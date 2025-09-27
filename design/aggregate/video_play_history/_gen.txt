@@ -4,11 +4,11 @@ cmd:video_play_history.ClearHistory:清空播放记录
 cmd:video_play_history.DelHistory:删除播放记录
 cmd:video_play_history.UpdatePlayProgress:更新播放进度
 
-de:video_play_history.VideoPlayHistory.PlayHistoryAdded:播放记录已添加
-de:video_play_history.VideoPlayHistory.PlayHistoryBatchAdded:播放记录已批量添加
-de:video_play_history.VideoPlayHistory.PlayHistoryCleared:播放记录已清空
-de:video_play_history.VideoPlayHistory.PlayHistoryDeleted:播放记录已删除
-de:video_play_history.VideoPlayHistory.PlayProgressUpdated:播放进度已更新
+de:video_play_history.VideoPlayHistory:PlayHistoryAdded:播放记录已添加
+de:video_play_history.VideoPlayHistory:PlayHistoryBatchAdded:播放记录已批量添加
+de:video_play_history.VideoPlayHistory:PlayHistoryCleared:播放记录已清空
+de:video_play_history.VideoPlayHistory:PlayHistoryDeleted:播放记录已删除
+de:video_play_history.VideoPlayHistory:PlayProgressUpdated:播放进度已更新
 
 qry:video_play_history.GetUserPlayHistory:获取用户播放历史
 qry:video_play_history.GetPlayHistoryByVideo:获取视频播放历史
