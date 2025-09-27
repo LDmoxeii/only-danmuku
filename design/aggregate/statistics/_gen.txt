@@ -3,10 +3,10 @@ cmd:statistics.UpdateStatisticsInfo:更新统计数据
 cmd:statistics.DeleteStatisticsInfo:删除统计数据
 cmd:statistics.BatchCalculateStatistics:批量计算统计数据
 
-de:statistics.Statistics.StatisticsInfoAdded:统计数据已添加
-de:statistics.Statistics.StatisticsInfoUpdated:统计数据已更新
-de:statistics.Statistics.StatisticsInfoDeleted:统计数据已删除
-de:statistics.Statistics.StatisticsBatchCalculated:统计数据已批量计算
+de:statistics.Statistics:StatisticsInfoAdded:统计数据已添加
+de:statistics.Statistics:StatisticsInfoUpdated:统计数据已更新
+de:statistics.Statistics:StatisticsInfoDeleted:统计数据已删除
+de:statistics.Statistics:StatisticsBatchCalculated:统计数据已批量计算
 
 qry:statistics.GetPreviousDayStatisticsInfo:获取前一天的统计数据
 qry:statistics.GetWeekStatisticsInfo:获取最近七天的统计数据
