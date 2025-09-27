@@ -1,5 +1,6 @@
 package ${basePackage}
 
+import org.babyfish.jimmer.spring.repository.EnableJimmerRepositories
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
@@ -13,6 +14,7 @@ import org.springframework.scheduling.annotation.EnableScheduling
  */
 @SpringBootApplication
 @EnableScheduling
+@EnableJimmerRepositories(basePackages = ["${basePackage}.adapter.application.repositories"])
 @EnableJpaRepositories(basePackages = ["${basePackage}.adapter.domain.repositories"])
 @EntityScan(basePackages = ["${basePackage}.domain.aggregates"])
 class StartApplication
