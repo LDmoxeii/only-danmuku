@@ -1,15 +1,16 @@
 package com.edu.only4.danmuku.domain._share.meta.statistics.meta
 
-import com.edu.only4.danmuku.domain._share.meta.Schema
-import com.edu.only4.danmuku.domain.aggregates.statistics.AggStatistics
-import com.edu.only4.danmuku.domain.aggregates.statistics.QStatistics
-import com.edu.only4.danmuku.domain.aggregates.statistics.Statistics
-import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePredicate
+import com.querydsl.core.types.OrderSpecifier
 import com.only4.cap4k.ddd.domain.repo.JpaPredicate
 import com.only4.cap4k.ddd.domain.repo.querydsl.QuerydslPredicate
-import com.querydsl.core.types.OrderSpecifier
-import jakarta.persistence.criteria.*
+import com.edu.only4.danmuku.domain._share.meta.Schema
+import com.edu.only4.danmuku.domain.aggregates.statistics.AggStatistics
+import com.edu.only4.danmuku.domain.aggregates.statistics.Statistics
+import com.edu.only4.danmuku.domain.aggregates.statistics.QStatistics
+import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePredicate
 import org.springframework.data.jpa.domain.Specification
+
+import jakarta.persistence.criteria.*
 
 /**
  * 统计信息;
@@ -23,43 +24,43 @@ class SStatistics(
     private val criteriaBuilder: CriteriaBuilder,
 ) {
     class PROPERTY_NAMES {
-
+            
         /**
          * ID
          */
         val id = "id"
-
+           
         /**
          * 用户ID
          */
         val customerId = "customerId"
-
+           
         /**
          * 数据统计类型
          */
         val dataType = "dataType"
-
+           
         /**
          * 统计数量
          */
         val statisticsCount = "statisticsCount"
-
+           
         /**
          * 统计日期
          */
         val statisticsDate = "statisticsDate"
-
+           
         /**
          * 删除标识 0：未删除 id：已删除
          */
         val deleted = "deleted"
-
+       
     }
-
+    
     companion object {
-
+    
         val props = PROPERTY_NAMES()
-
+        
         /**
          * 构建查询条件
          *
@@ -114,13 +115,13 @@ class SStatistics(
         }
 
         /**
-         * 构建查询条件
-         *
-         * @param builder       where条件构造器
-         * @param distinct      是否去重
-         * @param orderBuilders 排序条件构造器
-         * @return
-         */
+        * 构建查询条件
+        *
+        * @param builder       where条件构造器
+        * @param distinct      是否去重
+        * @param orderBuilders 排序条件构造器
+        * @return
+        */
         @JvmStatic
         fun specify(
             builder: Schema.PredicateBuilder<SStatistics>,
@@ -131,13 +132,13 @@ class SStatistics(
         }
 
         /**
-         * 构建查询条件
-         *
-         * @param builder       where条件构造器
-         * @param distinct      是否去重
-         * @param orderBuilders 排序条件构造器
-         * @return
-         */
+        * 构建查询条件
+        *
+        * @param builder       where条件构造器
+        * @param distinct      是否去重
+        * @param orderBuilders 排序条件构造器
+        * @return
+        */
         @JvmStatic
         fun specify(
             builder: Schema.PredicateBuilder<SStatistics>,
@@ -169,16 +170,16 @@ class SStatistics(
         }
 
         /**
-         * 构建子查询
-         *
-         * @param resultClass      返回结果类型
-         * @param selectBuilder    select条件构造器
-         * @param predicateBuilder where条件构造器
-         * @param criteriaBuilder
-         * @param criteriaQuery
-         * @param <E>
-         * @return
-         */
+        * 构建子查询
+        *
+        * @param resultClass      返回结果类型
+        * @param selectBuilder    select条件构造器
+        * @param predicateBuilder where条件构造器
+        * @param criteriaBuilder
+        * @param criteriaQuery
+        * @param <E>
+        * @return
+        */
         @JvmStatic
         fun <E> subquery(
             resultClass: Class<E>,
@@ -216,7 +217,7 @@ class SStatistics(
             subqueryConfigure.configure(sq, schema)
             return sq
         }
-
+        
         /**
          * 构建查询条件
          *
@@ -227,20 +228,19 @@ class SStatistics(
         fun predicateById(id: Any): AggregatePredicate<AggStatistics, Statistics> {
             return JpaPredicate.byId(Statistics::class.java, id).toAggregatePredicate(AggStatistics::class.java)
         }
-
+    
         /**
-         * 构建查询条件
-         *
-         * @param ids 主键
-         * @return
-         */
+        * 构建查询条件
+        *
+        * @param ids 主键
+        * @return
+        */
         @JvmStatic
         fun predicateByIds(ids: Iterable<*>): AggregatePredicate<AggStatistics, Statistics> {
             @Suppress("UNCHECKED_CAST")
-            return JpaPredicate.byIds(Statistics::class.java, ids as Iterable<Any>)
-                .toAggregatePredicate(AggStatistics::class.java)
+            return JpaPredicate.byIds(Statistics::class.java, ids as Iterable<Any>).toAggregatePredicate(AggStatistics::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -249,10 +249,9 @@ class SStatistics(
          */
         @JvmStatic
         fun predicateByIds(vararg ids: Any): AggregatePredicate<AggStatistics, Statistics> {
-            return JpaPredicate.byIds(Statistics::class.java, ids.toList())
-                .toAggregatePredicate(AggStatistics::class.java)
+            return JpaPredicate.byIds(Statistics::class.java, ids.toList()).toAggregatePredicate(AggStatistics::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -261,10 +260,9 @@ class SStatistics(
          */
         @JvmStatic
         fun predicate(builder: Schema.PredicateBuilder<SStatistics>): AggregatePredicate<AggStatistics, Statistics> {
-            return JpaPredicate.bySpecification(Statistics::class.java, specify(builder))
-                .toAggregatePredicate(AggStatistics::class.java)
+            return JpaPredicate.bySpecification(Statistics::class.java, specify(builder)).toAggregatePredicate(AggStatistics::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -273,14 +271,10 @@ class SStatistics(
          * @return
          */
         @JvmStatic
-        fun predicate(
-            builder: Schema.PredicateBuilder<SStatistics>,
-            distinct: Boolean,
-        ): AggregatePredicate<AggStatistics, Statistics> {
-            return JpaPredicate.bySpecification(Statistics::class.java, specify(builder, distinct))
-                .toAggregatePredicate(AggStatistics::class.java)
+        fun predicate(builder: Schema.PredicateBuilder<SStatistics>, distinct: Boolean): AggregatePredicate<AggStatistics, Statistics> {
+            return JpaPredicate.bySpecification(Statistics::class.java, specify(builder, distinct)).toAggregatePredicate(AggStatistics::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -293,10 +287,9 @@ class SStatistics(
             builder: Schema.PredicateBuilder<SStatistics>,
             orderBuilders: List<Schema.OrderBuilder<SStatistics>>,
         ): AggregatePredicate<AggStatistics, Statistics> {
-            return JpaPredicate.bySpecification(Statistics::class.java, specify(builder, false, orderBuilders))
-                .toAggregatePredicate(AggStatistics::class.java)
+            return JpaPredicate.bySpecification(Statistics::class.java, specify(builder, false, orderBuilders)).toAggregatePredicate(AggStatistics::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -309,10 +302,9 @@ class SStatistics(
             builder: Schema.PredicateBuilder<SStatistics>,
             vararg orderBuilders: Schema.OrderBuilder<SStatistics>,
         ): AggregatePredicate<AggStatistics, Statistics> {
-            return JpaPredicate.bySpecification(Statistics::class.java, specify(builder, false, *orderBuilders))
-                .toAggregatePredicate(AggStatistics::class.java)
+            return JpaPredicate.bySpecification(Statistics::class.java, specify(builder, false, *orderBuilders)).toAggregatePredicate(AggStatistics::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -327,10 +319,9 @@ class SStatistics(
             distinct: Boolean,
             orderBuilders: List<Schema.OrderBuilder<SStatistics>>,
         ): AggregatePredicate<AggStatistics, Statistics> {
-            return JpaPredicate.bySpecification(Statistics::class.java, specify(builder, distinct, orderBuilders))
-                .toAggregatePredicate(AggStatistics::class.java)
+            return JpaPredicate.bySpecification(Statistics::class.java, specify(builder, distinct, orderBuilders)).toAggregatePredicate(AggStatistics::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -345,10 +336,9 @@ class SStatistics(
             distinct: Boolean,
             vararg orderBuilders: Schema.OrderBuilder<SStatistics>,
         ): AggregatePredicate<AggStatistics, Statistics> {
-            return JpaPredicate.bySpecification(Statistics::class.java, specify(builder, distinct, *orderBuilders))
-                .toAggregatePredicate(AggStatistics::class.java)
+            return JpaPredicate.bySpecification(Statistics::class.java, specify(builder, distinct, *orderBuilders)).toAggregatePredicate(AggStatistics::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -357,11 +347,9 @@ class SStatistics(
          */
         @JvmStatic
         fun predicate(specifier: Schema.Specification<Statistics, SStatistics>): AggregatePredicate<AggStatistics, Statistics> {
-            return JpaPredicate.bySpecification(Statistics::class.java, specify(specifier))
-                .toAggregatePredicate(AggStatistics::class.java)
+            return JpaPredicate.bySpecification(Statistics::class.java, specify(specifier)).toAggregatePredicate(AggStatistics::class.java)
         }
-
-        /**
+       /**
          * 构建querydsl查询条件
          *
          * @param filterBuilder          查询条件构造器
@@ -378,7 +366,7 @@ class SStatistics(
                 .orderBy(*orderSpecifierBuilders.map { it.apply(QStatistics.statistics) }.toTypedArray())
                 .toAggregatePredicate(AggStatistics::class.java)
         }
-
+        
         /**
          * 构建querydsl查询条件
          *
@@ -395,14 +383,14 @@ class SStatistics(
                 .where(filter)
                 .orderBy(*orderSpecifiers)
                 .toAggregatePredicate(AggStatistics::class.java)
-        }
+        }  
     }
-
+    
     fun _criteriaBuilder(): CriteriaBuilder = criteriaBuilder
 
     fun _root(): Path<Statistics> = root
 
-
+    
     /**
      * ID
      * bigint
@@ -410,7 +398,6 @@ class SStatistics(
     fun id(): Schema.Field<Long> {
         return Schema.Field(root.get(props.id), this.criteriaBuilder)
     }
-
     /**
      * 用户ID
      * bigint
@@ -418,7 +405,6 @@ class SStatistics(
     fun customerId(): Schema.Field<Long> {
         return Schema.Field(root.get(props.customerId), this.criteriaBuilder)
     }
-
     /**
      * 数据统计类型
      * 0:UNKNOW:未知类型
@@ -433,7 +419,6 @@ class SStatistics(
     fun dataType(): Schema.Field<com.edu.only4.danmuku.domain.aggregates.statistics.enums.StatisticsDataType> {
         return Schema.Field(root.get(props.dataType), this.criteriaBuilder)
     }
-
     /**
      * 统计数量
      * int
@@ -441,7 +426,6 @@ class SStatistics(
     fun statisticsCount(): Schema.Field<Int?> {
         return Schema.Field(root.get(props.statisticsCount), this.criteriaBuilder)
     }
-
     /**
      * 统计日期
      * bigint
@@ -449,7 +433,6 @@ class SStatistics(
     fun statisticsDate(): Schema.Field<Long> {
         return Schema.Field(root.get(props.statisticsDate), this.criteriaBuilder)
     }
-
     /**
      * 删除标识 0：未删除 id：已删除
      * tinyint(1)
@@ -484,6 +467,6 @@ class SStatistics(
     fun spec(builder: Schema.PredicateBuilder<SStatistics>): Predicate {
         return builder.build(this)
     }
-
-
+    
+    
 }

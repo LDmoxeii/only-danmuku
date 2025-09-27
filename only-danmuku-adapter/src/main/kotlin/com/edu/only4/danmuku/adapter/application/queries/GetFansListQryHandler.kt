@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service
 class GetFansListQryHandler(
 ) : ListQuery<GetFansListQry.Request, GetFansListQry.Response> {
 
-    override fun exec(request: GetFansListQry.Request): List<GetFansListQry.Response > {
+    override fun exec(request: GetFansListQry.Request): List<GetFansListQry.Response> {
 
         return listOf(GetFansListQry.Response(
 

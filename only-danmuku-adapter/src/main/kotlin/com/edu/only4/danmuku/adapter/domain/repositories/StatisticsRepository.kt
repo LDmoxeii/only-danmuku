@@ -13,28 +13,23 @@ import org.springframework.stereotype.Component
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * @date 2025/09/27
  */
-interface StatisticsRepository : JpaRepository<Statistics, Long>, JpaSpecificationExecutor<Statistics>,
-    QuerydslPredicateExecutor<Statistics> {
+interface StatisticsRepository : JpaRepository<Statistics, Long>, JpaSpecificationExecutor<Statistics>, 
+	QuerydslPredicateExecutor<Statistics> {
 
     @Component
     @Aggregate(aggregate = "Statistics", name = "StatisticsRepo", type = Aggregate.TYPE_REPOSITORY, description = "")
     class StatisticsJpaRepositoryAdapter(
         jpaSpecificationExecutor: JpaSpecificationExecutor<Statistics>,
-        jpaRepository: JpaRepository<Statistics, Long>,
+        jpaRepository: JpaRepository<Statistics, Long>
     ) : AbstractJpaRepository<Statistics, Long>(
         jpaSpecificationExecutor,
         jpaRepository
     )
 
     @Component
-    @Aggregate(
-        aggregate = "Statistics",
-        name = "StatisticsQuerydslRepo",
-        type = Aggregate.TYPE_REPOSITORY,
-        description = ""
-    )
+    @Aggregate(aggregate = "Statistics", name = "StatisticsQuerydslRepo", type = Aggregate.TYPE_REPOSITORY, description = "")
     class StatisticsQuerydslRepositoryAdapter(
-        querydslPredicateExecutor: QuerydslPredicateExecutor<Statistics>,
+        querydslPredicateExecutor: QuerydslPredicateExecutor<Statistics>
     ) : AbstractQuerydslRepository<Statistics>(
         querydslPredicateExecutor
     )

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service
 class GetDanmukuListQryHandler(
 ) : ListQuery<GetDanmukuListQry.Request, GetDanmukuListQry.Response> {
 
-    override fun exec(request: GetDanmukuListQry.Request): List<GetDanmukuListQry.Response > {
+    override fun exec(request: GetDanmukuListQry.Request): List<GetDanmukuListQry.Response> {
 
         return listOf(GetDanmukuListQry.Response(
 

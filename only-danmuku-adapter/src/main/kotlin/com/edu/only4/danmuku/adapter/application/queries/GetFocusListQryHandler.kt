@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service
 class GetFocusListQryHandler(
 ) : ListQuery<GetFocusListQry.Request, GetFocusListQry.Response> {
 
-    override fun exec(request: GetFocusListQry.Request): List<GetFocusListQry.Response > {
+    override fun exec(request: GetFocusListQry.Request): List<GetFocusListQry.Response> {
 
         return listOf(GetFocusListQry.Response(
 

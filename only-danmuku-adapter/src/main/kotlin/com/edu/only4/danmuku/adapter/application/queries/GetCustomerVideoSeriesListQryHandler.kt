@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service
 class GetCustomerVideoSeriesListQryHandler(
 ) : ListQuery<GetCustomerVideoSeriesListQry.Request, GetCustomerVideoSeriesListQry.Response> {
 
-    override fun exec(request: GetCustomerVideoSeriesListQry.Request): List<GetCustomerVideoSeriesListQry.Response > {
+    override fun exec(request: GetCustomerVideoSeriesListQry.Request): List<GetCustomerVideoSeriesListQry.Response> {
 
         return listOf(GetCustomerVideoSeriesListQry.Response(
 

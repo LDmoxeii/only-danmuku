@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service
 class ${Query}Handler(
 ) : ListQuery<${Query}.Request, ${Query}.Response> {
 
-    override fun exec(request: ${Query}.Request): List<${Query}.Response > {
+    override fun exec(request: ${Query}.Request): List<${Query}.Response> {
 
         return listOf(${Query}.Response(
 

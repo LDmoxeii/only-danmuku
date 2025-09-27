@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service
 class GetMessageListQryHandler(
 ) : ListQuery<GetMessageListQry.Request, GetMessageListQry.Response> {
 
-    override fun exec(request: GetMessageListQry.Request): List<GetMessageListQry.Response > {
+    override fun exec(request: GetMessageListQry.Request): List<GetMessageListQry.Response> {
 
         return listOf(GetMessageListQry.Response(
 

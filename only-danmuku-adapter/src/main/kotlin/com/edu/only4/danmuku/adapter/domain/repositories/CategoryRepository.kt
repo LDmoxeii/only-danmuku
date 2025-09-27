@@ -13,28 +13,23 @@ import org.springframework.stereotype.Component
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * @date 2025/09/27
  */
-interface CategoryRepository : JpaRepository<Category, Long>, JpaSpecificationExecutor<Category>,
-    QuerydslPredicateExecutor<Category> {
+interface CategoryRepository : JpaRepository<Category, Long>, JpaSpecificationExecutor<Category>, 
+	QuerydslPredicateExecutor<Category> {
 
     @Component
     @Aggregate(aggregate = "Category", name = "CategoryRepo", type = Aggregate.TYPE_REPOSITORY, description = "")
     class CategoryJpaRepositoryAdapter(
         jpaSpecificationExecutor: JpaSpecificationExecutor<Category>,
-        jpaRepository: JpaRepository<Category, Long>,
+        jpaRepository: JpaRepository<Category, Long>
     ) : AbstractJpaRepository<Category, Long>(
         jpaSpecificationExecutor,
         jpaRepository
     )
 
     @Component
-    @Aggregate(
-        aggregate = "Category",
-        name = "CategoryQuerydslRepo",
-        type = Aggregate.TYPE_REPOSITORY,
-        description = ""
-    )
+    @Aggregate(aggregate = "Category", name = "CategoryQuerydslRepo", type = Aggregate.TYPE_REPOSITORY, description = "")
     class CategoryQuerydslRepositoryAdapter(
-        querydslPredicateExecutor: QuerydslPredicateExecutor<Category>,
+        querydslPredicateExecutor: QuerydslPredicateExecutor<Category>
     ) : AbstractQuerydslRepository<Category>(
         querydslPredicateExecutor
     )

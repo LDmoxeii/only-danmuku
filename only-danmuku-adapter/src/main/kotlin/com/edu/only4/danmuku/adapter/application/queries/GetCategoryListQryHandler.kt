@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service
 class GetCategoryListQryHandler(
 ) : ListQuery<GetCategoryListQry.Request, GetCategoryListQry.Response> {
 
-    override fun exec(request: GetCategoryListQry.Request): List<GetCategoryListQry.Response > {
+    override fun exec(request: GetCategoryListQry.Request): List<GetCategoryListQry.Response> {
 
         return listOf(GetCategoryListQry.Response(
 
