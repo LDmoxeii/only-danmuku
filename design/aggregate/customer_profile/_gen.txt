@@ -4,11 +4,11 @@ cmd:customer_profile.CreateCustomerProfile:创建用户档案
 cmd:customer_profile.UpdateAvatar:更新用户头像
 cmd:customer_profile.UpdateNickname:更新用户昵称
 
-de:customer_profile.CustomerProfile.CustomerProfileCreated:用户档案已创建
-de:customer_profile.CustomerProfile.CustomerProfileUpdated:用户信息已更新
-de:customer_profile.CustomerProfile.CustomerStatisticUpdated:用户统计信息已更新
-de:customer_profile.CustomerProfile.CustomerAvatarUpdated:用户头像已更新
-de:customer_profile.CustomerProfile.CustomerNicknameUpdated:用户昵称已更新
+de:customer_profile.CustomerProfile:CustomerProfileCreated:用户档案已创建
+de:customer_profile.CustomerProfile:CustomerProfileUpdated:用户信息已更新
+de:customer_profile.CustomerProfile:CustomerStatisticUpdated:用户统计信息已更新
+de:customer_profile.CustomerProfile:CustomerAvatarUpdated:用户头像已更新
+de:customer_profile.CustomerProfile:CustomerNicknameUpdated:用户昵称已更新
 
 qry:customer_profile.GetCustomerProfile:获取用户信息
 qry:customer_profile.GetCustomerStatistic:获取用户统计信息
