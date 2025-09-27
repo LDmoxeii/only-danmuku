@@ -1,8 +1,8 @@
 -- ----------------------------
--- Table structure for statistics_info
+-- Table structure for statistics
 -- ----------------------------
-DROP TABLE IF EXISTS `statistics_info`;
-CREATE TABLE `statistics_info`
+DROP TABLE IF EXISTS statistics;
+CREATE TABLE statistics
     (
     `id`               bigint      NOT NULL COMMENT 'ID',
     `customer_id`      bigint      NOT NULL COMMENT '用户ID',
