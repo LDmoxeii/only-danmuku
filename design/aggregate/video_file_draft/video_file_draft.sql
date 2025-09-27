@@ -1,8 +1,8 @@
 -- ----------------------------
--- Table structure for video_file_post
+-- Table structure for video_file_draft
 -- ----------------------------
-DROP TABLE IF EXISTS `video_file_post`;
-CREATE TABLE `video_file_post`
+DROP TABLE IF EXISTS video_file_draft;
+CREATE TABLE video_file_draft
     (
     `id`              bigint                                                        NOT NULL COMMENT 'ID',
     `file_id`         bigint                                                        NOT NULL COMMENT '唯一ID',
