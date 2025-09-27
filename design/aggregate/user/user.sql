@@ -2,7 +2,7 @@
 -- Table structure for user
 -- ----------------------------
 DROP TABLE IF EXISTS `user`;
-CREATE TABLE `user_profile`
+CREATE TABLE `user`
     (
     `id`              bigint                                                        NOT NULL COMMENT 'ID',
     `email`           varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '邮箱',
