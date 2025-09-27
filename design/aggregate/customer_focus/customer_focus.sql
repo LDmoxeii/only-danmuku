@@ -18,5 +18,5 @@ CREATE TABLE `customer_focus`
     )
     ENGINE = InnoDB
     CHARACTER SET = utf8mb4
-    COLLATE = utf8mb4_general_ci COMMENT = '用户关注\nSpe;@Fac;'
+    COLLATE = utf8mb4_general_ci COMMENT = '用户关注;@Spe;@Fac;'
     ROW_FORMAT = DYNAMIC;

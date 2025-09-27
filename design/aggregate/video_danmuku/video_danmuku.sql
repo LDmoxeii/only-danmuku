@@ -24,5 +24,5 @@ CREATE TABLE video_danmuku
     )
     ENGINE = InnoDB
     CHARACTER SET = utf8mb4
-    COLLATE = utf8mb4_general_ci COMMENT = '视频弹幕\nSpe;@Fac;'
+    COLLATE = utf8mb4_general_ci COMMENT = '视频弹幕;@Spe;@Fac;'
     ROW_FORMAT = DYNAMIC;

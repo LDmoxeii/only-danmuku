@@ -29,6 +29,6 @@ CREATE TABLE `customer_profile`
     )
     ENGINE = InnoDB
     CHARACTER SET = utf8mb4
-    COLLATE = utf8mb4_general_ci COMMENT = '用户信息\nSpe;@Fac;'
+    COLLATE = utf8mb4_general_ci COMMENT = '用户信息;@Spe;@Fac;'
     ROW_FORMAT = Dynamic;
 

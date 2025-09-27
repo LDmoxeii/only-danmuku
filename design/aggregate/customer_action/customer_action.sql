@@ -23,5 +23,5 @@ CREATE TABLE `customer_action`
     )
     ENGINE = InnoDB
     CHARACTER SET = utf8mb4
-    COLLATE = utf8mb4_general_ci COMMENT = '用户行为 点赞、评论\nSpe;@Fac;'
+    COLLATE = utf8mb4_general_ci COMMENT = '用户行为 点赞、评论;@Spe;@Fac;'
     ROW_FORMAT = DYNAMIC;

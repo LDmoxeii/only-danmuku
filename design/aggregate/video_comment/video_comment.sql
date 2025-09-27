@@ -27,5 +27,5 @@ CREATE TABLE `video_comment`
     )
     ENGINE = InnoDB
     CHARACTER SET = utf8mb4
-    COLLATE = utf8mb4_general_ci COMMENT = '评论\nSpe;@Fac;'
+    COLLATE = utf8mb4_general_ci COMMENT = '评论;@Spe;@Fac;'
     ROW_FORMAT = DYNAMIC;

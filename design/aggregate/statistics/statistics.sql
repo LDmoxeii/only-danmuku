@@ -20,5 +20,5 @@ CREATE TABLE `statistics_info`
     )
     ENGINE = InnoDB
     CHARACTER SET = utf8mb4
-    COLLATE = utf8mb4_general_ci COMMENT = '统计信息\nSpe;@Fac;'
+    COLLATE = utf8mb4_general_ci COMMENT = '统计信息;@Spe;@Fac;'
     ROW_FORMAT = DYNAMIC;

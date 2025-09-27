@@ -19,5 +19,5 @@ CREATE TABLE `video_play_history`
     )
     ENGINE = InnoDB
     CHARACTER SET = utf8mb4
-    COLLATE = utf8mb4_general_ci COMMENT = '视频播放历史\nSpe;@Fac;'
+    COLLATE = utf8mb4_general_ci COMMENT = '视频播放历史;@Spe;@Fac;'
     ROW_FORMAT = DYNAMIC;

@@ -20,7 +20,7 @@ CREATE TABLE `customer_video_series`
     )
     ENGINE = InnoDB
     CHARACTER SET = utf8mb4
-    COLLATE = utf8mb4_general_ci COMMENT = '用户视频序列归档\nSpe;@Fac;'
+    COLLATE = utf8mb4_general_ci COMMENT = '用户视频序列归档;@Spe;@Fac;'
     ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -45,5 +45,5 @@ CREATE TABLE `customer_video_series_video`
     )
     ENGINE = InnoDB
     CHARACTER SET = utf8mb4
-    COLLATE = utf8mb4_general_ci COMMENT = '用户视频序列视频关联\n@P=customer_video_series;'
+    COLLATE = utf8mb4_general_ci COMMENT = '用户视频序列视频关联;@@P=customer_video_series;'
     ROW_FORMAT = DYNAMIC;

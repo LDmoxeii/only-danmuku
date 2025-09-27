@@ -23,5 +23,5 @@ CREATE TABLE `customer_message`
     ENGINE = InnoDB
     AUTO_INCREMENT = 23
     CHARACTER SET = utf8mb4
-    COLLATE = utf8mb4_general_ci COMMENT = '用户消息表\nSpe;@Fac;'
+    COLLATE = utf8mb4_general_ci COMMENT = '用户消息表;@Spe;@Fac;'
     ROW_FORMAT = DYNAMIC;

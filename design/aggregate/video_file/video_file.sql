@@ -24,5 +24,5 @@ CREATE TABLE `video_file`
     )
     ENGINE = InnoDB
     CHARACTER SET = utf8mb4
-    COLLATE = utf8mb4_general_ci COMMENT = '视频文件信息\nSpe;@Fac;'
+    COLLATE = utf8mb4_general_ci COMMENT = '视频文件信息;@Spe;@Fac;'
     ROW_FORMAT = DYNAMIC;
