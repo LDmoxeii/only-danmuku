@@ -1,8 +1,8 @@
 cmd:customer_focus.Focus:关注
 cmd:customer_focus.UnFocus:取消关注
 
-de:customer_focus.CustomerFocus.UserFocused:用户已关注
-de:customer_focus.CustomerFocus:用户已取消关注
+de:customer_focus:CustomerFocus.UserFocused:用户已关注
+de:customer_focus:CustomerFocus:用户已取消关注
 
 qry:customer_focus.GetFocusList:获取关注列表
 qry:customer_focus.GetFansList:获取粉丝列表

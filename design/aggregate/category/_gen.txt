@@ -3,10 +3,10 @@ cmd:category.UpdateCategoryInfo:更新分类信息
 cmd:category.UpdateCategorySortOrder:更新分类排序
 cmd:category.DeleteCategory:删除分类
 
-de:category.Category.CategoryCreated:分类已创建
-de:category.Category.CategoryInfoUpdated:分类信息已更新
-de:category.Category.CategorySortOrderUpdated:分类排序已更新
-de:category.Category.CategoryDeleted:分类已删除
+de:category.Category:CategoryCreated:分类已创建
+de:category.Category:CategoryInfoUpdated:分类信息已更新
+de:category.Category:CategorySortOrderUpdated:分类排序已更新
+de:category.Category:CategoryDeleted:分类已删除
 
 qry:category.CategoryExistsByCode:根据分类编码判断分类是否存在
 qry:category.getCategoryList:获取分类列表

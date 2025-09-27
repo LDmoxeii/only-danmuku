@@ -1,4 +1,4 @@
-package com.edu.only4.danmuku.domain.aggregates.category_info
+package com.edu.only4.danmuku.domain.aggregates.category
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 
@@ -17,14 +17,14 @@ import org.hibernate.annotations.Where
  * @author cap4k-ddd-codegen
  * @date 2025/09/27
  */
-@Aggregate(aggregate = "CategoryInfo", name = "CategoryInfo", root = true, type = Aggregate.TYPE_ENTITY, description = "分类信息;")
+@Aggregate(aggregate = "Category", name = "Category", root = true, type = Aggregate.TYPE_ENTITY, description = "分类信息;")
 @Entity
-@Table(name = "`category_info`")
+@Table(name = "`category`")
 @DynamicInsert
 @DynamicUpdate
-@SQLDelete(sql = "update `category_info` set `deleted` = `id` where `id` = ?")
+@SQLDelete(sql = "update `category` set `deleted` = `id` where `id` = ?")
 @Where(clause = "`deleted` = 0")
-class CategoryInfo (
+class Category (
     // 【字段映射开始】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
 
     /**

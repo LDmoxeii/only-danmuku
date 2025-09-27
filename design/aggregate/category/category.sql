@@ -1,8 +1,8 @@
 -- ----------------------------
 -- Table structure for category_info
 -- ----------------------------
-DROP TABLE IF EXISTS `category_info`;
-CREATE TABLE `category_info`
+DROP TABLE IF EXISTS category;
+CREATE TABLE category
     (
     `id`             bigint                                                        NOT NULL COMMENT 'ID',
     `parent_id`      bigint                                                        NOT NULL COMMENT '父级ID',

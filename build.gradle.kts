@@ -23,7 +23,9 @@ kotlin {
 cap4kCodegen {
     basePackage.set("com.edu.only4.danmuku")
     archTemplate.set("cap4k-ddd-codegen-template-multi-nested.json")
-    designFiles.from(fileTree(mapOf("dir" to "design", "include" to "**/*_gen.txt")))
+    designFiles.from(fileTree("design") {
+        include("**/*_gen.txt")
+    })
 
     database {
         url.set("jdbc:mysql://localhost:3306/only_danmuku?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai")

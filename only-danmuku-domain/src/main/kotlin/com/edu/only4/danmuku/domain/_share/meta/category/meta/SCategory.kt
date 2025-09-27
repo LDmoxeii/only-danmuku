@@ -1,12 +1,12 @@
-package com.edu.only4.danmuku.domain._share.meta.category_info.meta
+package com.edu.only4.danmuku.domain._share.meta.category.meta
 
 import com.querydsl.core.types.OrderSpecifier
 import com.only4.cap4k.ddd.domain.repo.JpaPredicate
 import com.only4.cap4k.ddd.domain.repo.querydsl.QuerydslPredicate
 import com.edu.only4.danmuku.domain._share.meta.Schema
-import com.edu.only4.danmuku.domain.aggregates.category_info.AggCategoryInfo
-import com.edu.only4.danmuku.domain.aggregates.category_info.CategoryInfo
-import com.edu.only4.danmuku.domain.aggregates.category_info.QCategoryInfo
+import com.edu.only4.danmuku.domain.aggregates.category.AggCategory
+import com.edu.only4.danmuku.domain.aggregates.category.Category
+import com.edu.only4.danmuku.domain.aggregates.category.QCategory
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePredicate
 import org.springframework.data.jpa.domain.Specification
 
@@ -19,8 +19,8 @@ import jakarta.persistence.criteria.*
  * @author cap4k-ddd-codegen
  * @date 2025/09/27
  */
-class SCategoryInfo(
-    private val root: Path<CategoryInfo>,
+class SCategory(
+    private val root: Path<Category>,
     private val criteriaBuilder: CriteriaBuilder,
 ) {
     class PROPERTY_NAMES {
@@ -83,7 +83,7 @@ class SCategoryInfo(
          * @return
          */
         @JvmStatic
-        fun specify(builder: Schema.PredicateBuilder<SCategoryInfo>): Specification<CategoryInfo> {
+        fun specify(builder: Schema.PredicateBuilder<SCategory>): Specification<Category> {
             return specify(builder, false, emptyList())
         }
 
@@ -95,7 +95,7 @@ class SCategoryInfo(
          * @return
          */
         @JvmStatic
-        fun specify(builder: Schema.PredicateBuilder<SCategoryInfo>, distinct: Boolean): Specification<CategoryInfo> {
+        fun specify(builder: Schema.PredicateBuilder<SCategory>, distinct: Boolean): Specification<Category> {
             return specify(builder, distinct, emptyList())
         }
 
@@ -108,9 +108,9 @@ class SCategoryInfo(
          */
         @JvmStatic
         fun specify(
-            builder: Schema.PredicateBuilder<SCategoryInfo>,
-            vararg orderBuilders: Schema.OrderBuilder<SCategoryInfo>,
-        ): Specification<CategoryInfo> {
+            builder: Schema.PredicateBuilder<SCategory>,
+            vararg orderBuilders: Schema.OrderBuilder<SCategory>,
+        ): Specification<Category> {
             return specify(builder, orderBuilders.toList())
         }
 
@@ -123,9 +123,9 @@ class SCategoryInfo(
          */
         @JvmStatic
         fun specify(
-            builder: Schema.PredicateBuilder<SCategoryInfo>,
-            orderBuilders: List<Schema.OrderBuilder<SCategoryInfo>>,
-        ): Specification<CategoryInfo> {
+            builder: Schema.PredicateBuilder<SCategory>,
+            orderBuilders: List<Schema.OrderBuilder<SCategory>>,
+        ): Specification<Category> {
             return specify(builder, false, orderBuilders)
         }
 
@@ -139,10 +139,10 @@ class SCategoryInfo(
         */
         @JvmStatic
         fun specify(
-            builder: Schema.PredicateBuilder<SCategoryInfo>,
+            builder: Schema.PredicateBuilder<SCategory>,
             distinct: Boolean,
-            vararg orderBuilders: Schema.OrderBuilder<SCategoryInfo>,
-        ): Specification<CategoryInfo> {
+            vararg orderBuilders: Schema.OrderBuilder<SCategory>,
+        ): Specification<Category> {
             return specify(builder, distinct, orderBuilders.toList())
         }
 
@@ -156,10 +156,10 @@ class SCategoryInfo(
         */
         @JvmStatic
         fun specify(
-            builder: Schema.PredicateBuilder<SCategoryInfo>,
+            builder: Schema.PredicateBuilder<SCategory>,
             distinct: Boolean,
-            orderBuilders: List<Schema.OrderBuilder<SCategoryInfo>>,
-        ): Specification<CategoryInfo> {
+            orderBuilders: List<Schema.OrderBuilder<SCategory>>,
+        ): Specification<Category> {
             return specify { schema, criteriaQuery, criteriaBuilder ->
                 criteriaQuery.where(builder.build(schema))
                 criteriaQuery.distinct(distinct)
@@ -177,9 +177,9 @@ class SCategoryInfo(
          * @return
          */
         @JvmStatic
-        fun specify(specifier: Schema.Specification<CategoryInfo, SCategoryInfo>): Specification<CategoryInfo> {
+        fun specify(specifier: Schema.Specification<Category, SCategory>): Specification<Category> {
             return Specification { root, criteriaQuery, criteriaBuilder ->
-                val schema = SCategoryInfo(root, criteriaBuilder)
+                val schema = SCategory(root, criteriaBuilder)
                 specifier.toPredicate(schema, criteriaQuery, criteriaBuilder)
             }
         }
@@ -198,8 +198,8 @@ class SCategoryInfo(
         @JvmStatic
         fun <E> subquery(
             resultClass: Class<E>,
-            selectBuilder: Schema.ExpressionBuilder<SCategoryInfo, E>,
-            predicateBuilder: Schema.PredicateBuilder<SCategoryInfo>,
+            selectBuilder: Schema.ExpressionBuilder<SCategory, E>,
+            predicateBuilder: Schema.PredicateBuilder<SCategory>,
             criteriaBuilder: CriteriaBuilder,
             criteriaQuery: CriteriaQuery<*>,
         ): Subquery<E> {
@@ -222,13 +222,13 @@ class SCategoryInfo(
         @JvmStatic
         fun <E> subquery(
             resultClass: Class<E>,
-            subqueryConfigure: Schema.SubqueryConfigure<E, SCategoryInfo>,
+            subqueryConfigure: Schema.SubqueryConfigure<E, SCategory>,
             criteriaBuilder: CriteriaBuilder,
             criteriaQuery: CriteriaQuery<*>,
         ): Subquery<E> {
             val sq = criteriaQuery.subquery(resultClass)
-            val root = sq.from(CategoryInfo::class.java)
-            val schema = SCategoryInfo(root, criteriaBuilder)
+            val root = sq.from(Category::class.java)
+            val schema = SCategory(root, criteriaBuilder)
             subqueryConfigure.configure(sq, schema)
             return sq
         }
@@ -240,8 +240,8 @@ class SCategoryInfo(
          * @return
          */
         @JvmStatic
-        fun predicateById(id: Any): AggregatePredicate<AggCategoryInfo, CategoryInfo> {
-            return JpaPredicate.byId(CategoryInfo::class.java, id).toAggregatePredicate(AggCategoryInfo::class.java)
+        fun predicateById(id: Any): AggregatePredicate<AggCategory, Category> {
+            return JpaPredicate.byId(Category::class.java, id).toAggregatePredicate(AggCategory::class.java)
         }
     
         /**
@@ -251,9 +251,9 @@ class SCategoryInfo(
         * @return
         */
         @JvmStatic
-        fun predicateByIds(ids: Iterable<*>): AggregatePredicate<AggCategoryInfo, CategoryInfo> {
+        fun predicateByIds(ids: Iterable<*>): AggregatePredicate<AggCategory, Category> {
             @Suppress("UNCHECKED_CAST")
-            return JpaPredicate.byIds(CategoryInfo::class.java, ids as Iterable<Any>).toAggregatePredicate(AggCategoryInfo::class.java)
+            return JpaPredicate.byIds(Category::class.java, ids as Iterable<Any>).toAggregatePredicate(AggCategory::class.java)
         }
     
         /**
@@ -263,8 +263,8 @@ class SCategoryInfo(
          * @return
          */
         @JvmStatic
-        fun predicateByIds(vararg ids: Any): AggregatePredicate<AggCategoryInfo, CategoryInfo> {
-            return JpaPredicate.byIds(CategoryInfo::class.java, ids.toList()).toAggregatePredicate(AggCategoryInfo::class.java)
+        fun predicateByIds(vararg ids: Any): AggregatePredicate<AggCategory, Category> {
+            return JpaPredicate.byIds(Category::class.java, ids.toList()).toAggregatePredicate(AggCategory::class.java)
         }
     
         /**
@@ -274,8 +274,8 @@ class SCategoryInfo(
          * @return
          */
         @JvmStatic
-        fun predicate(builder: Schema.PredicateBuilder<SCategoryInfo>): AggregatePredicate<AggCategoryInfo, CategoryInfo> {
-            return JpaPredicate.bySpecification(CategoryInfo::class.java, specify(builder)).toAggregatePredicate(AggCategoryInfo::class.java)
+        fun predicate(builder: Schema.PredicateBuilder<SCategory>): AggregatePredicate<AggCategory, Category> {
+            return JpaPredicate.bySpecification(Category::class.java, specify(builder)).toAggregatePredicate(AggCategory::class.java)
         }
     
         /**
@@ -286,8 +286,8 @@ class SCategoryInfo(
          * @return
          */
         @JvmStatic
-        fun predicate(builder: Schema.PredicateBuilder<SCategoryInfo>, distinct: Boolean): AggregatePredicate<AggCategoryInfo, CategoryInfo> {
-            return JpaPredicate.bySpecification(CategoryInfo::class.java, specify(builder, distinct)).toAggregatePredicate(AggCategoryInfo::class.java)
+        fun predicate(builder: Schema.PredicateBuilder<SCategory>, distinct: Boolean): AggregatePredicate<AggCategory, Category> {
+            return JpaPredicate.bySpecification(Category::class.java, specify(builder, distinct)).toAggregatePredicate(AggCategory::class.java)
         }
     
         /**
@@ -299,10 +299,10 @@ class SCategoryInfo(
          */
         @JvmStatic
         fun predicate(
-            builder: Schema.PredicateBuilder<SCategoryInfo>,
-            orderBuilders: List<Schema.OrderBuilder<SCategoryInfo>>,
-        ): AggregatePredicate<AggCategoryInfo, CategoryInfo> {
-            return JpaPredicate.bySpecification(CategoryInfo::class.java, specify(builder, false, orderBuilders)).toAggregatePredicate(AggCategoryInfo::class.java)
+            builder: Schema.PredicateBuilder<SCategory>,
+            orderBuilders: List<Schema.OrderBuilder<SCategory>>,
+        ): AggregatePredicate<AggCategory, Category> {
+            return JpaPredicate.bySpecification(Category::class.java, specify(builder, false, orderBuilders)).toAggregatePredicate(AggCategory::class.java)
         }
     
         /**
@@ -314,27 +314,10 @@ class SCategoryInfo(
          */
         @JvmStatic
         fun predicate(
-            builder: Schema.PredicateBuilder<SCategoryInfo>,
-            vararg orderBuilders: Schema.OrderBuilder<SCategoryInfo>,
-        ): AggregatePredicate<AggCategoryInfo, CategoryInfo> {
-            return JpaPredicate.bySpecification(CategoryInfo::class.java, specify(builder, false, *orderBuilders)).toAggregatePredicate(AggCategoryInfo::class.java)
-        }
-    
-        /**
-         * 构建查询条件
-         *
-         * @param builder       查询条件构造器
-         * @param distinct      是否去重
-         * @param orderBuilders 排序构造器
-         * @return
-         */
-        @JvmStatic
-        fun predicate(
-            builder: Schema.PredicateBuilder<SCategoryInfo>,
-            distinct: Boolean,
-            orderBuilders: List<Schema.OrderBuilder<SCategoryInfo>>,
-        ): AggregatePredicate<AggCategoryInfo, CategoryInfo> {
-            return JpaPredicate.bySpecification(CategoryInfo::class.java, specify(builder, distinct, orderBuilders)).toAggregatePredicate(AggCategoryInfo::class.java)
+            builder: Schema.PredicateBuilder<SCategory>,
+            vararg orderBuilders: Schema.OrderBuilder<SCategory>,
+        ): AggregatePredicate<AggCategory, Category> {
+            return JpaPredicate.bySpecification(Category::class.java, specify(builder, false, *orderBuilders)).toAggregatePredicate(AggCategory::class.java)
         }
     
         /**
@@ -347,11 +330,28 @@ class SCategoryInfo(
          */
         @JvmStatic
         fun predicate(
-            builder: Schema.PredicateBuilder<SCategoryInfo>,
+            builder: Schema.PredicateBuilder<SCategory>,
             distinct: Boolean,
-            vararg orderBuilders: Schema.OrderBuilder<SCategoryInfo>,
-        ): AggregatePredicate<AggCategoryInfo, CategoryInfo> {
-            return JpaPredicate.bySpecification(CategoryInfo::class.java, specify(builder, distinct, *orderBuilders)).toAggregatePredicate(AggCategoryInfo::class.java)
+            orderBuilders: List<Schema.OrderBuilder<SCategory>>,
+        ): AggregatePredicate<AggCategory, Category> {
+            return JpaPredicate.bySpecification(Category::class.java, specify(builder, distinct, orderBuilders)).toAggregatePredicate(AggCategory::class.java)
+        }
+    
+        /**
+         * 构建查询条件
+         *
+         * @param builder       查询条件构造器
+         * @param distinct      是否去重
+         * @param orderBuilders 排序构造器
+         * @return
+         */
+        @JvmStatic
+        fun predicate(
+            builder: Schema.PredicateBuilder<SCategory>,
+            distinct: Boolean,
+            vararg orderBuilders: Schema.OrderBuilder<SCategory>,
+        ): AggregatePredicate<AggCategory, Category> {
+            return JpaPredicate.bySpecification(Category::class.java, specify(builder, distinct, *orderBuilders)).toAggregatePredicate(AggCategory::class.java)
         }
     
         /**
@@ -361,8 +361,8 @@ class SCategoryInfo(
          * @return
          */
         @JvmStatic
-        fun predicate(specifier: Schema.Specification<CategoryInfo, SCategoryInfo>): AggregatePredicate<AggCategoryInfo, CategoryInfo> {
-            return JpaPredicate.bySpecification(CategoryInfo::class.java, specify(specifier)).toAggregatePredicate(AggCategoryInfo::class.java)
+        fun predicate(specifier: Schema.Specification<Category, SCategory>): AggregatePredicate<AggCategory, Category> {
+            return JpaPredicate.bySpecification(Category::class.java, specify(specifier)).toAggregatePredicate(AggCategory::class.java)
         }
        /**
          * 构建querydsl查询条件
@@ -373,13 +373,13 @@ class SCategoryInfo(
          */
         @JvmStatic
         fun querydsl(
-            filterBuilder: java.util.function.Function<QCategoryInfo, com.querydsl.core.types.Predicate>,
-            vararg orderSpecifierBuilders: java.util.function.Function<QCategoryInfo, OrderSpecifier<*>>,
-        ): AggregatePredicate<AggCategoryInfo, CategoryInfo> {
-            return QuerydslPredicate.of(CategoryInfo::class.java)
-                .where(filterBuilder.apply(QCategoryInfo.categoryInfo))
-                .orderBy(*orderSpecifierBuilders.map { it.apply(QCategoryInfo.categoryInfo) }.toTypedArray())
-                .toAggregatePredicate(AggCategoryInfo::class.java)
+            filterBuilder: java.util.function.Function<QCategory, com.querydsl.core.types.Predicate>,
+            vararg orderSpecifierBuilders: java.util.function.Function<QCategory, OrderSpecifier<*>>,
+        ): AggregatePredicate<AggCategory, Category> {
+            return QuerydslPredicate.of(Category::class.java)
+                .where(filterBuilder.apply(QCategory.category))
+                .orderBy(*orderSpecifierBuilders.map { it.apply(QCategory.category) }.toTypedArray())
+                .toAggregatePredicate(AggCategory::class.java)
         }
         
         /**
@@ -393,17 +393,17 @@ class SCategoryInfo(
         fun querydsl(
             filter: com.querydsl.core.types.Predicate,
             vararg orderSpecifiers: OrderSpecifier<*>,
-        ): AggregatePredicate<AggCategoryInfo, CategoryInfo> {
-            return QuerydslPredicate.of(CategoryInfo::class.java)
+        ): AggregatePredicate<AggCategory, Category> {
+            return QuerydslPredicate.of(Category::class.java)
                 .where(filter)
                 .orderBy(*orderSpecifiers)
-                .toAggregatePredicate(AggCategoryInfo::class.java)
+                .toAggregatePredicate(AggCategory::class.java)
         }  
     }
     
     fun _criteriaBuilder(): CriteriaBuilder = criteriaBuilder
 
-    fun _root(): Path<CategoryInfo> = root
+    fun _root(): Path<Category> = root
 
     
     /**
@@ -493,7 +493,7 @@ class SCategoryInfo(
      * @param builder
      * @return
      */
-    fun spec(builder: Schema.PredicateBuilder<SCategoryInfo>): Predicate {
+    fun spec(builder: Schema.PredicateBuilder<SCategory>): Predicate {
         return builder.build(this)
     }
     
