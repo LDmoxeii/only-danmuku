@@ -1,0 +1,36 @@
+package com.edu.only4.danmuku.adapter.domain.repositories
+
+import com.edu.only4.danmuku.domain.aggregates.video_play_history.VideoPlayHistory
+import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
+import com.only4.cap4k.ddd.domain.repo.AbstractJpaRepository
+import com.only4.cap4k.ddd.domain.repo.querydsl.AbstractQuerydslRepository
+import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor
+import org.springframework.data.querydsl.QuerydslPredicateExecutor
+import org.springframework.stereotype.Component
+
+/**
+ * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
+ * @date 2025/09/27
+ */
+interface VideoPlayHistoryRepository : JpaRepository<VideoPlayHistory, Long>, JpaSpecificationExecutor<VideoPlayHistory>, 
+	QuerydslPredicateExecutor<VideoPlayHistory> {
+
+    @Component
+    @Aggregate(aggregate = "VideoPlayHistory", name = "VideoPlayHistoryRepo", type = Aggregate.TYPE_REPOSITORY, description = "")
+    class VideoPlayHistoryJpaRepositoryAdapter(
+        jpaSpecificationExecutor: JpaSpecificationExecutor<VideoPlayHistory>,
+        jpaRepository: JpaRepository<VideoPlayHistory, Long>
+    ) : AbstractJpaRepository<VideoPlayHistory, Long>(
+        jpaSpecificationExecutor,
+        jpaRepository
+    )
+
+    @Component
+    @Aggregate(aggregate = "VideoPlayHistory", name = "VideoPlayHistoryQuerydslRepo", type = Aggregate.TYPE_REPOSITORY, description = "")
+    class VideoPlayHistoryQuerydslRepositoryAdapter(
+        querydslPredicateExecutor: QuerydslPredicateExecutor<VideoPlayHistory>
+    ) : AbstractQuerydslRepository<VideoPlayHistory>(
+        querydslPredicateExecutor
+    )
+}
