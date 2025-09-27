@@ -1,0 +1,13 @@
+cmd:video_danmuku.PostDanmuku:发送弹幕
+cmd:video_danmuku.DeleteDanmuku:删除弹幕
+cmd:video_danmuku.BatchDeleteDanmuku:批量删除弹幕
+cmd:video_danmuku.UpdateDanmukuStatus:更新弹幕状态
+
+de:video_danmuku.VideoDanmuku:DanmukuPosted:弹幕已发送
+de:video_danmuku.VideoDanmuku:DanmukuDeleted:弹幕已删除
+de:video_danmuku.VideoDanmuku:DanmukuBatchDeleted:弹幕已批量删除
+
+qry:video_danmuku.GetDanmukuList:获取弹幕列表
+qry:video_danmuku.GetDanmukuByFileId:根据文件ID获取弹幕
+qry:video_danmuku.GetDanmukuByVideoId:根据视频ID获取弹幕
+qry:video_danmuku.GetUserDanmukuHistory:获取用户弹幕历史

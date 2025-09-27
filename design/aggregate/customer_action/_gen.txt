@@ -1,0 +1,13 @@
+cmd:customer_action.doAction:执行用户行为
+
+de:customer_action.CustomerAction:CustomerLikedComment:用户已点赞评论
+de:customer_action.CustomerAction:CustomerDislikedComment:用户已点踩评论
+de:customer_action.CustomerAction:CustomerLikedVideo:用户已点赞视频
+de:customer_action.CustomerAction:CustomerCollectedVideo:用户已收藏视频
+de:customer_action.CustomerAction:CustomerCoinGiven:用户已投币视频
+
+qry:customer_action.CustomerLikedCommentIds:用户点赞的评论ID列表
+qry:customer_action.CustomerDislikedCommentIds:用户点踩的评论ID列表
+qry:customer_action.CustomerCollectedVideoIds:用户收藏的视频ID列表
+qry:customer_action.CustomerLikedVideoIds:用户点赞的视频ID列表
+qry:customer_action.CustomerCoinGivenVideoIds:用户投币的视频ID列表

@@ -1,0 +1,12 @@
+cmd:video_file.CreateVideoFile:创建视频文件
+cmd:video_file.UpdateVideoFile:更新视频文件信息
+cmd:video_file.DeleteVideoFile:删除视频文件
+cmd:video_file.UpdateFilePath:更新文件路径
+
+de:video_file.VideoFile:VideoFileCreated:视频文件已创建
+de:video_file.VideoFile:VideoFileDeleted:视频文件已删除
+de:video_file.VideoFile:VideoFileUpdated:视频文件已更新
+
+qry:video_file.GetVideoFiles:获取视频文件列表
+qry:video_file.GetVideoFileById:根据ID获取视频文件
+qry:video_file.GetVideoFilesByVideoId:根据视频ID获取文件列表
