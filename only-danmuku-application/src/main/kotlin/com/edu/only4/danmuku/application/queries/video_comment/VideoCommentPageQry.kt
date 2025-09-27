@@ -6,7 +6,7 @@ object VideoCommentPageQry {
 
     class Request(
 
-    ) : PageQueryParam<Response>
+    ) : PageQueryParam<Response>()
 
     class Response(
     )
