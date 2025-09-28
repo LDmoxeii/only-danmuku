@@ -46,6 +46,13 @@ class CustomerVideoSeriesVideo (
     var customerId: Long = 0L,
 
     /**
+     * 列表ID
+     * bigint
+     */
+    @Column(name = "`series_id`")
+    var seriesId: Long = 0L,
+
+    /**
      * 视频ID
      * bigint
      */
@@ -68,7 +75,7 @@ class CustomerVideoSeriesVideo (
 ) {
 
     @ManyToOne(cascade = [], fetch = FetchType.EAGER)
-    @JoinColumn(name = "`series_id`", nullable = false)
+    @JoinColumn(name = "`series_id`", nullable = false, insertable = false, updatable = false)
     var customerVideoSeries: com.edu.only4.danmuku.domain.aggregates.customer_video_series.CustomerVideoSeries? = null
 
     // 【字段映射结束】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动

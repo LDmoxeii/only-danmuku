@@ -11,7 +11,7 @@ import jakarta.persistence.criteria.*
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/09/27
+ * @date 2025/09/28
  */
 class SCustomerVideoSeriesVideo(
     private val root: Path<CustomerVideoSeriesVideo>,
@@ -30,6 +30,11 @@ class SCustomerVideoSeriesVideo(
         val customerId = "customerId"
            
         /**
+         * 列表ID
+         */
+        val seriesId = "seriesId"
+           
+        /**
          * 视频ID
          */
         val videoId = "videoId"
@@ -43,11 +48,6 @@ class SCustomerVideoSeriesVideo(
          * 删除标识 0：未删除 id：已删除
          */
         val deleted = "deleted"
-           
-        /**
-         * 列表ID
-         */
-        val customerVideoSeries = "customerVideoSeries"
        
     }
     
@@ -235,6 +235,13 @@ class SCustomerVideoSeriesVideo(
         return Schema.Field(root.get(props.customerId), this.criteriaBuilder)
     }
     /**
+     * 列表ID
+     * bigint
+     */
+    fun seriesId(): Schema.Field<Long> {
+        return Schema.Field(root.get(props.seriesId), this.criteriaBuilder)
+    }
+    /**
      * 视频ID
      * bigint
      */
@@ -254,13 +261,6 @@ class SCustomerVideoSeriesVideo(
      */
     fun deleted(): Schema.Field<Boolean> {
         return Schema.Field(root.get(props.deleted), this.criteriaBuilder)
-    }
-    /**
-     * 列表ID
-     * bigint
-     */
-    fun customerVideoSeries(): Schema.Field<com.edu.only4.danmuku.domain.aggregates.customer_video_series.CustomerVideoSeries> {
-        return Schema.Field(root.get(props.customerVideoSeries), this.criteriaBuilder)
     }
 
     /**
@@ -290,16 +290,5 @@ class SCustomerVideoSeriesVideo(
         return builder.build(this)
     }
     
-    /**
-     * CustomerVideoSeries 关联查询条件定义
-     *
-     * @param joinType
-     * @return
-     */
-    fun joinCustomerVideoSeries(joinType: Schema.JoinType): SCustomerVideoSeries {
-        val type = joinType.toJpaJoinType()
-        val join = (this.root as Root<CustomerVideoSeriesVideo>).join<CustomerVideoSeriesVideo, com.edu.only4.danmuku.domain.aggregates.customer_video_series.CustomerVideoSeries>("customerVideoSeries", type)
-        val schema = SCustomerVideoSeries(join, this.criteriaBuilder)
-        return schema
-    }
+    
 }

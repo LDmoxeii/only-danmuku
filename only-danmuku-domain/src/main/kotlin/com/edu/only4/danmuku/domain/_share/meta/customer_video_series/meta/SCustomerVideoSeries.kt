@@ -17,7 +17,7 @@ import jakarta.persistence.criteria.*
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/09/27
+ * @date 2025/09/28
  */
 class SCustomerVideoSeries(
     private val root: Path<CustomerVideoSeries>,
