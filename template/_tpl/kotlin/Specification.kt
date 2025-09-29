@@ -7,8 +7,6 @@ import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import org.springframework.stereotype.Service
 
 /**
- * ${CommentEscaped}
- *
  * @author cap4k-ddd-codegen
  * @date ${date}
  */

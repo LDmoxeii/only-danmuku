@@ -1,7 +1,7 @@
 // [cap4k-ddd-codegen-gradle-plugin:do-not-overwrite]
 plugins {
     id("buildsrc.convention.kotlin-jvm")
-    id("com.only4.cap4k.ddd.codegen") version "0.3.8-SNAPSHOT"
+    id("com.only4.cap4k.ddd.codegen") version "0.3.9-SNAPSHOT"
 }
 
 dependencies {
@@ -39,5 +39,6 @@ cap4kCodegen {
         deletedField.set("deleted")
         readonlyFields.set("id")
         ignoreFields.set("create_user_id,create_by,create_time,update_user_id,update_by,update_time")
+        generateParent.set(true)
     }
 }

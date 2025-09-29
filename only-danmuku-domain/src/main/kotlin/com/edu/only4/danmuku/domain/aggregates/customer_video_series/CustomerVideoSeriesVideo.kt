@@ -41,6 +41,13 @@ class CustomerVideoSeriesVideo (
     var customerId: Long = 0L,
 
     /**
+     * 列表ID
+     * bigint
+     */
+    @Column(name = "`series_id`")
+    var seriesId: Long = 0L,
+
+    /**
      * 视频ID
      * bigint
      */
