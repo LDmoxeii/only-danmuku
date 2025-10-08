@@ -1,15 +1,16 @@
 package com.edu.only4.danmuku.domain._share.meta.video_danmuku.meta
 
-import com.edu.only4.danmuku.domain._share.meta.Schema
-import com.edu.only4.danmuku.domain.aggregates.video_danmuku.AggVideoDanmuku
-import com.edu.only4.danmuku.domain.aggregates.video_danmuku.QVideoDanmuku
-import com.edu.only4.danmuku.domain.aggregates.video_danmuku.VideoDanmuku
-import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePredicate
+import com.querydsl.core.types.OrderSpecifier
 import com.only4.cap4k.ddd.domain.repo.JpaPredicate
 import com.only4.cap4k.ddd.domain.repo.querydsl.QuerydslPredicate
-import com.querydsl.core.types.OrderSpecifier
-import jakarta.persistence.criteria.*
+import com.edu.only4.danmuku.domain._share.meta.Schema
+import com.edu.only4.danmuku.domain.aggregates.video_danmuku.AggVideoDanmuku
+import com.edu.only4.danmuku.domain.aggregates.video_danmuku.VideoDanmuku
+import com.edu.only4.danmuku.domain.aggregates.video_danmuku.QVideoDanmuku
+import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePredicate
 import org.springframework.data.jpa.domain.Specification
+
+import jakarta.persistence.criteria.*
 
 /**
  * 视频弹幕;
@@ -23,63 +24,63 @@ class SVideoDanmuku(
     private val criteriaBuilder: CriteriaBuilder,
 ) {
     class PROPERTY_NAMES {
-
+            
         /**
          * ID
          */
         val id = "id"
-
+           
         /**
          * 视频ID
          */
         val videoId = "videoId"
-
+           
         /**
          * 唯一ID
          */
         val fileId = "fileId"
-
+           
         /**
          * 用户ID
          */
         val customerId = "customerId"
-
+           
         /**
          * 发布时间
          */
         val postTime = "postTime"
-
+           
         /**
          * 内容
          */
         val text = "text"
-
+           
         /**
          * 展示位置
          */
         val mode = "mode"
-
+           
         /**
          * 颜色
          */
         val color = "color"
-
+           
         /**
          * 展示时间
          */
         val time = "time"
-
+           
         /**
          * 删除标识 0：未删除 id：已删除
          */
         val deleted = "deleted"
-
+       
     }
-
+    
     companion object {
-
+    
         val props = PROPERTY_NAMES()
-
+        
         /**
          * 构建查询条件
          *
@@ -236,7 +237,7 @@ class SVideoDanmuku(
             subqueryConfigure.configure(sq, schema)
             return sq
         }
-
+        
         /**
          * 构建查询条件
          *
@@ -247,7 +248,7 @@ class SVideoDanmuku(
         fun predicateById(id: Any): AggregatePredicate<AggVideoDanmuku, VideoDanmuku> {
             return JpaPredicate.byId(VideoDanmuku::class.java, id).toAggregatePredicate(AggVideoDanmuku::class.java)
         }
-
+    
         /**
         * 构建查询条件
         *
@@ -259,7 +260,7 @@ class SVideoDanmuku(
             @Suppress("UNCHECKED_CAST")
             return JpaPredicate.byIds(VideoDanmuku::class.java, ids as Iterable<Any>).toAggregatePredicate(AggVideoDanmuku::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -270,7 +271,7 @@ class SVideoDanmuku(
         fun predicateByIds(vararg ids: Any): AggregatePredicate<AggVideoDanmuku, VideoDanmuku> {
             return JpaPredicate.byIds(VideoDanmuku::class.java, ids.toList()).toAggregatePredicate(AggVideoDanmuku::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -281,7 +282,7 @@ class SVideoDanmuku(
         fun predicate(builder: Schema.PredicateBuilder<SVideoDanmuku>): AggregatePredicate<AggVideoDanmuku, VideoDanmuku> {
             return JpaPredicate.bySpecification(VideoDanmuku::class.java, specify(builder)).toAggregatePredicate(AggVideoDanmuku::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -293,7 +294,7 @@ class SVideoDanmuku(
         fun predicate(builder: Schema.PredicateBuilder<SVideoDanmuku>, distinct: Boolean): AggregatePredicate<AggVideoDanmuku, VideoDanmuku> {
             return JpaPredicate.bySpecification(VideoDanmuku::class.java, specify(builder, distinct)).toAggregatePredicate(AggVideoDanmuku::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -308,7 +309,7 @@ class SVideoDanmuku(
         ): AggregatePredicate<AggVideoDanmuku, VideoDanmuku> {
             return JpaPredicate.bySpecification(VideoDanmuku::class.java, specify(builder, false, orderBuilders)).toAggregatePredicate(AggVideoDanmuku::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -323,7 +324,7 @@ class SVideoDanmuku(
         ): AggregatePredicate<AggVideoDanmuku, VideoDanmuku> {
             return JpaPredicate.bySpecification(VideoDanmuku::class.java, specify(builder, false, *orderBuilders)).toAggregatePredicate(AggVideoDanmuku::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -340,7 +341,7 @@ class SVideoDanmuku(
         ): AggregatePredicate<AggVideoDanmuku, VideoDanmuku> {
             return JpaPredicate.bySpecification(VideoDanmuku::class.java, specify(builder, distinct, orderBuilders)).toAggregatePredicate(AggVideoDanmuku::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -357,7 +358,7 @@ class SVideoDanmuku(
         ): AggregatePredicate<AggVideoDanmuku, VideoDanmuku> {
             return JpaPredicate.bySpecification(VideoDanmuku::class.java, specify(builder, distinct, *orderBuilders)).toAggregatePredicate(AggVideoDanmuku::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -385,7 +386,7 @@ class SVideoDanmuku(
                 .orderBy(*orderSpecifierBuilders.map { it.apply(QVideoDanmuku.videoDanmuku) }.toTypedArray())
                 .toAggregatePredicate(AggVideoDanmuku::class.java)
         }
-
+        
         /**
          * 构建querydsl查询条件
          *
@@ -402,14 +403,14 @@ class SVideoDanmuku(
                 .where(filter)
                 .orderBy(*orderSpecifiers)
                 .toAggregatePredicate(AggVideoDanmuku::class.java)
-        }
+        }  
     }
-
+    
     fun _criteriaBuilder(): CriteriaBuilder = criteriaBuilder
 
     fun _root(): Path<VideoDanmuku> = root
 
-
+    
     /**
      * ID
      * bigint
@@ -507,6 +508,6 @@ class SVideoDanmuku(
     fun spec(builder: Schema.PredicateBuilder<SVideoDanmuku>): Predicate {
         return builder.build(this)
     }
-
-
+    
+    
 }

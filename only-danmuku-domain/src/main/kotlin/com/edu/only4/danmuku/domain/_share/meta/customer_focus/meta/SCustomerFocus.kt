@@ -1,15 +1,16 @@
 package com.edu.only4.danmuku.domain._share.meta.customer_focus.meta
 
+import com.querydsl.core.types.OrderSpecifier
+import com.only4.cap4k.ddd.domain.repo.JpaPredicate
+import com.only4.cap4k.ddd.domain.repo.querydsl.QuerydslPredicate
 import com.edu.only4.danmuku.domain._share.meta.Schema
 import com.edu.only4.danmuku.domain.aggregates.customer_focus.AggCustomerFocus
 import com.edu.only4.danmuku.domain.aggregates.customer_focus.CustomerFocus
 import com.edu.only4.danmuku.domain.aggregates.customer_focus.QCustomerFocus
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePredicate
-import com.only4.cap4k.ddd.domain.repo.JpaPredicate
-import com.only4.cap4k.ddd.domain.repo.querydsl.QuerydslPredicate
-import com.querydsl.core.types.OrderSpecifier
-import jakarta.persistence.criteria.*
 import org.springframework.data.jpa.domain.Specification
+
+import jakarta.persistence.criteria.*
 
 /**
  * 用户关注;
@@ -23,33 +24,33 @@ class SCustomerFocus(
     private val criteriaBuilder: CriteriaBuilder,
 ) {
     class PROPERTY_NAMES {
-
+            
         /**
          * ID
          */
         val id = "id"
-
+           
         /**
          * 用户ID
          */
         val customerId = "customerId"
-
+           
         /**
          * 用户ID
          */
         val focusCustomerId = "focusCustomerId"
-
+           
         /**
          * 删除标识 0：未删除 id：已删除
          */
         val deleted = "deleted"
-
+       
     }
-
+    
     companion object {
-
+    
         val props = PROPERTY_NAMES()
-
+        
         /**
          * 构建查询条件
          *
@@ -206,7 +207,7 @@ class SCustomerFocus(
             subqueryConfigure.configure(sq, schema)
             return sq
         }
-
+        
         /**
          * 构建查询条件
          *
@@ -217,7 +218,7 @@ class SCustomerFocus(
         fun predicateById(id: Any): AggregatePredicate<AggCustomerFocus, CustomerFocus> {
             return JpaPredicate.byId(CustomerFocus::class.java, id).toAggregatePredicate(AggCustomerFocus::class.java)
         }
-
+    
         /**
         * 构建查询条件
         *
@@ -229,7 +230,7 @@ class SCustomerFocus(
             @Suppress("UNCHECKED_CAST")
             return JpaPredicate.byIds(CustomerFocus::class.java, ids as Iterable<Any>).toAggregatePredicate(AggCustomerFocus::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -240,7 +241,7 @@ class SCustomerFocus(
         fun predicateByIds(vararg ids: Any): AggregatePredicate<AggCustomerFocus, CustomerFocus> {
             return JpaPredicate.byIds(CustomerFocus::class.java, ids.toList()).toAggregatePredicate(AggCustomerFocus::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -251,7 +252,7 @@ class SCustomerFocus(
         fun predicate(builder: Schema.PredicateBuilder<SCustomerFocus>): AggregatePredicate<AggCustomerFocus, CustomerFocus> {
             return JpaPredicate.bySpecification(CustomerFocus::class.java, specify(builder)).toAggregatePredicate(AggCustomerFocus::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -263,7 +264,7 @@ class SCustomerFocus(
         fun predicate(builder: Schema.PredicateBuilder<SCustomerFocus>, distinct: Boolean): AggregatePredicate<AggCustomerFocus, CustomerFocus> {
             return JpaPredicate.bySpecification(CustomerFocus::class.java, specify(builder, distinct)).toAggregatePredicate(AggCustomerFocus::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -278,7 +279,7 @@ class SCustomerFocus(
         ): AggregatePredicate<AggCustomerFocus, CustomerFocus> {
             return JpaPredicate.bySpecification(CustomerFocus::class.java, specify(builder, false, orderBuilders)).toAggregatePredicate(AggCustomerFocus::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -293,7 +294,7 @@ class SCustomerFocus(
         ): AggregatePredicate<AggCustomerFocus, CustomerFocus> {
             return JpaPredicate.bySpecification(CustomerFocus::class.java, specify(builder, false, *orderBuilders)).toAggregatePredicate(AggCustomerFocus::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -310,7 +311,7 @@ class SCustomerFocus(
         ): AggregatePredicate<AggCustomerFocus, CustomerFocus> {
             return JpaPredicate.bySpecification(CustomerFocus::class.java, specify(builder, distinct, orderBuilders)).toAggregatePredicate(AggCustomerFocus::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -327,7 +328,7 @@ class SCustomerFocus(
         ): AggregatePredicate<AggCustomerFocus, CustomerFocus> {
             return JpaPredicate.bySpecification(CustomerFocus::class.java, specify(builder, distinct, *orderBuilders)).toAggregatePredicate(AggCustomerFocus::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -355,7 +356,7 @@ class SCustomerFocus(
                 .orderBy(*orderSpecifierBuilders.map { it.apply(QCustomerFocus.customerFocus) }.toTypedArray())
                 .toAggregatePredicate(AggCustomerFocus::class.java)
         }
-
+        
         /**
          * 构建querydsl查询条件
          *
@@ -372,14 +373,14 @@ class SCustomerFocus(
                 .where(filter)
                 .orderBy(*orderSpecifiers)
                 .toAggregatePredicate(AggCustomerFocus::class.java)
-        }
+        }  
     }
-
+    
     fun _criteriaBuilder(): CriteriaBuilder = criteriaBuilder
 
     fun _root(): Path<CustomerFocus> = root
 
-
+    
     /**
      * ID
      * bigint
@@ -435,6 +436,6 @@ class SCustomerFocus(
     fun spec(builder: Schema.PredicateBuilder<SCustomerFocus>): Predicate {
         return builder.build(this)
     }
-
-
+    
+    
 }

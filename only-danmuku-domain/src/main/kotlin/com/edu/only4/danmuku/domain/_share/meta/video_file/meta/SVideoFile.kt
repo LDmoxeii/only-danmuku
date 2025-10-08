@@ -1,15 +1,16 @@
 package com.edu.only4.danmuku.domain._share.meta.video_file.meta
 
-import com.edu.only4.danmuku.domain._share.meta.Schema
-import com.edu.only4.danmuku.domain.aggregates.video_file.AggVideoFile
-import com.edu.only4.danmuku.domain.aggregates.video_file.QVideoFile
-import com.edu.only4.danmuku.domain.aggregates.video_file.VideoFile
-import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePredicate
+import com.querydsl.core.types.OrderSpecifier
 import com.only4.cap4k.ddd.domain.repo.JpaPredicate
 import com.only4.cap4k.ddd.domain.repo.querydsl.QuerydslPredicate
-import com.querydsl.core.types.OrderSpecifier
-import jakarta.persistence.criteria.*
+import com.edu.only4.danmuku.domain._share.meta.Schema
+import com.edu.only4.danmuku.domain.aggregates.video_file.AggVideoFile
+import com.edu.only4.danmuku.domain.aggregates.video_file.VideoFile
+import com.edu.only4.danmuku.domain.aggregates.video_file.QVideoFile
+import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePredicate
 import org.springframework.data.jpa.domain.Specification
+
+import jakarta.persistence.criteria.*
 
 /**
  * 视频文件信息;
@@ -23,63 +24,63 @@ class SVideoFile(
     private val criteriaBuilder: CriteriaBuilder,
 ) {
     class PROPERTY_NAMES {
-
+            
         /**
          * ID
          */
         val id = "id"
-
+           
         /**
          * 唯一ID
          */
         val fileId = "fileId"
-
+           
         /**
          * 用户ID
          */
         val customerId = "customerId"
-
+           
         /**
          * 视频ID
          */
         val videoId = "videoId"
-
+           
         /**
          * 文件名
          */
         val fileName = "fileName"
-
+           
         /**
          * 文件索引
          */
         val fileIndex = "fileIndex"
-
+           
         /**
          * 文件大小
          */
         val fileSize = "fileSize"
-
+           
         /**
          * 文件路径
          */
         val filePath = "filePath"
-
+           
         /**
          * 持续时间（秒）
          */
         val duration = "duration"
-
+           
         /**
          * 删除标识 0：未删除 id：已删除
          */
         val deleted = "deleted"
-
+       
     }
-
+    
     companion object {
-
+    
         val props = PROPERTY_NAMES()
-
+        
         /**
          * 构建查询条件
          *
@@ -236,7 +237,7 @@ class SVideoFile(
             subqueryConfigure.configure(sq, schema)
             return sq
         }
-
+        
         /**
          * 构建查询条件
          *
@@ -247,7 +248,7 @@ class SVideoFile(
         fun predicateById(id: Any): AggregatePredicate<AggVideoFile, VideoFile> {
             return JpaPredicate.byId(VideoFile::class.java, id).toAggregatePredicate(AggVideoFile::class.java)
         }
-
+    
         /**
         * 构建查询条件
         *
@@ -259,7 +260,7 @@ class SVideoFile(
             @Suppress("UNCHECKED_CAST")
             return JpaPredicate.byIds(VideoFile::class.java, ids as Iterable<Any>).toAggregatePredicate(AggVideoFile::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -270,7 +271,7 @@ class SVideoFile(
         fun predicateByIds(vararg ids: Any): AggregatePredicate<AggVideoFile, VideoFile> {
             return JpaPredicate.byIds(VideoFile::class.java, ids.toList()).toAggregatePredicate(AggVideoFile::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -281,7 +282,7 @@ class SVideoFile(
         fun predicate(builder: Schema.PredicateBuilder<SVideoFile>): AggregatePredicate<AggVideoFile, VideoFile> {
             return JpaPredicate.bySpecification(VideoFile::class.java, specify(builder)).toAggregatePredicate(AggVideoFile::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -293,7 +294,7 @@ class SVideoFile(
         fun predicate(builder: Schema.PredicateBuilder<SVideoFile>, distinct: Boolean): AggregatePredicate<AggVideoFile, VideoFile> {
             return JpaPredicate.bySpecification(VideoFile::class.java, specify(builder, distinct)).toAggregatePredicate(AggVideoFile::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -308,7 +309,7 @@ class SVideoFile(
         ): AggregatePredicate<AggVideoFile, VideoFile> {
             return JpaPredicate.bySpecification(VideoFile::class.java, specify(builder, false, orderBuilders)).toAggregatePredicate(AggVideoFile::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -323,7 +324,7 @@ class SVideoFile(
         ): AggregatePredicate<AggVideoFile, VideoFile> {
             return JpaPredicate.bySpecification(VideoFile::class.java, specify(builder, false, *orderBuilders)).toAggregatePredicate(AggVideoFile::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -340,7 +341,7 @@ class SVideoFile(
         ): AggregatePredicate<AggVideoFile, VideoFile> {
             return JpaPredicate.bySpecification(VideoFile::class.java, specify(builder, distinct, orderBuilders)).toAggregatePredicate(AggVideoFile::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -357,7 +358,7 @@ class SVideoFile(
         ): AggregatePredicate<AggVideoFile, VideoFile> {
             return JpaPredicate.bySpecification(VideoFile::class.java, specify(builder, distinct, *orderBuilders)).toAggregatePredicate(AggVideoFile::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -385,7 +386,7 @@ class SVideoFile(
                 .orderBy(*orderSpecifierBuilders.map { it.apply(QVideoFile.videoFile) }.toTypedArray())
                 .toAggregatePredicate(AggVideoFile::class.java)
         }
-
+        
         /**
          * 构建querydsl查询条件
          *
@@ -402,14 +403,14 @@ class SVideoFile(
                 .where(filter)
                 .orderBy(*orderSpecifiers)
                 .toAggregatePredicate(AggVideoFile::class.java)
-        }
+        }  
     }
-
+    
     fun _criteriaBuilder(): CriteriaBuilder = criteriaBuilder
 
     fun _root(): Path<VideoFile> = root
 
-
+    
     /**
      * ID
      * bigint
@@ -507,6 +508,6 @@ class SVideoFile(
     fun spec(builder: Schema.PredicateBuilder<SVideoFile>): Predicate {
         return builder.build(this)
     }
-
-
+    
+    
 }

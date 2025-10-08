@@ -1,15 +1,16 @@
 package com.edu.only4.danmuku.domain._share.meta.video.meta
 
-import com.edu.only4.danmuku.domain._share.meta.Schema
-import com.edu.only4.danmuku.domain.aggregates.video.AggVideo
-import com.edu.only4.danmuku.domain.aggregates.video.QVideo
-import com.edu.only4.danmuku.domain.aggregates.video.Video
-import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePredicate
+import com.querydsl.core.types.OrderSpecifier
 import com.only4.cap4k.ddd.domain.repo.JpaPredicate
 import com.only4.cap4k.ddd.domain.repo.querydsl.QuerydslPredicate
-import com.querydsl.core.types.OrderSpecifier
-import jakarta.persistence.criteria.*
+import com.edu.only4.danmuku.domain._share.meta.Schema
+import com.edu.only4.danmuku.domain.aggregates.video.AggVideo
+import com.edu.only4.danmuku.domain.aggregates.video.Video
+import com.edu.only4.danmuku.domain.aggregates.video.QVideo
+import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePredicate
 import org.springframework.data.jpa.domain.Specification
+
+import jakarta.persistence.criteria.*
 
 /**
  * 视频信息;
@@ -23,118 +24,118 @@ class SVideo(
     private val criteriaBuilder: CriteriaBuilder,
 ) {
     class PROPERTY_NAMES {
-
+            
         /**
          * ID
          */
         val id = "id"
-
+           
         /**
          * 用户ID
          */
         val customerId = "customerId"
-
+           
         /**
          * 视频封面
          */
         val videoCover = "videoCover"
-
+           
         /**
          * 视频名称
          */
         val videoName = "videoName"
-
+           
         /**
          * 父级分类ID
          */
         val pCategoryId = "pCategoryId"
-
+           
         /**
          * 分类ID
          */
         val categoryId = "categoryId"
-
+           
         /**
          * 投稿类型
          */
         val postType = "postType"
-
+           
         /**
          * 原资源说明
          */
         val originInfo = "originInfo"
-
+           
         /**
          * 标签
          */
         val tags = "tags"
-
+           
         /**
          * 简介
          */
         val introduction = "introduction"
-
+           
         /**
          * 互动设置
          */
         val interaction = "interaction"
-
+           
         /**
          * 持续时间（秒）
          */
         val duration = "duration"
-
+           
         /**
          * 播放数量
          */
         val playCount = "playCount"
-
+           
         /**
          * 点赞数量
          */
         val likeCount = "likeCount"
-
+           
         /**
          * 弹幕数量
          */
         val danmukuCount = "danmukuCount"
-
+           
         /**
          * 评论数量
          */
         val commentCount = "commentCount"
-
+           
         /**
          * 投币数量
          */
         val coinCount = "coinCount"
-
+           
         /**
          * 收藏数量
          */
         val collectCount = "collectCount"
-
+           
         /**
          * 推荐状态
          */
         val recommendType = "recommendType"
-
+           
         /**
          * 最后播放时间
          */
         val lastPlayTime = "lastPlayTime"
-
+           
         /**
          * 删除标识 0：未删除 id：已删除
          */
         val deleted = "deleted"
-
+       
     }
-
+    
     companion object {
-
+    
         val props = PROPERTY_NAMES()
-
+        
         /**
          * 构建查询条件
          *
@@ -291,7 +292,7 @@ class SVideo(
             subqueryConfigure.configure(sq, schema)
             return sq
         }
-
+        
         /**
          * 构建查询条件
          *
@@ -302,7 +303,7 @@ class SVideo(
         fun predicateById(id: Any): AggregatePredicate<AggVideo, Video> {
             return JpaPredicate.byId(Video::class.java, id).toAggregatePredicate(AggVideo::class.java)
         }
-
+    
         /**
         * 构建查询条件
         *
@@ -314,7 +315,7 @@ class SVideo(
             @Suppress("UNCHECKED_CAST")
             return JpaPredicate.byIds(Video::class.java, ids as Iterable<Any>).toAggregatePredicate(AggVideo::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -325,7 +326,7 @@ class SVideo(
         fun predicateByIds(vararg ids: Any): AggregatePredicate<AggVideo, Video> {
             return JpaPredicate.byIds(Video::class.java, ids.toList()).toAggregatePredicate(AggVideo::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -336,7 +337,7 @@ class SVideo(
         fun predicate(builder: Schema.PredicateBuilder<SVideo>): AggregatePredicate<AggVideo, Video> {
             return JpaPredicate.bySpecification(Video::class.java, specify(builder)).toAggregatePredicate(AggVideo::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -348,7 +349,7 @@ class SVideo(
         fun predicate(builder: Schema.PredicateBuilder<SVideo>, distinct: Boolean): AggregatePredicate<AggVideo, Video> {
             return JpaPredicate.bySpecification(Video::class.java, specify(builder, distinct)).toAggregatePredicate(AggVideo::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -363,7 +364,7 @@ class SVideo(
         ): AggregatePredicate<AggVideo, Video> {
             return JpaPredicate.bySpecification(Video::class.java, specify(builder, false, orderBuilders)).toAggregatePredicate(AggVideo::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -378,7 +379,7 @@ class SVideo(
         ): AggregatePredicate<AggVideo, Video> {
             return JpaPredicate.bySpecification(Video::class.java, specify(builder, false, *orderBuilders)).toAggregatePredicate(AggVideo::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -395,7 +396,7 @@ class SVideo(
         ): AggregatePredicate<AggVideo, Video> {
             return JpaPredicate.bySpecification(Video::class.java, specify(builder, distinct, orderBuilders)).toAggregatePredicate(AggVideo::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -412,7 +413,7 @@ class SVideo(
         ): AggregatePredicate<AggVideo, Video> {
             return JpaPredicate.bySpecification(Video::class.java, specify(builder, distinct, *orderBuilders)).toAggregatePredicate(AggVideo::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -440,7 +441,7 @@ class SVideo(
                 .orderBy(*orderSpecifierBuilders.map { it.apply(QVideo.video) }.toTypedArray())
                 .toAggregatePredicate(AggVideo::class.java)
         }
-
+        
         /**
          * 构建querydsl查询条件
          *
@@ -457,14 +458,14 @@ class SVideo(
                 .where(filter)
                 .orderBy(*orderSpecifiers)
                 .toAggregatePredicate(AggVideo::class.java)
-        }
+        }  
     }
-
+    
     fun _criteriaBuilder(): CriteriaBuilder = criteriaBuilder
 
     fun _root(): Path<Video> = root
 
-
+    
     /**
      * ID
      * bigint
@@ -645,6 +646,6 @@ class SVideo(
     fun spec(builder: Schema.PredicateBuilder<SVideo>): Predicate {
         return builder.build(this)
     }
-
-
+    
+    
 }

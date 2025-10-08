@@ -1,15 +1,16 @@
 package com.edu.only4.danmuku.domain._share.meta.video_comment.meta
 
-import com.edu.only4.danmuku.domain._share.meta.Schema
-import com.edu.only4.danmuku.domain.aggregates.video_comment.AggVideoComment
-import com.edu.only4.danmuku.domain.aggregates.video_comment.QVideoComment
-import com.edu.only4.danmuku.domain.aggregates.video_comment.VideoComment
-import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePredicate
+import com.querydsl.core.types.OrderSpecifier
 import com.only4.cap4k.ddd.domain.repo.JpaPredicate
 import com.only4.cap4k.ddd.domain.repo.querydsl.QuerydslPredicate
-import com.querydsl.core.types.OrderSpecifier
-import jakarta.persistence.criteria.*
+import com.edu.only4.danmuku.domain._share.meta.Schema
+import com.edu.only4.danmuku.domain.aggregates.video_comment.AggVideoComment
+import com.edu.only4.danmuku.domain.aggregates.video_comment.VideoComment
+import com.edu.only4.danmuku.domain.aggregates.video_comment.QVideoComment
+import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePredicate
 import org.springframework.data.jpa.domain.Specification
+
+import jakarta.persistence.criteria.*
 
 /**
  * 评论;
@@ -23,78 +24,78 @@ class SVideoComment(
     private val criteriaBuilder: CriteriaBuilder,
 ) {
     class PROPERTY_NAMES {
-
+            
         /**
          * 评论ID
          */
         val id = "id"
-
+           
         /**
          * 父级评论ID
          */
         val parentId = "parentId"
-
+           
         /**
          * 视频ID
          */
         val videoId = "videoId"
-
+           
         /**
          * 视频用户ID
          */
         val videoOwnerId = "videoOwnerId"
-
+           
         /**
          * 回复内容
          */
         val content = "content"
-
+           
         /**
          * 图片
          */
         val imgPath = "imgPath"
-
+           
         /**
          * 用户ID
          */
         val customerId = "customerId"
-
+           
         /**
          * 回复人ID
          */
         val replyCustomerId = "replyCustomerId"
-
+           
         /**
          * 0:未置顶  1:置顶
          */
         val topType = "topType"
-
+           
         /**
          * 发布时间
          */
         val postTime = "postTime"
-
+           
         /**
          * 喜欢数量
          */
         val likeCount = "likeCount"
-
+           
         /**
          * 讨厌数量
          */
         val hateCount = "hateCount"
-
+           
         /**
          * 删除标识 0：未删除 id：已删除
          */
         val deleted = "deleted"
-
+       
     }
-
+    
     companion object {
-
+    
         val props = PROPERTY_NAMES()
-
+        
         /**
          * 构建查询条件
          *
@@ -251,7 +252,7 @@ class SVideoComment(
             subqueryConfigure.configure(sq, schema)
             return sq
         }
-
+        
         /**
          * 构建查询条件
          *
@@ -262,7 +263,7 @@ class SVideoComment(
         fun predicateById(id: Any): AggregatePredicate<AggVideoComment, VideoComment> {
             return JpaPredicate.byId(VideoComment::class.java, id).toAggregatePredicate(AggVideoComment::class.java)
         }
-
+    
         /**
         * 构建查询条件
         *
@@ -274,7 +275,7 @@ class SVideoComment(
             @Suppress("UNCHECKED_CAST")
             return JpaPredicate.byIds(VideoComment::class.java, ids as Iterable<Any>).toAggregatePredicate(AggVideoComment::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -285,7 +286,7 @@ class SVideoComment(
         fun predicateByIds(vararg ids: Any): AggregatePredicate<AggVideoComment, VideoComment> {
             return JpaPredicate.byIds(VideoComment::class.java, ids.toList()).toAggregatePredicate(AggVideoComment::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -296,7 +297,7 @@ class SVideoComment(
         fun predicate(builder: Schema.PredicateBuilder<SVideoComment>): AggregatePredicate<AggVideoComment, VideoComment> {
             return JpaPredicate.bySpecification(VideoComment::class.java, specify(builder)).toAggregatePredicate(AggVideoComment::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -308,7 +309,7 @@ class SVideoComment(
         fun predicate(builder: Schema.PredicateBuilder<SVideoComment>, distinct: Boolean): AggregatePredicate<AggVideoComment, VideoComment> {
             return JpaPredicate.bySpecification(VideoComment::class.java, specify(builder, distinct)).toAggregatePredicate(AggVideoComment::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -323,7 +324,7 @@ class SVideoComment(
         ): AggregatePredicate<AggVideoComment, VideoComment> {
             return JpaPredicate.bySpecification(VideoComment::class.java, specify(builder, false, orderBuilders)).toAggregatePredicate(AggVideoComment::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -338,7 +339,7 @@ class SVideoComment(
         ): AggregatePredicate<AggVideoComment, VideoComment> {
             return JpaPredicate.bySpecification(VideoComment::class.java, specify(builder, false, *orderBuilders)).toAggregatePredicate(AggVideoComment::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -355,7 +356,7 @@ class SVideoComment(
         ): AggregatePredicate<AggVideoComment, VideoComment> {
             return JpaPredicate.bySpecification(VideoComment::class.java, specify(builder, distinct, orderBuilders)).toAggregatePredicate(AggVideoComment::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -372,7 +373,7 @@ class SVideoComment(
         ): AggregatePredicate<AggVideoComment, VideoComment> {
             return JpaPredicate.bySpecification(VideoComment::class.java, specify(builder, distinct, *orderBuilders)).toAggregatePredicate(AggVideoComment::class.java)
         }
-
+    
         /**
          * 构建查询条件
          *
@@ -400,7 +401,7 @@ class SVideoComment(
                 .orderBy(*orderSpecifierBuilders.map { it.apply(QVideoComment.videoComment) }.toTypedArray())
                 .toAggregatePredicate(AggVideoComment::class.java)
         }
-
+        
         /**
          * 构建querydsl查询条件
          *
@@ -417,14 +418,14 @@ class SVideoComment(
                 .where(filter)
                 .orderBy(*orderSpecifiers)
                 .toAggregatePredicate(AggVideoComment::class.java)
-        }
+        }  
     }
-
+    
     fun _criteriaBuilder(): CriteriaBuilder = criteriaBuilder
 
     fun _root(): Path<VideoComment> = root
 
-
+    
     /**
      * 评论ID
      * bigint
@@ -543,6 +544,6 @@ class SVideoComment(
     fun spec(builder: Schema.PredicateBuilder<SVideoComment>): Predicate {
         return builder.build(this)
     }
-
-
+    
+    
 }
