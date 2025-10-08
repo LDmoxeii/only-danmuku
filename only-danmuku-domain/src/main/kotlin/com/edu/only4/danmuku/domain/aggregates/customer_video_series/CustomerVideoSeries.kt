@@ -1,14 +1,10 @@
 package com.edu.only4.danmuku.domain.aggregates.customer_video_series
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
-
 import jakarta.persistence.*
-import org.hibernate.annotations.DynamicInsert
-import org.hibernate.annotations.DynamicUpdate
-import org.hibernate.annotations.Fetch
-import org.hibernate.annotations.GenericGenerator
-import org.hibernate.annotations.SQLDelete
-import org.hibernate.annotations.Where
+import jakarta.persistence.CascadeType
+import jakarta.persistence.Table
+import org.hibernate.annotations.*
 
 /**
  * 用户视频序列归档;
