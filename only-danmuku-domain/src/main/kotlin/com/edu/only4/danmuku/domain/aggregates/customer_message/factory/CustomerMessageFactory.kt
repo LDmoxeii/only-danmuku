@@ -9,7 +9,11 @@ import org.springframework.stereotype.Service
 @Service
 @Aggregate(aggregate = "CustomerMessage", name = "CustomerMessageFactory", type = Aggregate.TYPE_FACTORY, description = "")
 class CustomerMessageFactory : AggregateFactory<CustomerMessageFactory.Payload, CustomerMessage> {
-    override fun create(payload: Payload): CustomerMessage {
+    override fun create(entityPayload: Payload): $ {
+        Entity
+    }
+
+    {
         return CustomerMessage(
 
         )

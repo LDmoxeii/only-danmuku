@@ -1,101 +1,100 @@
 package com.edu.only4.danmuku.domain._share.meta.video_file_draft.meta
 
-import com.querydsl.core.types.OrderSpecifier
-import com.only4.cap4k.ddd.domain.repo.JpaPredicate
-import com.only4.cap4k.ddd.domain.repo.querydsl.QuerydslPredicate
 import com.edu.only4.danmuku.domain._share.meta.Schema
 import com.edu.only4.danmuku.domain.aggregates.video_file_draft.AggVideoFileDraft
-import com.edu.only4.danmuku.domain.aggregates.video_file_draft.VideoFileDraft
 import com.edu.only4.danmuku.domain.aggregates.video_file_draft.QVideoFileDraft
+import com.edu.only4.danmuku.domain.aggregates.video_file_draft.VideoFileDraft
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePredicate
-import org.springframework.data.jpa.domain.Specification
-
+import com.only4.cap4k.ddd.domain.repo.JpaPredicate
+import com.only4.cap4k.ddd.domain.repo.querydsl.QuerydslPredicate
+import com.querydsl.core.types.OrderSpecifier
 import jakarta.persistence.criteria.*
+import org.springframework.data.jpa.domain.Specification
 
 /**
  * 视频文件信息;
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/09/27
+ * @date 2025/10/08
  */
 class SVideoFileDraft(
     private val root: Path<VideoFileDraft>,
     private val criteriaBuilder: CriteriaBuilder,
 ) {
     class PROPERTY_NAMES {
-            
+
         /**
          * ID
          */
         val id = "id"
-           
+
         /**
          * 唯一ID
          */
         val fileId = "fileId"
-           
+
         /**
          * 上传ID
          */
         val uploadId = "uploadId"
-           
+
         /**
          * 用户ID
          */
         val customerId = "customerId"
-           
+
         /**
          * 视频ID
          */
         val videoId = "videoId"
-           
+
         /**
          * 文件索引
          */
         val fileIndex = "fileIndex"
-           
+
         /**
          * 文件名
          */
         val fileName = "fileName"
-           
+
         /**
          * 文件大小
          */
         val fileSize = "fileSize"
-           
+
         /**
          * 文件路径
          */
         val filePath = "filePath"
-           
+
         /**
          * 更新类型
          */
         val updateType = "updateType"
-           
+
         /**
          * 转码结果
          */
         val transferResult = "transferResult"
-           
+
         /**
          * 持续时间（秒）
          */
         val duration = "duration"
-           
+
         /**
          * 删除标识 0：未删除 id：已删除
          */
         val deleted = "deleted"
-       
+
     }
-    
+
     companion object {
-    
+
         val props = PROPERTY_NAMES()
-        
+
         /**
          * 构建查询条件
          *
@@ -252,7 +251,7 @@ class SVideoFileDraft(
             subqueryConfigure.configure(sq, schema)
             return sq
         }
-        
+
         /**
          * 构建查询条件
          *
@@ -263,7 +262,7 @@ class SVideoFileDraft(
         fun predicateById(id: Any): AggregatePredicate<AggVideoFileDraft, VideoFileDraft> {
             return JpaPredicate.byId(VideoFileDraft::class.java, id).toAggregatePredicate(AggVideoFileDraft::class.java)
         }
-    
+
         /**
         * 构建查询条件
         *
@@ -275,7 +274,7 @@ class SVideoFileDraft(
             @Suppress("UNCHECKED_CAST")
             return JpaPredicate.byIds(VideoFileDraft::class.java, ids as Iterable<Any>).toAggregatePredicate(AggVideoFileDraft::class.java)
         }
-    
+
         /**
          * 构建查询条件
          *
@@ -286,7 +285,7 @@ class SVideoFileDraft(
         fun predicateByIds(vararg ids: Any): AggregatePredicate<AggVideoFileDraft, VideoFileDraft> {
             return JpaPredicate.byIds(VideoFileDraft::class.java, ids.toList()).toAggregatePredicate(AggVideoFileDraft::class.java)
         }
-    
+
         /**
          * 构建查询条件
          *
@@ -297,7 +296,7 @@ class SVideoFileDraft(
         fun predicate(builder: Schema.PredicateBuilder<SVideoFileDraft>): AggregatePredicate<AggVideoFileDraft, VideoFileDraft> {
             return JpaPredicate.bySpecification(VideoFileDraft::class.java, specify(builder)).toAggregatePredicate(AggVideoFileDraft::class.java)
         }
-    
+
         /**
          * 构建查询条件
          *
@@ -309,7 +308,7 @@ class SVideoFileDraft(
         fun predicate(builder: Schema.PredicateBuilder<SVideoFileDraft>, distinct: Boolean): AggregatePredicate<AggVideoFileDraft, VideoFileDraft> {
             return JpaPredicate.bySpecification(VideoFileDraft::class.java, specify(builder, distinct)).toAggregatePredicate(AggVideoFileDraft::class.java)
         }
-    
+
         /**
          * 构建查询条件
          *
@@ -324,7 +323,7 @@ class SVideoFileDraft(
         ): AggregatePredicate<AggVideoFileDraft, VideoFileDraft> {
             return JpaPredicate.bySpecification(VideoFileDraft::class.java, specify(builder, false, orderBuilders)).toAggregatePredicate(AggVideoFileDraft::class.java)
         }
-    
+
         /**
          * 构建查询条件
          *
@@ -339,7 +338,7 @@ class SVideoFileDraft(
         ): AggregatePredicate<AggVideoFileDraft, VideoFileDraft> {
             return JpaPredicate.bySpecification(VideoFileDraft::class.java, specify(builder, false, *orderBuilders)).toAggregatePredicate(AggVideoFileDraft::class.java)
         }
-    
+
         /**
          * 构建查询条件
          *
@@ -356,7 +355,7 @@ class SVideoFileDraft(
         ): AggregatePredicate<AggVideoFileDraft, VideoFileDraft> {
             return JpaPredicate.bySpecification(VideoFileDraft::class.java, specify(builder, distinct, orderBuilders)).toAggregatePredicate(AggVideoFileDraft::class.java)
         }
-    
+
         /**
          * 构建查询条件
          *
@@ -373,7 +372,7 @@ class SVideoFileDraft(
         ): AggregatePredicate<AggVideoFileDraft, VideoFileDraft> {
             return JpaPredicate.bySpecification(VideoFileDraft::class.java, specify(builder, distinct, *orderBuilders)).toAggregatePredicate(AggVideoFileDraft::class.java)
         }
-    
+
         /**
          * 构建查询条件
          *
@@ -401,7 +400,7 @@ class SVideoFileDraft(
                 .orderBy(*orderSpecifierBuilders.map { it.apply(QVideoFileDraft.videoFileDraft) }.toTypedArray())
                 .toAggregatePredicate(AggVideoFileDraft::class.java)
         }
-        
+
         /**
          * 构建querydsl查询条件
          *
@@ -418,14 +417,14 @@ class SVideoFileDraft(
                 .where(filter)
                 .orderBy(*orderSpecifiers)
                 .toAggregatePredicate(AggVideoFileDraft::class.java)
-        }  
+        }
     }
-    
+
     fun _criteriaBuilder(): CriteriaBuilder = criteriaBuilder
 
     fun _root(): Path<VideoFileDraft> = root
 
-    
+
     /**
      * ID
      * bigint
@@ -551,6 +550,6 @@ class SVideoFileDraft(
     fun spec(builder: Schema.PredicateBuilder<SVideoFileDraft>): Predicate {
         return builder.build(this)
     }
-    
-    
+
+
 }

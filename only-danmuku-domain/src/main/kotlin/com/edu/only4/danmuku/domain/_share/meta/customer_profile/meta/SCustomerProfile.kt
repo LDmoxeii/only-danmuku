@@ -1,101 +1,100 @@
 package com.edu.only4.danmuku.domain._share.meta.customer_profile.meta
 
-import com.querydsl.core.types.OrderSpecifier
-import com.only4.cap4k.ddd.domain.repo.JpaPredicate
-import com.only4.cap4k.ddd.domain.repo.querydsl.QuerydslPredicate
 import com.edu.only4.danmuku.domain._share.meta.Schema
 import com.edu.only4.danmuku.domain.aggregates.customer_profile.AggCustomerProfile
 import com.edu.only4.danmuku.domain.aggregates.customer_profile.CustomerProfile
 import com.edu.only4.danmuku.domain.aggregates.customer_profile.QCustomerProfile
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePredicate
-import org.springframework.data.jpa.domain.Specification
-
+import com.only4.cap4k.ddd.domain.repo.JpaPredicate
+import com.only4.cap4k.ddd.domain.repo.querydsl.QuerydslPredicate
+import com.querydsl.core.types.OrderSpecifier
 import jakarta.persistence.criteria.*
+import org.springframework.data.jpa.domain.Specification
 
 /**
  * 用户信息;
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/09/27
+ * @date 2025/10/08
  */
 class SCustomerProfile(
     private val root: Path<CustomerProfile>,
     private val criteriaBuilder: CriteriaBuilder,
 ) {
     class PROPERTY_NAMES {
-            
+
         /**
          * ID
          */
         val id = "id"
-           
+
         /**
          * 昵称
          */
         val nickName = "nickName"
-           
+
         /**
          * 头像
          */
         val avatar = "avatar"
-           
+
         /**
          * 邮箱
          */
         val email = "email"
-           
+
         /**
          * 性别
          */
         val sex = "sex"
-           
+
         /**
          * 出生日期
          */
         val birthday = "birthday"
-           
+
         /**
          * 学校
          */
         val school = "school"
-           
+
         /**
          * 个人简介
          */
         val personIntroduction = "personIntroduction"
-           
+
         /**
          * 空间公告
          */
         val noticeInfo = "noticeInfo"
-           
+
         /**
          * 硬币总数量
          */
         val totalCoinCount = "totalCoinCount"
-           
+
         /**
          * 当前硬币数
          */
         val currentCoinCount = "currentCoinCount"
-           
+
         /**
          * 主题
          */
         val theme = "theme"
-           
+
         /**
          * 删除标识 0：未删除 id：已删除
          */
         val deleted = "deleted"
-       
+
     }
-    
+
     companion object {
-    
+
         val props = PROPERTY_NAMES()
-        
+
         /**
          * 构建查询条件
          *
@@ -252,7 +251,7 @@ class SCustomerProfile(
             subqueryConfigure.configure(sq, schema)
             return sq
         }
-        
+
         /**
          * 构建查询条件
          *
@@ -263,7 +262,7 @@ class SCustomerProfile(
         fun predicateById(id: Any): AggregatePredicate<AggCustomerProfile, CustomerProfile> {
             return JpaPredicate.byId(CustomerProfile::class.java, id).toAggregatePredicate(AggCustomerProfile::class.java)
         }
-    
+
         /**
         * 构建查询条件
         *
@@ -275,7 +274,7 @@ class SCustomerProfile(
             @Suppress("UNCHECKED_CAST")
             return JpaPredicate.byIds(CustomerProfile::class.java, ids as Iterable<Any>).toAggregatePredicate(AggCustomerProfile::class.java)
         }
-    
+
         /**
          * 构建查询条件
          *
@@ -286,7 +285,7 @@ class SCustomerProfile(
         fun predicateByIds(vararg ids: Any): AggregatePredicate<AggCustomerProfile, CustomerProfile> {
             return JpaPredicate.byIds(CustomerProfile::class.java, ids.toList()).toAggregatePredicate(AggCustomerProfile::class.java)
         }
-    
+
         /**
          * 构建查询条件
          *
@@ -297,7 +296,7 @@ class SCustomerProfile(
         fun predicate(builder: Schema.PredicateBuilder<SCustomerProfile>): AggregatePredicate<AggCustomerProfile, CustomerProfile> {
             return JpaPredicate.bySpecification(CustomerProfile::class.java, specify(builder)).toAggregatePredicate(AggCustomerProfile::class.java)
         }
-    
+
         /**
          * 构建查询条件
          *
@@ -309,7 +308,7 @@ class SCustomerProfile(
         fun predicate(builder: Schema.PredicateBuilder<SCustomerProfile>, distinct: Boolean): AggregatePredicate<AggCustomerProfile, CustomerProfile> {
             return JpaPredicate.bySpecification(CustomerProfile::class.java, specify(builder, distinct)).toAggregatePredicate(AggCustomerProfile::class.java)
         }
-    
+
         /**
          * 构建查询条件
          *
@@ -324,7 +323,7 @@ class SCustomerProfile(
         ): AggregatePredicate<AggCustomerProfile, CustomerProfile> {
             return JpaPredicate.bySpecification(CustomerProfile::class.java, specify(builder, false, orderBuilders)).toAggregatePredicate(AggCustomerProfile::class.java)
         }
-    
+
         /**
          * 构建查询条件
          *
@@ -339,7 +338,7 @@ class SCustomerProfile(
         ): AggregatePredicate<AggCustomerProfile, CustomerProfile> {
             return JpaPredicate.bySpecification(CustomerProfile::class.java, specify(builder, false, *orderBuilders)).toAggregatePredicate(AggCustomerProfile::class.java)
         }
-    
+
         /**
          * 构建查询条件
          *
@@ -356,7 +355,7 @@ class SCustomerProfile(
         ): AggregatePredicate<AggCustomerProfile, CustomerProfile> {
             return JpaPredicate.bySpecification(CustomerProfile::class.java, specify(builder, distinct, orderBuilders)).toAggregatePredicate(AggCustomerProfile::class.java)
         }
-    
+
         /**
          * 构建查询条件
          *
@@ -373,7 +372,7 @@ class SCustomerProfile(
         ): AggregatePredicate<AggCustomerProfile, CustomerProfile> {
             return JpaPredicate.bySpecification(CustomerProfile::class.java, specify(builder, distinct, *orderBuilders)).toAggregatePredicate(AggCustomerProfile::class.java)
         }
-    
+
         /**
          * 构建查询条件
          *
@@ -401,7 +400,7 @@ class SCustomerProfile(
                 .orderBy(*orderSpecifierBuilders.map { it.apply(QCustomerProfile.customerProfile) }.toTypedArray())
                 .toAggregatePredicate(AggCustomerProfile::class.java)
         }
-        
+
         /**
          * 构建querydsl查询条件
          *
@@ -418,14 +417,14 @@ class SCustomerProfile(
                 .where(filter)
                 .orderBy(*orderSpecifiers)
                 .toAggregatePredicate(AggCustomerProfile::class.java)
-        }  
+        }
     }
-    
+
     fun _criteriaBuilder(): CriteriaBuilder = criteriaBuilder
 
     fun _root(): Path<CustomerProfile> = root
 
-    
+
     /**
      * ID
      * bigint
@@ -551,6 +550,6 @@ class SCustomerProfile(
     fun spec(builder: Schema.PredicateBuilder<SCustomerProfile>): Predicate {
         return builder.build(this)
     }
-    
-    
+
+
 }

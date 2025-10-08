@@ -1,76 +1,75 @@
 package com.edu.only4.danmuku.domain._share.meta.customer_message.meta
 
-import com.querydsl.core.types.OrderSpecifier
-import com.only4.cap4k.ddd.domain.repo.JpaPredicate
-import com.only4.cap4k.ddd.domain.repo.querydsl.QuerydslPredicate
 import com.edu.only4.danmuku.domain._share.meta.Schema
 import com.edu.only4.danmuku.domain.aggregates.customer_message.AggCustomerMessage
 import com.edu.only4.danmuku.domain.aggregates.customer_message.CustomerMessage
 import com.edu.only4.danmuku.domain.aggregates.customer_message.QCustomerMessage
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePredicate
-import org.springframework.data.jpa.domain.Specification
-
+import com.only4.cap4k.ddd.domain.repo.JpaPredicate
+import com.only4.cap4k.ddd.domain.repo.querydsl.QuerydslPredicate
+import com.querydsl.core.types.OrderSpecifier
 import jakarta.persistence.criteria.*
+import org.springframework.data.jpa.domain.Specification
 
 /**
  * 用户消息表;
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/09/27
+ * @date 2025/10/08
  */
 class SCustomerMessage(
     private val root: Path<CustomerMessage>,
     private val criteriaBuilder: CriteriaBuilder,
 ) {
     class PROPERTY_NAMES {
-            
+
         /**
          * ID
          */
         val id = "id"
-           
+
         /**
          * 用户ID
          */
         val customerId = "customerId"
-           
+
         /**
          * 主体ID
          */
         val videoId = "videoId"
-           
+
         /**
          * 消息类型
          */
         val messageType = "messageType"
-           
+
         /**
          * 发送主体ID
          */
         val sendSubjectId = "sendSubjectId"
-           
+
         /**
          * 读取状态
          */
         val readType = "readType"
-           
+
         /**
          * 扩展信息
          */
         val extendJson = "extendJson"
-           
+
         /**
          * 删除标识 0：未删除 id：已删除
          */
         val deleted = "deleted"
-       
+
     }
-    
+
     companion object {
-    
+
         val props = PROPERTY_NAMES()
-        
+
         /**
          * 构建查询条件
          *
@@ -227,7 +226,7 @@ class SCustomerMessage(
             subqueryConfigure.configure(sq, schema)
             return sq
         }
-        
+
         /**
          * 构建查询条件
          *
@@ -238,7 +237,7 @@ class SCustomerMessage(
         fun predicateById(id: Any): AggregatePredicate<AggCustomerMessage, CustomerMessage> {
             return JpaPredicate.byId(CustomerMessage::class.java, id).toAggregatePredicate(AggCustomerMessage::class.java)
         }
-    
+
         /**
         * 构建查询条件
         *
@@ -250,7 +249,7 @@ class SCustomerMessage(
             @Suppress("UNCHECKED_CAST")
             return JpaPredicate.byIds(CustomerMessage::class.java, ids as Iterable<Any>).toAggregatePredicate(AggCustomerMessage::class.java)
         }
-    
+
         /**
          * 构建查询条件
          *
@@ -261,7 +260,7 @@ class SCustomerMessage(
         fun predicateByIds(vararg ids: Any): AggregatePredicate<AggCustomerMessage, CustomerMessage> {
             return JpaPredicate.byIds(CustomerMessage::class.java, ids.toList()).toAggregatePredicate(AggCustomerMessage::class.java)
         }
-    
+
         /**
          * 构建查询条件
          *
@@ -272,7 +271,7 @@ class SCustomerMessage(
         fun predicate(builder: Schema.PredicateBuilder<SCustomerMessage>): AggregatePredicate<AggCustomerMessage, CustomerMessage> {
             return JpaPredicate.bySpecification(CustomerMessage::class.java, specify(builder)).toAggregatePredicate(AggCustomerMessage::class.java)
         }
-    
+
         /**
          * 构建查询条件
          *
@@ -284,7 +283,7 @@ class SCustomerMessage(
         fun predicate(builder: Schema.PredicateBuilder<SCustomerMessage>, distinct: Boolean): AggregatePredicate<AggCustomerMessage, CustomerMessage> {
             return JpaPredicate.bySpecification(CustomerMessage::class.java, specify(builder, distinct)).toAggregatePredicate(AggCustomerMessage::class.java)
         }
-    
+
         /**
          * 构建查询条件
          *
@@ -299,7 +298,7 @@ class SCustomerMessage(
         ): AggregatePredicate<AggCustomerMessage, CustomerMessage> {
             return JpaPredicate.bySpecification(CustomerMessage::class.java, specify(builder, false, orderBuilders)).toAggregatePredicate(AggCustomerMessage::class.java)
         }
-    
+
         /**
          * 构建查询条件
          *
@@ -314,7 +313,7 @@ class SCustomerMessage(
         ): AggregatePredicate<AggCustomerMessage, CustomerMessage> {
             return JpaPredicate.bySpecification(CustomerMessage::class.java, specify(builder, false, *orderBuilders)).toAggregatePredicate(AggCustomerMessage::class.java)
         }
-    
+
         /**
          * 构建查询条件
          *
@@ -331,7 +330,7 @@ class SCustomerMessage(
         ): AggregatePredicate<AggCustomerMessage, CustomerMessage> {
             return JpaPredicate.bySpecification(CustomerMessage::class.java, specify(builder, distinct, orderBuilders)).toAggregatePredicate(AggCustomerMessage::class.java)
         }
-    
+
         /**
          * 构建查询条件
          *
@@ -348,7 +347,7 @@ class SCustomerMessage(
         ): AggregatePredicate<AggCustomerMessage, CustomerMessage> {
             return JpaPredicate.bySpecification(CustomerMessage::class.java, specify(builder, distinct, *orderBuilders)).toAggregatePredicate(AggCustomerMessage::class.java)
         }
-    
+
         /**
          * 构建查询条件
          *
@@ -376,7 +375,7 @@ class SCustomerMessage(
                 .orderBy(*orderSpecifierBuilders.map { it.apply(QCustomerMessage.customerMessage) }.toTypedArray())
                 .toAggregatePredicate(AggCustomerMessage::class.java)
         }
-        
+
         /**
          * 构建querydsl查询条件
          *
@@ -393,14 +392,14 @@ class SCustomerMessage(
                 .where(filter)
                 .orderBy(*orderSpecifiers)
                 .toAggregatePredicate(AggCustomerMessage::class.java)
-        }  
+        }
     }
-    
+
     fun _criteriaBuilder(): CriteriaBuilder = criteriaBuilder
 
     fun _root(): Path<CustomerMessage> = root
 
-    
+
     /**
      * ID
      * bigint
@@ -494,6 +493,6 @@ class SCustomerMessage(
     fun spec(builder: Schema.PredicateBuilder<SCustomerMessage>): Predicate {
         return builder.build(this)
     }
-    
-    
+
+
 }

@@ -1,81 +1,80 @@
 package com.edu.only4.danmuku.domain._share.meta.category.meta
 
-import com.querydsl.core.types.OrderSpecifier
-import com.only4.cap4k.ddd.domain.repo.JpaPredicate
-import com.only4.cap4k.ddd.domain.repo.querydsl.QuerydslPredicate
 import com.edu.only4.danmuku.domain._share.meta.Schema
 import com.edu.only4.danmuku.domain.aggregates.category.AggCategory
 import com.edu.only4.danmuku.domain.aggregates.category.Category
 import com.edu.only4.danmuku.domain.aggregates.category.QCategory
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePredicate
-import org.springframework.data.jpa.domain.Specification
-
+import com.only4.cap4k.ddd.domain.repo.JpaPredicate
+import com.only4.cap4k.ddd.domain.repo.querydsl.QuerydslPredicate
+import com.querydsl.core.types.OrderSpecifier
 import jakarta.persistence.criteria.*
+import org.springframework.data.jpa.domain.Specification
 
 /**
  * 分类信息;
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/09/27
+ * @date 2025/10/08
  */
 class SCategory(
     private val root: Path<Category>,
     private val criteriaBuilder: CriteriaBuilder,
 ) {
     class PROPERTY_NAMES {
-            
+
         /**
          * ID
          */
         val id = "id"
-           
+
         /**
          * 父级ID
          */
         val parentId = "parentId"
-           
+
         /**
          * 路径
          */
         val nodePath = "nodePath"
-           
+
         /**
          * 排序号
          */
         val sort = "sort"
-           
+
         /**
          * 编码
          */
         val code = "code"
-           
+
         /**
          * 名称
          */
         val name = "name"
-           
+
         /**
          * 图标
          */
         val icon = "icon"
-           
+
         /**
          * 背景图
          */
         val background = "background"
-           
+
         /**
          * 删除标识 0：未删除 id：已删除
          */
         val deleted = "deleted"
-       
+
     }
-    
+
     companion object {
-    
+
         val props = PROPERTY_NAMES()
-        
+
         /**
          * 构建查询条件
          *
@@ -232,7 +231,7 @@ class SCategory(
             subqueryConfigure.configure(sq, schema)
             return sq
         }
-        
+
         /**
          * 构建查询条件
          *
@@ -243,7 +242,7 @@ class SCategory(
         fun predicateById(id: Any): AggregatePredicate<AggCategory, Category> {
             return JpaPredicate.byId(Category::class.java, id).toAggregatePredicate(AggCategory::class.java)
         }
-    
+
         /**
         * 构建查询条件
         *
@@ -255,7 +254,7 @@ class SCategory(
             @Suppress("UNCHECKED_CAST")
             return JpaPredicate.byIds(Category::class.java, ids as Iterable<Any>).toAggregatePredicate(AggCategory::class.java)
         }
-    
+
         /**
          * 构建查询条件
          *
@@ -266,7 +265,7 @@ class SCategory(
         fun predicateByIds(vararg ids: Any): AggregatePredicate<AggCategory, Category> {
             return JpaPredicate.byIds(Category::class.java, ids.toList()).toAggregatePredicate(AggCategory::class.java)
         }
-    
+
         /**
          * 构建查询条件
          *
@@ -277,7 +276,7 @@ class SCategory(
         fun predicate(builder: Schema.PredicateBuilder<SCategory>): AggregatePredicate<AggCategory, Category> {
             return JpaPredicate.bySpecification(Category::class.java, specify(builder)).toAggregatePredicate(AggCategory::class.java)
         }
-    
+
         /**
          * 构建查询条件
          *
@@ -289,7 +288,7 @@ class SCategory(
         fun predicate(builder: Schema.PredicateBuilder<SCategory>, distinct: Boolean): AggregatePredicate<AggCategory, Category> {
             return JpaPredicate.bySpecification(Category::class.java, specify(builder, distinct)).toAggregatePredicate(AggCategory::class.java)
         }
-    
+
         /**
          * 构建查询条件
          *
@@ -304,7 +303,7 @@ class SCategory(
         ): AggregatePredicate<AggCategory, Category> {
             return JpaPredicate.bySpecification(Category::class.java, specify(builder, false, orderBuilders)).toAggregatePredicate(AggCategory::class.java)
         }
-    
+
         /**
          * 构建查询条件
          *
@@ -319,7 +318,7 @@ class SCategory(
         ): AggregatePredicate<AggCategory, Category> {
             return JpaPredicate.bySpecification(Category::class.java, specify(builder, false, *orderBuilders)).toAggregatePredicate(AggCategory::class.java)
         }
-    
+
         /**
          * 构建查询条件
          *
@@ -336,7 +335,7 @@ class SCategory(
         ): AggregatePredicate<AggCategory, Category> {
             return JpaPredicate.bySpecification(Category::class.java, specify(builder, distinct, orderBuilders)).toAggregatePredicate(AggCategory::class.java)
         }
-    
+
         /**
          * 构建查询条件
          *
@@ -353,7 +352,7 @@ class SCategory(
         ): AggregatePredicate<AggCategory, Category> {
             return JpaPredicate.bySpecification(Category::class.java, specify(builder, distinct, *orderBuilders)).toAggregatePredicate(AggCategory::class.java)
         }
-    
+
         /**
          * 构建查询条件
          *
@@ -381,7 +380,7 @@ class SCategory(
                 .orderBy(*orderSpecifierBuilders.map { it.apply(QCategory.category) }.toTypedArray())
                 .toAggregatePredicate(AggCategory::class.java)
         }
-        
+
         /**
          * 构建querydsl查询条件
          *
@@ -398,14 +397,14 @@ class SCategory(
                 .where(filter)
                 .orderBy(*orderSpecifiers)
                 .toAggregatePredicate(AggCategory::class.java)
-        }  
+        }
     }
-    
+
     fun _criteriaBuilder(): CriteriaBuilder = criteriaBuilder
 
     fun _root(): Path<Category> = root
 
-    
+
     /**
      * ID
      * bigint
@@ -496,6 +495,6 @@ class SCategory(
     fun spec(builder: Schema.PredicateBuilder<SCategory>): Predicate {
         return builder.build(this)
     }
-    
-    
+
+
 }

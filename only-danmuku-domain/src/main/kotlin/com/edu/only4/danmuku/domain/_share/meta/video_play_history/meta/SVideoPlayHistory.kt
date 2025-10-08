@@ -1,61 +1,60 @@
 package com.edu.only4.danmuku.domain._share.meta.video_play_history.meta
 
-import com.querydsl.core.types.OrderSpecifier
-import com.only4.cap4k.ddd.domain.repo.JpaPredicate
-import com.only4.cap4k.ddd.domain.repo.querydsl.QuerydslPredicate
 import com.edu.only4.danmuku.domain._share.meta.Schema
 import com.edu.only4.danmuku.domain.aggregates.video_play_history.AggVideoPlayHistory
-import com.edu.only4.danmuku.domain.aggregates.video_play_history.VideoPlayHistory
 import com.edu.only4.danmuku.domain.aggregates.video_play_history.QVideoPlayHistory
+import com.edu.only4.danmuku.domain.aggregates.video_play_history.VideoPlayHistory
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePredicate
-import org.springframework.data.jpa.domain.Specification
-
+import com.only4.cap4k.ddd.domain.repo.JpaPredicate
+import com.only4.cap4k.ddd.domain.repo.querydsl.QuerydslPredicate
+import com.querydsl.core.types.OrderSpecifier
 import jakarta.persistence.criteria.*
+import org.springframework.data.jpa.domain.Specification
 
 /**
  * 视频播放历史;
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/09/27
+ * @date 2025/10/08
  */
 class SVideoPlayHistory(
     private val root: Path<VideoPlayHistory>,
     private val criteriaBuilder: CriteriaBuilder,
 ) {
     class PROPERTY_NAMES {
-            
+
         /**
          * ID
          */
         val id = "id"
-           
+
         /**
          * 用户ID
          */
         val customerId = "customerId"
-           
+
         /**
          * 视频ID
          */
         val videoId = "videoId"
-           
+
         /**
          * 文件索引
          */
         val fileIndex = "fileIndex"
-           
+
         /**
          * 删除标识 0：未删除 id：已删除
          */
         val deleted = "deleted"
-       
+
     }
-    
+
     companion object {
-    
+
         val props = PROPERTY_NAMES()
-        
+
         /**
          * 构建查询条件
          *
@@ -212,7 +211,7 @@ class SVideoPlayHistory(
             subqueryConfigure.configure(sq, schema)
             return sq
         }
-        
+
         /**
          * 构建查询条件
          *
@@ -223,7 +222,7 @@ class SVideoPlayHistory(
         fun predicateById(id: Any): AggregatePredicate<AggVideoPlayHistory, VideoPlayHistory> {
             return JpaPredicate.byId(VideoPlayHistory::class.java, id).toAggregatePredicate(AggVideoPlayHistory::class.java)
         }
-    
+
         /**
         * 构建查询条件
         *
@@ -235,7 +234,7 @@ class SVideoPlayHistory(
             @Suppress("UNCHECKED_CAST")
             return JpaPredicate.byIds(VideoPlayHistory::class.java, ids as Iterable<Any>).toAggregatePredicate(AggVideoPlayHistory::class.java)
         }
-    
+
         /**
          * 构建查询条件
          *
@@ -246,7 +245,7 @@ class SVideoPlayHistory(
         fun predicateByIds(vararg ids: Any): AggregatePredicate<AggVideoPlayHistory, VideoPlayHistory> {
             return JpaPredicate.byIds(VideoPlayHistory::class.java, ids.toList()).toAggregatePredicate(AggVideoPlayHistory::class.java)
         }
-    
+
         /**
          * 构建查询条件
          *
@@ -257,7 +256,7 @@ class SVideoPlayHistory(
         fun predicate(builder: Schema.PredicateBuilder<SVideoPlayHistory>): AggregatePredicate<AggVideoPlayHistory, VideoPlayHistory> {
             return JpaPredicate.bySpecification(VideoPlayHistory::class.java, specify(builder)).toAggregatePredicate(AggVideoPlayHistory::class.java)
         }
-    
+
         /**
          * 构建查询条件
          *
@@ -269,7 +268,7 @@ class SVideoPlayHistory(
         fun predicate(builder: Schema.PredicateBuilder<SVideoPlayHistory>, distinct: Boolean): AggregatePredicate<AggVideoPlayHistory, VideoPlayHistory> {
             return JpaPredicate.bySpecification(VideoPlayHistory::class.java, specify(builder, distinct)).toAggregatePredicate(AggVideoPlayHistory::class.java)
         }
-    
+
         /**
          * 构建查询条件
          *
@@ -284,7 +283,7 @@ class SVideoPlayHistory(
         ): AggregatePredicate<AggVideoPlayHistory, VideoPlayHistory> {
             return JpaPredicate.bySpecification(VideoPlayHistory::class.java, specify(builder, false, orderBuilders)).toAggregatePredicate(AggVideoPlayHistory::class.java)
         }
-    
+
         /**
          * 构建查询条件
          *
@@ -299,7 +298,7 @@ class SVideoPlayHistory(
         ): AggregatePredicate<AggVideoPlayHistory, VideoPlayHistory> {
             return JpaPredicate.bySpecification(VideoPlayHistory::class.java, specify(builder, false, *orderBuilders)).toAggregatePredicate(AggVideoPlayHistory::class.java)
         }
-    
+
         /**
          * 构建查询条件
          *
@@ -316,7 +315,7 @@ class SVideoPlayHistory(
         ): AggregatePredicate<AggVideoPlayHistory, VideoPlayHistory> {
             return JpaPredicate.bySpecification(VideoPlayHistory::class.java, specify(builder, distinct, orderBuilders)).toAggregatePredicate(AggVideoPlayHistory::class.java)
         }
-    
+
         /**
          * 构建查询条件
          *
@@ -333,7 +332,7 @@ class SVideoPlayHistory(
         ): AggregatePredicate<AggVideoPlayHistory, VideoPlayHistory> {
             return JpaPredicate.bySpecification(VideoPlayHistory::class.java, specify(builder, distinct, *orderBuilders)).toAggregatePredicate(AggVideoPlayHistory::class.java)
         }
-    
+
         /**
          * 构建查询条件
          *
@@ -361,7 +360,7 @@ class SVideoPlayHistory(
                 .orderBy(*orderSpecifierBuilders.map { it.apply(QVideoPlayHistory.videoPlayHistory) }.toTypedArray())
                 .toAggregatePredicate(AggVideoPlayHistory::class.java)
         }
-        
+
         /**
          * 构建querydsl查询条件
          *
@@ -378,14 +377,14 @@ class SVideoPlayHistory(
                 .where(filter)
                 .orderBy(*orderSpecifiers)
                 .toAggregatePredicate(AggVideoPlayHistory::class.java)
-        }  
+        }
     }
-    
+
     fun _criteriaBuilder(): CriteriaBuilder = criteriaBuilder
 
     fun _root(): Path<VideoPlayHistory> = root
 
-    
+
     /**
      * ID
      * bigint
@@ -448,6 +447,6 @@ class SVideoPlayHistory(
     fun spec(builder: Schema.PredicateBuilder<SVideoPlayHistory>): Predicate {
         return builder.build(this)
     }
-    
-    
+
+
 }

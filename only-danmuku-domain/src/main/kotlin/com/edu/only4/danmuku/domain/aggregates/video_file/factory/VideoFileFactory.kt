@@ -9,7 +9,11 @@ import org.springframework.stereotype.Service
 @Service
 @Aggregate(aggregate = "VideoFile", name = "VideoFileFactory", type = Aggregate.TYPE_FACTORY, description = "")
 class VideoFileFactory : AggregateFactory<VideoFileFactory.Payload, VideoFile> {
-    override fun create(payload: Payload): VideoFile {
+    override fun create(entityPayload: Payload): $ {
+        Entity
+    }
+
+    {
         return VideoFile(
 
         )
