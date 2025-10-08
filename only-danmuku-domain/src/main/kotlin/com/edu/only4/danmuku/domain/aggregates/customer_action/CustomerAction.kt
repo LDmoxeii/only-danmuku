@@ -68,7 +68,7 @@ class CustomerAction (
     /**
      * 行为类型
      * 0:UNKNOW:未知行为
-     * 1:Like_COMMENT:评论喜欢点赞
+     * 1:LIKE_COMMENT:评论喜欢点赞
      * 2:HATE_COMMENT:讨厌评论
      * 3:LIKE_VIDEO:视频点赞
      * 4:FAVORITE_VIDEO:视频收藏

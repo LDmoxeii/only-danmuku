@@ -15,7 +15,8 @@ dependencies {
     api(libs.blazebit.persistence.hibernate)
 
     api(libs.engine.common)
-    api(libs.engine.web.starter)
+    api(libs.engine.jimmer)
+    api(libs.engine.web)
     implementation(libs.blazebit.persistence.querydsl)
 
     api(project(":only-danmuku-application"))

@@ -1,7 +1,7 @@
 // [cap4k-ddd-codegen-gradle-plugin:do-not-overwrite]
 plugins {
     id("buildsrc.convention.kotlin-jvm")
-    id("com.only4.cap4k.ddd.codegen") version "0.3.9-SNAPSHOT"
+    id("com.only4.cap4k.ddd.codegen") version "0.3.10-SNAPSHOT"
 }
 
 dependencies {
@@ -30,7 +30,7 @@ cap4kCodegen {
         username.set("root")
         password.set("123456")
         schema.set("only_danmuku")
-        tables.set("")
+        tables.set("user,customer_action,customer_video_series,customer_video_series_video")
         ignoreTables.set("")
     }
 

@@ -15,7 +15,7 @@ import org.hibernate.annotations.Where
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2025/09/27
+ * @date 2025/10/08
  */
 @Aggregate(aggregate = "User", name = "User", root = true, type = Aggregate.TYPE_ENTITY, description = "帐号;")
 @Entity
@@ -36,6 +36,16 @@ class User (
     @GenericGenerator(name = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator", strategy = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator")
     @Column(name = "`id`", insertable = false, updatable = false)
     var id: Long = 0L,
+
+    /**
+     * 帐号类型
+     * 0:UNKNOW:未知类型
+     * 1:SYS_USER:系统管理员
+     * tinyint(1)
+     */
+    @Convert(converter = com.edu.only4.danmuku.domain.aggregates.user.enums.UserType.Converter::class)
+    @Column(name = "`type`")
+    var type: com.edu.only4.danmuku.domain.aggregates.user.enums.UserType = com.edu.only4.danmuku.domain.aggregates.user.enums.UserType.valueOf(0),
 
     /**
      * 邮箱

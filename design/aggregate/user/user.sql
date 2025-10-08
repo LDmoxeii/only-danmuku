@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user`
     (
     `id`              bigint                                                        NOT NULL COMMENT 'ID',
+    `type` tinyint(1) NOT NULL DEFAULT 0 COMMENT '帐号类型 @E=0:UNKNOW:未知类型|1:SYS_USER:系统管理员;@T=UserType',
     `email`           varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '邮箱',
     `password`        varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL COMMENT '密码',
     `join_time`       bigint                                                        NOT NULL COMMENT '加入时间',

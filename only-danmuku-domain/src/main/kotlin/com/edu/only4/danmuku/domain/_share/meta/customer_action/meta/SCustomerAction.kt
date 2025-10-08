@@ -17,7 +17,7 @@ import jakarta.persistence.criteria.*
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/09/27
+ * @date 2025/10/08
  */
 class SCustomerAction(
     private val root: Path<CustomerAction>,
@@ -444,7 +444,7 @@ class SCustomerAction(
     /**
      * 行为类型
      * 0:UNKNOW:未知行为
-     * 1:Like_COMMENT:评论喜欢点赞
+     * 1:LIKE_COMMENT:评论喜欢点赞
      * 2:HATE_COMMENT:讨厌评论
      * 3:LIKE_VIDEO:视频点赞
      * 4:FAVORITE_VIDEO:视频收藏

@@ -17,7 +17,7 @@ import jakarta.persistence.criteria.*
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/09/27
+ * @date 2025/10/08
  */
 class SUser(
     private val root: Path<User>,
@@ -29,6 +29,11 @@ class SUser(
          * ID
          */
         val id = "id"
+           
+        /**
+         * 帐号类型
+         */
+        val type = "type"
            
         /**
          * 邮箱
@@ -412,6 +417,15 @@ class SUser(
      */
     fun id(): Schema.Field<Long> {
         return Schema.Field(root.get(props.id), this.criteriaBuilder)
+    }
+    /**
+     * 帐号类型
+     * 0:UNKNOW:未知类型
+     * 1:SYS_USER:系统管理员
+     * tinyint(1)
+     */
+    fun type(): Schema.Field<com.edu.only4.danmuku.domain.aggregates.user.enums.UserType> {
+        return Schema.Field(root.get(props.type), this.criteriaBuilder)
     }
     /**
      * 邮箱

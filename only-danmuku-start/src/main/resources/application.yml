@@ -91,12 +91,24 @@ jimmer:
 
 
 only:
-  web:
-    filter:
-      thread-local:
-        enable: false
-    result-wrapper:
+  engine:
+    jimmer:
       enable: true
+    json:
+      enable: true
+    web:
+      filter:
+        health-check:
+          enable: true
+        request-body:
+          enable: true
+      advice:
+        response-wrapper:
+          enable: true
+        global-exception:
+          enable: true
+      performance-interceptor:
+        enable: true
 cap4k:
   ddd:
     archinfo:
