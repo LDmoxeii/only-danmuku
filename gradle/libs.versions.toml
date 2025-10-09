@@ -8,11 +8,11 @@ kotlin = "2.1.20"
 ksp = "2.2.0-2.0.2"
 
 # Spring framework
-spring-boot = "3.1.12"
+spring-boot = "3.5.6"
 spring-dependency-management = "1.1.3"
 blazebit = "1.6.12"
 
-only-engine = "0.0.20-SNAPSHOT"
+only-engine = "0.0.26-SNAPSHOT"
 cap4k = "0.3.12-SNAPSHOT"
 jimmer = "0.9.106"
 
@@ -43,6 +43,8 @@ blazebit-persistence-querydsl = { module = "com.blazebit:blaze-persistence-integ
 blazebit-persistence-hibernate = { module = "com.blazebit:blaze-persistence-integration-hibernate-6.2", version.ref = "blazebit" }
 
 engine-common = { module = "com.only4:engine-common", version.ref = "only-engine" }
+engine-captcha = { module = "com.only4:engine-captcha", version.ref = "only-engine" }
+engine-redis = { module = "com.only4:engine-redis", version.ref = "only-engine" }
 engine-jimmer = { module = "com.only4:engine-jimmer", version.ref = "only-engine" }
 engine-json = { module = "com.only4:engine-json", version.ref = "only-engine" }
 engine-web = { module = "com.only4:engine-web", version.ref = "only-engine" }
