@@ -1,9 +1,6 @@
-import jdk.tools.jlink.resources.plugins
-
-// [cap4k-ddd-codegen-gradle-plugin:do-not-overwrite]
 plugins {
-    id("buildsrc.convention.kotlin-jvm")
-    id("com.only.codegen")
+    kotlin("jvm") version "2.1.20"
+    id("com.only4.codegen") version "0.1.0-SNAPSHOT"
 }
 
 dependencies {
@@ -20,11 +17,11 @@ kotlin {
     jvmToolchain(17)
 }
 
-cap4kCodegen {
-    basePackage.set("com.edu.only4.danmuku")
+codegen {
+    basePackage.set("edu.only4.danmuku")
     archTemplate.set("cap4k-ddd-codegen-template-multi-nested.json")
     designFiles.from(fileTree("design") {
-        include("**/*_gen.txt")
+        include("**/*_gen.json")
     })
 
     database {
@@ -41,6 +38,6 @@ cap4kCodegen {
         deletedField.set("deleted")
         readonlyFields.set("id")
         ignoreFields.set("create_user_id,create_by,create_time,update_user_id,update_by,update_time")
-        generateParent.set(true)
+        ignoreFields.set("")
     }
 }

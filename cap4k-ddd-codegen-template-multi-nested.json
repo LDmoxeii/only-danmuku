@@ -4,69 +4,39 @@
     {
       "type": "dir",
       "tag": "command",
-      "name": "${path}",
+      "name": "{{ path }}",
       "children": [
-        {
-          "type": "file",
-          "name": "${Command}.kt",
-          "format": "url",
-          "data": "template/_tpl/kotlin/Command.kt"
-        }
       ]
     },
     {
       "type": "dir",
       "tag": "saga",
-      "name": "${path}",
+      "name": "{{ path }}",
       "children": [
-        {
-          "type": "file",
-          "name": "${Saga}.kt",
-          "format": "url",
-          "data": "template/_tpl/kotlin/Saga.kt"
-        }
       ]
     },
     {
       "type": "dir",
       "tag": "query",
-      "name": "${path}",
+      "name": "{{ path }}",
       "pattern": "^(?!.*(List|list|Page|page)).*$",
       "children": [
-        {
-          "type": "file",
-          "name": "${Query}.kt",
-          "format": "url",
-          "data": "template/_tpl/kotlin/Query.kt"
-        }
       ]
     },
     {
       "type": "dir",
       "tag": "query",
-      "name": "${path}",
+      "name": "{{ path }}",
       "pattern": "^.*(List|list).*$",
       "children": [
-        {
-          "type": "file",
-          "name": "${Query}.kt",
-          "format": "url",
-          "data": "template/_tpl/kotlin/QueryList.kt"
-        }
       ]
     },
     {
       "type": "dir",
       "tag": "query",
-      "name": "${path}",
+      "name": "{{ path }}",
       "pattern": "^.*(Page|page).*$",
       "children": [
-        {
-          "type": "file",
-          "name": "${Query}.kt",
-          "format": "url",
-          "data": "template/_tpl/kotlin/QueryPage.kt"
-        }
       ]
     },
     {
@@ -75,12 +45,6 @@
       "name": "",
       "pattern": "^(?!.*(List|list|Page|page)).*$",
       "children": [
-        {
-          "type": "file",
-          "name": "${Query}Handler.kt",
-          "format": "url",
-          "data": "template/_tpl/kotlin/QueryHandler.kt"
-        }
       ]
     },
     {
@@ -89,12 +53,6 @@
       "name": "",
       "pattern": "^.*(List|list).*$",
       "children": [
-        {
-          "type": "file",
-          "name": "${Query}Handler.kt",
-          "format": "url",
-          "data": "template/_tpl/kotlin/QueryListHandler.kt"
-        }
       ]
     },
     {
@@ -103,38 +61,20 @@
       "name": "",
       "pattern": "^.*(Page|page).*$",
       "children": [
-        {
-          "type": "file",
-          "name": "${Query}Handler.kt",
-          "format": "url",
-          "data": "template/_tpl/kotlin/QueryPageHandler.kt"
-        }
       ]
     },
     {
       "type": "dir",
       "tag": "client",
-      "name": "${path}",
+      "name": "{{ path }}",
       "children": [
-        {
-          "type": "file",
-          "name": "${Client}.kt",
-          "format": "url",
-          "data": "template/_tpl/kotlin/Client.kt"
-        }
       ]
     },
     {
       "type": "dir",
       "tag": "client_handler",
-      "name": "${path}",
+      "name": "{{ path }}",
       "children": [
-        {
-          "type": "file",
-          "name": "${Client}Handler.kt",
-          "format": "url",
-          "data": "template/_tpl/kotlin/ClientHandler.kt"
-        }
       ]
     },
     {
@@ -142,12 +82,6 @@
       "tag": "integration_event",
       "name": "",
       "children": [
-        {
-          "type": "file",
-          "name": "${IntegrationEvent}.kt",
-          "format": "url",
-          "data": "template/_tpl/kotlin/IntegrationEvent.kt"
-        }
       ]
     },
     {
@@ -155,103 +89,96 @@
       "tag": "integration_event_handler",
       "name": "",
       "children": [
-        {
-          "type": "file",
-          "name": "${IntegrationEvent}Subscriber.kt",
-          "format": "url",
-          "data": "template/_tpl/kotlin/IntegrationEventHandler.kt"
-        }
-      ]
-    },
-    {
-      "type": "dir",
-      "tag": "domain_event",
-      "name": "${path}${SEPARATOR}events",
-      "children": [
-        {
-          "type": "file",
-          "name": "${DomainEvent}.kt",
-          "format": "url",
-          "data": "template/_tpl/kotlin/DomainEvent.kt"
-        }
-      ]
-    },
-    {
-      "type": "dir",
-      "tag": "domain_event_handler",
-      "name": "",
-      "children": [
-        {
-          "type": "file",
-          "name": "${DomainEvent}Subscriber.kt",
-          "format": "url",
-          "data": "template/_tpl/kotlin/DomainEventHandler.kt"
-        }
-      ]
-    },
-    {
-      "type": "dir",
-      "tag": "aggregate",
-      "name": "${path}",
-      "children": [
-        {
-          "type": "file",
-          "name": "${aggregateNameTemplate}.kt",
-          "format": "url",
-          "data": "template/_tpl/kotlin/Aggregate.kt"
-        }
-      ]
-    },
-    {
-      "type": "dir",
-      "tag": "factory",
-      "name": "${path}${SEPARATOR}factory",
-      "children": [
-        {
-          "type": "file",
-          "name": "${Entity}Factory.kt",
-          "format": "url",
-          "data": "template/_tpl/kotlin/Factory.kt"
-        }
-      ]
-    },
-    {
-      "type": "dir",
-      "tag": "specification",
-      "name": "${path}${SEPARATOR}specs",
-      "children": [
-        {
-          "type": "file",
-          "name": "${Entity}Specification.kt",
-          "format": "url",
-          "data": "template/_tpl/kotlin/Specification.kt"
-        }
       ]
     },
     {
       "type": "dir",
       "tag": "domain_service",
-      "name": "${path}",
+      "name": "{{ path }}",
       "children": [
-        {
-          "type": "file",
-          "name": "${DomainService}.kt",
-          "format": "url",
-          "data": "template/_tpl/kotlin/DomainService.kt"
-        }
+      ]
+    },
+    {
+      "type": "dir",
+      "tag": "repository",
+      "name": "{{ path }}",
+      "children": [
+      ]
+    },
+    {
+      "type": "dir",
+      "tag": "schema",
+      "name": "{{ path }}",
+      "children": [
+      ]
+    },
+    {
+      "type": "dir",
+      "tag": "aggregate",
+      "name": "{{ path }}",
+      "children": [
+      ]
+    },
+    {
+      "type": "dir",
+      "tag": "domain_event_handler",
+      "name": "{{ path }}",
+      "children": [
+      ]
+    },
+    {
+      "type": "dir",
+      "tag": "domain_event",
+      "name": "{{ path }}",
+      "children": [
+      ]
+    },
+    {
+      "type": "dir",
+      "tag": "factory",
+      "name": "{{ path }}",
+      "children": [
+      ]
+    },
+    {
+      "type": "dir",
+      "tag": "specification",
+      "name": "{{ path }}",
+      "children": [
+      ]
+    },
+    {
+      "type": "dir",
+      "tag": "entity",
+      "name": "{{ path }}",
+      "children": [
+      ]
+    },
+    {
+      "type": "dir",
+      "tag": "enum",
+      "name": "{{ path }}",
+      "children": [
+      ]
+    },
+    {
+      "type": "dir",
+      "tag": "schema_base",
+      "name": "{{ path }}",
+      "children": [
       ]
     }
   ],
   "children": [
     {
       "type": "dir",
-      "name": "${artifactId}-adapter",
+      "name": "{{ artifactId }}-adapter",
       "children": [
         {
           "type": "file",
           "name": "build.gradle.kts",
           "format": "url",
-          "data": "template/build.gradle-adapter.kts"
+          "data": "template/build.gradle-adapter.kts.peb"
         },
         {
           "type": "dir",
@@ -267,7 +194,7 @@
                   "children": [
                     {
                       "type": "dir",
-                      "name": "${basePackage}",
+                      "name": "{{ basePackage }}",
                       "children": [
                         {
                           "type": "dir",
@@ -289,7 +216,7 @@
                                           "type": "file",
                                           "name": "MyIntegrationEventInterceptor.kt",
                                           "format": "url",
-                                          "data": "template/src/main/kotlin/adapter/application/_share/configure/MyIntegrationEventInterceptor.kt"
+                                          "data": "template/src/main/kotlin/adapter/application/_share/configure/MyIntegrationEventInterceptor.kt.peb"
                                         }
                                       ]
                                     }
@@ -329,13 +256,13 @@
                                           "type": "file",
                                           "name": "MyDomainEventInterceptor.kt",
                                           "format": "url",
-                                          "data": "template/src/main/kotlin/adapter/domain/_share/configure/MyDomainEventInterceptor.kt"
+                                          "data": "template/src/main/kotlin/adapter/domain/_share/configure/MyDomainEventInterceptor.kt.peb"
                                         },
                                         {
                                           "type": "file",
                                           "name": "MyEventMessageInterceptor.kt",
                                           "format": "url",
-                                          "data": "template/src/main/kotlin/adapter/domain/_share/configure/MyEventMessageInterceptor.kt"
+                                          "data": "template/src/main/kotlin/adapter/domain/_share/configure/MyEventMessageInterceptor.kt.peb"
                                         }
                                       ]
                                     }
@@ -343,7 +270,8 @@
                                 },
                                 {
                                   "type": "dir",
-                                  "name": "repositories"
+                                  "name": "repositories",
+                                  "tag": "repository"
                                 }
                               ]
                             },
@@ -363,7 +291,7 @@
                                       "type": "file",
                                       "name": "QueryDslConfig.kt",
                                       "format": "url",
-                                      "data": "template/src/main/kotlin/adapter/infra/jpa/QueryDslConfig.kt"
+                                      "data": "template/src/main/kotlin/adapter/infra/jpa/QueryDslConfig.kt.peb"
                                     }
                                   ]
                                 }
@@ -389,7 +317,7 @@
                                               "type": "file",
                                               "name": "DomainContextConfig.kt",
                                               "format": "url",
-                                              "data": "template/src/main/kotlin/adapter/portal/api/DomainContextConfig.kt"
+                                              "data": "template/src/main/kotlin/adapter/portal/api/DomainContextConfig.kt.peb"
                                             }
                                           ]
                                         }
@@ -436,7 +364,7 @@
                   "children": [
                     {
                       "type": "dir",
-                      "name": "${basePackage}",
+                      "name": "{{ basePackage }}",
                       "children": []
                     }
                   ]
@@ -449,13 +377,13 @@
     },
     {
       "type": "dir",
-      "name": "${artifactId}-application",
+      "name": "{{ artifactId }}-application",
       "children": [
         {
           "type": "file",
           "name": "build.gradle.kts",
           "format": "url",
-          "data": "template/build.gradle-application.kts"
+          "data": "template/build.gradle-application.kts.peb"
         },
         {
           "type": "dir",
@@ -476,7 +404,7 @@
                   "children": [
                     {
                       "type": "dir",
-                      "name": "${basePackage}",
+                      "name": "{{ basePackage }}",
                       "children": [
                         {
                           "type": "dir",
@@ -562,7 +490,7 @@
                   "children": [
                     {
                       "type": "dir",
-                      "name": "${basePackage}",
+                      "name": "{{ basePackage }}",
                       "children": []
                     }
                   ]
@@ -575,13 +503,13 @@
     },
     {
       "type": "dir",
-      "name": "${artifactId}-domain",
+      "name": "{{ artifactId }}-domain",
       "children": [
         {
           "type": "file",
           "name": "build.gradle.kts",
           "format": "url",
-          "data": "template/build.gradle-domain.kts"
+          "data": "template/build.gradle-domain.kts.peb"
         },
         {
           "type": "dir",
@@ -597,7 +525,7 @@
                   "children": [
                     {
                       "type": "dir",
-                      "name": "${basePackage}",
+                      "name": "{{ basePackage }}",
                       "children": [
                         {
                           "type": "dir",
@@ -605,12 +533,19 @@
                           "children": [
                             {
                               "type": "dir",
-                              "name": "_share"
+                              "name": "_share",
+                              "children": [
+                                {
+                                  "type": "dir",
+                                  "name": "meta",
+                                  "tag": "schema_base,schema"
+                                }
+                              ]
                             },
                             {
                               "type": "dir",
                               "name": "aggregates",
-                              "tag": "aggregate,domain_event,factory,specification"
+                              "tag": "enum,entity,aggregate,domain_event,factory,specification"
                             },
                             {
                               "type": "dir",
@@ -640,7 +575,7 @@
                   "children": [
                     {
                       "type": "dir",
-                      "name": "${basePackage}",
+                      "name": "{{ basePackage }}",
                       "children": []
                     }
                   ]
@@ -653,13 +588,13 @@
     },
     {
       "type": "dir",
-      "name": "${artifactId}-start",
+      "name": "{{ artifactId }}-start",
       "children": [
         {
           "type": "file",
           "name": "build.gradle.kts",
           "format": "url",
-          "data": "template/build.gradle-start.kts"
+          "data": "template/build.gradle-start.kts.peb"
         },
         {
           "type": "dir",
@@ -675,13 +610,13 @@
                   "children": [
                     {
                       "type": "dir",
-                      "name": "${basePackage}",
+                      "name": "{{ basePackage }}",
                       "children": [
                         {
                           "type": "file",
                           "name": "StartApplication.kt",
                           "format": "url",
-                          "data": "template/src/main/kotlin/StartApplication.kt"
+                          "data": "template/src/main/kotlin/StartApplication.kt.peb"
                         }
                       ]
                     }
@@ -699,7 +634,7 @@
                           "type": "file",
                           "name": "V2025.0217.000000__frame_init.sql",
                           "format": "url",
-                          "data": "template/src/main/resources/db.migration/V2025.0217.000000__frame_init.sql"
+                          "data": "template/src/main/resources/db.migration/V2025.0217.000000__frame_init.sql.peb"
                         }
                       ]
                     },
@@ -707,13 +642,13 @@
                       "type": "file",
                       "name": "application.yml",
                       "format": "url",
-                      "data": "template/src/main/resources/application.yml"
+                      "data": "template/src/main/resources/application.yml.peb"
                     },
                     {
                       "type": "file",
                       "name": "logback.xml",
                       "format": "url",
-                      "data": "template/src/main/resources/logback.xml"
+                      "data": "template/src/main/resources/logback.xml.peb"
                     }
                   ]
                 }
@@ -727,7 +662,7 @@
       "type": "file",
       "name": ".gitignore",
       "format": "url",
-      "data": "template/.gitignore"
+      "data": "template/.gitignore.peb"
     },
     {
       "type": "dir",
@@ -737,7 +672,7 @@
           "type": "file",
           "name": "libs.versions.toml",
           "format": "url",
-          "data": "template/libs.versions.toml"
+          "data": "template/libs.versions.toml.peb"
         }
       ]
     },
@@ -766,7 +701,7 @@
                       "type": "file",
                       "name": "kotlin-jvm.gradle.kts",
                       "format": "url",
-                      "data": "template/buildSrc/src/main/kotlin/kotlin-jvm.gradle.kts"
+                      "data": "template/buildSrc/src/main/kotlin/kotlin-jvm.gradle.kts.peb"
                     }
                   ]
                 }
@@ -778,35 +713,36 @@
           "type": "file",
           "name": "build.gradle.kts",
           "format": "url",
-          "data": "template/buildSrc/build.gradle.kts"
+          "data": "template/buildSrc/build.gradle.kts.peb"
         },
         {
           "type": "file",
           "name": "settings.gradle.kts",
           "format": "url",
-          "data": "template/buildSrc/settings.gradle.kts"
+          "data": "template/buildSrc/settings.gradle.kts.peb"
         }
       ]
     },
     {
       "type": "file",
       "name": "gradle.properties",
+      "conflict": "overwrite",
       "format": "url",
-      "data": "template/gradle.properties"
+      "data": "template/gradle.properties.peb"
     },
     {
       "type": "file",
       "name": "build.gradle.kts",
       "conflict": "overwrite",
       "format": "url",
-      "data": "template/build.gradle.kts"
+      "data": "template/build.gradle.kts.peb"
     },
     {
       "type": "file",
       "name": "settings.gradle.kts",
       "conflict": "overwrite",
       "format": "url",
-      "data": "template/settings.gradle.kts"
+      "data": "template/settings.gradle.kts.peb"
     }
   ]
 }
