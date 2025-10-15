@@ -47,6 +47,44 @@ spring:
           batch_size: 5000
           batch_versioned_data: true
     database-platform: org.hibernate.dialect.MySQLDialect
+  data:
+    redis:
+      # 地址
+      host: localhost
+      # 端口，默认为6379
+      port: 6379
+      # 数据库索引
+      database: 0
+      # redis 密码必须配置
+      password: 123456
+      # 连接超时时间
+      timeout: 10s
+      # 是否开启ssl
+      ssl.enabled: false
+
+# redisson 配置
+redisson:
+  # redis key前缀
+  keyPrefix:
+  # 线程池数量
+  threads: 4
+  # Netty线程池数量
+  nettyThreads: 8
+  # 单节点配置
+  singleServerConfig:
+    # 客户端名称 不能用中文
+    clientName: ONLY-DANMUKU
+    # 最小空闲连接数
+    connectionMinimumIdleSize: 8
+    # 连接池大小
+    connectionPoolSize: 32
+    # 连接空闲超时，单位：毫秒
+    idleConnectionTimeout: 10000
+    # 命令等待超时，单位：毫秒
+    timeout: 3000
+    # 发布和订阅连接池大小
+    subscriptionConnectionPoolSize: 50
+
 
 logging:
   level:
@@ -91,19 +129,37 @@ jimmer:
 
 
 only:
-  web:
-    filter:
-      thread-local:
-        enable: false
-    result-wrapper:
+  engine:
+    jimmer:
       enable: true
+    json:
+      enable: true
+    captcha:
+      enable: true
+      provider:
+        store: redis
+    redis:
+      enable: true
+    web:
+      filter:
+        health-check:
+          enable: true
+        request-body:
+          enable: true
+      advice:
+        response-wrapper:
+          enable: true
+        global-exception-handler:
+          enable: true
+      performance-interceptor:
+        enable: true
 cap4k:
   ddd:
-    archinfo:
+    arch-info:
       enabled: true
       base-package: edu.only4.danmuku
     distributed:
-      idgenerator:
+      id-generator:
         snowflake:
           enable: true
     domain:

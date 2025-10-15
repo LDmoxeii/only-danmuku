@@ -12,6 +12,8 @@ dependencies {
     api(libs.ddd.integration.event.http.jpa)
 
     api(libs.engine.common)
+    api(libs.engine.json)
+    api(libs.engine.redis)
 
     implementation(libs.jimmer.core)
     compileOnly(libs.jimmer.sql)

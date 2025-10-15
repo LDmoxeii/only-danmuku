@@ -16,7 +16,7 @@ dependencies {
 
     api(libs.ddd.starter)
 
-    ksp("com.only4:ksp-processor:0.1.0-SNAPSHOT")
+    ksp("com.only4:ksp-processor:0.1.1-SNAPSHOT")
 }
 
 kapt {

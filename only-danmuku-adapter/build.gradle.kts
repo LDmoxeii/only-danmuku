@@ -2,7 +2,6 @@ plugins {
     id("buildsrc.convention.kotlin-jvm")
 }
 
-
 dependencies {
     api(libs.spring.data)
     api(libs.spring.web)
@@ -13,7 +12,8 @@ dependencies {
     api(libs.jimmer.starter)
     api(libs.blazebit.persistence.hibernate)
 
-    api(libs.engine.common)
+    api(libs.engine.jimmer)
+    api(libs.engine.captcha)
     api(libs.engine.web)
     implementation(libs.blazebit.persistence.querydsl)
 
