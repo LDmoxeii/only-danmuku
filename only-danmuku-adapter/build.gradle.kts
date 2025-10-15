@@ -15,6 +15,8 @@ dependencies {
     api(libs.engine.jimmer)
     api(libs.engine.captcha)
     api(libs.engine.web)
+    api(libs.engine.doc)
+
     implementation(libs.blazebit.persistence.querydsl)
 
     api(project(":only-danmuku-application"))

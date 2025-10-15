@@ -127,9 +127,15 @@ jimmer:
   show-sql: true
   pretty-sql: true
 
+springdoc:
+  api-docs:
+    # 是否开启接口文档
+    enabled: true
 
 only:
   engine:
+    doc:
+      enable: true
     jimmer:
       enable: true
     json:
@@ -145,10 +151,10 @@ only:
         health-check:
           enable: true
         request-body:
-          enable: true
+          enable: false
       advice:
         response-wrapper:
-          enable: true
+          enable: false
         global-exception-handler:
           enable: true
       performance-interceptor:
