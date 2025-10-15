@@ -85,4 +85,10 @@ plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
 }
 
+include("only-danmuku-adapter")
+include("only-danmuku-application")
+include("only-danmuku-domain")
+
 rootProject.name = "only-danmuku"
+
+include("only-danmuku-start")

@@ -1,5 +1,6 @@
+// [cap4k-ddd-codegen-gradle-plugin:do-not-overwrite]
 plugins {
-    kotlin("jvm") version "2.1.20"
+    id("buildsrc.convention.kotlin-jvm")
     id("com.only4.codegen") version "0.1.0-SNAPSHOT"
 }
 
@@ -21,8 +22,8 @@ codegen {
     basePackage.set("edu.only4.danmuku")
     archTemplate.set("cap4k-ddd-codegen-template-multi-nested.json")
     designFiles.from(fileTree("design") {
-        include("**/*_gen.json")
-    })
+            include("**/*_gen.json")
+        })
 
     database {
         url.set("jdbc:mysql://localhost:3306/only_danmuku?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai")
