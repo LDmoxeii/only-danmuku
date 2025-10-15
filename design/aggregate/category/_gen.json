@@ -1,0 +1,98 @@
+{
+  "cmd": [
+    {
+      "package": "category",
+      "name": "CreateCategory",
+      "desc": "创建分类"
+    },
+    {
+      "package": "category",
+      "name": "UpdateCategoryInfo",
+      "desc": "更新分类信息"
+    },
+    {
+      "package": "category",
+      "name": "UpdateCategorySortOrder",
+      "desc": "更新分类排序"
+    },
+    {
+      "package": "category",
+      "name": "DeleteCategory",
+      "desc": "删除分类"
+    }
+  ],
+  "de": [
+    {
+      "package": "",
+      "name": "CategoryCreated",
+      "desc": "分类已创建",
+      "aggregates": [
+        "Category"
+      ],
+      "entity": "Category",
+      "persist": true
+    },
+    {
+      "package": "",
+      "name": "CategoryInfoUpdated",
+      "desc": "分类信息已更新",
+      "aggregates": [
+        "Category"
+      ],
+      "entity": "Category",
+      "persist": true
+    },
+    {
+      "package": "",
+      "name": "CategorySortOrderUpdated",
+      "desc": "分类排序已更新",
+      "aggregates": [
+        "Category"
+      ],
+      "entity": "Category",
+      "persist": true
+    },
+    {
+      "package": "",
+      "name": "CategoryDeleted",
+      "desc": "分类已删除",
+      "aggregates": [
+        "Category"
+      ],
+      "entity": "Category",
+      "persist": true
+    }
+  ],
+  "qry": [
+    {
+      "package": "category",
+      "name": "CategoryExistsByCode",
+      "desc": "根据分类编码判断分类是否存在"
+    },
+    {
+      "package": "category",
+      "name": "GetCategoryList",
+      "desc": "获取分类列表"
+    },
+    {
+      "package": "category",
+      "name": "GetCategoryTree",
+      "desc": "获取分类树形结构"
+    },
+    {
+      "package": "category",
+      "name": "GetCategoryById",
+      "desc": "根据ID获取分类信息"
+    },
+    {
+      "package": "category",
+      "name": "GetParentCategories",
+      "desc": "获取父级分类列表"
+    },
+    {
+      "package": "category",
+      "name": "GetSubCategories",
+      "desc": "获取子分类列表"
+    }
+  ]
+}

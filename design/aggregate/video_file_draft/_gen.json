@@ -1,0 +1,108 @@
+{
+  "cmd": [
+    {
+      "package": "video_file_draft",
+      "name": "CreateVideoFileDraft",
+      "desc": "创建视频文件草稿"
+    },
+    {
+      "package": "video_file_draft",
+      "name": "UpdateVideoFileDraft",
+      "desc": "更新视频文件草稿"
+    },
+    {
+      "package": "video_file_draft",
+      "name": "DeleteVideoFileDraft",
+      "desc": "删除视频文件草稿"
+    },
+    {
+      "package": "video_file_draft",
+      "name": "TransferVideoFile",
+      "desc": "转码视频文件"
+    },
+    {
+      "package": "video_file_draft",
+      "name": "UpdateTransferResult",
+      "desc": "更新转码结果"
+    },
+    {
+      "package": "video_file_draft",
+      "name": "UpdateFileUploadProgress",
+      "desc": "更新文件上传进度"
+    }
+  ],
+  "de": [
+    {
+      "package": "",
+      "name": "VideoFileDraftCreated",
+      "desc": "视频文件草稿已创建",
+      "aggregates": [
+        "VideoFileDraft"
+      ],
+      "entity": "VideoFileDraft",
+      "persist": true
+    },
+    {
+      "package": "",
+      "name": "VideoFileTransferStarted",
+      "desc": "视频文件转码开始",
+      "aggregates": [
+        "VideoFileDraft"
+      ],
+      "entity": "VideoFileDraft",
+      "persist": true
+    },
+    {
+      "package": "",
+      "name": "VideoFileTransferCompleted",
+      "desc": "视频文件转码完成",
+      "aggregates": [
+        "VideoFileDraft"
+      ],
+      "entity": "VideoFileDraft",
+      "persist": true
+    },
+    {
+      "package": "",
+      "name": "VideoFileTransferFailed",
+      "desc": "视频文件转码失败",
+      "aggregates": [
+        "VideoFileDraft"
+      ],
+      "entity": "VideoFileDraft",
+      "persist": true
+    },
+    {
+      "package": "",
+      "name": "VideoFileUploadCompleted",
+      "desc": "视频文件上传完成",
+      "aggregates": [
+        "VideoFileDraft"
+      ],
+      "entity": "VideoFileDraft",
+      "persist": true
+    }
+  ],
+  "qry": [
+    {
+      "package": "video_file_draft",
+      "name": "GetVideoFileDraftInfo",
+      "desc": "获取视频文件草稿信息"
+    },
+    {
+      "package": "video_file_draft",
+      "name": "GetVideoFileDraftsByVideoId",
+      "desc": "根据视频ID获取文件草稿"
+    },
+    {
+      "package": "video_file_draft",
+      "name": "GetVideoFileDraftsByUploadId",
+      "desc": "根据上传ID获取文件草稿"
+    },
+    {
+      "package": "video_file_draft",
+      "name": "GetVideoFileDraftsByTransferStatus",
+      "desc": "按转码状态获取文件草稿"
+    }
+  ]
+}

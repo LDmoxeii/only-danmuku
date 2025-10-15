@@ -1,0 +1,113 @@
+{
+  "cmd": [
+    {
+      "package": "video_play_history",
+      "name": "AddPlayHistory",
+      "desc": "添加播放记录"
+    },
+    {
+      "package": "video_play_history",
+      "name": "BatchAddHistory",
+      "desc": "批量添加播放记录"
+    },
+    {
+      "package": "video_play_history",
+      "name": "ClearHistory",
+      "desc": "清空播放记录"
+    },
+    {
+      "package": "video_play_history",
+      "name": "DelHistory",
+      "desc": "删除播放记录"
+    },
+    {
+      "package": "video_play_history",
+      "name": "UpdatePlayProgress",
+      "desc": "更新播放进度"
+    }
+  ],
+  "de": [
+    {
+      "package": "",
+      "name": "PlayHistoryAdded",
+      "desc": "播放记录已添加",
+      "aggregates": [
+        "VideoPlayHistory"
+      ],
+      "entity": "VideoPlayHistory",
+      "persist": true
+    },
+    {
+      "package": "",
+      "name": "PlayHistoryBatchAdded",
+      "desc": "播放记录已批量添加",
+      "aggregates": [
+        "VideoPlayHistory"
+      ],
+      "entity": "VideoPlayHistory",
+      "persist": true
+    },
+    {
+      "package": "",
+      "name": "PlayHistoryCleared",
+      "desc": "播放记录已清空",
+      "aggregates": [
+        "VideoPlayHistory"
+      ],
+      "entity": "VideoPlayHistory",
+      "persist": true
+    },
+    {
+      "package": "",
+      "name": "PlayHistoryDeleted",
+      "desc": "播放记录已删除",
+      "aggregates": [
+        "VideoPlayHistory"
+      ],
+      "entity": "VideoPlayHistory",
+      "persist": true
+    },
+    {
+      "package": "",
+      "name": "PlayProgressUpdated",
+      "desc": "播放进度已更新",
+      "aggregates": [
+        "VideoPlayHistory"
+      ],
+      "entity": "VideoPlayHistory",
+      "persist": true
+    }
+  ],
+  "qry": [
+    {
+      "package": "video_play_history",
+      "name": "GetUserPlayHistory",
+      "desc": "获取用户播放历史"
+    },
+    {
+      "package": "video_play_history",
+      "name": "GetPlayHistoryByVideo",
+      "desc": "获取视频播放历史"
+    },
+    {
+      "package": "video_play_history",
+      "name": "GetRecentPlayHistory",
+      "desc": "获取最近播放历史"
+    },
+    {
+      "package": "video_play_history",
+      "name": "GetPlayHistoryCount",
+      "desc": "获取播放历史数量"
+    },
+    {
+      "package": "video_play_history",
+      "name": "GetPlayProgress",
+      "desc": "获取播放进度"
+    },
+    {
+      "package": "video_play_history",
+      "name": "GetPlayStatistics",
+      "desc": "获取播放统计信息"
+    }
+  ]
+}

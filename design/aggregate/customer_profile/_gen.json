@@ -1,0 +1,103 @@
+{
+  "cmd": [
+    {
+      "package": "customer_profile",
+      "name": "UpdateCustomerProfile",
+      "desc": "更新用户信息"
+    },
+    {
+      "package": "customer_profile",
+      "name": "UpdateCustomerStatistic",
+      "desc": "更新用户统计信息"
+    },
+    {
+      "package": "customer_profile",
+      "name": "CreateCustomerProfile",
+      "desc": "创建用户档案"
+    },
+    {
+      "package": "customer_profile",
+      "name": "UpdateAvatar",
+      "desc": "更新用户头像"
+    },
+    {
+      "package": "customer_profile",
+      "name": "UpdateNickname",
+      "desc": "更新用户昵称"
+    }
+  ],
+  "de": [
+    {
+      "package": "",
+      "name": "CustomerProfileCreated",
+      "desc": "用户档案已创建",
+      "aggregates": [
+        "CustomerProfile"
+      ],
+      "entity": "CustomerProfile",
+      "persist": true
+    },
+    {
+      "package": "",
+      "name": "CustomerProfileUpdated",
+      "desc": "用户信息已更新",
+      "aggregates": [
+        "CustomerProfile"
+      ],
+      "entity": "CustomerProfile",
+      "persist": true
+    },
+    {
+      "package": "",
+      "name": "CustomerStatisticUpdated",
+      "desc": "用户统计信息已更新",
+      "aggregates": [
+        "CustomerProfile"
+      ],
+      "entity": "CustomerProfile",
+      "persist": true
+    },
+    {
+      "package": "",
+      "name": "CustomerAvatarUpdated",
+      "desc": "用户头像已更新",
+      "aggregates": [
+        "CustomerProfile"
+      ],
+      "entity": "CustomerProfile",
+      "persist": true
+    },
+    {
+      "package": "",
+      "name": "CustomerNicknameUpdated",
+      "desc": "用户昵称已更新",
+      "aggregates": [
+        "CustomerProfile"
+      ],
+      "entity": "CustomerProfile",
+      "persist": true
+    }
+  ],
+  "qry": [
+    {
+      "package": "customer_profile",
+      "name": "GetCustomerProfile",
+      "desc": "获取用户信息"
+    },
+    {
+      "package": "customer_profile",
+      "name": "GetCustomerStatistic",
+      "desc": "获取用户统计信息"
+    },
+    {
+      "package": "customer_profile",
+      "name": "GetCustomersByNickname",
+      "desc": "根据昵称搜索用户"
+    },
+    {
+      "package": "customer_profile",
+      "name": "GetCustomerBasicInfo",
+      "desc": "获取用户基本信息"
+    }
+  ]
+}

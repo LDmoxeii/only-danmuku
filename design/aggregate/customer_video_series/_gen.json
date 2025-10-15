@@ -1,0 +1,47 @@
+{
+  "cmd": [
+    {
+      "package": "customer_video_series",
+      "name": "CreateCustomerVideoSeries",
+      "desc": "创建用户视频系列"
+    },
+    {
+      "package": "customer_video_series",
+      "name": "UpdateCustomerVideoSeriesSort",
+      "desc": "更新用户视频系列排序"
+    },
+    {
+      "package": "customer_video_series",
+      "name": "DeleteCustomerVideoSeries",
+      "desc": "删除用户视频系列"
+    },
+    {
+      "package": "customer_video_series",
+      "name": "UpdateCustomerVideoSeriesVideos",
+      "desc": "更新用户视频系列视频"
+    },
+    {
+      "package": "customer_video_series",
+      "name": "UpdateCustomerVideoSeriesVideoSort",
+      "desc": "更新用户视频系列视频排序"
+    }
+  ],
+  "de": [],
+  "qry": [
+    {
+      "package": "customer_video_series",
+      "name": "GetCustomerVideoSeriesList",
+      "desc": "获取用户视频系列"
+    },
+    {
+      "package": "customer_video_series",
+      "name": "GetCustomerVideoSeriesInfo",
+      "desc": "获取用户视频系列信息"
+    },
+    {
+      "package": "customer_video_series",
+      "name": "GetCustomerVideoSeriesVideo",
+      "desc": "获取用户视频系列视频"
+    }
+  ]
+}

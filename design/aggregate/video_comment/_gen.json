@@ -1,0 +1,143 @@
+{
+  "cmd": [
+    {
+      "package": "video_comment",
+      "name": "PostComment",
+      "desc": "发表评论"
+    },
+    {
+      "package": "video_comment",
+      "name": "DelComment",
+      "desc": "删除评论"
+    },
+    {
+      "package": "video_comment",
+      "name": "TopComment",
+      "desc": "置顶评论"
+    },
+    {
+      "package": "video_comment",
+      "name": "UntopComment",
+      "desc": "取消置顶评论"
+    },
+    {
+      "package": "video_comment",
+      "name": "UpdateLikeCount",
+      "desc": "更新评论点赞数"
+    },
+    {
+      "package": "video_comment",
+      "name": "UpdateHateCount",
+      "desc": "更新评论点踩数"
+    },
+    {
+      "package": "video_comment",
+      "name": "ReplyComment",
+      "desc": "回复评论"
+    }
+  ],
+  "de": [
+    {
+      "package": "",
+      "name": "CommentPosted",
+      "desc": "评论已发表",
+      "aggregates": [
+        "VideoComment"
+      ],
+      "entity": "VideoComment",
+      "persist": true
+    },
+    {
+      "package": "",
+      "name": "CommentDeleted",
+      "desc": "评论已删除",
+      "aggregates": [
+        "VideoComment"
+      ],
+      "entity": "VideoComment",
+      "persist": true
+    },
+    {
+      "package": "",
+      "name": "CommentTopped",
+      "desc": "评论已置顶",
+      "aggregates": [
+        "VideoComment"
+      ],
+      "entity": "VideoComment",
+      "persist": true
+    },
+    {
+      "package": "",
+      "name": "CommentUntopped",
+      "desc": "评论已取消置顶",
+      "aggregates": [
+        "VideoComment"
+      ],
+      "entity": "VideoComment",
+      "persist": true
+    },
+    {
+      "package": "",
+      "name": "CommentLikeCountUpdated",
+      "desc": "评论点赞数已更新",
+      "aggregates": [
+        "VideoComment"
+      ],
+      "entity": "VideoComment",
+      "persist": true
+    },
+    {
+      "package": "",
+      "name": "CommentHateCountUpdated",
+      "desc": "评论点踩数已更新",
+      "aggregates": [
+        "VideoComment"
+      ],
+      "entity": "VideoComment",
+      "persist": true
+    },
+    {
+      "package": "",
+      "name": "CommentReplied",
+      "desc": "评论已回复",
+      "aggregates": [
+        "VideoComment"
+      ],
+      "entity": "VideoComment",
+      "persist": true
+    }
+  ],
+  "qry": [
+    {
+      "package": "video_comment",
+      "name": "VideoCommentPage",
+      "desc": "评论分页"
+    },
+    {
+      "package": "video_comment",
+      "name": "GetCommentById",
+      "desc": "根据ID获取评论"
+    },
+    {
+      "package": "video_comment",
+      "name": "GetCommentReplies",
+      "desc": "获取评论回复列表"
+    },
+    {
+      "package": "video_comment",
+      "name": "GetTopComments",
+      "desc": "获取置顶评论"
+    },
+    {
+      "package": "video_comment",
+      "name": "GetUserComments",
+      "desc": "获取用户评论列表"
+    },
+    {
+      "package": "video_comment",
+      "name": "GetCommentCount",
+      "desc": "获取评论数量"
+    }
+  ]
+}
