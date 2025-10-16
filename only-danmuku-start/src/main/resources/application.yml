@@ -151,10 +151,11 @@ only:
         health-check:
           enable: true
         request-body:
-          enable: false
+          enable: true
       advice:
+        base-packages: ["edu.only4.danmuku"]
         response-wrapper:
-          enable: false
+          enable: true
         global-exception-handler:
           enable: true
       performance-interceptor:
