@@ -11,10 +11,20 @@ import com.only4.cap4k.ddd.core.application.RequestParam
  */
 object GetPreviousDayStatisticsInfoQry {
 
-    class Request(
+    class Request : RequestParam<Response>
 
-    ) : RequestParam<Response>
-
-    class Response(
+    data class Response(
+        /** 视频观看数 */
+        val videoViewCount: Int = 0,
+        /** 视频点赞数 */
+        val videoLikeCount: Int = 0,
+        /** 视频评论数 */
+        val videoCommentCount: Int = 0,
+        /** 视频分享数 */
+        val videoShareCount: Int = 0,
+        /** 用户关注数 */
+        val userFollowCount: Int = 0,
+        /** 用户登录数 */
+        val userLoginCount: Int = 0
     )
 }

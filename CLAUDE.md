@@ -199,18 +199,153 @@ When adding new features, create design JSON files in `design/` with `_gen.json`
     - Application logic in command/query handlers
     - API endpoints in portal controllers
 
-2. **Working with Aggregates:**
+2. **Implementing Controllers (CQRS Pattern):**
+
+   When implementing a new controller in `adapter/portal/api/`, follow these steps:
+
+    1. **Identify Required Commands and Queries**
+        - Analyze the controller requirements to determine what commands (write operations) and queries (read
+          operations) are needed
+        - Example: For category management, you might need:
+            - Commands: `CreateCategoryCmd`, `UpdateCategoryInfoCmd`, `DeleteCategoryCmd`, `UpdateCategorySortOrderCmd`
+            - Queries: `GetCategoryListQry`, `GetCategoryTreeQry`
+
+    2. **Persist Command/Query Definitions**
+        - Document required commands and queries in `design/extra/` directory
+        - Define the contract for each command/query with their request/response structures
+
+    3. **Complete Input/Output Parameters**
+        - Ensure all command requests have complete input parameters
+        - Define query response types carefully:
+            - **Single element**: `Response` (single object)
+            - **List elements**: `List<Response>` (collection)
+            - **Paginated elements**: `Page<Response>` (paginated collection)
+        - Example from `GetCategoryListQry`:
+          ```kotlin
+          // Returns a list of category responses
+          val listResult: List<GetCategoryListQry.Response> = Mediator.queries.send(...)
+          ```
+
+    4. **Optimize Payload Request/Response Structures**
+        - **IMPORTANT**: Do NOT use generic `Map<String, Any>` or `List<Any>` in payload definitions
+        - Always create specific data classes for better type safety and frontend usability
+        - Define nested data classes within the payload object for encapsulation
+        - Example - **BAD Practice** (avoid this):
+          ```kotlin
+          data class Response(
+              var preDayData: Map<String, Any>? = null,  // ❌ Hard for frontend to use
+              var list: List<Any>? = null                // ❌ No type information
+          )
+          ```
+        - Example - **GOOD Practice** (follow this):
+          ```kotlin
+          object AdminIndexGetActualTimeStatistics {
+              data class Response(
+                  var preDayData: StatisticsData? = null,      // ✅ Strongly typed
+                  var totalCountInfo: StatisticsData? = null   // ✅ Clear structure
+              )
+
+              // Nested data class for better encapsulation
+              data class StatisticsData(
+                  var videoViewCount: Int = 0,
+                  var videoLikeCount: Int = 0,
+                  var videoCommentCount: Int = 0
+              )
+          }
+          ```
+        - Benefits of typed data classes:
+            - IDE auto-completion support for frontend developers
+            - Compile-time type checking
+            - Clear API documentation
+            - Easier to maintain and refactor
+
+    5. **Implement Controller Using Commands and Queries**
+        - Use `Mediator.commands.send()` for write operations
+        - Use `Mediator.queries.send()` for read operations
+        - Transform command/query responses to controller response format
+        - **IMPORTANT**: At the initial implementation stage, focus ONLY on controller layer logic
+            - Do NOT implement Command Handler or Query Handler business logic yet
+            - The handlers can remain empty or return mock data initially
+            - Actual handler implementation will be done in a separate step
+        - Example structure:
+          ```kotlin
+          @RestController
+          @RequestMapping("/admin/category")
+          class AdminCategoryController {
+              @PostMapping("/loadCategory")
+              fun load(@RequestBody request: Request): Response {
+                  // Query handler logic will be implemented later
+                  val result = Mediator.queries.send(GetCategoryListQry.Request())
+                  return Response(list = result.map { transform(it) })
+              }
+
+              @PostMapping("/saveCategory")
+              fun save(@RequestBody request: Request): Response {
+                  // Command handler logic will be implemented later
+                  Mediator.commands.send(CreateCategoryCmd.Request(...))
+                  return Response()
+              }
+          }
+          ```
+
+    6. **Handle Conditional Logic**
+        - Use request parameters to determine behavior (e.g., create vs. update)
+        - Choose appropriate query based on requirements (e.g., tree vs. list format)
+        - Example:
+          ```kotlin
+          if (request.categoryId == null) {
+              // Create new entity
+              Mediator.commands.send(CreateCategoryCmd.Request(...))
+          } else {
+              // Update existing entity
+              Mediator.commands.send(UpdateCategoryInfoCmd.Request(...))
+          }
+          ```
+
+    7. **Data Transformation**
+        - Convert domain query responses to controller response format using typed data classes
+        - Avoid using `Map` - use specific data classes instead
+        - Use helper functions for complex transformations
+        - Example from `AdminIndexController`:
+          ```kotlin
+          // ✅ GOOD: Transform to typed data class
+          val preDayDataObj = AdminIndexGetActualTimeStatistics.StatisticsData(
+              videoViewCount = preDayData.videoViewCount,
+              videoLikeCount = preDayData.videoLikeCount,
+              videoCommentCount = preDayData.videoCommentCount,
+              videoShareCount = preDayData.videoShareCount,
+              userFollowCount = preDayData.userFollowCount,
+              userLoginCount = preDayData.userLoginCount
+          )
+
+          // ✅ GOOD: Transform list to typed objects
+          val resultList = weekData.map { item ->
+              AdminIndexGetWeekStatistics.WeekStatisticsItem(
+                  statisticsDate = item.date,
+                  statisticsCount = item.count
+              )
+          }
+          ```
+
+   **Implementation Workflow Summary:**
+    - Step 1: Define Query/Command contracts (Request/Response)
+    - Step 2: Optimize payload structures with typed data classes (NO Map/Any)
+    - Step 3: Implement Controller layer with Mediator calls
+    - Step 4: Leave Handler implementations for next iteration
+    - Step 5: Implement Handler business logic separately (future step)
+
+3. **Working with Aggregates:**
     - Aggregate roots extend generated base classes with `Agg*` prefix
     - Entities use JPA annotations
     - Domain events are raised within aggregates
     - Use factories for complex creation logic
 
-3. **Testing:**
+4. **Testing:**
     - Test configuration in `buildSrc/src/main/kotlin/kotlin-jvm.gradle.kts`
     - JUnit 5 with 10-minute timeout
     - JVM args: `-Xmx2g -Xms512m`
 
-4. **Convention Plugin:**
+5. **Convention Plugin:**
     - Shared build logic in `buildSrc/`
     - Convention: `buildsrc.convention.kotlin-jvm`
     - Applies Kotlin JVM, Spring, and JPA plugins

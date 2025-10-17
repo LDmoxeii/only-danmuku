@@ -12,6 +12,16 @@ object AdminIndexGetWeekStatistics {
 
     data class Response(
         /** 7天统计数据列表 */
-        var list: List<Any>? = null
+        var list: List<WeekStatisticsItem>? = null
+    )
+
+    /**
+     * 周统计数据项
+     */
+    data class WeekStatisticsItem(
+        /** 统计日期（时间戳） */
+        var statisticsDate: Long,
+        /** 统计数量 */
+        var statisticsCount: Int
     )
 }

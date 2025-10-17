@@ -11,10 +11,15 @@ import com.only4.cap4k.ddd.core.application.RequestParam
  */
 object GetWeekStatisticsInfoQry {
 
-    class Request(
+    data class Request(
+        /** 数据类型：1-视频观看，2-视频点赞，3-视频评论，4-视频分享，5-用户关注，6-用户登录 */
+        val dataType: Int?
+    ) : RequestParam<List<Response>>
 
-    ) : RequestParam<Response>
-
-    class Response(
+    data class Response(
+        /** 日期（时间戳） */
+        val date: Long,
+        /** 统计数量 */
+        val count: Int
     )
 }
