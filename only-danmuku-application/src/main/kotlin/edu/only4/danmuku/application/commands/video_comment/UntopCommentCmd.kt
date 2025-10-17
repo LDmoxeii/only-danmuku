@@ -26,9 +26,10 @@ object UntopCommentCmd {
 
     }
 
-    class Request(
+    data class Request(
+        /** 评论ID */
+        val commentId: Long
     ) : RequestParam<Response>
 
-    class Response(
-    )
+    class Response()
 }

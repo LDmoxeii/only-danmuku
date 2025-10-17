@@ -26,9 +26,19 @@ object PostCommentCmd {
 
     }
 
-    class Request(
+    data class Request(
+        /** 视频ID */
+        val videoId: Long,
+        /** 回复评论ID */
+        val replyCommentId: Long? = null,
+        /** 评论内容 */
+        val content: String,
+        /** 图片路径 */
+        val imgPath: String? = null
     ) : RequestParam<Response>
 
-    class Response(
+    data class Response(
+        /** 评论ID */
+        val commentId: Long
     )
 }
