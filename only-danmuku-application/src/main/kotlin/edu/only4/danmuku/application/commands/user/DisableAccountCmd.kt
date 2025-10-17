@@ -26,7 +26,9 @@ object DisableAccountCmd {
 
     }
 
-    class Request(
+    data class Request(
+        /** 用户ID */
+        val userId: Long
     ) : RequestParam<Response>
 
     class Response(
