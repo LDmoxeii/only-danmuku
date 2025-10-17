@@ -1,6 +1,6 @@
 package edu.only4.danmuku.adapter.portal.api.payload
 
-import com.only4.cap4k.ddd.core.share.PageData
+import com.only4.cap4k.ddd.core.share.PageParam
 import java.time.LocalDateTime
 
 /**
@@ -8,28 +8,15 @@ import java.time.LocalDateTime
  */
 object AdminInteractLoadComment {
 
-    data class Request(
-        /** 页码 */
-        val pageNo: Int? = null,
+    class Request(
         /** 视频名称模糊查询 */
         val videoNameFuzzy: String? = null
-    )
-
-    data class Response(
-        /** 评论列表 */
-        var list: List<CommentItem>? = null,
-        /** 当前页码 */
-        var pageNo: Int? = null,
-        /** 总记录数 */
-        var totalCount: Int? = null
-    )
-
-    class Rep : PageData<CommentItem>
+    ) : PageParam()
 
     /**
      * 评论项
      */
-    data class CommentItem(
+    data class Response(
         /** 评论ID */
         var commentId: Long? = null,
         /** 父评论ID */

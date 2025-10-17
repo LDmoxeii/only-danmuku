@@ -210,9 +210,19 @@ When adding new features, create design JSON files in `design/` with `_gen.json`
             - Commands: `CreateCategoryCmd`, `UpdateCategoryInfoCmd`, `DeleteCategoryCmd`, `UpdateCategorySortOrderCmd`
             - Queries: `GetCategoryListQry`, `GetCategoryTreeQry`
 
-    2. **Persist Command/Query Definitions**
-        - Document required commands and queries in `design/extra/` directory
-        - Define the contract for each command/query with their request/response structures
+    2. **Check Existing Aggregates and Supplement Missing Command/Query Definitions**
+        - **First**: Check if required commands and queries already exist in `design/aggregate/` directory
+            - Each subdirectory represents an existing aggregate (e.g., `video_comment/`, `video_danmuku/`)
+            - Read the `_gen.json` file in each aggregate to see available commands and queries
+            - Search the application layer to confirm existing implementations:
+                - Commands location: `only-danmuku-application/src/main/kotlin/edu/only4/danmuku/application/commands/`
+                - Queries location: `only-danmuku-application/src/main/kotlin/edu/only4/danmuku/application/queries/`
+        - **Second**: Only create new design files in `design/extra/` for truly missing functionality
+            - `design/aggregate/` = Already defined aggregates (DO NOT MODIFY)
+            - `design/extra/` = Additional commands/queries for existing aggregates (ADD HERE only if needed)
+            - Never duplicate commands/queries that already exist in aggregates
+        - **Then**: Run `./gradlew codegen` to generate code for newly defined commands/queries
+        - **IMPORTANT**: Define the contract for each new command/query with their request/response structures
 
     3. **Complete Input/Output Parameters**
         - Ensure all command requests have complete input parameters
@@ -349,11 +359,13 @@ When adding new features, create design JSON files in `design/` with `_gen.json`
           ```
 
    **Implementation Workflow Summary:**
-    - Step 1: Define Query/Command contracts (Request/Response)
-    - Step 2: Optimize payload structures with typed data classes (NO Map/Any)
-    - Step 3: Implement Controller layer with Mediator calls
-    - Step 4: Leave Handler implementations for next iteration
-    - Step 5: Implement Handler business logic separately (future step)
+    - Step 1: Identify required commands and queries
+    - Step 2: Check existing aggregates, only add new definitions in `design/extra/` for missing functionality, run `./gradlew codegen` to generate code
+    - Step 3: Complete command/query input/output parameters (Request/Response)
+    - Step 4: Optimize payload structures with typed data classes (NO Map/Any)
+    - Step 5: Implement Controller layer with Mediator calls
+    - Step 6: Leave Handler implementations for next iteration
+    - Step 7: Implement Handler business logic separately (future step)
 
 3. **Working with Aggregates:**
     - Aggregate roots extend generated base classes with `Agg*` prefix

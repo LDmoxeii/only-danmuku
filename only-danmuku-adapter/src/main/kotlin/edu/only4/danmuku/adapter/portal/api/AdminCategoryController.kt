@@ -29,13 +29,13 @@ class AdminCategoryController {
      * 加载分类列表(树形结构)
      */
     @PostMapping("/loadCategory")
-    fun adminCategoryLoad(@RequestBody request: AdminCategoryLoad.Request): AdminCategoryLoad.Response {
+    fun adminCategoryLoad(@RequestBody request: AdminCategoryLoad.Request): List<AdminCategoryLoad.Response> {
         // 根据请求参数决定是否转换为树形结构
-        if (request.convert2Tree == true) {
+        return if (request.convert2Tree == true) {
             // 获取树形结构
             val treeResult = Mediator.queries.send(GetCategoryTreeQry.Request())
             // 转换为前端需要的格式
-            return treeResult.categoryTree.map { convertTreeNode(it) } as AdminCategoryLoad.Response
+            treeResult.categoryTree.map { convertTreeNode(it) }
         } else {
             // 获取平铺列表
             val listResult = Mediator.queries.send(GetCategoryListQry.Request())
@@ -111,8 +111,8 @@ class AdminCategoryController {
     /**
      * 转换树节点为强类型 CategoryItem
      */
-    private fun convertTreeNode(node: GetCategoryTreeQry.CategoryTreeNode): AdminCategoryLoad.CategoryItem {
-        return AdminCategoryLoad.CategoryItem(
+    private fun convertTreeNode(node: GetCategoryTreeQry.CategoryTreeNode): AdminCategoryLoad.Response {
+        return AdminCategoryLoad.Response(
             categoryId = node.categoryId,
             code = node.code,
             name = node.name,
@@ -127,8 +127,8 @@ class AdminCategoryController {
     /**
      * 转换分类信息为强类型 CategoryItem
      */
-    private fun convertCategoryInfo(info: GetCategoryListQry.Response): AdminCategoryLoad.CategoryItem {
-        return AdminCategoryLoad.CategoryItem(
+    private fun convertCategoryInfo(info: GetCategoryListQry.Response): AdminCategoryLoad.Response {
+        return AdminCategoryLoad.Response(
             categoryId = info.categoryId,
             code = info.code,
             name = info.name,

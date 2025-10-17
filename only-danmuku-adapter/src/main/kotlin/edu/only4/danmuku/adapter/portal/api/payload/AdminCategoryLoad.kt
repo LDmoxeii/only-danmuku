@@ -10,12 +10,7 @@ object AdminCategoryLoad {
         val convert2Tree: Boolean? = null
     )
 
-    class Response() : List<CategoryItem> by ArrayList()
-
-    /**
-     * 分类项 (支持树形结构和平铺列表)
-     */
-    data class CategoryItem(
+    data class Response(
         /** 分类ID */
         var categoryId: Long? = null,
         /** 分类编码 */
@@ -31,6 +26,6 @@ object AdminCategoryLoad {
         /** 排序 */
         var sort: Byte? = null,
         /** 子分类列表 (仅树形结构时有值) */
-        var children: List<CategoryItem>? = null
+        var children: List<Response>? = null
     )
 }

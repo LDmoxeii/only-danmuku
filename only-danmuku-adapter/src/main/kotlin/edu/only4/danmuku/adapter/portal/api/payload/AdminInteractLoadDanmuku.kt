@@ -15,15 +15,6 @@ object AdminInteractLoadDanmuku {
     ) : PageParam()
 
     class Response(
-        pageNum: Int,
-        pateSize: Int,
-        danmukuList: List<DanmukuItem>
-    ) : PageData<DanmukuItem>(pageNum, pateSize, danmukuList.size.toLong(), danmukuList)
-
-    /**
-     * 弹幕项
-     */
-    data class DanmukuItem(
         /** 弹幕ID */
         var danmukuId: Long? = null,
         /** 视频ID */
