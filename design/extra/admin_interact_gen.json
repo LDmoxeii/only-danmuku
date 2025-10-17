@@ -1,0 +1,9 @@
+{
+  "qry": [
+    {
+      "package": "video_danmuku",
+      "name": "GetDanmukuPage",
+      "desc": "获取弹幕分页列表(管理端)"
+    }
+  ]
+}

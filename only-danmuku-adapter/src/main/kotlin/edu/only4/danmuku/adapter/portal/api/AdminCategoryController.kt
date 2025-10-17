@@ -31,22 +31,17 @@ class AdminCategoryController {
     @PostMapping("/loadCategory")
     fun adminCategoryLoad(@RequestBody request: AdminCategoryLoad.Request): AdminCategoryLoad.Response {
         // 根据请求参数决定是否转换为树形结构
-        val response = if (request.convert2Tree == true) {
+        if (request.convert2Tree == true) {
             // 获取树形结构
             val treeResult = Mediator.queries.send(GetCategoryTreeQry.Request())
             // 转换为前端需要的格式
-            AdminCategoryLoad.Response(
-                list = treeResult.categoryTree.map { convertTreeNode(it) }
-            )
+            return treeResult.categoryTree.map { convertTreeNode(it) } as AdminCategoryLoad.Response
         } else {
-            // 获取平铺列表 - Handler返回的是List<Response>
+            // 获取平铺列表
             val listResult = Mediator.queries.send(GetCategoryListQry.Request())
             // 转换为前端需要的格式
-            AdminCategoryLoad.Response(
-                list = listResult.map { convertCategoryInfo(it) }
-            )
+            listResult.map { convertCategoryInfo(it) }
         }
-        return response
     }
 
     /**
@@ -114,33 +109,33 @@ class AdminCategoryController {
     }
 
     /**
-     * 转换树节点为通用Map格式
+     * 转换树节点为强类型 CategoryItem
      */
-    private fun convertTreeNode(node: GetCategoryTreeQry.CategoryTreeNode): Map<String, Any?> {
-        return mapOf(
-            "categoryId" to node.categoryId,
-            "code" to node.code,
-            "name" to node.name,
-            "parentId" to node.parentId,
-            "icon" to node.icon,
-            "background" to node.background,
-            "sort" to node.sort,
-            "children" to node.children.map { convertTreeNode(it) }
+    private fun convertTreeNode(node: GetCategoryTreeQry.CategoryTreeNode): AdminCategoryLoad.CategoryItem {
+        return AdminCategoryLoad.CategoryItem(
+            categoryId = node.categoryId,
+            code = node.code,
+            name = node.name,
+            parentId = node.parentId,
+            icon = node.icon,
+            background = node.background,
+            sort = node.sort,
+            children = node.children.map { convertTreeNode(it) }
         )
     }
 
     /**
-     * 转换分类信息为通用Map格式
+     * 转换分类信息为强类型 CategoryItem
      */
-    private fun convertCategoryInfo(info: GetCategoryListQry.Response): Map<String, Any?> {
-        return mapOf(
-            "categoryId" to info.categoryId,
-            "code" to info.code,
-            "name" to info.name,
-            "parentId" to info.parentId,
-            "icon" to info.icon,
-            "background" to info.background,
-            "sort" to info.sort
+    private fun convertCategoryInfo(info: GetCategoryListQry.Response): AdminCategoryLoad.CategoryItem {
+        return AdminCategoryLoad.CategoryItem(
+            categoryId = info.categoryId,
+            code = info.code,
+            name = info.name,
+            parentId = info.parentId,
+            icon = info.icon,
+            background = info.background,
+            sort = info.sort
         )
     }
 

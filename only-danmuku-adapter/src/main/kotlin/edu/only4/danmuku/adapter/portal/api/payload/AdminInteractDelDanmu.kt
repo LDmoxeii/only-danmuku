@@ -1,6 +1,6 @@
 package edu.only4.danmuku.adapter.portal.api.payload
 
-import jakarta.validation.constraints.NotEmpty
+import jakarta.validation.constraints.NotNull
 
 /**
  * 删除弹幕接口载荷
@@ -9,9 +9,8 @@ object AdminInteractDelDanmu {
 
     data class Request(
         /** 弹幕ID */
-
-        @field:NotEmpty(message = "弹幕ID不能为空")
-        val danmuId: Int = 0
+        @field:NotNull(message = "弹幕ID不能为空")
+        val danmuId: Long? = null
     )
 
     class Response

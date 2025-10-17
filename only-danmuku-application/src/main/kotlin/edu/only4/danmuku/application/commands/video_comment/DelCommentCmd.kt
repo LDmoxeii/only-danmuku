@@ -18,17 +18,17 @@ object DelCommentCmd {
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
+            // TODO: 实现删除评论逻辑
             Mediator.uow.save()
 
-            return Response(
-            )
+            return Response()
         }
-
     }
 
-    class Request(
+    data class Request(
+        /** 评论ID */
+        val commentId: Long
     ) : RequestParam<Response>
 
-    class Response(
-    )
+    class Response
 }

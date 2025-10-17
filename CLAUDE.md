@@ -227,6 +227,27 @@ When adding new features, create design JSON files in `design/` with `_gen.json`
           ```
 
     4. **Optimize Payload Request/Response Structures**
+        - **IMPORTANT**: Before defining payload structures, check if the interface is a list or pagination interface
+        - **List Interface** (返回集合): Controller return type should be `List<Payload.ItemType>`
+          ```kotlin
+          // ✅ GOOD: List interface
+          @PostMapping("/loadCategory")
+          fun load(@RequestBody request: Request): List<AdminCategoryLoad.CategoryItem> {
+              return listResult.map { transform(it) }
+          }
+          ```
+        - **Pagination Interface** (返回分页): Controller return type should be `PageData<Payload.ItemType>`
+          ```kotlin
+          // ✅ GOOD: Pagination interface
+          @PostMapping("/loadDanmu")
+          fun load(@RequestBody request: Request): PageData<AdminInteractLoadDanmu.DanmuItem> {
+              val pageData = PageData<AdminInteractLoadDanmu.DanmuItem>()
+              pageData.list = queryResult.list.map { transform(it) }
+              pageData.pageNo = queryResult.pageNo
+              pageData.totalCount = queryResult.totalCount
+              return pageData
+          }
+          ```
         - **IMPORTANT**: Do NOT use generic `Map<String, Any>` or `List<Any>` in payload definitions
         - Always create specific data classes for better type safety and frontend usability
         - Define nested data classes within the payload object for encapsulation
@@ -359,3 +380,46 @@ When adding new features, create design JSON files in `design/` with `_gen.json`
 - Domain events use both synchronous subscribers and async integration events
 - Jimmer requires KSP processing - ensure `build/generated/ksp/` is in source sets
 - QueryDSL metamodel generation via kapt requires clean build after entity changes
+
+### ⚠️ Critical: Check Existing Aggregates Before Creating New Commands/Queries
+
+**ALWAYS follow this workflow when implementing a new Controller:**
+
+1. **First**: Check `design/aggregate/` directory for existing aggregate definitions
+   - Each subdirectory represents an existing aggregate (e.g., `video_comment/`, `video_danmuku/`)
+   - Read the `_gen.json` file in each aggregate to see available Commands and Queries
+   - Example: `design/aggregate/video_comment/_gen.json` contains `DelCommentCmd`, `VideoCommentPageQry`, etc.
+
+2. **Second**: Search for existing Commands/Queries in the application layer
+   - Commands location: `only-danmuku-application/src/main/kotlin/edu/only4/danmuku/application/commands/`
+   - Queries location: `only-danmuku-application/src/main/kotlin/edu/only4/danmuku/application/queries/`
+   - Use file search to find existing implementations before creating new ones
+
+3. **Third**: Only create new design files in `design/extra/` for truly missing functionality
+   - `design/aggregate/` = Already defined aggregates (DO NOT MODIFY)
+   - `design/extra/` = Additional commands/queries for existing aggregates (ADD HERE if needed)
+   - Never duplicate Commands/Queries that already exist in aggregates
+
+4. **Fourth**: Use existing Commands/Queries with correct package paths
+   - Existing: `edu.only4.danmuku.application.commands.video_comment.DelCommentCmd`
+   - ❌ Wrong: `edu.only4.danmuku.application.commands.comment.DeleteCommentCmd`
+   - Check actual file locations and import statements carefully
+
+**Lesson Learned**: In a previous implementation, I incorrectly created `design/extra/interact_gen.json` with duplicate
+Commands/Queries that already existed in `design/aggregate/video_comment/` and `design/aggregate/video_danmuku/`. This
+caused import errors because I used non-existent package paths. Always verify existing aggregates first to avoid this mistake.
+
+**Quick Check Commands**:
+```bash
+# List all existing aggregates
+ls -la design/aggregate/
+
+# Check specific aggregate definition
+cat design/aggregate/video_comment/_gen.json
+
+# Search for existing Commands
+find only-danmuku-application -name "*Cmd.kt" -type f
+
+# Search for existing Queries
+find only-danmuku-application -name "*Qry.kt" -type f
+```

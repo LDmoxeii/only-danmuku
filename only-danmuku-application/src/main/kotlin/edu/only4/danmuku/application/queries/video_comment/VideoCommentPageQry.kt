@@ -11,10 +11,29 @@ import com.only4.cap4k.ddd.core.application.query.PageQueryParam
  */
 object VideoCommentPageQry {
 
-    class Request(
-
+    data class Request(
+        /** 视频名称模糊查询 */
+        val videoNameFuzzy: String? = null
     ) : PageQueryParam<Response>()
 
-    class Response(
+    data class Response(
+        /** 评论ID */
+        val commentId: Long,
+        /** 视频ID */
+        val videoId: Long,
+        /** 视频名称 */
+        val videoName: String? = null,
+        /** 评论内容 */
+        val content: String? = null,
+        /** 用户ID */
+        val customerId: Long,
+        /** 用户昵称 */
+        val customerNickname: String? = null,
+        /** 发布时间 */
+        val postTime: Long,
+        /** 点赞数 */
+        val likeCount: Int? = 0,
+        /** 是否置顶 */
+        val topType: Byte? = 0
     )
 }

@@ -18,17 +18,17 @@ object DeleteDanmukuCmd {
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
+            // TODO: 实现删除弹幕逻辑
             Mediator.uow.save()
 
-            return Response(
-            )
+            return Response()
         }
-
     }
 
-    class Request(
+    data class Request(
+        /** 弹幕ID */
+        val danmukuId: Long
     ) : RequestParam<Response>
 
-    class Response(
-    )
+    class Response
 }
