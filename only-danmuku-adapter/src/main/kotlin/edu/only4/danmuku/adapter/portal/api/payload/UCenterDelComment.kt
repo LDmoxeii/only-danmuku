@@ -9,10 +9,9 @@ object UCenterDelComment {
 
     data class Request(
         /** 评论ID */
-
         @field:NotEmpty(message = "评论ID不能为空")
-        val commentId: Int = 0
+        val commentId: String = ""
     )
 
-    class Response
+    class Response()
 }

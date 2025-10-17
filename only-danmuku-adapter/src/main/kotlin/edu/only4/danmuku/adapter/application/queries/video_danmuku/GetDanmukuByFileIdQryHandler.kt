@@ -1,9 +1,7 @@
 package edu.only4.danmuku.adapter.application.queries.video_danmuku
 
-import com.only4.cap4k.ddd.core.application.query.Query
-
+import com.only4.cap4k.ddd.core.application.query.ListQuery
 import edu.only4.danmuku.application.queries.video_danmuku.GetDanmukuByFileIdQry
-
 import org.springframework.stereotype.Service
 
 /**
@@ -15,12 +13,15 @@ import org.springframework.stereotype.Service
  */
 @Service
 class GetDanmukuByFileIdQryHandler(
-) : Query<GetDanmukuByFileIdQry.Request, GetDanmukuByFileIdQry.Response> {
+) : ListQuery<GetDanmukuByFileIdQry.Request, GetDanmukuByFileIdQry.Response> {
 
-    override fun exec(request: GetDanmukuByFileIdQry.Request): GetDanmukuByFileIdQry.Response {
+    override fun exec(request: GetDanmukuByFileIdQry.Request): List<GetDanmukuByFileIdQry.Response> {
 
-        return GetDanmukuByFileIdQry.Response(
-
+        return listOf(
+            // TODO: 实现根据文件ID获取弹幕逻辑
+//            GetDanmukuByFileIdQry.Response(
+//
+//            )
         )
     }
 }

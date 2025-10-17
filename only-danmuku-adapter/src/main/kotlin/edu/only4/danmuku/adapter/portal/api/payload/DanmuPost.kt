@@ -23,18 +23,13 @@ object DanmuPost {
         @field:Size(max = 200, message = "长度不能超过200个字符")
         val text: String = "",
         /** 弹幕模式 */
-
-        @field:NotEmpty(message = "弹幕模式不能为空")
-        val mode: Int = 0,
+        val mode: Int? = null,
         /** 弹幕颜色 */
-
         @field:NotEmpty(message = "弹幕颜色不能为空")
         val color: String = "",
         /** 弹幕时间(秒) */
-
-        @field:NotEmpty(message = "弹幕时间(秒)不能为空")
-        val time: Int = 0
+        val time: Int? = null
     )
 
-    class Response
+    class Response()
 }

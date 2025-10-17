@@ -9,10 +9,9 @@ object UCenterDelDanmu {
 
     data class Request(
         /** 弹幕ID */
-
         @field:NotEmpty(message = "弹幕ID不能为空")
-        val danmuId: Int = 0
+        val danmuId: String = ""
     )
 
-    class Response
+    class Response()
 }

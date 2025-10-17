@@ -39,5 +39,5 @@ object UHomeUpdateUserInfo {
         val noticeInfo: String? = null
     )
 
-    class Response
+    class Response()
 }

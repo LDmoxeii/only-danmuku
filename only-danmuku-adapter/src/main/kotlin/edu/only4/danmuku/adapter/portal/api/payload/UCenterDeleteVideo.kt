@@ -11,8 +11,8 @@ object UCenterDeleteVideo {
         /** 视频ID */
 
         @field:NotEmpty(message = "视频ID不能为空")
-        val videoId: String = "",
+        val videoId: String = ""
     )
 
-    class Response
+    class Response()
 }

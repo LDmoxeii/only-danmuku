@@ -49,5 +49,5 @@ object UCenterPostVideo {
         val uploadFileList: String = ""
     )
 
-    class Response
+    class Response()
 }

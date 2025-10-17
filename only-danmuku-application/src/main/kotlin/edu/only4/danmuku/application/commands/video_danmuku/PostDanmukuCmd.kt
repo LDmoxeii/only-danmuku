@@ -26,9 +26,20 @@ object PostDanmukuCmd {
 
     }
 
-    class Request(
+    data class Request(
+        /** 视频ID */
+        val videoId: Long,
+        /** 文件ID */
+        val fileId: Long,
+        /** 弹幕内容 */
+        val text: String,
+        /** 弹幕模式 */
+        val mode: Int,
+        /** 弹幕颜色 */
+        val color: String,
+        /** 弹幕时间(秒) */
+        val time: Int
     ) : RequestParam<Response>
 
-    class Response(
-    )
+    class Response()
 }

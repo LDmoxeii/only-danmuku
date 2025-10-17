@@ -16,5 +16,5 @@ object UCenterSaveVideoInteraction {
         val interaction: String? = null
     )
 
-    class Response
+    class Response()
 }

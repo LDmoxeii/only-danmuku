@@ -26,9 +26,14 @@ object ChangeVideoInteractionCmd {
 
     }
 
-    class Request(
+    data class Request(
+        /** 视频ID */
+        val videoId: Long,
+        /** 用户ID */
+        val userId: Long,
+        /** 互动设置 */
+        val interaction: String?
     ) : RequestParam<Response>
 
-    class Response(
-    )
+    class Response()
 }

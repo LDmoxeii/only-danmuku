@@ -10,8 +10,13 @@ object UCenterGetWeekStatistics {
         val dataType: Int? = null
     )
 
-    data class Response(
-        /** 7天统计数据 */
-        var list: List<Any>? = null
+    /**
+     * 统计项
+     */
+    data class StatisticsItem(
+        /** 统计日期 */
+        var statisticsDate: String? = null,
+        /** 统计数量 */
+        var statisticsCount: Int? = null
     )
 }

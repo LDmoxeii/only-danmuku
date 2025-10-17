@@ -7,8 +7,17 @@ object UCenterLoadAllVideo {
 
     class Request
 
-    data class Response(
-        /** 视频列表 */
-        var list: List<Any>? = null
+    /**
+     * 视频项
+     */
+    data class VideoItem(
+        /** 视频ID */
+        var videoId: String? = null,
+        /** 视频封面 */
+        var videoCover: String? = null,
+        /** 视频名称 */
+        var videoName: String? = null,
+        /** 创建时间 */
+        var createTime: String? = null
     )
 }

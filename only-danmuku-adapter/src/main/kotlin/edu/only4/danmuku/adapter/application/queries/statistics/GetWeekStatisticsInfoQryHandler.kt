@@ -1,5 +1,6 @@
 package edu.only4.danmuku.adapter.application.queries.statistics
 
+import com.only4.cap4k.ddd.core.application.query.ListQuery
 import com.only4.cap4k.ddd.core.application.query.Query
 
 import edu.only4.danmuku.application.queries.statistics.GetWeekStatisticsInfoQry
@@ -15,12 +16,14 @@ import org.springframework.stereotype.Service
  */
 @Service
 class GetWeekStatisticsInfoQryHandler(
-) : Query<GetWeekStatisticsInfoQry.Request, GetWeekStatisticsInfoQry.Response> {
+) : ListQuery<GetWeekStatisticsInfoQry.Request, GetWeekStatisticsInfoQry.Response> {
 
-    override fun exec(request: GetWeekStatisticsInfoQry.Request): GetWeekStatisticsInfoQry.Response {
+    override fun exec(request: GetWeekStatisticsInfoQry.Request): List<GetWeekStatisticsInfoQry.Response> {
 
-        return GetWeekStatisticsInfoQry.Response(
-
+        return listOf(
+//            GetWeekStatisticsInfoQry.Response(
+//
+//        )
         )
     }
 }

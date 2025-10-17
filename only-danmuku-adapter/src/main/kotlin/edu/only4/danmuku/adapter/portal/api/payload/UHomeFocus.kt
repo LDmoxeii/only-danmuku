@@ -14,5 +14,5 @@ object UHomeFocus {
         val focusUserId: String = ""
     )
 
-    class Response
+    class Response()
 }

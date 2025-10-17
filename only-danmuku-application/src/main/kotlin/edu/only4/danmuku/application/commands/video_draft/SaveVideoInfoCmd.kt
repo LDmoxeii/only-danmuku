@@ -26,9 +26,36 @@ object SaveVideoInfoCmd {
 
     }
 
-    class Request(
+    data class Request(
+        /** 视频ID(更新时传) */
+        val videoId: Long? = null,
+        /** 视频封面 */
+        val videoCover: String,
+        /** 视频名称 */
+        val videoName: String,
+        /** 父分类ID */
+        val pCategoryId: Int,
+        /** 分类ID */
+        val categoryId: Int? = null,
+        /** 上传类型(0自制/1转载) */
+        val postType: Int,
+        /** 标签 */
+        val tags: String,
+        /** 简介 */
+        val introduction: String? = null,
+        /** 互动设置 */
+        val interaction: String? = null,
+        /** 上传文件列表 */
+        val uploadFileList: List<VideoFileInfo>
     ) : RequestParam<Response>
 
-    class Response(
+    data class VideoFileInfo(
+        val uploadId: String,
+        val fileIndex: Int,
+        val fileName: String,
+        val fileSize: Long,
+        val duration: Int
     )
+
+    class Response()
 }

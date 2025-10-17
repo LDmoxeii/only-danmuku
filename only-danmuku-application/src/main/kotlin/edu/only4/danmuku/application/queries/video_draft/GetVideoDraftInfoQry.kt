@@ -11,10 +11,40 @@ import com.only4.cap4k.ddd.core.application.RequestParam
  */
 object GetVideoDraftInfoQry {
 
-    class Request(
-
+    data class Request(
+        /** 视频ID */
+        val videoId: Long,
+        /** 用户ID */
+        val userId: Long
     ) : RequestParam<Response>
 
-    class Response(
+    data class Response(
+        /** 视频信息 */
+        val videoInfo: VideoInfo,
+        /** 视频文件列表 */
+        val videoFileList: List<VideoFileItem>
+    )
+
+    data class VideoInfo(
+        val videoId: Long,
+        val videoCover: String?,
+        val videoName: String?,
+        val pCategoryId: Int?,
+        val categoryId: Int?,
+        val postType: Int?,
+        val tags: String?,
+        val introduction: String?,
+        val interaction: String?,
+        val status: Int
+    )
+
+    data class VideoFileItem(
+        val fileId: Long,
+        val uploadId: String,
+        val fileIndex: Int,
+        val fileName: String,
+        val fileSize: Long,
+        val filePath: String?,
+        val duration: Int
     )
 }
