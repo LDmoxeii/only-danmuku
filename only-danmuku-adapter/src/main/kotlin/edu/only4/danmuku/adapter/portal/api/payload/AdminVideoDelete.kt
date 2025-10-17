@@ -9,9 +9,8 @@ object AdminVideoDelete {
 
     data class Request(
         /** 视频ID */
-
         @field:NotEmpty(message = "视频ID不能为空")
-        val videoId: String = "",
+        val videoId: String? = null
     )
 
     class Response

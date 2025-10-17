@@ -26,7 +26,9 @@ object RecommendVideoCmd {
 
     }
 
-    class Request(
+    data class Request(
+        /** 视频ID */
+        val videoId: Long
     ) : RequestParam<Response>
 
     class Response(
