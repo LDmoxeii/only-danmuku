@@ -5,6 +5,7 @@ import com.only4.cap4k.ddd.core.share.PageData
 import edu.only4.danmuku.adapter.portal.api.payload.*
 import edu.only4.danmuku.application.commands.video.DeleteVideoCmd
 import edu.only4.danmuku.application.commands.video.RecommendVideoCmd
+import edu.only4.danmuku.application.commands.video_draft.AuditVideoCmd
 import edu.only4.danmuku.application.queries.video.GetVideoPlayFilesQry
 import edu.only4.danmuku.application.queries.video.SearchVideosQry
 import org.springframework.validation.annotation.Validated
@@ -95,15 +96,14 @@ class AdminVideoController {
      */
     @PostMapping("/auditVideo")
     fun adminVideoAudit(@RequestBody @Validated request: AdminVideoAudit.Request): AdminVideoAudit.Response {
-        // TODO: 需要创建 AuditVideoCmd 命令
-        // 这里暂时返回空响应
-        // Mediator.commands.send(
-        //     AuditVideoCmd.Request(
-        //         videoId = request.videoId!!.toLong(),
-        //         status = request.status!!,
-        //         reason = request.reason
-        //     )
-        // )
+        // 调用命令审核视频
+        Mediator.commands.send(
+            AuditVideoCmd.Request(
+                videoId = request.videoId!!.toLong(),
+                status = request.status!!,
+                reason = request.reason
+            )
+        )
         return AdminVideoAudit.Response()
     }
 
