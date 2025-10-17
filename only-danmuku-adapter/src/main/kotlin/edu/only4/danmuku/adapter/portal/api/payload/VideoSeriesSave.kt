@@ -15,7 +15,7 @@ object VideoSeriesSave {
 
         @field:NotEmpty(message = "系列名称不能为空")
         @field:Size(max = 100, message = "长度不能超过100个字符")
-        val seriesName: String = null,
+        val seriesName: String = "",
         /** 系列描述 */
 
         @field:Size(max = 200, message = "长度不能超过200个字符")

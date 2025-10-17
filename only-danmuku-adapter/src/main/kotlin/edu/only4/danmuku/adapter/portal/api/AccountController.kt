@@ -1,9 +1,9 @@
 package edu.only4.danmuku.adapter.portal.api
 
 import edu.only4.danmuku.adapter.portal.api.payload.*
+import jakarta.servlet.http.HttpServletResponse
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
-import javax.servlet.http.HttpServletResponse
 
 /**
  * 用户账户管理控制器

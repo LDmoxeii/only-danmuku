@@ -11,7 +11,7 @@ object AdminSettingSave {
         /** 系统设置对象 */
 
         @field:NotEmpty(message = "系统设置对象不能为空")
-        val sysSettingDto: Map<String, Any> = null
+        val sysSettingDto: Map<String, Any> = emptyMap()
     )
 
     class Response

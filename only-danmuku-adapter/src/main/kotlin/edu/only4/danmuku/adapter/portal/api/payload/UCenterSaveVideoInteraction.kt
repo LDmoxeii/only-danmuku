@@ -11,7 +11,7 @@ object UCenterSaveVideoInteraction {
         /** 视频ID */
 
         @field:NotEmpty(message = "视频ID不能为空")
-        val videoId: String = null,
+        val videoId: String = "",
         /** 互动设置 */
         val interaction: String? = null
     )

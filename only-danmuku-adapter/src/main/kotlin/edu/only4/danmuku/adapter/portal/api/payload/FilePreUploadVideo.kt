@@ -11,11 +11,11 @@ object FilePreUploadVideo {
         /** 文件名 */
 
         @field:NotEmpty(message = "文件名不能为空")
-        val fileName: String = null,
+        val fileName: String = "",
         /** 分片总数 */
 
         @field:NotEmpty(message = "分片总数不能为空")
-        val chunks: Int = null
+        val chunks: Int = 0
     )
 
     data class Response(

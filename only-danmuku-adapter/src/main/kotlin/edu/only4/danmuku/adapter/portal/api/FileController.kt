@@ -16,7 +16,7 @@ class FileController {
      * 获取资源文件
      */
     @GetMapping("/getResource")
-    fun fileGetResource(sourceName: String = null): FileGetResource.Response {
+    fun fileGetResource(sourceName: String = ""): FileGetResource.Response {
         // TODO: 实现获取资源文件逻辑
         return FileGetResource.Response()
     }
@@ -61,7 +61,7 @@ class FileController {
      * 获取视频资源(m3u8)
      */
     @GetMapping("/videoResource/{fileId}")
-    fun fileGetVideoResource(@PathVariable fileId: String = null): FileGetVideoResource.Response {
+    fun fileGetVideoResource(@PathVariable fileId: String = ""): FileGetVideoResource.Response {
         // TODO: 实现获取视频资源(m3u8)逻辑
         return FileGetVideoResource.Response()
     }
@@ -71,8 +71,8 @@ class FileController {
      */
     @GetMapping("/videoResource/{fileId}/{ts}")
     fun fileGetVideoResourceTs(
-        @PathVariable fileId: String = null,
-        @PathVariable ts: String = null
+        @PathVariable fileId: String = "",
+        @PathVariable ts: String = ""
     ): FileGetVideoResourceTs.Response {
         // TODO: 实现获取视频TS分片逻辑
         return FileGetVideoResourceTs.Response()

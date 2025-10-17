@@ -18,7 +18,7 @@ object VideoReportPlayOnline {
          */
 
         @field:NotEmpty(message = "文件ID不能为空")
-        val fileId: String = null,
+        val fileId: String = "",
         /**
          * 设备ID
          */

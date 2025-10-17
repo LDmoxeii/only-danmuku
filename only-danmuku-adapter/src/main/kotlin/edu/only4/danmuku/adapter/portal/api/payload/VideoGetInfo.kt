@@ -18,7 +18,7 @@ object VideoGetInfo {
          */
 
         @field:NotEmpty(message = "视频ID不能为空")
-        val videoId: String = null
+        val videoId: String = ""
     )
 
     /**

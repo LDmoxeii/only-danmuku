@@ -11,11 +11,11 @@ object AdminVideoAudit {
         /** 视频ID */
 
         @field:NotEmpty(message = "视频ID不能为空")
-        val videoId: String = null,
+        val videoId: String = "",
         /** 审核状态 */
 
         @field:NotEmpty(message = "审核状态不能为空")
-        val status: Int = null,
+        val status: Int = 0,
         /** 审核原因 */
         val reason: String? = null
     )

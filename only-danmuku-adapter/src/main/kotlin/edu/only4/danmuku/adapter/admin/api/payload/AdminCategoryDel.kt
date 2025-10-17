@@ -11,7 +11,7 @@ object AdminCategoryDel {
         /** 分类ID */
 
         @field:NotEmpty(message = "分类ID不能为空")
-        val categoryId: Int = null
+        val categoryId: Int = 0
     )
 
     class Response

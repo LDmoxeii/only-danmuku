@@ -11,7 +11,7 @@ object MessageDel {
         /** 消息ID */
 
         @field:NotEmpty(message = "消息ID不能为空")
-        val messageId: Int = null
+        val messageId: Int = 0
     )
 
     class Response

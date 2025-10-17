@@ -11,11 +11,11 @@ object FileGetVideoResourceTs {
         /** 文件ID */
 
         @field:NotEmpty(message = "文件ID不能为空")
-        val fileId: String = null,
+        val fileId: String = "",
         /** TS文件名 */
 
         @field:NotEmpty(message = "TS文件名不能为空")
-        val ts: String = null
+        val ts: String = ""
     )
 
     class Response

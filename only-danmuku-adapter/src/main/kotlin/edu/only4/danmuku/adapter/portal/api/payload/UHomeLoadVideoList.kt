@@ -11,7 +11,7 @@ object UHomeLoadVideoList {
         /** 用户ID */
 
         @field:NotEmpty(message = "用户ID不能为空")
-        val userId: String = null,
+        val userId: String = "",
         /** 类型 */
         val type: Int? = null,
         /** 页码 */

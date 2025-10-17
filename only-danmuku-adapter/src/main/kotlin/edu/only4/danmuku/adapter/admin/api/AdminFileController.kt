@@ -28,7 +28,7 @@ class AdminFileController {
      * 获取资源文件
      */
     @GetMapping("/getResource")
-    fun adminFileGetResource(@RequestParam sourceName: String = null): AdminFileGetResource.Response {
+    fun adminFileGetResource(@RequestParam sourceName: String = ""): AdminFileGetResource.Response {
         // TODO: 实现获取资源文件逻辑
         return AdminFileGetResource.Response()
     }
@@ -37,7 +37,7 @@ class AdminFileController {
      * 获取视频资源(m3u8)
      */
     @GetMapping("/videoResource/{fileId}")
-    fun adminFileGetVideoResource(@PathVariable fileId: String = null): AdminFileGetVideoResource.Response {
+    fun adminFileGetVideoResource(@PathVariable fileId: String = ""): AdminFileGetVideoResource.Response {
         // TODO: 实现获取视频资源(m3u8)逻辑
         return AdminFileGetVideoResource.Response()
     }
@@ -47,8 +47,8 @@ class AdminFileController {
      */
     @GetMapping("/videoResource/{fileId}/{ts}")
     fun adminFileGetVideoResourceTs(
-        @PathVariable fileId: String = null,
-        @PathVariable ts: String = null
+        @PathVariable fileId: String = "",
+        @PathVariable ts: String = ""
     ): AdminFileGetVideoResourceTs.Response {
         // TODO: 实现获取视频TS分片逻辑
         return AdminFileGetVideoResourceTs.Response()

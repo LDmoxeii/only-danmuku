@@ -11,7 +11,7 @@ object CommentLoad {
         /** 视频ID */
 
         @field:NotEmpty(message = "视频ID不能为空")
-        val videoId: String = null,
+        val videoId: String = "",
         /** 页码 */
         val pageNo: Int? = null,
         /** 排序类型 */

@@ -8,15 +8,17 @@ import jakarta.validation.constraints.NotEmpty
 object FileUploadImage {
 
     data class Request(
-        /** 图片文件 */
 
-        @field:NotEmpty(message = "图片文件不能为空")
-        val file: org.springframework.web.multipart.MultipartFile = null,
+
         /** 是否生成缩略图 */
 
         @field:NotEmpty(message = "是否生成缩略图不能为空")
-        val createThumbnail: Boolean = null
-    )
+        val createThumbnail: Boolean = false
+    ) {
+        /** 图片文件 */
+        @field:NotEmpty(message = "图片文件不能为空")
+        lateinit var file: org.springframework.web.multipart.MultipartFile
+    }
 
     data class Response(
         /** 文件路径 */

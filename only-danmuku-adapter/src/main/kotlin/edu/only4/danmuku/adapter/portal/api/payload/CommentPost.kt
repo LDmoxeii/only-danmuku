@@ -12,14 +12,14 @@ object CommentPost {
         /** 视频ID */
 
         @field:NotEmpty(message = "视频ID不能为空")
-        val videoId: String = null,
+        val videoId: String = "",
         /** 回复评论ID */
         val replyCommentId: Int? = null,
         /** 评论内容 */
 
         @field:NotEmpty(message = "评论内容不能为空")
         @field:Size(max = 500, message = "长度不能超过500个字符")
-        val content: String = null,
+        val content: String = "",
         /** 图片路径 */
 
         @field:Size(max = 50, message = "长度不能超过50个字符")

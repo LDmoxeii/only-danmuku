@@ -18,13 +18,13 @@ object VideoGetRecommend {
          */
 
         @field:NotEmpty(message = "关键词不能为空")
-        val keyword: String = null,
+        val keyword: String = "",
         /**
          * 当前视频ID(排除)
          */
 
         @field:NotEmpty(message = "当前视频ID(排除)不能为空")
-        val videoId: String = null
+        val videoId: String = ""
     )
 
     /**

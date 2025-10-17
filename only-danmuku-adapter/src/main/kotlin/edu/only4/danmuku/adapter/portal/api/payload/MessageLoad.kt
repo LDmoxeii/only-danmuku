@@ -11,7 +11,7 @@ object MessageLoad {
         /** 消息类型 */
 
         @field:NotEmpty(message = "消息类型不能为空")
-        val messageType: Int = null,
+        val messageType: Int = 0,
         /** 页码 */
         val pageNo: Int? = null
     )

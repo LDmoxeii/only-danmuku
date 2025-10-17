@@ -11,7 +11,7 @@ object FileDelUploadVideo {
         /** 上传ID */
 
         @field:NotEmpty(message = "上传ID不能为空")
-        val uploadId: String = null
+        val uploadId: String = ""
     )
 
     class Response

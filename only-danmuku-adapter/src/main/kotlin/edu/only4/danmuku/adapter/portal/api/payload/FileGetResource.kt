@@ -11,7 +11,7 @@ object FileGetResource {
         /** 资源名称 */
 
         @field:NotEmpty(message = "资源名称不能为空")
-        val sourceName: String = null
+        val sourceName: String = ""
     )
 
     class Response

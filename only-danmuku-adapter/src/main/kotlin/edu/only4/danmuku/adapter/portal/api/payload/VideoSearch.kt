@@ -18,7 +18,7 @@ object VideoSearch {
          */
 
         @field:NotEmpty(message = "搜索关键词不能为空")
-        val keyword: String = null,
+        val keyword: String = "",
         /**
          * 排序类型
          */

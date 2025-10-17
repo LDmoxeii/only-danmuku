@@ -11,7 +11,7 @@ object AdminFileGetVideoResource {
         /** 文件ID */
 
         @field:NotEmpty(message = "文件ID不能为空")
-        val fileId: String = null
+        val fileId: String = ""
     )
 
     class Response

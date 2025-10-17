@@ -13,16 +13,16 @@ object UHomeUpdateUserInfo {
 
         @field:NotEmpty(message = "昵称不能为空")
         @field:Size(max = 20, message = "长度不能超过20个字符")
-        val nickName: String = null,
+        val nickName: String = "",
         /** 头像 */
 
         @field:NotEmpty(message = "头像不能为空")
         @field:Size(max = 100, message = "长度不能超过100个字符")
-        val avatar: String = null,
+        val avatar: String = "",
         /** 性别 */
 
         @field:NotEmpty(message = "性别不能为空")
-        val sex: Int = null,
+        val sex: Int = 0,
         /** 生日 */
         val birthday: String? = null,
         /** 学校 */

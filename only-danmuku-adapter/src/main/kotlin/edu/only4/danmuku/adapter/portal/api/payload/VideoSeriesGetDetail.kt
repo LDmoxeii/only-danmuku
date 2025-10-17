@@ -11,7 +11,7 @@ object VideoSeriesGetDetail {
         /** 系列ID */
 
         @field:NotEmpty(message = "系列ID不能为空")
-        val seriesId: Int = null
+        val seriesId: Int = 0
     )
 
     data class Response(

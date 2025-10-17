@@ -11,7 +11,7 @@ object UCenterDelDanmu {
         /** 弹幕ID */
 
         @field:NotEmpty(message = "弹幕ID不能为空")
-        val danmuId: Int = null
+        val danmuId: Int = 0
     )
 
     class Response

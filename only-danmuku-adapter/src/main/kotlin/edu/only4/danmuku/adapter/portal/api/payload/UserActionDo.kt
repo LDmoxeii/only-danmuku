@@ -13,11 +13,11 @@ object UserActionDo {
         /** 视频ID */
 
         @field:NotEmpty(message = "视频ID不能为空")
-        val videoId: String = null,
+        val videoId: String = "",
         /** 行为类型 */
 
         @field:NotEmpty(message = "行为类型不能为空")
-        val actionType: Int = null,
+        val actionType: Int = 0,
         /** 行为次数 */
 
         @field:Min(1, message = "最小值为1")

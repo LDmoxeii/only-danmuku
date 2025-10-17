@@ -11,11 +11,11 @@ object AdminUserChangeStatus {
         /** 用户ID */
 
         @field:NotEmpty(message = "用户ID不能为空")
-        val userId: String = null,
+        val userId: String = "",
         /** 新状态 */
 
         @field:NotEmpty(message = "新状态不能为空")
-        val status: Int = null
+        val status: Int = 0
     )
 
     class Response

@@ -11,7 +11,7 @@ object UHomeLoadUserCollection {
         /** 用户ID */
 
         @field:NotEmpty(message = "用户ID不能为空")
-        val userId: String = null,
+        val userId: String = "",
         /** 页码 */
         val pageNo: Int? = null
     )

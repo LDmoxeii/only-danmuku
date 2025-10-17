@@ -11,7 +11,7 @@ object VideoSeriesChangeSort {
         /** 系列ID列表(逗号分隔) */
 
         @field:NotEmpty(message = "系列ID列表(逗号分隔)不能为空")
-        val seriesIds: String = null
+        val seriesIds: String = ""
     )
 
     class Response

@@ -11,11 +11,11 @@ object DanmuLoad {
         /** 文件ID */
 
         @field:NotEmpty(message = "文件ID不能为空")
-        val fileId: String = null,
+        val fileId: String = "",
         /** 视频ID */
 
         @field:NotEmpty(message = "视频ID不能为空")
-        val videoId: String = null
+        val videoId: String = "",
     )
 
     data class Response(

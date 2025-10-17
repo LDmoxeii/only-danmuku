@@ -11,7 +11,7 @@ object UHomeGetUserInfo {
         /** 用户ID */
 
         @field:NotEmpty(message = "用户ID不能为空")
-        val userId: String = null
+        val userId: String = "",
     )
 
     data class Response(

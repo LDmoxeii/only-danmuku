@@ -11,11 +11,11 @@ object VideoSeriesDelVideo {
         /** 系列ID */
 
         @field:NotEmpty(message = "系列ID不能为空")
-        val seriesId: Int = null,
+        val seriesId: Int = 0,
         /** 视频ID */
 
         @field:NotEmpty(message = "视频ID不能为空")
-        val videoId: String = null
+        val videoId: String = ""
     )
 
     class Response

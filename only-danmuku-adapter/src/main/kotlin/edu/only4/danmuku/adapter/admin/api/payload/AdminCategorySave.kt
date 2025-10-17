@@ -11,17 +11,17 @@ object AdminCategorySave {
         /** 父分类ID */
 
         @field:NotEmpty(message = "父分类ID不能为空")
-        val pCategoryId: Int = null,
+        val pCategoryId: Int = 0,
         /** 分类ID(更新时传) */
         val categoryId: Int? = null,
         /** 分类编码 */
 
         @field:NotEmpty(message = "分类编码不能为空")
-        val categoryCode: String = null,
+        val categoryCode: String = "",
         /** 分类名称 */
 
         @field:NotEmpty(message = "分类名称不能为空")
-        val categoryName: String = null,
+        val categoryName: String = "",
         /** 分类图标 */
         val icon: String? = null,
         /** 分类背景 */
