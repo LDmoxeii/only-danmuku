@@ -49,7 +49,7 @@ interface JCategory {
     /**
      * 逻辑删除标识
      */
-    @LogicalDeleted("0")
+    @LogicalDeleted("true")
     val deleted: Boolean
 
     /**
@@ -61,14 +61,20 @@ interface JCategory {
 
     /**
      * 父分类（自关联）
+     * 使用伪外键，允许 parent_id = 0（不存在的父分类）
      */
     @ManyToOne
-    @JoinColumn(name = "parent_id", referencedColumnName = "id")
+    @JoinColumn(
+        name = "parent_id",
+        foreignKeyType = ForeignKeyType.FAKE
+    )
     val parent: JCategory?
 
     /**
-     * 父级ID（IdView方式访问父分类ID）
+     * 父级ID（通过 @IdView 访问 parent 的 ID）
+     * 注意：顶级分类的 parentId = 0 时，parent 为 null
+     * 因此这里必须定义为可空类型
      */
-    @IdView
+    @IdView("parent")
     val parentId: Long?
 }

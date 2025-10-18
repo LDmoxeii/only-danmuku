@@ -151,7 +151,7 @@ only:
         health-check:
           enable: true
         request-body:
-          enable: true
+          enable: false
       advice:
         base-packages: ["edu.only4.danmuku"]
         response-wrapper:
@@ -159,7 +159,7 @@ only:
         global-exception-handler:
           enable: true
       performance-interceptor:
-        enable: true
+        enable: false
 cap4k:
   ddd:
     arch-info:

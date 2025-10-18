@@ -11,12 +11,12 @@ import com.only4.cap4k.ddd.core.application.query.ListQueryParam
  */
 object GetCategoryTreeQry {
 
-    class Request : ListQueryParam<ResponseItem>
+    class Request : ListQueryParam<Response>
 
     /**
      * 分类树节点
      */
-    data class ResponseItem(
+    data class Response(
         /** 分类ID */
         val categoryId: Long,
         /** 分类编码 */
@@ -32,6 +32,6 @@ object GetCategoryTreeQry {
         /** 排序号 */
         val sort: Byte,
         /** 子分类列表 */
-        val children: List<ResponseItem> = emptyList()
+        val children: List<Response> = emptyList()
     )
 }

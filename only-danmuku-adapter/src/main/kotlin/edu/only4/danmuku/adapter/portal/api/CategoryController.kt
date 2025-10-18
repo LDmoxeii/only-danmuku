@@ -1,5 +1,6 @@
 package edu.only4.danmuku.adapter.portal.api
 
+import edu.only4.danmuku.adapter.portal.api.payload.CategoryLoadAll
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.RequestMapping
