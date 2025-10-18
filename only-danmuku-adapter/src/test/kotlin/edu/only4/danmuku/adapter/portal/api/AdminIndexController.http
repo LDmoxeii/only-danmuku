@@ -1,0 +1,2 @@
+### 获取前一天和总计的统计信息
+POST {{host}}/admin/index/getActualTimeStatisticsInfo

@@ -159,6 +159,11 @@ only-danmuku-domain
 - Default credentials: root/123456
 - Druid connection pool (initial: 30, max: 100)
 - JPA DDL: none (managed by migrations)
+- **Timestamp Convention**: All time-related fields in the database must use **second-level Unix timestamps** (not milliseconds, not formatted dates)
+  - Example: `1729267200` (2024-10-18 16:00:00 in seconds)
+  - ❌ Wrong: `1729267200000` (milliseconds)
+  - ❌ Wrong: `20241018` (formatted date)
+  - This applies to all date fields including: `create_time`, `update_time`, `statistics_date`, etc.
 
 ### Application Settings
 
@@ -488,6 +493,41 @@ When adding new features, create design JSON files in `design/` with `_gen.json`
         - Location: `only-danmuku-adapter/src/main/kotlin/.../adapter/application/queries/`
         - Inject `KSqlClient` from Jimmer
         - Use `sqlClient.findAll(DtoClass::class)` for direct DTO queries
+        - **IMPORTANT - Using Domain Enums in QueryHandlers**:
+            - When implementing QueryHandlers that need to work with enumerated types (e.g., data classification, status codes), **always check the domain model first** before writing hardcoded logic
+            - Domain enums are located in: `only-danmuku-domain/src/main/kotlin/edu/only4/danmuku/domain/aggregates/{aggregate}/enums/`
+            - Example scenario: When processing statistics by data type, check `Statistics.kt` in the domain module for available enums
+            - **Why this matters**:
+                - ✅ Reuses domain knowledge and type safety from the write model
+                - ✅ Avoids magic numbers and hardcoded type mappings
+                - ✅ Ensures consistency between read and write sides
+                - ✅ Makes code more maintainable and self-documenting
+            - **BAD Practice** (avoid hardcoded type checks):
+              ```kotlin
+              // ❌ BAD: Magic numbers without domain context
+              when (stats.dataType.toInt()) {
+                  1 -> videoViewCount += count      // What is 1?
+                  2 -> videoLikeCount += count       // What is 2?
+                  3 -> videoCommentCount += count    // What is 3?
+              }
+              ```
+            - **GOOD Practice** (use domain enums):
+              ```kotlin
+              // ✅ GOOD: Use domain enum from write model
+              import edu.only4.danmuku.domain.aggregates.statistics.enums.StatisticsDataType
+
+              val countsByType = statisticsList
+                  .groupingBy { StatisticsDataType.valueOf(it.dataType.toInt()) }
+                  .fold(0) { acc, item -> acc + (item.statisticsCount ?: 0) }
+
+              val videoViewCount = countsByType[StatisticsDataType.VIDEO_VIEW] ?: 0
+              val videoLikeCount = countsByType[StatisticsDataType.VIDEO_LIKE] ?: 0
+              ```
+            - **Workflow**: Before implementing type-based logic in QueryHandlers:
+                1. Check the corresponding aggregate in `only-danmuku-domain/src/main/kotlin/edu/only4/danmuku/domain/aggregates/{aggregate}/`
+                2. Look for enum classes in the `enums/` subdirectory or as nested classes
+                3. Import and use the domain enum for type-safe operations
+                4. This ensures CQRS read side stays aligned with domain model semantics
         - Example:
           ```kotlin
           @Service

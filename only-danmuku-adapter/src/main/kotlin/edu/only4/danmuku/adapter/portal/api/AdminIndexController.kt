@@ -4,6 +4,7 @@ import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.adapter.portal.api.payload.AdminIndexGetActualTimeStatistics
 import edu.only4.danmuku.adapter.portal.api.payload.AdminIndexGetWeekStatistics
 import edu.only4.danmuku.application.queries.statistics.GetPreviousDayStatisticsInfoQry
+import edu.only4.danmuku.application.queries.statistics.GetTotalStatisticsInfoQry
 import edu.only4.danmuku.application.queries.statistics.GetWeekStatisticsInfoQry
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
@@ -26,6 +27,7 @@ class AdminIndexController {
     fun adminIndexGetActualTimeStatistics(): AdminIndexGetActualTimeStatistics.Response {
         // 获取前一天的统计数据
         val preDayData = Mediator.queries.send(GetPreviousDayStatisticsInfoQry.Request())
+        val totalData = Mediator.queries.send(GetTotalStatisticsInfoQry.Request())
 
         // 转换为 StatisticsData 对象
         val preDayDataObj = AdminIndexGetActualTimeStatistics.StatisticsData(
@@ -37,15 +39,13 @@ class AdminIndexController {
             userLoginCount = preDayData.userLoginCount
         )
 
-        // 构造总统计数据（这里暂时使用前一天数据，实际应该查询总计数据）
-        // TODO: 需要创建 GetTotalStatisticsInfoQry 查询来获取总统计数据
         val totalCountInfoObj = AdminIndexGetActualTimeStatistics.StatisticsData(
-            videoViewCount = preDayData.videoViewCount,
-            videoLikeCount = preDayData.videoLikeCount,
-            videoCommentCount = preDayData.videoCommentCount,
-            videoShareCount = preDayData.videoShareCount,
-            userFollowCount = preDayData.userFollowCount,
-            userLoginCount = preDayData.userLoginCount
+            videoViewCount = totalData.videoViewCount,
+            videoLikeCount = totalData.videoLikeCount,
+            videoCommentCount = totalData.videoCommentCount,
+            videoShareCount = totalData.videoShareCount,
+            userFollowCount = totalData.userFollowCount,
+            userLoginCount = totalData.userLoginCount
         )
 
         return AdminIndexGetActualTimeStatistics.Response(

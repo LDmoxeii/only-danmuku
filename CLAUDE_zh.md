@@ -158,6 +158,11 @@ only-danmuku-domain
 - 默认凭证：root/123456
 - Druid 连接池（初始：30，最大：100）
 - JPA DDL：none（由迁移管理）
+- **时间戳约定**：数据库中所有时间相关字段必须使用**秒级 Unix 时间戳**（不是毫秒，不是格式化日期）
+  - 示例：`1729267200`（表示 2024-10-18 16:00:00，单位为秒）
+  - ❌ 错误：`1729267200000`（毫秒级）
+  - ❌ 错误：`20241018`（格式化日期）
+  - 适用于所有日期字段，包括：`create_time`、`update_time`、`statistics_date` 等
 
 ### 应用设置
 
@@ -491,6 +496,41 @@ Maven 仓库需要在 `gradle.properties` 中配置阿里云凭证：
         - 位置：`only-danmuku-adapter/src/main/kotlin/.../adapter/application/queries/`
         - 注入 Jimmer 的 `KSqlClient`
         - 使用 `sqlClient.findAll(DtoClass::class)` 进行直接 DTO 查询
+        - **重要 - 在 QueryHandler 中使用领域枚举**：
+            - 当实现需要处理枚举类型（如数据分类、状态码）的 QueryHandler 时，**在编写硬编码逻辑之前，始终先检查领域模型**
+            - 领域枚举位置：`only-danmuku-domain/src/main/kotlin/edu/only4/danmuku/domain/aggregates/{聚合名}/enums/`
+            - 示例场景：处理按数据类型统计时，检查领域模块中的 `Statistics.kt` 查看可用的枚举
+            - **为什么这很重要**：
+                - ✅ 复用写模型的领域知识和类型安全
+                - ✅ 避免魔法数字和硬编码的类型映射
+                - ✅ 确保读写端的一致性
+                - ✅ 使代码更易维护和自文档化
+            - **错误实践**（避免硬编码类型检查）：
+              ```kotlin
+              // ❌ 不好：没有领域上下文的魔法数字
+              when (stats.dataType.toInt()) {
+                  1 -> videoViewCount += count      // 1 是什么？
+                  2 -> videoLikeCount += count       // 2 是什么？
+                  3 -> videoCommentCount += count    // 3 是什么？
+              }
+              ```
+            - **正确实践**（使用领域枚举）：
+              ```kotlin
+              // ✅ 好：使用写模型的领域枚举
+              import edu.only4.danmuku.domain.aggregates.statistics.enums.StatisticsDataType
+
+              val countsByType = statisticsList
+                  .groupingBy { StatisticsDataType.valueOf(it.dataType.toInt()) }
+                  .fold(0) { acc, item -> acc + (item.statisticsCount ?: 0) }
+
+              val videoViewCount = countsByType[StatisticsDataType.VIDEO_VIEW] ?: 0
+              val videoLikeCount = countsByType[StatisticsDataType.VIDEO_LIKE] ?: 0
+              ```
+            - **工作流**：在 QueryHandler 中实现基于类型的逻辑之前：
+                1. 检查 `only-danmuku-domain/src/main/kotlin/edu/only4/danmuku/domain/aggregates/{聚合名}/` 中对应的聚合
+                2. 在 `enums/` 子目录或嵌套类中查找枚举类
+                3. 导入并使用领域枚举进行类型安全的操作
+                4. 这确保 CQRS 读端与领域模型语义保持一致
         - 示例：
           ```kotlin
           @Service

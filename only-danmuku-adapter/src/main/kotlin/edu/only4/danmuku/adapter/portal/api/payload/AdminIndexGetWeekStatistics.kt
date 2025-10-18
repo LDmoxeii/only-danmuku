@@ -7,7 +7,7 @@ object AdminIndexGetWeekStatistics {
 
     data class Request(
         /** 数据类型 */
-        val dataType: Int? = null
+        val dataType: Int = 0
     )
 
     data class Response(

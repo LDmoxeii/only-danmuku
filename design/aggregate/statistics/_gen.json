@@ -86,6 +86,11 @@
     },
     {
       "package": "statistics",
+      "name": "GetTotalStatisticsInfo",
+      "desc": "获取总统计数据"
+    },
+    {
+      "package": "statistics",
       "name": "GetStatisticsByDateRange",
       "desc": "按日期范围获取统计数据"
     },
