@@ -45,7 +45,6 @@ blazebit-persistence-hibernate = { module = "com.blazebit:blaze-persistence-inte
 engine-common = { module = "com.only4:engine-common", version.ref = "only-engine" }
 engine-captcha = { module = "com.only4:engine-captcha", version.ref = "only-engine" }
 engine-redis = { module = "com.only4:engine-redis", version.ref = "only-engine" }
-engine-jimmer = { module = "com.only4:engine-jimmer", version.ref = "only-engine" }
 engine-json = { module = "com.only4:engine-json", version.ref = "only-engine" }
 engine-web = { module = "com.only4:engine-web", version.ref = "only-engine" }
 engine-doc = { module = "com.only4:engine-doc", version.ref = "only-engine" }

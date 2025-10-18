@@ -12,7 +12,6 @@ dependencies {
     api(libs.jimmer.starter)
     api(libs.blazebit.persistence.hibernate)
 
-    api(libs.engine.jimmer)
     api(libs.engine.captcha)
     api(libs.engine.web)
     api(libs.engine.doc)
