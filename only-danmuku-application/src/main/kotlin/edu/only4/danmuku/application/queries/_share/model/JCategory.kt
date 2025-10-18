@@ -17,11 +17,6 @@ interface JCategory {
     val id: Long
 
     /**
-     * 父级ID
-     */
-    val parentId: Long
-
-    /**
      * 路径
      */
     val nodePath: String
@@ -70,4 +65,10 @@ interface JCategory {
     @ManyToOne
     @JoinColumn(name = "parent_id", referencedColumnName = "id")
     val parent: JCategory?
+
+    /**
+     * 父级ID（IdView方式访问父分类ID）
+     */
+    @IdView
+    val parentId: Long?
 }

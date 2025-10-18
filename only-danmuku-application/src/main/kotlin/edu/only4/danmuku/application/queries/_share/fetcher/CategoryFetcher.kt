@@ -23,10 +23,8 @@ object CategoryFetcher {
      */
     val TREE = newFetcher(JCategory::class).by {
         allScalarFields()
-        // 递归加载子分类
-        `children*` {
-            allScalarFields()
-        }
+        // 递归加载子分类（* 表示递归，自动使用相同的字段定义）
+        `children*`()
     }
 
     /**

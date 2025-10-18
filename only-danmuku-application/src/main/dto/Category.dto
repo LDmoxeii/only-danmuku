@@ -1,5 +1,5 @@
 export edu.only4.danmuku.application.queries._share.model.JCategory
-    -> package edu.only4.danmuku.application.queries._share.draft.JCategory
+    -> package edu.only4.danmuku.application.queries._share.draft
 
 /**
  * 分类树形结构 DTO
@@ -11,12 +11,17 @@ export edu.only4.danmuku.application.queries._share.model.JCategory
  * 3. KSP 自动生成完整的 DTO 实现
  */
 CategoryTreeNode {
-    #allScalars(JCategory)
+    id
+    parentId
+    nodePath
+    sort
+    code
+    name
+    icon
+    background
 
-    // 递归加载所有子分类（* 表示递归）
-    children* {
-        #allScalars(JCategory)
-    }
+    // 递归加载所有子分类（* 表示递归，自动使用相同的字段定义）
+    children*
 }
 
 /**

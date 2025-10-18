@@ -1,6 +1,5 @@
 package edu.only4.danmuku.application.queries.category
 
-import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.query.ListQueryParam
 
 /**
@@ -12,12 +11,12 @@ import com.only4.cap4k.ddd.core.application.query.ListQueryParam
  */
 object GetCategoryTreeQry {
 
-    class Request : ListQueryParam<CategoryTreeNode>
+    class Request : ListQueryParam<ResponseItem>
 
     /**
      * 分类树节点
      */
-    data class CategoryTreeNode(
+    data class ResponseItem(
         /** 分类ID */
         val categoryId: Long,
         /** 分类编码 */
@@ -25,7 +24,7 @@ object GetCategoryTreeQry {
         /** 分类名称 */
         val name: String,
         /** 父分类ID */
-        val parentId: Long,
+        val parentId: Long?,
         /** 图标 */
         val icon: String? = null,
         /** 背景图 */
@@ -33,6 +32,6 @@ object GetCategoryTreeQry {
         /** 排序号 */
         val sort: Byte,
         /** 子分类列表 */
-        val children: List<CategoryTreeNode> = emptyList()
+        val children: List<ResponseItem> = emptyList()
     )
 }

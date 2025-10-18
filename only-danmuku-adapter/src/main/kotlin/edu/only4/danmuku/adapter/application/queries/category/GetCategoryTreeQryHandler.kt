@@ -1,10 +1,10 @@
 package edu.only4.danmuku.adapter.application.queries.category
 
 import com.only4.cap4k.ddd.core.application.query.ListQuery
-import edu.only4.danmuku.application.queries.category.GetCategoryTreeQry
-import edu.only4.danmuku.application.queries._share.draft.JCategory.CategoryTreeNode
+import edu.only4.danmuku.application.queries._share.fetcher.CategoryFetcher
 import edu.only4.danmuku.application.queries._share.model.JCategory
 import edu.only4.danmuku.application.queries._share.model.parentId
+import edu.only4.danmuku.application.queries.category.GetCategoryTreeQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.springframework.stereotype.Service
@@ -24,42 +24,40 @@ import org.springframework.stereotype.Service
 @Service
 class GetCategoryTreeQryHandler(
     private val sqlClient: KSqlClient
-) : ListQuery<GetCategoryTreeQry.Request, GetCategoryTreeQry.CategoryTreeNode> {
+) : ListQuery<GetCategoryTreeQry.Request, GetCategoryTreeQry.ResponseItem> {
 
-    override fun exec(request: GetCategoryTreeQry.Request): List<GetCategoryTreeQry.CategoryTreeNode> {
+    override fun exec(request: GetCategoryTreeQry.Request): List<GetCategoryTreeQry.ResponseItem> {
 
-//        // 方式 1：使用 Jimmer DTO 直接查询（推荐）
-//        // 优势：
-//        // - 自动递归加载子分类
-//        // - 生成最优 SQL（可能使用递归 CTE）
-//        // - 类型安全，自动映射
-//        val categoryTreeNodes = sqlClient.findList(GetCategoryTreeQry.CategoryTreeNode::class) {
-//            where(table.parentId.eq(0L))  // 只查询顶级分类，子分类会自动递归加载
-//            orderBy(table.sort.asc())
-//        }
-//
-//        // 转换 Jimmer DTO 为 Query Response
-//        return categoryTreeNodes.map { convertToQueryResponse(it) }
-        return emptyList()
+        // 使用 Jimmer Fetcher 查询分类树形结构
+        // 优势：
+        // - 使用预定义的 TREE Fetcher，包含递归子分类加载
+        // - 生成最优 SQL（使用递归 CTE）
+        // - 自动处理 N+1 问题
+        val categories = sqlClient.executeQuery(JCategory::class) {
+            where(table.parentId eq 0L)  // 只查询顶级分类
+            select(table.fetch(CategoryFetcher.TREE))  // 使用 TREE Fetcher
+        }
+
+        // 转换 Jimmer 实体为 Query Response
+        return categories.map { categoryToResponse(it) }
     }
 
-//    /**
-//     * 将 Jimmer DTO 转换为 Query Response
-//     * 递归转换整个树形结构
-//     */
-//    private fun convertToQueryResponse(dto: CategoryTreeNode): GetCategoryTreeQry.CategoryTreeNode {
-//        return GetCategoryTreeQry.CategoryTreeNode(
-//            categoryId = dto.id,
-//            code = dto.code,
-//            name = dto.name,
-//            parentId = dto.parentId,
-//            icon = dto.icon,
-//            background = dto.background,
-//            sort = dto.sort,
-//            // 递归转换子分类
-//            children = dto.children?.map { convertToQueryResponse(it) } ?: emptyList()
-//        )
-//    }
+    /**
+     * 实体转换为 Response
+     * 递归转换整个树形结构
+     */
+    private fun categoryToResponse(category: JCategory): GetCategoryTreeQry.ResponseItem {
+        return GetCategoryTreeQry.ResponseItem(
+            categoryId = category.id,
+            code = category.code,
+            name = category.name,
+            parentId = category.parentId,
+            icon = category.icon,
+            background = category.background,
+            sort = category.sort,
+            children = category.children.map { categoryToResponse(it) }
+        )
+    }
 //
 //    /**
 //     * 方式 2：使用 Fetcher 手动查询（备选方案）
