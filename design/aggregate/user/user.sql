@@ -28,3 +28,30 @@ CREATE TABLE `user`
     COLLATE = utf8mb4_general_ci COMMENT = '帐号;@Spe;@Fac;'
     ROW_FORMAT = Dynamic;
 
+-- ----------------------------
+-- Test data for user
+-- ----------------------------
+-- 用户1: 张三 - 正常状态
+INSERT INTO user (id, type, email, password, join_time, last_login_time, last_login_ip, status, related_id,
+                  create_user_id, create_by, create_time, update_user_id, update_by, update_time, deleted)
+VALUES (2001, 0, 'zhangsan@example.com', 'password123', 1729180800, 1729440000, '192.168.1.100', 1, 0,
+        2001, 'user_zhang', 1729180800, 2001, 'user_zhang', 1729440000, 0);
+
+-- 用户2: 李四 - 正常状态
+INSERT INTO user (id, type, email, password, join_time, last_login_time, last_login_ip, status, related_id,
+                  create_user_id, create_by, create_time, update_user_id, update_by, update_time, deleted)
+VALUES (2002, 0, 'lisi@example.com', 'password456', 1729184400, 1729450000, '192.168.1.101', 1, 0,
+        2002, 'user_li', 1729184400, 2002, 'user_li', 1729450000, 0);
+
+-- 用户3: 王五 - 禁用状态
+INSERT INTO user (id, type, email, password, join_time, last_login_time, last_login_ip, status, related_id,
+                  create_user_id, create_by, create_time, update_user_id, update_by, update_time, deleted)
+VALUES (2003, 0, 'wangwu@example.com', 'password789', 1729188000, 1729420000, '192.168.1.102', 0, 0,
+        2003, 'user_wang', 1729188000, 2003, 'user_wang', 1729430000, 0);
+
+-- 用户4: 赵六 - 正常状态
+INSERT INTO user (id, type, email, password, join_time, last_login_time, last_login_ip, status, related_id,
+                  create_user_id, create_by, create_time, update_user_id, update_by, update_time, deleted)
+VALUES (2004, 0, 'zhaoliu@example.com', 'password000', 1729191600, 1729460000, '192.168.1.103', 1, 0,
+        2004, 'user_zhao', 1729191600, 2004, 'user_zhao', 1729460000, 0);
+

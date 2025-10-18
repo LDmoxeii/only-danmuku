@@ -56,12 +56,12 @@ class AdminUserController {
                     personalSignature = user.personalSignature,
                     status = user.status,
                     joinTime = LocalDateTime.ofInstant(
-                        Instant.ofEpochMilli(user.joinTime),
+                        Instant.ofEpochSecond(user.joinTime),
                         ZoneId.systemDefault()
                     ),
                     lastLoginTime = user.lastLoginTime?.let {
                         LocalDateTime.ofInstant(
-                            Instant.ofEpochMilli(it),
+                            Instant.ofEpochSecond(it),
                             ZoneId.systemDefault()
                         )
                     },

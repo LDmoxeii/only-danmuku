@@ -1,0 +1,26 @@
+export edu.only4.danmuku.application.queries._share.model.JCustomerProfile
+    -> package edu.only4.danmuku.application.queries._share.draft
+
+/**
+ * 用户档案查询 DTO
+ * 包含用户账号和档案信息
+ */
+ProfileWithUser {
+    id
+    nickName
+    avatar
+    sex
+    birthday
+    school
+    personIntroduction
+    currentCoinCount
+    theme
+
+    user {
+        id
+        email
+        status
+        joinTime
+        lastLoginTime
+    }
+}

@@ -1,0 +1,11 @@
+### 获取用户分页
+POST {{host}}/admin/user/loadUser
+Content-Type: application/json
+
+{
+  "nickNameFuzzy": "",
+  "status": 1,
+  "pageNum": 1,
+  "pageSize": 2,
+  "sort": []
+}
