@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/category")
 @Validated
 class CategoryController(
-    // 注入 Jimmer SqlClient（可选，用于方式 2）
-    private val sqlClient: KSqlClient? = null
 ) {
 
 //    /**

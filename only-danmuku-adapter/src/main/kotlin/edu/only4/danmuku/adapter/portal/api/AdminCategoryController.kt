@@ -2,6 +2,7 @@ package edu.only4.danmuku.adapter.portal.api
 
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.adapter.portal.api.payload.AdminCategoryLoad
+import edu.only4.danmuku.application.queries.category.GetCategoryListQry
 import edu.only4.danmuku.application.queries.category.GetCategoryTreeQry
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
@@ -28,9 +29,25 @@ class AdminCategoryController {
             val treeResult = Mediator.qry.send(GetCategoryTreeQry.Request())
             // 转换为前端需要的格式
             treeResult.map { qryResponseToApiResponse(it) }
-        } else emptyList()
+        } else {
+            // 获取平铺列表
+            val listResult = Mediator.queries.send(GetCategoryListQry.Request())
+            // 转换为前端需要的格式
+            listResult.map {
+                AdminCategoryLoad.Response(
+                    categoryId = it.categoryId,
+                    code = it.code,
+                    name = it.name,
+                    parentId = it.parentId,
+                    icon = it.icon,
+                    background = it.background,
+                    sort = it.sort
+                )
+            }
+        }
     }
-//
+
+    //
 //    /**
 //     * 保存/更新分类
 //     */
@@ -95,9 +112,6 @@ class AdminCategoryController {
 //        return AdminCategoryChangeSort.Response()
 //    }
 //
-    /**
-     * 转换树节点为强类型 CategoryItem
-     */
     private fun qryResponseToApiResponse(node: GetCategoryTreeQry.Response): AdminCategoryLoad.Response {
         return AdminCategoryLoad.Response(
             categoryId = node.categoryId,
@@ -110,20 +124,5 @@ class AdminCategoryController {
             children = node.children.map { qryResponseToApiResponse(it) }
         )
     }
-//
-//    /**
-//     * 转换分类信息为强类型 CategoryItem
-//     */
-//    private fun convertCategoryInfo(info: GetCategoryListQry.Response): AdminCategoryLoad.Response {
-//        return AdminCategoryLoad.Response(
-//            categoryId = info.categoryId,
-//            code = info.code,
-//            name = info.name,
-//            parentId = info.parentId,
-//            icon = info.icon,
-//            background = info.background,
-//            sort = info.sort
-//        )
-//    }
 
 }
