@@ -361,6 +361,36 @@ Maven 仓库需要在 `gradle.properties` 中配置阿里云凭证：
           }
           ```
 
+    8. **创建 HTTP 测试文件**
+        - 实现控制器方法后，创建/更新对应的 `.http` 文件用于测试
+        - 位置：`only-danmuku-adapter/src/test/kotlin/edu/only4/danmuku/adapter/portal/api/`
+        - 文件命名：`控制器名.http`（例如，`AdminCategoryController.http`）
+        - 环境配置：`only-danmuku-adapter/src/test/resources/http-client.env.json`
+        - 示例结构：
+          ```http
+          ### 方法描述
+          POST {{host}}/admin/category/loadCategory
+          Content-Type: application/json
+
+          {
+            "parentId": null
+          }
+
+          ### 获取分类树
+          POST {{host}}/admin/category/loadCategory
+          Content-Type: application/json
+
+          {
+            "convert2Tree": true
+          }
+          ```
+        - **最佳实践**：
+            - 使用描述性注释分组相关测试用例（`### 描述`）
+            - 使用来自 `http-client.env.json` 的环境变量 `{{host}}`
+            - 为每个端点提供示例请求体
+            - 按控制器功能组织测试用例
+            - **注意**：这些是用于快速 API 验证的冒烟测试，不是完整的测试套件
+
    **实现工作流总结：**
     - 步骤 1：识别所需的命令和查询
     - 步骤 2：检查现有聚合，仅为缺失功能在 `design/extra/` 中添加新定义，运行 `./gradlew codegen` 生成代码
@@ -369,6 +399,7 @@ Maven 仓库需要在 `gradle.properties` 中配置阿里云凭证：
     - 步骤 5：通过 Mediator 调用实现控制器层
     - 步骤 6：将处理器实现留待下次迭代
     - 步骤 7：单独实现处理器业务逻辑（未来步骤）
+    - 步骤 8：为控制器端点创建/更新 HTTP 测试文件
 
 3. **使用聚合：**
     - 聚合根扩展带 `Agg*` 前缀的生成基类

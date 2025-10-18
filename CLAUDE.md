@@ -358,6 +358,36 @@ When adding new features, create design JSON files in `design/` with `_gen.json`
           }
           ```
 
+    8. **Create HTTP Test File**
+        - After implementing a controller method, create/update the corresponding `.http` file for testing
+        - Location: `only-danmuku-adapter/src/test/kotlin/edu/only4/danmuku/adapter/portal/api/`
+        - File naming: `ControllerName.http` (e.g., `AdminCategoryController.http`)
+        - Environment configuration: `only-danmuku-adapter/src/test/resources/http-client.env.json`
+        - Example structure:
+          ```http
+          ### Method description
+          POST {{host}}/admin/category/loadCategory
+          Content-Type: application/json
+
+          {
+            "parentId": null
+          }
+
+          ### Get category tree
+          POST {{host}}/admin/category/loadCategory
+          Content-Type: application/json
+
+          {
+            "convert2Tree": true
+          }
+          ```
+        - **Best Practices**:
+            - Group related test cases with descriptive comments (`### Description`)
+            - Use environment variable `{{host}}` from `http-client.env.json`
+            - Provide example request bodies for each endpoint
+            - Keep test cases organized by controller functionality
+            - **Note**: These are smoke tests for quick API verification, not comprehensive test suites
+
    **Implementation Workflow Summary:**
     - Step 1: Identify required commands and queries
     - Step 2: Check existing aggregates, only add new definitions in `design/extra/` for missing functionality, run `./gradlew codegen` to generate code
@@ -366,6 +396,7 @@ When adding new features, create design JSON files in `design/` with `_gen.json`
     - Step 5: Implement Controller layer with Mediator calls
     - Step 6: Leave Handler implementations for next iteration
     - Step 7: Implement Handler business logic separately (future step)
+    - Step 8: Create/update HTTP test file for the controller endpoint
 
 3. **Working with Aggregates:**
     - Aggregate roots extend generated base classes with `Agg*` prefix
