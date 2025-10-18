@@ -13,21 +13,26 @@ object VideoLoadPList {
      * 请求参数
      */
     data class Request(
-        /**
-         * 视频ID
-         */
-
+        /** 视频ID */
         @field:NotEmpty(message = "视频ID不能为空")
         val videoId: String = ""
     )
 
     /**
-     * 响应结果
+     * 响应结果 - 视频文件列表
      */
     data class Response(
-        /**
-         * 分片文件列表
-         */
-        var list: List<Any>? = null
+        /** 分片文件列表 */
+        var list: List<FileItem>? = null
+    )
+
+    data class FileItem(
+        var fileId: String? = null,
+        var videoId: String? = null,
+        var fileIndex: Int? = null,
+        var fileName: String? = null,
+        var fileSize: Long? = null,
+        var filePath: String? = null,
+        var duration: Int? = null
     )
 }

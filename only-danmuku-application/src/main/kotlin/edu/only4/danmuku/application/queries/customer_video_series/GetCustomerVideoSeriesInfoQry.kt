@@ -11,10 +11,38 @@ import com.only4.cap4k.ddd.core.application.RequestParam
  */
 object GetCustomerVideoSeriesInfoQry {
 
-    class Request(
-
+    data class Request(
+        /** 系列ID */
+        val seriesId: Long
     ) : RequestParam<Response>
 
-    class Response(
+    data class Response(
+        /** 系列ID */
+        val seriesId: Long,
+        /** 用户ID */
+        val userId: Long,
+        /** 系列名称 */
+        val seriesName: String? = null,
+        /** 系列描述 */
+        val seriesDescription: String? = null,
+        /** 系列排序 */
+        val sort: Int? = null,
+        /** 创建时间 */
+        val createTime: Long,
+        /** 视频列表 */
+        val videoList: List<VideoItem>? = null
+    )
+
+    data class VideoItem(
+        /** 视频ID */
+        val videoId: Long,
+        /** 视频封面 */
+        val videoCover: String? = null,
+        /** 视频名称 */
+        val videoName: String? = null,
+        /** 播放数 */
+        val playCount: Int? = null,
+        /** 系列内排序 */
+        val sort: Int? = null
     )
 }

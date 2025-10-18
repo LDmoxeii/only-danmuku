@@ -8,19 +8,10 @@ package edu.only4.danmuku.adapter.portal.api.payload
 object VideoGetSearchKeywordTop {
 
     /**
-     * 请求参数
-     */
-    class Request {
-        // 无请求参数
-    }
-
-    /**
-     * 响应结果
+     * 响应结果 - 热门关键词列表
      */
     data class Response(
-        /**
-         * 热门关键词列表
-         */
-        var list: List<Any>? = null
+        /** 热门关键词列表 */
+        var list: List<String>? = null
     )
 }

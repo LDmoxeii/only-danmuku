@@ -13,27 +13,30 @@ object VideoGetRecommend {
      * 请求参数
      */
     data class Request(
-        /**
-         * 关键词
-         */
-
+        /** 关键词 */
         @field:NotEmpty(message = "关键词不能为空")
         val keyword: String = "",
-        /**
-         * 当前视频ID(排除)
-         */
-
+        /** 当前视频ID(排除) */
         @field:NotEmpty(message = "当前视频ID(排除)不能为空")
         val videoId: String = ""
     )
 
     /**
-     * 响应结果
+     * 响应结果 - 推荐视频列表
      */
     data class Response(
-        /**
-         * 推荐视频列表
-         */
-        var list: List<Any>? = null
+        /** 推荐视频列表 */
+        var list: List<VideoItem>? = null
+    )
+
+    data class VideoItem(
+        var videoId: String? = null,
+        var videoCover: String? = null,
+        var videoName: String? = null,
+        var userId: String? = null,
+        var nickName: String? = null,
+        var avatar: String? = null,
+        var playCount: Int? = null,
+        var likeCount: Int? = null
     )
 }

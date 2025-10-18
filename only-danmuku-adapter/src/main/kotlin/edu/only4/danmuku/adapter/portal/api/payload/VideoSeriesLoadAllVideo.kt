@@ -12,6 +12,13 @@ object VideoSeriesLoadAllVideo {
 
     data class Response(
         /** 视频列表 */
-        var list: List<Any>? = null
+        var list: List<VideoItem>? = null
+    )
+
+    data class VideoItem(
+        var videoId: String? = null,
+        var videoCover: String? = null,
+        var videoName: String? = null,
+        var playCount: Int? = null
     )
 }

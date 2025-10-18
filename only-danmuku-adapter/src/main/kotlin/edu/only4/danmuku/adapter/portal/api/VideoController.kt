@@ -1,8 +1,15 @@
 package edu.only4.danmuku.adapter.portal.api
 
+import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.adapter.portal.api.payload.*
+import edu.only4.danmuku.application.queries.video.*
+import edu.only4.danmuku.application.queries.video_file.GetVideoFilesByVideoIdQry
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 /**
  * 视频浏览控制器 - 处理视频列表加载、搜索、详情查看等操作
@@ -18,8 +25,27 @@ class VideoController {
      */
     @GetMapping("/loadRecommendVideo")
     fun videoLoadRecommend(): VideoLoadRecommend.Response {
-        // TODO: 实现加载推荐视频逻辑
-        return VideoLoadRecommend.Response()
+        // 调用查询获取推荐视频列表
+        val videoList = Mediator.queries.send(GetRecommendVideosQry.Request())
+
+        return VideoLoadRecommend.Response(
+            list = videoList.map { video ->
+                VideoLoadRecommend.VideoItem(
+                    videoId = video.videoId.toString(),
+                    videoCover = video.videoCover,
+                    videoName = video.videoName,
+                    userId = video.userId.toString(),
+                    nickName = video.nickName,
+                    avatar = video.avatar,
+                    playCount = video.playCount,
+                    likeCount = video.likeCount,
+                    createTime = LocalDateTime.ofInstant(
+                        Instant.ofEpochMilli(video.createTime),
+                        ZoneId.systemDefault()
+                    ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+                )
+            }
+        )
     }
 
     /**
@@ -31,8 +57,40 @@ class VideoController {
      */
     @PostMapping("/loadVideo")
     fun videoLoad(@RequestBody request: VideoLoad.Request): VideoLoad.Response {
-        // TODO: 实现加载视频列表(按分类)逻辑
-        return VideoLoad.Response()
+        // 如果父分类ID和分类ID都为空，显示非推荐视频
+        val recommendType = if (request.categoryId == null && request.pCategoryId == null) 0 else null
+
+        // 构建查询请求
+        val queryRequest = GetVideosByCategoryQry.Request(
+            pCategoryId = request.pCategoryId,
+            categoryId = request.categoryId,
+            recommendType = recommendType
+        ).apply {
+            pageNum = request.pageNo ?: 1
+        }
+
+        val queryResult = Mediator.queries.send(queryRequest)
+
+        return VideoLoad.Response(
+            list = queryResult.list.map { video ->
+                VideoLoad.VideoItem(
+                    videoId = video.videoId.toString(),
+                    videoCover = video.videoCover,
+                    videoName = video.videoName,
+                    userId = video.userId.toString(),
+                    nickName = video.nickName,
+                    avatar = video.avatar,
+                    playCount = video.playCount,
+                    likeCount = video.likeCount,
+                    createTime = LocalDateTime.ofInstant(
+                        Instant.ofEpochMilli(video.createTime),
+                        ZoneId.systemDefault()
+                    ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+                )
+            },
+            pageNo = queryResult.pageNum,
+            totalCount = queryResult.totalCount
+        )
     }
 
     /**
@@ -42,8 +100,24 @@ class VideoController {
      */
     @PostMapping("/loadVideoPList")
     fun videoLoadPList(@RequestBody @Validated request: VideoLoadPList.Request): VideoLoadPList.Response {
-        // TODO: 实现加载视频分片列表逻辑
-        return VideoLoadPList.Response()
+        // 调用查询获取视频文件列表
+        val fileList = Mediator.queries.send(
+            GetVideoFilesByVideoIdQry.Request(videoId = request.videoId.toLong())
+        )
+
+        return VideoLoadPList.Response(
+            list = fileList.map { file ->
+                VideoLoadPList.FileItem(
+                    fileId = file.fileId.toString(),
+                    videoId = file.videoId.toString(),
+                    fileIndex = file.fileIndex,
+                    fileName = file.fileName,
+                    fileSize = file.fileSize,
+                    filePath = file.filePath,
+                    duration = file.duration
+                )
+            }
+        )
     }
 
     /**
@@ -53,8 +127,45 @@ class VideoController {
      */
     @PostMapping("/getVideoInfo")
     fun videoGetInfo(@RequestBody @Validated request: VideoGetInfo.Request): VideoGetInfo.Response {
-        // TODO: 实现获取视频详情逻辑
-        return VideoGetInfo.Response()
+        // TODO: 从上下文获取当前用户ID
+        val currentUserId: Long? = null // 临时设为null表示未登录
+
+        // 调用查询获取视频详情
+        val videoInfo = Mediator.queries.send(
+            GetVideoInfoQry.Request(videoId = request.videoId.toLong())
+        )
+
+        // 如果用户已登录，查询用户对该视频的行为
+        val userActionList = mutableListOf<VideoGetInfo.UserAction>()
+        if (currentUserId != null) {
+            // TODO: 实现查询用户行为逻辑 (点赞、收藏、投币)
+            // 需要创建 GetUserActionsByVideoIdQry 查询
+        }
+
+        return VideoGetInfo.Response(
+            videoInfo = VideoGetInfo.VideoInfo(
+                videoId = videoInfo.videoId.toString(),
+                videoCover = videoInfo.videoCover,
+                videoName = videoInfo.videoName,
+                userId = videoInfo.userId.toString(),
+                nickName = videoInfo.nickName,
+                avatar = videoInfo.avatar,
+                introduction = videoInfo.introduction,
+                interaction = videoInfo.interaction,
+                duration = videoInfo.duration,
+                playCount = videoInfo.playCount,
+                likeCount = videoInfo.likeCount,
+                danmuCount = videoInfo.danmuCount,
+                commentCount = videoInfo.commentCount,
+                coinCount = videoInfo.coinCount,
+                collectCount = videoInfo.collectCount,
+                createTime = LocalDateTime.ofInstant(
+                    Instant.ofEpochMilli(videoInfo.createTime),
+                    ZoneId.systemDefault()
+                ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+            ),
+            userActionList = userActionList
+        )
     }
 
     /**
@@ -65,8 +176,34 @@ class VideoController {
      */
     @PostMapping("/getVideoRecommend")
     fun videoGetRecommend(@RequestBody @Validated request: VideoGetRecommend.Request): VideoGetRecommend.Response {
-        // TODO: 实现获取推荐视频(基于关键词)逻辑
-        return VideoGetRecommend.Response()
+        // 调用搜索查询获取相关视频(最多10个)
+        val queryRequest = SearchVideosQry.Request(
+            videoNameFuzzy = request.keyword,
+            status = null
+        ).apply {
+            pageNum = 1
+            pageSize = 10
+        }
+
+        val queryResult = Mediator.queries.send(queryRequest)
+
+        // 过滤掉当前视频
+        val filteredList = queryResult.list.filter { it.videoId.toString() != request.videoId }
+
+        return VideoGetRecommend.Response(
+            list = filteredList.map { video ->
+                VideoGetRecommend.VideoItem(
+                    videoId = video.videoId.toString(),
+                    videoCover = video.videoCover,
+                    videoName = video.videoName,
+                    userId = video.userId.toString(),
+                    nickName = video.nickName,
+                    avatar = video.avatar,
+                    playCount = video.playCount,
+                    likeCount = video.likeCount
+                )
+            }
+        )
     }
 
     /**
@@ -78,7 +215,9 @@ class VideoController {
     @PostMapping("/reportVideoPlayOnline")
     fun videoReportPlayOnline(@RequestBody @Validated request: VideoReportPlayOnline.Request): VideoReportPlayOnline.Response {
         // TODO: 实现上报在线播放数逻辑
-        return VideoReportPlayOnline.Response()
+        // 需要通过Redis记录在线播放设备
+        // 暂时返回0
+        return VideoReportPlayOnline.Response(count = 0)
     }
 
     /**
@@ -90,8 +229,40 @@ class VideoController {
      */
     @PostMapping("/search")
     fun videoSearch(@RequestBody @Validated request: VideoSearch.Request): VideoSearch.Response {
-        // TODO: 实现搜索视频逻辑
-        return VideoSearch.Response()
+        // TODO: 实现记录搜索关键词到Redis用于热词统计
+        // redisComponent.addKeywordCount(request.keyword)
+
+        // 调用搜索查询
+        val queryRequest = SearchVideosQry.Request(
+            videoNameFuzzy = request.keyword,
+            status = null
+        ).apply {
+            pageNum = request.pageNo ?: 1
+            pageSize = 30
+        }
+
+        val queryResult = Mediator.queries.send(queryRequest)
+
+        return VideoSearch.Response(
+            list = queryResult.list.map { video ->
+                VideoSearch.VideoItem(
+                    videoId = video.videoId.toString(),
+                    videoCover = video.videoCover,
+                    videoName = video.videoName,
+                    userId = video.userId.toString(),
+                    nickName = video.nickName,
+                    avatar = video.avatar,
+                    playCount = video.playCount,
+                    likeCount = video.likeCount,
+                    createTime = LocalDateTime.ofInstant(
+                        Instant.ofEpochMilli(video.createTime),
+                        ZoneId.systemDefault()
+                    ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+                )
+            },
+            pageNo = queryResult.pageNum,
+            totalCount = queryResult.totalCount
+        )
     }
 
     /**
@@ -100,8 +271,10 @@ class VideoController {
      */
     @GetMapping("/getSearchKeywordTop")
     fun videoGetSearchKeywordTop(): VideoGetSearchKeywordTop.Response {
-        // TODO: 实现获取热门搜索关键词逻辑
-        return VideoGetSearchKeywordTop.Response()
+        // TODO: 实现从Redis获取热门搜索关键词逻辑
+        // redisComponent.getKeywordTop(10)
+        // 暂时返回空列表
+        return VideoGetSearchKeywordTop.Response(list = emptyList())
     }
 
     /**
@@ -111,8 +284,33 @@ class VideoController {
      */
     @PostMapping("/loadHotVideoList")
     fun videoLoadHot(@RequestBody request: VideoLoadHot.Request): VideoLoadHot.Response {
-        // TODO: 实现加载热门视频列表(24小时内)逻辑
-        return VideoLoadHot.Response()
+        // 调用查询获取热门视频列表
+        val queryRequest = GetHotVideosQry.Request(lastPlayHour = 24).apply {
+            pageNum = request.pageNo ?: 1
+        }
+
+        val queryResult = Mediator.queries.send(queryRequest)
+
+        return VideoLoadHot.Response(
+            list = queryResult.list.map { video ->
+                VideoLoadHot.VideoItem(
+                    videoId = video.videoId.toString(),
+                    videoCover = video.videoCover,
+                    videoName = video.videoName,
+                    userId = video.userId.toString(),
+                    nickName = video.nickName,
+                    avatar = video.avatar,
+                    playCount = video.playCount,
+                    likeCount = video.likeCount,
+                    createTime = LocalDateTime.ofInstant(
+                        Instant.ofEpochMilli(video.createTime),
+                        ZoneId.systemDefault()
+                    ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+                )
+            },
+            pageNo = queryResult.pageNum,
+            totalCount = queryResult.totalCount
+        )
     }
 
 }

@@ -26,7 +26,11 @@ object UpdateCustomerVideoSeriesSortCmd {
 
     }
 
-    class Request(
+    data class Request(
+        /** 用户ID */
+        val userId: Long,
+        /** 系列ID列表(逗号分隔，按顺序) */
+        val seriesIds: String
     ) : RequestParam<Response>
 
     class Response(

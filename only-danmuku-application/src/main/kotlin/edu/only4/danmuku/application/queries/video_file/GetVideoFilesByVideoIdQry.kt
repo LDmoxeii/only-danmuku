@@ -11,10 +11,25 @@ import com.only4.cap4k.ddd.core.application.RequestParam
  */
 object GetVideoFilesByVideoIdQry {
 
-    class Request(
+    data class Request(
+        /** 视频ID */
+        val videoId: Long
+    ) : RequestParam<List<Response>>
 
-    ) : RequestParam<Response>
-
-    class Response(
+    data class Response(
+        /** 文件ID */
+        val fileId: Long,
+        /** 视频ID */
+        val videoId: Long,
+        /** 文件索引 */
+        val fileIndex: Int,
+        /** 文件名 */
+        val fileName: String? = null,
+        /** 文件大小 */
+        val fileSize: Long? = null,
+        /** 文件路径 */
+        val filePath: String? = null,
+        /** 视频时长(秒) */
+        val duration: Int? = null
     )
 }

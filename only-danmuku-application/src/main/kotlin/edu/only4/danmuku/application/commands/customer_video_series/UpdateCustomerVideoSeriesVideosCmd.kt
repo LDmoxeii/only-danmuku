@@ -26,7 +26,15 @@ object UpdateCustomerVideoSeriesVideosCmd {
 
     }
 
-    class Request(
+    data class Request(
+        /** 用户ID */
+        val userId: Long,
+        /** 系列ID */
+        val seriesId: Long,
+        /** 视频ID列表(逗号分隔) - 可用于添加或删除 */
+        val videoIds: String? = null,
+        /** 是否删除操作 */
+        val isDelete: Boolean = false
     ) : RequestParam<Response>
 
     class Response(

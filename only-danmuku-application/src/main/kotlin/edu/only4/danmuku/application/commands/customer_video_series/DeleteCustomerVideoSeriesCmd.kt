@@ -26,7 +26,11 @@ object DeleteCustomerVideoSeriesCmd {
 
     }
 
-    class Request(
+    data class Request(
+        /** 用户ID */
+        val userId: Long,
+        /** 系列ID */
+        val seriesId: Long
     ) : RequestParam<Response>
 
     class Response(

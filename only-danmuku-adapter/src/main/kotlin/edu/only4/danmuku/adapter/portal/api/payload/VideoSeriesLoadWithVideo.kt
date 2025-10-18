@@ -9,13 +9,27 @@ object VideoSeriesLoadWithVideo {
 
     data class Request(
         /** 用户ID */
-
         @field:NotEmpty(message = "用户ID不能为空")
         val userId: String = ""
     )
 
     data class Response(
         /** 系列列表(包含视频) */
-        var list: List<Any>? = null
+        var list: List<SeriesWithVideo>? = null
+    )
+
+    data class SeriesWithVideo(
+        var seriesId: String? = null,
+        var seriesName: String? = null,
+        var seriesDescription: String? = null,
+        var sort: Int? = null,
+        var videoList: List<VideoItem>? = null
+    )
+
+    data class VideoItem(
+        var videoId: String? = null,
+        var videoCover: String? = null,
+        var videoName: String? = null,
+        var playCount: Int? = null
     )
 }

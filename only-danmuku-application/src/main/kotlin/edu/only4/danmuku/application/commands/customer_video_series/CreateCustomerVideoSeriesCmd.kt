@@ -26,7 +26,17 @@ object CreateCustomerVideoSeriesCmd {
 
     }
 
-    class Request(
+    data class Request(
+        /** 用户ID */
+        val userId: Long,
+        /** 系列ID(更新时传) */
+        val seriesId: Long? = null,
+        /** 系列名称 */
+        val seriesName: String,
+        /** 系列描述 */
+        val seriesDescription: String? = null,
+        /** 视频ID列表(逗号分隔) */
+        val videoIds: String? = null
     ) : RequestParam<Response>
 
     class Response(

@@ -11,10 +11,26 @@ import com.only4.cap4k.ddd.core.application.RequestParam
  */
 object GetRecommendVideosQry {
 
-    class Request(
+    class Request : RequestParam<List<Response>>
 
-    ) : RequestParam<Response>
-
-    class Response(
+    data class Response(
+        /** 视频ID */
+        val videoId: Long,
+        /** 视频封面 */
+        val videoCover: String? = null,
+        /** 视频名称 */
+        val videoName: String? = null,
+        /** 作者ID */
+        val userId: Long,
+        /** 作者昵称 */
+        val nickName: String? = null,
+        /** 作者头像 */
+        val avatar: String? = null,
+        /** 播放数 */
+        val playCount: Int? = null,
+        /** 点赞数 */
+        val likeCount: Int? = null,
+        /** 创建时间 */
+        val createTime: Long
     )
 }

@@ -10,5 +10,5 @@ object UHomeSaveTheme {
         val theme: Int? = null
     )
 
-    class Response
+    class Response()
 }

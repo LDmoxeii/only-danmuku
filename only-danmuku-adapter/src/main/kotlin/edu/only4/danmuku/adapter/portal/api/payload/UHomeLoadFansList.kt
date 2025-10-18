@@ -1,19 +1,21 @@
 package edu.only4.danmuku.adapter.portal.api.payload
 
+import com.only4.cap4k.ddd.core.share.PageParam
+
 /**
  * 加载粉丝列表接口载荷
  */
 object UHomeLoadFansList {
 
     data class Request(
-        /** 页码 */
-        val pageNo: Int? = null
-    )
+        val userId: String? = null
+    ) : PageParam()
 
-    data class Response(
-        /** 粉丝列表 */
-        var list: List<Any>? = null,
-        var pageNo: Int? = null,
-        var totalCount: Int? = null
+    data class UserItem(
+        var userId: String? = null,
+        var nickName: String? = null,
+        var avatar: String? = null,
+        var fansCount: Int? = null,
+        var haveFocus: Boolean? = null
     )
 }

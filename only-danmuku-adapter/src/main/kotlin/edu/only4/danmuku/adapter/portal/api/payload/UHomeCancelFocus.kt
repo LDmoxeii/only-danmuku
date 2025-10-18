@@ -9,10 +9,9 @@ object UHomeCancelFocus {
 
     data class Request(
         /** 被取消关注用户ID */
-
         @field:NotEmpty(message = "被取消关注用户ID不能为空")
         val focusUserId: String = ""
     )
 
-    class Response
+    class Response()
 }

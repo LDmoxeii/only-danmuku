@@ -8,19 +8,22 @@ package edu.only4.danmuku.adapter.portal.api.payload
 object VideoLoadRecommend {
 
     /**
-     * 请求参数
-     */
-    class Request {
-        // 无请求参数
-    }
-
-    /**
-     * 响应结果
+     * 响应结果 - 返回推荐视频列表
      */
     data class Response(
-        /**
-         * 推荐视频列表
-         */
-        var list: List<Any>? = null
+        /** 推荐视频列表 */
+        var list: List<VideoItem>? = null
+    )
+
+    data class VideoItem(
+        var videoId: String? = null,
+        var videoCover: String? = null,
+        var videoName: String? = null,
+        var userId: String? = null,
+        var nickName: String? = null,
+        var avatar: String? = null,
+        var playCount: Int? = null,
+        var likeCount: Int? = null,
+        var createTime: String? = null
     )
 }
