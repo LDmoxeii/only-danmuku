@@ -20,8 +20,7 @@ object PostCommentCmd {
         override fun exec(request: Request): Response {
             Mediator.uow.save()
 
-            return Response(
-            )
+            return TODO()
         }
 
     }
