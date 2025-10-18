@@ -373,12 +373,199 @@ When adding new features, create design JSON files in `design/` with `_gen.json`
     - Domain events are raised within aggregates
     - Use factories for complex creation logic
 
-4. **Testing:**
+4. **Implementing QueryHandlers with Jimmer ORM:**
+
+   When implementing QueryHandlers in the CQRS read side using Jimmer, follow this workflow:
+
+    1. **Define Jimmer Entity Interface**
+        - Location: `only-danmuku-application/src/main/kotlin/.../application/queries/_share/model/`
+        - Create Kotlin interface with `@Entity` annotation
+        - Use `@Table(name = "table_name")` to map to database table
+        - Example:
+          ```kotlin
+          @Table(name = "category")
+          @Entity
+          interface JCategory {
+              @Id
+              val id: Long
+              val code: String
+              val name: String
+
+              // Self-referencing relationship for tree structure
+              @OneToMany(mappedBy = "parent")
+              val children: List<JCategory>
+
+              @ManyToOne
+              @JoinColumn(name = "parent_id", foreignKeyType = ForeignKeyType.FAKE)
+              val parent: JCategory?
+
+              @IdView("parent")  // Access parent's ID without loading parent entity
+              val parentId: Long?
+          }
+          ```
+        - **Important**: For self-referencing entities with nullable foreign keys:
+            - Use `ForeignKeyType.FAKE` to allow special values (e.g., `parent_id = 0`)
+            - Use `@IdView` to access foreign key IDs through associations
+            - Match nullability between association and `@IdView` property
+
+    2. **Define DTO Using Jimmer DTO Language**
+        - Location: `only-danmuku-application/src/main/dto/`
+        - Create `.dto` file with Jimmer DTO Language syntax
+        - Export entity and define DTO structures
+        - Example (`Category.dto`):
+          ```dto
+          export edu.only4.danmuku.application.queries._share.model.JCategory
+              -> package edu.only4.danmuku.application.queries._share.draft
+
+          /**
+           * Category tree structure DTO
+           */
+          CategoryTreeNode {
+              id
+              parentId
+              code
+              name
+              icon
+              background
+
+              // Recursive loading (use * for recursion)
+              children*
+          }
+
+          CategorySimple {
+              id
+              code
+              name
+          }
+          ```
+        - **Syntax Rules**:
+            - Use explicit field names (no macros like `#allScalars`)
+            - Recursive syntax: `children*` (no nested field definition)
+            - Package export uses `-> package target.package`
+
+    3. **Run KSP Code Generation**
+        - Execute: `./gradlew :only-danmuku-application:kspKotlin`
+        - Or: `./gradlew build` (includes KSP processing)
+        - Generated DTO classes: `build/generated/ksp/main/kotlin/.../draft/`
+        - Generated DTOs are immutable data classes with `View<T>` interface
+        - **Common Errors**:
+            - ❌ KSP syntax error: Check DTO syntax, use explicit fields
+            - ❌ Missing `@IdView`: Add annotation for foreign key access
+            - ❌ Nullable mismatch: Match nullability of association and `@IdView`
+
+    4. **Implement QueryHandler Using DTO Projection**
+        - Location: `only-danmuku-adapter/src/main/kotlin/.../adapter/application/queries/`
+        - Inject `KSqlClient` from Jimmer
+        - Use `sqlClient.findAll(DtoClass::class)` for direct DTO queries
+        - Example:
+          ```kotlin
+          @Service
+          class GetCategoryTreeQryHandler(
+              private val sqlClient: KSqlClient
+          ) : ListQuery<GetCategoryTreeQry.Request, GetCategoryTreeQry.Response> {
+
+              override fun exec(request: GetCategoryTreeQry.Request): List<GetCategoryTreeQry.Response> {
+                  // Direct DTO query with filtering
+                  val readModel = sqlClient.findAll(CategoryTreeNode::class) {
+                      where(table.parentId eq 0L)
+                  }
+
+                  // Transform to query response
+                  return readModel.map { readModelToResponse(it) }
+              }
+
+              private fun readModelToResponse(dto: CategoryTreeNode): GetCategoryTreeQry.Response {
+                  return GetCategoryTreeQry.Response(
+                      categoryId = dto.id,
+                      code = dto.code,
+                      name = dto.name,
+                      children = dto.children?.map { readModelToResponse(it) } ?: emptyList()
+                  )
+              }
+          }
+          ```
+        - **Best Practices**:
+            - ✅ Use `sqlClient.findAll(DtoClass::class)` for DTO projection
+            - ✅ DTO projection avoids `UnloadedException`
+            - ✅ All DTO fields are automatically loaded via METADATA
+            - ✅ Use `eq?` operator for optional filtering (handles null gracefully)
+            - ❌ Avoid using Fetcher objects in CQRS (no reuse scenarios)
+            - ❌ Do NOT use `findList()` (doesn't exist in Jimmer API)
+        - **Optional Filtering Pattern**:
+          ```kotlin
+          // ❌ BAD: Verbose if-else branching
+          val result = if (request.parentId != null) {
+              sqlClient.findAll(CategorySimple::class) {
+                  where(table.parentId eq request.parentId)
+                  orderBy(table.sort.asc())
+              }
+          } else {
+              sqlClient.findAll(CategorySimple::class) {
+                  orderBy(table.sort.asc())
+              }
+          }
+
+          // ✅ GOOD: Use eq? operator for null-safe filtering
+          val result = sqlClient.findAll(CategorySimple::class) {
+              where(table.parentId `eq?` request.parentId)  // Ignores condition if null
+              orderBy(table.sort.asc())
+          }
+          ```
+        - **Jimmer Null-Safe Operators**:
+            - `eq?` - Equals or ignore if null
+            - `ne?` - Not equals or ignore if null
+            - `like?` - Like or ignore if null
+            - `gt?`, `ge?`, `lt?`, `le?` - Comparison or ignore if null
+            - These operators automatically skip the condition when the value is null
+        - **Required Imports for Jimmer Queries**:
+
+          Jimmer generates extension properties for entity fields via KSP. These **must be explicitly imported**:
+          ```kotlin
+          import org.babyfish.jimmer.sql.kt.KSqlClient
+          import org.babyfish.jimmer.sql.kt.ast.expression.eq
+          import org.babyfish.jimmer.sql.kt.ast.expression.`eq?`  // Null-safe equals
+          import org.babyfish.jimmer.sql.kt.ast.expression.asc   // For sorting
+          import org.babyfish.jimmer.sql.kt.ast.expression.desc  // For sorting
+          import edu.only4.danmuku.application.queries._share.model.fieldName  // Generated field extensions
+          ```
+        - **Common Import Errors**:
+            - ❌ **Error**: `Unresolved reference 'asc'` when using `orderBy(table.sort.asc())`
+            - ✅ **Solution**: Import `org.babyfish.jimmer.sql.kt.ast.expression.asc`
+            - ❌ **Error**: `Unresolved reference 'sort'` when accessing `table.sort`
+            - ✅ **Solution**: Import field extension from model package (e.g., `edu.only4.danmuku.application.queries._share.model.sort`)
+            - **Important**: You need BOTH the field extension AND the sorting function imports
+
+    5. **Test and Verify**
+        - Create test data in design SQL files (`design/aggregate/*/table.sql`)
+        - Run the application: `./gradlew :only-danmuku-start:bootRun`
+        - Test API endpoint via Swagger UI: `http://localhost:8081/swagger-ui.html`
+        - Verify recursive loading for tree structures
+        - Check generated SQL in logs
+
+   **Jimmer QueryHandler Architecture Decision:**
+   - In CQRS architecture, each QueryHandler has unique requirements
+   - **Do NOT create predefined Fetcher objects** (no reuse scenarios)
+   - Use direct DTO queries in handlers: `sqlClient.findAll(DtoClass::class)`
+   - DTO Language approach is preferred over Kotlin Fetcher DSL
+   - Keep query logic simple and maintainable
+
+   **Common Errors and Solutions:**
+
+   | Error | Cause | Solution |
+   |-------|-------|----------|
+   | `KSP failed with exit code: PROCESSING_ERROR` | Invalid DTO syntax | Use explicit fields, fix recursive syntax `children*` |
+   | `Illegal property, please add @IdView` | Missing annotation for FK | Add `@IdView("association")` |
+   | `Property is not nullable but association is nullable` | Nullability mismatch | Match `@IdView` nullability with association |
+   | `The property is nullable, but DB column is nonnull` | DB constraint conflict | Use `foreignKeyType = ForeignKeyType.FAKE` |
+   | `UnloadedException: property is unloaded` | Using Fetcher without loading field | Use DTO projection instead of Fetcher |
+   | `Unresolved reference 'findList'` | Wrong API method | Use `findAll(DtoClass::class)` instead |
+
+5. **Testing:**
     - Test configuration in `buildSrc/src/main/kotlin/kotlin-jvm.gradle.kts`
     - JUnit 5 with 10-minute timeout
     - JVM args: `-Xmx2g -Xms512m`
 
-5. **Convention Plugin:**
+6. **Convention Plugin:**
     - Shared build logic in `buildSrc/`
     - Convention: `buildsrc.convention.kotlin-jvm`
     - Applies Kotlin JVM, Spring, and JPA plugins

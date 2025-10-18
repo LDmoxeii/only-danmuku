@@ -376,12 +376,199 @@ Maven 仓库需要在 `gradle.properties` 中配置阿里云凭证：
     - 领域事件在聚合内引发
     - 对复杂的创建逻辑使用工厂
 
-4. **测试：**
+4. **使用 Jimmer ORM 实现 QueryHandler：**
+
+   在 CQRS 读端使用 Jimmer 实现 QueryHandler 时，遵循以下工作流：
+
+    1. **定义 Jimmer 实体接口**
+        - 位置：`only-danmuku-application/src/main/kotlin/.../application/queries/_share/model/`
+        - 创建带 `@Entity` 注解的 Kotlin 接口
+        - 使用 `@Table(name = "表名")` 映射到数据库表
+        - 示例：
+          ```kotlin
+          @Table(name = "category")
+          @Entity
+          interface JCategory {
+              @Id
+              val id: Long
+              val code: String
+              val name: String
+
+              // 树形结构的自关联关系
+              @OneToMany(mappedBy = "parent")
+              val children: List<JCategory>
+
+              @ManyToOne
+              @JoinColumn(name = "parent_id", foreignKeyType = ForeignKeyType.FAKE)
+              val parent: JCategory?
+
+              @IdView("parent")  // 无需加载 parent 实体即可访问其 ID
+              val parentId: Long?
+          }
+          ```
+        - **重要**：对于带可空外键的自关联实体：
+            - 使用 `ForeignKeyType.FAKE` 允许特殊值（例如，`parent_id = 0`）
+            - 使用 `@IdView` 通过关联访问外键 ID
+            - 确保关联和 `@IdView` 属性的可空性一致
+
+    2. **使用 Jimmer DTO 语言定义 DTO**
+        - 位置：`only-danmuku-application/src/main/dto/`
+        - 使用 Jimmer DTO 语言语法创建 `.dto` 文件
+        - 导出实体并定义 DTO 结构
+        - 示例（`Category.dto`）：
+          ```dto
+          export edu.only4.danmuku.application.queries._share.model.JCategory
+              -> package edu.only4.danmuku.application.queries._share.draft
+
+          /**
+           * 分类树形结构 DTO
+           */
+          CategoryTreeNode {
+              id
+              parentId
+              code
+              name
+              icon
+              background
+
+              // 递归加载（使用 * 表示递归）
+              children*
+          }
+
+          CategorySimple {
+              id
+              code
+              name
+          }
+          ```
+        - **语法规则**：
+            - 使用显式字段名（不使用 `#allScalars` 等宏）
+            - 递归语法：`children*`（不需要嵌套字段定义）
+            - 包导出使用 `-> package 目标包`
+
+    3. **运行 KSP 代码生成**
+        - 执行：`./gradlew :only-danmuku-application:kspKotlin`
+        - 或：`./gradlew build`（包含 KSP 处理）
+        - 生成的 DTO 类：`build/generated/ksp/main/kotlin/.../draft/`
+        - 生成的 DTO 是实现 `View<T>` 接口的不可变数据类
+        - **常见错误**：
+            - ❌ KSP 语法错误：检查 DTO 语法，使用显式字段
+            - ❌ 缺少 `@IdView`：为外键访问添加注解
+            - ❌ 可空性不匹配：匹配关联和 `@IdView` 的可空性
+
+    4. **使用 DTO 投影实现 QueryHandler**
+        - 位置：`only-danmuku-adapter/src/main/kotlin/.../adapter/application/queries/`
+        - 注入 Jimmer 的 `KSqlClient`
+        - 使用 `sqlClient.findAll(DtoClass::class)` 进行直接 DTO 查询
+        - 示例：
+          ```kotlin
+          @Service
+          class GetCategoryTreeQryHandler(
+              private val sqlClient: KSqlClient
+          ) : ListQuery<GetCategoryTreeQry.Request, GetCategoryTreeQry.Response> {
+
+              override fun exec(request: GetCategoryTreeQry.Request): List<GetCategoryTreeQry.Response> {
+                  // 带过滤条件的直接 DTO 查询
+                  val readModel = sqlClient.findAll(CategoryTreeNode::class) {
+                      where(table.parentId eq 0L)
+                  }
+
+                  // 转换为查询响应
+                  return readModel.map { readModelToResponse(it) }
+              }
+
+              private fun readModelToResponse(dto: CategoryTreeNode): GetCategoryTreeQry.Response {
+                  return GetCategoryTreeQry.Response(
+                      categoryId = dto.id,
+                      code = dto.code,
+                      name = dto.name,
+                      children = dto.children?.map { readModelToResponse(it) } ?: emptyList()
+                  )
+              }
+          }
+          ```
+        - **最佳实践**：
+            - ✅ 使用 `sqlClient.findAll(DtoClass::class)` 进行 DTO 投影
+            - ✅ DTO 投影避免 `UnloadedException`
+            - ✅ 所有 DTO 字段通过 METADATA 自动加载
+            - ✅ 使用 `eq?` 操作符进行可选过滤（优雅处理 null 值）
+            - ❌ 在 CQRS 中避免使用 Fetcher 对象（无复用场景）
+            - ❌ 不要使用 `findList()`（Jimmer API 中不存在）
+        - **可选过滤模式**：
+          ```kotlin
+          // ❌ 不好：冗长的 if-else 分支
+          val result = if (request.parentId != null) {
+              sqlClient.findAll(CategorySimple::class) {
+                  where(table.parentId eq request.parentId)
+                  orderBy(table.sort.asc())
+              }
+          } else {
+              sqlClient.findAll(CategorySimple::class) {
+                  orderBy(table.sort.asc())
+              }
+          }
+
+          // ✅ 好：使用 eq? 操作符进行空安全过滤
+          val result = sqlClient.findAll(CategorySimple::class) {
+              where(table.parentId `eq?` request.parentId)  // null 时忽略该条件
+              orderBy(table.sort.asc())
+          }
+          ```
+        - **Jimmer 空安全操作符**：
+            - `eq?` - 相等或 null 时忽略
+            - `ne?` - 不等或 null 时忽略
+            - `like?` - 模糊匹配或 null 时忽略
+            - `gt?`, `ge?`, `lt?`, `le?` - 比较或 null 时忽略
+            - 这些操作符在值为 null 时自动跳过该条件
+        - **Jimmer 查询必需的导入**：
+
+          Jimmer 通过 KSP 为实体字段生成扩展属性。这些**必须显式导入**：
+          ```kotlin
+          import org.babyfish.jimmer.sql.kt.KSqlClient
+          import org.babyfish.jimmer.sql.kt.ast.expression.eq
+          import org.babyfish.jimmer.sql.kt.ast.expression.`eq?`  // 空安全相等
+          import org.babyfish.jimmer.sql.kt.ast.expression.asc   // 排序
+          import org.babyfish.jimmer.sql.kt.ast.expression.desc  // 排序
+          import edu.only4.danmuku.application.queries._share.model.fieldName  // 生成的字段扩展
+          ```
+        - **常见导入错误**：
+            - ❌ **错误**：使用 `orderBy(table.sort.asc())` 时提示 `Unresolved reference 'asc'`
+            - ✅ **解决**：导入 `org.babyfish.jimmer.sql.kt.ast.expression.asc`
+            - ❌ **错误**：访问 `table.sort` 时提示 `Unresolved reference 'sort'`
+            - ✅ **解决**：从 model 包导入字段扩展（例如：`edu.only4.danmuku.application.queries._share.model.sort`）
+            - **重要**：你需要同时导入字段扩展和排序函数
+
+    5. **测试和验证**
+        - 在设计 SQL 文件中创建测试数据（`design/aggregate/*/table.sql`）
+        - 运行应用程序：`./gradlew :only-danmuku-start:bootRun`
+        - 通过 Swagger UI 测试 API 端点：`http://localhost:8081/swagger-ui.html`
+        - 验证树形结构的递归加载
+        - 检查日志中生成的 SQL
+
+   **Jimmer QueryHandler 架构决策：**
+   - 在 CQRS 架构中，每个 QueryHandler 都有独特的需求
+   - **不要创建预定义的 Fetcher 对象**（无复用场景）
+   - 在处理器中使用直接 DTO 查询：`sqlClient.findAll(DtoClass::class)`
+   - DTO 语言方法优于 Kotlin Fetcher DSL
+   - 保持查询逻辑简单和可维护
+
+   **常见错误及解决方案：**
+
+   | 错误 | 原因 | 解决方案 |
+   |------|------|---------|
+   | `KSP failed with exit code: PROCESSING_ERROR` | DTO 语法无效 | 使用显式字段，修复递归语法 `children*` |
+   | `Illegal property, please add @IdView` | 外键缺少注解 | 添加 `@IdView("关联属性")` |
+   | `Property is not nullable but association is nullable` | 可空性不匹配 | 匹配 `@IdView` 与关联的可空性 |
+   | `The property is nullable, but DB column is nonnull` | 数据库约束冲突 | 使用 `foreignKeyType = ForeignKeyType.FAKE` |
+   | `UnloadedException: property is unloaded` | 使用 Fetcher 但未加载字段 | 使用 DTO 投影代替 Fetcher |
+   | `Unresolved reference 'findList'` | 错误的 API 方法 | 使用 `findAll(DtoClass::class)` 代替 |
+
+5. **测试：**
     - 测试配置在 `buildSrc/src/main/kotlin/kotlin-jvm.gradle.kts`
     - JUnit 5，10 分钟超时
     - JVM 参数：`-Xmx2g -Xms512m`
 
-5. **约定插件：**
+6. **约定插件：**
     - `buildSrc/` 中的共享构建逻辑
     - 约定：`buildsrc.convention.kotlin-jvm`
     - 应用 Kotlin JVM、Spring 和 JPA 插件

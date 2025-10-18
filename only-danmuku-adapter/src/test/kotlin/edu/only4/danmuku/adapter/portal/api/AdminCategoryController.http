@@ -1,0 +1,7 @@
+### 获取所有分类
+POST {{host}}/admin/category/loadCategory
+Content-Type: application/json
+
+{
+  "convert2Tree": false
+}
