@@ -1,6 +1,9 @@
 package edu.only4.danmuku.adapter.application.queries.user
 
+import com.only4.cap4k.ddd.core.application.query.PageQuery
+import com.only4.cap4k.ddd.core.application.query.PageQueryParam
 import com.only4.cap4k.ddd.core.application.query.Query
+import com.only4.cap4k.ddd.core.share.PageData
 
 import edu.only4.danmuku.application.queries.user.GetUsersByStatusQry
 
@@ -15,12 +18,10 @@ import org.springframework.stereotype.Service
  */
 @Service
 class GetUsersByStatusQryHandler(
-) : Query<GetUsersByStatusQry.Request, GetUsersByStatusQry.Response> {
+) : PageQuery<GetUsersByStatusQry.Request, GetUsersByStatusQry.UserItem> {
 
-    override fun exec(request: GetUsersByStatusQry.Request): GetUsersByStatusQry.Response {
+    override fun exec(request: GetUsersByStatusQry.Request): PageData<GetUsersByStatusQry.UserItem> {
 
-        return GetUsersByStatusQry.Response(
-
-        )
+        return TODO()
     }
 }

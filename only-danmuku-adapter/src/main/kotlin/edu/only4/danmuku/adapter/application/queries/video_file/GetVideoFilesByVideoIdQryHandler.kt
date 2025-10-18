@@ -1,5 +1,6 @@
 package edu.only4.danmuku.adapter.application.queries.video_file
 
+import com.only4.cap4k.ddd.core.application.query.ListQuery
 import com.only4.cap4k.ddd.core.application.query.Query
 
 import edu.only4.danmuku.application.queries.video_file.GetVideoFilesByVideoIdQry
@@ -15,12 +16,10 @@ import org.springframework.stereotype.Service
  */
 @Service
 class GetVideoFilesByVideoIdQryHandler(
-) : Query<GetVideoFilesByVideoIdQry.Request, GetVideoFilesByVideoIdQry.Response> {
+) : ListQuery<GetVideoFilesByVideoIdQry.Request, GetVideoFilesByVideoIdQry.Response> {
 
-    override fun exec(request: GetVideoFilesByVideoIdQry.Request): GetVideoFilesByVideoIdQry.Response {
+    override fun exec(request: GetVideoFilesByVideoIdQry.Request): List<GetVideoFilesByVideoIdQry.Response> {
 
-        return GetVideoFilesByVideoIdQry.Response(
-
-        )
+        return listOf()
     }
 }

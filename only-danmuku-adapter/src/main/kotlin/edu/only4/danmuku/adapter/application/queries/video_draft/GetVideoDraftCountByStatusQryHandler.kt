@@ -19,8 +19,6 @@ class GetVideoDraftCountByStatusQryHandler(
 
     override fun exec(request: GetVideoDraftCountByStatusQry.Request): GetVideoDraftCountByStatusQry.Response {
 
-        return GetVideoDraftCountByStatusQry.Response(
-
-        )
+        return TODO()
     }
 }

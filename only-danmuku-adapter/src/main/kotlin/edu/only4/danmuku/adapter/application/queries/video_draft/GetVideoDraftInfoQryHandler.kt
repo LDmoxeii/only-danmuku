@@ -19,8 +19,6 @@ class GetVideoDraftInfoQryHandler(
 
     override fun exec(request: GetVideoDraftInfoQry.Request): GetVideoDraftInfoQry.Response {
 
-        return GetVideoDraftInfoQry.Response(
-
-        )
+        return TODO()
     }
 }

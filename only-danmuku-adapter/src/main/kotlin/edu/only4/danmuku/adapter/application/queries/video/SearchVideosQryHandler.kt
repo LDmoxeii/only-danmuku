@@ -1,6 +1,8 @@
 package edu.only4.danmuku.adapter.application.queries.video
 
+import com.only4.cap4k.ddd.core.application.query.PageQuery
 import com.only4.cap4k.ddd.core.application.query.Query
+import com.only4.cap4k.ddd.core.share.PageData
 
 import edu.only4.danmuku.application.queries.video.SearchVideosQry
 
@@ -15,12 +17,10 @@ import org.springframework.stereotype.Service
  */
 @Service
 class SearchVideosQryHandler(
-) : Query<SearchVideosQry.Request, SearchVideosQry.Response> {
+) : PageQuery<SearchVideosQry.Request, SearchVideosQry.Response> {
 
-    override fun exec(request: SearchVideosQry.Request): SearchVideosQry.Response {
+    override fun exec(request: SearchVideosQry.Request): PageData<SearchVideosQry.Response> {
 
-        return SearchVideosQry.Response(
-
-        )
+        return TODO()
     }
 }

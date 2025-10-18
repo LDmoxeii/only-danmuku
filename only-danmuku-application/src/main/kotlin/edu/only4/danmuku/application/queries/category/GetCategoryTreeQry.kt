@@ -1,6 +1,7 @@
 package edu.only4.danmuku.application.queries.category
 
 import com.only4.cap4k.ddd.core.application.RequestParam
+import com.only4.cap4k.ddd.core.application.query.ListQueryParam
 
 /**
  * 获取分类树形结构
@@ -11,12 +12,7 @@ import com.only4.cap4k.ddd.core.application.RequestParam
  */
 object GetCategoryTreeQry {
 
-    class Request : RequestParam<Response>
-
-    data class Response(
-        /** 分类树形结构列表，只包含顶级分类，子分类嵌套在children中 */
-        val categoryTree: List<CategoryTreeNode> = emptyList()
-    )
+    class Request : ListQueryParam<CategoryTreeNode>
 
     /**
      * 分类树节点

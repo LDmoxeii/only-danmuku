@@ -19,9 +19,7 @@ class GetCustomerVideoSeriesListQryHandler(
 
     override fun exec(request: GetCustomerVideoSeriesListQry.Request): List<GetCustomerVideoSeriesListQry.Response> {
 
-        return listOf(GetCustomerVideoSeriesListQry.Response(
-
-        ))
+        return listOf()
 
     }
 }

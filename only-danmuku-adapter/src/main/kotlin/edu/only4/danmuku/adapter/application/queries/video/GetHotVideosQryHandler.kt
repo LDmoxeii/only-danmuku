@@ -1,9 +1,7 @@
 package edu.only4.danmuku.adapter.application.queries.video
 
-import com.only4.cap4k.ddd.core.application.query.Query
-
+import com.only4.cap4k.ddd.core.application.query.ListQuery
 import edu.only4.danmuku.application.queries.video.GetHotVideosQry
-
 import org.springframework.stereotype.Service
 
 /**
@@ -15,12 +13,10 @@ import org.springframework.stereotype.Service
  */
 @Service
 class GetHotVideosQryHandler(
-) : Query<GetHotVideosQry.Request, GetHotVideosQry.Response> {
+) : ListQuery<GetHotVideosQry.Request, GetHotVideosQry.Response> {
 
-    override fun exec(request: GetHotVideosQry.Request): GetHotVideosQry.Response {
+    override fun exec(request: GetHotVideosQry.Request): List<GetHotVideosQry.Response> {
 
-        return GetHotVideosQry.Response(
-
-        )
+        return listOf()
     }
 }

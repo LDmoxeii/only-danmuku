@@ -19,8 +19,6 @@ class GetVideoPlayFilesQryHandler(
 
     override fun exec(request: GetVideoPlayFilesQry.Request): GetVideoPlayFilesQry.Response {
 
-        return GetVideoPlayFilesQry.Response(
-
-        )
+        return TODO()
     }
 }

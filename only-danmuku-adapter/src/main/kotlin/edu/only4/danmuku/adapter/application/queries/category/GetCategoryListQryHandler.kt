@@ -19,9 +19,7 @@ class GetCategoryListQryHandler(
 
     override fun exec(request: GetCategoryListQry.Request): List<GetCategoryListQry.Response> {
 
-        return listOf(GetCategoryListQry.Response(
-
-        ))
+        return listOf()
 
     }
 }

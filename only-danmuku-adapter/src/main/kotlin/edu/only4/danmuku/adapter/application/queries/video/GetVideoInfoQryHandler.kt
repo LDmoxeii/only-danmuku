@@ -19,8 +19,6 @@ class GetVideoInfoQryHandler(
 
     override fun exec(request: GetVideoInfoQry.Request): GetVideoInfoQry.Response {
 
-        return GetVideoInfoQry.Response(
-
-        )
+        return TODO()
     }
 }

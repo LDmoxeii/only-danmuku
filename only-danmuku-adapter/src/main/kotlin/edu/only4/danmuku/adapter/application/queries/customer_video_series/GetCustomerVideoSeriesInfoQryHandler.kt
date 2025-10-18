@@ -19,8 +19,6 @@ class GetCustomerVideoSeriesInfoQryHandler(
 
     override fun exec(request: GetCustomerVideoSeriesInfoQry.Request): GetCustomerVideoSeriesInfoQry.Response {
 
-        return GetCustomerVideoSeriesInfoQry.Response(
-
-        )
+        return TODO()
     }
 }

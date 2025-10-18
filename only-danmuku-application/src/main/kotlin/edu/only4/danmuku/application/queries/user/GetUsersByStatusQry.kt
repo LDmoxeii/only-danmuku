@@ -16,9 +16,9 @@ object GetUsersByStatusQry {
         val nickNameFuzzy: String? = null,
         /** 用户状态: 0-禁用 1-正常 */
         val status: Int? = null
-    ) : PageQueryParam<Response>()
+    ) : PageQueryParam<UserItem>()
 
-    data class Response(
+    data class UserItem(
         /** 用户ID */
         val userId: Long,
         /** 邮箱 */

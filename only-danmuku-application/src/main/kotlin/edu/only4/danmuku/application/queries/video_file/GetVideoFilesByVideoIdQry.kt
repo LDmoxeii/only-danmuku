@@ -1,6 +1,7 @@
 package edu.only4.danmuku.application.queries.video_file
 
 import com.only4.cap4k.ddd.core.application.RequestParam
+import com.only4.cap4k.ddd.core.application.query.ListQueryParam
 
 /**
  * 根据视频ID获取文件列表
@@ -14,7 +15,7 @@ object GetVideoFilesByVideoIdQry {
     data class Request(
         /** 视频ID */
         val videoId: Long
-    ) : RequestParam<List<Response>>
+    ) : ListQueryParam<Response>
 
     data class Response(
         /** 文件ID */
