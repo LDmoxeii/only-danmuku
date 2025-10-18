@@ -19,21 +19,35 @@ object VideoCommentPageQry {
     data class Response(
         /** 评论ID */
         val commentId: Long,
+        /** 父评论ID */
+        val parentCommentId: Long,
         /** 视频ID */
         val videoId: Long,
         /** 视频名称 */
-        val videoName: String? = null,
+        val videoName: String,
+        /** 视频封面 */
+        val videoCover: String,
         /** 评论内容 */
         val content: String? = null,
+        /** 评论图片路径 */
+        val imgPath: String? = null,
         /** 用户ID */
         val customerId: Long,
         /** 用户昵称 */
-        val customerNickname: String? = null,
+        val customerNickname: String,
+        /** 用户头像 */
+        val customerAvatar: String? = null,
+        /** 回复用户ID */
+        val replyCustomerId: Long? = null,
+        /** 回复用户昵称 */
+        val replyCustomerNickname: String? = null,
         /** 发布时间 */
         val postTime: Long,
         /** 点赞数 */
         val likeCount: Int? = 0,
+        /** 讨厌数 */
+        val hateCount: Int? = 0,
         /** 是否置顶 */
-        val topType: Byte? = 0
+        val topType: Byte? = 0,
     )
 }

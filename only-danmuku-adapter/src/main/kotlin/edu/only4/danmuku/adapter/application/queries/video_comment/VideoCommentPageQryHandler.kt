@@ -2,9 +2,15 @@ package edu.only4.danmuku.adapter.application.queries.video_comment
 
 import com.only4.cap4k.ddd.core.application.query.PageQuery
 import com.only4.cap4k.ddd.core.share.PageData
-
+import edu.only4.danmuku.application.queries._share.draft.CommentPageItem
+import edu.only4.danmuku.application.queries._share.model.JVideoComment
+import edu.only4.danmuku.application.queries._share.model.postTime
+import edu.only4.danmuku.application.queries._share.model.video
+import edu.only4.danmuku.application.queries._share.model.videoName
 import edu.only4.danmuku.application.queries.video_comment.VideoCommentPageQry
-
+import org.babyfish.jimmer.sql.kt.KSqlClient
+import org.babyfish.jimmer.sql.kt.ast.expression.desc
+import org.babyfish.jimmer.sql.kt.ast.expression.`ilike?`
 import org.springframework.stereotype.Service
 
 /**
@@ -16,9 +22,48 @@ import org.springframework.stereotype.Service
  */
 @Service
 class VideoCommentPageQryHandler(
+    private val sqlClient: KSqlClient,
 ) : PageQuery<VideoCommentPageQry.Request, VideoCommentPageQry.Response> {
 
     override fun exec(request: VideoCommentPageQry.Request): PageData<VideoCommentPageQry.Response> {
-        TODO()
+        // 使用 Jimmer 查询评论分页数据，使用 DTO 投影
+        val pageResult = sqlClient.createQuery(JVideoComment::class) {
+            // 视频名称模糊查询（可选）
+            where(table.video.videoName `ilike?` request.videoNameFuzzy)
+            // 按发布时间倒序排列
+            orderBy(table.postTime.desc())
+            // DTO 投影
+            select(table.fetch(CommentPageItem::class))
+        }.fetchPage(request.pageNum - 1, request.pageSize)
+
+        // 将 DTO 转换为查询响应
+        val responseList = pageResult.rows.map { item ->
+            VideoCommentPageQry.Response(
+                commentId = item.id,
+                parentCommentId = item.parentId,
+                videoId = item.videoId,
+                videoName = item.video.videoName,
+                videoCover = item.video.videoCover,
+                content = item.content,
+                imgPath = item.imgPath,
+                customerId = item.customerId,
+                customerNickname = item.customer.nickName,
+                customerAvatar = item.customer.avatar,
+                replyCustomerId = item.replyCustomer?.id,
+                replyCustomerNickname = item.replyCustomer?.nickName,
+                postTime = item.postTime,
+                likeCount = item.likeCount,
+                hateCount = item.hateCount,
+                topType = item.topType
+            )
+        }
+
+        // 返回分页结果
+        return PageData.create(
+            pageNum = request.pageNum,
+            pageSize = request.pageSize,
+            list = responseList,
+            totalCount = pageResult.totalRowCount
+        )
     }
 }

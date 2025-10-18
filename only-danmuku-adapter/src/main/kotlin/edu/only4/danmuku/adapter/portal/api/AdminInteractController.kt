@@ -95,6 +95,7 @@ class AdminInteractController {
         ).apply {
             pageNum = request.pageNum
             pageSize = request.pageSize
+            sort.addAll(request.sort)
         }
 
 
@@ -107,22 +108,22 @@ class AdminInteractController {
             list = queryResult.list.map { comment ->
                 AdminInteractLoadComment.Response(
                     commentId = comment.commentId,
-                    pCommentId = null, // VideoCommentPageQry.Response 中没有 pCommentId 字段
+                    pCommentId = comment.parentCommentId,
                     videoId = comment.videoId.toString(),
                     videoName = comment.videoName,
-                    videoCover = null, // VideoCommentPageQry.Response 中没有 videoCover 字段
+                    videoCover = comment.videoCover,
                     userId = comment.customerId.toString(),
                     nickName = comment.customerNickname,
-                    avatar = null, // VideoCommentPageQry.Response 中没有 avatar 字段
-                    replyUserId = null, // VideoCommentPageQry.Response 中没有 replyUserId 字段
-                    replyNickName = null, // VideoCommentPageQry.Response 中没有 replyNickName 字段
+                    avatar = comment.customerAvatar,
+                    replyUserId = comment.replyCustomerId?.toString(),
+                    replyNickName = comment.replyCustomerNickname,
                     content = comment.content,
-                    imgPath = null, // VideoCommentPageQry.Response 中没有 imgPath 字段
+                    imgPath = comment.imgPath,
                     topType = comment.topType?.toInt(),
                     likeCount = comment.likeCount,
-                    hateCount = null, // VideoCommentPageQry.Response 中没有 hateCount 字段
+                    hateCount = comment.hateCount,
                     postTime = LocalDateTime.ofInstant(
-                        Instant.ofEpochMilli(comment.postTime),
+                        Instant.ofEpochSecond(comment.postTime),
                         ZoneId.systemDefault()
                     )
                 )

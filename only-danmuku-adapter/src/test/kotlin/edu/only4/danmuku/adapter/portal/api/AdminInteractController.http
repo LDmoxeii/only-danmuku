@@ -13,3 +13,14 @@ Content-Type: application/json
     }
   ]
 }
+
+### 评论列表
+POST {{host}}/admin/interact/loadComment
+Content-Type: application/json
+
+{
+  "videoNameFuzzy": "Kotlin",
+  "pageNum": 1,
+  "pageSize": 2,
+  "sort": []
+}
