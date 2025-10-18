@@ -1,0 +1,15 @@
+### 视频弹幕列表
+POST {{host}}/admin/interact/loadDanmu
+Content-Type: application/json
+
+{
+  "videoNameFuzzy": "",
+  "pageNum": 1,
+  "pageSize": 2,
+  "sort": [
+    {
+      "field": "postTime",
+      "desc": false
+    }
+  ]
+}

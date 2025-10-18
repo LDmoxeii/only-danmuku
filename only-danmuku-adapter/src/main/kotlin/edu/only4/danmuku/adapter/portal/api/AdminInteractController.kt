@@ -30,14 +30,17 @@ class AdminInteractController {
     /**
      * 加载弹幕列表(分页)
      */
-    @PostMapping("/loadDanmuku")
+    @PostMapping("/loadDanmu")
     fun adminInteractLoadDanmuku(@RequestBody request: AdminInteractLoadDanmuku.Request): PageData<AdminInteractLoadDanmuku.Response> {
         // 调用查询获取弹幕分页列表
         val queryRequest = GetDanmukuPageQry.Request(
             videoNameFuzzy = request.videoNameFuzzy
-        )
-        request.pageNum?.let { queryRequest.pageNum = it }
-        request.pageSize?.let { queryRequest.pageSize = it }
+        ).apply {
+            pageNum = request.pageNum
+            pageSize = request.pageSize
+            sort.addAll(request.sort)
+        }
+
 
         val queryResult = Mediator.queries.send(queryRequest)
 

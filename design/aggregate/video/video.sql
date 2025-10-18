@@ -37,3 +37,30 @@ CREATE TABLE `video`
     CHARACTER SET = utf8mb4
     COLLATE = utf8mb4_general_ci COMMENT = '视频信息;@Spe;@Fac;'
     ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Test data for video
+-- ----------------------------
+INSERT INTO video (id, customer_id, video_cover, video_name, p_category_id, category_id, post_type, origin_info, tags,
+                   introduction, interaction, duration, play_count, like_count, danmuku_count, comment_count,
+                   coin_count, collect_count, recommend_type, last_play_time, create_user_id, create_by, create_time,
+                   update_user_id, update_by, update_time, deleted)
+VALUES (1001, 2001, 'cover_kotlin.jpg', 'Kotlin 入门教程', 1, 101, 1, NULL, 'Kotlin,编程,入门',
+        '从零开始学习Kotlin编程语言', '111', 1800, 5280, 326, 3, 45, 28, 156, 2, '2024-10-20 10:30:00', 2001,
+        'user_zhang', 1729267200, 2001, 'user_zhang', 1729353600, 0);
+
+INSERT INTO video (id, customer_id, video_cover, video_name, p_category_id, category_id, post_type, origin_info, tags,
+                   introduction, interaction, duration, play_count, like_count, danmuku_count, comment_count,
+                   coin_count, collect_count, recommend_type, last_play_time, create_user_id, create_by, create_time,
+                   update_user_id, update_by, update_time, deleted)
+VALUES (1002, 2002, 'cover_spring.jpg', 'Spring Boot 实战', 1, 101, 1, NULL, 'Spring Boot,Java,后端',
+        'Spring Boot微服务开发实战课程', '111', 2400, 8650, 542, 2, 67, 42, 289, 2, '2024-10-20 11:00:00', 2002,
+        'user_li', 1729270800, 2002, 'user_li', 1729354200, 0);
+
+INSERT INTO video (id, customer_id, video_cover, video_name, p_category_id, category_id, post_type, origin_info, tags,
+                   introduction, interaction, duration, play_count, like_count, danmuku_count, comment_count,
+                   coin_count, collect_count, recommend_type, last_play_time, create_user_id, create_by, create_time,
+                   update_user_id, update_by, update_time, deleted)
+VALUES (1003, 2003, 'cover_mysql.jpg', 'MySQL 优化技巧', 1, 102, 1, NULL, 'MySQL,数据库,优化',
+        '深入讲解MySQL数据库性能优化技巧', '111', 3600, 12300, 856, 3, 103, 68, 421, 2, '2024-10-20 14:30:00', 2003,
+        'user_wang', 1729280800, 2003, 'user_wang', 1729356600, 0);

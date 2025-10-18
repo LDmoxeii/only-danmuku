@@ -32,3 +32,34 @@ CREATE TABLE `customer_profile`
     COLLATE = utf8mb4_general_ci COMMENT = '用户信息;@Spe;@Fac;'
     ROW_FORMAT = Dynamic;
 
+-- ----------------------------
+-- Test data for customer_profile
+-- ----------------------------
+INSERT INTO customer_profile (id, nick_name, avatar, email, sex, birthday, school, person_introduction, notice_info,
+                              total_coin_count, current_coin_count, theme, create_user_id, create_by, create_time,
+                              update_user_id, update_by, update_time, deleted)
+VALUES (2001, '张三的编程日记', 'avatar_zhang.jpg', 'zhangsan@example.com', 2, '1995-06-15', '清华大学',
+        '热爱编程，专注于Kotlin和Spring Boot开发', '欢迎来到我的空间！', 500, 320, 2, 2001, 'user_zhang', 1729180800,
+        2001, 'user_zhang', 1729353600, 0);
+
+INSERT INTO customer_profile (id, nick_name, avatar, email, sex, birthday, school, person_introduction, notice_info,
+                              total_coin_count, current_coin_count, theme, create_user_id, create_by, create_time,
+                              update_user_id, update_by, update_time, deleted)
+VALUES (2002, '李四学Java', 'avatar_li.jpg', 'lisi@example.com', 2, '1998-03-22', '北京大学',
+        'Java后端工程师，喜欢分享技术', '一起学习，共同进步！', 800, 650, 1, 2002, 'user_li', 1729184400, 2002, 'user_li',
+        1729354200, 0);
+
+INSERT INTO customer_profile (id, nick_name, avatar, email, sex, birthday, school, person_introduction, notice_info,
+                              total_coin_count, current_coin_count, theme, create_user_id, create_by, create_time,
+                              update_user_id, update_by, update_time, deleted)
+VALUES (2003, '王五的数据库笔记', 'avatar_wang.jpg', 'wangwu@example.com', 1, '1996-11-08', '复旦大学',
+        'DBA，专注数据库性能优化', '分享数据库优化经验', 1200, 980, 2, 2003, 'user_wang', 1729188000, 2003, 'user_wang',
+        1729356600, 0);
+
+INSERT INTO customer_profile (id, nick_name, avatar, email, sex, birthday, school, person_introduction, notice_info,
+                              total_coin_count, current_coin_count, theme, create_user_id, create_by, create_time,
+                              update_user_id, update_by, update_time, deleted)
+VALUES (2004, '赵六看技术', 'avatar_zhao.jpg', 'zhaoliu@example.com', 2, '1997-09-30', '浙江大学',
+        '全栈开发者，喜欢学习新技术', '技术改变世界！', 600, 420, 3, 2004, 'user_zhao', 1729191600, 2004, 'user_zhao',
+        1729357800, 0);
+

@@ -13,8 +13,9 @@ object GetDanmukuPageQry {
 
     data class Request(
         /** 视频名称模糊查询 */
-        val videoNameFuzzy: String? = null
-    ) : PageQueryParam<Response>()
+        val videoNameFuzzy: String? = null,
+
+        ) : PageQueryParam<Response>()
 
     data class Response(
         /** 弹幕ID */
