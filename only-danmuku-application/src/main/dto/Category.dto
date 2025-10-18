@@ -1,15 +1,6 @@
 export edu.only4.danmuku.application.queries._share.model.JCategory
     -> package edu.only4.danmuku.application.queries._share.draft
 
-/**
- * 分类树形结构 DTO
- * 用于 GetCategoryTreeQry 查询返回
- *
- * 特性：
- * 1. 自动递归加载子分类（使用 children* 语法）
- * 2. 只选择必要的字段，减少数据传输
- * 3. KSP 自动生成完整的 DTO 实现
- */
 CategoryTreeNode {
     id
     parentId
@@ -24,10 +15,6 @@ CategoryTreeNode {
     children*
 }
 
-/**
- * 简单分类信息 DTO
- * 用于列表展示，不包含子分类
- */
 CategorySimple {
     id
     code
@@ -38,10 +25,6 @@ CategorySimple {
     sort
 }
 
-/**
- * 带一级子分类的分类信息
- * 适用于二级分类展示
- */
 CategoryWithChildren {
     id
     code
