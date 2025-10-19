@@ -1,5 +1,5 @@
-export edu.only4.danmuku.application.queries._share.model.JVideo
-    -> package edu.only4.danmuku.application.queries._share.draft
+export edu.only4.danmuku.application.queries._share.model.video.JVideo
+    -> package edu.only4.danmuku.application.queries._share.draft.video
 
 /**
  * 视频搜索查询 DTO

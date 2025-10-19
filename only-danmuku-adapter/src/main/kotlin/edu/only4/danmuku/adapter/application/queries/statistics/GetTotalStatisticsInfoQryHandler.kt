@@ -1,7 +1,7 @@
 package edu.only4.danmuku.adapter.application.queries.statistics
 
 import com.only4.cap4k.ddd.core.application.query.Query
-import edu.only4.danmuku.application.queries._share.draft.PreviousDayStatistics
+import edu.only4.danmuku.application.queries._share.draft.statistics.PreviousDayStatistics
 import edu.only4.danmuku.application.queries.statistics.GetTotalStatisticsInfoQry
 import edu.only4.danmuku.domain.aggregates.statistics.enums.StatisticsDataType
 import org.babyfish.jimmer.sql.kt.KSqlClient

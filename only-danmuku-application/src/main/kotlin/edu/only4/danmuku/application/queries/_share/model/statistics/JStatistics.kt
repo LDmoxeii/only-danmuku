@@ -1,4 +1,4 @@
-package edu.only4.danmuku.application.queries._share.model
+package edu.only4.danmuku.application.queries._share.model.statistics
 
 import org.babyfish.jimmer.sql.Entity
 import org.babyfish.jimmer.sql.Id
@@ -6,12 +6,12 @@ import org.babyfish.jimmer.sql.LogicalDeleted
 import org.babyfish.jimmer.sql.Table
 
 /**
- * Jimmer 用户账号实体
+ * Jimmer 统计信息实体
  * 用于 CQRS 读模型查询
  */
-@Table(name = "user")
+@Table(name = "statistics")
 @Entity
-interface JUser {
+interface JStatistics {
 
     /**
      * ID
@@ -20,44 +20,31 @@ interface JUser {
     val id: Long
 
     /**
-     * 账号类型 (0:未知 1:系统管理员)
+     * 用户ID
      */
-    val type: Byte
+    val customerId: Long
 
     /**
-     * 邮箱
+     * 数据统计类型
+     * 0:UNKNOW:未知类型
+     * 1:VIDEO_VIEW:视频观看
+     * 2:VIDEO_LIKE:视频点赞
+     * 3:VIDEO_COMMENT:视频评论
+     * 4:VIDEO_SHARE:视频分享
+     * 5:USER_FOLLOW:用户关注
+     * 6:USER_LOGIN:用户登录
      */
-    val email: String
+    val dataType: Byte
 
     /**
-     * 密码
+     * 统计数量
      */
-    val password: String
+    val statisticsCount: Int?
 
     /**
-     * 加入时间
+     * 统计日期
      */
-    val joinTime: Long
-
-    /**
-     * 最后登录时间
-     */
-    val lastLoginTime: Long?
-
-    /**
-     * 最后登录IP
-     */
-    val lastLoginIp: String?
-
-    /**
-     * 状态 (0:禁用 1:正常)
-     */
-    val status: Byte
-
-    /**
-     * 关联ID
-     */
-    val relatedId: Int?
+    val statisticsDate: Long
 
     /**
      * 创建人ID

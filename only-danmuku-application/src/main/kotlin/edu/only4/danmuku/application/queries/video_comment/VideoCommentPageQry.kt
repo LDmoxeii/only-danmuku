@@ -12,8 +12,10 @@ import com.only4.cap4k.ddd.core.application.query.PageQueryParam
 object VideoCommentPageQry {
 
     data class Request(
+        /** 视频ID */
+        val videoId: Long? = null,
         /** 视频名称模糊查询 */
-        val videoNameFuzzy: String? = null
+        val videoNameFuzzy: String? = null,
     ) : PageQueryParam<Response>()
 
     data class Response(
@@ -23,6 +25,8 @@ object VideoCommentPageQry {
         val parentCommentId: Long,
         /** 视频ID */
         val videoId: Long,
+        /** 视频作者ID */
+        val videoUserId: Long,
         /** 视频名称 */
         val videoName: String,
         /** 视频封面 */
@@ -49,5 +53,9 @@ object VideoCommentPageQry {
         val hateCount: Int? = 0,
         /** 是否置顶 */
         val topType: Byte? = 0,
+        /** 子评论数量 */
+        val childrenCount: Int = 0,
+        /** 子评论列表 */
+        val children: List<Response>? = null,
     )
 }

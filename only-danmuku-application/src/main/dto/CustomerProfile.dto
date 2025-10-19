@@ -1,5 +1,5 @@
-export edu.only4.danmuku.application.queries._share.model.JCustomerProfile
-    -> package edu.only4.danmuku.application.queries._share.draft
+export edu.only4.danmuku.application.queries._share.model.customer_profile.JCustomerProfile
+    -> package edu.only4.danmuku.application.queries._share.draft.customer_profile
 
 /**
  * 用户档案查询 DTO

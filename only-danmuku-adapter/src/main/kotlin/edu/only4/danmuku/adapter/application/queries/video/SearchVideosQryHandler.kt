@@ -2,11 +2,11 @@ package edu.only4.danmuku.adapter.application.queries.video
 
 import com.only4.cap4k.ddd.core.application.query.PageQuery
 import com.only4.cap4k.ddd.core.share.PageData
-import edu.only4.danmuku.application.queries._share.draft.VideoSearchItem
-import edu.only4.danmuku.application.queries._share.model.JVideo
-import edu.only4.danmuku.application.queries._share.model.createTime
-import edu.only4.danmuku.application.queries._share.model.recommendType
-import edu.only4.danmuku.application.queries._share.model.videoName
+import edu.only4.danmuku.application.queries._share.draft.video.VideoSearchItem
+import edu.only4.danmuku.application.queries._share.model.video.JVideo
+import edu.only4.danmuku.application.queries._share.model.video.createTime
+import edu.only4.danmuku.application.queries._share.model.video.recommendType
+import edu.only4.danmuku.application.queries._share.model.video.videoName
 import edu.only4.danmuku.application.queries.video.SearchVideosQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.desc

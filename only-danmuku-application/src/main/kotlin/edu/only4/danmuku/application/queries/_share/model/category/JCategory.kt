@@ -1,4 +1,4 @@
-package edu.only4.danmuku.application.queries._share.model
+package edu.only4.danmuku.application.queries._share.model.category
 
 import org.babyfish.jimmer.sql.*
 

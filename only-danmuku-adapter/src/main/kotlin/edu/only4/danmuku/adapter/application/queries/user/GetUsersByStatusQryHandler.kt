@@ -2,8 +2,12 @@ package edu.only4.danmuku.adapter.application.queries.user
 
 import com.only4.cap4k.ddd.core.application.query.PageQuery
 import com.only4.cap4k.ddd.core.share.PageData
-import edu.only4.danmuku.application.queries._share.draft.ProfileWithUser
-import edu.only4.danmuku.application.queries._share.model.*
+import edu.only4.danmuku.application.queries._share.draft.customer_profile.ProfileWithUser
+import edu.only4.danmuku.application.queries._share.model.customer_profile.JCustomerProfile
+import edu.only4.danmuku.application.queries._share.model.customer_profile.nickName
+import edu.only4.danmuku.application.queries._share.model.customer_profile.user
+import edu.only4.danmuku.application.queries._share.model.user.joinTime
+import edu.only4.danmuku.application.queries._share.model.user.status
 import edu.only4.danmuku.application.queries.user.GetUsersByStatusQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.desc

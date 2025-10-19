@@ -1,12 +1,8 @@
 package edu.only4.danmuku.adapter.application.queries.video
 
-import com.only4.cap4k.ddd.core.application.query.ListQuery
 import com.only4.cap4k.ddd.core.application.query.PageQuery
-import com.only4.cap4k.ddd.core.application.query.Query
 import com.only4.cap4k.ddd.core.share.PageData
-
 import edu.only4.danmuku.application.queries.video.GetVideosByCategoryQry
-
 import org.springframework.stereotype.Service
 
 /**

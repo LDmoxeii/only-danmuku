@@ -1,5 +1,5 @@
-export edu.only4.danmuku.application.queries._share.model.JCategory
-    -> package edu.only4.danmuku.application.queries._share.draft
+export edu.only4.danmuku.application.queries._share.model.category.JCategory
+    -> package edu.only4.danmuku.application.queries._share.draft.category
 
 CategoryTreeNode {
     id

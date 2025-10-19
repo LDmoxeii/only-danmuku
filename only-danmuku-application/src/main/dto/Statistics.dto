@@ -1,5 +1,5 @@
-export edu.only4.danmuku.application.queries._share.model.JStatistics
-    -> package edu.only4.danmuku.application.queries._share.draft
+export edu.only4.danmuku.application.queries._share.model.statistics.JStatistics
+    -> package edu.only4.danmuku.application.queries._share.draft.statistics
 
 /**
  * 统计信息简单 DTO

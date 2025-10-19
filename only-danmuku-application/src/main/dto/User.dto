@@ -1,5 +1,5 @@
-export edu.only4.danmuku.application.queries._share.model.JUser
-    -> package edu.only4.danmuku.application.queries._share.draft
+export edu.only4.danmuku.application.queries._share.model.user.JUser
+    -> package edu.only4.danmuku.application.queries._share.draft.user
 
 /**
  * 用户列表查询 DTO

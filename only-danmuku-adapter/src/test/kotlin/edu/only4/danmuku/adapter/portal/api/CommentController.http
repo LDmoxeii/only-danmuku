@@ -1,0 +1,9 @@
+### 加载评论列表(分页) - 视频1001的评论
+POST {{host}}/comment/loadComment
+Content-Type: application/json
+
+{
+  "videoId": "1001",
+  "pageNum": 1,
+  "pageSize": 10
+}

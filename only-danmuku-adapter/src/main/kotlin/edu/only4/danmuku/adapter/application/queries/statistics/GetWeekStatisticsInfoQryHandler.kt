@@ -1,13 +1,12 @@
 package edu.only4.danmuku.adapter.application.queries.statistics
 
 import com.only4.cap4k.ddd.core.application.query.ListQuery
-import edu.only4.danmuku.application.queries._share.draft.StatisticsSimple
-import edu.only4.danmuku.application.queries._share.model.dataType
-import edu.only4.danmuku.application.queries._share.model.statisticsDate
+import edu.only4.danmuku.application.queries._share.draft.statistics.StatisticsSimple
+import edu.only4.danmuku.application.queries._share.model.statistics.dataType
+import edu.only4.danmuku.application.queries._share.model.statistics.statisticsDate
 import edu.only4.danmuku.application.queries.statistics.GetWeekStatisticsInfoQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
-import org.babyfish.jimmer.sql.kt.ast.expression.`eq?`
 import org.babyfish.jimmer.sql.kt.ast.expression.ge
 import org.springframework.stereotype.Service
 import java.time.LocalDate

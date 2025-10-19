@@ -48,7 +48,7 @@ class DanmuController {
                 color = danmuku.color,
                 time = danmuku.time,
                 postTime = LocalDateTime.ofInstant(
-                    Instant.ofEpochMilli(danmuku.postTime),
+                    Instant.ofEpochSecond(danmuku.postTime),
                     ZoneId.systemDefault()
                 ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
             )

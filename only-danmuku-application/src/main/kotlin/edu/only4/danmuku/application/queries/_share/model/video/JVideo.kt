@@ -1,5 +1,6 @@
-package edu.only4.danmuku.application.queries._share.model
+package edu.only4.danmuku.application.queries._share.model.video
 
+import edu.only4.danmuku.application.queries._share.model.customer_profile.JCustomerProfile
 import org.babyfish.jimmer.sql.*
 
 /**

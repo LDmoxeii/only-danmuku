@@ -1,10 +1,10 @@
 package edu.only4.danmuku.adapter.application.queries.video
 
 import com.only4.cap4k.ddd.core.application.query.ListQuery
-import edu.only4.danmuku.application.queries._share.draft.VideoFileItem
-import edu.only4.danmuku.application.queries._share.model.JVideoFile
-import edu.only4.danmuku.application.queries._share.model.fileIndex
-import edu.only4.danmuku.application.queries._share.model.videoId
+import edu.only4.danmuku.application.queries._share.draft.video_file.VideoFileItem
+import edu.only4.danmuku.application.queries._share.model.video_file.JVideoFile
+import edu.only4.danmuku.application.queries._share.model.video_file.fileIndex
+import edu.only4.danmuku.application.queries._share.model.video_file.videoId
 import edu.only4.danmuku.application.queries.video.GetVideoPlayFilesQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.asc

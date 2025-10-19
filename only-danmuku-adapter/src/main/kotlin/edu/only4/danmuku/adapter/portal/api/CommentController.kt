@@ -30,10 +30,11 @@ class CommentController {
      * 加载评论列表(分页)
      */
     @PostMapping("/loadComment")
-    fun commentLoad(@RequestBody @Validated request: CommentLoad.Request): PageData<CommentLoad.CommentItem> {
+    fun commentLoad(@RequestBody @Validated request: CommentLoad.Request): PageData<CommentLoad.Response> {
         // 调用查询获取评论分页列表
         val queryRequest = VideoCommentPageQry.Request(
-            videoNameFuzzy = null // 前端按视频ID查询，这里不使用模糊查询
+            videoId = request.videoId.toLong(),
+            videoNameFuzzy = null
         ).apply {
             pageNum = request.pageNum
             pageSize = request.pageSize
@@ -46,28 +47,35 @@ class CommentController {
             pageNum = queryResult.pageNum,
             pageSize = queryResult.pageSize,
             list = queryResult.list.map { comment ->
-                CommentLoad.CommentItem(
-                    commentId = comment.commentId.toString(),
-                    pCommentId = null, // TODO: 从评论数据中获取
-                    videoId = comment.videoId.toString(),
-                    videoUserId = null, // TODO: 从评论数据中获取
-                    content = comment.content,
-                    imgPath = null, // TODO: 从评论数据中获取
-                    userId = comment.customerId.toString(),
-                    nickName = comment.customerNickname,
-                    avatar = null, // TODO: 从评论数据中获取
-                    likeCount = comment.likeCount,
-                    haveLike = null, // TODO: 从评论数据中获取
-                    topType = comment.topType?.toInt(),
-                    postTime = LocalDateTime.ofInstant(
-                        Instant.ofEpochMilli(comment.postTime),
-                        ZoneId.systemDefault()
-                    ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
-                    childrenCount = null, // TODO: 从评论数据中获取
-                    children = null // TODO: 递归获取子评论
-                )
+                toCommentItem(comment)
             },
             totalCount = queryResult.totalCount
+        )
+    }
+
+    /**
+     * 递归转换评论响应为前端格式
+     */
+    private fun toCommentItem(comment: VideoCommentPageQry.Response): CommentLoad.Response {
+        return CommentLoad.Response(
+            commentId = comment.commentId.toString(),
+            pCommentId = comment.parentCommentId.toString(),
+            videoId = comment.videoId.toString(),
+            videoUserId = comment.videoUserId.toString(),
+            content = comment.content,
+            imgPath = comment.imgPath,
+            userId = comment.customerId.toString(),
+            nickName = comment.customerNickname,
+            avatar = comment.customerAvatar,
+            likeCount = comment.likeCount,
+            haveLike = 0, // TODO: 需要查询当前用户是否点赞过该评论
+            topType = comment.topType?.toInt(),
+            postTime = LocalDateTime.ofInstant(
+                Instant.ofEpochSecond(comment.postTime),
+                ZoneId.systemDefault()
+            ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
+            childrenCount = comment.childrenCount,
+            children = comment.children?.map { child -> toCommentItem(child) }
         )
     }
 

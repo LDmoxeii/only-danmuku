@@ -1,7 +1,15 @@
 package edu.only4.danmuku.adapter.application.queries.video_danmuku
 
 import com.only4.cap4k.ddd.core.application.query.ListQuery
+import edu.only4.danmuku.application.queries._share.draft.video_danmuku.DanmukuPageItem
+import edu.only4.danmuku.application.queries._share.model.video_danmuku.JVideoDanmuku
+import edu.only4.danmuku.application.queries._share.model.video_danmuku.fileId
+import edu.only4.danmuku.application.queries._share.model.video_danmuku.time
+import edu.only4.danmuku.application.queries._share.model.video_danmuku.videoId
 import edu.only4.danmuku.application.queries.video_danmuku.GetDanmukuByFileIdQry
+import org.babyfish.jimmer.sql.kt.KSqlClient
+import org.babyfish.jimmer.sql.kt.ast.expression.asc
+import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.springframework.stereotype.Service
 
 /**
@@ -13,15 +21,35 @@ import org.springframework.stereotype.Service
  */
 @Service
 class GetDanmukuByFileIdQryHandler(
+    private val sqlClient: KSqlClient,
 ) : ListQuery<GetDanmukuByFileIdQry.Request, GetDanmukuByFileIdQry.Response> {
 
     override fun exec(request: GetDanmukuByFileIdQry.Request): List<GetDanmukuByFileIdQry.Response> {
+        // 使用 Jimmer 查询弹幕列表
+        val danmukuList = sqlClient.createQuery(JVideoDanmuku::class) {
+            // 按文件ID过滤
+            where(table.fileId eq request.fileId)
+            // 按视频ID过滤
+            where(table.videoId eq request.videoId)
+            // 按弹幕时间（展示时间）排序，保证播放顺序
+            orderBy(table.time.asc())
+            // DTO 投影
+            select(table.fetch(DanmukuPageItem::class))
+        }.execute()
 
-        return listOf(
-            // TODO: 实现根据文件ID获取弹幕逻辑
-//            GetDanmukuByFileIdQry.Response(
-//
-//            )
-        )
+        // 转换为查询响应
+        return danmukuList.map { danmuku ->
+            GetDanmukuByFileIdQry.Response(
+                danmukuId = danmuku.id,
+                fileId = danmuku.fileId,
+                videoId = danmuku.videoId,
+                userId = danmuku.customerId,
+                text = danmuku.text ?: "",
+                mode = danmuku.mode?.toInt() ?: 1, // 默认滚动模式
+                color = danmuku.color ?: "#FFFFFF", // 默认白色
+                time = danmuku.time ?: 0,
+                postTime = danmuku.postTime ?: 0L
+            )
+        }
     }
 }

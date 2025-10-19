@@ -3,11 +3,11 @@ package edu.only4.danmuku.adapter.application.queries.video_danmuku
 import com.only4.cap4k.ddd.core.application.query.PageQuery
 import com.only4.cap4k.ddd.core.share.PageData
 import com.only4.cap4k.ddd.domain.repo.toSpringData
-import edu.only4.danmuku.application.queries._share.draft.DanmukuPageItem
-import edu.only4.danmuku.application.queries._share.model.JVideoDanmuku
-import edu.only4.danmuku.application.queries._share.model.postTime
-import edu.only4.danmuku.application.queries._share.model.video
-import edu.only4.danmuku.application.queries._share.model.videoName
+import edu.only4.danmuku.application.queries._share.draft.video_danmuku.DanmukuPageItem
+import edu.only4.danmuku.application.queries._share.model.video.videoName
+import edu.only4.danmuku.application.queries._share.model.video_danmuku.JVideoDanmuku
+import edu.only4.danmuku.application.queries._share.model.video_danmuku.postTime
+import edu.only4.danmuku.application.queries._share.model.video_danmuku.video
 import edu.only4.danmuku.application.queries.video_danmuku.GetDanmukuPageQry
 import org.babyfish.jimmer.spring.repository.orderBy
 import org.babyfish.jimmer.sql.kt.KSqlClient

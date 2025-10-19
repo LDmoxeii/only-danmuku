@@ -19,7 +19,7 @@ object CommentLoad {
     /**
      * 评论项
      */
-    data class CommentItem(
+    data class Response(
         /** 评论ID */
         var commentId: String? = null,
         /** 父评论ID */
@@ -49,6 +49,6 @@ object CommentLoad {
         /** 子评论数量 */
         var childrenCount: Int? = null,
         /** 子评论列表 */
-        var children: List<CommentItem>? = null
+        var children: List<Response>? = null,
     )
 }

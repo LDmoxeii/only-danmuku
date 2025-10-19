@@ -1,5 +1,5 @@
-export edu.only4.danmuku.application.queries._share.model.JVideoComment
-    -> package edu.only4.danmuku.application.queries._share.draft
+export edu.only4.danmuku.application.queries._share.model.video_comment.JVideoComment
+    -> package edu.only4.danmuku.application.queries._share.draft.video_comment
 
 /**
  * 评论分页查询 DTO
@@ -21,6 +21,7 @@ CommentPageItem {
     video {
         videoName
         videoCover
+        customerId
     }
 
     customer {

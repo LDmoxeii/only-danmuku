@@ -1,0 +1,8 @@
+### 加载弹幕列表 - 视频1001的弹幕
+POST {{host}}/danmu/loadDanmu
+Content-Type: application/json
+
+{
+  "videoId": "1001",
+  "fileId": "3001"
+}

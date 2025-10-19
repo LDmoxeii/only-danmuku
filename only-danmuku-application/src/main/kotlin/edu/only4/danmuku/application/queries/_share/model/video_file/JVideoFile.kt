@@ -1,4 +1,4 @@
-package edu.only4.danmuku.application.queries._share.model
+package edu.only4.danmuku.application.queries._share.model.video_file
 
 import org.babyfish.jimmer.sql.Entity
 import org.babyfish.jimmer.sql.Id
