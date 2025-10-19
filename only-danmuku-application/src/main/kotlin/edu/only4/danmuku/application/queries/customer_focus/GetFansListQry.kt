@@ -1,6 +1,6 @@
 package edu.only4.danmuku.application.queries.customer_focus
 
-import com.only4.cap4k.ddd.core.application.query.ListQueryParam
+import com.only4.cap4k.ddd.core.application.query.PageQueryParam
 
 /**
  * 获取粉丝列表
@@ -11,10 +11,15 @@ import com.only4.cap4k.ddd.core.application.query.ListQueryParam
  */
 object GetFansListQry {
 
-    class Request(
+    data class Request(
+        val userId: Long,
+    ) : PageQueryParam<Response>()
 
-    ) : ListQueryParam<Response>
-
-    class Response(
+    data class Response(
+        val userId: Long,
+        val nickName: String,
+        val avatar: String?,
+        val fansCount: Int = 0,
+        val haveFocus: Boolean = false,
     )
 }

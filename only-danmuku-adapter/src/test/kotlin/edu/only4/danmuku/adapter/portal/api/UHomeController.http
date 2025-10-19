@@ -1,0 +1,76 @@
+### 获取用户信息
+POST {{host}}/uhome/getUserInfo
+Content-Type: application/json
+
+{
+  "userId": "2001"
+}
+
+### 获取其他用户信息（检查关注状态）
+POST {{host}}/uhome/getUserInfo
+Content-Type: application/json
+
+{
+  "userId": "2002"
+}
+
+### 加载关注列表 - 用户 2001
+POST {{host}}/uhome/loadFocusList
+Content-Type: application/json
+
+{
+  "userId": "2001",
+  "pageNum": 1,
+  "pageSize": 10
+}
+
+### 加载粉丝列表 - 用户 2001
+POST {{host}}/uhome/loadFansList
+Content-Type: application/json
+
+{
+  "userId": "2001",
+  "pageNum": 1,
+  "pageSize": 10
+}
+
+### 加载用户视频列表 - 用户 2001
+POST {{host}}/uhome/loadVideoList
+Content-Type: application/json
+
+{
+  "userId": "2001",
+  "pageNum": 1,
+  "pageSize": 10
+}
+
+### 加载用户视频列表（带视频名称模糊查询）
+POST {{host}}/uhome/loadVideoList
+Content-Type: application/json
+
+{
+  "userId": "2001",
+  "videoName": "Kotlin",
+  "pageNum": 1,
+  "pageSize": 10
+}
+
+### 加载用户收藏列表 - 用户 2001
+POST {{host}}/uhome/loadUserCollection
+Content-Type: application/json
+
+{
+  "userId": "2001",
+  "pageNum": 1,
+  "pageSize": 15
+}
+
+### 加载用户收藏列表 - 用户 2002
+POST {{host}}/uhome/loadUserCollection
+Content-Type: application/json
+
+{
+  "userId": "2002",
+  "pageNum": 1,
+  "pageSize": 15
+}

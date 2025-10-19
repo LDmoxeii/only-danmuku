@@ -11,10 +11,22 @@ import com.only4.cap4k.ddd.core.application.RequestParam
  */
 object GetCustomerProfileQry {
 
-    class Request(
-
+    data class Request(
+        val customerId: Long,
     ) : RequestParam<Response>
 
-    class Response(
+    data class Response(
+        val customerId: Long,
+        val nickName: String,
+        val avatar: String?,
+        val sex: Byte,
+        val birthday: String?,
+        val school: String?,
+        val personIntroduction: String?,
+        val noticeInfo: String?,
+        val theme: Byte,
+        val currentCoinCount: Int,
+        val fansCount: Int = 0,
+        val focusCount: Int = 0,
     )
 }

@@ -11,10 +11,12 @@ import com.only4.cap4k.ddd.core.application.RequestParam
  */
 object CheckFocusStatusQry {
 
-    class Request(
-
+    data class Request(
+        val userId: Long,
+        val focusUserId: Long,
     ) : RequestParam<Response>
 
-    class Response(
+    data class Response(
+        val haveFocus: Boolean,
     )
 }

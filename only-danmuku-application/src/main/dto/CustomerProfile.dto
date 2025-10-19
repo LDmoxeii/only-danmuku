@@ -24,3 +24,21 @@ ProfileWithUser {
         lastLoginTime
     }
 }
+
+/**
+ * 用户主页简单信息 DTO
+ * 用于用户主页查询
+ */
+CustomerProfileSimple {
+    id
+    userId
+    nickName
+    avatar
+    sex
+    birthday
+    school
+    personIntroduction
+    noticeInfo
+    theme
+    currentCoinCount
+}

@@ -1,6 +1,6 @@
 package edu.only4.danmuku.application.queries.customer_action
 
-import com.only4.cap4k.ddd.core.application.RequestParam
+import com.only4.cap4k.ddd.core.application.query.PageQueryParam
 
 /**
  * 用户收藏的视频ID列表
@@ -11,10 +11,11 @@ import com.only4.cap4k.ddd.core.application.RequestParam
  */
 object CustomerCollectedVideoIdsQry {
 
-    class Request(
+    data class Request(
+        val customerId: Long,
+    ) : PageQueryParam<Response>()
 
-    ) : RequestParam<Response>
-
-    class Response(
+    data class Response(
+        val videoId: Long,
     )
 }
