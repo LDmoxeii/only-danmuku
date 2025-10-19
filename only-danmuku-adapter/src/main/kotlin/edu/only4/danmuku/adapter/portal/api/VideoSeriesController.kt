@@ -2,8 +2,13 @@ package edu.only4.danmuku.adapter.portal.api
 
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.adapter.portal.api.payload.*
-import edu.only4.danmuku.application.commands.customer_video_series.*
-import edu.only4.danmuku.application.queries.customer_video_series.*
+import edu.only4.danmuku.application.commands.customer_video_series.CreateCustomerVideoSeriesCmd
+import edu.only4.danmuku.application.commands.customer_video_series.DeleteCustomerVideoSeriesCmd
+import edu.only4.danmuku.application.commands.customer_video_series.UpdateCustomerVideoSeriesSortCmd
+import edu.only4.danmuku.application.commands.customer_video_series.UpdateCustomerVideoSeriesVideosCmd
+import edu.only4.danmuku.application.queries.customer_video_series.GetCustomerVideoSeriesInfoQry
+import edu.only4.danmuku.application.queries.customer_video_series.GetCustomerVideoSeriesListQry
+import edu.only4.danmuku.application.queries.customer_video_series.GetCustomerVideoSeriesVideoQry
 import edu.only4.danmuku.application.queries.video.SearchVideosQry
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
@@ -42,7 +47,7 @@ class VideoSeriesController {
                     sort = series.sort,
                     videoCount = series.videoCount,
                     createTime = LocalDateTime.ofInstant(
-                        Instant.ofEpochMilli(series.createTime),
+                        Instant.ofEpochSecond(series.createTime),
                         ZoneId.systemDefault()
                     ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
                 )
@@ -120,7 +125,7 @@ class VideoSeriesController {
                 seriesDescription = seriesInfo.seriesDescription,
                 sort = seriesInfo.sort,
                 createTime = LocalDateTime.ofInstant(
-                    Instant.ofEpochMilli(seriesInfo.createTime),
+                    Instant.ofEpochSecond(seriesInfo.createTime),
                     ZoneId.systemDefault()
                 ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
             ),
@@ -221,10 +226,30 @@ class VideoSeriesController {
      */
     @PostMapping("/loadVideoSeriesWithVideo")
     fun videoSeriesLoadWithVideo(@RequestBody @Validated request: VideoSeriesLoadWithVideo.Request): VideoSeriesLoadWithVideo.Response {
-        // TODO: 实现加载系列及关联视频逻辑
-        // 需要创建专门的查询来获取系列及其关联的视频列表
-        // 目前返回空列表
-        return VideoSeriesLoadWithVideo.Response(list = emptyList())
+        // TODO: 从上下文获取当前用户ID
+        val userId = request.userId?.toLong() ?: 1L
+
+        // 调用查询获取系列及关联视频
+        val seriesList = Mediator.queries.send(
+            GetCustomerVideoSeriesVideoQry.Request(userId = userId)
+        )
+
+        return VideoSeriesLoadWithVideo.Response(
+            list = seriesList.map { series ->
+                VideoSeriesLoadWithVideo.SeriesWithVideo(
+                    seriesId = series.seriesId.toString(),
+                    seriesName = series.seriesName,
+                    videoList = series.videoList?.map { video ->
+                        VideoSeriesLoadWithVideo.VideoItem(
+                            videoId = video.videoId.toString(),
+                            videoCover = video.videoCover,
+                            videoName = video.videoName,
+                            playCount = video.playCount
+                        )
+                    }
+                )
+            }
+        )
     }
 
 }

@@ -1,0 +1,42 @@
+export edu.only4.danmuku.application.queries._share.model.customer_video_series.JCustomerVideoSeries
+    -> package edu.only4.danmuku.application.queries._share.draft.customer_video_series
+
+import edu.only4.danmuku.application.queries._share.model.customer_video_series.JCustomerVideoSeriesVideo
+
+/**
+ * 用户视频系列简单信息 DTO
+ * 用于列表展示
+ */
+CustomerVideoSeriesSimple {
+    id
+    customerId
+    seriesName
+    seriesDescription
+    sort
+    createTime
+}
+
+/**
+ * 用户视频系列详细信息 DTO
+ * 包含系列视频列表
+ */
+CustomerVideoSeriesDetail {
+    id
+    customerId
+    seriesName
+    seriesDescription
+    sort
+    createTime
+
+    seriesVideos {
+        id
+        videoId
+        sort
+
+        video {
+            videoCover
+            videoName
+            playCount
+        }
+    }
+}

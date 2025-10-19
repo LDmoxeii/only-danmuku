@@ -1,13 +1,15 @@
 package edu.only4.danmuku.adapter.application.queries.customer_video_series
 
-import com.only4.cap4k.ddd.core.application.query.Query
-
+import com.only4.cap4k.ddd.core.application.query.ListQuery
+import edu.only4.danmuku.application.queries._share.draft.customer_video_series.CustomerVideoSeriesDetail
+import edu.only4.danmuku.application.queries._share.model.customer_video_series.customerId
 import edu.only4.danmuku.application.queries.customer_video_series.GetCustomerVideoSeriesVideoQry
-
+import org.babyfish.jimmer.sql.kt.KSqlClient
+import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.springframework.stereotype.Service
 
 /**
- * 获取用户视频系列视频
+ * 获取用户视频系列及关联视频
  *
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * @author cap4k-ddd-codegen
@@ -15,12 +17,32 @@ import org.springframework.stereotype.Service
  */
 @Service
 class GetCustomerVideoSeriesVideoQryHandler(
-) : Query<GetCustomerVideoSeriesVideoQry.Request, GetCustomerVideoSeriesVideoQry.Response> {
+    private val sqlClient: KSqlClient,
+) : ListQuery<GetCustomerVideoSeriesVideoQry.Request, GetCustomerVideoSeriesVideoQry.Response> {
 
-    override fun exec(request: GetCustomerVideoSeriesVideoQry.Request): GetCustomerVideoSeriesVideoQry.Response {
+    override fun exec(request: GetCustomerVideoSeriesVideoQry.Request): List<GetCustomerVideoSeriesVideoQry.Response> {
+        // 查询用户的所有系列及其视频
+        val seriesList = sqlClient.findAll(CustomerVideoSeriesDetail::class) {
+            where(table.customerId eq request.userId)
+        }
 
-        return GetCustomerVideoSeriesVideoQry.Response(
-
-        )
+        // 转换为响应格式
+        return seriesList.map { series ->
+            GetCustomerVideoSeriesVideoQry.Response(
+                seriesId = series.id,
+                seriesName = series.seriesName,
+                seriesDescription = series.seriesDescription,
+                sort = series.sort.toInt(),
+                videoList = series.seriesVideos.map { seriesVideo ->
+                    GetCustomerVideoSeriesVideoQry.VideoItem(
+                        videoId = seriesVideo.videoId,
+                        videoCover = seriesVideo.video.videoCover,
+                        videoName = seriesVideo.video.videoName,
+                        playCount = seriesVideo.video.playCount,
+                        sort = seriesVideo.sort.toInt()
+                    )
+                }
+            )
+        }
     }
 }

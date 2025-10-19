@@ -1,0 +1,107 @@
+### 加载视频系列列表
+POST {{host}}/uhome/series/loadVideoSeries
+Content-Type: application/json
+
+{
+  "userId": "2001"
+}
+
+### 保存视频系列 - 创建新系列
+POST {{host}}/uhome/series/saveVideoSeries
+Content-Type: application/json
+
+{
+  "seriesName": "Kotlin学习系列",
+  "seriesDescription": "Kotlin编程学习视频合集",
+  "videoIds": [
+    "1001",
+    "1005"
+  ]
+}
+
+### 保存视频系列 - 更新已有系列
+POST {{host}}/uhome/series/saveVideoSeries
+Content-Type: application/json
+
+{
+  "seriesId": "5001",
+  "seriesName": "Kotlin学习系列（更新）",
+  "seriesDescription": "Kotlin编程学习视频合集 - 已更新",
+  "videoIds": [
+    "1001",
+    "1005"
+  ]
+}
+
+### 加载所有视频(用于添加到系列)
+POST {{host}}/uhome/series/loadAllVideo
+Content-Type: application/json
+
+{
+  "seriesId": "5001"
+}
+
+### 获取系列详情
+POST {{host}}/uhome/series/getVideoSeriesDetail
+Content-Type: application/json
+
+{
+  "seriesId": "5001"
+}
+
+### 保存系列视频 - 添加视频到系列
+POST {{host}}/uhome/series/saveSeriesVideo
+Content-Type: application/json
+
+{
+  "seriesId": "5001",
+  "videoIds": [
+    "1002",
+    "1003"
+  ]
+}
+
+### 删除系列中的视频
+POST {{host}}/uhome/series/delSeriesVideo
+Content-Type: application/json
+
+{
+  "seriesId": "5001",
+  "videoId": [
+    "1002"
+  ]
+}
+
+### 删除视频系列
+POST {{host}}/uhome/series/delVideoSeries
+Content-Type: application/json
+
+{
+  "seriesId": "5002"
+}
+
+### 调整系列排序
+POST {{host}}/uhome/series/changeVideoSeriesSort
+Content-Type: application/json
+
+{
+  "seriesIds": [
+    "5001",
+    "5002",
+    "5003"
+  ]
+}
+
+### 加载系列及关联视频
+POST {{host}}/uhome/series/loadVideoSeriesWithVideo
+Content-Type: application/json
+
+{
+  "userId": "2001"
+}
+
+### 加载系列及关联视频 - 不指定用户ID (使用默认)
+POST {{host}}/uhome/series/loadVideoSeriesWithVideo
+Content-Type: application/json
+
+{}
