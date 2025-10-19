@@ -14,6 +14,8 @@ object VideoCommentPageQry {
     data class Request(
         /** 视频ID */
         val videoId: Long? = null,
+        /** 视频作者ID - 查询该作者所有视频收到的评论 */
+        val videoUserId: Long? = null,
         /** 视频名称模糊查询 */
         val videoNameFuzzy: String? = null,
     ) : PageQueryParam<Response>()

@@ -3,10 +3,7 @@ package edu.only4.danmuku.adapter.application.queries.video
 import com.only4.cap4k.ddd.core.application.query.PageQuery
 import com.only4.cap4k.ddd.core.share.PageData
 import edu.only4.danmuku.application.queries._share.draft.video.VideoSearchItem
-import edu.only4.danmuku.application.queries._share.model.video.JVideo
-import edu.only4.danmuku.application.queries._share.model.video.createTime
-import edu.only4.danmuku.application.queries._share.model.video.recommendType
-import edu.only4.danmuku.application.queries._share.model.video.videoName
+import edu.only4.danmuku.application.queries._share.model.video.*
 import edu.only4.danmuku.application.queries.video.SearchVideosQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.desc
@@ -29,6 +26,8 @@ class SearchVideosQryHandler(
     override fun exec(request: SearchVideosQry.Request): PageData<SearchVideosQry.Response> {
         // 使用 Jimmer 查询视频列表，关联用户档案表
         val pageResult = sqlClient.createQuery(JVideo::class) {
+            // 用户ID过滤
+            where(table.customerId `eq?` request.userId)
             // 视频名称模糊查询
             where(table.videoName `ilike?` request.videoNameFuzzy)
             // 状态过滤 (这里过滤的是推荐状态)

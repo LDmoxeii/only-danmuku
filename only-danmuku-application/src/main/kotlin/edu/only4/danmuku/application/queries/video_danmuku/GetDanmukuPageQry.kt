@@ -12,6 +12,8 @@ import com.only4.cap4k.ddd.core.application.query.PageQueryParam
 object GetDanmukuPageQry {
 
     data class Request(
+        /** 视频作者ID - 查询该作者所有视频收到的弹幕 */
+        val videoUserId: Long? = null,
         /** 视频名称模糊查询 */
         val videoNameFuzzy: String? = null,
 

@@ -4,6 +4,7 @@ import com.only4.cap4k.ddd.core.application.query.PageQuery
 import com.only4.cap4k.ddd.core.share.PageData
 import com.only4.cap4k.ddd.domain.repo.toSpringData
 import edu.only4.danmuku.application.queries._share.draft.video_danmuku.DanmukuPageItem
+import edu.only4.danmuku.application.queries._share.model.video.customerId
 import edu.only4.danmuku.application.queries._share.model.video.videoName
 import edu.only4.danmuku.application.queries._share.model.video_danmuku.JVideoDanmuku
 import edu.only4.danmuku.application.queries._share.model.video_danmuku.postTime
@@ -12,6 +13,7 @@ import edu.only4.danmuku.application.queries.video_danmuku.GetDanmukuPageQry
 import org.babyfish.jimmer.spring.repository.orderBy
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.desc
+import org.babyfish.jimmer.sql.kt.ast.expression.`eq?`
 import org.babyfish.jimmer.sql.kt.ast.expression.`ilike?`
 import org.springframework.stereotype.Service
 
@@ -31,6 +33,8 @@ class GetDanmukuPageQryHandler(
 
         // 使用 Jimmer 分页查询弹幕数据
         val pageResult = sqlClient.createQuery(JVideoDanmuku::class) {
+            // 视频作者ID过滤（可选）- 查询该作者所有视频收到的弹幕
+            where(table.video.customerId `eq?` request.videoUserId)
             // 支持按视频名称模糊查询
             where(table.video.videoName `ilike?` request.videoNameFuzzy)
 

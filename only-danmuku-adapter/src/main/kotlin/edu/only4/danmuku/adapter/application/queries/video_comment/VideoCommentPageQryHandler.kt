@@ -3,6 +3,7 @@ package edu.only4.danmuku.adapter.application.queries.video_comment
 import com.only4.cap4k.ddd.core.application.query.PageQuery
 import com.only4.cap4k.ddd.core.share.PageData
 import edu.only4.danmuku.application.queries._share.draft.video_comment.CommentPageItem
+import edu.only4.danmuku.application.queries._share.model.video.customerId
 import edu.only4.danmuku.application.queries._share.model.video.videoName
 import edu.only4.danmuku.application.queries._share.model.video_comment.*
 import edu.only4.danmuku.application.queries.video_comment.VideoCommentPageQry
@@ -27,6 +28,8 @@ class VideoCommentPageQryHandler(
         val pageResult = sqlClient.createQuery(JVideoComment::class) {
             // 视频ID精确查询（可选）
             where(table.videoId `eq?` request.videoId)
+            // 视频作者ID过滤（可选）- 查询该作者所有视频收到的评论
+            where(table.video.customerId `eq?` request.videoUserId)
             // 视频名称模糊查询（可选）
             where(table.video.videoName `ilike?` request.videoNameFuzzy)
             // 按发布时间倒序排列
