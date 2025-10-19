@@ -125,17 +125,17 @@ class AdminVideoController {
      * 加载视频分片列表
      */
     @PostMapping("/loadVideoPList")
-    fun adminVideoLoadPList(@RequestBody @Validated request: AdminVideoLoadPList.Request): List<AdminVideoLoadPList.FileItem> {
+    fun adminVideoLoadPList(@RequestBody @Validated request: AdminVideoLoadPList.Request): List<AdminVideoLoadPList.Response> {
         // 调用查询获取视频文件列表
-        val queryResult = Mediator.queries.send(
+        val queryResultList = Mediator.queries.send(
             GetVideoPlayFilesQry.Request(
                 videoId = request.videoId!!.toLong()
             )
         )
 
         // 转换为前端需要的格式
-        return queryResult.list.map { file ->
-            AdminVideoLoadPList.FileItem(
+        return queryResultList.map { file ->
+            AdminVideoLoadPList.Response(
                 fileId = file.fileId.toString(),
                 videoId = file.videoId.toString(),
                 fileIndex = file.fileIndex,

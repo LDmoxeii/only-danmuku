@@ -16,7 +16,7 @@ object AdminVideoLoadPList {
     /**
      * 视频文件分片项
      */
-    data class FileItem(
+    data class Response(
         /** 文件ID */
         var fileId: String? = null,
         /** 视频ID */
@@ -30,6 +30,6 @@ object AdminVideoLoadPList {
         /** 文件路径 */
         var filePath: String? = null,
         /** 时长(秒) */
-        var duration: Int? = null
+        var duration: Int? = null,
     )
 }

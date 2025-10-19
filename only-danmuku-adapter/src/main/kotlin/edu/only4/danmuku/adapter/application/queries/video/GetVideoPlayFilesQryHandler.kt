@@ -1,9 +1,14 @@
 package edu.only4.danmuku.adapter.application.queries.video
 
-import com.only4.cap4k.ddd.core.application.query.Query
-
+import com.only4.cap4k.ddd.core.application.query.ListQuery
+import edu.only4.danmuku.application.queries._share.draft.VideoFileItem
+import edu.only4.danmuku.application.queries._share.model.JVideoFile
+import edu.only4.danmuku.application.queries._share.model.fileIndex
+import edu.only4.danmuku.application.queries._share.model.videoId
 import edu.only4.danmuku.application.queries.video.GetVideoPlayFilesQry
-
+import org.babyfish.jimmer.sql.kt.KSqlClient
+import org.babyfish.jimmer.sql.kt.ast.expression.asc
+import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.springframework.stereotype.Service
 
 /**
@@ -15,10 +20,31 @@ import org.springframework.stereotype.Service
  */
 @Service
 class GetVideoPlayFilesQryHandler(
-) : Query<GetVideoPlayFilesQry.Request, GetVideoPlayFilesQry.Response> {
+    private val sqlClient: KSqlClient,
+) : ListQuery<GetVideoPlayFilesQry.Request, GetVideoPlayFilesQry.Response> {
 
-    override fun exec(request: GetVideoPlayFilesQry.Request): GetVideoPlayFilesQry.Response {
+    override fun exec(request: GetVideoPlayFilesQry.Request): List<GetVideoPlayFilesQry.Response> {
+        // 使用 Jimmer 查询视频文件列表
+        val fileList = sqlClient.createQuery(JVideoFile::class) {
+            // 按视频ID过滤
+            where(table.videoId eq request.videoId)
+            // 按文件索引排序
+            orderBy(table.fileIndex.asc())
+            // DTO 投影
+            select(table.fetch(VideoFileItem::class))
+        }.execute()
 
-        return TODO()
+        // 转换为查询响应
+        return fileList.map { file ->
+            GetVideoPlayFilesQry.Response(
+                fileId = file.fileId,
+                videoId = file.videoId,
+                fileIndex = file.fileIndex,
+                fileName = file.fileName,
+                fileSize = file.fileSize,
+                filePath = file.filePath,
+                duration = file.duration
+            )
+        }
     }
 }
