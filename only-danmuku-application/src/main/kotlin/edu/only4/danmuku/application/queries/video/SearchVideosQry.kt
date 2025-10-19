@@ -31,6 +31,8 @@ object SearchVideosQry {
         val userId: Long,
         /** 作者昵称 */
         val nickName: String? = null,
+        /** 作者头像 */
+        val avatar: String? = null,
         /** 视频时长(秒) */
         val duration: Int? = null,
         /** 视频状态 */
@@ -52,6 +54,6 @@ object SearchVideosQry {
         /** 收藏数 */
         val collectCount: Int? = null,
         /** 推荐类型 */
-        val recommendType: Int? = null
+        val recommendType: Int? = null,
     )
 }

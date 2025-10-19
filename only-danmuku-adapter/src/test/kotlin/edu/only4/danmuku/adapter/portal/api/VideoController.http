@@ -1,0 +1,94 @@
+### 加载推荐视频
+GET {{host}}/video/loadRecommendVideo
+Content-Type: application/json
+
+### 加载视频列表 - 全部视频 (不按分类)
+POST {{host}}/video/loadVideo
+Content-Type: application/json
+
+{
+  "pageNo": 1
+}
+
+### 加载视频列表 - 按父分类过滤
+POST {{host}}/video/loadVideo
+Content-Type: application/json
+
+{
+  "pCategoryId": 1,
+  "pageNo": 1
+}
+
+### 加载视频列表 - 按子分类过滤
+POST {{host}}/video/loadVideo
+Content-Type: application/json
+
+{
+  "pCategoryId": 1,
+  "categoryId": 101,
+  "pageNo": 1
+}
+
+### 加载视频分片列表
+POST {{host}}/video/loadVideoPList
+Content-Type: application/json
+
+{
+  "videoId": "1001"
+}
+
+### 获取视频详情
+POST {{host}}/video/getVideoInfo
+Content-Type: application/json
+
+{
+  "videoId": "1001"
+}
+
+### 获取推荐视频(基于关键词)
+POST {{host}}/video/getVideoRecommend
+Content-Type: application/json
+
+{
+  "keyword": "Kotlin",
+  "videoId": "1001"
+}
+
+### 搜索视频
+POST {{host}}/video/search
+Content-Type: application/json
+
+{
+  "keyword": "Spring",
+  "pageNo": 1
+}
+
+### 搜索视频 - 带排序类型
+POST {{host}}/video/search
+Content-Type: application/json
+
+{
+  "keyword": "Kotlin",
+  "orderType": 1,
+  "pageNo": 1
+}
+
+### 获取热门搜索关键词
+GET {{host}}/video/getSearchKeywordTop
+Content-Type: application/json
+
+### 加载热门视频列表
+POST {{host}}/video/loadHotVideoList
+Content-Type: application/json
+
+{
+  "pageNo": 1
+}
+
+### 加载热门视频列表 - 第2页
+POST {{host}}/video/loadHotVideoList
+Content-Type: application/json
+
+{
+  "pageNo": 2
+}

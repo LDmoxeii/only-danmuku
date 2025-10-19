@@ -1,9 +1,11 @@
 package edu.only4.danmuku.adapter.application.queries.video
 
 import com.only4.cap4k.ddd.core.application.query.Query
-
+import edu.only4.danmuku.application.queries._share.draft.video.VideoFullInfo
+import edu.only4.danmuku.application.queries._share.model.video.id
 import edu.only4.danmuku.application.queries.video.GetVideoInfoQry
-
+import org.babyfish.jimmer.sql.kt.KSqlClient
+import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.springframework.stereotype.Service
 
 /**
@@ -15,10 +17,34 @@ import org.springframework.stereotype.Service
  */
 @Service
 class GetVideoInfoQryHandler(
+    private val sqlClient: KSqlClient,
 ) : Query<GetVideoInfoQry.Request, GetVideoInfoQry.Response> {
 
     override fun exec(request: GetVideoInfoQry.Request): GetVideoInfoQry.Response {
+        // 查询视频完整信息
+        val videoList = sqlClient.findAll(VideoFullInfo::class) {
+            where(table.id eq request.videoId)
+        }
 
-        return TODO()
+        val video = videoList.first()
+
+        return GetVideoInfoQry.Response(
+            videoId = video.id,
+            videoCover = video.videoCover,
+            videoName = video.videoName,
+            userId = video.customerId,
+            nickName = video.customer.nickName,
+            avatar = video.customer.avatar,
+            introduction = video.introduction,
+            interaction = video.interaction,
+            duration = video.duration,
+            playCount = video.playCount,
+            likeCount = video.likeCount,
+            danmuCount = video.danmukuCount,
+            commentCount = video.commentCount,
+            coinCount = video.coinCount,
+            collectCount = video.collectCount,
+            createTime = video.createTime ?: 0L
+        )
     }
 }

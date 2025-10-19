@@ -46,6 +46,7 @@ class SearchVideosQryHandler(
                 videoName = video.videoName,
                 userId = video.customerId,
                 nickName = video.customer.nickName,
+                avatar = video.customer.avatar,
                 duration = video.duration,
                 status = video.recommendType.toInt(),
                 createTime = video.createTime ?: 0L,

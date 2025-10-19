@@ -1,6 +1,5 @@
 package edu.only4.danmuku.application.queries.video
 
-import com.only4.cap4k.ddd.core.application.query.ListQueryParam
 import com.only4.cap4k.ddd.core.application.query.PageQueryParam
 
 /**
@@ -14,8 +13,8 @@ object GetHotVideosQry {
 
     data class Request(
         /** 最近播放小时数(如24表示最近24小时内) */
-        val lastPlayHour: Int = 24
-    ) : ListQueryParam<Response>
+        val lastPlayHour: Int = 24,
+    ) : PageQueryParam<Response>()
 
     data class Response(
         /** 视频ID */

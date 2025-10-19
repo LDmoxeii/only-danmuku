@@ -43,6 +43,26 @@ interface JVideo {
     val postType: Byte
 
     /**
+     * 原资源说明
+     */
+    val originInfo: String?
+
+    /**
+     * 标签
+     */
+    val tags: String?
+
+    /**
+     * 简介
+     */
+    val introduction: String?
+
+    /**
+     * 互动设置
+     */
+    val interaction: String?
+
+    /**
      * 持续时间（秒）
      */
     val duration: Int?
