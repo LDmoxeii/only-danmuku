@@ -1,6 +1,17 @@
 package edu.only4.danmuku.adapter.portal.api
 
+import cn.dev33.satoken.stp.StpUtil
+import com.only.engine.entity.UserInfo
+import com.only.engine.redis.misc.RedisUtils
+import com.only.engine.satoken.utils.LoginHelper
+import com.only4.cap4k.ddd.core.Mediator
+import edu.only4.danmuku.adapter.portal.api._share.constant.Constants
 import edu.only4.danmuku.adapter.portal.api.payload.*
+import edu.only4.danmuku.application.commands.user.RegisterAccountCmd
+import edu.only4.danmuku.application.distributed.clients.CaptchaGen
+import edu.only4.danmuku.application.distributed.clients.CaptchaValid
+import edu.only4.danmuku.application.queries.user.GetAccountInfoByEmailQry
+import edu.only4.danmuku.domain.aggregates.user.User
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
@@ -24,11 +35,12 @@ class AccountController {
      */
     @GetMapping("/checkCode")
     fun checkCode(): AccountCheckCode.Response {
-        // TODO: 实现验证码生成逻辑
-        // 1. 生成算术验证码
-        // 2. 将验证码存储到Redis
-        // 3. 返回Base64编码和Key
-        return AccountCheckCode.Response()
+        val result = Mediator.requests.send(CaptchaGen.Request("auth"))
+        RedisUtils.setCacheObject(Constants.REDIS_KEY_CHECK_CODE + result.captchaId, result.text)
+        return AccountCheckCode.Response(
+            result.captchaId,
+            result.byte
+        )
     }
 
     /**
@@ -41,10 +53,15 @@ class AccountController {
      */
     @PostMapping("/register")
     fun register(@RequestBody @Validated request: AccountRegister.Request): AccountRegister.Response {
-        // TODO: 实现用户注册逻辑
-        // 1. 验证验证码
-        // 2. 检查邮箱是否已存在
-        // 3. 创建用户账户
+        val validated = Mediator.requests.send(CaptchaValid.Request(request.checkCodeKey, request.checkCode))
+        require(validated.result) { "验证失败" }
+        Mediator.cmd.send(
+            RegisterAccountCmd.Request(
+                email = request.email,
+                nickName = request.nickName,
+                registerPassword = request.registerPassword
+            )
+        )
         return AccountRegister.Response()
     }
 
@@ -60,14 +77,27 @@ class AccountController {
     @PostMapping("/login")
     fun login(
         @RequestBody @Validated request: AccountLogin.Request,
-        response: HttpServletResponse
+        response: HttpServletResponse,
     ): AccountLogin.Response {
         // TODO: 实现用户登录逻辑
-        // 1. 验证验证码
+        val validated = Mediator.requests.send(CaptchaValid.Request(request.checkCodeKey, request.checkCode))
+        require(validated.result) { "验证失败" }
         // 2. 验证邮箱和密码
-        // 3. 生成Token并保存到Redis
-        // 4. 将Token保存到Cookie
-        return AccountLogin.Response()
+        val accountInfo = Mediator.queries.send(
+            GetAccountInfoByEmailQry.Request(
+                email = request.email
+            )
+        )
+
+        val validatedPassword = User.validatePassword(accountInfo.password, request.password)
+        require(validatedPassword) { "密码错误" }
+        LoginHelper.login(UserInfo(accountInfo.id, accountInfo.type.code, accountInfo.email))
+        val token = StpUtil.getTokenValue()
+        return AccountLogin.Response(
+            userId = accountInfo.id.toString(),
+            nickName = accountInfo.nickName,
+            token = token
+        )
     }
 
     /**

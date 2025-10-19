@@ -5,7 +5,8 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user`
     (
     `id`              bigint                                                        NOT NULL COMMENT 'ID',
-    `type` tinyint(1) NOT NULL DEFAULT 0 COMMENT '帐号类型 @E=0:UNKNOW:未知类型|1:SYS_USER:系统管理员;@T=UserType',
+    `type`      tinyint(1)                                                   NOT NULL DEFAULT 0 COMMENT '帐号类型 @E=0:UNKNOW:未知类型|1:SYS_USER:系统管理员;@T=UserType',
+    `nick_name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '昵称',
     `email`           varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '邮箱',
     `password`        varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL COMMENT '密码',
     `join_time`       bigint                                                        NOT NULL COMMENT '加入时间',
@@ -32,26 +33,29 @@ CREATE TABLE `user`
 -- Test data for user
 -- ----------------------------
 -- 用户1: 张三 - 正常状态
-INSERT INTO user (id, type, email, password, join_time, last_login_time, last_login_ip, status, related_id,
+INSERT INTO user (id, type, nick_name, email, password, join_time, last_login_time, last_login_ip, status, related_id,
                   create_user_id, create_by, create_time, update_user_id, update_by, update_time, deleted)
-VALUES (2001, 0, 'zhangsan@example.com', 'password123', 1729180800, 1729440000, '192.168.1.100', 1, 0,
+VALUES (2001, 0, 'zhangsan@example.com', 'zhangsan@example.com', 'password123', 1729180800, 1729440000, '192.168.1.100',
+        1, 0,
         2001, 'user_zhang', 1729180800, 2001, 'user_zhang', 1729440000, 0);
 
 -- 用户2: 李四 - 正常状态
-INSERT INTO user (id, type, email, password, join_time, last_login_time, last_login_ip, status, related_id,
+INSERT INTO user (id, type, nick_name, email, password, join_time, last_login_time, last_login_ip, status, related_id,
                   create_user_id, create_by, create_time, update_user_id, update_by, update_time, deleted)
-VALUES (2002, 0, 'lisi@example.com', 'password456', 1729184400, 1729450000, '192.168.1.101', 1, 0,
+VALUES (2002, 0, 'lisi@example.com', 'lisi@example.com', 'password456', 1729184400, 1729450000, '192.168.1.101', 1, 0,
         2002, 'user_li', 1729184400, 2002, 'user_li', 1729450000, 0);
 
 -- 用户3: 王五 - 禁用状态
-INSERT INTO user (id, type, email, password, join_time, last_login_time, last_login_ip, status, related_id,
+INSERT INTO user (id, type, nick_name, email, password, join_time, last_login_time, last_login_ip, status, related_id,
                   create_user_id, create_by, create_time, update_user_id, update_by, update_time, deleted)
-VALUES (2003, 0, 'wangwu@example.com', 'password789', 1729188000, 1729420000, '192.168.1.102', 0, 0,
+VALUES (2003, 0, 'wangwu@example.com', 'wangwu@example.com', 'password789', 1729188000, 1729420000, '192.168.1.102', 0,
+        0,
         2003, 'user_wang', 1729188000, 2003, 'user_wang', 1729430000, 0);
 
 -- 用户4: 赵六 - 正常状态
-INSERT INTO user (id, type, email, password, join_time, last_login_time, last_login_ip, status, related_id,
+INSERT INTO user (id, type, nick_name, email, password, join_time, last_login_time, last_login_ip, status, related_id,
                   create_user_id, create_by, create_time, update_user_id, update_by, update_time, deleted)
-VALUES (2004, 0, 'zhaoliu@example.com', 'password000', 1729191600, 1729460000, '192.168.1.103', 1, 0,
+VALUES (2004, 0, 'zhaoliu@example.com', 'zhaoliu@example.com', 'password000', 1729191600, 1729460000, '192.168.1.103',
+        1, 0,
         2004, 'user_zhao', 1729191600, 2004, 'user_zhao', 1729460000, 0);
 

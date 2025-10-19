@@ -57,7 +57,5 @@ object AccountRegister {
     /**
      * 用户注册响应结果
      */
-    class Response {
-        // 注册成功无返回数据
-    }
+    class Response
 }

@@ -12,9 +12,11 @@ import com.only4.cap4k.ddd.core.application.RequestParam
 object CheckLoginQry {
 
     class Request(
-
+        val email: String,
+        val password: String,
     ) : RequestParam<Response>
 
     class Response(
+        val userId: Long,
     )
 }

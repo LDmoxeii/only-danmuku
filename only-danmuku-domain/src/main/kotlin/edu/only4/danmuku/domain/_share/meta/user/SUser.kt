@@ -23,7 +23,7 @@ import org.springframework.data.jpa.domain.Specification
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/10/15
+ * @date 2025/10/19
  */
 class SUser(
     private val root: Path<User>,
@@ -34,6 +34,8 @@ class SUser(
         val id = "id"
 
         val type = "type"
+
+        val nickName = "nickName"
 
         val email = "email"
 
@@ -411,6 +413,14 @@ class SUser(
      */
     val type: Schema.Field<UserType> by lazy {
         Schema.Field(root.get("type"), criteriaBuilder)
+    }
+
+
+    /**
+     * 昵称
+     */
+    val nickName: Schema.Field<String> by lazy {
+        Schema.Field(root.get("nickName"), criteriaBuilder)
     }
 
 

@@ -131,6 +131,10 @@
     },
     {
       "package": "user",
+      "name": "GetAccountInfoByEmail"
+    },
+    {
+      "package": "user",
       "name": "CheckLogin",
       "desc": "检查登录"
     },

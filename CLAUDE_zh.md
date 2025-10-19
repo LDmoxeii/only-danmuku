@@ -634,12 +634,205 @@ Maven 仓库需要在 `gradle.properties` 中配置阿里云凭证：
    | `UnloadedException: property is unloaded` | 使用 Fetcher 但未加载字段 | 使用 DTO 投影代替 Fetcher |
    | `Unresolved reference 'findList'` | 错误的 API 方法 | 使用 `findAll(DtoClass::class)` 代替 |
 
-5. **测试：**
+5. **实现自定义验证器：**
+
+   在 DDD + CQRS 架构中实现 Bean Validation 自定义验证器时，遵循以下模式：
+
+   **架构原则：**
+    - **验证器位于 `application` 层**：业务逻辑，不直接访问数据库
+    - **查询处理器位于 `adapter` 层**：数据访问实现
+    - **通过 `Mediator` 解耦**：验证器使用 CQRS 查询获取数据
+
+   **标准实现步骤：**
+
+   **步骤 1：定义验证注解（内部类模式）**
+
+   位置：`only-danmuku-application/src/main/kotlin/.../application/validater/`
+
+   ```kotlin
+   package edu.only4.danmuku.application.validater
+
+   import com.only4.cap4k.ddd.core.Mediator
+   import edu.only4.danmuku.application.queries.user.CheckEmailExistsQry
+   import jakarta.validation.Constraint
+   import jakarta.validation.ConstraintValidator
+   import jakarta.validation.ConstraintValidatorContext
+   import jakarta.validation.Payload
+   import kotlin.reflect.KClass
+
+   /**
+    * 验证邮箱唯一性
+    */
+   @Target(AnnotationTarget.FIELD, AnnotationTarget.VALUE_PARAMETER)
+   @Retention(AnnotationRetention.RUNTIME)
+   @Constraint(validatedBy = [UniqueUserEmail.Validator::class])
+   @MustBeDocumented
+   annotation class UniqueUserEmail(
+       val message: String = "邮箱已被注册",
+       val groups: Array<KClass<*>> = [],
+       val payload: Array<KClass<out Payload>> = []
+   ) {
+
+       /**
+        * 验证器实现（内部类）
+        */
+       class Validator : ConstraintValidator<UniqueUserEmail, String> {
+
+           override fun isValid(value: String?, context: ConstraintValidatorContext): Boolean {
+               // 空值由其他注解处理（如 @NotBlank）
+               if (value.isNullOrBlank()) {
+                   return true
+               }
+
+               // 使用 CQRS 查询获取数据
+               return !Mediator.queries.send(
+                   CheckEmailExistsQry.Request(email = value)
+               ).exists
+           }
+       }
+   }
+   ```
+
+   **关键点：**
+    - ✅ 使用 `@Constraint(validatedBy = [XXX.Validator::class])` 绑定验证器
+    - ✅ 验证器作为**内部类**，无需 `@Component` 注解
+    - ✅ 使用 `Mediator.queries.send()` 而非直接访问数据库
+    - ✅ 空值处理：返回 `true` 让其他注解处理
+    - ✅ 验证逻辑：返回 `true` 表示通过，`false` 表示失败
+
+   **步骤 2：定义 CQRS 查询对象**
+
+   位置：`only-danmuku-application/src/main/kotlin/.../application/queries/`
+
+   ```kotlin
+   package edu.only4.danmuku.application.queries.user
+
+   import com.only4.cap4k.ddd.core.application.RequestParam
+
+   /**
+    * 检查邮箱是否存在
+    */
+   object CheckEmailExistsQry {
+
+       class Request(
+           val email: String
+       ) : RequestParam<Response>
+
+       class Response(
+           val exists: Boolean  // true: 存在, false: 不存在
+       )
+   }
+   ```
+
+   **步骤 3：实现查询处理器（使用 Jimmer）**
+
+   位置：`only-danmuku-adapter/src/main/kotlin/.../adapter/application/queries/`
+
+   ```kotlin
+   package edu.only4.danmuku.adapter.application.queries.user
+
+   import com.only4.cap4k.ddd.core.application.query.Query
+   import edu.only4.danmuku.application.queries._share.model.user.JUser
+   import edu.only4.danmuku.application.queries._share.model.user.email
+   import edu.only4.danmuku.application.queries.user.CheckEmailExistsQry
+   import org.babyfish.jimmer.sql.kt.KSqlClient
+   import org.babyfish.jimmer.sql.kt.ast.expression.eq
+   import org.babyfish.jimmer.sql.kt.exists
+   import org.springframework.stereotype.Service
+
+   /**
+    * 检查邮箱是否存在查询处理器
+    */
+   @Service
+   class CheckEmailExistsQryHandler(
+       private val sqlClient: KSqlClient
+   ) : Query<CheckEmailExistsQry.Request, CheckEmailExistsQry.Response> {
+
+       override fun exec(request: CheckEmailExistsQry.Request): CheckEmailExistsQry.Response {
+           // 使用 Jimmer exists() 获得最佳性能
+           val exists = sqlClient.exists(JUser::class) {
+               where(table.email eq request.email)
+           }
+
+           return CheckEmailExistsQry.Response(exists = exists)
+       }
+   }
+   ```
+
+   **关键点：**
+    - ✅ 使用 `@Service` 注册为 Spring Bean
+    - ✅ 注入 `KSqlClient` 进行 Jimmer 查询
+    - ✅ 使用 `sqlClient.exists()` 而非 `findAll()`（性能更优）
+    - ✅ 生成高效的 SQL：`SELECT EXISTS(SELECT 1 FROM user WHERE email = ?)`
+    - ✅ 必须导入 Jimmer 扩展：
+        - `import edu.only4.danmuku.application.queries._share.model.user.email`  // 字段扩展
+        - `import org.babyfish.jimmer.sql.kt.ast.expression.eq`  // 操作符
+        - `import org.babyfish.jimmer.sql.kt.exists`  // exists 函数
+
+   **步骤 4：在命令中使用**
+
+   ```kotlin
+   package edu.only4.danmuku.application.commands.user
+
+   import edu.only4.danmuku.application.validater.UniqueUserEmail
+   import jakarta.validation.constraints.Email
+   import jakarta.validation.constraints.NotBlank
+
+   object RegisterAccountCmd {
+
+       class Request(
+           @field:NotBlank(message = "邮箱不能为空")
+           @field:Email(message = "邮箱格式不正确")
+           @field:UniqueUserEmail()  // 自动验证邮箱唯一性
+           val email: String,
+
+           @field:NotBlank(message = "昵称不能为空")
+           val nickName: String,
+
+           @field:NotBlank(message = "密码不能为空")
+           val registerPassword: String
+       ) : RequestParam<Response>
+
+       class Response
+   }
+   ```
+
+   **验证流程：**
+    1. Spring MVC 接收请求
+    2. 自动触发 Bean Validation
+    3. 依次执行：`@NotBlank` → `@Email` → `@UniqueUserEmail`
+    4. 如果邮箱已存在，返回 400 错误："邮箱已被注册"
+
+   **最佳实践：**
+
+   ✅ **推荐做法：**
+    - 内部类模式：更好的封装性
+    - CQRS 分离：使用查询，不使用仓储
+    - 使用 Jimmer `exists()`：最佳性能
+    - 空值处理：仅验证非空值
+    - 清晰的语义：`exists = true` 表示已存在，验证器返回 `!exists`
+
+   ❌ **避免做法：**
+    - ~~在验证器中注入 `@Autowired` 依赖~~（内部类无法注入）
+    - ~~使用 `Mediator.repos` 访问仓储~~（应使用 `Mediator.queries`）
+    - ~~使用 `findAll()` 判断存在性~~（性能差，应使用 `exists()`）
+    - ~~验证器返回 `true` 表示失败~~（应返回 `false`）
+    - ~~忘记导入 Jimmer 扩展函数~~（会导致编译错误）
+
+   **性能对比：**
+
+   | 方式 | SQL 生成 | 性能 |
+      |------|---------|------|
+   | ❌ `findAll().isNotEmpty()` | `SELECT * FROM user WHERE email = ?` | 慢（全表扫描） |
+   | ⚠️ `count() > 0` | `SELECT COUNT(*) FROM user WHERE email = ?` | 中等 |
+   | ✅ `exists()` | `SELECT EXISTS(SELECT 1 FROM user WHERE email = ?)` | **最快** |
+
+6. **测试：**
     - 测试配置在 `buildSrc/src/main/kotlin/kotlin-jvm.gradle.kts`
     - JUnit 5，10 分钟超时
     - JVM 参数：`-Xmx2g -Xms512m`
 
-6. **约定插件：**
+7. **约定插件：**
     - `buildSrc/` 中的共享构建逻辑
     - 约定：`buildsrc.convention.kotlin-jvm`
     - 应用 Kotlin JVM、Spring 和 JPA 插件

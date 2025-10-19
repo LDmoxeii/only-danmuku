@@ -3,7 +3,8 @@ package edu.only4.danmuku.application.commands.user
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
-
+import edu.only4.danmuku.application.validater.UniqueUserEmail
+import edu.only4.danmuku.domain.aggregates.user.factory.UserFactory
 import org.springframework.stereotype.Service
 
 /**
@@ -18,17 +19,26 @@ object RegisterAccountCmd {
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
-            Mediator.uow.save()
-
-            return Response(
+            Mediator.factories.create(
+                UserFactory.Payload(
+                    email = request.email,
+                    nickName = request.nickName,
+                    registerPassword = request.registerPassword
+                )
             )
+
+            Mediator.uow.save()
+            return Response()
         }
 
     }
 
     class Request(
+        @field:UniqueUserEmail()
+        val email: String,
+        val nickName: String,
+        val registerPassword: String,
     ) : RequestParam<Response>
 
-    class Response(
-    )
+    class Response
 }

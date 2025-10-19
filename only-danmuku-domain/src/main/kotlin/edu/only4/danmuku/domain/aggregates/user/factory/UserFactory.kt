@@ -24,9 +24,12 @@ import org.springframework.stereotype.Service
 )
 class UserFactory : AggregateFactory<UserFactory.Payload, User> {
 
-    override fun create(payload: Payload): User {
+    override fun create(entityPayload: Payload): User {
         return User(
-
+            email = entityPayload.email,
+            nickName = entityPayload.nickName,
+            password = entityPayload.registerPassword,
+            joinTime = System.currentTimeMillis() / 1000L,
         )
     }
 
@@ -37,7 +40,9 @@ class UserFactory : AggregateFactory<UserFactory.Payload, User> {
         description = ""
     )
     data class Payload(
-        val name: String
+         val email: String,
+         val nickName: String,
+         val registerPassword: String,
     ) : AggregatePayload<User>
 
 }

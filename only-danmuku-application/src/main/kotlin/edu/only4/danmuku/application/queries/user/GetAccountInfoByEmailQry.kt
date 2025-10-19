@@ -1,21 +1,26 @@
 package edu.only4.danmuku.application.queries.user
 
 import com.only4.cap4k.ddd.core.application.RequestParam
+import edu.only4.danmuku.domain.aggregates.user.enums.UserType
 
 /**
- * 检查邮箱是否存在
+ *
  *
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * @author cap4k-ddd-codegen
- * @date 2025/10/15
+ * @date 2025/10/19
  */
-object CheckEmailExistsQry {
+object GetAccountInfoByEmailQry {
 
     class Request(
         val email: String,
     ) : RequestParam<Response>
 
     class Response(
-        val exists: Boolean,
+        val id: Long,
+        val nickName: String,
+        val email: String,
+        val password: String,
+        val type: UserType,
     )
 }

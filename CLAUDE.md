@@ -631,12 +631,205 @@ When adding new features, create design JSON files in `design/` with `_gen.json`
    | `UnloadedException: property is unloaded` | Using Fetcher without loading field | Use DTO projection instead of Fetcher |
    | `Unresolved reference 'findList'` | Wrong API method | Use `findAll(DtoClass::class)` instead |
 
-5. **Testing:**
+5. **Implementing Custom Validators:**
+
+   When implementing custom validators for Bean Validation in the DDD + CQRS architecture, follow this pattern:
+
+   **Architecture Principle:**
+    - **Validators in `application` layer**: Business logic, no direct database access
+    - **Query handlers in `adapter` layer**: Data access implementation
+    - **Decouple via `Mediator`**: Validators use CQRS queries to fetch data
+
+   **Standard Implementation Steps:**
+
+   **Step 1: Define Validation Annotation (Inner Class Pattern)**
+
+   Location: `only-danmuku-application/src/main/kotlin/.../application/validater/`
+
+   ```kotlin
+   package edu.only4.danmuku.application.validater
+
+   import com.only4.cap4k.ddd.core.Mediator
+   import edu.only4.danmuku.application.queries.user.CheckEmailExistsQry
+   import jakarta.validation.Constraint
+   import jakarta.validation.ConstraintValidator
+   import jakarta.validation.ConstraintValidatorContext
+   import jakarta.validation.Payload
+   import kotlin.reflect.KClass
+
+   /**
+    * Validates email uniqueness
+    */
+   @Target(AnnotationTarget.FIELD, AnnotationTarget.VALUE_PARAMETER)
+   @Retention(AnnotationRetention.RUNTIME)
+   @Constraint(validatedBy = [UniqueUserEmail.Validator::class])
+   @MustBeDocumented
+   annotation class UniqueUserEmail(
+       val message: String = "邮箱已被注册",
+       val groups: Array<KClass<*>> = [],
+       val payload: Array<KClass<out Payload>> = []
+   ) {
+
+       /**
+        * Validator implementation (inner class)
+        */
+       class Validator : ConstraintValidator<UniqueUserEmail, String> {
+
+           override fun isValid(value: String?, context: ConstraintValidatorContext): Boolean {
+               // Null/blank values handled by other annotations (e.g., @NotBlank)
+               if (value.isNullOrBlank()) {
+                   return true
+               }
+
+               // Use CQRS query to fetch data
+               return !Mediator.queries.send(
+                   CheckEmailExistsQry.Request(email = value)
+               ).exists
+           }
+       }
+   }
+   ```
+
+   **Key Points:**
+    - ✅ Use `@Constraint(validatedBy = [XXX.Validator::class])` to bind validator
+    - ✅ Validator as **inner class**, no need for `@Component` annotation
+    - ✅ Use `Mediator.queries.send()` instead of direct database access
+    - ✅ Null handling: Return `true` to let other annotations handle it
+    - ✅ Validation logic: Return `true` for pass, `false` for fail
+
+   **Step 2: Define CQRS Query Object**
+
+   Location: `only-danmuku-application/src/main/kotlin/.../application/queries/`
+
+   ```kotlin
+   package edu.only4.danmuku.application.queries.user
+
+   import com.only4.cap4k.ddd.core.application.RequestParam
+
+   /**
+    * Check if email exists
+    */
+   object CheckEmailExistsQry {
+
+       class Request(
+           val email: String
+       ) : RequestParam<Response>
+
+       class Response(
+           val exists: Boolean  // true: exists, false: not exists
+       )
+   }
+   ```
+
+   **Step 3: Implement Query Handler (Using Jimmer)**
+
+   Location: `only-danmuku-adapter/src/main/kotlin/.../adapter/application/queries/`
+
+   ```kotlin
+   package edu.only4.danmuku.adapter.application.queries.user
+
+   import com.only4.cap4k.ddd.core.application.query.Query
+   import edu.only4.danmuku.application.queries._share.model.user.JUser
+   import edu.only4.danmuku.application.queries._share.model.user.email
+   import edu.only4.danmuku.application.queries.user.CheckEmailExistsQry
+   import org.babyfish.jimmer.sql.kt.KSqlClient
+   import org.babyfish.jimmer.sql.kt.ast.expression.eq
+   import org.babyfish.jimmer.sql.kt.exists
+   import org.springframework.stereotype.Service
+
+   /**
+    * Check email exists query handler
+    */
+   @Service
+   class CheckEmailExistsQryHandler(
+       private val sqlClient: KSqlClient
+   ) : Query<CheckEmailExistsQry.Request, CheckEmailExistsQry.Response> {
+
+       override fun exec(request: CheckEmailExistsQry.Request): CheckEmailExistsQry.Response {
+           // Use Jimmer exists() for optimal performance
+           val exists = sqlClient.exists(JUser::class) {
+               where(table.email eq request.email)
+           }
+
+           return CheckEmailExistsQry.Response(exists = exists)
+       }
+   }
+   ```
+
+   **Key Points:**
+    - ✅ Use `@Service` to register as Spring Bean
+    - ✅ Inject `KSqlClient` for Jimmer queries
+    - ✅ Use `sqlClient.exists()` instead of `findAll()` (better performance)
+    - ✅ Generates efficient SQL: `SELECT EXISTS(SELECT 1 FROM user WHERE email = ?)`
+    - ✅ Must import Jimmer extensions:
+        - `import edu.only4.danmuku.application.queries._share.model.user.email`  // Field extension
+        - `import org.babyfish.jimmer.sql.kt.ast.expression.eq`  // Operator
+        - `import org.babyfish.jimmer.sql.kt.exists`  // exists function
+
+   **Step 4: Usage in Commands**
+
+   ```kotlin
+   package edu.only4.danmuku.application.commands.user
+
+   import edu.only4.danmuku.application.validater.UniqueUserEmail
+   import jakarta.validation.constraints.Email
+   import jakarta.validation.constraints.NotBlank
+
+   object RegisterAccountCmd {
+
+       class Request(
+           @field:NotBlank(message = "邮箱不能为空")
+           @field:Email(message = "邮箱格式不正确")
+           @field:UniqueUserEmail()  // Automatically validates email uniqueness
+           val email: String,
+
+           @field:NotBlank(message = "昵称不能为空")
+           val nickName: String,
+
+           @field:NotBlank(message = "密码不能为空")
+           val registerPassword: String
+       ) : RequestParam<Response>
+
+       class Response
+   }
+   ```
+
+   **Validation Flow:**
+    1. Spring MVC receives request
+    2. Triggers Bean Validation automatically
+    3. Executes sequentially: `@NotBlank` → `@Email` → `@UniqueUserEmail`
+    4. If email exists, returns 400 error: "邮箱已被注册"
+
+   **Best Practices:**
+
+   ✅ **Recommended:**
+    - Inner class pattern: Better encapsulation
+    - CQRS separation: Use queries, not repositories
+    - Use Jimmer `exists()`: Best performance
+    - Null handling: Only validate non-null values
+    - Clear semantics: `exists = true` means already exists, validator returns `!exists`
+
+   ❌ **Avoid:**
+    - ~~Inject `@Autowired` dependencies in validator~~ (inner class cannot inject)
+    - ~~Use `Mediator.repos` to access repositories~~ (should use `Mediator.queries`)
+    - ~~Use `findAll()` for existence check~~ (poor performance, use `exists()`)
+    - ~~Validator returns `true` for failure~~ (should return `false`)
+    - ~~Forget to import Jimmer extension functions~~ (causes compile errors)
+
+   **Performance Comparison:**
+
+   | Method | SQL Generated | Performance |
+      |--------|---------------|-------------|
+   | ❌ `findAll().isNotEmpty()` | `SELECT * FROM user WHERE email = ?` | Slow (full scan) |
+   | ⚠️ `count() > 0` | `SELECT COUNT(*) FROM user WHERE email = ?` | Medium |
+   | ✅ `exists()` | `SELECT EXISTS(SELECT 1 FROM user WHERE email = ?)` | **Fastest** |
+
+6. **Testing:**
     - Test configuration in `buildSrc/src/main/kotlin/kotlin-jvm.gradle.kts`
     - JUnit 5 with 10-minute timeout
     - JVM args: `-Xmx2g -Xms512m`
 
-6. **Convention Plugin:**
+7. **Convention Plugin:**
     - Shared build logic in `buildSrc/`
     - Convention: `buildsrc.convention.kotlin-jvm`
     - Applies Kotlin JVM, Spring, and JPA plugins

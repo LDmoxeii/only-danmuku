@@ -13,6 +13,8 @@ dependencies {
     api(libs.blazebit.persistence.hibernate)
 
     api(libs.engine.captcha)
+    api(libs.engine.security)
+    api(libs.engine.satoken)
     api(libs.engine.web)
     api(libs.engine.doc)
 

@@ -1,16 +1,10 @@
 package edu.only4.danmuku.domain.aggregates.user
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
-
 import edu.only4.danmuku.domain.aggregates.user.enums.UserType
-
 import jakarta.persistence.*
-
-import org.hibernate.annotations.DynamicInsert
-import org.hibernate.annotations.DynamicUpdate
-import org.hibernate.annotations.GenericGenerator
-import org.hibernate.annotations.SQLDelete
-import org.hibernate.annotations.Where
+import jakarta.persistence.Table
+import org.hibernate.annotations.*
 
 /**
  * 帐号;
@@ -18,7 +12,7 @@ import org.hibernate.annotations.Where
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2025/10/15
+ * @date 2025/10/19
  */
 @Aggregate(aggregate = "User", name = "User", root = true, type = Aggregate.TYPE_ENTITY, description = "帐号，")
 @Entity
@@ -49,6 +43,13 @@ class User (
     @Convert(converter = UserType.Converter::class)
     @Column(name = "`type`")
     var type: UserType = UserType.valueOf(0),
+
+    /**
+     * 昵称
+     * varchar(20)
+     */
+    @Column(name = "`nick_name`")
+    var nickName: String = "",
 
     /**
      * 邮箱
@@ -154,4 +155,9 @@ class User (
     // 【行为方法开始】
 
     // 【行为方法结束】
+    companion object {
+        fun validatePassword(password: String, input: String): Boolean {
+
+        }
+    }
 }
