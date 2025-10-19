@@ -27,6 +27,8 @@ object DelHistoryCmd {
     }
 
     class Request(
+        /** 视频ID */
+        val videoId: Long,
     ) : RequestParam<Response>
 
     class Response(

@@ -1,0 +1,20 @@
+export edu.only4.danmuku.application.queries._share.model.video_play_history.JVideoPlayHistory
+    -> package edu.only4.danmuku.application.queries._share.draft.video_play_history
+
+/**
+ * 播放历史分页查询 DTO
+ * 包含视频信息
+ */
+PlayHistoryPageItem {
+    id
+    customerId
+    videoId
+    fileIndex
+    createTime
+
+    // 关联查询视频信息
+    video {
+        videoName
+        videoCover
+    }
+}

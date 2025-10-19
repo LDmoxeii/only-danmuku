@@ -1,0 +1,9 @@
+### 加载播放历史 - 第一页
+POST {{host}}/history/loadHistory
+Content-Type: application/json
+
+{
+  "pageNum": 1,
+  "pageSize": 10,
+  "sort": []
+}
