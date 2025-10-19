@@ -1,0 +1,16 @@
+export edu.only4.danmuku.application.queries._share.model.video_file_draft.JVideoFileDraft
+    -> package edu.only4.danmuku.application.queries._share.draft.video_file_draft
+
+/**
+ * 视频文件草稿项 DTO
+ * 用于获取视频草稿的文件列表
+ */
+VideoFileDraftItem {
+    fileId
+    uploadId
+    fileIndex
+    fileName
+    fileSize
+    filePath
+    duration
+}

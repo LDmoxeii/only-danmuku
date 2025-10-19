@@ -1,0 +1,66 @@
+### 加载用户发布的视频列表 - 全部
+POST {{host}}/ucenter/loadVideoList
+Content-Type: application/json
+
+{
+  "pageNum": 1,
+  "pageSize": 10
+}
+
+### 加载用户发布的视频列表 - 审核通过 (status = 3 对应 4审核成功)
+POST {{host}}/ucenter/loadVideoList
+Content-Type: application/json
+
+{
+  "pageNum": 1,
+  "pageSize": 10,
+  "status": 4
+}
+
+### 加载用户发布的视频列表 - 审核失败 (status = 4 对应 5审核失败)
+POST {{host}}/ucenter/loadVideoList
+Content-Type: application/json
+
+{
+  "pageNum": 1,
+  "pageSize": 10,
+  "status": 5
+}
+
+### 加载用户发布的视频列表 - 进行中 (status = -1 排除审核通过和失败)
+POST {{host}}/ucenter/loadVideoList
+Content-Type: application/json
+
+{
+  "pageNum": 1,
+  "pageSize": 10,
+  "status": -1
+}
+
+### 获取视频统计信息
+GET {{host}}/ucenter/getVideoCountInfo
+
+### 根据视频ID获取视频详情
+POST {{host}}/ucenter/getVideoByVideoId
+Content-Type: application/json
+
+{
+  "videoId": "1001"
+}
+
+### 保存视频互动设置
+POST {{host}}/ucenter/saveVideoInteraction
+Content-Type: application/json
+
+{
+  "videoId": "1001",
+  "interaction": "011"
+}
+
+### 删除视频
+POST {{host}}/ucenter/deleteVideo
+Content-Type: application/json
+
+{
+  "videoId": "1007"
+}

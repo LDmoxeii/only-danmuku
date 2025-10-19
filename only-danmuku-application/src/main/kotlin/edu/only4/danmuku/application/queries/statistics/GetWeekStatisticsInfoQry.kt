@@ -12,8 +12,10 @@ import com.only4.cap4k.ddd.core.application.query.ListQueryParam
 object GetWeekStatisticsInfoQry {
 
     data class Request(
+        /** 用户ID - 可选，不传则查询全局统计 */
+        val userId: Long? = null,
         /** 数据类型：1-视频观看，2-视频点赞，3-视频评论，4-视频分享，5-用户关注，6-用户登录 */
-        val dataType: Int = 0
+        val dataType: Int = 0,
     ) : ListQueryParam<Response>
 
     data class Response(

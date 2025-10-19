@@ -11,20 +11,35 @@ import com.only4.cap4k.ddd.core.application.RequestParam
  */
 object GetPreviousDayStatisticsInfoQry {
 
-    class Request : RequestParam<Response>
+    data class Request(
+        /** 用户ID - 可选，不传则查询全局统计 */
+        val userId: Long? = null,
+    ) : RequestParam<Response>
 
     data class Response(
-        /** 视频观看数 */
+        /** 前一天视频观看数 */
         val videoViewCount: Int = 0,
-        /** 视频点赞数 */
+        /** 前一天视频点赞数 */
         val videoLikeCount: Int = 0,
-        /** 视频评论数 */
+        /** 前一天视频评论数 */
         val videoCommentCount: Int = 0,
-        /** 视频分享数 */
+        /** 前一天视频分享数 */
         val videoShareCount: Int = 0,
-        /** 用户关注数 */
+        /** 前一天用户关注数 */
         val userFollowCount: Int = 0,
-        /** 用户登录数 */
-        val userLoginCount: Int = 0
+        /** 前一天用户登录数 */
+        val userLoginCount: Int = 0,
+        /** 总视频观看数 */
+        val totalVideoViewCount: Int = 0,
+        /** 总视频点赞数 */
+        val totalVideoLikeCount: Int = 0,
+        /** 总视频评论数 */
+        val totalVideoCommentCount: Int = 0,
+        /** 总视频分享数 */
+        val totalVideoShareCount: Int = 0,
+        /** 总用户关注数 */
+        val totalUserFollowCount: Int = 0,
+        /** 总用户登录数 */
+        val totalUserLoginCount: Int = 0,
     )
 }

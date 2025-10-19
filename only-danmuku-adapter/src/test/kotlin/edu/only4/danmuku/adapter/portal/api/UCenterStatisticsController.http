@@ -1,0 +1,50 @@
+### 获取实时统计信息
+GET {{host}}/ucenter/getActualTimeStatisticsInfo
+
+### 获取周统计信息 - 视频观看 (dataType = 1)
+POST {{host}}/ucenter/getWeekStatisticsInfo
+Content-Type: application/json
+
+{
+  "dataType": 1
+}
+
+### 获取周统计信息 - 视频点赞 (dataType = 2)
+POST {{host}}/ucenter/getWeekStatisticsInfo
+Content-Type: application/json
+
+{
+  "dataType": 2
+}
+
+### 获取周统计信息 - 视频评论 (dataType = 3)
+POST {{host}}/ucenter/getWeekStatisticsInfo
+Content-Type: application/json
+
+{
+  "dataType": 3
+}
+
+### 获取周统计信息 - 视频分享 (dataType = 4)
+POST {{host}}/ucenter/getWeekStatisticsInfo
+Content-Type: application/json
+
+{
+  "dataType": 4
+}
+
+### 获取周统计信息 - 用户关注 (dataType = 5)
+POST {{host}}/ucenter/getWeekStatisticsInfo
+Content-Type: application/json
+
+{
+  "dataType": 5
+}
+
+### 获取周统计信息 - 用户登录 (dataType = 6)
+POST {{host}}/ucenter/getWeekStatisticsInfo
+Content-Type: application/json
+
+{
+  "dataType": 6
+}

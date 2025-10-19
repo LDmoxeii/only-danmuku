@@ -59,11 +59,11 @@ class UCenterVideoPostController {
     @PostMapping("/loadVideoList")
     fun loadVideoList(@RequestBody request: UCenterLoadVideoList.Request): PageData<UCenterLoadVideoList.VideoItem> {
         // TODO: 从上下文获取当前用户ID
-        val userId = 1L // 临时硬编码
+        val currentUserId = 2001L // 临时硬编码
 
         // 构建查询请求
         val queryRequest = GetUserVideoDraftsQry.Request(
-            userId = userId,
+            userId = currentUserId,
             status = request.status,
             videoNameFuzzy = request.videoNameFuzzy,
             excludeStatusArray = if (request.status == -1) listOf(3, 4) else null // 进行中排除审核通过和不通过
@@ -84,12 +84,12 @@ class UCenterVideoPostController {
                     videoCover = video.videoCover,
                     videoName = video.videoName,
                     createTime = LocalDateTime.ofInstant(
-                        Instant.ofEpochMilli(video.createTime),
+                        Instant.ofEpochSecond(video.createTime),
                         ZoneId.systemDefault()
                     ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
                     lastUpdateTime = video.lastUpdateTime?.let {
                         LocalDateTime.ofInstant(
-                            Instant.ofEpochMilli(it),
+                            Instant.ofEpochSecond(it),
                             ZoneId.systemDefault()
                         ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
                     },
@@ -112,12 +112,12 @@ class UCenterVideoPostController {
     @GetMapping("/getVideoCountInfo")
     fun getVideoCountInfo(): UCenterGetVideoCountInfo.Response {
         // TODO: 从上下文获取当前用户ID
-        val userId = 1L // 临时硬编码
+        val currentUserId = 2001L // 临时硬编码
 
         // 查询审核通过的数量 (status = 3)
         val auditPassCount = Mediator.queries.send(
             GetVideoDraftCountByStatusQry.Request(
-                userId = userId,
+                userId = currentUserId,
                 status = 3
             )
         ).count
@@ -125,7 +125,7 @@ class UCenterVideoPostController {
         // 查询审核失败的数量 (status = 4)
         val auditFailCount = Mediator.queries.send(
             GetVideoDraftCountByStatusQry.Request(
-                userId = userId,
+                userId = currentUserId,
                 status = 4
             )
         ).count
@@ -133,7 +133,7 @@ class UCenterVideoPostController {
         // 查询进行中的数量 (排除审核通过和不通过)
         val inProgress = Mediator.queries.send(
             GetVideoDraftCountByStatusQry.Request(
-                userId = userId,
+                userId = currentUserId,
                 excludeStatusArray = listOf(3, 4)
             )
         ).count
@@ -151,13 +151,13 @@ class UCenterVideoPostController {
     @PostMapping("/getVideoByVideoId")
     fun getVideoByVideoId(@RequestBody @Validated request: UCenterGetVideoByVideoId.Request): UCenterGetVideoByVideoId.Response {
         // TODO: 从上下文获取当前用户ID
-        val userId = 1L // 临时硬编码
+        val currentUserId = 2001L // 临时硬编码
 
         // 调用查询获取视频信息
         val queryResult = Mediator.queries.send(
             GetVideoDraftInfoQry.Request(
                 videoId = request.videoId.toLong(),
-                userId = userId
+                userId = currentUserId
             )
         )
 

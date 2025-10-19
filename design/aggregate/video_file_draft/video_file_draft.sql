@@ -30,3 +30,32 @@ CREATE TABLE video_file_draft
     CHARACTER SET = utf8mb4
     COLLATE = utf8mb4_general_ci COMMENT = '视频文件信息;@Spe;@Fac;'
     ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Test data for video_file_draft
+-- ----------------------------
+INSERT INTO video_file_draft (id, file_id, upload_id, customer_id, video_id, file_index, file_name, file_size,
+                              file_path, update_type, transfer_result, duration, create_user_id, create_by, create_time,
+                              update_user_id, update_by, update_time, deleted)
+VALUES
+-- 视频 1001 的文件草稿 (Kotlin 入门教程 - 3个分片)
+(5001, 3001, 8001, 2001, 1001, 1, 'kotlin_tutorial_part1.mp4', 104857600, '/videos/2001/1001/part1.mp4', 1, 2, 600,
+ 2001, 'user_zhang', 1729267200, 2001, 'user_zhang', 1729267200, 0),
+(5002, 3002, 8002, 2001, 1001, 2, 'kotlin_tutorial_part2.mp4', 104857600, '/videos/2001/1001/part2.mp4', 1, 2, 600,
+ 2001, 'user_zhang', 1729267200, 2001, 'user_zhang', 1729267200, 0),
+(5003, 3003, 8003, 2001, 1001, 3, 'kotlin_tutorial_part3.mp4', 104857600, '/videos/2001/1001/part3.mp4', 1, 2, 600,
+ 2001, 'user_zhang', 1729267200, 2001, 'user_zhang', 1729267200, 0),
+
+-- 视频 1002 的文件草稿 (React 实战项目 - 4个分片)
+(5004, 3004, 8004, 2001, 1002, 1, 'react_project_part1.mp4', 125829120, '/videos/2001/1002/part1.mp4', 1, 2, 600, 2001,
+ 'user_zhang', 1729267200, 2001, 'user_zhang', 1729267200, 0),
+(5005, 3005, 8005, 2001, 1002, 2, 'react_project_part2.mp4', 125829120, '/videos/2001/1002/part2.mp4', 1, 2, 600, 2001,
+ 'user_zhang', 1729267200, 2001, 'user_zhang', 1729267200, 0),
+(5006, 3006, 8006, 2001, 1002, 3, 'react_project_part3.mp4', 125829120, '/videos/2001/1002/part3.mp4', 1, 2, 600, 2001,
+ 'user_zhang', 1729267200, 2001, 'user_zhang', 1729267200, 0),
+(5007, 3007, 8007, 2001, 1002, 4, 'react_project_part4.mp4', 125829120, '/videos/2001/1002/part4.mp4', 1, 2, 600, 2001,
+ 'user_zhang', 1729267200, 2001, 'user_zhang', 1729267200, 0),
+
+-- 视频 1010 的文件草稿 (待审核视频 - 转码中)
+(5008, 3014, 8008, 2001, 1010, 1, 'kubernetes_tutorial.mp4', 209715200, '/videos/2001/1010/part1.mp4', 1, 1, 4200, 2001,
+ 'user_zhang', 1729699200, 2001, 'user_zhang', 1729699200, 0);
