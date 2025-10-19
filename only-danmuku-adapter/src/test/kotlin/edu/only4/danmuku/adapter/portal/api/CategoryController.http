@@ -1,0 +1,5 @@
+### 获取所有分类
+POST {{host}}/category/loadAllCategory
+Content-Type: application/json
+
+{}
