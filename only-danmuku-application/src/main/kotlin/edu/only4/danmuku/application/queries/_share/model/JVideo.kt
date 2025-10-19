@@ -1,9 +1,6 @@
 package edu.only4.danmuku.application.queries._share.model
 
-import org.babyfish.jimmer.sql.Entity
-import org.babyfish.jimmer.sql.Id
-import org.babyfish.jimmer.sql.LogicalDeleted
-import org.babyfish.jimmer.sql.Table
+import org.babyfish.jimmer.sql.*
 
 /**
  * Jimmer 视频实体
@@ -18,11 +15,6 @@ interface JVideo {
      */
     @Id
     val id: Long
-
-    /**
-     * 用户ID
-     */
-    val customerId: Long
 
     /**
      * 视频封面
@@ -73,6 +65,44 @@ interface JVideo {
      * 评论数量
      */
     val commentCount: Int?
+
+    /**
+     * 投币数量
+     */
+    val coinCount: Int?
+
+    /**
+     * 收藏数量
+     */
+    val collectCount: Int?
+
+    /**
+     * 推荐类型
+     */
+    val recommendType: Byte
+
+    /**
+     * 创建时间
+     */
+    val createTime: Long?
+
+    /**
+     * 更新时间
+     */
+    val updateTime: Long?
+
+    /**
+     * 关联的用户档案
+     */
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    val customer: JCustomerProfile
+
+    /**
+     * 用户ID
+     */
+    @IdView("customer")
+    val customerId: Long
 
     /**
      * 逻辑删除标识

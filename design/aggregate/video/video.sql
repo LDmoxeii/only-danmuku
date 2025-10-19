@@ -64,3 +64,20 @@ INSERT INTO video (id, customer_id, video_cover, video_name, p_category_id, cate
 VALUES (1003, 2003, 'cover_mysql.jpg', 'MySQL 优化技巧', 1, 102, 1, NULL, 'MySQL,数据库,优化',
         '深入讲解MySQL数据库性能优化技巧', '111', 3600, 12300, 856, 3, 103, 68, 421, 2, '2024-10-20 14:30:00', 2003,
         'user_wang', 1729280800, 2003, 'user_wang', 1729356600, 0);
+
+INSERT INTO video (id, customer_id, video_cover, video_name, p_category_id, category_id, post_type, origin_info, tags,
+                   introduction, interaction, duration, play_count, like_count, danmuku_count, comment_count,
+                   coin_count, collect_count, recommend_type, last_play_time, create_user_id, create_by, create_time,
+                   update_user_id, update_by, update_time, deleted)
+VALUES (1004, 2004, 'cover_react.jpg', 'React 前端开发', 1, 101, 1, NULL, 'React,前端,JavaScript',
+        'React框架从入门到精通', '111', 2100, 6500, 423, 4, 58, 35, 215, 1, '2024-10-20 15:00:00', 2004,
+        'user_zhao', 1729282800, 2004, 'user_zhao', 1729358000, 0);
+
+INSERT INTO video (id, customer_id, video_cover, video_name, p_category_id, category_id, post_type, origin_info, tags,
+                   introduction, interaction, duration, play_count, like_count, danmuku_count, comment_count,
+                   coin_count, collect_count, recommend_type, last_play_time, create_user_id, create_by, create_time,
+                   update_user_id, update_by, update_time, deleted)
+VALUES (1005, 2001, 'cover_docker.jpg', 'Docker 容器技术', 1, 102, 1, NULL, 'Docker,容器,DevOps',
+        'Docker容器化技术实战应用', '111', 2700, 9200, 612, 5, 76, 48, 325, 2, '2024-10-20 16:00:00', 2001,
+        'user_zhang', 1729286400, 2001, 'user_zhang', 1729359600, 0);
+

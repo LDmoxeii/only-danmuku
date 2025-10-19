@@ -1,0 +1,27 @@
+export edu.only4.danmuku.application.queries._share.model.JVideo
+    -> package edu.only4.danmuku.application.queries._share.draft
+
+/**
+ * 视频搜索查询 DTO
+ * 包含视频信息和作者信息
+ */
+VideoSearchItem {
+    id
+    videoCover
+    videoName
+    duration
+    createTime
+    updateTime
+    playCount
+    likeCount
+    danmukuCount
+    commentCount
+    coinCount
+    collectCount
+    recommendType
+    customerId
+
+    customer {
+        nickName
+    }
+}

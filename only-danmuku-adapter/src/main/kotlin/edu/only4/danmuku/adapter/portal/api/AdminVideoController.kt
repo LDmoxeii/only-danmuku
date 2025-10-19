@@ -55,12 +55,12 @@ class AdminVideoController {
                     duration = video.duration,
                     status = video.status,
                     createTime = LocalDateTime.ofInstant(
-                        Instant.ofEpochMilli(video.createTime),
+                        Instant.ofEpochSecond(video.createTime),
                         ZoneId.systemDefault()
                     ),
                     lastUpdateTime = video.lastUpdateTime?.let {
                         LocalDateTime.ofInstant(
-                            Instant.ofEpochMilli(it),
+                            Instant.ofEpochSecond(it),
                             ZoneId.systemDefault()
                         )
                     },
