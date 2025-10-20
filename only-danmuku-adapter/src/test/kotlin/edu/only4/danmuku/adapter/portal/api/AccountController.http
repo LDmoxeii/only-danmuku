@@ -16,8 +16,8 @@ POST {{host}}/account/register
 Content-Type: application/json
 
 {
-  "email": "2649075705@165.com",
-  "nickName": "2649075705@165.com",
+  "email": "2649075705@172.com",
+  "nickName": "2649075705@172.com",
   "registerPassword": "Zhenyu123456",
   "checkCodeKey": "{{checkCodeKey}}",
   "checkCode": "1512"

@@ -3,6 +3,9 @@ package edu.only4.danmuku.application.commands.customer_profile
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
+import edu.only4.danmuku.domain.aggregates.customer_profile.AggCustomerProfile
+import edu.only4.danmuku.domain.aggregates.customer_profile.CustomerProfile
+import edu.only4.danmuku.domain.aggregates.customer_profile.factory.CustomerProfileFactory
 
 import org.springframework.stereotype.Service
 
@@ -18,15 +21,26 @@ object CreateCustomerProfileCmd {
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
+            Mediator.aggregates.create(
+                AggCustomerProfile::class.java,
+                CustomerProfileFactory.Payload(
+                    userid = request.userid,
+                    nickName = request.nickName,
+                    email = request.email,
+                )
+            )
+
             Mediator.uow.save()
 
-            return Response(
-            )
+            return Response()
         }
 
     }
 
     class Request(
+        val userid: Long,
+        val nickName: String,
+        val email: String,
     ) : RequestParam<Response>
 
     class Response(

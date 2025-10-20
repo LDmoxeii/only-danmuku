@@ -24,20 +24,24 @@ import org.springframework.stereotype.Service
 )
 class CustomerProfileFactory : AggregateFactory<CustomerProfileFactory.Payload, CustomerProfile> {
 
-    override fun create(payload: Payload): CustomerProfile {
+    override fun create(entityPayload: Payload): CustomerProfile {
         return CustomerProfile(
-
+            userId = entityPayload.userid,
+            nickName = entityPayload.nickName,
+            email = entityPayload.email,
         )
     }
 
-     @Aggregate(
+    @Aggregate(
         aggregate = "CustomerProfile",
         name = "CustomerProfilePayload",
         type = Aggregate.TYPE_FACTORY_PAYLOAD,
         description = ""
     )
     data class Payload(
-        val name: String
+        val userid: Long,
+        val nickName: String,
+        val email: String,
     ) : AggregatePayload<CustomerProfile>
 
 }

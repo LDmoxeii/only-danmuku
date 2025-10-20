@@ -27,7 +27,27 @@ object AdminAccountLogin {
     )
 
     data class Response(
+        /**
+         * 用户ID
+         */
+        var userId: String,
+
         /** 管理员账号 */
-        var account: String? = null
+        var account: String? = null,
+
+        /**
+         * 用户昵称
+         */
+        var nickName: String,
+
+        /**
+         * 用户头像
+         */
+        var avatar: String? = null,
+
+        /**
+         * 登录令牌
+         */
+        var token: String
     )
 }

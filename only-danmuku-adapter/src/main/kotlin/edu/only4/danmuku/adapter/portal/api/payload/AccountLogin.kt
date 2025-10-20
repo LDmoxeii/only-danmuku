@@ -47,12 +47,12 @@ object AccountLogin {
         /**
          * 用户ID
          */
-        var userId: String? = null,
+        var userId: String,
 
         /**
          * 用户昵称
          */
-        var nickName: String? = null,
+        var nickName: String,
 
         /**
          * 用户头像
@@ -62,6 +62,6 @@ object AccountLogin {
         /**
          * 登录令牌
          */
-        var token: String? = null
+        var token: String
     )
 }

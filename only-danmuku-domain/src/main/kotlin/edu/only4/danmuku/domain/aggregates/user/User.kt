@@ -2,6 +2,8 @@ package edu.only4.danmuku.domain.aggregates.user
 
 import cn.hutool.crypto.digest.BCrypt
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
+import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
+import edu.only4.danmuku.domain.aggregates.events.UserCreatedDomainEvent
 import edu.only4.danmuku.domain.aggregates.user.enums.UserType
 import jakarta.persistence.*
 import jakarta.persistence.Table
@@ -163,6 +165,12 @@ class User(
     }
 
     // 【行为方法开始】
+
+    fun onCreate() {
+        // 密码加密
+//        this.password = BCrypt.hashpw(this.password)
+        events().attach(this) { UserCreatedDomainEvent(entity = this) }
+    }
 
     // 【行为方法结束】
 }

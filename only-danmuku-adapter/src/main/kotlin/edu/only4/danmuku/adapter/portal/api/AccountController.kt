@@ -33,7 +33,7 @@ class AccountController {
      */
     @PostMapping("/checkCode")
     fun checkCode(): AccountCheckCode.Response {
-        val result = Mediator.requests.send(CaptchaGen.Request("admin-auth"))
+        val result = Mediator.requests.send(CaptchaGen.Request("web-auth"))
         return AccountCheckCode.Response(
             result.captchaId,
             result.byte

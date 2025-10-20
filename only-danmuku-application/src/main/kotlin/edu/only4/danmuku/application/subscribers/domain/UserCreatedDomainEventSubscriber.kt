@@ -1,7 +1,8 @@
 package edu.only4.danmuku.application.subscribers.domain
 
+import com.only4.cap4k.ddd.core.Mediator
+import edu.only4.danmuku.application.commands.customer_profile.CreateCustomerProfileCmd
 import edu.only4.danmuku.domain.aggregates.events.UserCreatedDomainEvent
-
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Service
 
@@ -18,6 +19,11 @@ class UserCreatedDomainEventSubscriber {
 
     @EventListener(UserCreatedDomainEvent::class)
     fun on(event: UserCreatedDomainEvent) {
-
+        val user = event.entity
+        Mediator.commands.send(CreateCustomerProfileCmd.Request(
+            userid = user.id,
+            nickName = user.nickName,
+            email = user.email,
+        ))
     }
 }
