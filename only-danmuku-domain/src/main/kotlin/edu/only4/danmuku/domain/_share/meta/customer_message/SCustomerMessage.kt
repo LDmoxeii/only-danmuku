@@ -3,17 +3,14 @@ package edu.only4.danmuku.domain._share.meta.customer_message
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePredicate
 import com.only4.cap4k.ddd.domain.repo.JpaPredicate
 import com.only4.cap4k.ddd.domain.repo.querydsl.QuerydslPredicate
-
 import com.querydsl.core.types.OrderSpecifier
-import edu.only4.danmuku.domain._share.meta.Schema
+import edu.only4.danmuku.domain._share.meta.*
 import edu.only4.danmuku.domain.aggregates.customer_message.AggCustomerMessage
 import edu.only4.danmuku.domain.aggregates.customer_message.CustomerMessage
 import edu.only4.danmuku.domain.aggregates.customer_message.QCustomerMessage
 import edu.only4.danmuku.domain.aggregates.customer_message.enums.MessageType
 import edu.only4.danmuku.domain.aggregates.customer_message.enums.ReadType
-
 import jakarta.persistence.criteria.*
-
 import org.springframework.data.jpa.domain.Specification
 
 /**
@@ -24,7 +21,7 @@ import org.springframework.data.jpa.domain.Specification
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/10/15
+ * @date 2025/10/20
  */
 class SCustomerMessage(
     private val root: Path<CustomerMessage>,
@@ -73,7 +70,7 @@ class SCustomerMessage(
          * @return
          */
         @JvmStatic
-        fun specify(builder: Schema.PredicateBuilder<SCustomerMessage>): Specification<CustomerMessage> {
+        fun specify(builder: PredicateBuilder<SCustomerMessage>): Specification<CustomerMessage> {
             return specify(builder, false, emptyList())
         }
 
@@ -85,7 +82,7 @@ class SCustomerMessage(
          * @return
          */
         @JvmStatic
-        fun specify(builder: Schema.PredicateBuilder<SCustomerMessage>, distinct: Boolean): Specification<CustomerMessage> {
+        fun specify(builder: PredicateBuilder<SCustomerMessage>, distinct: Boolean): Specification<CustomerMessage> {
             return specify(builder, distinct, emptyList())
         }
 
@@ -98,8 +95,8 @@ class SCustomerMessage(
          */
         @JvmStatic
         fun specify(
-            builder: Schema.PredicateBuilder<SCustomerMessage>,
-            vararg orderBuilders: Schema.OrderBuilder<SCustomerMessage>,
+            builder: PredicateBuilder<SCustomerMessage>,
+            vararg orderBuilders: OrderBuilder<SCustomerMessage>,
         ): Specification<CustomerMessage> {
             return specify(builder, orderBuilders.toList())
         }
@@ -113,8 +110,8 @@ class SCustomerMessage(
          */
         @JvmStatic
         fun specify(
-            builder: Schema.PredicateBuilder<SCustomerMessage>,
-            orderBuilders: List<Schema.OrderBuilder<SCustomerMessage>>,
+            builder: PredicateBuilder<SCustomerMessage>,
+            orderBuilders: List<OrderBuilder<SCustomerMessage>>,
         ): Specification<CustomerMessage> {
             return specify(builder, false, orderBuilders)
         }
@@ -129,9 +126,9 @@ class SCustomerMessage(
         */
         @JvmStatic
         fun specify(
-            builder: Schema.PredicateBuilder<SCustomerMessage>,
+            builder: PredicateBuilder<SCustomerMessage>,
             distinct: Boolean,
-            vararg orderBuilders: Schema.OrderBuilder<SCustomerMessage>,
+            vararg orderBuilders: OrderBuilder<SCustomerMessage>,
         ): Specification<CustomerMessage> {
             return specify(builder, distinct, orderBuilders.toList())
         }
@@ -146,9 +143,9 @@ class SCustomerMessage(
         */
         @JvmStatic
         fun specify(
-            builder: Schema.PredicateBuilder<SCustomerMessage>,
+            builder: PredicateBuilder<SCustomerMessage>,
             distinct: Boolean,
-            orderBuilders: List<Schema.OrderBuilder<SCustomerMessage>>,
+            orderBuilders: List<OrderBuilder<SCustomerMessage>>,
         ): Specification<CustomerMessage> {
             return specify { schema, criteriaQuery, criteriaBuilder ->
                 criteriaQuery.where(builder.build(schema))
@@ -167,7 +164,7 @@ class SCustomerMessage(
          * @return
          */
         @JvmStatic
-        fun specify(specifier: Schema.Specification<CustomerMessage, SCustomerMessage>): Specification<CustomerMessage> {
+        fun specify(specifier: SchemaSpecification<CustomerMessage, SCustomerMessage>): Specification<CustomerMessage> {
             return Specification { root, criteriaQuery, criteriaBuilder ->
                 val schema = SCustomerMessage(root, criteriaBuilder)
                 specifier.toPredicate(schema, criteriaQuery, criteriaBuilder)
@@ -188,8 +185,8 @@ class SCustomerMessage(
         @JvmStatic
         fun <E> subquery(
             resultClass: Class<E>,
-            selectBuilder: Schema.ExpressionBuilder<SCustomerMessage, E>,
-            predicateBuilder: Schema.PredicateBuilder<SCustomerMessage>,
+            selectBuilder: ExpressionBuilder<SCustomerMessage, E>,
+            predicateBuilder: PredicateBuilder<SCustomerMessage>,
             criteriaBuilder: CriteriaBuilder,
             criteriaQuery: CriteriaQuery<*>,
         ): Subquery<E> {
@@ -212,7 +209,7 @@ class SCustomerMessage(
         @JvmStatic
         fun <E> subquery(
             resultClass: Class<E>,
-            subqueryConfigure: Schema.SubqueryConfigure<E, SCustomerMessage>,
+            subqueryConfigure: SubqueryConfigure<E, SCustomerMessage>,
             criteriaBuilder: CriteriaBuilder,
             criteriaQuery: CriteriaQuery<*>,
         ): Subquery<E> {
@@ -263,7 +260,7 @@ class SCustomerMessage(
          * @return
          */
         @JvmStatic
-        fun predicate(builder: Schema.PredicateBuilder<SCustomerMessage>): AggregatePredicate<AggCustomerMessage, CustomerMessage> {
+        fun predicate(builder: PredicateBuilder<SCustomerMessage>): AggregatePredicate<AggCustomerMessage, CustomerMessage> {
             return JpaPredicate.bySpecification(CustomerMessage::class.java, specify(builder)).toAggregatePredicate(AggCustomerMessage::class.java)
         }
 
@@ -275,7 +272,10 @@ class SCustomerMessage(
          * @return
          */
         @JvmStatic
-        fun predicate(builder: Schema.PredicateBuilder<SCustomerMessage>, distinct: Boolean): AggregatePredicate<AggCustomerMessage, CustomerMessage> {
+        fun predicate(
+            builder: PredicateBuilder<SCustomerMessage>,
+            distinct: Boolean,
+        ): AggregatePredicate<AggCustomerMessage, CustomerMessage> {
             return JpaPredicate.bySpecification(CustomerMessage::class.java, specify(builder, distinct)).toAggregatePredicate(AggCustomerMessage::class.java)
         }
 
@@ -288,8 +288,8 @@ class SCustomerMessage(
          */
         @JvmStatic
         fun predicate(
-            builder: Schema.PredicateBuilder<SCustomerMessage>,
-            orderBuilders: List<Schema.OrderBuilder<SCustomerMessage>>,
+            builder: PredicateBuilder<SCustomerMessage>,
+            orderBuilders: List<OrderBuilder<SCustomerMessage>>,
         ): AggregatePredicate<AggCustomerMessage, CustomerMessage> {
             return JpaPredicate.bySpecification(CustomerMessage::class.java, specify(builder, false, orderBuilders)).toAggregatePredicate(AggCustomerMessage::class.java)
         }
@@ -303,8 +303,8 @@ class SCustomerMessage(
          */
         @JvmStatic
         fun predicate(
-            builder: Schema.PredicateBuilder<SCustomerMessage>,
-            vararg orderBuilders: Schema.OrderBuilder<SCustomerMessage>,
+            builder: PredicateBuilder<SCustomerMessage>,
+            vararg orderBuilders: OrderBuilder<SCustomerMessage>,
         ): AggregatePredicate<AggCustomerMessage, CustomerMessage> {
             return JpaPredicate.bySpecification(CustomerMessage::class.java, specify(builder, false, *orderBuilders)).toAggregatePredicate(AggCustomerMessage::class.java)
         }
@@ -319,9 +319,9 @@ class SCustomerMessage(
          */
         @JvmStatic
         fun predicate(
-            builder: Schema.PredicateBuilder<SCustomerMessage>,
+            builder: PredicateBuilder<SCustomerMessage>,
             distinct: Boolean,
-            orderBuilders: List<Schema.OrderBuilder<SCustomerMessage>>,
+            orderBuilders: List<OrderBuilder<SCustomerMessage>>,
         ): AggregatePredicate<AggCustomerMessage, CustomerMessage> {
             return JpaPredicate.bySpecification(CustomerMessage::class.java, specify(builder, distinct, orderBuilders)).toAggregatePredicate(AggCustomerMessage::class.java)
         }
@@ -336,9 +336,9 @@ class SCustomerMessage(
          */
         @JvmStatic
         fun predicate(
-            builder: Schema.PredicateBuilder<SCustomerMessage>,
+            builder: PredicateBuilder<SCustomerMessage>,
             distinct: Boolean,
-            vararg orderBuilders: Schema.OrderBuilder<SCustomerMessage>,
+            vararg orderBuilders: OrderBuilder<SCustomerMessage>,
         ): AggregatePredicate<AggCustomerMessage, CustomerMessage> {
             return JpaPredicate.bySpecification(CustomerMessage::class.java, specify(builder, distinct, *orderBuilders)).toAggregatePredicate(AggCustomerMessage::class.java)
         }
@@ -350,7 +350,7 @@ class SCustomerMessage(
          * @return
          */
         @JvmStatic
-        fun predicate(specifier: Schema.Specification<CustomerMessage, SCustomerMessage>): AggregatePredicate<AggCustomerMessage, CustomerMessage> {
+        fun predicate(specifier: SchemaSpecification<CustomerMessage, SCustomerMessage>): AggregatePredicate<AggCustomerMessage, CustomerMessage> {
             return JpaPredicate.bySpecification(CustomerMessage::class.java, specify(specifier)).toAggregatePredicate(AggCustomerMessage::class.java)
         }
        /**
@@ -398,112 +398,112 @@ class SCustomerMessage(
     /**
      * ID
      */
-    val id: Schema.Field<Long> by lazy {
-        Schema.Field(root.get("id"), criteriaBuilder)
+    val id: Field<Long> by lazy {
+        Field(root.get("id"), criteriaBuilder)
     }
 
 
     /**
      * 用户ID
      */
-    val customerId: Schema.Field<String> by lazy {
-        Schema.Field(root.get("customerId"), criteriaBuilder)
+    val customerId: Field<String> by lazy {
+        Field(root.get("customerId"), criteriaBuilder)
     }
 
 
     /**
      * 主体ID
      */
-    val videoId: Schema.Field<String?> by lazy {
-        Schema.Field(root.get("videoId"), criteriaBuilder)
+    val videoId: Field<String?> by lazy {
+        Field(root.get("videoId"), criteriaBuilder)
     }
 
 
     /**
      * 消息类型
      */
-    val messageType: Schema.Field<MessageType> by lazy {
-        Schema.Field(root.get("messageType"), criteriaBuilder)
+    val messageType: Field<MessageType> by lazy {
+        Field(root.get("messageType"), criteriaBuilder)
     }
 
 
     /**
      * 发送主体ID
      */
-    val sendSubjectId: Schema.Field<String?> by lazy {
-        Schema.Field(root.get("sendSubjectId"), criteriaBuilder)
+    val sendSubjectId: Field<String?> by lazy {
+        Field(root.get("sendSubjectId"), criteriaBuilder)
     }
 
 
     /**
      * 读取状态
      */
-    val readType: Schema.Field<ReadType> by lazy {
-        Schema.Field(root.get("readType"), criteriaBuilder)
+    val readType: Field<ReadType> by lazy {
+        Field(root.get("readType"), criteriaBuilder)
     }
 
 
     /**
      * 扩展信息
      */
-    val extendJson: Schema.Field<String?> by lazy {
-        Schema.Field(root.get("extendJson"), criteriaBuilder)
+    val extendJson: Field<String?> by lazy {
+        Field(root.get("extendJson"), criteriaBuilder)
     }
 
 
     /**
      * 创建人ID
      */
-    val createUserId: Schema.Field<Long?> by lazy {
-        Schema.Field(root.get("createUserId"), criteriaBuilder)
+    val createUserId: Field<Long?> by lazy {
+        Field(root.get("createUserId"), criteriaBuilder)
     }
 
 
     /**
      * 创建人名称
      */
-    val createBy: Schema.Field<String?> by lazy {
-        Schema.Field(root.get("createBy"), criteriaBuilder)
+    val createBy: Field<String?> by lazy {
+        Field(root.get("createBy"), criteriaBuilder)
     }
 
 
     /**
      * 创建时间
      */
-    val createTime: Schema.Field<Long?> by lazy {
-        Schema.Field(root.get("createTime"), criteriaBuilder)
+    val createTime: Field<Long?> by lazy {
+        Field(root.get("createTime"), criteriaBuilder)
     }
 
 
     /**
      * 更新人ID
      */
-    val updateUserId: Schema.Field<Long?> by lazy {
-        Schema.Field(root.get("updateUserId"), criteriaBuilder)
+    val updateUserId: Field<Long?> by lazy {
+        Field(root.get("updateUserId"), criteriaBuilder)
     }
 
 
     /**
      * 更新人名称
      */
-    val updateBy: Schema.Field<String?> by lazy {
-        Schema.Field(root.get("updateBy"), criteriaBuilder)
+    val updateBy: Field<String?> by lazy {
+        Field(root.get("updateBy"), criteriaBuilder)
     }
 
 
     /**
      * 更新时间
      */
-    val updateTime: Schema.Field<Long?> by lazy {
-        Schema.Field(root.get("updateTime"), criteriaBuilder)
+    val updateTime: Field<Long?> by lazy {
+        Field(root.get("updateTime"), criteriaBuilder)
     }
 
 
     /**
      * 删除标识 0：未删除 id：已删除
      */
-    val deleted: Schema.Field<Boolean> by lazy {
-        Schema.Field(root.get("deleted"), criteriaBuilder)
+    val deleted: Field<Boolean> by lazy {
+        Field(root.get("deleted"), criteriaBuilder)
     }
 
 
@@ -527,12 +527,41 @@ class SCustomerMessage(
     }
 
     /**
+     * 满足所有条件（过滤 null）
+     * 类似 Jimmer 的 where { } 自动过滤 null 的行为
+     */
+    fun allNotNull(vararg restrictions: Predicate?): Predicate? {
+        val nonNullRestrictions = restrictions.filterNotNull().toTypedArray()
+        return when {
+            nonNullRestrictions.isEmpty() -> null
+            nonNullRestrictions.size == 1 -> nonNullRestrictions[0]
+            else -> criteriaBuilder.and(*nonNullRestrictions)
+        }
+    }
+
+    /**
+     * 满足任一条件（过滤 null）
+     */
+    fun anyNotNull(vararg restrictions: Predicate?): Predicate? {
+        val nonNullRestrictions = restrictions.filterNotNull().toTypedArray()
+        return when {
+            nonNullRestrictions.isEmpty() -> null
+            nonNullRestrictions.size == 1 -> nonNullRestrictions[0]
+            else -> criteriaBuilder.or(*nonNullRestrictions)
+        }
+    }
+
+    /**
+     * NOT 操作
+     */
+    fun not(restriction: Predicate): Predicate = criteriaBuilder.not(restriction)
+
+    /**
      * 指定条件
      * @param builder
      * @return
      */
-    fun spec(builder: Schema.PredicateBuilder<SCustomerMessage>): Predicate
-    {
+    fun spec(builder: PredicateBuilder<SCustomerMessage>): Predicate {
         return builder.build(this)
     }
 }

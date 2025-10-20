@@ -3,15 +3,12 @@ package edu.only4.danmuku.domain._share.meta.video_file
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePredicate
 import com.only4.cap4k.ddd.domain.repo.JpaPredicate
 import com.only4.cap4k.ddd.domain.repo.querydsl.QuerydslPredicate
-
 import com.querydsl.core.types.OrderSpecifier
-import edu.only4.danmuku.domain._share.meta.Schema
+import edu.only4.danmuku.domain._share.meta.*
 import edu.only4.danmuku.domain.aggregates.video_file.AggVideoFile
 import edu.only4.danmuku.domain.aggregates.video_file.QVideoFile
 import edu.only4.danmuku.domain.aggregates.video_file.VideoFile
-
 import jakarta.persistence.criteria.*
-
 import org.springframework.data.jpa.domain.Specification
 
 /**
@@ -22,7 +19,7 @@ import org.springframework.data.jpa.domain.Specification
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/10/15
+ * @date 2025/10/20
  */
 class SVideoFile(
     private val root: Path<VideoFile>,
@@ -75,7 +72,7 @@ class SVideoFile(
          * @return
          */
         @JvmStatic
-        fun specify(builder: Schema.PredicateBuilder<SVideoFile>): Specification<VideoFile> {
+        fun specify(builder: PredicateBuilder<SVideoFile>): Specification<VideoFile> {
             return specify(builder, false, emptyList())
         }
 
@@ -87,7 +84,7 @@ class SVideoFile(
          * @return
          */
         @JvmStatic
-        fun specify(builder: Schema.PredicateBuilder<SVideoFile>, distinct: Boolean): Specification<VideoFile> {
+        fun specify(builder: PredicateBuilder<SVideoFile>, distinct: Boolean): Specification<VideoFile> {
             return specify(builder, distinct, emptyList())
         }
 
@@ -100,8 +97,8 @@ class SVideoFile(
          */
         @JvmStatic
         fun specify(
-            builder: Schema.PredicateBuilder<SVideoFile>,
-            vararg orderBuilders: Schema.OrderBuilder<SVideoFile>,
+            builder: PredicateBuilder<SVideoFile>,
+            vararg orderBuilders: OrderBuilder<SVideoFile>,
         ): Specification<VideoFile> {
             return specify(builder, orderBuilders.toList())
         }
@@ -115,8 +112,8 @@ class SVideoFile(
          */
         @JvmStatic
         fun specify(
-            builder: Schema.PredicateBuilder<SVideoFile>,
-            orderBuilders: List<Schema.OrderBuilder<SVideoFile>>,
+            builder: PredicateBuilder<SVideoFile>,
+            orderBuilders: List<OrderBuilder<SVideoFile>>,
         ): Specification<VideoFile> {
             return specify(builder, false, orderBuilders)
         }
@@ -131,9 +128,9 @@ class SVideoFile(
         */
         @JvmStatic
         fun specify(
-            builder: Schema.PredicateBuilder<SVideoFile>,
+            builder: PredicateBuilder<SVideoFile>,
             distinct: Boolean,
-            vararg orderBuilders: Schema.OrderBuilder<SVideoFile>,
+            vararg orderBuilders: OrderBuilder<SVideoFile>,
         ): Specification<VideoFile> {
             return specify(builder, distinct, orderBuilders.toList())
         }
@@ -148,9 +145,9 @@ class SVideoFile(
         */
         @JvmStatic
         fun specify(
-            builder: Schema.PredicateBuilder<SVideoFile>,
+            builder: PredicateBuilder<SVideoFile>,
             distinct: Boolean,
-            orderBuilders: List<Schema.OrderBuilder<SVideoFile>>,
+            orderBuilders: List<OrderBuilder<SVideoFile>>,
         ): Specification<VideoFile> {
             return specify { schema, criteriaQuery, criteriaBuilder ->
                 criteriaQuery.where(builder.build(schema))
@@ -169,7 +166,7 @@ class SVideoFile(
          * @return
          */
         @JvmStatic
-        fun specify(specifier: Schema.Specification<VideoFile, SVideoFile>): Specification<VideoFile> {
+        fun specify(specifier: SchemaSpecification<VideoFile, SVideoFile>): Specification<VideoFile> {
             return Specification { root, criteriaQuery, criteriaBuilder ->
                 val schema = SVideoFile(root, criteriaBuilder)
                 specifier.toPredicate(schema, criteriaQuery, criteriaBuilder)
@@ -190,8 +187,8 @@ class SVideoFile(
         @JvmStatic
         fun <E> subquery(
             resultClass: Class<E>,
-            selectBuilder: Schema.ExpressionBuilder<SVideoFile, E>,
-            predicateBuilder: Schema.PredicateBuilder<SVideoFile>,
+            selectBuilder: ExpressionBuilder<SVideoFile, E>,
+            predicateBuilder: PredicateBuilder<SVideoFile>,
             criteriaBuilder: CriteriaBuilder,
             criteriaQuery: CriteriaQuery<*>,
         ): Subquery<E> {
@@ -214,7 +211,7 @@ class SVideoFile(
         @JvmStatic
         fun <E> subquery(
             resultClass: Class<E>,
-            subqueryConfigure: Schema.SubqueryConfigure<E, SVideoFile>,
+            subqueryConfigure: SubqueryConfigure<E, SVideoFile>,
             criteriaBuilder: CriteriaBuilder,
             criteriaQuery: CriteriaQuery<*>,
         ): Subquery<E> {
@@ -265,7 +262,7 @@ class SVideoFile(
          * @return
          */
         @JvmStatic
-        fun predicate(builder: Schema.PredicateBuilder<SVideoFile>): AggregatePredicate<AggVideoFile, VideoFile> {
+        fun predicate(builder: PredicateBuilder<SVideoFile>): AggregatePredicate<AggVideoFile, VideoFile> {
             return JpaPredicate.bySpecification(VideoFile::class.java, specify(builder)).toAggregatePredicate(AggVideoFile::class.java)
         }
 
@@ -277,7 +274,10 @@ class SVideoFile(
          * @return
          */
         @JvmStatic
-        fun predicate(builder: Schema.PredicateBuilder<SVideoFile>, distinct: Boolean): AggregatePredicate<AggVideoFile, VideoFile> {
+        fun predicate(
+            builder: PredicateBuilder<SVideoFile>,
+            distinct: Boolean,
+        ): AggregatePredicate<AggVideoFile, VideoFile> {
             return JpaPredicate.bySpecification(VideoFile::class.java, specify(builder, distinct)).toAggregatePredicate(AggVideoFile::class.java)
         }
 
@@ -290,8 +290,8 @@ class SVideoFile(
          */
         @JvmStatic
         fun predicate(
-            builder: Schema.PredicateBuilder<SVideoFile>,
-            orderBuilders: List<Schema.OrderBuilder<SVideoFile>>,
+            builder: PredicateBuilder<SVideoFile>,
+            orderBuilders: List<OrderBuilder<SVideoFile>>,
         ): AggregatePredicate<AggVideoFile, VideoFile> {
             return JpaPredicate.bySpecification(VideoFile::class.java, specify(builder, false, orderBuilders)).toAggregatePredicate(AggVideoFile::class.java)
         }
@@ -305,8 +305,8 @@ class SVideoFile(
          */
         @JvmStatic
         fun predicate(
-            builder: Schema.PredicateBuilder<SVideoFile>,
-            vararg orderBuilders: Schema.OrderBuilder<SVideoFile>,
+            builder: PredicateBuilder<SVideoFile>,
+            vararg orderBuilders: OrderBuilder<SVideoFile>,
         ): AggregatePredicate<AggVideoFile, VideoFile> {
             return JpaPredicate.bySpecification(VideoFile::class.java, specify(builder, false, *orderBuilders)).toAggregatePredicate(AggVideoFile::class.java)
         }
@@ -321,9 +321,9 @@ class SVideoFile(
          */
         @JvmStatic
         fun predicate(
-            builder: Schema.PredicateBuilder<SVideoFile>,
+            builder: PredicateBuilder<SVideoFile>,
             distinct: Boolean,
-            orderBuilders: List<Schema.OrderBuilder<SVideoFile>>,
+            orderBuilders: List<OrderBuilder<SVideoFile>>,
         ): AggregatePredicate<AggVideoFile, VideoFile> {
             return JpaPredicate.bySpecification(VideoFile::class.java, specify(builder, distinct, orderBuilders)).toAggregatePredicate(AggVideoFile::class.java)
         }
@@ -338,9 +338,9 @@ class SVideoFile(
          */
         @JvmStatic
         fun predicate(
-            builder: Schema.PredicateBuilder<SVideoFile>,
+            builder: PredicateBuilder<SVideoFile>,
             distinct: Boolean,
-            vararg orderBuilders: Schema.OrderBuilder<SVideoFile>,
+            vararg orderBuilders: OrderBuilder<SVideoFile>,
         ): AggregatePredicate<AggVideoFile, VideoFile> {
             return JpaPredicate.bySpecification(VideoFile::class.java, specify(builder, distinct, *orderBuilders)).toAggregatePredicate(AggVideoFile::class.java)
         }
@@ -352,7 +352,7 @@ class SVideoFile(
          * @return
          */
         @JvmStatic
-        fun predicate(specifier: Schema.Specification<VideoFile, SVideoFile>): AggregatePredicate<AggVideoFile, VideoFile> {
+        fun predicate(specifier: SchemaSpecification<VideoFile, SVideoFile>): AggregatePredicate<AggVideoFile, VideoFile> {
             return JpaPredicate.bySpecification(VideoFile::class.java, specify(specifier)).toAggregatePredicate(AggVideoFile::class.java)
         }
        /**
@@ -400,128 +400,128 @@ class SVideoFile(
     /**
      * ID
      */
-    val id: Schema.Field<Long> by lazy {
-        Schema.Field(root.get("id"), criteriaBuilder)
+    val id: Field<Long> by lazy {
+        Field(root.get("id"), criteriaBuilder)
     }
 
 
     /**
      * 唯一ID
      */
-    val fileId: Schema.Field<Long> by lazy {
-        Schema.Field(root.get("fileId"), criteriaBuilder)
+    val fileId: Field<Long> by lazy {
+        Field(root.get("fileId"), criteriaBuilder)
     }
 
 
     /**
      * 用户ID
      */
-    val customerId: Schema.Field<Long> by lazy {
-        Schema.Field(root.get("customerId"), criteriaBuilder)
+    val customerId: Field<Long> by lazy {
+        Field(root.get("customerId"), criteriaBuilder)
     }
 
 
     /**
      * 视频ID
      */
-    val videoId: Schema.Field<Long> by lazy {
-        Schema.Field(root.get("videoId"), criteriaBuilder)
+    val videoId: Field<Long> by lazy {
+        Field(root.get("videoId"), criteriaBuilder)
     }
 
 
     /**
      * 文件名
      */
-    val fileName: Schema.Field<String?> by lazy {
-        Schema.Field(root.get("fileName"), criteriaBuilder)
+    val fileName: Field<String?> by lazy {
+        Field(root.get("fileName"), criteriaBuilder)
     }
 
 
     /**
      * 文件索引
      */
-    val fileIndex: Schema.Field<Int> by lazy {
-        Schema.Field(root.get("fileIndex"), criteriaBuilder)
+    val fileIndex: Field<Int> by lazy {
+        Field(root.get("fileIndex"), criteriaBuilder)
     }
 
 
     /**
      * 文件大小
      */
-    val fileSize: Schema.Field<Long?> by lazy {
-        Schema.Field(root.get("fileSize"), criteriaBuilder)
+    val fileSize: Field<Long?> by lazy {
+        Field(root.get("fileSize"), criteriaBuilder)
     }
 
 
     /**
      * 文件路径
      */
-    val filePath: Schema.Field<String?> by lazy {
-        Schema.Field(root.get("filePath"), criteriaBuilder)
+    val filePath: Field<String?> by lazy {
+        Field(root.get("filePath"), criteriaBuilder)
     }
 
 
     /**
      * 持续时间（秒）
      */
-    val duration: Schema.Field<Int?> by lazy {
-        Schema.Field(root.get("duration"), criteriaBuilder)
+    val duration: Field<Int?> by lazy {
+        Field(root.get("duration"), criteriaBuilder)
     }
 
 
     /**
      * 创建人ID
      */
-    val createUserId: Schema.Field<Long?> by lazy {
-        Schema.Field(root.get("createUserId"), criteriaBuilder)
+    val createUserId: Field<Long?> by lazy {
+        Field(root.get("createUserId"), criteriaBuilder)
     }
 
 
     /**
      * 创建人名称
      */
-    val createBy: Schema.Field<String?> by lazy {
-        Schema.Field(root.get("createBy"), criteriaBuilder)
+    val createBy: Field<String?> by lazy {
+        Field(root.get("createBy"), criteriaBuilder)
     }
 
 
     /**
      * 创建时间
      */
-    val createTime: Schema.Field<Long?> by lazy {
-        Schema.Field(root.get("createTime"), criteriaBuilder)
+    val createTime: Field<Long?> by lazy {
+        Field(root.get("createTime"), criteriaBuilder)
     }
 
 
     /**
      * 更新人ID
      */
-    val updateUserId: Schema.Field<Long?> by lazy {
-        Schema.Field(root.get("updateUserId"), criteriaBuilder)
+    val updateUserId: Field<Long?> by lazy {
+        Field(root.get("updateUserId"), criteriaBuilder)
     }
 
 
     /**
      * 更新人名称
      */
-    val updateBy: Schema.Field<String?> by lazy {
-        Schema.Field(root.get("updateBy"), criteriaBuilder)
+    val updateBy: Field<String?> by lazy {
+        Field(root.get("updateBy"), criteriaBuilder)
     }
 
 
     /**
      * 更新时间
      */
-    val updateTime: Schema.Field<Long?> by lazy {
-        Schema.Field(root.get("updateTime"), criteriaBuilder)
+    val updateTime: Field<Long?> by lazy {
+        Field(root.get("updateTime"), criteriaBuilder)
     }
 
 
     /**
      * 删除标识 0：未删除 id：已删除
      */
-    val deleted: Schema.Field<Boolean> by lazy {
-        Schema.Field(root.get("deleted"), criteriaBuilder)
+    val deleted: Field<Boolean> by lazy {
+        Field(root.get("deleted"), criteriaBuilder)
     }
 
 
@@ -545,12 +545,41 @@ class SVideoFile(
     }
 
     /**
+     * 满足所有条件（过滤 null）
+     * 类似 Jimmer 的 where { } 自动过滤 null 的行为
+     */
+    fun allNotNull(vararg restrictions: Predicate?): Predicate? {
+        val nonNullRestrictions = restrictions.filterNotNull().toTypedArray()
+        return when {
+            nonNullRestrictions.isEmpty() -> null
+            nonNullRestrictions.size == 1 -> nonNullRestrictions[0]
+            else -> criteriaBuilder.and(*nonNullRestrictions)
+        }
+    }
+
+    /**
+     * 满足任一条件（过滤 null）
+     */
+    fun anyNotNull(vararg restrictions: Predicate?): Predicate? {
+        val nonNullRestrictions = restrictions.filterNotNull().toTypedArray()
+        return when {
+            nonNullRestrictions.isEmpty() -> null
+            nonNullRestrictions.size == 1 -> nonNullRestrictions[0]
+            else -> criteriaBuilder.or(*nonNullRestrictions)
+        }
+    }
+
+    /**
+     * NOT 操作
+     */
+    fun not(restriction: Predicate): Predicate = criteriaBuilder.not(restriction)
+
+    /**
      * 指定条件
      * @param builder
      * @return
      */
-    fun spec(builder: Schema.PredicateBuilder<SVideoFile>): Predicate
-    {
+    fun spec(builder: PredicateBuilder<SVideoFile>): Predicate {
         return builder.build(this)
     }
 }

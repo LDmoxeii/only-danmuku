@@ -1,14 +1,9 @@
 package edu.only4.danmuku.domain.aggregates.category
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
-
 import jakarta.persistence.*
-
-import org.hibernate.annotations.DynamicInsert
-import org.hibernate.annotations.DynamicUpdate
-import org.hibernate.annotations.GenericGenerator
-import org.hibernate.annotations.SQLDelete
-import org.hibernate.annotations.Where
+import jakarta.persistence.Table
+import org.hibernate.annotations.*
 
 /**
  * 分类信息;
@@ -16,7 +11,7 @@ import org.hibernate.annotations.Where
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2025/10/15
+ * @date 2025/10/20
  */
 @Aggregate(aggregate = "Category", name = "Category", root = true, type = Aggregate.TYPE_ENTITY, description = "分类信息，")
 @Entity
@@ -140,6 +135,50 @@ class Category (
     // 【字段映射结束】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
 
     // 【行为方法开始】
+
+    /**
+     * 更新节点路径（在创建或移动节点时调用）
+     * @param parentPath 父节点的路径，根节点传空字符串
+     */
+    fun updateNodePath(parentPath: String = "") {
+        nodePath = if (parentPath.isEmpty()) {
+            "/$id/"  // 根节点：/1/
+        } else {
+            "$parentPath$id/"  // 子节点：/1/101/
+        }
+    }
+
+    /**
+     * 增加排序号
+     * @param increment 增加的值
+     */
+    fun addSort(increment: Int) {
+        sort = (sort + increment).toByte()
+    }
+
+    /**
+     * 是否为根节点
+     */
+    fun isRoot(): Boolean = parentId == 0L
+
+    /**
+     * 获取层级深度（1=根节点, 2=一级子节点...）
+     */
+    fun getLevel(): Int = nodePath.trim('/').split('/').size
+
+    /**
+     * 获取所有祖先 ID（从根到父节点）
+     */
+    fun getAncestorIds(): List<Long> {
+        return nodePath.trim('/').split('/').dropLast(1).mapNotNull { it.toLongOrNull() }
+    }
+
+    /**
+     * 检查是否为指定节点的后代
+     */
+    fun isDescendantOf(ancestorId: Long): Boolean {
+        return nodePath.contains("/$ancestorId/")
+    }
 
     // 【行为方法结束】
 }

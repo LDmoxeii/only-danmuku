@@ -3,15 +3,12 @@ package edu.only4.danmuku.domain._share.meta.video_danmuku
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePredicate
 import com.only4.cap4k.ddd.domain.repo.JpaPredicate
 import com.only4.cap4k.ddd.domain.repo.querydsl.QuerydslPredicate
-
 import com.querydsl.core.types.OrderSpecifier
-import edu.only4.danmuku.domain._share.meta.Schema
+import edu.only4.danmuku.domain._share.meta.*
 import edu.only4.danmuku.domain.aggregates.video_danmuku.AggVideoDanmuku
 import edu.only4.danmuku.domain.aggregates.video_danmuku.QVideoDanmuku
 import edu.only4.danmuku.domain.aggregates.video_danmuku.VideoDanmuku
-
 import jakarta.persistence.criteria.*
-
 import org.springframework.data.jpa.domain.Specification
 
 /**
@@ -22,7 +19,7 @@ import org.springframework.data.jpa.domain.Specification
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/10/15
+ * @date 2025/10/20
  */
 class SVideoDanmuku(
     private val root: Path<VideoDanmuku>,
@@ -75,7 +72,7 @@ class SVideoDanmuku(
          * @return
          */
         @JvmStatic
-        fun specify(builder: Schema.PredicateBuilder<SVideoDanmuku>): Specification<VideoDanmuku> {
+        fun specify(builder: PredicateBuilder<SVideoDanmuku>): Specification<VideoDanmuku> {
             return specify(builder, false, emptyList())
         }
 
@@ -87,7 +84,7 @@ class SVideoDanmuku(
          * @return
          */
         @JvmStatic
-        fun specify(builder: Schema.PredicateBuilder<SVideoDanmuku>, distinct: Boolean): Specification<VideoDanmuku> {
+        fun specify(builder: PredicateBuilder<SVideoDanmuku>, distinct: Boolean): Specification<VideoDanmuku> {
             return specify(builder, distinct, emptyList())
         }
 
@@ -100,8 +97,8 @@ class SVideoDanmuku(
          */
         @JvmStatic
         fun specify(
-            builder: Schema.PredicateBuilder<SVideoDanmuku>,
-            vararg orderBuilders: Schema.OrderBuilder<SVideoDanmuku>,
+            builder: PredicateBuilder<SVideoDanmuku>,
+            vararg orderBuilders: OrderBuilder<SVideoDanmuku>,
         ): Specification<VideoDanmuku> {
             return specify(builder, orderBuilders.toList())
         }
@@ -115,8 +112,8 @@ class SVideoDanmuku(
          */
         @JvmStatic
         fun specify(
-            builder: Schema.PredicateBuilder<SVideoDanmuku>,
-            orderBuilders: List<Schema.OrderBuilder<SVideoDanmuku>>,
+            builder: PredicateBuilder<SVideoDanmuku>,
+            orderBuilders: List<OrderBuilder<SVideoDanmuku>>,
         ): Specification<VideoDanmuku> {
             return specify(builder, false, orderBuilders)
         }
@@ -131,9 +128,9 @@ class SVideoDanmuku(
         */
         @JvmStatic
         fun specify(
-            builder: Schema.PredicateBuilder<SVideoDanmuku>,
+            builder: PredicateBuilder<SVideoDanmuku>,
             distinct: Boolean,
-            vararg orderBuilders: Schema.OrderBuilder<SVideoDanmuku>,
+            vararg orderBuilders: OrderBuilder<SVideoDanmuku>,
         ): Specification<VideoDanmuku> {
             return specify(builder, distinct, orderBuilders.toList())
         }
@@ -148,9 +145,9 @@ class SVideoDanmuku(
         */
         @JvmStatic
         fun specify(
-            builder: Schema.PredicateBuilder<SVideoDanmuku>,
+            builder: PredicateBuilder<SVideoDanmuku>,
             distinct: Boolean,
-            orderBuilders: List<Schema.OrderBuilder<SVideoDanmuku>>,
+            orderBuilders: List<OrderBuilder<SVideoDanmuku>>,
         ): Specification<VideoDanmuku> {
             return specify { schema, criteriaQuery, criteriaBuilder ->
                 criteriaQuery.where(builder.build(schema))
@@ -169,7 +166,7 @@ class SVideoDanmuku(
          * @return
          */
         @JvmStatic
-        fun specify(specifier: Schema.Specification<VideoDanmuku, SVideoDanmuku>): Specification<VideoDanmuku> {
+        fun specify(specifier: SchemaSpecification<VideoDanmuku, SVideoDanmuku>): Specification<VideoDanmuku> {
             return Specification { root, criteriaQuery, criteriaBuilder ->
                 val schema = SVideoDanmuku(root, criteriaBuilder)
                 specifier.toPredicate(schema, criteriaQuery, criteriaBuilder)
@@ -190,8 +187,8 @@ class SVideoDanmuku(
         @JvmStatic
         fun <E> subquery(
             resultClass: Class<E>,
-            selectBuilder: Schema.ExpressionBuilder<SVideoDanmuku, E>,
-            predicateBuilder: Schema.PredicateBuilder<SVideoDanmuku>,
+            selectBuilder: ExpressionBuilder<SVideoDanmuku, E>,
+            predicateBuilder: PredicateBuilder<SVideoDanmuku>,
             criteriaBuilder: CriteriaBuilder,
             criteriaQuery: CriteriaQuery<*>,
         ): Subquery<E> {
@@ -214,7 +211,7 @@ class SVideoDanmuku(
         @JvmStatic
         fun <E> subquery(
             resultClass: Class<E>,
-            subqueryConfigure: Schema.SubqueryConfigure<E, SVideoDanmuku>,
+            subqueryConfigure: SubqueryConfigure<E, SVideoDanmuku>,
             criteriaBuilder: CriteriaBuilder,
             criteriaQuery: CriteriaQuery<*>,
         ): Subquery<E> {
@@ -265,7 +262,7 @@ class SVideoDanmuku(
          * @return
          */
         @JvmStatic
-        fun predicate(builder: Schema.PredicateBuilder<SVideoDanmuku>): AggregatePredicate<AggVideoDanmuku, VideoDanmuku> {
+        fun predicate(builder: PredicateBuilder<SVideoDanmuku>): AggregatePredicate<AggVideoDanmuku, VideoDanmuku> {
             return JpaPredicate.bySpecification(VideoDanmuku::class.java, specify(builder)).toAggregatePredicate(AggVideoDanmuku::class.java)
         }
 
@@ -277,7 +274,10 @@ class SVideoDanmuku(
          * @return
          */
         @JvmStatic
-        fun predicate(builder: Schema.PredicateBuilder<SVideoDanmuku>, distinct: Boolean): AggregatePredicate<AggVideoDanmuku, VideoDanmuku> {
+        fun predicate(
+            builder: PredicateBuilder<SVideoDanmuku>,
+            distinct: Boolean,
+        ): AggregatePredicate<AggVideoDanmuku, VideoDanmuku> {
             return JpaPredicate.bySpecification(VideoDanmuku::class.java, specify(builder, distinct)).toAggregatePredicate(AggVideoDanmuku::class.java)
         }
 
@@ -290,8 +290,8 @@ class SVideoDanmuku(
          */
         @JvmStatic
         fun predicate(
-            builder: Schema.PredicateBuilder<SVideoDanmuku>,
-            orderBuilders: List<Schema.OrderBuilder<SVideoDanmuku>>,
+            builder: PredicateBuilder<SVideoDanmuku>,
+            orderBuilders: List<OrderBuilder<SVideoDanmuku>>,
         ): AggregatePredicate<AggVideoDanmuku, VideoDanmuku> {
             return JpaPredicate.bySpecification(VideoDanmuku::class.java, specify(builder, false, orderBuilders)).toAggregatePredicate(AggVideoDanmuku::class.java)
         }
@@ -305,8 +305,8 @@ class SVideoDanmuku(
          */
         @JvmStatic
         fun predicate(
-            builder: Schema.PredicateBuilder<SVideoDanmuku>,
-            vararg orderBuilders: Schema.OrderBuilder<SVideoDanmuku>,
+            builder: PredicateBuilder<SVideoDanmuku>,
+            vararg orderBuilders: OrderBuilder<SVideoDanmuku>,
         ): AggregatePredicate<AggVideoDanmuku, VideoDanmuku> {
             return JpaPredicate.bySpecification(VideoDanmuku::class.java, specify(builder, false, *orderBuilders)).toAggregatePredicate(AggVideoDanmuku::class.java)
         }
@@ -321,9 +321,9 @@ class SVideoDanmuku(
          */
         @JvmStatic
         fun predicate(
-            builder: Schema.PredicateBuilder<SVideoDanmuku>,
+            builder: PredicateBuilder<SVideoDanmuku>,
             distinct: Boolean,
-            orderBuilders: List<Schema.OrderBuilder<SVideoDanmuku>>,
+            orderBuilders: List<OrderBuilder<SVideoDanmuku>>,
         ): AggregatePredicate<AggVideoDanmuku, VideoDanmuku> {
             return JpaPredicate.bySpecification(VideoDanmuku::class.java, specify(builder, distinct, orderBuilders)).toAggregatePredicate(AggVideoDanmuku::class.java)
         }
@@ -338,9 +338,9 @@ class SVideoDanmuku(
          */
         @JvmStatic
         fun predicate(
-            builder: Schema.PredicateBuilder<SVideoDanmuku>,
+            builder: PredicateBuilder<SVideoDanmuku>,
             distinct: Boolean,
-            vararg orderBuilders: Schema.OrderBuilder<SVideoDanmuku>,
+            vararg orderBuilders: OrderBuilder<SVideoDanmuku>,
         ): AggregatePredicate<AggVideoDanmuku, VideoDanmuku> {
             return JpaPredicate.bySpecification(VideoDanmuku::class.java, specify(builder, distinct, *orderBuilders)).toAggregatePredicate(AggVideoDanmuku::class.java)
         }
@@ -352,7 +352,7 @@ class SVideoDanmuku(
          * @return
          */
         @JvmStatic
-        fun predicate(specifier: Schema.Specification<VideoDanmuku, SVideoDanmuku>): AggregatePredicate<AggVideoDanmuku, VideoDanmuku> {
+        fun predicate(specifier: SchemaSpecification<VideoDanmuku, SVideoDanmuku>): AggregatePredicate<AggVideoDanmuku, VideoDanmuku> {
             return JpaPredicate.bySpecification(VideoDanmuku::class.java, specify(specifier)).toAggregatePredicate(AggVideoDanmuku::class.java)
         }
        /**
@@ -400,128 +400,128 @@ class SVideoDanmuku(
     /**
      * ID
      */
-    val id: Schema.Field<Long> by lazy {
-        Schema.Field(root.get("id"), criteriaBuilder)
+    val id: Field<Long> by lazy {
+        Field(root.get("id"), criteriaBuilder)
     }
 
 
     /**
      * 视频ID
      */
-    val videoId: Schema.Field<Long> by lazy {
-        Schema.Field(root.get("videoId"), criteriaBuilder)
+    val videoId: Field<Long> by lazy {
+        Field(root.get("videoId"), criteriaBuilder)
     }
 
 
     /**
      * 唯一ID
      */
-    val fileId: Schema.Field<Long> by lazy {
-        Schema.Field(root.get("fileId"), criteriaBuilder)
+    val fileId: Field<Long> by lazy {
+        Field(root.get("fileId"), criteriaBuilder)
     }
 
 
     /**
      * 用户ID
      */
-    val customerId: Schema.Field<Long> by lazy {
-        Schema.Field(root.get("customerId"), criteriaBuilder)
+    val customerId: Field<Long> by lazy {
+        Field(root.get("customerId"), criteriaBuilder)
     }
 
 
     /**
      * 发布时间
      */
-    val postTime: Schema.Field<Long?> by lazy {
-        Schema.Field(root.get("postTime"), criteriaBuilder)
+    val postTime: Field<Long?> by lazy {
+        Field(root.get("postTime"), criteriaBuilder)
     }
 
 
     /**
      * 内容
      */
-    val text: Schema.Field<String?> by lazy {
-        Schema.Field(root.get("text"), criteriaBuilder)
+    val text: Field<String?> by lazy {
+        Field(root.get("text"), criteriaBuilder)
     }
 
 
     /**
      * 展示位置
      */
-    val mode: Schema.Field<Boolean?> by lazy {
-        Schema.Field(root.get("mode"), criteriaBuilder)
+    val mode: Field<Boolean?> by lazy {
+        Field(root.get("mode"), criteriaBuilder)
     }
 
 
     /**
      * 颜色
      */
-    val color: Schema.Field<String?> by lazy {
-        Schema.Field(root.get("color"), criteriaBuilder)
+    val color: Field<String?> by lazy {
+        Field(root.get("color"), criteriaBuilder)
     }
 
 
     /**
      * 展示时间
      */
-    val time: Schema.Field<Int?> by lazy {
-        Schema.Field(root.get("time"), criteriaBuilder)
+    val time: Field<Int?> by lazy {
+        Field(root.get("time"), criteriaBuilder)
     }
 
 
     /**
      * 创建人ID
      */
-    val createUserId: Schema.Field<Long?> by lazy {
-        Schema.Field(root.get("createUserId"), criteriaBuilder)
+    val createUserId: Field<Long?> by lazy {
+        Field(root.get("createUserId"), criteriaBuilder)
     }
 
 
     /**
      * 创建人名称
      */
-    val createBy: Schema.Field<String?> by lazy {
-        Schema.Field(root.get("createBy"), criteriaBuilder)
+    val createBy: Field<String?> by lazy {
+        Field(root.get("createBy"), criteriaBuilder)
     }
 
 
     /**
      * 创建时间
      */
-    val createTime: Schema.Field<Long?> by lazy {
-        Schema.Field(root.get("createTime"), criteriaBuilder)
+    val createTime: Field<Long?> by lazy {
+        Field(root.get("createTime"), criteriaBuilder)
     }
 
 
     /**
      * 更新人ID
      */
-    val updateUserId: Schema.Field<Long?> by lazy {
-        Schema.Field(root.get("updateUserId"), criteriaBuilder)
+    val updateUserId: Field<Long?> by lazy {
+        Field(root.get("updateUserId"), criteriaBuilder)
     }
 
 
     /**
      * 更新人名称
      */
-    val updateBy: Schema.Field<String?> by lazy {
-        Schema.Field(root.get("updateBy"), criteriaBuilder)
+    val updateBy: Field<String?> by lazy {
+        Field(root.get("updateBy"), criteriaBuilder)
     }
 
 
     /**
      * 更新时间
      */
-    val updateTime: Schema.Field<Long?> by lazy {
-        Schema.Field(root.get("updateTime"), criteriaBuilder)
+    val updateTime: Field<Long?> by lazy {
+        Field(root.get("updateTime"), criteriaBuilder)
     }
 
 
     /**
      * 删除标识 0：未删除 id：已删除
      */
-    val deleted: Schema.Field<Boolean> by lazy {
-        Schema.Field(root.get("deleted"), criteriaBuilder)
+    val deleted: Field<Boolean> by lazy {
+        Field(root.get("deleted"), criteriaBuilder)
     }
 
 
@@ -545,12 +545,41 @@ class SVideoDanmuku(
     }
 
     /**
+     * 满足所有条件（过滤 null）
+     * 类似 Jimmer 的 where { } 自动过滤 null 的行为
+     */
+    fun allNotNull(vararg restrictions: Predicate?): Predicate? {
+        val nonNullRestrictions = restrictions.filterNotNull().toTypedArray()
+        return when {
+            nonNullRestrictions.isEmpty() -> null
+            nonNullRestrictions.size == 1 -> nonNullRestrictions[0]
+            else -> criteriaBuilder.and(*nonNullRestrictions)
+        }
+    }
+
+    /**
+     * 满足任一条件（过滤 null）
+     */
+    fun anyNotNull(vararg restrictions: Predicate?): Predicate? {
+        val nonNullRestrictions = restrictions.filterNotNull().toTypedArray()
+        return when {
+            nonNullRestrictions.isEmpty() -> null
+            nonNullRestrictions.size == 1 -> nonNullRestrictions[0]
+            else -> criteriaBuilder.or(*nonNullRestrictions)
+        }
+    }
+
+    /**
+     * NOT 操作
+     */
+    fun not(restriction: Predicate): Predicate = criteriaBuilder.not(restriction)
+
+    /**
      * 指定条件
      * @param builder
      * @return
      */
-    fun spec(builder: Schema.PredicateBuilder<SVideoDanmuku>): Predicate
-    {
+    fun spec(builder: PredicateBuilder<SVideoDanmuku>): Predicate {
         return builder.build(this)
     }
 }

@@ -1,16 +1,10 @@
 package edu.only4.danmuku.domain.aggregates.customer_action
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
-
 import edu.only4.danmuku.domain.aggregates.customer_action.enums.ActionType
-
 import jakarta.persistence.*
-
-import org.hibernate.annotations.DynamicInsert
-import org.hibernate.annotations.DynamicUpdate
-import org.hibernate.annotations.GenericGenerator
-import org.hibernate.annotations.SQLDelete
-import org.hibernate.annotations.Where
+import jakarta.persistence.Table
+import org.hibernate.annotations.*
 
 /**
  * 用户行为 点赞、评论;
@@ -18,7 +12,7 @@ import org.hibernate.annotations.Where
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2025/10/15
+ * @date 2025/10/20
  */
 @Aggregate(aggregate = "CustomerAction", name = "CustomerAction", root = true, type = Aggregate.TYPE_ENTITY, description = "用户行为 点赞、评论，")
 @Entity

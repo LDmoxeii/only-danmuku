@@ -3,16 +3,13 @@ package edu.only4.danmuku.domain._share.meta.customer_action
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePredicate
 import com.only4.cap4k.ddd.domain.repo.JpaPredicate
 import com.only4.cap4k.ddd.domain.repo.querydsl.QuerydslPredicate
-
 import com.querydsl.core.types.OrderSpecifier
-import edu.only4.danmuku.domain._share.meta.Schema
+import edu.only4.danmuku.domain._share.meta.*
 import edu.only4.danmuku.domain.aggregates.customer_action.AggCustomerAction
 import edu.only4.danmuku.domain.aggregates.customer_action.CustomerAction
 import edu.only4.danmuku.domain.aggregates.customer_action.QCustomerAction
 import edu.only4.danmuku.domain.aggregates.customer_action.enums.ActionType
-
 import jakarta.persistence.criteria.*
-
 import org.springframework.data.jpa.domain.Specification
 
 /**
@@ -23,7 +20,7 @@ import org.springframework.data.jpa.domain.Specification
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/10/15
+ * @date 2025/10/20
  */
 class SCustomerAction(
     private val root: Path<CustomerAction>,
@@ -72,7 +69,7 @@ class SCustomerAction(
          * @return
          */
         @JvmStatic
-        fun specify(builder: Schema.PredicateBuilder<SCustomerAction>): Specification<CustomerAction> {
+        fun specify(builder: PredicateBuilder<SCustomerAction>): Specification<CustomerAction> {
             return specify(builder, false, emptyList())
         }
 
@@ -84,7 +81,7 @@ class SCustomerAction(
          * @return
          */
         @JvmStatic
-        fun specify(builder: Schema.PredicateBuilder<SCustomerAction>, distinct: Boolean): Specification<CustomerAction> {
+        fun specify(builder: PredicateBuilder<SCustomerAction>, distinct: Boolean): Specification<CustomerAction> {
             return specify(builder, distinct, emptyList())
         }
 
@@ -97,8 +94,8 @@ class SCustomerAction(
          */
         @JvmStatic
         fun specify(
-            builder: Schema.PredicateBuilder<SCustomerAction>,
-            vararg orderBuilders: Schema.OrderBuilder<SCustomerAction>,
+            builder: PredicateBuilder<SCustomerAction>,
+            vararg orderBuilders: OrderBuilder<SCustomerAction>,
         ): Specification<CustomerAction> {
             return specify(builder, orderBuilders.toList())
         }
@@ -112,8 +109,8 @@ class SCustomerAction(
          */
         @JvmStatic
         fun specify(
-            builder: Schema.PredicateBuilder<SCustomerAction>,
-            orderBuilders: List<Schema.OrderBuilder<SCustomerAction>>,
+            builder: PredicateBuilder<SCustomerAction>,
+            orderBuilders: List<OrderBuilder<SCustomerAction>>,
         ): Specification<CustomerAction> {
             return specify(builder, false, orderBuilders)
         }
@@ -128,9 +125,9 @@ class SCustomerAction(
         */
         @JvmStatic
         fun specify(
-            builder: Schema.PredicateBuilder<SCustomerAction>,
+            builder: PredicateBuilder<SCustomerAction>,
             distinct: Boolean,
-            vararg orderBuilders: Schema.OrderBuilder<SCustomerAction>,
+            vararg orderBuilders: OrderBuilder<SCustomerAction>,
         ): Specification<CustomerAction> {
             return specify(builder, distinct, orderBuilders.toList())
         }
@@ -145,9 +142,9 @@ class SCustomerAction(
         */
         @JvmStatic
         fun specify(
-            builder: Schema.PredicateBuilder<SCustomerAction>,
+            builder: PredicateBuilder<SCustomerAction>,
             distinct: Boolean,
-            orderBuilders: List<Schema.OrderBuilder<SCustomerAction>>,
+            orderBuilders: List<OrderBuilder<SCustomerAction>>,
         ): Specification<CustomerAction> {
             return specify { schema, criteriaQuery, criteriaBuilder ->
                 criteriaQuery.where(builder.build(schema))
@@ -166,7 +163,7 @@ class SCustomerAction(
          * @return
          */
         @JvmStatic
-        fun specify(specifier: Schema.Specification<CustomerAction, SCustomerAction>): Specification<CustomerAction> {
+        fun specify(specifier: SchemaSpecification<CustomerAction, SCustomerAction>): Specification<CustomerAction> {
             return Specification { root, criteriaQuery, criteriaBuilder ->
                 val schema = SCustomerAction(root, criteriaBuilder)
                 specifier.toPredicate(schema, criteriaQuery, criteriaBuilder)
@@ -187,8 +184,8 @@ class SCustomerAction(
         @JvmStatic
         fun <E> subquery(
             resultClass: Class<E>,
-            selectBuilder: Schema.ExpressionBuilder<SCustomerAction, E>,
-            predicateBuilder: Schema.PredicateBuilder<SCustomerAction>,
+            selectBuilder: ExpressionBuilder<SCustomerAction, E>,
+            predicateBuilder: PredicateBuilder<SCustomerAction>,
             criteriaBuilder: CriteriaBuilder,
             criteriaQuery: CriteriaQuery<*>,
         ): Subquery<E> {
@@ -211,7 +208,7 @@ class SCustomerAction(
         @JvmStatic
         fun <E> subquery(
             resultClass: Class<E>,
-            subqueryConfigure: Schema.SubqueryConfigure<E, SCustomerAction>,
+            subqueryConfigure: SubqueryConfigure<E, SCustomerAction>,
             criteriaBuilder: CriteriaBuilder,
             criteriaQuery: CriteriaQuery<*>,
         ): Subquery<E> {
@@ -262,7 +259,7 @@ class SCustomerAction(
          * @return
          */
         @JvmStatic
-        fun predicate(builder: Schema.PredicateBuilder<SCustomerAction>): AggregatePredicate<AggCustomerAction, CustomerAction> {
+        fun predicate(builder: PredicateBuilder<SCustomerAction>): AggregatePredicate<AggCustomerAction, CustomerAction> {
             return JpaPredicate.bySpecification(CustomerAction::class.java, specify(builder)).toAggregatePredicate(AggCustomerAction::class.java)
         }
 
@@ -274,7 +271,10 @@ class SCustomerAction(
          * @return
          */
         @JvmStatic
-        fun predicate(builder: Schema.PredicateBuilder<SCustomerAction>, distinct: Boolean): AggregatePredicate<AggCustomerAction, CustomerAction> {
+        fun predicate(
+            builder: PredicateBuilder<SCustomerAction>,
+            distinct: Boolean,
+        ): AggregatePredicate<AggCustomerAction, CustomerAction> {
             return JpaPredicate.bySpecification(CustomerAction::class.java, specify(builder, distinct)).toAggregatePredicate(AggCustomerAction::class.java)
         }
 
@@ -287,8 +287,8 @@ class SCustomerAction(
          */
         @JvmStatic
         fun predicate(
-            builder: Schema.PredicateBuilder<SCustomerAction>,
-            orderBuilders: List<Schema.OrderBuilder<SCustomerAction>>,
+            builder: PredicateBuilder<SCustomerAction>,
+            orderBuilders: List<OrderBuilder<SCustomerAction>>,
         ): AggregatePredicate<AggCustomerAction, CustomerAction> {
             return JpaPredicate.bySpecification(CustomerAction::class.java, specify(builder, false, orderBuilders)).toAggregatePredicate(AggCustomerAction::class.java)
         }
@@ -302,8 +302,8 @@ class SCustomerAction(
          */
         @JvmStatic
         fun predicate(
-            builder: Schema.PredicateBuilder<SCustomerAction>,
-            vararg orderBuilders: Schema.OrderBuilder<SCustomerAction>,
+            builder: PredicateBuilder<SCustomerAction>,
+            vararg orderBuilders: OrderBuilder<SCustomerAction>,
         ): AggregatePredicate<AggCustomerAction, CustomerAction> {
             return JpaPredicate.bySpecification(CustomerAction::class.java, specify(builder, false, *orderBuilders)).toAggregatePredicate(AggCustomerAction::class.java)
         }
@@ -318,9 +318,9 @@ class SCustomerAction(
          */
         @JvmStatic
         fun predicate(
-            builder: Schema.PredicateBuilder<SCustomerAction>,
+            builder: PredicateBuilder<SCustomerAction>,
             distinct: Boolean,
-            orderBuilders: List<Schema.OrderBuilder<SCustomerAction>>,
+            orderBuilders: List<OrderBuilder<SCustomerAction>>,
         ): AggregatePredicate<AggCustomerAction, CustomerAction> {
             return JpaPredicate.bySpecification(CustomerAction::class.java, specify(builder, distinct, orderBuilders)).toAggregatePredicate(AggCustomerAction::class.java)
         }
@@ -335,9 +335,9 @@ class SCustomerAction(
          */
         @JvmStatic
         fun predicate(
-            builder: Schema.PredicateBuilder<SCustomerAction>,
+            builder: PredicateBuilder<SCustomerAction>,
             distinct: Boolean,
-            vararg orderBuilders: Schema.OrderBuilder<SCustomerAction>,
+            vararg orderBuilders: OrderBuilder<SCustomerAction>,
         ): AggregatePredicate<AggCustomerAction, CustomerAction> {
             return JpaPredicate.bySpecification(CustomerAction::class.java, specify(builder, distinct, *orderBuilders)).toAggregatePredicate(AggCustomerAction::class.java)
         }
@@ -349,7 +349,7 @@ class SCustomerAction(
          * @return
          */
         @JvmStatic
-        fun predicate(specifier: Schema.Specification<CustomerAction, SCustomerAction>): AggregatePredicate<AggCustomerAction, CustomerAction> {
+        fun predicate(specifier: SchemaSpecification<CustomerAction, SCustomerAction>): AggregatePredicate<AggCustomerAction, CustomerAction> {
             return JpaPredicate.bySpecification(CustomerAction::class.java, specify(specifier)).toAggregatePredicate(AggCustomerAction::class.java)
         }
        /**
@@ -397,112 +397,112 @@ class SCustomerAction(
     /**
      * ID
      */
-    val id: Schema.Field<Long> by lazy {
-        Schema.Field(root.get("id"), criteriaBuilder)
+    val id: Field<Long> by lazy {
+        Field(root.get("id"), criteriaBuilder)
     }
 
 
     /**
      * 用户ID
      */
-    val customerId: Schema.Field<String> by lazy {
-        Schema.Field(root.get("customerId"), criteriaBuilder)
+    val customerId: Field<String> by lazy {
+        Field(root.get("customerId"), criteriaBuilder)
     }
 
 
     /**
      * 视频ID
      */
-    val videoId: Schema.Field<String> by lazy {
-        Schema.Field(root.get("videoId"), criteriaBuilder)
+    val videoId: Field<String> by lazy {
+        Field(root.get("videoId"), criteriaBuilder)
     }
 
 
     /**
      * 视频用户ID
      */
-    val videoOwnerId: Schema.Field<String> by lazy {
-        Schema.Field(root.get("videoOwnerId"), criteriaBuilder)
+    val videoOwnerId: Field<String> by lazy {
+        Field(root.get("videoOwnerId"), criteriaBuilder)
     }
 
 
     /**
      * 评论ID
      */
-    val commentId: Schema.Field<Long> by lazy {
-        Schema.Field(root.get("commentId"), criteriaBuilder)
+    val commentId: Field<Long> by lazy {
+        Field(root.get("commentId"), criteriaBuilder)
     }
 
 
     /**
      * 行为类型
      */
-    val actionType: Schema.Field<ActionType> by lazy {
-        Schema.Field(root.get("actionType"), criteriaBuilder)
+    val actionType: Field<ActionType> by lazy {
+        Field(root.get("actionType"), criteriaBuilder)
     }
 
 
     /**
      * 数量
      */
-    val actionCount: Schema.Field<Int> by lazy {
-        Schema.Field(root.get("actionCount"), criteriaBuilder)
+    val actionCount: Field<Int> by lazy {
+        Field(root.get("actionCount"), criteriaBuilder)
     }
 
 
     /**
      * 操作时间
      */
-    val actionTime: Schema.Field<Long> by lazy {
-        Schema.Field(root.get("actionTime"), criteriaBuilder)
+    val actionTime: Field<Long> by lazy {
+        Field(root.get("actionTime"), criteriaBuilder)
     }
 
 
     /**
      * 创建人名称
      */
-    val createBy: Schema.Field<String?> by lazy {
-        Schema.Field(root.get("createBy"), criteriaBuilder)
+    val createBy: Field<String?> by lazy {
+        Field(root.get("createBy"), criteriaBuilder)
     }
 
 
     /**
      * 创建时间
      */
-    val createTime: Schema.Field<Long?> by lazy {
-        Schema.Field(root.get("createTime"), criteriaBuilder)
+    val createTime: Field<Long?> by lazy {
+        Field(root.get("createTime"), criteriaBuilder)
     }
 
 
     /**
      * 更新人ID
      */
-    val updateUserId: Schema.Field<Long?> by lazy {
-        Schema.Field(root.get("updateUserId"), criteriaBuilder)
+    val updateUserId: Field<Long?> by lazy {
+        Field(root.get("updateUserId"), criteriaBuilder)
     }
 
 
     /**
      * 更新人名称
      */
-    val updateBy: Schema.Field<String?> by lazy {
-        Schema.Field(root.get("updateBy"), criteriaBuilder)
+    val updateBy: Field<String?> by lazy {
+        Field(root.get("updateBy"), criteriaBuilder)
     }
 
 
     /**
      * 更新时间
      */
-    val updateTime: Schema.Field<Long?> by lazy {
-        Schema.Field(root.get("updateTime"), criteriaBuilder)
+    val updateTime: Field<Long?> by lazy {
+        Field(root.get("updateTime"), criteriaBuilder)
     }
 
 
     /**
      * 删除标识 0：未删除 id：已删除
      */
-    val deleted: Schema.Field<Boolean> by lazy {
-        Schema.Field(root.get("deleted"), criteriaBuilder)
+    val deleted: Field<Boolean> by lazy {
+        Field(root.get("deleted"), criteriaBuilder)
     }
 
 
@@ -526,12 +526,41 @@ class SCustomerAction(
     }
 
     /**
+     * 满足所有条件（过滤 null）
+     * 类似 Jimmer 的 where { } 自动过滤 null 的行为
+     */
+    fun allNotNull(vararg restrictions: Predicate?): Predicate? {
+        val nonNullRestrictions = restrictions.filterNotNull().toTypedArray()
+        return when {
+            nonNullRestrictions.isEmpty() -> null
+            nonNullRestrictions.size == 1 -> nonNullRestrictions[0]
+            else -> criteriaBuilder.and(*nonNullRestrictions)
+        }
+    }
+
+    /**
+     * 满足任一条件（过滤 null）
+     */
+    fun anyNotNull(vararg restrictions: Predicate?): Predicate? {
+        val nonNullRestrictions = restrictions.filterNotNull().toTypedArray()
+        return when {
+            nonNullRestrictions.isEmpty() -> null
+            nonNullRestrictions.size == 1 -> nonNullRestrictions[0]
+            else -> criteriaBuilder.or(*nonNullRestrictions)
+        }
+    }
+
+    /**
+     * NOT 操作
+     */
+    fun not(restriction: Predicate): Predicate = criteriaBuilder.not(restriction)
+
+    /**
      * 指定条件
      * @param builder
      * @return
      */
-    fun spec(builder: Schema.PredicateBuilder<SCustomerAction>): Predicate
-    {
+    fun spec(builder: PredicateBuilder<SCustomerAction>): Predicate {
         return builder.build(this)
     }
 }

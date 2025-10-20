@@ -3,15 +3,12 @@ package edu.only4.danmuku.domain._share.meta.category
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePredicate
 import com.only4.cap4k.ddd.domain.repo.JpaPredicate
 import com.only4.cap4k.ddd.domain.repo.querydsl.QuerydslPredicate
-
 import com.querydsl.core.types.OrderSpecifier
-import edu.only4.danmuku.domain._share.meta.Schema
+import edu.only4.danmuku.domain._share.meta.*
 import edu.only4.danmuku.domain.aggregates.category.AggCategory
 import edu.only4.danmuku.domain.aggregates.category.Category
 import edu.only4.danmuku.domain.aggregates.category.QCategory
-
 import jakarta.persistence.criteria.*
-
 import org.springframework.data.jpa.domain.Specification
 
 /**
@@ -22,7 +19,7 @@ import org.springframework.data.jpa.domain.Specification
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/10/15
+ * @date 2025/10/20
  */
 class SCategory(
     private val root: Path<Category>,
@@ -73,7 +70,7 @@ class SCategory(
          * @return
          */
         @JvmStatic
-        fun specify(builder: Schema.PredicateBuilder<SCategory>): Specification<Category> {
+        fun specify(builder: PredicateBuilder<SCategory>): Specification<Category> {
             return specify(builder, false, emptyList())
         }
 
@@ -85,7 +82,7 @@ class SCategory(
          * @return
          */
         @JvmStatic
-        fun specify(builder: Schema.PredicateBuilder<SCategory>, distinct: Boolean): Specification<Category> {
+        fun specify(builder: PredicateBuilder<SCategory>, distinct: Boolean): Specification<Category> {
             return specify(builder, distinct, emptyList())
         }
 
@@ -98,8 +95,8 @@ class SCategory(
          */
         @JvmStatic
         fun specify(
-            builder: Schema.PredicateBuilder<SCategory>,
-            vararg orderBuilders: Schema.OrderBuilder<SCategory>,
+            builder: PredicateBuilder<SCategory>,
+            vararg orderBuilders: OrderBuilder<SCategory>,
         ): Specification<Category> {
             return specify(builder, orderBuilders.toList())
         }
@@ -113,8 +110,8 @@ class SCategory(
          */
         @JvmStatic
         fun specify(
-            builder: Schema.PredicateBuilder<SCategory>,
-            orderBuilders: List<Schema.OrderBuilder<SCategory>>,
+            builder: PredicateBuilder<SCategory>,
+            orderBuilders: List<OrderBuilder<SCategory>>,
         ): Specification<Category> {
             return specify(builder, false, orderBuilders)
         }
@@ -129,9 +126,9 @@ class SCategory(
         */
         @JvmStatic
         fun specify(
-            builder: Schema.PredicateBuilder<SCategory>,
+            builder: PredicateBuilder<SCategory>,
             distinct: Boolean,
-            vararg orderBuilders: Schema.OrderBuilder<SCategory>,
+            vararg orderBuilders: OrderBuilder<SCategory>,
         ): Specification<Category> {
             return specify(builder, distinct, orderBuilders.toList())
         }
@@ -146,9 +143,9 @@ class SCategory(
         */
         @JvmStatic
         fun specify(
-            builder: Schema.PredicateBuilder<SCategory>,
+            builder: PredicateBuilder<SCategory>,
             distinct: Boolean,
-            orderBuilders: List<Schema.OrderBuilder<SCategory>>,
+            orderBuilders: List<OrderBuilder<SCategory>>,
         ): Specification<Category> {
             return specify { schema, criteriaQuery, criteriaBuilder ->
                 criteriaQuery.where(builder.build(schema))
@@ -167,7 +164,7 @@ class SCategory(
          * @return
          */
         @JvmStatic
-        fun specify(specifier: Schema.Specification<Category, SCategory>): Specification<Category> {
+        fun specify(specifier: SchemaSpecification<Category, SCategory>): Specification<Category> {
             return Specification { root, criteriaQuery, criteriaBuilder ->
                 val schema = SCategory(root, criteriaBuilder)
                 specifier.toPredicate(schema, criteriaQuery, criteriaBuilder)
@@ -188,8 +185,8 @@ class SCategory(
         @JvmStatic
         fun <E> subquery(
             resultClass: Class<E>,
-            selectBuilder: Schema.ExpressionBuilder<SCategory, E>,
-            predicateBuilder: Schema.PredicateBuilder<SCategory>,
+            selectBuilder: ExpressionBuilder<SCategory, E>,
+            predicateBuilder: PredicateBuilder<SCategory>,
             criteriaBuilder: CriteriaBuilder,
             criteriaQuery: CriteriaQuery<*>,
         ): Subquery<E> {
@@ -212,7 +209,7 @@ class SCategory(
         @JvmStatic
         fun <E> subquery(
             resultClass: Class<E>,
-            subqueryConfigure: Schema.SubqueryConfigure<E, SCategory>,
+            subqueryConfigure: SubqueryConfigure<E, SCategory>,
             criteriaBuilder: CriteriaBuilder,
             criteriaQuery: CriteriaQuery<*>,
         ): Subquery<E> {
@@ -263,7 +260,7 @@ class SCategory(
          * @return
          */
         @JvmStatic
-        fun predicate(builder: Schema.PredicateBuilder<SCategory>): AggregatePredicate<AggCategory, Category> {
+        fun predicate(builder: PredicateBuilder<SCategory>): AggregatePredicate<AggCategory, Category> {
             return JpaPredicate.bySpecification(Category::class.java, specify(builder)).toAggregatePredicate(AggCategory::class.java)
         }
 
@@ -275,7 +272,10 @@ class SCategory(
          * @return
          */
         @JvmStatic
-        fun predicate(builder: Schema.PredicateBuilder<SCategory>, distinct: Boolean): AggregatePredicate<AggCategory, Category> {
+        fun predicate(
+            builder: PredicateBuilder<SCategory>,
+            distinct: Boolean,
+        ): AggregatePredicate<AggCategory, Category> {
             return JpaPredicate.bySpecification(Category::class.java, specify(builder, distinct)).toAggregatePredicate(AggCategory::class.java)
         }
 
@@ -288,8 +288,8 @@ class SCategory(
          */
         @JvmStatic
         fun predicate(
-            builder: Schema.PredicateBuilder<SCategory>,
-            orderBuilders: List<Schema.OrderBuilder<SCategory>>,
+            builder: PredicateBuilder<SCategory>,
+            orderBuilders: List<OrderBuilder<SCategory>>,
         ): AggregatePredicate<AggCategory, Category> {
             return JpaPredicate.bySpecification(Category::class.java, specify(builder, false, orderBuilders)).toAggregatePredicate(AggCategory::class.java)
         }
@@ -303,8 +303,8 @@ class SCategory(
          */
         @JvmStatic
         fun predicate(
-            builder: Schema.PredicateBuilder<SCategory>,
-            vararg orderBuilders: Schema.OrderBuilder<SCategory>,
+            builder: PredicateBuilder<SCategory>,
+            vararg orderBuilders: OrderBuilder<SCategory>,
         ): AggregatePredicate<AggCategory, Category> {
             return JpaPredicate.bySpecification(Category::class.java, specify(builder, false, *orderBuilders)).toAggregatePredicate(AggCategory::class.java)
         }
@@ -319,9 +319,9 @@ class SCategory(
          */
         @JvmStatic
         fun predicate(
-            builder: Schema.PredicateBuilder<SCategory>,
+            builder: PredicateBuilder<SCategory>,
             distinct: Boolean,
-            orderBuilders: List<Schema.OrderBuilder<SCategory>>,
+            orderBuilders: List<OrderBuilder<SCategory>>,
         ): AggregatePredicate<AggCategory, Category> {
             return JpaPredicate.bySpecification(Category::class.java, specify(builder, distinct, orderBuilders)).toAggregatePredicate(AggCategory::class.java)
         }
@@ -336,9 +336,9 @@ class SCategory(
          */
         @JvmStatic
         fun predicate(
-            builder: Schema.PredicateBuilder<SCategory>,
+            builder: PredicateBuilder<SCategory>,
             distinct: Boolean,
-            vararg orderBuilders: Schema.OrderBuilder<SCategory>,
+            vararg orderBuilders: OrderBuilder<SCategory>,
         ): AggregatePredicate<AggCategory, Category> {
             return JpaPredicate.bySpecification(Category::class.java, specify(builder, distinct, *orderBuilders)).toAggregatePredicate(AggCategory::class.java)
         }
@@ -350,7 +350,7 @@ class SCategory(
          * @return
          */
         @JvmStatic
-        fun predicate(specifier: Schema.Specification<Category, SCategory>): AggregatePredicate<AggCategory, Category> {
+        fun predicate(specifier: SchemaSpecification<Category, SCategory>): AggregatePredicate<AggCategory, Category> {
             return JpaPredicate.bySpecification(Category::class.java, specify(specifier)).toAggregatePredicate(AggCategory::class.java)
         }
        /**
@@ -398,120 +398,120 @@ class SCategory(
     /**
      * ID
      */
-    val id: Schema.Field<Long> by lazy {
-        Schema.Field(root.get("id"), criteriaBuilder)
+    val id: Field<Long> by lazy {
+        Field(root.get("id"), criteriaBuilder)
     }
 
 
     /**
      * 父级ID
      */
-    val parentId: Schema.Field<Long> by lazy {
-        Schema.Field(root.get("parentId"), criteriaBuilder)
+    val parentId: Field<Long> by lazy {
+        Field(root.get("parentId"), criteriaBuilder)
     }
 
 
     /**
      * 路径
      */
-    val nodePath: Schema.Field<String> by lazy {
-        Schema.Field(root.get("nodePath"), criteriaBuilder)
+    val nodePath: Field<String> by lazy {
+        Field(root.get("nodePath"), criteriaBuilder)
     }
 
 
     /**
      * 排序号
      */
-    val sort: Schema.Field<Byte> by lazy {
-        Schema.Field(root.get("sort"), criteriaBuilder)
+    val sort: Field<Byte> by lazy {
+        Field(root.get("sort"), criteriaBuilder)
     }
 
 
     /**
      * 编码
      */
-    val code: Schema.Field<String> by lazy {
-        Schema.Field(root.get("code"), criteriaBuilder)
+    val code: Field<String> by lazy {
+        Field(root.get("code"), criteriaBuilder)
     }
 
 
     /**
      * 名称
      */
-    val name: Schema.Field<String> by lazy {
-        Schema.Field(root.get("name"), criteriaBuilder)
+    val name: Field<String> by lazy {
+        Field(root.get("name"), criteriaBuilder)
     }
 
 
     /**
      * 图标
      */
-    val icon: Schema.Field<String?> by lazy {
-        Schema.Field(root.get("icon"), criteriaBuilder)
+    val icon: Field<String?> by lazy {
+        Field(root.get("icon"), criteriaBuilder)
     }
 
 
     /**
      * 背景图
      */
-    val background: Schema.Field<String?> by lazy {
-        Schema.Field(root.get("background"), criteriaBuilder)
+    val background: Field<String?> by lazy {
+        Field(root.get("background"), criteriaBuilder)
     }
 
 
     /**
      * 创建人ID
      */
-    val createUserId: Schema.Field<Long?> by lazy {
-        Schema.Field(root.get("createUserId"), criteriaBuilder)
+    val createUserId: Field<Long?> by lazy {
+        Field(root.get("createUserId"), criteriaBuilder)
     }
 
 
     /**
      * 创建人名称
      */
-    val createBy: Schema.Field<String?> by lazy {
-        Schema.Field(root.get("createBy"), criteriaBuilder)
+    val createBy: Field<String?> by lazy {
+        Field(root.get("createBy"), criteriaBuilder)
     }
 
 
     /**
      * 创建时间
      */
-    val createTime: Schema.Field<Long?> by lazy {
-        Schema.Field(root.get("createTime"), criteriaBuilder)
+    val createTime: Field<Long?> by lazy {
+        Field(root.get("createTime"), criteriaBuilder)
     }
 
 
     /**
      * 更新人ID
      */
-    val updateUserId: Schema.Field<Long?> by lazy {
-        Schema.Field(root.get("updateUserId"), criteriaBuilder)
+    val updateUserId: Field<Long?> by lazy {
+        Field(root.get("updateUserId"), criteriaBuilder)
     }
 
 
     /**
      * 更新人名称
      */
-    val updateBy: Schema.Field<String?> by lazy {
-        Schema.Field(root.get("updateBy"), criteriaBuilder)
+    val updateBy: Field<String?> by lazy {
+        Field(root.get("updateBy"), criteriaBuilder)
     }
 
 
     /**
      * 更新时间
      */
-    val updateTime: Schema.Field<Long?> by lazy {
-        Schema.Field(root.get("updateTime"), criteriaBuilder)
+    val updateTime: Field<Long?> by lazy {
+        Field(root.get("updateTime"), criteriaBuilder)
     }
 
 
     /**
      * 删除标识 0：未删除 id：已删除
      */
-    val deleted: Schema.Field<Boolean> by lazy {
-        Schema.Field(root.get("deleted"), criteriaBuilder)
+    val deleted: Field<Boolean> by lazy {
+        Field(root.get("deleted"), criteriaBuilder)
     }
 
 
@@ -535,12 +535,41 @@ class SCategory(
     }
 
     /**
+     * 满足所有条件（过滤 null）
+     * 类似 Jimmer 的 where { } 自动过滤 null 的行为
+     */
+    fun allNotNull(vararg restrictions: Predicate?): Predicate? {
+        val nonNullRestrictions = restrictions.filterNotNull().toTypedArray()
+        return when {
+            nonNullRestrictions.isEmpty() -> null
+            nonNullRestrictions.size == 1 -> nonNullRestrictions[0]
+            else -> criteriaBuilder.and(*nonNullRestrictions)
+        }
+    }
+
+    /**
+     * 满足任一条件（过滤 null）
+     */
+    fun anyNotNull(vararg restrictions: Predicate?): Predicate? {
+        val nonNullRestrictions = restrictions.filterNotNull().toTypedArray()
+        return when {
+            nonNullRestrictions.isEmpty() -> null
+            nonNullRestrictions.size == 1 -> nonNullRestrictions[0]
+            else -> criteriaBuilder.or(*nonNullRestrictions)
+        }
+    }
+
+    /**
+     * NOT 操作
+     */
+    fun not(restriction: Predicate): Predicate = criteriaBuilder.not(restriction)
+
+    /**
      * 指定条件
      * @param builder
      * @return
      */
-    fun spec(builder: Schema.PredicateBuilder<SCategory>): Predicate
-    {
+    fun spec(builder: PredicateBuilder<SCategory>): Predicate {
         return builder.build(this)
     }
 }

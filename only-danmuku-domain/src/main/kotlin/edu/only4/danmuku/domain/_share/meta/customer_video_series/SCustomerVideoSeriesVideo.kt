@@ -1,10 +1,8 @@
 package edu.only4.danmuku.domain._share.meta.customer_video_series
 
-import edu.only4.danmuku.domain._share.meta.Schema
+import edu.only4.danmuku.domain._share.meta.*
 import edu.only4.danmuku.domain.aggregates.customer_video_series.CustomerVideoSeriesVideo
-
 import jakarta.persistence.criteria.*
-
 import org.springframework.data.jpa.domain.Specification
 
 /**
@@ -15,7 +13,7 @@ import org.springframework.data.jpa.domain.Specification
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/10/15
+ * @date 2025/10/20
  */
 class SCustomerVideoSeriesVideo(
     private val root: Path<CustomerVideoSeriesVideo>,
@@ -60,7 +58,7 @@ class SCustomerVideoSeriesVideo(
          * @return
          */
         @JvmStatic
-        fun specify(builder: Schema.PredicateBuilder<SCustomerVideoSeriesVideo>): Specification<CustomerVideoSeriesVideo> {
+        fun specify(builder: PredicateBuilder<SCustomerVideoSeriesVideo>): Specification<CustomerVideoSeriesVideo> {
             return specify(builder, false, emptyList())
         }
 
@@ -72,7 +70,10 @@ class SCustomerVideoSeriesVideo(
          * @return
          */
         @JvmStatic
-        fun specify(builder: Schema.PredicateBuilder<SCustomerVideoSeriesVideo>, distinct: Boolean): Specification<CustomerVideoSeriesVideo> {
+        fun specify(
+            builder: PredicateBuilder<SCustomerVideoSeriesVideo>,
+            distinct: Boolean,
+        ): Specification<CustomerVideoSeriesVideo> {
             return specify(builder, distinct, emptyList())
         }
 
@@ -85,8 +86,8 @@ class SCustomerVideoSeriesVideo(
          */
         @JvmStatic
         fun specify(
-            builder: Schema.PredicateBuilder<SCustomerVideoSeriesVideo>,
-            vararg orderBuilders: Schema.OrderBuilder<SCustomerVideoSeriesVideo>,
+            builder: PredicateBuilder<SCustomerVideoSeriesVideo>,
+            vararg orderBuilders: OrderBuilder<SCustomerVideoSeriesVideo>,
         ): Specification<CustomerVideoSeriesVideo> {
             return specify(builder, orderBuilders.toList())
         }
@@ -100,8 +101,8 @@ class SCustomerVideoSeriesVideo(
          */
         @JvmStatic
         fun specify(
-            builder: Schema.PredicateBuilder<SCustomerVideoSeriesVideo>,
-            orderBuilders: List<Schema.OrderBuilder<SCustomerVideoSeriesVideo>>,
+            builder: PredicateBuilder<SCustomerVideoSeriesVideo>,
+            orderBuilders: List<OrderBuilder<SCustomerVideoSeriesVideo>>,
         ): Specification<CustomerVideoSeriesVideo> {
             return specify(builder, false, orderBuilders)
         }
@@ -116,9 +117,9 @@ class SCustomerVideoSeriesVideo(
         */
         @JvmStatic
         fun specify(
-            builder: Schema.PredicateBuilder<SCustomerVideoSeriesVideo>,
+            builder: PredicateBuilder<SCustomerVideoSeriesVideo>,
             distinct: Boolean,
-            vararg orderBuilders: Schema.OrderBuilder<SCustomerVideoSeriesVideo>,
+            vararg orderBuilders: OrderBuilder<SCustomerVideoSeriesVideo>,
         ): Specification<CustomerVideoSeriesVideo> {
             return specify(builder, distinct, orderBuilders.toList())
         }
@@ -133,9 +134,9 @@ class SCustomerVideoSeriesVideo(
         */
         @JvmStatic
         fun specify(
-            builder: Schema.PredicateBuilder<SCustomerVideoSeriesVideo>,
+            builder: PredicateBuilder<SCustomerVideoSeriesVideo>,
             distinct: Boolean,
-            orderBuilders: List<Schema.OrderBuilder<SCustomerVideoSeriesVideo>>,
+            orderBuilders: List<OrderBuilder<SCustomerVideoSeriesVideo>>,
         ): Specification<CustomerVideoSeriesVideo> {
             return specify { schema, criteriaQuery, criteriaBuilder ->
                 criteriaQuery.where(builder.build(schema))
@@ -154,7 +155,7 @@ class SCustomerVideoSeriesVideo(
          * @return
          */
         @JvmStatic
-        fun specify(specifier: Schema.Specification<CustomerVideoSeriesVideo, SCustomerVideoSeriesVideo>): Specification<CustomerVideoSeriesVideo> {
+        fun specify(specifier: SchemaSpecification<CustomerVideoSeriesVideo, SCustomerVideoSeriesVideo>): Specification<CustomerVideoSeriesVideo> {
             return Specification { root, criteriaQuery, criteriaBuilder ->
                 val schema = SCustomerVideoSeriesVideo(root, criteriaBuilder)
                 specifier.toPredicate(schema, criteriaQuery, criteriaBuilder)
@@ -175,8 +176,8 @@ class SCustomerVideoSeriesVideo(
         @JvmStatic
         fun <E> subquery(
             resultClass: Class<E>,
-            selectBuilder: Schema.ExpressionBuilder<SCustomerVideoSeriesVideo, E>,
-            predicateBuilder: Schema.PredicateBuilder<SCustomerVideoSeriesVideo>,
+            selectBuilder: ExpressionBuilder<SCustomerVideoSeriesVideo, E>,
+            predicateBuilder: PredicateBuilder<SCustomerVideoSeriesVideo>,
             criteriaBuilder: CriteriaBuilder,
             criteriaQuery: CriteriaQuery<*>,
         ): Subquery<E> {
@@ -199,7 +200,7 @@ class SCustomerVideoSeriesVideo(
         @JvmStatic
         fun <E> subquery(
             resultClass: Class<E>,
-            subqueryConfigure: Schema.SubqueryConfigure<E, SCustomerVideoSeriesVideo>,
+            subqueryConfigure: SubqueryConfigure<E, SCustomerVideoSeriesVideo>,
             criteriaBuilder: CriteriaBuilder,
             criteriaQuery: CriteriaQuery<*>,
         ): Subquery<E> {
@@ -219,96 +220,96 @@ class SCustomerVideoSeriesVideo(
     /**
      * ID
      */
-    val id: Schema.Field<Long> by lazy {
-        Schema.Field(root.get("id"), criteriaBuilder)
+    val id: Field<Long> by lazy {
+        Field(root.get("id"), criteriaBuilder)
     }
 
 
     /**
      * 用户ID
      */
-    val customerId: Schema.Field<Long> by lazy {
-        Schema.Field(root.get("customerId"), criteriaBuilder)
+    val customerId: Field<Long> by lazy {
+        Field(root.get("customerId"), criteriaBuilder)
     }
 
 
     /**
      * 列表ID
      */
-    val seriesId: Schema.Field<Long> by lazy {
-        Schema.Field(root.get("seriesId"), criteriaBuilder)
+    val seriesId: Field<Long> by lazy {
+        Field(root.get("seriesId"), criteriaBuilder)
     }
 
 
     /**
      * 视频ID
      */
-    val videoId: Schema.Field<Long> by lazy {
-        Schema.Field(root.get("videoId"), criteriaBuilder)
+    val videoId: Field<Long> by lazy {
+        Field(root.get("videoId"), criteriaBuilder)
     }
 
 
     /**
      * 排序
      */
-    val sort: Schema.Field<Byte> by lazy {
-        Schema.Field(root.get("sort"), criteriaBuilder)
+    val sort: Field<Byte> by lazy {
+        Field(root.get("sort"), criteriaBuilder)
     }
 
 
     /**
      * 创建人ID
      */
-    val createUserId: Schema.Field<Long?> by lazy {
-        Schema.Field(root.get("createUserId"), criteriaBuilder)
+    val createUserId: Field<Long?> by lazy {
+        Field(root.get("createUserId"), criteriaBuilder)
     }
 
 
     /**
      * 创建人名称
      */
-    val createBy: Schema.Field<String?> by lazy {
-        Schema.Field(root.get("createBy"), criteriaBuilder)
+    val createBy: Field<String?> by lazy {
+        Field(root.get("createBy"), criteriaBuilder)
     }
 
 
     /**
      * 创建时间
      */
-    val createTime: Schema.Field<Long?> by lazy {
-        Schema.Field(root.get("createTime"), criteriaBuilder)
+    val createTime: Field<Long?> by lazy {
+        Field(root.get("createTime"), criteriaBuilder)
     }
 
 
     /**
      * 更新人ID
      */
-    val updateUserId: Schema.Field<Long?> by lazy {
-        Schema.Field(root.get("updateUserId"), criteriaBuilder)
+    val updateUserId: Field<Long?> by lazy {
+        Field(root.get("updateUserId"), criteriaBuilder)
     }
 
 
     /**
      * 更新人名称
      */
-    val updateBy: Schema.Field<String?> by lazy {
-        Schema.Field(root.get("updateBy"), criteriaBuilder)
+    val updateBy: Field<String?> by lazy {
+        Field(root.get("updateBy"), criteriaBuilder)
     }
 
 
     /**
      * 更新时间
      */
-    val updateTime: Schema.Field<Long?> by lazy {
-        Schema.Field(root.get("updateTime"), criteriaBuilder)
+    val updateTime: Field<Long?> by lazy {
+        Field(root.get("updateTime"), criteriaBuilder)
     }
 
 
     /**
      * 删除标识 0：未删除 id：已删除
      */
-    val deleted: Schema.Field<Boolean> by lazy {
-        Schema.Field(root.get("deleted"), criteriaBuilder)
+    val deleted: Field<Boolean> by lazy {
+        Field(root.get("deleted"), criteriaBuilder)
     }
 
 
@@ -316,8 +317,8 @@ class SCustomerVideoSeriesVideo(
     /**
      * 关联: ManyToOne - CustomerVideoSeries
      */
-    val customerVideoSeries: Schema.Field<Any> by lazy {
-        Schema.Field(root.get("customerVideoSeries"), criteriaBuilder)
+    val customerVideoSeries: Field<Any> by lazy {
+        Field(root.get("customerVideoSeries"), criteriaBuilder)
     }
 
 
@@ -340,12 +341,41 @@ class SCustomerVideoSeriesVideo(
     }
 
     /**
+     * 满足所有条件（过滤 null）
+     * 类似 Jimmer 的 where { } 自动过滤 null 的行为
+     */
+    fun allNotNull(vararg restrictions: Predicate?): Predicate? {
+        val nonNullRestrictions = restrictions.filterNotNull().toTypedArray()
+        return when {
+            nonNullRestrictions.isEmpty() -> null
+            nonNullRestrictions.size == 1 -> nonNullRestrictions[0]
+            else -> criteriaBuilder.and(*nonNullRestrictions)
+        }
+    }
+
+    /**
+     * 满足任一条件（过滤 null）
+     */
+    fun anyNotNull(vararg restrictions: Predicate?): Predicate? {
+        val nonNullRestrictions = restrictions.filterNotNull().toTypedArray()
+        return when {
+            nonNullRestrictions.isEmpty() -> null
+            nonNullRestrictions.size == 1 -> nonNullRestrictions[0]
+            else -> criteriaBuilder.or(*nonNullRestrictions)
+        }
+    }
+
+    /**
+     * NOT 操作
+     */
+    fun not(restriction: Predicate): Predicate = criteriaBuilder.not(restriction)
+
+    /**
      * 指定条件
      * @param builder
      * @return
      */
-    fun spec(builder: Schema.PredicateBuilder<SCustomerVideoSeriesVideo>): Predicate
-    {
+    fun spec(builder: PredicateBuilder<SCustomerVideoSeriesVideo>): Predicate {
         return builder.build(this)
     }
 }

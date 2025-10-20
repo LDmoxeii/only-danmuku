@@ -3,16 +3,13 @@ package edu.only4.danmuku.domain._share.meta.user
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePredicate
 import com.only4.cap4k.ddd.domain.repo.JpaPredicate
 import com.only4.cap4k.ddd.domain.repo.querydsl.QuerydslPredicate
-
 import com.querydsl.core.types.OrderSpecifier
-import edu.only4.danmuku.domain._share.meta.Schema
+import edu.only4.danmuku.domain._share.meta.*
 import edu.only4.danmuku.domain.aggregates.user.AggUser
 import edu.only4.danmuku.domain.aggregates.user.QUser
 import edu.only4.danmuku.domain.aggregates.user.User
 import edu.only4.danmuku.domain.aggregates.user.enums.UserType
-
 import jakarta.persistence.criteria.*
-
 import org.springframework.data.jpa.domain.Specification
 
 /**
@@ -23,7 +20,7 @@ import org.springframework.data.jpa.domain.Specification
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/10/19
+ * @date 2025/10/20
  */
 class SUser(
     private val root: Path<User>,
@@ -78,7 +75,7 @@ class SUser(
          * @return
          */
         @JvmStatic
-        fun specify(builder: Schema.PredicateBuilder<SUser>): Specification<User> {
+        fun specify(builder: PredicateBuilder<SUser>): Specification<User> {
             return specify(builder, false, emptyList())
         }
 
@@ -90,7 +87,7 @@ class SUser(
          * @return
          */
         @JvmStatic
-        fun specify(builder: Schema.PredicateBuilder<SUser>, distinct: Boolean): Specification<User> {
+        fun specify(builder: PredicateBuilder<SUser>, distinct: Boolean): Specification<User> {
             return specify(builder, distinct, emptyList())
         }
 
@@ -103,8 +100,8 @@ class SUser(
          */
         @JvmStatic
         fun specify(
-            builder: Schema.PredicateBuilder<SUser>,
-            vararg orderBuilders: Schema.OrderBuilder<SUser>,
+            builder: PredicateBuilder<SUser>,
+            vararg orderBuilders: OrderBuilder<SUser>,
         ): Specification<User> {
             return specify(builder, orderBuilders.toList())
         }
@@ -118,8 +115,8 @@ class SUser(
          */
         @JvmStatic
         fun specify(
-            builder: Schema.PredicateBuilder<SUser>,
-            orderBuilders: List<Schema.OrderBuilder<SUser>>,
+            builder: PredicateBuilder<SUser>,
+            orderBuilders: List<OrderBuilder<SUser>>,
         ): Specification<User> {
             return specify(builder, false, orderBuilders)
         }
@@ -134,9 +131,9 @@ class SUser(
         */
         @JvmStatic
         fun specify(
-            builder: Schema.PredicateBuilder<SUser>,
+            builder: PredicateBuilder<SUser>,
             distinct: Boolean,
-            vararg orderBuilders: Schema.OrderBuilder<SUser>,
+            vararg orderBuilders: OrderBuilder<SUser>,
         ): Specification<User> {
             return specify(builder, distinct, orderBuilders.toList())
         }
@@ -151,9 +148,9 @@ class SUser(
         */
         @JvmStatic
         fun specify(
-            builder: Schema.PredicateBuilder<SUser>,
+            builder: PredicateBuilder<SUser>,
             distinct: Boolean,
-            orderBuilders: List<Schema.OrderBuilder<SUser>>,
+            orderBuilders: List<OrderBuilder<SUser>>,
         ): Specification<User> {
             return specify { schema, criteriaQuery, criteriaBuilder ->
                 criteriaQuery.where(builder.build(schema))
@@ -172,7 +169,7 @@ class SUser(
          * @return
          */
         @JvmStatic
-        fun specify(specifier: Schema.Specification<User, SUser>): Specification<User> {
+        fun specify(specifier: SchemaSpecification<User, SUser>): Specification<User> {
             return Specification { root, criteriaQuery, criteriaBuilder ->
                 val schema = SUser(root, criteriaBuilder)
                 specifier.toPredicate(schema, criteriaQuery, criteriaBuilder)
@@ -193,8 +190,8 @@ class SUser(
         @JvmStatic
         fun <E> subquery(
             resultClass: Class<E>,
-            selectBuilder: Schema.ExpressionBuilder<SUser, E>,
-            predicateBuilder: Schema.PredicateBuilder<SUser>,
+            selectBuilder: ExpressionBuilder<SUser, E>,
+            predicateBuilder: PredicateBuilder<SUser>,
             criteriaBuilder: CriteriaBuilder,
             criteriaQuery: CriteriaQuery<*>,
         ): Subquery<E> {
@@ -217,7 +214,7 @@ class SUser(
         @JvmStatic
         fun <E> subquery(
             resultClass: Class<E>,
-            subqueryConfigure: Schema.SubqueryConfigure<E, SUser>,
+            subqueryConfigure: SubqueryConfigure<E, SUser>,
             criteriaBuilder: CriteriaBuilder,
             criteriaQuery: CriteriaQuery<*>,
         ): Subquery<E> {
@@ -268,7 +265,7 @@ class SUser(
          * @return
          */
         @JvmStatic
-        fun predicate(builder: Schema.PredicateBuilder<SUser>): AggregatePredicate<AggUser, User> {
+        fun predicate(builder: PredicateBuilder<SUser>): AggregatePredicate<AggUser, User> {
             return JpaPredicate.bySpecification(User::class.java, specify(builder)).toAggregatePredicate(AggUser::class.java)
         }
 
@@ -280,7 +277,7 @@ class SUser(
          * @return
          */
         @JvmStatic
-        fun predicate(builder: Schema.PredicateBuilder<SUser>, distinct: Boolean): AggregatePredicate<AggUser, User> {
+        fun predicate(builder: PredicateBuilder<SUser>, distinct: Boolean): AggregatePredicate<AggUser, User> {
             return JpaPredicate.bySpecification(User::class.java, specify(builder, distinct)).toAggregatePredicate(AggUser::class.java)
         }
 
@@ -293,8 +290,8 @@ class SUser(
          */
         @JvmStatic
         fun predicate(
-            builder: Schema.PredicateBuilder<SUser>,
-            orderBuilders: List<Schema.OrderBuilder<SUser>>,
+            builder: PredicateBuilder<SUser>,
+            orderBuilders: List<OrderBuilder<SUser>>,
         ): AggregatePredicate<AggUser, User> {
             return JpaPredicate.bySpecification(User::class.java, specify(builder, false, orderBuilders)).toAggregatePredicate(AggUser::class.java)
         }
@@ -308,8 +305,8 @@ class SUser(
          */
         @JvmStatic
         fun predicate(
-            builder: Schema.PredicateBuilder<SUser>,
-            vararg orderBuilders: Schema.OrderBuilder<SUser>,
+            builder: PredicateBuilder<SUser>,
+            vararg orderBuilders: OrderBuilder<SUser>,
         ): AggregatePredicate<AggUser, User> {
             return JpaPredicate.bySpecification(User::class.java, specify(builder, false, *orderBuilders)).toAggregatePredicate(AggUser::class.java)
         }
@@ -324,9 +321,9 @@ class SUser(
          */
         @JvmStatic
         fun predicate(
-            builder: Schema.PredicateBuilder<SUser>,
+            builder: PredicateBuilder<SUser>,
             distinct: Boolean,
-            orderBuilders: List<Schema.OrderBuilder<SUser>>,
+            orderBuilders: List<OrderBuilder<SUser>>,
         ): AggregatePredicate<AggUser, User> {
             return JpaPredicate.bySpecification(User::class.java, specify(builder, distinct, orderBuilders)).toAggregatePredicate(AggUser::class.java)
         }
@@ -341,9 +338,9 @@ class SUser(
          */
         @JvmStatic
         fun predicate(
-            builder: Schema.PredicateBuilder<SUser>,
+            builder: PredicateBuilder<SUser>,
             distinct: Boolean,
-            vararg orderBuilders: Schema.OrderBuilder<SUser>,
+            vararg orderBuilders: OrderBuilder<SUser>,
         ): AggregatePredicate<AggUser, User> {
             return JpaPredicate.bySpecification(User::class.java, specify(builder, distinct, *orderBuilders)).toAggregatePredicate(AggUser::class.java)
         }
@@ -355,7 +352,7 @@ class SUser(
          * @return
          */
         @JvmStatic
-        fun predicate(specifier: Schema.Specification<User, SUser>): AggregatePredicate<AggUser, User> {
+        fun predicate(specifier: SchemaSpecification<User, SUser>): AggregatePredicate<AggUser, User> {
             return JpaPredicate.bySpecification(User::class.java, specify(specifier)).toAggregatePredicate(AggUser::class.java)
         }
        /**
@@ -403,136 +400,136 @@ class SUser(
     /**
      * ID
      */
-    val id: Schema.Field<Long> by lazy {
-        Schema.Field(root.get("id"), criteriaBuilder)
+    val id: Field<Long> by lazy {
+        Field(root.get("id"), criteriaBuilder)
     }
 
 
     /**
      * 帐号类型
      */
-    val type: Schema.Field<UserType> by lazy {
-        Schema.Field(root.get("type"), criteriaBuilder)
+    val type: Field<UserType> by lazy {
+        Field(root.get("type"), criteriaBuilder)
     }
 
 
     /**
      * 昵称
      */
-    val nickName: Schema.Field<String> by lazy {
-        Schema.Field(root.get("nickName"), criteriaBuilder)
+    val nickName: Field<String> by lazy {
+        Field(root.get("nickName"), criteriaBuilder)
     }
 
 
     /**
      * 邮箱
      */
-    val email: Schema.Field<String> by lazy {
-        Schema.Field(root.get("email"), criteriaBuilder)
+    val email: Field<String> by lazy {
+        Field(root.get("email"), criteriaBuilder)
     }
 
 
     /**
      * 密码
      */
-    val password: Schema.Field<String> by lazy {
-        Schema.Field(root.get("password"), criteriaBuilder)
+    val password: Field<String> by lazy {
+        Field(root.get("password"), criteriaBuilder)
     }
 
 
     /**
      * 加入时间
      */
-    val joinTime: Schema.Field<Long> by lazy {
-        Schema.Field(root.get("joinTime"), criteriaBuilder)
+    val joinTime: Field<Long> by lazy {
+        Field(root.get("joinTime"), criteriaBuilder)
     }
 
 
     /**
      * 最后登录时间
      */
-    val lastLoginTime: Schema.Field<Long?> by lazy {
-        Schema.Field(root.get("lastLoginTime"), criteriaBuilder)
+    val lastLoginTime: Field<Long?> by lazy {
+        Field(root.get("lastLoginTime"), criteriaBuilder)
     }
 
 
     /**
      * 最后登录IP
      */
-    val lastLoginIp: Schema.Field<String?> by lazy {
-        Schema.Field(root.get("lastLoginIp"), criteriaBuilder)
+    val lastLoginIp: Field<String?> by lazy {
+        Field(root.get("lastLoginIp"), criteriaBuilder)
     }
 
 
     /**
      * 0:禁用 1:正常
      */
-    val status: Schema.Field<Boolean> by lazy {
-        Schema.Field(root.get("status"), criteriaBuilder)
+    val status: Field<Boolean> by lazy {
+        Field(root.get("status"), criteriaBuilder)
     }
 
 
     /**
      * 关联ID; 用户、管理员 = 0
      */
-    val relatedId: Schema.Field<Int?> by lazy {
-        Schema.Field(root.get("relatedId"), criteriaBuilder)
+    val relatedId: Field<Int?> by lazy {
+        Field(root.get("relatedId"), criteriaBuilder)
     }
 
 
     /**
      * 创建人ID
      */
-    val createUserId: Schema.Field<Long?> by lazy {
-        Schema.Field(root.get("createUserId"), criteriaBuilder)
+    val createUserId: Field<Long?> by lazy {
+        Field(root.get("createUserId"), criteriaBuilder)
     }
 
 
     /**
      * 创建人名称
      */
-    val createBy: Schema.Field<String?> by lazy {
-        Schema.Field(root.get("createBy"), criteriaBuilder)
+    val createBy: Field<String?> by lazy {
+        Field(root.get("createBy"), criteriaBuilder)
     }
 
 
     /**
      * 创建时间
      */
-    val createTime: Schema.Field<Long?> by lazy {
-        Schema.Field(root.get("createTime"), criteriaBuilder)
+    val createTime: Field<Long?> by lazy {
+        Field(root.get("createTime"), criteriaBuilder)
     }
 
 
     /**
      * 更新人ID
      */
-    val updateUserId: Schema.Field<Long?> by lazy {
-        Schema.Field(root.get("updateUserId"), criteriaBuilder)
+    val updateUserId: Field<Long?> by lazy {
+        Field(root.get("updateUserId"), criteriaBuilder)
     }
 
 
     /**
      * 更新人名称
      */
-    val updateBy: Schema.Field<String?> by lazy {
-        Schema.Field(root.get("updateBy"), criteriaBuilder)
+    val updateBy: Field<String?> by lazy {
+        Field(root.get("updateBy"), criteriaBuilder)
     }
 
 
     /**
      * 更新时间
      */
-    val updateTime: Schema.Field<Long?> by lazy {
-        Schema.Field(root.get("updateTime"), criteriaBuilder)
+    val updateTime: Field<Long?> by lazy {
+        Field(root.get("updateTime"), criteriaBuilder)
     }
 
 
     /**
      * 删除标识 0：未删除 id：已删除
      */
-    val deleted: Schema.Field<Boolean> by lazy {
-        Schema.Field(root.get("deleted"), criteriaBuilder)
+    val deleted: Field<Boolean> by lazy {
+        Field(root.get("deleted"), criteriaBuilder)
     }
 
 
@@ -556,12 +553,41 @@ class SUser(
     }
 
     /**
+     * 满足所有条件（过滤 null）
+     * 类似 Jimmer 的 where { } 自动过滤 null 的行为
+     */
+    fun allNotNull(vararg restrictions: Predicate?): Predicate? {
+        val nonNullRestrictions = restrictions.filterNotNull().toTypedArray()
+        return when {
+            nonNullRestrictions.isEmpty() -> null
+            nonNullRestrictions.size == 1 -> nonNullRestrictions[0]
+            else -> criteriaBuilder.and(*nonNullRestrictions)
+        }
+    }
+
+    /**
+     * 满足任一条件（过滤 null）
+     */
+    fun anyNotNull(vararg restrictions: Predicate?): Predicate? {
+        val nonNullRestrictions = restrictions.filterNotNull().toTypedArray()
+        return when {
+            nonNullRestrictions.isEmpty() -> null
+            nonNullRestrictions.size == 1 -> nonNullRestrictions[0]
+            else -> criteriaBuilder.or(*nonNullRestrictions)
+        }
+    }
+
+    /**
+     * NOT 操作
+     */
+    fun not(restriction: Predicate): Predicate = criteriaBuilder.not(restriction)
+
+    /**
      * 指定条件
      * @param builder
      * @return
      */
-    fun spec(builder: Schema.PredicateBuilder<SUser>): Predicate
-    {
+    fun spec(builder: PredicateBuilder<SUser>): Predicate {
         return builder.build(this)
     }
 }

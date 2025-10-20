@@ -17,7 +17,7 @@ import org.springframework.stereotype.Repository
  *
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * @author cap4k-ddd-codegen
- * @date 2025/10/15
+ * @date 2025/10/20
  */
 @Repository
 interface CustomerMessageRepository : JpaRepository<CustomerMessage, Long>, JpaSpecificationExecutor<CustomerMessage>,

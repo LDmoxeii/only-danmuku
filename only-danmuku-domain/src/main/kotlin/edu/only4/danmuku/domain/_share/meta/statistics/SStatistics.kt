@@ -3,16 +3,13 @@ package edu.only4.danmuku.domain._share.meta.statistics
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePredicate
 import com.only4.cap4k.ddd.domain.repo.JpaPredicate
 import com.only4.cap4k.ddd.domain.repo.querydsl.QuerydslPredicate
-
 import com.querydsl.core.types.OrderSpecifier
-import edu.only4.danmuku.domain._share.meta.Schema
+import edu.only4.danmuku.domain._share.meta.*
 import edu.only4.danmuku.domain.aggregates.statistics.AggStatistics
 import edu.only4.danmuku.domain.aggregates.statistics.QStatistics
 import edu.only4.danmuku.domain.aggregates.statistics.Statistics
 import edu.only4.danmuku.domain.aggregates.statistics.enums.StatisticsDataType
-
 import jakarta.persistence.criteria.*
-
 import org.springframework.data.jpa.domain.Specification
 
 /**
@@ -23,7 +20,7 @@ import org.springframework.data.jpa.domain.Specification
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/10/15
+ * @date 2025/10/20
  */
 class SStatistics(
     private val root: Path<Statistics>,
@@ -68,7 +65,7 @@ class SStatistics(
          * @return
          */
         @JvmStatic
-        fun specify(builder: Schema.PredicateBuilder<SStatistics>): Specification<Statistics> {
+        fun specify(builder: PredicateBuilder<SStatistics>): Specification<Statistics> {
             return specify(builder, false, emptyList())
         }
 
@@ -80,7 +77,7 @@ class SStatistics(
          * @return
          */
         @JvmStatic
-        fun specify(builder: Schema.PredicateBuilder<SStatistics>, distinct: Boolean): Specification<Statistics> {
+        fun specify(builder: PredicateBuilder<SStatistics>, distinct: Boolean): Specification<Statistics> {
             return specify(builder, distinct, emptyList())
         }
 
@@ -93,8 +90,8 @@ class SStatistics(
          */
         @JvmStatic
         fun specify(
-            builder: Schema.PredicateBuilder<SStatistics>,
-            vararg orderBuilders: Schema.OrderBuilder<SStatistics>,
+            builder: PredicateBuilder<SStatistics>,
+            vararg orderBuilders: OrderBuilder<SStatistics>,
         ): Specification<Statistics> {
             return specify(builder, orderBuilders.toList())
         }
@@ -108,8 +105,8 @@ class SStatistics(
          */
         @JvmStatic
         fun specify(
-            builder: Schema.PredicateBuilder<SStatistics>,
-            orderBuilders: List<Schema.OrderBuilder<SStatistics>>,
+            builder: PredicateBuilder<SStatistics>,
+            orderBuilders: List<OrderBuilder<SStatistics>>,
         ): Specification<Statistics> {
             return specify(builder, false, orderBuilders)
         }
@@ -124,9 +121,9 @@ class SStatistics(
         */
         @JvmStatic
         fun specify(
-            builder: Schema.PredicateBuilder<SStatistics>,
+            builder: PredicateBuilder<SStatistics>,
             distinct: Boolean,
-            vararg orderBuilders: Schema.OrderBuilder<SStatistics>,
+            vararg orderBuilders: OrderBuilder<SStatistics>,
         ): Specification<Statistics> {
             return specify(builder, distinct, orderBuilders.toList())
         }
@@ -141,9 +138,9 @@ class SStatistics(
         */
         @JvmStatic
         fun specify(
-            builder: Schema.PredicateBuilder<SStatistics>,
+            builder: PredicateBuilder<SStatistics>,
             distinct: Boolean,
-            orderBuilders: List<Schema.OrderBuilder<SStatistics>>,
+            orderBuilders: List<OrderBuilder<SStatistics>>,
         ): Specification<Statistics> {
             return specify { schema, criteriaQuery, criteriaBuilder ->
                 criteriaQuery.where(builder.build(schema))
@@ -162,7 +159,7 @@ class SStatistics(
          * @return
          */
         @JvmStatic
-        fun specify(specifier: Schema.Specification<Statistics, SStatistics>): Specification<Statistics> {
+        fun specify(specifier: SchemaSpecification<Statistics, SStatistics>): Specification<Statistics> {
             return Specification { root, criteriaQuery, criteriaBuilder ->
                 val schema = SStatistics(root, criteriaBuilder)
                 specifier.toPredicate(schema, criteriaQuery, criteriaBuilder)
@@ -183,8 +180,8 @@ class SStatistics(
         @JvmStatic
         fun <E> subquery(
             resultClass: Class<E>,
-            selectBuilder: Schema.ExpressionBuilder<SStatistics, E>,
-            predicateBuilder: Schema.PredicateBuilder<SStatistics>,
+            selectBuilder: ExpressionBuilder<SStatistics, E>,
+            predicateBuilder: PredicateBuilder<SStatistics>,
             criteriaBuilder: CriteriaBuilder,
             criteriaQuery: CriteriaQuery<*>,
         ): Subquery<E> {
@@ -207,7 +204,7 @@ class SStatistics(
         @JvmStatic
         fun <E> subquery(
             resultClass: Class<E>,
-            subqueryConfigure: Schema.SubqueryConfigure<E, SStatistics>,
+            subqueryConfigure: SubqueryConfigure<E, SStatistics>,
             criteriaBuilder: CriteriaBuilder,
             criteriaQuery: CriteriaQuery<*>,
         ): Subquery<E> {
@@ -258,7 +255,7 @@ class SStatistics(
          * @return
          */
         @JvmStatic
-        fun predicate(builder: Schema.PredicateBuilder<SStatistics>): AggregatePredicate<AggStatistics, Statistics> {
+        fun predicate(builder: PredicateBuilder<SStatistics>): AggregatePredicate<AggStatistics, Statistics> {
             return JpaPredicate.bySpecification(Statistics::class.java, specify(builder)).toAggregatePredicate(AggStatistics::class.java)
         }
 
@@ -270,7 +267,10 @@ class SStatistics(
          * @return
          */
         @JvmStatic
-        fun predicate(builder: Schema.PredicateBuilder<SStatistics>, distinct: Boolean): AggregatePredicate<AggStatistics, Statistics> {
+        fun predicate(
+            builder: PredicateBuilder<SStatistics>,
+            distinct: Boolean,
+        ): AggregatePredicate<AggStatistics, Statistics> {
             return JpaPredicate.bySpecification(Statistics::class.java, specify(builder, distinct)).toAggregatePredicate(AggStatistics::class.java)
         }
 
@@ -283,8 +283,8 @@ class SStatistics(
          */
         @JvmStatic
         fun predicate(
-            builder: Schema.PredicateBuilder<SStatistics>,
-            orderBuilders: List<Schema.OrderBuilder<SStatistics>>,
+            builder: PredicateBuilder<SStatistics>,
+            orderBuilders: List<OrderBuilder<SStatistics>>,
         ): AggregatePredicate<AggStatistics, Statistics> {
             return JpaPredicate.bySpecification(Statistics::class.java, specify(builder, false, orderBuilders)).toAggregatePredicate(AggStatistics::class.java)
         }
@@ -298,8 +298,8 @@ class SStatistics(
          */
         @JvmStatic
         fun predicate(
-            builder: Schema.PredicateBuilder<SStatistics>,
-            vararg orderBuilders: Schema.OrderBuilder<SStatistics>,
+            builder: PredicateBuilder<SStatistics>,
+            vararg orderBuilders: OrderBuilder<SStatistics>,
         ): AggregatePredicate<AggStatistics, Statistics> {
             return JpaPredicate.bySpecification(Statistics::class.java, specify(builder, false, *orderBuilders)).toAggregatePredicate(AggStatistics::class.java)
         }
@@ -314,9 +314,9 @@ class SStatistics(
          */
         @JvmStatic
         fun predicate(
-            builder: Schema.PredicateBuilder<SStatistics>,
+            builder: PredicateBuilder<SStatistics>,
             distinct: Boolean,
-            orderBuilders: List<Schema.OrderBuilder<SStatistics>>,
+            orderBuilders: List<OrderBuilder<SStatistics>>,
         ): AggregatePredicate<AggStatistics, Statistics> {
             return JpaPredicate.bySpecification(Statistics::class.java, specify(builder, distinct, orderBuilders)).toAggregatePredicate(AggStatistics::class.java)
         }
@@ -331,9 +331,9 @@ class SStatistics(
          */
         @JvmStatic
         fun predicate(
-            builder: Schema.PredicateBuilder<SStatistics>,
+            builder: PredicateBuilder<SStatistics>,
             distinct: Boolean,
-            vararg orderBuilders: Schema.OrderBuilder<SStatistics>,
+            vararg orderBuilders: OrderBuilder<SStatistics>,
         ): AggregatePredicate<AggStatistics, Statistics> {
             return JpaPredicate.bySpecification(Statistics::class.java, specify(builder, distinct, *orderBuilders)).toAggregatePredicate(AggStatistics::class.java)
         }
@@ -345,7 +345,7 @@ class SStatistics(
          * @return
          */
         @JvmStatic
-        fun predicate(specifier: Schema.Specification<Statistics, SStatistics>): AggregatePredicate<AggStatistics, Statistics> {
+        fun predicate(specifier: SchemaSpecification<Statistics, SStatistics>): AggregatePredicate<AggStatistics, Statistics> {
             return JpaPredicate.bySpecification(Statistics::class.java, specify(specifier)).toAggregatePredicate(AggStatistics::class.java)
         }
        /**
@@ -393,96 +393,96 @@ class SStatistics(
     /**
      * ID
      */
-    val id: Schema.Field<Long> by lazy {
-        Schema.Field(root.get("id"), criteriaBuilder)
+    val id: Field<Long> by lazy {
+        Field(root.get("id"), criteriaBuilder)
     }
 
 
     /**
      * 用户ID
      */
-    val customerId: Schema.Field<Long> by lazy {
-        Schema.Field(root.get("customerId"), criteriaBuilder)
+    val customerId: Field<Long> by lazy {
+        Field(root.get("customerId"), criteriaBuilder)
     }
 
 
     /**
      * 数据统计类型
      */
-    val dataType: Schema.Field<StatisticsDataType> by lazy {
-        Schema.Field(root.get("dataType"), criteriaBuilder)
+    val dataType: Field<StatisticsDataType> by lazy {
+        Field(root.get("dataType"), criteriaBuilder)
     }
 
 
     /**
      * 统计数量
      */
-    val statisticsCount: Schema.Field<Int?> by lazy {
-        Schema.Field(root.get("statisticsCount"), criteriaBuilder)
+    val statisticsCount: Field<Int?> by lazy {
+        Field(root.get("statisticsCount"), criteriaBuilder)
     }
 
 
     /**
      * 统计日期
      */
-    val statisticsDate: Schema.Field<Long> by lazy {
-        Schema.Field(root.get("statisticsDate"), criteriaBuilder)
+    val statisticsDate: Field<Long> by lazy {
+        Field(root.get("statisticsDate"), criteriaBuilder)
     }
 
 
     /**
      * 创建人ID
      */
-    val createUserId: Schema.Field<Long?> by lazy {
-        Schema.Field(root.get("createUserId"), criteriaBuilder)
+    val createUserId: Field<Long?> by lazy {
+        Field(root.get("createUserId"), criteriaBuilder)
     }
 
 
     /**
      * 创建人名称
      */
-    val createBy: Schema.Field<String?> by lazy {
-        Schema.Field(root.get("createBy"), criteriaBuilder)
+    val createBy: Field<String?> by lazy {
+        Field(root.get("createBy"), criteriaBuilder)
     }
 
 
     /**
      * 创建时间
      */
-    val createTime: Schema.Field<Long?> by lazy {
-        Schema.Field(root.get("createTime"), criteriaBuilder)
+    val createTime: Field<Long?> by lazy {
+        Field(root.get("createTime"), criteriaBuilder)
     }
 
 
     /**
      * 更新人ID
      */
-    val updateUserId: Schema.Field<Long?> by lazy {
-        Schema.Field(root.get("updateUserId"), criteriaBuilder)
+    val updateUserId: Field<Long?> by lazy {
+        Field(root.get("updateUserId"), criteriaBuilder)
     }
 
 
     /**
      * 更新人名称
      */
-    val updateBy: Schema.Field<String?> by lazy {
-        Schema.Field(root.get("updateBy"), criteriaBuilder)
+    val updateBy: Field<String?> by lazy {
+        Field(root.get("updateBy"), criteriaBuilder)
     }
 
 
     /**
      * 更新时间
      */
-    val updateTime: Schema.Field<Long?> by lazy {
-        Schema.Field(root.get("updateTime"), criteriaBuilder)
+    val updateTime: Field<Long?> by lazy {
+        Field(root.get("updateTime"), criteriaBuilder)
     }
 
 
     /**
      * 删除标识 0：未删除 id：已删除
      */
-    val deleted: Schema.Field<Boolean> by lazy {
-        Schema.Field(root.get("deleted"), criteriaBuilder)
+    val deleted: Field<Boolean> by lazy {
+        Field(root.get("deleted"), criteriaBuilder)
     }
 
 
@@ -506,12 +506,41 @@ class SStatistics(
     }
 
     /**
+     * 满足所有条件（过滤 null）
+     * 类似 Jimmer 的 where { } 自动过滤 null 的行为
+     */
+    fun allNotNull(vararg restrictions: Predicate?): Predicate? {
+        val nonNullRestrictions = restrictions.filterNotNull().toTypedArray()
+        return when {
+            nonNullRestrictions.isEmpty() -> null
+            nonNullRestrictions.size == 1 -> nonNullRestrictions[0]
+            else -> criteriaBuilder.and(*nonNullRestrictions)
+        }
+    }
+
+    /**
+     * 满足任一条件（过滤 null）
+     */
+    fun anyNotNull(vararg restrictions: Predicate?): Predicate? {
+        val nonNullRestrictions = restrictions.filterNotNull().toTypedArray()
+        return when {
+            nonNullRestrictions.isEmpty() -> null
+            nonNullRestrictions.size == 1 -> nonNullRestrictions[0]
+            else -> criteriaBuilder.or(*nonNullRestrictions)
+        }
+    }
+
+    /**
+     * NOT 操作
+     */
+    fun not(restriction: Predicate): Predicate = criteriaBuilder.not(restriction)
+
+    /**
      * 指定条件
      * @param builder
      * @return
      */
-    fun spec(builder: Schema.PredicateBuilder<SStatistics>): Predicate
-    {
+    fun spec(builder: PredicateBuilder<SStatistics>): Predicate {
         return builder.build(this)
     }
 }
