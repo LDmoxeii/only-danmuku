@@ -19,8 +19,6 @@ class CheckLoginQryHandler(
 
     override fun exec(request: CheckLoginQry.Request): CheckLoginQry.Response {
 
-        return CheckLoginQry.Response(
-
-        )
+        return TODO()
     }
 }

@@ -12,7 +12,10 @@ spring-boot = "3.5.6"
 spring-dependency-management = "1.1.3"
 blazebit = "1.6.12"
 
-only-engine = "0.1.5-SNAPSHOT"
+# Tools
+hutool = "5.8.40"
+
+only-engine = "0.1.8-SNAPSHOT"
 cap4k = "0.4.2-SNAPSHOT"
 jimmer = "0.9.106"
 
@@ -42,6 +45,14 @@ annotation = { module = "jakarta.annotation:jakarta.annotation-api" }
 blazebit-persistence-querydsl = { module = "com.blazebit:blaze-persistence-integration-querydsl-expressions-jakarta", version.ref = "blazebit" }
 blazebit-persistence-hibernate = { module = "com.blazebit:blaze-persistence-integration-hibernate-6.2", version.ref = "blazebit" }
 
+# Tools
+hutool-jwt = { module = "cn.hutool:hutool-jwt", version.ref = "hutool" }
+hutool-core = { module = "cn.hutool:hutool-core", version.ref = "hutool" }
+hutool-extra = { module = "cn.hutool:hutool-extra", version.ref = "hutool" }
+hutool-crypto = { module = "cn.hutool:hutool-crypto", version.ref = "hutool" }
+hutool-http = { module = "cn.hutool:hutool-http", version.ref = "hutool" }
+hutool-captcha = { module = "cn.hutool:hutool-captcha", version.ref = "hutool" }
+
 engine-common = { module = "com.only4:engine-common", version.ref = "only-engine" }
 engine-captcha = { module = "com.only4:engine-captcha", version.ref = "only-engine" }
 engine-security = { module = "com.only4:engine-security", version.ref = "only-engine" }
@@ -68,8 +79,18 @@ mysql = { module = "com.mysql:mysql-connector-j", version = "8.1.0" }
 
 # Testing
 junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
-kotlin-compile-testing = { module = "dev.zacsweers.kctfork:ksp", version.ref = "kotlin-compile-testing" }
+junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
+junit-jupiter-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "junit" }
+junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+kotlin-compile-testing = { module = "dev.zacsweers.kctfork:ksp", version.ref = "kotlin-compile-testing" }
+spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "spring-boot" }
+
+# Libraries can be bundled together for easier import
+[bundles]
+junit-core = ["junit-jupiter-api", "junit-jupiter-params"]
+junit-runtime = ["junit-jupiter-engine", "junit-platform-launcher"]
 
 [plugins]
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }

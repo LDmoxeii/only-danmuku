@@ -31,8 +31,8 @@ class CaptchaGenClientHandler(
         @Suppress("CAST_NEVER_SUCCEEDS")
         return CaptchaGen.Response(
             result.captchaId,
-            (result as CaptchaContent.Image).bytes,
-            (result as CaptchaContent.Image).text,
+            (result.inlineContent as CaptchaContent.Image).bytes,
+            (result.inlineContent as CaptchaContent.Image).text,
         )
 
     }

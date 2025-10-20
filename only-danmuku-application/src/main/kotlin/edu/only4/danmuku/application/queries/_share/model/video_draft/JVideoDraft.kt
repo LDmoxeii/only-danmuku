@@ -27,12 +27,12 @@ interface JVideoDraft {
     /**
      * 视频封面
      */
-    val videoCover: String?
+    val videoCover: String
 
     /**
      * 视频名称
      */
-    val videoName: String?
+    val videoName: String
 
     /**
      * 用户ID
@@ -42,7 +42,7 @@ interface JVideoDraft {
     /**
      * 父级分类ID
      */
-    val pCategoryId: Long?
+    val pCategoryId: Long
 
     /**
      * 分类ID
@@ -66,7 +66,7 @@ interface JVideoDraft {
      * 1:ORIGINAL:自制作
      * 2:REPOST:转载
      */
-    val postType: Byte?
+    val postType: Byte
 
     /**
      * 原资源说明

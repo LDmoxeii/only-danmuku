@@ -1,0 +1,49 @@
+### 获取验证码
+POST {{host}}/account/checkCode
+Authorization: Bearer {{auth_token}}
+
+> {%
+    // 自动保存验证码 key
+    if (response.body && response.body.data && response.body.data.captchaId) {
+        const checkCodeKey = response.body.data.captchaId;
+        client.global.set("checkCodeKey", checkCodeKey);
+        client.log("验证码 Key: " + checkCodeKey);
+    }
+%}
+
+### 注册帐号
+POST {{host}}/account/register
+Content-Type: application/json
+
+{
+  "email": "2649075705@165.com",
+  "nickName": "2649075705@165.com",
+  "registerPassword": "Zhenyu123456",
+  "checkCodeKey": "{{checkCodeKey}}",
+  "checkCode": "1512"
+}
+
+### 登录
+POST {{host}}/account/login
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJsb2dpblR5cGUiOiJsb2dpbiIsImxvZ2luSWQiOjIyNzQzNzg0MDE5ODMzMjQxNiwicm5TdHIiOiJyR3hhQWg2TVdkanZHMHhMNHRZc1dPN0FDUnRaSDBQWSIsInVzZXJJZCI6MjI3NDM3ODQwMTk4MzMyNDE2LCJ1c2VyUm9sZXMiOltdLCJ1c2VyUGVybWlzc2lvbnMiOltdfQ.y444RKhPD4dhjgVxuAkqzZ5WraShJASgDr9oOsLTwwc
+
+{
+  "email": "lisi@example.com",
+  "password": "password456",
+  "checkCodeKey": "{{checkCodeKey}}",
+  "checkCode": "1512"
+}
+
+> {%
+    if (response.body && response.body.data && response.body.data.token) {
+        client.global.set("auth_token", response.body.data.token);
+        client.log("保存 Token: " + response.body.data.token);
+    }
+%}
+
+### 获取用户数量信息
+POST {{host}}/account/getUserCountInfo
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+

@@ -1,5 +1,6 @@
 package edu.only4.danmuku.domain.aggregates.user
 
+import cn.hutool.crypto.digest.BCrypt
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import edu.only4.danmuku.domain.aggregates.user.enums.UserType
 import jakarta.persistence.*
@@ -21,7 +22,7 @@ import org.hibernate.annotations.*
 @DynamicUpdate
 @SQLDelete(sql = "update `user` set `deleted` = `id` where `id` = ?")
 @Where(clause = "`deleted` = 0")
-class User (
+class User(
     // 【字段映射开始】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
 
     /**
@@ -30,7 +31,10 @@ class User (
      */
     @Id
     @GeneratedValue(generator = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator")
-    @GenericGenerator(name = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator", strategy = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator")
+    @GenericGenerator(
+        name = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator",
+        strategy = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator"
+    )
     @Column(name = "`id`", insertable = false, updatable = false)
     var id: Long = 0L,
 
@@ -151,13 +155,14 @@ class User (
 ) {
 
     // 【字段映射结束】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
+    companion object {
+        fun isPasswordCorrect(password: String, input: String): Boolean {
+            BCrypt.hashpw(input)
+            return password == input
+        }
+    }
 
     // 【行为方法开始】
 
     // 【行为方法结束】
-    companion object {
-        fun validatePassword(password: String, input: String): Boolean {
-
-        }
-    }
 }

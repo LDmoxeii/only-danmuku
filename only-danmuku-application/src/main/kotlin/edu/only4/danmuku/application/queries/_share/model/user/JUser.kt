@@ -25,6 +25,11 @@ interface JUser {
     val type: Byte
 
     /**
+     * 昵称
+     */
+    val nickName: String
+
+    /**
      * 邮箱
      */
     val email: String

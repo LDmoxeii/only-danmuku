@@ -68,6 +68,75 @@ logging:
     org.hibernate.orm.jdbc.bind: TRACE
     org.springframework.boot.autoconfigure.condition: DEBUG
 
+# redisson 配置
+redisson:
+  # redis key前缀
+  keyPrefix:
+  # 线程池数量
+  threads: 4
+  # Netty线程池数量
+  nettyThreads: 8
+  # 单节点配置
+  singleServerConfig:
+    # 客户端名称 不能用中文
+    clientName: ONLY-DANMUKU
+    # 最小空闲连接数
+    connectionMinimumIdleSize: 8
+    # 连接池大小
+    connectionPoolSize: 32
+    # 连接空闲超时，单位：毫秒
+    idleConnectionTimeout: 10000
+    # 命令等待超时，单位：毫秒
+    timeout: 3000
+    # 发布和订阅连接池大小
+    subscriptionConnectionPoolSize: 50
+
+server:
+  port: 8081
+  tomcat:
+    uri-encoding: UTF-8
+    threads:
+      max: 400
+
+management:
+  endpoint:
+    shutdown:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics,shutdown
+  metrics:
+    tags:
+      application: ${spring.application.name}
+  health:
+    redis:
+      enabled: false
+
+
+jimmer:
+
+  # This is very important,
+  # With this configuration,
+  # `jimmer-spring-starter` will create `KSqlClient` for kotlin;
+  # otherwise, it will create `JSqlClient` for java.
+  language: kotlin
+
+  database-validation-mode: ERROR
+  show-sql: true
+  pretty-sql: true
+
+# Sa-Token配置
+sa-token:
+  # token名称 (同时也是cookie名称)
+  token-name: Authorization
+  # 是否允许同一账号并发登录 (为true时允许一起登录, 为false时新登录挤掉旧登录)
+  is-concurrent: true
+  # 在多人登录同一账号时，是否共用一个token (为true时所有登录共用一个token, 为false时每次登录新建一个token)
+  is-share: false
+  # jwt秘钥
+  jwt-secret-key: abcdefghijklmnopqrstuvwxyz
+
 only:
   engine:
     json:
@@ -78,28 +147,6 @@ only:
         store: redis
     redis:
       enable: true
-    # redisson 配置
-    redisson:
-      # redis key前缀
-      keyPrefix:
-      # 线程池数量
-      threads: 4
-      # Netty线程池数量
-      nettyThreads: 8
-      # 单节点配置
-      singleServerConfig:
-        # 客户端名称 不能用中文
-        clientName: ONLY-DANMUKU
-        # 最小空闲连接数
-        connectionMinimumIdleSize: 8
-        # 连接池大小
-        connectionPoolSize: 32
-        # 连接空闲超时，单位：毫秒
-        idleConnectionTimeout: 10000
-        # 命令等待超时，单位：毫秒
-        timeout: 3000
-        # 发布和订阅连接池大小
-        subscriptionConnectionPoolSize: 50
     sa-token:
       enable: true
     security:
@@ -118,7 +165,6 @@ only:
           enable: true
       performance-interceptor:
         enable: false
-
 cap4k:
   ddd:
     arch-info:
@@ -140,48 +186,3 @@ cap4k:
       request:
         schedule:
           add-partition-enable: false
-
-server:
-  port: 8081
-  tomcat:
-    uri-encoding: UTF-8
-    threads:
-      max: 400
-
-# Sa-Token配置
-sa-token:
-  # token名称 (同时也是cookie名称)
-  token-name: Authorization
-  # 是否允许同一账号并发登录 (为true时允许一起登录, 为false时新登录挤掉旧登录)
-  is-concurrent: true
-  # 在多人登录同一账号时，是否共用一个token (为true时所有登录共用一个token, 为false时每次登录新建一个token)
-  is-share: false
-  # jwt秘钥
-  jwt-secret-key: abcdefghijklmnopqrstuvwxyz
-
-management:
-  endpoint:
-    shutdown:
-      enabled: true
-  endpoints:
-    web:
-      exposure:
-        include: health,info,prometheus,metrics,shutdown
-  metrics:
-    tags:
-      application: ${spring.application.name}
-  health:
-    redis:
-      enabled: false
-
-jimmer:
-
-  # This is very important,
-  # With this configuration,
-  # `jimmer-spring-starter` will create `KSqlClient` for kotlin;
-  # otherwise, it will create `JSqlClient` for java.
-  language: kotlin
-
-  database-validation-mode: ERROR
-  show-sql: true
-  pretty-sql: true

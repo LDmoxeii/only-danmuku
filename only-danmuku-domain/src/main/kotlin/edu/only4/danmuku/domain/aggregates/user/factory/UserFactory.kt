@@ -5,6 +5,9 @@ import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePayload
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 
 import edu.only4.danmuku.domain.aggregates.user.User
+import edu.only4.danmuku.domain.aggregates.user.User_.joinTime
+import edu.only4.danmuku.domain.aggregates.user.User_.password
+import edu.only4.danmuku.domain.aggregates.user.enums.UserType
 
 import org.springframework.stereotype.Service
 
@@ -26,6 +29,7 @@ class UserFactory : AggregateFactory<UserFactory.Payload, User> {
 
     override fun create(entityPayload: Payload): User {
         return User(
+            type = entityPayload.type,
             email = entityPayload.email,
             nickName = entityPayload.nickName,
             password = entityPayload.registerPassword,
@@ -40,6 +44,7 @@ class UserFactory : AggregateFactory<UserFactory.Payload, User> {
         description = ""
     )
     data class Payload(
+         val type: UserType,
          val email: String,
          val nickName: String,
          val registerPassword: String,

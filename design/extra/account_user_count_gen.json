@@ -1,0 +1,9 @@
+{
+  "qry": [
+    {
+      "package": "user",
+      "name": "GetUserCountInfo",
+      "desc": "获取用户统计信息(粉丝数、硬币数、关注数)"
+    }
+  ]
+}

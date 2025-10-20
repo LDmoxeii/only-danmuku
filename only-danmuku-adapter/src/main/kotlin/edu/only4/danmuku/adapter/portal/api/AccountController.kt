@@ -2,15 +2,13 @@ package edu.only4.danmuku.adapter.portal.api
 
 import cn.dev33.satoken.stp.StpUtil
 import com.only.engine.entity.UserInfo
-import com.only.engine.redis.misc.RedisUtils
 import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
-import edu.only4.danmuku.adapter.portal.api._share.constant.Constants
 import edu.only4.danmuku.adapter.portal.api.payload.*
 import edu.only4.danmuku.application.commands.user.RegisterAccountCmd
 import edu.only4.danmuku.application.distributed.clients.CaptchaGen
-import edu.only4.danmuku.application.distributed.clients.CaptchaValid
 import edu.only4.danmuku.application.queries.user.GetAccountInfoByEmailQry
+import edu.only4.danmuku.application.queries.user.GetUserCountInfoQry
 import edu.only4.danmuku.domain.aggregates.user.User
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.validation.annotation.Validated
@@ -33,10 +31,9 @@ class AccountController {
      *
      * @return 验证码响应对象
      */
-    @GetMapping("/checkCode")
+    @PostMapping("/checkCode")
     fun checkCode(): AccountCheckCode.Response {
-        val result = Mediator.requests.send(CaptchaGen.Request("auth"))
-        RedisUtils.setCacheObject(Constants.REDIS_KEY_CHECK_CODE + result.captchaId, result.text)
+        val result = Mediator.requests.send(CaptchaGen.Request("admin-auth"))
         return AccountCheckCode.Response(
             result.captchaId,
             result.byte
@@ -53,8 +50,9 @@ class AccountController {
      */
     @PostMapping("/register")
     fun register(@RequestBody @Validated request: AccountRegister.Request): AccountRegister.Response {
-        val validated = Mediator.requests.send(CaptchaValid.Request(request.checkCodeKey, request.checkCode))
-        require(validated.result) { "验证失败" }
+//        val captchaValidationResult = Mediator.requests.send(CaptchaValid.Request(request.checkCodeKey, request.checkCode))
+//        require(captchaValidationResult.result) { "验证码错误" }
+
         Mediator.cmd.send(
             RegisterAccountCmd.Request(
                 email = request.email,
@@ -79,23 +77,24 @@ class AccountController {
         @RequestBody @Validated request: AccountLogin.Request,
         response: HttpServletResponse,
     ): AccountLogin.Response {
-        // TODO: 实现用户登录逻辑
-        val validated = Mediator.requests.send(CaptchaValid.Request(request.checkCodeKey, request.checkCode))
-        require(validated.result) { "验证失败" }
-        // 2. 验证邮箱和密码
-        val accountInfo = Mediator.queries.send(
+//        val captchaValidationResult = Mediator.requests.send(CaptchaValid.Request(request.checkCodeKey, request.checkCode))
+//        require(captchaValidationResult.result) { "验证码错误" }
+
+        val userAccount = Mediator.queries.send(
             GetAccountInfoByEmailQry.Request(
                 email = request.email
             )
         )
 
-        val validatedPassword = User.validatePassword(accountInfo.password, request.password)
-        require(validatedPassword) { "密码错误" }
-        LoginHelper.login(UserInfo(accountInfo.id, accountInfo.type.code, accountInfo.email))
+        val isPasswordCorrect = User.isPasswordCorrect(userAccount.password, request.password)
+        require(isPasswordCorrect) { "密码错误" }
+
+        LoginHelper.login(UserInfo(userAccount.id, userAccount.type.code, userAccount.email))
         val token = StpUtil.getTokenValue()
+
         return AccountLogin.Response(
-            userId = accountInfo.id.toString(),
-            nickName = accountInfo.nickName,
+            userId = userAccount.id.toString(),
+            nickName = userAccount.nickName,
             token = token
         )
     }
@@ -110,11 +109,6 @@ class AccountController {
      */
     @PostMapping("/autoLogin")
     fun autoLogin(response: HttpServletResponse): AccountAutoLogin.Response? {
-        // TODO: 实现自动登录逻辑
-        // 1. 从Cookie或Header获取Token
-        // 2. 验证Token有效性
-        // 3. 检查Token是否即将过期
-        // 4. 如果即将过期则刷新Token
         return AccountAutoLogin.Response()
     }
 
@@ -128,26 +122,35 @@ class AccountController {
      */
     @PostMapping("/logout")
     fun logout(response: HttpServletResponse): AccountLogout.Response {
-        // TODO: 实现用户登出逻辑
-        // 1. 从Cookie或Header获取Token
-        // 2. 从Redis中删除Token
-        // 3. 清除Cookie
+        StpUtil.logout()
         return AccountLogout.Response()
     }
 
     /**
      * 获取用户统计信息
      *
-     * 根据当前用户的ID获取其统计信息（粉丝数、关注数、获赞数等）
+     * 根据当前用户的ID获取其统计信息（粉丝数、关注数、当前硬币数等）
      *
      * @return 包含用户统计信息的响应对象
      */
-    @GetMapping("/getUserCountInfo")
+    @PostMapping("/getUserCountInfo")
     fun getUserCountInfo(): AccountUserCountInfo.Response {
-        // TODO: 实现获取用户统计信息逻辑
         // 1. 从Token中获取当前用户ID
+        val currentUserId = LoginHelper.getUserId()!!
+
         // 2. 查询用户统计信息
-        return AccountUserCountInfo.Response()
+        val userCountInfo = Mediator.queries.send(
+            GetUserCountInfoQry.Request(
+                customerId = currentUserId
+            )
+        )
+
+        // 3. 转换为响应对象
+        return AccountUserCountInfo.Response(
+            fansCount = userCountInfo.fansCount,
+            currentCoinCount = userCountInfo.currentCoinCount,
+            focusCount = userCountInfo.focusCount
+        )
     }
 
 }
