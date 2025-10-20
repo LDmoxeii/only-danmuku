@@ -1,7 +1,14 @@
 package edu.only4.danmuku.adapter.portal.api
 
 import com.only4.cap4k.ddd.core.Mediator
+import edu.only4.danmuku.adapter.portal.api.payload.AdminCategoryChangeSort
+import edu.only4.danmuku.adapter.portal.api.payload.AdminCategoryDel
 import edu.only4.danmuku.adapter.portal.api.payload.AdminCategoryLoad
+import edu.only4.danmuku.adapter.portal.api.payload.AdminCategorySave
+import edu.only4.danmuku.application.commands.category.CreateCategoryCmd
+import edu.only4.danmuku.application.commands.category.DeleteCategoryCmd
+import edu.only4.danmuku.application.commands.category.UpdateCategoryInfoCmd
+import edu.only4.danmuku.application.commands.category.UpdateCategorySortOrderCmd
 import edu.only4.danmuku.application.queries.category.GetCategoryListQry
 import edu.only4.danmuku.application.queries.category.GetCategoryTreeQry
 import org.springframework.validation.annotation.Validated
@@ -47,71 +54,71 @@ class AdminCategoryController {
         }
     }
 
-    //
-//    /**
-//     * 保存/更新分类
-//     */
-//    @PostMapping("/saveCategory")
-//    fun adminCategorySave(@RequestBody @Validated request: AdminCategorySave.Request): AdminCategorySave.Response {
-//        // 判断是创建还是更新
-//        if (request.categoryId == null) {
-//            // 创建新分类
-//            Mediator.commands.send(
-//                CreateCategoryCmd.Request(
-//                    parentId = request.pCategoryId.toLong(),
-//                    code = request.categoryCode,
-//                    name = request.categoryName,
-//                    icon = request.icon,
-//                    background = request.background
-//                )
-//            )
-//        } else {
-//            // 更新已有分类
-//            Mediator.commands.send(
-//                UpdateCategoryInfoCmd.Request(
-//                    categoryId = request.categoryId.toLong(),
-//                    parentId = request.pCategoryId.toLong(),
-//                    code = request.categoryCode,
-//                    name = request.categoryName,
-//                    icon = request.icon,
-//                    background = request.background
-//                )
-//            )
-//        }
-//        return AdminCategorySave.Response()
-//    }
-//
-//    /**
-//     * 删除分类
-//     */
-//    @PostMapping("/delCategory")
-//    fun adminCategoryDel(@RequestBody @Validated request: AdminCategoryDel.Request): AdminCategoryDel.Response {
-//        Mediator.commands.send(
-//            DeleteCategoryCmd.Request(
-//                categoryId = request.categoryId.toLong()
-//            )
-//        )
-//        return AdminCategoryDel.Response()
-//    }
-//
-//    /**
-//     * 调整分类排序
-//     */
-//    @PostMapping("/changeSort")
-//    fun adminCategoryChangeSort(@RequestBody @Validated request: AdminCategoryChangeSort.Request): AdminCategoryChangeSort.Response {
-//        // 将分类ID字符串分割成列表
-//        val categoryIdList = request.categoryIds.split(",")
-//            .map { it.trim().toLong() }
-//
-//        Mediator.commands.send(
-//            UpdateCategorySortOrderCmd.Request(
-//                parentId = request.pCategoryId.toLong(),
-//                categoryIds = categoryIdList
-//            )
-//        )
-//        return AdminCategoryChangeSort.Response()
-//    }
-//
+
+    /**
+     * 保存/更新分类
+     */
+    @PostMapping("/saveCategory")
+    fun adminCategorySave(@RequestBody @Validated request: AdminCategorySave.Request): AdminCategorySave.Response {
+        // 判断是创建还是更新
+        if (request.categoryId == null) {
+            // 创建新分类
+            Mediator.commands.send(
+                CreateCategoryCmd.Request(
+                    parentId = request.pCategoryId.toLong(),
+                    code = request.categoryCode,
+                    name = request.categoryName,
+                    icon = request.icon,
+                    background = request.background
+                )
+            )
+        } else {
+            // 更新已有分类
+            Mediator.commands.send(
+                UpdateCategoryInfoCmd.Request(
+                    categoryId = request.categoryId.toLong(),
+                    parentId = request.pCategoryId.toLong(),
+                    code = request.categoryCode,
+                    name = request.categoryName,
+                    icon = request.icon,
+                    background = request.background
+                )
+            )
+        }
+        return AdminCategorySave.Response()
+    }
+
+    /**
+     * 删除分类
+     */
+    @PostMapping("/delCategory")
+    fun adminCategoryDel(@RequestBody @Validated request: AdminCategoryDel.Request): AdminCategoryDel.Response {
+        Mediator.commands.send(
+            DeleteCategoryCmd.Request(
+                categoryId = request.categoryId.toLong()
+            )
+        )
+        return AdminCategoryDel.Response()
+    }
+
+    /**
+     * 调整分类排序
+     */
+    @PostMapping("/changeSort")
+    fun adminCategoryChangeSort(@RequestBody @Validated request: AdminCategoryChangeSort.Request): AdminCategoryChangeSort.Response {
+        // 将分类ID字符串分割成列表
+        val categoryIdList = request.categoryIds.split(",")
+            .map { it.trim().toLong() }
+
+        Mediator.commands.send(
+            UpdateCategorySortOrderCmd.Request(
+                parentId = request.pCategoryId.toLong(),
+                categoryIds = categoryIdList
+            )
+        )
+        return AdminCategoryChangeSort.Response()
+    }
+
     private fun qryResponseToApiResponse(node: GetCategoryTreeQry.Response): AdminCategoryLoad.Response {
         return AdminCategoryLoad.Response(
             categoryId = node.categoryId,

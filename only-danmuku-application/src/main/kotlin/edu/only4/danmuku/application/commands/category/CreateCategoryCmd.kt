@@ -3,6 +3,10 @@ package edu.only4.danmuku.application.commands.category
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
+import edu.only4.danmuku.application.queries.category.GetCategoryListQry
+import edu.only4.danmuku.domain._share.meta.category.SCategory
+import edu.only4.danmuku.domain.aggregates.category.AggCategory
+import edu.only4.danmuku.domain.aggregates.category.factory.CategoryFactory
 
 import org.springframework.stereotype.Service
 
@@ -19,6 +23,25 @@ object CreateCategoryCmd {
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
             // TODO: 实现创建分类逻辑
+            val siblings = Mediator.repositories.find(SCategory.predicate { it.parentId.eq(request.parentId) })
+
+            val maxSort = siblings.maxOfOrNull { it.sort } ?: 0
+
+            val category = Mediator.factories.create(
+                CategoryFactory.Payload(
+                    parentId = request.parentId,
+                    code = request.code,
+                    name = request.name,
+                    icon = request.icon,
+                    background = request.background,
+                    sort = request.sort ?: maxSort
+                )
+            )
+
+            siblings.filter { it.sort >= category.sort }.forEach {
+                it.sort = (it.sort + 1).toByte()
+            }
+
             // 1. 检查分类编码是否已存在
             // 2. 创建分类聚合根
             // 3. 计算并设置节点路径(nodePath)
@@ -45,7 +68,7 @@ object CreateCategoryCmd {
         /** 背景图路径或URL */
         val background: String? = null,
         /** 排序号，同级分类中的显示顺序 */
-        val sort: Byte = 0
+        val sort: Byte? = null,
     ) : RequestParam<Response>
 
     data class Response(
