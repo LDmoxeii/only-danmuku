@@ -1,7 +1,7 @@
 // [cap4k-ddd-codegen-gradle-plugin:do-not-overwrite]
 plugins {
     id("buildsrc.convention.kotlin-jvm")
-    id("com.only4.codegen") version "0.1.2-SNAPSHOT"
+    id("com.only4.codegen") version "0.1.3-SNAPSHOT"
 }
 
 dependencies {
