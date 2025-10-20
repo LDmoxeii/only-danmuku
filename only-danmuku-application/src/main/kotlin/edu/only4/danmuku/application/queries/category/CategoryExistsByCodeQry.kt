@@ -12,9 +12,10 @@ import com.only4.cap4k.ddd.core.application.RequestParam
 object CategoryExistsByCodeQry {
 
     class Request(
-
+        val code: String,
     ) : RequestParam<Response>
 
     class Response(
+        val exists: Boolean,  // true: 存在, false: 不存在
     )
 }

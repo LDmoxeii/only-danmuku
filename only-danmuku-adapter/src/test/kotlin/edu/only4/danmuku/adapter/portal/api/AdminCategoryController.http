@@ -5,3 +5,13 @@ Content-Type: application/json
 {
   "convert2Tree": false
 }
+
+### 保存分类
+POST {{host}}/admin/category/saveCategory
+Content-Type: application/json
+
+{
+  "pCategoryId": 0,
+  "categoryCode": "testCode",
+  "categoryName": "测试分类"
+}

@@ -104,6 +104,8 @@ only:
       enable: true
     security:
       enable: true
+      provider:
+        security-interceptor: "sa-token"
     web:
       filter:
         health-check:

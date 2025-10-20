@@ -1,6 +1,5 @@
 ### 获取验证码
 POST {{host}}/account/checkCode
-Authorization: Bearer {{auth_token}}
 
 > {%
     // 自动保存验证码 key
@@ -26,7 +25,6 @@ Content-Type: application/json
 ### 登录
 POST {{host}}/account/login
 Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJsb2dpblR5cGUiOiJsb2dpbiIsImxvZ2luSWQiOjIyNzQzNzg0MDE5ODMzMjQxNiwicm5TdHIiOiJyR3hhQWg2TVdkanZHMHhMNHRZc1dPN0FDUnRaSDBQWSIsInVzZXJJZCI6MjI3NDM3ODQwMTk4MzMyNDE2LCJ1c2VyUm9sZXMiOltdLCJ1c2VyUGVybWlzc2lvbnMiOltdfQ.y444RKhPD4dhjgVxuAkqzZ5WraShJASgDr9oOsLTwwc
 
 {
   "email": "lisi@example.com",

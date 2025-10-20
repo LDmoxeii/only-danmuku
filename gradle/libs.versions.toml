@@ -15,7 +15,7 @@ blazebit = "1.6.12"
 # Tools
 hutool = "5.8.40"
 
-only-engine = "0.1.8-SNAPSHOT"
+only-engine = "0.1.11-SNAPSHOT"
 cap4k = "0.4.2-SNAPSHOT"
 jimmer = "0.9.106"
 
