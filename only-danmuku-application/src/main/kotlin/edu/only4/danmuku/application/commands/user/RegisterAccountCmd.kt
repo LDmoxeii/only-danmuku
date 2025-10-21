@@ -4,7 +4,6 @@ import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
 import edu.only4.danmuku.application.validater.UniqueUserEmail
-import edu.only4.danmuku.domain.aggregates.user.AggUser
 import edu.only4.danmuku.domain.aggregates.user.enums.UserType
 import edu.only4.danmuku.domain.aggregates.user.factory.UserFactory
 import org.springframework.stereotype.Service
@@ -21,8 +20,7 @@ object RegisterAccountCmd {
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
-            Mediator.aggregates.create(
-                AggUser::class.java,
+            Mediator.factories.create(
                 UserFactory.Payload(
                     type = UserType.SYS_USER,
                     email = request.email,
