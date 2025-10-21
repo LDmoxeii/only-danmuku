@@ -40,5 +40,7 @@ codegen {
         readonlyFields.set("id")
         ignoreFields.set("create_user_id,create_by,create_time,update_user_id,update_by,update_time")
         ignoreFields.set("")
+        generateAggregate.set(false)
+        repositorySupportQuerydsl.set(false)
     }
 }

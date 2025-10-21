@@ -13,7 +13,7 @@ import org.hibernate.query.sqm.tree.select.SqmSortSpecification
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/10/20
+ * @date 2025/10/21
  */
 
 // ============ 类型定义 ============
@@ -217,8 +217,7 @@ class Field<T> {
 
     infix fun <Y : Comparable<Y>> `gt?`(value: Y?): Predicate? = if (value == null) null else greaterThan(value)
 
-    infix fun <Y : Comparable<Y>> `ge?`(value: Y?): Predicate? =
-        if (value == null) null else greaterThanOrEqualTo(value)
+    infix fun <Y : Comparable<Y>> `ge?`(value: Y?): Predicate? = if (value == null) null else greaterThanOrEqualTo(value)
 
     infix fun <Y : Comparable<Y>> `lt?`(value: Y?): Predicate? = if (value == null) null else lessThan(value)
 
@@ -298,7 +297,6 @@ private fun getCriteriaBuilderFromPredicate(predicate: Predicate): CriteriaBuild
         is org.hibernate.query.sqm.tree.predicate.SqmPredicate -> {
             predicate.nodeBuilder()
         }
-
         else -> {
             // 尝试反射获取
             try {

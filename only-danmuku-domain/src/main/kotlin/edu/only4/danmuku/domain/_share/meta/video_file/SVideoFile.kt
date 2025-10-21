@@ -1,14 +1,17 @@
 package edu.only4.danmuku.domain._share.meta.video_file
 
-import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePredicate
 import com.only4.cap4k.ddd.domain.repo.JpaPredicate
-import com.only4.cap4k.ddd.domain.repo.querydsl.QuerydslPredicate
-import com.querydsl.core.types.OrderSpecifier
-import edu.only4.danmuku.domain._share.meta.*
-import edu.only4.danmuku.domain.aggregates.video_file.AggVideoFile
-import edu.only4.danmuku.domain.aggregates.video_file.QVideoFile
+
+import edu.only4.danmuku.domain._share.meta.ExpressionBuilder
+import edu.only4.danmuku.domain._share.meta.Field
+import edu.only4.danmuku.domain._share.meta.OrderBuilder
+import edu.only4.danmuku.domain._share.meta.PredicateBuilder
+import edu.only4.danmuku.domain._share.meta.SchemaSpecification
+import edu.only4.danmuku.domain._share.meta.SubqueryConfigure
 import edu.only4.danmuku.domain.aggregates.video_file.VideoFile
+
 import jakarta.persistence.criteria.*
+
 import org.springframework.data.jpa.domain.Specification
 
 /**
@@ -19,7 +22,7 @@ import org.springframework.data.jpa.domain.Specification
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/10/20
+ * @date 2025/10/21
  */
 class SVideoFile(
     private val root: Path<VideoFile>,
@@ -228,8 +231,8 @@ class SVideoFile(
          * @return
          */
         @JvmStatic
-        fun predicateById(id: Any): AggregatePredicate<AggVideoFile, VideoFile> {
-            return JpaPredicate.byId(VideoFile::class.java, id).toAggregatePredicate(AggVideoFile::class.java)
+        fun predicateById(id: Any): JpaPredicate<VideoFile> {
+            return JpaPredicate.byId(VideoFile::class.java, id)
         }
 
         /**
@@ -239,9 +242,9 @@ class SVideoFile(
         * @return
         */
         @JvmStatic
-        fun predicateByIds(ids: Iterable<*>): AggregatePredicate<AggVideoFile, VideoFile> {
+        fun predicateByIds(ids: Iterable<*>): JpaPredicate<VideoFile> {
             @Suppress("UNCHECKED_CAST")
-            return JpaPredicate.byIds(VideoFile::class.java, ids as Iterable<Any>).toAggregatePredicate(AggVideoFile::class.java)
+            return JpaPredicate.byIds(VideoFile::class.java, ids as Iterable<Any>)
         }
 
         /**
@@ -251,8 +254,8 @@ class SVideoFile(
          * @return
          */
         @JvmStatic
-        fun predicateByIds(vararg ids: Any): AggregatePredicate<AggVideoFile, VideoFile> {
-            return JpaPredicate.byIds(VideoFile::class.java, ids.toList()).toAggregatePredicate(AggVideoFile::class.java)
+        fun predicateByIds(vararg ids: Any): JpaPredicate<VideoFile> {
+            return JpaPredicate.byIds(VideoFile::class.java, ids.toList())
         }
 
         /**
@@ -262,8 +265,8 @@ class SVideoFile(
          * @return
          */
         @JvmStatic
-        fun predicate(builder: PredicateBuilder<SVideoFile>): AggregatePredicate<AggVideoFile, VideoFile> {
-            return JpaPredicate.bySpecification(VideoFile::class.java, specify(builder)).toAggregatePredicate(AggVideoFile::class.java)
+        fun predicate(builder: PredicateBuilder<SVideoFile>): JpaPredicate<VideoFile> {
+            return JpaPredicate.bySpecification(VideoFile::class.java, specify(builder))
         }
 
         /**
@@ -274,11 +277,8 @@ class SVideoFile(
          * @return
          */
         @JvmStatic
-        fun predicate(
-            builder: PredicateBuilder<SVideoFile>,
-            distinct: Boolean,
-        ): AggregatePredicate<AggVideoFile, VideoFile> {
-            return JpaPredicate.bySpecification(VideoFile::class.java, specify(builder, distinct)).toAggregatePredicate(AggVideoFile::class.java)
+        fun predicate(builder: PredicateBuilder<SVideoFile>, distinct: Boolean): JpaPredicate<VideoFile> {
+            return JpaPredicate.bySpecification(VideoFile::class.java, specify(builder, distinct))
         }
 
         /**
@@ -292,8 +292,8 @@ class SVideoFile(
         fun predicate(
             builder: PredicateBuilder<SVideoFile>,
             orderBuilders: List<OrderBuilder<SVideoFile>>,
-        ): AggregatePredicate<AggVideoFile, VideoFile> {
-            return JpaPredicate.bySpecification(VideoFile::class.java, specify(builder, false, orderBuilders)).toAggregatePredicate(AggVideoFile::class.java)
+        ): JpaPredicate<VideoFile> {
+            return JpaPredicate.bySpecification(VideoFile::class.java, specify(builder, false, orderBuilders))
         }
 
         /**
@@ -307,8 +307,8 @@ class SVideoFile(
         fun predicate(
             builder: PredicateBuilder<SVideoFile>,
             vararg orderBuilders: OrderBuilder<SVideoFile>,
-        ): AggregatePredicate<AggVideoFile, VideoFile> {
-            return JpaPredicate.bySpecification(VideoFile::class.java, specify(builder, false, *orderBuilders)).toAggregatePredicate(AggVideoFile::class.java)
+        ): JpaPredicate<VideoFile> {
+            return JpaPredicate.bySpecification(VideoFile::class.java, specify(builder, false, *orderBuilders))
         }
 
         /**
@@ -324,8 +324,8 @@ class SVideoFile(
             builder: PredicateBuilder<SVideoFile>,
             distinct: Boolean,
             orderBuilders: List<OrderBuilder<SVideoFile>>,
-        ): AggregatePredicate<AggVideoFile, VideoFile> {
-            return JpaPredicate.bySpecification(VideoFile::class.java, specify(builder, distinct, orderBuilders)).toAggregatePredicate(AggVideoFile::class.java)
+        ): JpaPredicate<VideoFile> {
+            return JpaPredicate.bySpecification(VideoFile::class.java, specify(builder, distinct, orderBuilders))
         }
 
         /**
@@ -341,8 +341,8 @@ class SVideoFile(
             builder: PredicateBuilder<SVideoFile>,
             distinct: Boolean,
             vararg orderBuilders: OrderBuilder<SVideoFile>,
-        ): AggregatePredicate<AggVideoFile, VideoFile> {
-            return JpaPredicate.bySpecification(VideoFile::class.java, specify(builder, distinct, *orderBuilders)).toAggregatePredicate(AggVideoFile::class.java)
+        ): JpaPredicate<VideoFile> {
+            return JpaPredicate.bySpecification(VideoFile::class.java, specify(builder, distinct, *orderBuilders))
         }
 
         /**
@@ -352,44 +352,10 @@ class SVideoFile(
          * @return
          */
         @JvmStatic
-        fun predicate(specifier: SchemaSpecification<VideoFile, SVideoFile>): AggregatePredicate<AggVideoFile, VideoFile> {
-            return JpaPredicate.bySpecification(VideoFile::class.java, specify(specifier)).toAggregatePredicate(AggVideoFile::class.java)
-        }
-       /**
-         * 构建querydsl查询条件
-         *
-         * @param filterBuilder          查询条件构造器
-         * @param orderSpecifierBuilders 排序构造器
-         * @return
-         */
-        @JvmStatic
-        fun querydsl(
-            filterBuilder: java.util.function.Function<QVideoFile, com.querydsl.core.types.Predicate>,
-            vararg orderSpecifierBuilders: java.util.function.Function<QVideoFile, OrderSpecifier<*>>,
-        ): AggregatePredicate<AggVideoFile, VideoFile> {
-            return QuerydslPredicate.of(VideoFile::class.java)
-                .where(filterBuilder.apply(QVideoFile.videoFile))
-                .orderBy(*orderSpecifierBuilders.map { it.apply(QVideoFile.videoFile) }.toTypedArray())
-                .toAggregatePredicate(AggVideoFile::class.java)
+        fun predicate(specifier: SchemaSpecification<VideoFile, SVideoFile>): JpaPredicate<VideoFile> {
+            return JpaPredicate.bySpecification(VideoFile::class.java, specify(specifier))
         }
 
-        /**
-         * 构建querydsl查询条件
-         *
-         * @param filter          查询条件构造器
-         * @param orderSpecifiers 排序构造器
-         * @return
-         */
-        @JvmStatic
-        fun querydsl(
-            filter: com.querydsl.core.types.Predicate,
-            vararg orderSpecifiers: OrderSpecifier<*>,
-        ): AggregatePredicate<AggVideoFile, VideoFile> {
-            return QuerydslPredicate.of(VideoFile::class.java)
-                .where(filter)
-                .orderBy(*orderSpecifiers)
-                .toAggregatePredicate(AggVideoFile::class.java)
-        }
     }
 
     fun _criteriaBuilder(): CriteriaBuilder = criteriaBuilder

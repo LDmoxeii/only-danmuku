@@ -1,16 +1,19 @@
 package edu.only4.danmuku.domain._share.meta.customer_message
 
-import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePredicate
 import com.only4.cap4k.ddd.domain.repo.JpaPredicate
-import com.only4.cap4k.ddd.domain.repo.querydsl.QuerydslPredicate
-import com.querydsl.core.types.OrderSpecifier
-import edu.only4.danmuku.domain._share.meta.*
-import edu.only4.danmuku.domain.aggregates.customer_message.AggCustomerMessage
+
+import edu.only4.danmuku.domain._share.meta.ExpressionBuilder
+import edu.only4.danmuku.domain._share.meta.Field
+import edu.only4.danmuku.domain._share.meta.OrderBuilder
+import edu.only4.danmuku.domain._share.meta.PredicateBuilder
+import edu.only4.danmuku.domain._share.meta.SchemaSpecification
+import edu.only4.danmuku.domain._share.meta.SubqueryConfigure
 import edu.only4.danmuku.domain.aggregates.customer_message.CustomerMessage
-import edu.only4.danmuku.domain.aggregates.customer_message.QCustomerMessage
 import edu.only4.danmuku.domain.aggregates.customer_message.enums.MessageType
 import edu.only4.danmuku.domain.aggregates.customer_message.enums.ReadType
+
 import jakarta.persistence.criteria.*
+
 import org.springframework.data.jpa.domain.Specification
 
 /**
@@ -21,7 +24,7 @@ import org.springframework.data.jpa.domain.Specification
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/10/20
+ * @date 2025/10/21
  */
 class SCustomerMessage(
     private val root: Path<CustomerMessage>,
@@ -226,8 +229,8 @@ class SCustomerMessage(
          * @return
          */
         @JvmStatic
-        fun predicateById(id: Any): AggregatePredicate<AggCustomerMessage, CustomerMessage> {
-            return JpaPredicate.byId(CustomerMessage::class.java, id).toAggregatePredicate(AggCustomerMessage::class.java)
+        fun predicateById(id: Any): JpaPredicate<CustomerMessage> {
+            return JpaPredicate.byId(CustomerMessage::class.java, id)
         }
 
         /**
@@ -237,9 +240,9 @@ class SCustomerMessage(
         * @return
         */
         @JvmStatic
-        fun predicateByIds(ids: Iterable<*>): AggregatePredicate<AggCustomerMessage, CustomerMessage> {
+        fun predicateByIds(ids: Iterable<*>): JpaPredicate<CustomerMessage> {
             @Suppress("UNCHECKED_CAST")
-            return JpaPredicate.byIds(CustomerMessage::class.java, ids as Iterable<Any>).toAggregatePredicate(AggCustomerMessage::class.java)
+            return JpaPredicate.byIds(CustomerMessage::class.java, ids as Iterable<Any>)
         }
 
         /**
@@ -249,8 +252,8 @@ class SCustomerMessage(
          * @return
          */
         @JvmStatic
-        fun predicateByIds(vararg ids: Any): AggregatePredicate<AggCustomerMessage, CustomerMessage> {
-            return JpaPredicate.byIds(CustomerMessage::class.java, ids.toList()).toAggregatePredicate(AggCustomerMessage::class.java)
+        fun predicateByIds(vararg ids: Any): JpaPredicate<CustomerMessage> {
+            return JpaPredicate.byIds(CustomerMessage::class.java, ids.toList())
         }
 
         /**
@@ -260,8 +263,8 @@ class SCustomerMessage(
          * @return
          */
         @JvmStatic
-        fun predicate(builder: PredicateBuilder<SCustomerMessage>): AggregatePredicate<AggCustomerMessage, CustomerMessage> {
-            return JpaPredicate.bySpecification(CustomerMessage::class.java, specify(builder)).toAggregatePredicate(AggCustomerMessage::class.java)
+        fun predicate(builder: PredicateBuilder<SCustomerMessage>): JpaPredicate<CustomerMessage> {
+            return JpaPredicate.bySpecification(CustomerMessage::class.java, specify(builder))
         }
 
         /**
@@ -272,11 +275,8 @@ class SCustomerMessage(
          * @return
          */
         @JvmStatic
-        fun predicate(
-            builder: PredicateBuilder<SCustomerMessage>,
-            distinct: Boolean,
-        ): AggregatePredicate<AggCustomerMessage, CustomerMessage> {
-            return JpaPredicate.bySpecification(CustomerMessage::class.java, specify(builder, distinct)).toAggregatePredicate(AggCustomerMessage::class.java)
+        fun predicate(builder: PredicateBuilder<SCustomerMessage>, distinct: Boolean): JpaPredicate<CustomerMessage> {
+            return JpaPredicate.bySpecification(CustomerMessage::class.java, specify(builder, distinct))
         }
 
         /**
@@ -290,8 +290,8 @@ class SCustomerMessage(
         fun predicate(
             builder: PredicateBuilder<SCustomerMessage>,
             orderBuilders: List<OrderBuilder<SCustomerMessage>>,
-        ): AggregatePredicate<AggCustomerMessage, CustomerMessage> {
-            return JpaPredicate.bySpecification(CustomerMessage::class.java, specify(builder, false, orderBuilders)).toAggregatePredicate(AggCustomerMessage::class.java)
+        ): JpaPredicate<CustomerMessage> {
+            return JpaPredicate.bySpecification(CustomerMessage::class.java, specify(builder, false, orderBuilders))
         }
 
         /**
@@ -305,8 +305,8 @@ class SCustomerMessage(
         fun predicate(
             builder: PredicateBuilder<SCustomerMessage>,
             vararg orderBuilders: OrderBuilder<SCustomerMessage>,
-        ): AggregatePredicate<AggCustomerMessage, CustomerMessage> {
-            return JpaPredicate.bySpecification(CustomerMessage::class.java, specify(builder, false, *orderBuilders)).toAggregatePredicate(AggCustomerMessage::class.java)
+        ): JpaPredicate<CustomerMessage> {
+            return JpaPredicate.bySpecification(CustomerMessage::class.java, specify(builder, false, *orderBuilders))
         }
 
         /**
@@ -322,8 +322,8 @@ class SCustomerMessage(
             builder: PredicateBuilder<SCustomerMessage>,
             distinct: Boolean,
             orderBuilders: List<OrderBuilder<SCustomerMessage>>,
-        ): AggregatePredicate<AggCustomerMessage, CustomerMessage> {
-            return JpaPredicate.bySpecification(CustomerMessage::class.java, specify(builder, distinct, orderBuilders)).toAggregatePredicate(AggCustomerMessage::class.java)
+        ): JpaPredicate<CustomerMessage> {
+            return JpaPredicate.bySpecification(CustomerMessage::class.java, specify(builder, distinct, orderBuilders))
         }
 
         /**
@@ -339,8 +339,8 @@ class SCustomerMessage(
             builder: PredicateBuilder<SCustomerMessage>,
             distinct: Boolean,
             vararg orderBuilders: OrderBuilder<SCustomerMessage>,
-        ): AggregatePredicate<AggCustomerMessage, CustomerMessage> {
-            return JpaPredicate.bySpecification(CustomerMessage::class.java, specify(builder, distinct, *orderBuilders)).toAggregatePredicate(AggCustomerMessage::class.java)
+        ): JpaPredicate<CustomerMessage> {
+            return JpaPredicate.bySpecification(CustomerMessage::class.java, specify(builder, distinct, *orderBuilders))
         }
 
         /**
@@ -350,44 +350,10 @@ class SCustomerMessage(
          * @return
          */
         @JvmStatic
-        fun predicate(specifier: SchemaSpecification<CustomerMessage, SCustomerMessage>): AggregatePredicate<AggCustomerMessage, CustomerMessage> {
-            return JpaPredicate.bySpecification(CustomerMessage::class.java, specify(specifier)).toAggregatePredicate(AggCustomerMessage::class.java)
-        }
-       /**
-         * 构建querydsl查询条件
-         *
-         * @param filterBuilder          查询条件构造器
-         * @param orderSpecifierBuilders 排序构造器
-         * @return
-         */
-        @JvmStatic
-        fun querydsl(
-            filterBuilder: java.util.function.Function<QCustomerMessage, com.querydsl.core.types.Predicate>,
-            vararg orderSpecifierBuilders: java.util.function.Function<QCustomerMessage, OrderSpecifier<*>>,
-        ): AggregatePredicate<AggCustomerMessage, CustomerMessage> {
-            return QuerydslPredicate.of(CustomerMessage::class.java)
-                .where(filterBuilder.apply(QCustomerMessage.customerMessage))
-                .orderBy(*orderSpecifierBuilders.map { it.apply(QCustomerMessage.customerMessage) }.toTypedArray())
-                .toAggregatePredicate(AggCustomerMessage::class.java)
+        fun predicate(specifier: SchemaSpecification<CustomerMessage, SCustomerMessage>): JpaPredicate<CustomerMessage> {
+            return JpaPredicate.bySpecification(CustomerMessage::class.java, specify(specifier))
         }
 
-        /**
-         * 构建querydsl查询条件
-         *
-         * @param filter          查询条件构造器
-         * @param orderSpecifiers 排序构造器
-         * @return
-         */
-        @JvmStatic
-        fun querydsl(
-            filter: com.querydsl.core.types.Predicate,
-            vararg orderSpecifiers: OrderSpecifier<*>,
-        ): AggregatePredicate<AggCustomerMessage, CustomerMessage> {
-            return QuerydslPredicate.of(CustomerMessage::class.java)
-                .where(filter)
-                .orderBy(*orderSpecifiers)
-                .toAggregatePredicate(AggCustomerMessage::class.java)
-        }
     }
 
     fun _criteriaBuilder(): CriteriaBuilder = criteriaBuilder

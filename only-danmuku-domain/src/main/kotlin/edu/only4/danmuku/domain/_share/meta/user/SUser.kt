@@ -1,15 +1,18 @@
 package edu.only4.danmuku.domain._share.meta.user
 
-import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePredicate
 import com.only4.cap4k.ddd.domain.repo.JpaPredicate
-import com.only4.cap4k.ddd.domain.repo.querydsl.QuerydslPredicate
-import com.querydsl.core.types.OrderSpecifier
-import edu.only4.danmuku.domain._share.meta.*
-import edu.only4.danmuku.domain.aggregates.user.AggUser
-import edu.only4.danmuku.domain.aggregates.user.QUser
+
+import edu.only4.danmuku.domain._share.meta.ExpressionBuilder
+import edu.only4.danmuku.domain._share.meta.Field
+import edu.only4.danmuku.domain._share.meta.OrderBuilder
+import edu.only4.danmuku.domain._share.meta.PredicateBuilder
+import edu.only4.danmuku.domain._share.meta.SchemaSpecification
+import edu.only4.danmuku.domain._share.meta.SubqueryConfigure
 import edu.only4.danmuku.domain.aggregates.user.User
 import edu.only4.danmuku.domain.aggregates.user.enums.UserType
+
 import jakarta.persistence.criteria.*
+
 import org.springframework.data.jpa.domain.Specification
 
 /**
@@ -20,7 +23,7 @@ import org.springframework.data.jpa.domain.Specification
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/10/20
+ * @date 2025/10/21
  */
 class SUser(
     private val root: Path<User>,
@@ -231,8 +234,8 @@ class SUser(
          * @return
          */
         @JvmStatic
-        fun predicateById(id: Any): AggregatePredicate<AggUser, User> {
-            return JpaPredicate.byId(User::class.java, id).toAggregatePredicate(AggUser::class.java)
+        fun predicateById(id: Any): JpaPredicate<User> {
+            return JpaPredicate.byId(User::class.java, id)
         }
 
         /**
@@ -242,9 +245,9 @@ class SUser(
         * @return
         */
         @JvmStatic
-        fun predicateByIds(ids: Iterable<*>): AggregatePredicate<AggUser, User> {
+        fun predicateByIds(ids: Iterable<*>): JpaPredicate<User> {
             @Suppress("UNCHECKED_CAST")
-            return JpaPredicate.byIds(User::class.java, ids as Iterable<Any>).toAggregatePredicate(AggUser::class.java)
+            return JpaPredicate.byIds(User::class.java, ids as Iterable<Any>)
         }
 
         /**
@@ -254,8 +257,8 @@ class SUser(
          * @return
          */
         @JvmStatic
-        fun predicateByIds(vararg ids: Any): AggregatePredicate<AggUser, User> {
-            return JpaPredicate.byIds(User::class.java, ids.toList()).toAggregatePredicate(AggUser::class.java)
+        fun predicateByIds(vararg ids: Any): JpaPredicate<User> {
+            return JpaPredicate.byIds(User::class.java, ids.toList())
         }
 
         /**
@@ -265,8 +268,8 @@ class SUser(
          * @return
          */
         @JvmStatic
-        fun predicate(builder: PredicateBuilder<SUser>): AggregatePredicate<AggUser, User> {
-            return JpaPredicate.bySpecification(User::class.java, specify(builder)).toAggregatePredicate(AggUser::class.java)
+        fun predicate(builder: PredicateBuilder<SUser>): JpaPredicate<User> {
+            return JpaPredicate.bySpecification(User::class.java, specify(builder))
         }
 
         /**
@@ -277,8 +280,8 @@ class SUser(
          * @return
          */
         @JvmStatic
-        fun predicate(builder: PredicateBuilder<SUser>, distinct: Boolean): AggregatePredicate<AggUser, User> {
-            return JpaPredicate.bySpecification(User::class.java, specify(builder, distinct)).toAggregatePredicate(AggUser::class.java)
+        fun predicate(builder: PredicateBuilder<SUser>, distinct: Boolean): JpaPredicate<User> {
+            return JpaPredicate.bySpecification(User::class.java, specify(builder, distinct))
         }
 
         /**
@@ -292,8 +295,8 @@ class SUser(
         fun predicate(
             builder: PredicateBuilder<SUser>,
             orderBuilders: List<OrderBuilder<SUser>>,
-        ): AggregatePredicate<AggUser, User> {
-            return JpaPredicate.bySpecification(User::class.java, specify(builder, false, orderBuilders)).toAggregatePredicate(AggUser::class.java)
+        ): JpaPredicate<User> {
+            return JpaPredicate.bySpecification(User::class.java, specify(builder, false, orderBuilders))
         }
 
         /**
@@ -307,8 +310,8 @@ class SUser(
         fun predicate(
             builder: PredicateBuilder<SUser>,
             vararg orderBuilders: OrderBuilder<SUser>,
-        ): AggregatePredicate<AggUser, User> {
-            return JpaPredicate.bySpecification(User::class.java, specify(builder, false, *orderBuilders)).toAggregatePredicate(AggUser::class.java)
+        ): JpaPredicate<User> {
+            return JpaPredicate.bySpecification(User::class.java, specify(builder, false, *orderBuilders))
         }
 
         /**
@@ -324,8 +327,8 @@ class SUser(
             builder: PredicateBuilder<SUser>,
             distinct: Boolean,
             orderBuilders: List<OrderBuilder<SUser>>,
-        ): AggregatePredicate<AggUser, User> {
-            return JpaPredicate.bySpecification(User::class.java, specify(builder, distinct, orderBuilders)).toAggregatePredicate(AggUser::class.java)
+        ): JpaPredicate<User> {
+            return JpaPredicate.bySpecification(User::class.java, specify(builder, distinct, orderBuilders))
         }
 
         /**
@@ -341,8 +344,8 @@ class SUser(
             builder: PredicateBuilder<SUser>,
             distinct: Boolean,
             vararg orderBuilders: OrderBuilder<SUser>,
-        ): AggregatePredicate<AggUser, User> {
-            return JpaPredicate.bySpecification(User::class.java, specify(builder, distinct, *orderBuilders)).toAggregatePredicate(AggUser::class.java)
+        ): JpaPredicate<User> {
+            return JpaPredicate.bySpecification(User::class.java, specify(builder, distinct, *orderBuilders))
         }
 
         /**
@@ -352,44 +355,10 @@ class SUser(
          * @return
          */
         @JvmStatic
-        fun predicate(specifier: SchemaSpecification<User, SUser>): AggregatePredicate<AggUser, User> {
-            return JpaPredicate.bySpecification(User::class.java, specify(specifier)).toAggregatePredicate(AggUser::class.java)
-        }
-       /**
-         * 构建querydsl查询条件
-         *
-         * @param filterBuilder          查询条件构造器
-         * @param orderSpecifierBuilders 排序构造器
-         * @return
-         */
-        @JvmStatic
-        fun querydsl(
-            filterBuilder: java.util.function.Function<QUser, com.querydsl.core.types.Predicate>,
-            vararg orderSpecifierBuilders: java.util.function.Function<QUser, OrderSpecifier<*>>,
-        ): AggregatePredicate<AggUser, User> {
-            return QuerydslPredicate.of(User::class.java)
-                .where(filterBuilder.apply(QUser.user))
-                .orderBy(*orderSpecifierBuilders.map { it.apply(QUser.user) }.toTypedArray())
-                .toAggregatePredicate(AggUser::class.java)
+        fun predicate(specifier: SchemaSpecification<User, SUser>): JpaPredicate<User> {
+            return JpaPredicate.bySpecification(User::class.java, specify(specifier))
         }
 
-        /**
-         * 构建querydsl查询条件
-         *
-         * @param filter          查询条件构造器
-         * @param orderSpecifiers 排序构造器
-         * @return
-         */
-        @JvmStatic
-        fun querydsl(
-            filter: com.querydsl.core.types.Predicate,
-            vararg orderSpecifiers: OrderSpecifier<*>,
-        ): AggregatePredicate<AggUser, User> {
-            return QuerydslPredicate.of(User::class.java)
-                .where(filter)
-                .orderBy(*orderSpecifiers)
-                .toAggregatePredicate(AggUser::class.java)
-        }
     }
 
     fun _criteriaBuilder(): CriteriaBuilder = criteriaBuilder

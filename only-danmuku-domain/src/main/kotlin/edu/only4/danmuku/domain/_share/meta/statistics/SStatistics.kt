@@ -1,15 +1,18 @@
 package edu.only4.danmuku.domain._share.meta.statistics
 
-import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePredicate
 import com.only4.cap4k.ddd.domain.repo.JpaPredicate
-import com.only4.cap4k.ddd.domain.repo.querydsl.QuerydslPredicate
-import com.querydsl.core.types.OrderSpecifier
-import edu.only4.danmuku.domain._share.meta.*
-import edu.only4.danmuku.domain.aggregates.statistics.AggStatistics
-import edu.only4.danmuku.domain.aggregates.statistics.QStatistics
+
+import edu.only4.danmuku.domain._share.meta.ExpressionBuilder
+import edu.only4.danmuku.domain._share.meta.Field
+import edu.only4.danmuku.domain._share.meta.OrderBuilder
+import edu.only4.danmuku.domain._share.meta.PredicateBuilder
+import edu.only4.danmuku.domain._share.meta.SchemaSpecification
+import edu.only4.danmuku.domain._share.meta.SubqueryConfigure
 import edu.only4.danmuku.domain.aggregates.statistics.Statistics
 import edu.only4.danmuku.domain.aggregates.statistics.enums.StatisticsDataType
+
 import jakarta.persistence.criteria.*
+
 import org.springframework.data.jpa.domain.Specification
 
 /**
@@ -20,7 +23,7 @@ import org.springframework.data.jpa.domain.Specification
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/10/20
+ * @date 2025/10/21
  */
 class SStatistics(
     private val root: Path<Statistics>,
@@ -221,8 +224,8 @@ class SStatistics(
          * @return
          */
         @JvmStatic
-        fun predicateById(id: Any): AggregatePredicate<AggStatistics, Statistics> {
-            return JpaPredicate.byId(Statistics::class.java, id).toAggregatePredicate(AggStatistics::class.java)
+        fun predicateById(id: Any): JpaPredicate<Statistics> {
+            return JpaPredicate.byId(Statistics::class.java, id)
         }
 
         /**
@@ -232,9 +235,9 @@ class SStatistics(
         * @return
         */
         @JvmStatic
-        fun predicateByIds(ids: Iterable<*>): AggregatePredicate<AggStatistics, Statistics> {
+        fun predicateByIds(ids: Iterable<*>): JpaPredicate<Statistics> {
             @Suppress("UNCHECKED_CAST")
-            return JpaPredicate.byIds(Statistics::class.java, ids as Iterable<Any>).toAggregatePredicate(AggStatistics::class.java)
+            return JpaPredicate.byIds(Statistics::class.java, ids as Iterable<Any>)
         }
 
         /**
@@ -244,8 +247,8 @@ class SStatistics(
          * @return
          */
         @JvmStatic
-        fun predicateByIds(vararg ids: Any): AggregatePredicate<AggStatistics, Statistics> {
-            return JpaPredicate.byIds(Statistics::class.java, ids.toList()).toAggregatePredicate(AggStatistics::class.java)
+        fun predicateByIds(vararg ids: Any): JpaPredicate<Statistics> {
+            return JpaPredicate.byIds(Statistics::class.java, ids.toList())
         }
 
         /**
@@ -255,8 +258,8 @@ class SStatistics(
          * @return
          */
         @JvmStatic
-        fun predicate(builder: PredicateBuilder<SStatistics>): AggregatePredicate<AggStatistics, Statistics> {
-            return JpaPredicate.bySpecification(Statistics::class.java, specify(builder)).toAggregatePredicate(AggStatistics::class.java)
+        fun predicate(builder: PredicateBuilder<SStatistics>): JpaPredicate<Statistics> {
+            return JpaPredicate.bySpecification(Statistics::class.java, specify(builder))
         }
 
         /**
@@ -267,11 +270,8 @@ class SStatistics(
          * @return
          */
         @JvmStatic
-        fun predicate(
-            builder: PredicateBuilder<SStatistics>,
-            distinct: Boolean,
-        ): AggregatePredicate<AggStatistics, Statistics> {
-            return JpaPredicate.bySpecification(Statistics::class.java, specify(builder, distinct)).toAggregatePredicate(AggStatistics::class.java)
+        fun predicate(builder: PredicateBuilder<SStatistics>, distinct: Boolean): JpaPredicate<Statistics> {
+            return JpaPredicate.bySpecification(Statistics::class.java, specify(builder, distinct))
         }
 
         /**
@@ -285,8 +285,8 @@ class SStatistics(
         fun predicate(
             builder: PredicateBuilder<SStatistics>,
             orderBuilders: List<OrderBuilder<SStatistics>>,
-        ): AggregatePredicate<AggStatistics, Statistics> {
-            return JpaPredicate.bySpecification(Statistics::class.java, specify(builder, false, orderBuilders)).toAggregatePredicate(AggStatistics::class.java)
+        ): JpaPredicate<Statistics> {
+            return JpaPredicate.bySpecification(Statistics::class.java, specify(builder, false, orderBuilders))
         }
 
         /**
@@ -300,8 +300,8 @@ class SStatistics(
         fun predicate(
             builder: PredicateBuilder<SStatistics>,
             vararg orderBuilders: OrderBuilder<SStatistics>,
-        ): AggregatePredicate<AggStatistics, Statistics> {
-            return JpaPredicate.bySpecification(Statistics::class.java, specify(builder, false, *orderBuilders)).toAggregatePredicate(AggStatistics::class.java)
+        ): JpaPredicate<Statistics> {
+            return JpaPredicate.bySpecification(Statistics::class.java, specify(builder, false, *orderBuilders))
         }
 
         /**
@@ -317,8 +317,8 @@ class SStatistics(
             builder: PredicateBuilder<SStatistics>,
             distinct: Boolean,
             orderBuilders: List<OrderBuilder<SStatistics>>,
-        ): AggregatePredicate<AggStatistics, Statistics> {
-            return JpaPredicate.bySpecification(Statistics::class.java, specify(builder, distinct, orderBuilders)).toAggregatePredicate(AggStatistics::class.java)
+        ): JpaPredicate<Statistics> {
+            return JpaPredicate.bySpecification(Statistics::class.java, specify(builder, distinct, orderBuilders))
         }
 
         /**
@@ -334,8 +334,8 @@ class SStatistics(
             builder: PredicateBuilder<SStatistics>,
             distinct: Boolean,
             vararg orderBuilders: OrderBuilder<SStatistics>,
-        ): AggregatePredicate<AggStatistics, Statistics> {
-            return JpaPredicate.bySpecification(Statistics::class.java, specify(builder, distinct, *orderBuilders)).toAggregatePredicate(AggStatistics::class.java)
+        ): JpaPredicate<Statistics> {
+            return JpaPredicate.bySpecification(Statistics::class.java, specify(builder, distinct, *orderBuilders))
         }
 
         /**
@@ -345,44 +345,10 @@ class SStatistics(
          * @return
          */
         @JvmStatic
-        fun predicate(specifier: SchemaSpecification<Statistics, SStatistics>): AggregatePredicate<AggStatistics, Statistics> {
-            return JpaPredicate.bySpecification(Statistics::class.java, specify(specifier)).toAggregatePredicate(AggStatistics::class.java)
-        }
-       /**
-         * 构建querydsl查询条件
-         *
-         * @param filterBuilder          查询条件构造器
-         * @param orderSpecifierBuilders 排序构造器
-         * @return
-         */
-        @JvmStatic
-        fun querydsl(
-            filterBuilder: java.util.function.Function<QStatistics, com.querydsl.core.types.Predicate>,
-            vararg orderSpecifierBuilders: java.util.function.Function<QStatistics, OrderSpecifier<*>>,
-        ): AggregatePredicate<AggStatistics, Statistics> {
-            return QuerydslPredicate.of(Statistics::class.java)
-                .where(filterBuilder.apply(QStatistics.statistics))
-                .orderBy(*orderSpecifierBuilders.map { it.apply(QStatistics.statistics) }.toTypedArray())
-                .toAggregatePredicate(AggStatistics::class.java)
+        fun predicate(specifier: SchemaSpecification<Statistics, SStatistics>): JpaPredicate<Statistics> {
+            return JpaPredicate.bySpecification(Statistics::class.java, specify(specifier))
         }
 
-        /**
-         * 构建querydsl查询条件
-         *
-         * @param filter          查询条件构造器
-         * @param orderSpecifiers 排序构造器
-         * @return
-         */
-        @JvmStatic
-        fun querydsl(
-            filter: com.querydsl.core.types.Predicate,
-            vararg orderSpecifiers: OrderSpecifier<*>,
-        ): AggregatePredicate<AggStatistics, Statistics> {
-            return QuerydslPredicate.of(Statistics::class.java)
-                .where(filter)
-                .orderBy(*orderSpecifiers)
-                .toAggregatePredicate(AggStatistics::class.java)
-        }
     }
 
     fun _criteriaBuilder(): CriteriaBuilder = criteriaBuilder

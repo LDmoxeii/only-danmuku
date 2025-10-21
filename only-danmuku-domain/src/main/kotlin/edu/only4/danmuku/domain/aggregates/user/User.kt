@@ -1,13 +1,22 @@
 package edu.only4.danmuku.domain.aggregates.user
 
 import cn.hutool.crypto.digest.BCrypt
+
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
+
 import edu.only4.danmuku.domain.aggregates.events.UserCreatedDomainEvent
 import edu.only4.danmuku.domain.aggregates.user.enums.UserType
+
 import jakarta.persistence.*
 import jakarta.persistence.Table
+
 import org.hibernate.annotations.*
+import org.hibernate.annotations.DynamicInsert
+import org.hibernate.annotations.DynamicUpdate
+import org.hibernate.annotations.GenericGenerator
+import org.hibernate.annotations.SQLDelete
+import org.hibernate.annotations.Where
 
 /**
  * 帐号;
@@ -15,7 +24,7 @@ import org.hibernate.annotations.*
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2025/10/20
+ * @date 2025/10/21
  */
 @Aggregate(aggregate = "User", name = "User", root = true, type = Aggregate.TYPE_ENTITY, description = "帐号，")
 @Entity
@@ -24,7 +33,7 @@ import org.hibernate.annotations.*
 @DynamicUpdate
 @SQLDelete(sql = "update `user` set `deleted` = `id` where `id` = ?")
 @Where(clause = "`deleted` = 0")
-class User(
+class User (
     // 【字段映射开始】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
 
     /**
@@ -33,10 +42,7 @@ class User(
      */
     @Id
     @GeneratedValue(generator = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator")
-    @GenericGenerator(
-        name = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator",
-        strategy = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator"
-    )
+    @GenericGenerator(name = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator", strategy = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator")
     @Column(name = "`id`", insertable = false, updatable = false)
     var id: Long = 0L,
 

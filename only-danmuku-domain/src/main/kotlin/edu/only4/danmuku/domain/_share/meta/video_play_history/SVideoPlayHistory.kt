@@ -1,14 +1,17 @@
 package edu.only4.danmuku.domain._share.meta.video_play_history
 
-import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePredicate
 import com.only4.cap4k.ddd.domain.repo.JpaPredicate
-import com.only4.cap4k.ddd.domain.repo.querydsl.QuerydslPredicate
-import com.querydsl.core.types.OrderSpecifier
-import edu.only4.danmuku.domain._share.meta.*
-import edu.only4.danmuku.domain.aggregates.video_play_history.AggVideoPlayHistory
-import edu.only4.danmuku.domain.aggregates.video_play_history.QVideoPlayHistory
+
+import edu.only4.danmuku.domain._share.meta.ExpressionBuilder
+import edu.only4.danmuku.domain._share.meta.Field
+import edu.only4.danmuku.domain._share.meta.OrderBuilder
+import edu.only4.danmuku.domain._share.meta.PredicateBuilder
+import edu.only4.danmuku.domain._share.meta.SchemaSpecification
+import edu.only4.danmuku.domain._share.meta.SubqueryConfigure
 import edu.only4.danmuku.domain.aggregates.video_play_history.VideoPlayHistory
+
 import jakarta.persistence.criteria.*
+
 import org.springframework.data.jpa.domain.Specification
 
 /**
@@ -19,7 +22,7 @@ import org.springframework.data.jpa.domain.Specification
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/10/20
+ * @date 2025/10/21
  */
 class SVideoPlayHistory(
     private val root: Path<VideoPlayHistory>,
@@ -218,8 +221,8 @@ class SVideoPlayHistory(
          * @return
          */
         @JvmStatic
-        fun predicateById(id: Any): AggregatePredicate<AggVideoPlayHistory, VideoPlayHistory> {
-            return JpaPredicate.byId(VideoPlayHistory::class.java, id).toAggregatePredicate(AggVideoPlayHistory::class.java)
+        fun predicateById(id: Any): JpaPredicate<VideoPlayHistory> {
+            return JpaPredicate.byId(VideoPlayHistory::class.java, id)
         }
 
         /**
@@ -229,9 +232,9 @@ class SVideoPlayHistory(
         * @return
         */
         @JvmStatic
-        fun predicateByIds(ids: Iterable<*>): AggregatePredicate<AggVideoPlayHistory, VideoPlayHistory> {
+        fun predicateByIds(ids: Iterable<*>): JpaPredicate<VideoPlayHistory> {
             @Suppress("UNCHECKED_CAST")
-            return JpaPredicate.byIds(VideoPlayHistory::class.java, ids as Iterable<Any>).toAggregatePredicate(AggVideoPlayHistory::class.java)
+            return JpaPredicate.byIds(VideoPlayHistory::class.java, ids as Iterable<Any>)
         }
 
         /**
@@ -241,8 +244,8 @@ class SVideoPlayHistory(
          * @return
          */
         @JvmStatic
-        fun predicateByIds(vararg ids: Any): AggregatePredicate<AggVideoPlayHistory, VideoPlayHistory> {
-            return JpaPredicate.byIds(VideoPlayHistory::class.java, ids.toList()).toAggregatePredicate(AggVideoPlayHistory::class.java)
+        fun predicateByIds(vararg ids: Any): JpaPredicate<VideoPlayHistory> {
+            return JpaPredicate.byIds(VideoPlayHistory::class.java, ids.toList())
         }
 
         /**
@@ -252,8 +255,8 @@ class SVideoPlayHistory(
          * @return
          */
         @JvmStatic
-        fun predicate(builder: PredicateBuilder<SVideoPlayHistory>): AggregatePredicate<AggVideoPlayHistory, VideoPlayHistory> {
-            return JpaPredicate.bySpecification(VideoPlayHistory::class.java, specify(builder)).toAggregatePredicate(AggVideoPlayHistory::class.java)
+        fun predicate(builder: PredicateBuilder<SVideoPlayHistory>): JpaPredicate<VideoPlayHistory> {
+            return JpaPredicate.bySpecification(VideoPlayHistory::class.java, specify(builder))
         }
 
         /**
@@ -264,11 +267,8 @@ class SVideoPlayHistory(
          * @return
          */
         @JvmStatic
-        fun predicate(
-            builder: PredicateBuilder<SVideoPlayHistory>,
-            distinct: Boolean,
-        ): AggregatePredicate<AggVideoPlayHistory, VideoPlayHistory> {
-            return JpaPredicate.bySpecification(VideoPlayHistory::class.java, specify(builder, distinct)).toAggregatePredicate(AggVideoPlayHistory::class.java)
+        fun predicate(builder: PredicateBuilder<SVideoPlayHistory>, distinct: Boolean): JpaPredicate<VideoPlayHistory> {
+            return JpaPredicate.bySpecification(VideoPlayHistory::class.java, specify(builder, distinct))
         }
 
         /**
@@ -282,8 +282,8 @@ class SVideoPlayHistory(
         fun predicate(
             builder: PredicateBuilder<SVideoPlayHistory>,
             orderBuilders: List<OrderBuilder<SVideoPlayHistory>>,
-        ): AggregatePredicate<AggVideoPlayHistory, VideoPlayHistory> {
-            return JpaPredicate.bySpecification(VideoPlayHistory::class.java, specify(builder, false, orderBuilders)).toAggregatePredicate(AggVideoPlayHistory::class.java)
+        ): JpaPredicate<VideoPlayHistory> {
+            return JpaPredicate.bySpecification(VideoPlayHistory::class.java, specify(builder, false, orderBuilders))
         }
 
         /**
@@ -297,8 +297,8 @@ class SVideoPlayHistory(
         fun predicate(
             builder: PredicateBuilder<SVideoPlayHistory>,
             vararg orderBuilders: OrderBuilder<SVideoPlayHistory>,
-        ): AggregatePredicate<AggVideoPlayHistory, VideoPlayHistory> {
-            return JpaPredicate.bySpecification(VideoPlayHistory::class.java, specify(builder, false, *orderBuilders)).toAggregatePredicate(AggVideoPlayHistory::class.java)
+        ): JpaPredicate<VideoPlayHistory> {
+            return JpaPredicate.bySpecification(VideoPlayHistory::class.java, specify(builder, false, *orderBuilders))
         }
 
         /**
@@ -314,8 +314,8 @@ class SVideoPlayHistory(
             builder: PredicateBuilder<SVideoPlayHistory>,
             distinct: Boolean,
             orderBuilders: List<OrderBuilder<SVideoPlayHistory>>,
-        ): AggregatePredicate<AggVideoPlayHistory, VideoPlayHistory> {
-            return JpaPredicate.bySpecification(VideoPlayHistory::class.java, specify(builder, distinct, orderBuilders)).toAggregatePredicate(AggVideoPlayHistory::class.java)
+        ): JpaPredicate<VideoPlayHistory> {
+            return JpaPredicate.bySpecification(VideoPlayHistory::class.java, specify(builder, distinct, orderBuilders))
         }
 
         /**
@@ -331,8 +331,8 @@ class SVideoPlayHistory(
             builder: PredicateBuilder<SVideoPlayHistory>,
             distinct: Boolean,
             vararg orderBuilders: OrderBuilder<SVideoPlayHistory>,
-        ): AggregatePredicate<AggVideoPlayHistory, VideoPlayHistory> {
-            return JpaPredicate.bySpecification(VideoPlayHistory::class.java, specify(builder, distinct, *orderBuilders)).toAggregatePredicate(AggVideoPlayHistory::class.java)
+        ): JpaPredicate<VideoPlayHistory> {
+            return JpaPredicate.bySpecification(VideoPlayHistory::class.java, specify(builder, distinct, *orderBuilders))
         }
 
         /**
@@ -342,44 +342,10 @@ class SVideoPlayHistory(
          * @return
          */
         @JvmStatic
-        fun predicate(specifier: SchemaSpecification<VideoPlayHistory, SVideoPlayHistory>): AggregatePredicate<AggVideoPlayHistory, VideoPlayHistory> {
-            return JpaPredicate.bySpecification(VideoPlayHistory::class.java, specify(specifier)).toAggregatePredicate(AggVideoPlayHistory::class.java)
-        }
-       /**
-         * 构建querydsl查询条件
-         *
-         * @param filterBuilder          查询条件构造器
-         * @param orderSpecifierBuilders 排序构造器
-         * @return
-         */
-        @JvmStatic
-        fun querydsl(
-            filterBuilder: java.util.function.Function<QVideoPlayHistory, com.querydsl.core.types.Predicate>,
-            vararg orderSpecifierBuilders: java.util.function.Function<QVideoPlayHistory, OrderSpecifier<*>>,
-        ): AggregatePredicate<AggVideoPlayHistory, VideoPlayHistory> {
-            return QuerydslPredicate.of(VideoPlayHistory::class.java)
-                .where(filterBuilder.apply(QVideoPlayHistory.videoPlayHistory))
-                .orderBy(*orderSpecifierBuilders.map { it.apply(QVideoPlayHistory.videoPlayHistory) }.toTypedArray())
-                .toAggregatePredicate(AggVideoPlayHistory::class.java)
+        fun predicate(specifier: SchemaSpecification<VideoPlayHistory, SVideoPlayHistory>): JpaPredicate<VideoPlayHistory> {
+            return JpaPredicate.bySpecification(VideoPlayHistory::class.java, specify(specifier))
         }
 
-        /**
-         * 构建querydsl查询条件
-         *
-         * @param filter          查询条件构造器
-         * @param orderSpecifiers 排序构造器
-         * @return
-         */
-        @JvmStatic
-        fun querydsl(
-            filter: com.querydsl.core.types.Predicate,
-            vararg orderSpecifiers: OrderSpecifier<*>,
-        ): AggregatePredicate<AggVideoPlayHistory, VideoPlayHistory> {
-            return QuerydslPredicate.of(VideoPlayHistory::class.java)
-                .where(filter)
-                .orderBy(*orderSpecifiers)
-                .toAggregatePredicate(AggVideoPlayHistory::class.java)
-        }
     }
 
     fun _criteriaBuilder(): CriteriaBuilder = criteriaBuilder

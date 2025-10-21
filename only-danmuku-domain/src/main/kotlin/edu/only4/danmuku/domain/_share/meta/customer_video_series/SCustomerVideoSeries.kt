@@ -1,14 +1,17 @@
 package edu.only4.danmuku.domain._share.meta.customer_video_series
 
-import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePredicate
 import com.only4.cap4k.ddd.domain.repo.JpaPredicate
-import com.only4.cap4k.ddd.domain.repo.querydsl.QuerydslPredicate
-import com.querydsl.core.types.OrderSpecifier
-import edu.only4.danmuku.domain._share.meta.*
-import edu.only4.danmuku.domain.aggregates.customer_video_series.AggCustomerVideoSeries
+
+import edu.only4.danmuku.domain._share.meta.ExpressionBuilder
+import edu.only4.danmuku.domain._share.meta.Field
+import edu.only4.danmuku.domain._share.meta.OrderBuilder
+import edu.only4.danmuku.domain._share.meta.PredicateBuilder
+import edu.only4.danmuku.domain._share.meta.SchemaSpecification
+import edu.only4.danmuku.domain._share.meta.SubqueryConfigure
 import edu.only4.danmuku.domain.aggregates.customer_video_series.CustomerVideoSeries
-import edu.only4.danmuku.domain.aggregates.customer_video_series.QCustomerVideoSeries
+
 import jakarta.persistence.criteria.*
+
 import org.springframework.data.jpa.domain.Specification
 
 /**
@@ -19,7 +22,7 @@ import org.springframework.data.jpa.domain.Specification
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/10/20
+ * @date 2025/10/21
  */
 class SCustomerVideoSeries(
     private val root: Path<CustomerVideoSeries>,
@@ -76,10 +79,7 @@ class SCustomerVideoSeries(
          * @return
          */
         @JvmStatic
-        fun specify(
-            builder: PredicateBuilder<SCustomerVideoSeries>,
-            distinct: Boolean,
-        ): Specification<CustomerVideoSeries> {
+        fun specify(builder: PredicateBuilder<SCustomerVideoSeries>, distinct: Boolean): Specification<CustomerVideoSeries> {
             return specify(builder, distinct, emptyList())
         }
 
@@ -223,8 +223,8 @@ class SCustomerVideoSeries(
          * @return
          */
         @JvmStatic
-        fun predicateById(id: Any): AggregatePredicate<AggCustomerVideoSeries, CustomerVideoSeries> {
-            return JpaPredicate.byId(CustomerVideoSeries::class.java, id).toAggregatePredicate(AggCustomerVideoSeries::class.java)
+        fun predicateById(id: Any): JpaPredicate<CustomerVideoSeries> {
+            return JpaPredicate.byId(CustomerVideoSeries::class.java, id)
         }
 
         /**
@@ -234,9 +234,9 @@ class SCustomerVideoSeries(
         * @return
         */
         @JvmStatic
-        fun predicateByIds(ids: Iterable<*>): AggregatePredicate<AggCustomerVideoSeries, CustomerVideoSeries> {
+        fun predicateByIds(ids: Iterable<*>): JpaPredicate<CustomerVideoSeries> {
             @Suppress("UNCHECKED_CAST")
-            return JpaPredicate.byIds(CustomerVideoSeries::class.java, ids as Iterable<Any>).toAggregatePredicate(AggCustomerVideoSeries::class.java)
+            return JpaPredicate.byIds(CustomerVideoSeries::class.java, ids as Iterable<Any>)
         }
 
         /**
@@ -246,8 +246,8 @@ class SCustomerVideoSeries(
          * @return
          */
         @JvmStatic
-        fun predicateByIds(vararg ids: Any): AggregatePredicate<AggCustomerVideoSeries, CustomerVideoSeries> {
-            return JpaPredicate.byIds(CustomerVideoSeries::class.java, ids.toList()).toAggregatePredicate(AggCustomerVideoSeries::class.java)
+        fun predicateByIds(vararg ids: Any): JpaPredicate<CustomerVideoSeries> {
+            return JpaPredicate.byIds(CustomerVideoSeries::class.java, ids.toList())
         }
 
         /**
@@ -257,8 +257,8 @@ class SCustomerVideoSeries(
          * @return
          */
         @JvmStatic
-        fun predicate(builder: PredicateBuilder<SCustomerVideoSeries>): AggregatePredicate<AggCustomerVideoSeries, CustomerVideoSeries> {
-            return JpaPredicate.bySpecification(CustomerVideoSeries::class.java, specify(builder)).toAggregatePredicate(AggCustomerVideoSeries::class.java)
+        fun predicate(builder: PredicateBuilder<SCustomerVideoSeries>): JpaPredicate<CustomerVideoSeries> {
+            return JpaPredicate.bySpecification(CustomerVideoSeries::class.java, specify(builder))
         }
 
         /**
@@ -269,11 +269,8 @@ class SCustomerVideoSeries(
          * @return
          */
         @JvmStatic
-        fun predicate(
-            builder: PredicateBuilder<SCustomerVideoSeries>,
-            distinct: Boolean,
-        ): AggregatePredicate<AggCustomerVideoSeries, CustomerVideoSeries> {
-            return JpaPredicate.bySpecification(CustomerVideoSeries::class.java, specify(builder, distinct)).toAggregatePredicate(AggCustomerVideoSeries::class.java)
+        fun predicate(builder: PredicateBuilder<SCustomerVideoSeries>, distinct: Boolean): JpaPredicate<CustomerVideoSeries> {
+            return JpaPredicate.bySpecification(CustomerVideoSeries::class.java, specify(builder, distinct))
         }
 
         /**
@@ -287,8 +284,8 @@ class SCustomerVideoSeries(
         fun predicate(
             builder: PredicateBuilder<SCustomerVideoSeries>,
             orderBuilders: List<OrderBuilder<SCustomerVideoSeries>>,
-        ): AggregatePredicate<AggCustomerVideoSeries, CustomerVideoSeries> {
-            return JpaPredicate.bySpecification(CustomerVideoSeries::class.java, specify(builder, false, orderBuilders)).toAggregatePredicate(AggCustomerVideoSeries::class.java)
+        ): JpaPredicate<CustomerVideoSeries> {
+            return JpaPredicate.bySpecification(CustomerVideoSeries::class.java, specify(builder, false, orderBuilders))
         }
 
         /**
@@ -302,8 +299,8 @@ class SCustomerVideoSeries(
         fun predicate(
             builder: PredicateBuilder<SCustomerVideoSeries>,
             vararg orderBuilders: OrderBuilder<SCustomerVideoSeries>,
-        ): AggregatePredicate<AggCustomerVideoSeries, CustomerVideoSeries> {
-            return JpaPredicate.bySpecification(CustomerVideoSeries::class.java, specify(builder, false, *orderBuilders)).toAggregatePredicate(AggCustomerVideoSeries::class.java)
+        ): JpaPredicate<CustomerVideoSeries> {
+            return JpaPredicate.bySpecification(CustomerVideoSeries::class.java, specify(builder, false, *orderBuilders))
         }
 
         /**
@@ -319,8 +316,8 @@ class SCustomerVideoSeries(
             builder: PredicateBuilder<SCustomerVideoSeries>,
             distinct: Boolean,
             orderBuilders: List<OrderBuilder<SCustomerVideoSeries>>,
-        ): AggregatePredicate<AggCustomerVideoSeries, CustomerVideoSeries> {
-            return JpaPredicate.bySpecification(CustomerVideoSeries::class.java, specify(builder, distinct, orderBuilders)).toAggregatePredicate(AggCustomerVideoSeries::class.java)
+        ): JpaPredicate<CustomerVideoSeries> {
+            return JpaPredicate.bySpecification(CustomerVideoSeries::class.java, specify(builder, distinct, orderBuilders))
         }
 
         /**
@@ -336,8 +333,8 @@ class SCustomerVideoSeries(
             builder: PredicateBuilder<SCustomerVideoSeries>,
             distinct: Boolean,
             vararg orderBuilders: OrderBuilder<SCustomerVideoSeries>,
-        ): AggregatePredicate<AggCustomerVideoSeries, CustomerVideoSeries> {
-            return JpaPredicate.bySpecification(CustomerVideoSeries::class.java, specify(builder, distinct, *orderBuilders)).toAggregatePredicate(AggCustomerVideoSeries::class.java)
+        ): JpaPredicate<CustomerVideoSeries> {
+            return JpaPredicate.bySpecification(CustomerVideoSeries::class.java, specify(builder, distinct, *orderBuilders))
         }
 
         /**
@@ -347,44 +344,10 @@ class SCustomerVideoSeries(
          * @return
          */
         @JvmStatic
-        fun predicate(specifier: SchemaSpecification<CustomerVideoSeries, SCustomerVideoSeries>): AggregatePredicate<AggCustomerVideoSeries, CustomerVideoSeries> {
-            return JpaPredicate.bySpecification(CustomerVideoSeries::class.java, specify(specifier)).toAggregatePredicate(AggCustomerVideoSeries::class.java)
-        }
-       /**
-         * 构建querydsl查询条件
-         *
-         * @param filterBuilder          查询条件构造器
-         * @param orderSpecifierBuilders 排序构造器
-         * @return
-         */
-        @JvmStatic
-        fun querydsl(
-            filterBuilder: java.util.function.Function<QCustomerVideoSeries, com.querydsl.core.types.Predicate>,
-            vararg orderSpecifierBuilders: java.util.function.Function<QCustomerVideoSeries, OrderSpecifier<*>>,
-        ): AggregatePredicate<AggCustomerVideoSeries, CustomerVideoSeries> {
-            return QuerydslPredicate.of(CustomerVideoSeries::class.java)
-                .where(filterBuilder.apply(QCustomerVideoSeries.customerVideoSeries))
-                .orderBy(*orderSpecifierBuilders.map { it.apply(QCustomerVideoSeries.customerVideoSeries) }.toTypedArray())
-                .toAggregatePredicate(AggCustomerVideoSeries::class.java)
+        fun predicate(specifier: SchemaSpecification<CustomerVideoSeries, SCustomerVideoSeries>): JpaPredicate<CustomerVideoSeries> {
+            return JpaPredicate.bySpecification(CustomerVideoSeries::class.java, specify(specifier))
         }
 
-        /**
-         * 构建querydsl查询条件
-         *
-         * @param filter          查询条件构造器
-         * @param orderSpecifiers 排序构造器
-         * @return
-         */
-        @JvmStatic
-        fun querydsl(
-            filter: com.querydsl.core.types.Predicate,
-            vararg orderSpecifiers: OrderSpecifier<*>,
-        ): AggregatePredicate<AggCustomerVideoSeries, CustomerVideoSeries> {
-            return QuerydslPredicate.of(CustomerVideoSeries::class.java)
-                .where(filter)
-                .orderBy(*orderSpecifiers)
-                .toAggregatePredicate(AggCustomerVideoSeries::class.java)
-        }
     }
 
     fun _criteriaBuilder(): CriteriaBuilder = criteriaBuilder

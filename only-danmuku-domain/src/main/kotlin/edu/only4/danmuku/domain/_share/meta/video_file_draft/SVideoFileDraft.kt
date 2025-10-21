@@ -1,16 +1,19 @@
 package edu.only4.danmuku.domain._share.meta.video_file_draft
 
-import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePredicate
 import com.only4.cap4k.ddd.domain.repo.JpaPredicate
-import com.only4.cap4k.ddd.domain.repo.querydsl.QuerydslPredicate
-import com.querydsl.core.types.OrderSpecifier
-import edu.only4.danmuku.domain._share.meta.*
-import edu.only4.danmuku.domain.aggregates.video_file_draft.AggVideoFileDraft
-import edu.only4.danmuku.domain.aggregates.video_file_draft.QVideoFileDraft
+
+import edu.only4.danmuku.domain._share.meta.ExpressionBuilder
+import edu.only4.danmuku.domain._share.meta.Field
+import edu.only4.danmuku.domain._share.meta.OrderBuilder
+import edu.only4.danmuku.domain._share.meta.PredicateBuilder
+import edu.only4.danmuku.domain._share.meta.SchemaSpecification
+import edu.only4.danmuku.domain._share.meta.SubqueryConfigure
 import edu.only4.danmuku.domain.aggregates.video_file_draft.VideoFileDraft
 import edu.only4.danmuku.domain.aggregates.video_file_draft.enums.TransferResult
 import edu.only4.danmuku.domain.aggregates.video_file_draft.enums.UpdateType
+
 import jakarta.persistence.criteria.*
+
 import org.springframework.data.jpa.domain.Specification
 
 /**
@@ -21,7 +24,7 @@ import org.springframework.data.jpa.domain.Specification
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/10/20
+ * @date 2025/10/21
  */
 class SVideoFileDraft(
     private val root: Path<VideoFileDraft>,
@@ -236,8 +239,8 @@ class SVideoFileDraft(
          * @return
          */
         @JvmStatic
-        fun predicateById(id: Any): AggregatePredicate<AggVideoFileDraft, VideoFileDraft> {
-            return JpaPredicate.byId(VideoFileDraft::class.java, id).toAggregatePredicate(AggVideoFileDraft::class.java)
+        fun predicateById(id: Any): JpaPredicate<VideoFileDraft> {
+            return JpaPredicate.byId(VideoFileDraft::class.java, id)
         }
 
         /**
@@ -247,9 +250,9 @@ class SVideoFileDraft(
         * @return
         */
         @JvmStatic
-        fun predicateByIds(ids: Iterable<*>): AggregatePredicate<AggVideoFileDraft, VideoFileDraft> {
+        fun predicateByIds(ids: Iterable<*>): JpaPredicate<VideoFileDraft> {
             @Suppress("UNCHECKED_CAST")
-            return JpaPredicate.byIds(VideoFileDraft::class.java, ids as Iterable<Any>).toAggregatePredicate(AggVideoFileDraft::class.java)
+            return JpaPredicate.byIds(VideoFileDraft::class.java, ids as Iterable<Any>)
         }
 
         /**
@@ -259,8 +262,8 @@ class SVideoFileDraft(
          * @return
          */
         @JvmStatic
-        fun predicateByIds(vararg ids: Any): AggregatePredicate<AggVideoFileDraft, VideoFileDraft> {
-            return JpaPredicate.byIds(VideoFileDraft::class.java, ids.toList()).toAggregatePredicate(AggVideoFileDraft::class.java)
+        fun predicateByIds(vararg ids: Any): JpaPredicate<VideoFileDraft> {
+            return JpaPredicate.byIds(VideoFileDraft::class.java, ids.toList())
         }
 
         /**
@@ -270,8 +273,8 @@ class SVideoFileDraft(
          * @return
          */
         @JvmStatic
-        fun predicate(builder: PredicateBuilder<SVideoFileDraft>): AggregatePredicate<AggVideoFileDraft, VideoFileDraft> {
-            return JpaPredicate.bySpecification(VideoFileDraft::class.java, specify(builder)).toAggregatePredicate(AggVideoFileDraft::class.java)
+        fun predicate(builder: PredicateBuilder<SVideoFileDraft>): JpaPredicate<VideoFileDraft> {
+            return JpaPredicate.bySpecification(VideoFileDraft::class.java, specify(builder))
         }
 
         /**
@@ -282,11 +285,8 @@ class SVideoFileDraft(
          * @return
          */
         @JvmStatic
-        fun predicate(
-            builder: PredicateBuilder<SVideoFileDraft>,
-            distinct: Boolean,
-        ): AggregatePredicate<AggVideoFileDraft, VideoFileDraft> {
-            return JpaPredicate.bySpecification(VideoFileDraft::class.java, specify(builder, distinct)).toAggregatePredicate(AggVideoFileDraft::class.java)
+        fun predicate(builder: PredicateBuilder<SVideoFileDraft>, distinct: Boolean): JpaPredicate<VideoFileDraft> {
+            return JpaPredicate.bySpecification(VideoFileDraft::class.java, specify(builder, distinct))
         }
 
         /**
@@ -300,8 +300,8 @@ class SVideoFileDraft(
         fun predicate(
             builder: PredicateBuilder<SVideoFileDraft>,
             orderBuilders: List<OrderBuilder<SVideoFileDraft>>,
-        ): AggregatePredicate<AggVideoFileDraft, VideoFileDraft> {
-            return JpaPredicate.bySpecification(VideoFileDraft::class.java, specify(builder, false, orderBuilders)).toAggregatePredicate(AggVideoFileDraft::class.java)
+        ): JpaPredicate<VideoFileDraft> {
+            return JpaPredicate.bySpecification(VideoFileDraft::class.java, specify(builder, false, orderBuilders))
         }
 
         /**
@@ -315,8 +315,8 @@ class SVideoFileDraft(
         fun predicate(
             builder: PredicateBuilder<SVideoFileDraft>,
             vararg orderBuilders: OrderBuilder<SVideoFileDraft>,
-        ): AggregatePredicate<AggVideoFileDraft, VideoFileDraft> {
-            return JpaPredicate.bySpecification(VideoFileDraft::class.java, specify(builder, false, *orderBuilders)).toAggregatePredicate(AggVideoFileDraft::class.java)
+        ): JpaPredicate<VideoFileDraft> {
+            return JpaPredicate.bySpecification(VideoFileDraft::class.java, specify(builder, false, *orderBuilders))
         }
 
         /**
@@ -332,8 +332,8 @@ class SVideoFileDraft(
             builder: PredicateBuilder<SVideoFileDraft>,
             distinct: Boolean,
             orderBuilders: List<OrderBuilder<SVideoFileDraft>>,
-        ): AggregatePredicate<AggVideoFileDraft, VideoFileDraft> {
-            return JpaPredicate.bySpecification(VideoFileDraft::class.java, specify(builder, distinct, orderBuilders)).toAggregatePredicate(AggVideoFileDraft::class.java)
+        ): JpaPredicate<VideoFileDraft> {
+            return JpaPredicate.bySpecification(VideoFileDraft::class.java, specify(builder, distinct, orderBuilders))
         }
 
         /**
@@ -349,8 +349,8 @@ class SVideoFileDraft(
             builder: PredicateBuilder<SVideoFileDraft>,
             distinct: Boolean,
             vararg orderBuilders: OrderBuilder<SVideoFileDraft>,
-        ): AggregatePredicate<AggVideoFileDraft, VideoFileDraft> {
-            return JpaPredicate.bySpecification(VideoFileDraft::class.java, specify(builder, distinct, *orderBuilders)).toAggregatePredicate(AggVideoFileDraft::class.java)
+        ): JpaPredicate<VideoFileDraft> {
+            return JpaPredicate.bySpecification(VideoFileDraft::class.java, specify(builder, distinct, *orderBuilders))
         }
 
         /**
@@ -360,44 +360,10 @@ class SVideoFileDraft(
          * @return
          */
         @JvmStatic
-        fun predicate(specifier: SchemaSpecification<VideoFileDraft, SVideoFileDraft>): AggregatePredicate<AggVideoFileDraft, VideoFileDraft> {
-            return JpaPredicate.bySpecification(VideoFileDraft::class.java, specify(specifier)).toAggregatePredicate(AggVideoFileDraft::class.java)
-        }
-       /**
-         * 构建querydsl查询条件
-         *
-         * @param filterBuilder          查询条件构造器
-         * @param orderSpecifierBuilders 排序构造器
-         * @return
-         */
-        @JvmStatic
-        fun querydsl(
-            filterBuilder: java.util.function.Function<QVideoFileDraft, com.querydsl.core.types.Predicate>,
-            vararg orderSpecifierBuilders: java.util.function.Function<QVideoFileDraft, OrderSpecifier<*>>,
-        ): AggregatePredicate<AggVideoFileDraft, VideoFileDraft> {
-            return QuerydslPredicate.of(VideoFileDraft::class.java)
-                .where(filterBuilder.apply(QVideoFileDraft.videoFileDraft))
-                .orderBy(*orderSpecifierBuilders.map { it.apply(QVideoFileDraft.videoFileDraft) }.toTypedArray())
-                .toAggregatePredicate(AggVideoFileDraft::class.java)
+        fun predicate(specifier: SchemaSpecification<VideoFileDraft, SVideoFileDraft>): JpaPredicate<VideoFileDraft> {
+            return JpaPredicate.bySpecification(VideoFileDraft::class.java, specify(specifier))
         }
 
-        /**
-         * 构建querydsl查询条件
-         *
-         * @param filter          查询条件构造器
-         * @param orderSpecifiers 排序构造器
-         * @return
-         */
-        @JvmStatic
-        fun querydsl(
-            filter: com.querydsl.core.types.Predicate,
-            vararg orderSpecifiers: OrderSpecifier<*>,
-        ): AggregatePredicate<AggVideoFileDraft, VideoFileDraft> {
-            return QuerydslPredicate.of(VideoFileDraft::class.java)
-                .where(filter)
-                .orderBy(*orderSpecifiers)
-                .toAggregatePredicate(AggVideoFileDraft::class.java)
-        }
     }
 
     fun _criteriaBuilder(): CriteriaBuilder = criteriaBuilder

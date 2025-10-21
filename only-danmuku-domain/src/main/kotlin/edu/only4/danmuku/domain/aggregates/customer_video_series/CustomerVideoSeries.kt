@@ -1,10 +1,19 @@
 package edu.only4.danmuku.domain.aggregates.customer_video_series
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
+
 import jakarta.persistence.*
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Table
+
 import org.hibernate.annotations.*
+import org.hibernate.annotations.DynamicInsert
+import org.hibernate.annotations.DynamicUpdate
+import org.hibernate.annotations.Fetch
+import org.hibernate.annotations.FetchMode
+import org.hibernate.annotations.GenericGenerator
+import org.hibernate.annotations.SQLDelete
+import org.hibernate.annotations.Where
 
 /**
  * 用户视频序列归档;
@@ -12,7 +21,7 @@ import org.hibernate.annotations.*
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2025/10/20
+ * @date 2025/10/21
  */
 @Aggregate(aggregate = "CustomerVideoSeries", name = "CustomerVideoSeries", root = true, type = Aggregate.TYPE_ENTITY, description = "用户视频序列归档，")
 @Entity
