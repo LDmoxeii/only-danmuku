@@ -65,7 +65,7 @@ class AdminCategoryController {
             // 创建新分类
             Mediator.commands.send(
                 CreateCategoryCmd.Request(
-                    parentId = request.pCategoryId.toLong(),
+                    parentId = request.pCategoryId,
                     code = request.categoryCode,
                     name = request.categoryName,
                     icon = request.icon,
@@ -76,8 +76,8 @@ class AdminCategoryController {
             // 更新已有分类
             Mediator.commands.send(
                 UpdateCategoryInfoCmd.Request(
-                    categoryId = request.categoryId.toLong(),
-                    parentId = request.pCategoryId.toLong(),
+                    categoryId = request.categoryId,
+                    parentId = request.pCategoryId,
                     code = request.categoryCode,
                     name = request.categoryName,
                     icon = request.icon,
