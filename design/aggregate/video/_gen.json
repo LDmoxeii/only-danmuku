@@ -38,7 +38,7 @@
   ],
   "de": [
     {
-      "package": "",
+      "package": "video",
       "name": "VideoCreated",
       "desc": "视频已创建",
       "aggregates": [
@@ -48,7 +48,7 @@
       "persist": true
     },
     {
-      "package": "",
+      "package": "video",
       "name": "VideoDeleted",
       "desc": "视频已删除",
       "aggregates": [
@@ -58,7 +58,7 @@
       "persist": true
     },
     {
-      "package": "",
+      "package": "video",
       "name": "VideoPlayCountIncreased",
       "desc": "视频播放数已增加",
       "aggregates": [
@@ -68,7 +68,7 @@
       "persist": true
     },
     {
-      "package": "",
+      "package": "video",
       "name": "VideoRecommended",
       "desc": "视频已推荐",
       "aggregates": [
@@ -78,7 +78,7 @@
       "persist": true
     },
     {
-      "package": "",
+      "package": "video",
       "name": "VideoInteractionChanged",
       "desc": "视频互动设置已变更",
       "aggregates": [

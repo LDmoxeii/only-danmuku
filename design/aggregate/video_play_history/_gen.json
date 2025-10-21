@@ -28,7 +28,7 @@
   ],
   "de": [
     {
-      "package": "",
+      "package": "video_play_history",
       "name": "PlayHistoryAdded",
       "desc": "播放记录已添加",
       "aggregates": [
@@ -38,7 +38,7 @@
       "persist": true
     },
     {
-      "package": "",
+      "package": "video_play_history",
       "name": "PlayHistoryBatchAdded",
       "desc": "播放记录已批量添加",
       "aggregates": [
@@ -48,7 +48,7 @@
       "persist": true
     },
     {
-      "package": "",
+      "package": "video_play_history",
       "name": "PlayHistoryCleared",
       "desc": "播放记录已清空",
       "aggregates": [
@@ -58,7 +58,7 @@
       "persist": true
     },
     {
-      "package": "",
+      "package": "video_play_history",
       "name": "PlayHistoryDeleted",
       "desc": "播放记录已删除",
       "aggregates": [
@@ -68,7 +68,7 @@
       "persist": true
     },
     {
-      "package": "",
+      "package": "video_play_history",
       "name": "PlayProgressUpdated",
       "desc": "播放进度已更新",
       "aggregates": [

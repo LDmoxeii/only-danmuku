@@ -23,7 +23,7 @@
   ],
   "de": [
     {
-      "package": "",
+      "package": "video_file",
       "name": "VideoFileCreated",
       "desc": "视频文件已创建",
       "aggregates": [
@@ -33,7 +33,7 @@
       "persist": true
     },
     {
-      "package": "",
+      "package": "video_file",
       "name": "VideoFileDeleted",
       "desc": "视频文件已删除",
       "aggregates": [
@@ -43,7 +43,7 @@
       "persist": true
     },
     {
-      "package": "",
+      "package": "video_file",
       "name": "VideoFileUpdated",
       "desc": "视频文件已更新",
       "aggregates": [

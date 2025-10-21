@@ -28,7 +28,7 @@
   ],
   "de": [
     {
-      "package": "",
+      "package": "customer_profile",
       "name": "CustomerProfileCreated",
       "desc": "用户档案已创建",
       "aggregates": [
@@ -38,7 +38,7 @@
       "persist": true
     },
     {
-      "package": "",
+      "package": "customer_profile",
       "name": "CustomerProfileUpdated",
       "desc": "用户信息已更新",
       "aggregates": [
@@ -48,7 +48,7 @@
       "persist": true
     },
     {
-      "package": "",
+      "package": "customer_profile",
       "name": "CustomerStatisticUpdated",
       "desc": "用户统计信息已更新",
       "aggregates": [
@@ -58,7 +58,7 @@
       "persist": true
     },
     {
-      "package": "",
+      "package": "customer_profile",
       "name": "CustomerAvatarUpdated",
       "desc": "用户头像已更新",
       "aggregates": [
@@ -68,7 +68,7 @@
       "persist": true
     },
     {
-      "package": "",
+      "package": "customer_profile",
       "name": "CustomerNicknameUpdated",
       "desc": "用户昵称已更新",
       "aggregates": [

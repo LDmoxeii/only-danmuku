@@ -38,7 +38,7 @@
   ],
   "de": [
     {
-      "package": "",
+      "package": "video_comment",
       "name": "CommentPosted",
       "desc": "评论已发表",
       "aggregates": [
@@ -48,7 +48,7 @@
       "persist": true
     },
     {
-      "package": "",
+      "package": "video_comment",
       "name": "CommentDeleted",
       "desc": "评论已删除",
       "aggregates": [
@@ -58,7 +58,7 @@
       "persist": true
     },
     {
-      "package": "",
+      "package": "video_comment",
       "name": "CommentTopped",
       "desc": "评论已置顶",
       "aggregates": [
@@ -68,7 +68,7 @@
       "persist": true
     },
     {
-      "package": "",
+      "package": "video_comment",
       "name": "CommentUntopped",
       "desc": "评论已取消置顶",
       "aggregates": [
@@ -78,7 +78,7 @@
       "persist": true
     },
     {
-      "package": "",
+      "package": "video_comment",
       "name": "CommentLikeCountUpdated",
       "desc": "评论点赞数已更新",
       "aggregates": [
@@ -88,7 +88,7 @@
       "persist": true
     },
     {
-      "package": "",
+      "package": "video_comment",
       "name": "CommentHateCountUpdated",
       "desc": "评论点踩数已更新",
       "aggregates": [
@@ -98,7 +98,7 @@
       "persist": true
     },
     {
-      "package": "",
+      "package": "video_comment",
       "name": "CommentReplied",
       "desc": "评论已回复",
       "aggregates": [

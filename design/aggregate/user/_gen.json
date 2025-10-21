@@ -43,7 +43,7 @@
   ],
   "de": [
     {
-      "package": "",
+      "package": "user",
       "name": "UserCreated",
       "desc": "用户已创建",
       "aggregates": [
@@ -53,7 +53,7 @@
       "persist": true
     },
     {
-      "package": "",
+      "package": "user",
       "name": "PasswordChanged",
       "desc": "密码已修改",
       "aggregates": [
@@ -63,7 +63,7 @@
       "persist": true
     },
     {
-      "package": "",
+      "package": "user",
       "name": "PasswordReset",
       "desc": "密码已重置",
       "aggregates": [
@@ -73,7 +73,7 @@
       "persist": true
     },
     {
-      "package": "",
+      "package": "user",
       "name": "AccountDisabled",
       "desc": "帐号已禁用",
       "aggregates": [
@@ -83,7 +83,7 @@
       "persist": true
     },
     {
-      "package": "",
+      "package": "user",
       "name": "AccountEnabled",
       "desc": "帐号已启用",
       "aggregates": [
@@ -93,7 +93,7 @@
       "persist": true
     },
     {
-      "package": "",
+      "package": "user",
       "name": "AccountDeleted",
       "desc": "帐号已删除",
       "aggregates": [
@@ -103,7 +103,7 @@
       "persist": true
     },
     {
-      "package": "",
+      "package": "user",
       "name": "UserLoginSuccessful",
       "desc": "用户登录成功",
       "aggregates": [
@@ -113,7 +113,7 @@
       "persist": true
     },
     {
-      "package": "",
+      "package": "user",
       "name": "UserLoginFailed",
       "desc": "用户登录失败",
       "aggregates": [

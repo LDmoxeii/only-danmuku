@@ -23,7 +23,7 @@
   ],
   "de": [
     {
-      "package": "",
+      "package": "statistics",
       "name": "StatisticsInfoAdded",
       "desc": "统计数据已添加",
       "aggregates": [
@@ -33,7 +33,7 @@
       "persist": true
     },
     {
-      "package": "",
+      "package": "statistics",
       "name": "StatisticsInfoUpdated",
       "desc": "统计数据已更新",
       "aggregates": [
@@ -43,7 +43,7 @@
       "persist": true
     },
     {
-      "package": "",
+      "package": "statistics",
       "name": "StatisticsInfoDeleted",
       "desc": "统计数据已删除",
       "aggregates": [
@@ -53,7 +53,7 @@
       "persist": true
     },
     {
-      "package": "",
+      "package": "statistics",
       "name": "StatisticsBatchCalculated",
       "desc": "统计数据已批量计算",
       "aggregates": [

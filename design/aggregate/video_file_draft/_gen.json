@@ -33,7 +33,7 @@
   ],
   "de": [
     {
-      "package": "",
+      "package": "video_file_draft",
       "name": "VideoFileDraftCreated",
       "desc": "视频文件草稿已创建",
       "aggregates": [
@@ -43,7 +43,7 @@
       "persist": true
     },
     {
-      "package": "",
+      "package": "video_file_draft",
       "name": "VideoFileTransferStarted",
       "desc": "视频文件转码开始",
       "aggregates": [
@@ -53,7 +53,7 @@
       "persist": true
     },
     {
-      "package": "",
+      "package": "video_file_draft",
       "name": "VideoFileTransferCompleted",
       "desc": "视频文件转码完成",
       "aggregates": [
@@ -63,7 +63,7 @@
       "persist": true
     },
     {
-      "package": "",
+      "package": "video_file_draft",
       "name": "VideoFileTransferFailed",
       "desc": "视频文件转码失败",
       "aggregates": [
@@ -73,7 +73,7 @@
       "persist": true
     },
     {
-      "package": "",
+      "package": "video_file_draft",
       "name": "VideoFileUploadCompleted",
       "desc": "视频文件上传完成",
       "aggregates": [

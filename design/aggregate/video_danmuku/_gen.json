@@ -23,7 +23,7 @@
   ],
   "de": [
     {
-      "package": "",
+      "package": "video_danmuku",
       "name": "DanmukuPosted",
       "desc": "弹幕已发送",
       "aggregates": [
@@ -33,7 +33,7 @@
       "persist": true
     },
     {
-      "package": "",
+      "package": "video_danmuku",
       "name": "DanmukuDeleted",
       "desc": "弹幕已删除",
       "aggregates": [
@@ -43,7 +43,7 @@
       "persist": true
     },
     {
-      "package": "",
+      "package": "video_danmuku",
       "name": "DanmukuBatchDeleted",
       "desc": "弹幕已批量删除",
       "aggregates": [

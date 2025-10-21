@@ -38,7 +38,7 @@
   ],
   "de": [
     {
-      "package": "",
+      "package": "video_draft",
       "name": "VideoDraftCreated",
       "desc": "视频草稿已创建",
       "aggregates": [
@@ -48,7 +48,7 @@
       "persist": true
     },
     {
-      "package": "",
+      "package": "video_draft",
       "name": "VideoDraftSubmitted",
       "desc": "视频草稿已提交审核",
       "aggregates": [
@@ -58,7 +58,7 @@
       "persist": true
     },
     {
-      "package": "",
+      "package": "video_draft",
       "name": "VideoAuditPassed",
       "desc": "视频审核通过",
       "aggregates": [
@@ -68,7 +68,7 @@
       "persist": true
     },
     {
-      "package": "",
+      "package": "video_draft",
       "name": "VideoAuditFailed",
       "desc": "视频审核失败",
       "aggregates": [
@@ -78,7 +78,7 @@
       "persist": true
     },
     {
-      "package": "",
+      "package": "video_draft",
       "name": "VideoTransferredToProduction",
       "desc": "视频已转移到正式环境",
       "aggregates": [
