@@ -13,6 +13,8 @@ object CategoryExistsByCodeQry {
 
     class Request(
         val code: String,
+        /** 排除的分类ID（用于更新场景，排除自身） */
+        val excludeCategoryId: Long? = null
     ) : RequestParam<Response>
 
     class Response(

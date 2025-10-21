@@ -97,11 +97,11 @@ object CreateCategoryCmd {
 
     }
 
+    @UniqueCategoryCode
     data class Request(
         /** 父分类ID，顶级分类传0 */
         val parentId: Long = 0L,
         /** 分类编码，唯一标识 */
-        @UniqueCategoryCode
         val code: String,
         /** 分类名称 */
         val name: String,

@@ -3,8 +3,12 @@ package edu.only4.danmuku.application.commands.category
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
-
+import com.only4.cap4k.ddd.domain.repo.JpaPredicate
+import edu.only4.danmuku.application.validater.UniqueCategoryCode
+import edu.only4.danmuku.domain._share.meta.category.SCategory
+import edu.only4.danmuku.domain.aggregates.category.Category
 import org.springframework.stereotype.Service
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * 更新分类信息
@@ -18,12 +22,65 @@ object UpdateCategoryInfoCmd {
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
-            // TODO: 实现更新分类信息逻辑
-            // 1. 根据ID查找分类聚合根
-            // 2. 检查新编码是否与其他分类冲突
-            // 3. 更新分类信息
-            // 4. 如果父分类变更，需要重新计算节点路径(nodePath)
-            // 5. 保存更新
+            val category = Mediator.repositories.findFirst(
+                SCategory.predicateById(request.categoryId)
+            ).get()
+
+            category.updateBasicInfo(
+                newName = request.name,
+                newIcon = request.icon,
+                newBackground = request.background
+            )
+
+            val parentChanged = category.isParentChanged(request.parentId)
+            var parentCategory: Category? = null
+            var pathChange: Pair<String, String>? = null
+
+            if (parentChanged) {
+                if (category.isMovingToSelf(request.parentId)) {
+                    throw IllegalArgumentException("不能将分类移动到自身下")
+                }
+
+                if (request.parentId != 0L) {
+                    parentCategory = Mediator.repositories.findFirst(
+                        SCategory.predicateById(request.parentId),
+                        persist = false
+                    ).getOrNull() ?: throw IllegalArgumentException("父分类不存在：${request.parentId}")
+
+                    if (category.isMovingToDescendant(parentCategory)) {
+                        throw IllegalArgumentException("不能将分类移动到自己的子孙节点下")
+                    }
+                }
+            }
+
+            if (parentChanged) {
+                pathChange = category.changeParent(
+                    newParentId = request.parentId,
+                    parentCategory = parentCategory
+                )
+            }
+
+            val codeChanged = category.isCodeChanged(request.code)
+            var allDescendants: List<Category> = emptyList()
+
+            if (parentChanged || codeChanged) {
+                allDescendants = Mediator.repositories.find(
+                    JpaPredicate.bySpecification(
+                        Category::class.java,
+                        SCategory.specify { it.nodePath like "${category.nodePath}%" }
+                    )
+                )
+            }
+
+            if (codeChanged) {
+                pathChange = category.changeCode(newCode = request.code)
+            }
+
+            pathChange?.let { (oldPath, newPath) ->
+                allDescendants.forEach { descendant ->
+                    descendant.nodePath = descendant.nodePath.replaceFirst(oldPath, newPath)
+                }
+            }
 
             Mediator.uow.save()
 
@@ -32,6 +89,7 @@ object UpdateCategoryInfoCmd {
 
     }
 
+    @UniqueCategoryCode
     data class Request(
         /** 分类ID */
         val categoryId: Long,

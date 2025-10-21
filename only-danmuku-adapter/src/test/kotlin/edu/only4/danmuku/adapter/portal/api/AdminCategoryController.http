@@ -1,6 +1,7 @@
 ### 获取所有分类
 POST {{host}}/admin/category/loadCategory
 Content-Type: application/json
+Authorization: Bearer {{auth_token}}
 
 {
   "convert2Tree": false
@@ -9,9 +10,11 @@ Content-Type: application/json
 ### 保存分类
 POST {{host}}/admin/category/saveCategory
 Content-Type: application/json
+Authorization: Bearer {{auth_token}}
 
 {
+  "categoryId": "227760163027783680",
   "pCategoryId": 0,
-  "categoryCode": "testCode",
+  "categoryCode": "TEST",
   "categoryName": "测试分类"
 }

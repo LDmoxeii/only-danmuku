@@ -1,16 +1,9 @@
 package edu.only4.danmuku.domain.aggregates.category
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
-
 import jakarta.persistence.*
 import jakarta.persistence.Table
-
 import org.hibernate.annotations.*
-import org.hibernate.annotations.DynamicInsert
-import org.hibernate.annotations.DynamicUpdate
-import org.hibernate.annotations.GenericGenerator
-import org.hibernate.annotations.SQLDelete
-import org.hibernate.annotations.Where
 
 /**
  * 分类信息;
@@ -143,15 +136,70 @@ class Category (
 
     // 【行为方法开始】
 
+    fun updateBasicInfo(
+        newName: String,
+        newIcon: String?,
+        newBackground: String?
+    ) {
+        this.name = newName
+        this.icon = newIcon
+        this.background = newBackground
+    }
+
+    fun changeParent(newParentId: Long, parentCategory: Category?): Pair<String, String> {
+        val oldPath = this.nodePath
+        this.parentId = newParentId
+
+        val newParentPath = parentCategory?.nodePath ?: ""
+        updateNodePath(newParentPath)
+
+        return Pair(oldPath, this.nodePath)
+    }
+
+    fun changeCode(newCode: String): Pair<String, String> {
+        val oldPath = this.nodePath
+        this.code = newCode
+
+        val parentPath = if (parentId == 0L) {
+            ""
+        } else {
+            val parts = oldPath.trim('/').split('/')
+            if (parts.size > 1) {
+                "/" + parts.dropLast(1).joinToString("/") + "/"
+            } else {
+                ""
+            }
+        }
+        updateNodePath(parentPath)
+
+        return Pair(oldPath, this.nodePath)
+    }
+
+    fun isParentChanged(newParentId: Long): Boolean {
+        return this.parentId != newParentId
+    }
+
+    fun isCodeChanged(newCode: String): Boolean {
+        return this.code != newCode
+    }
+
+    fun isMovingToSelf(newParentId: Long): Boolean {
+        return newParentId == this.id
+    }
+
+    fun isMovingToDescendant(parentCategory: Category): Boolean {
+        return parentCategory.nodePath.startsWith(this.nodePath)
+    }
+
     /**
      * 更新节点路径（在创建或移动节点时调用）
      * @param parentPath 父节点的路径，根节点传空字符串
      */
     fun updateNodePath(parentPath: String = "") {
         nodePath = if (parentPath.isEmpty()) {
-            "/$id/"  // 根节点：/1/
+            "/$code/"  // 根节点：/1/
         } else {
-            "$parentPath$id/"  // 子节点：/1/101/
+            "$parentPath$code/"  // 子节点：/1/101/
         }
     }
 

@@ -1,5 +1,6 @@
 package edu.only4.danmuku.adapter.portal.api
 
+import cn.dev33.satoken.annotation.SaIgnore
 import cn.dev33.satoken.stp.StpUtil
 import com.only.engine.entity.UserInfo
 import com.only.engine.satoken.utils.LoginHelper
@@ -24,6 +25,7 @@ class AdminAccountController {
     /**
      * 获取管理员登录验证码
      */
+    @SaIgnore
     @GetMapping("/checkCode")
     fun adminAccountCheckCode(): AdminAccountCheckCode.Response {
         val result = Mediator.requests.send(CaptchaGen.Request("web-auth"))
@@ -36,6 +38,7 @@ class AdminAccountController {
     /**
      * 管理员登录
      */
+    @SaIgnore
     @PostMapping("/login")
     fun adminAccountLogin(@RequestBody @Validated request: AdminAccountLogin.Request): AdminAccountLogin.Response {
         //        val captchaValidationResult = Mediator.requests.send(CaptchaValid.Request(request.checkCodeKey, request.checkCode))

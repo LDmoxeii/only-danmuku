@@ -1,6 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.payload
 
 import jakarta.validation.constraints.NotEmpty
+import jakarta.validation.constraints.PositiveOrZero
 
 /**
  * 保存/更新分类接口载荷
@@ -9,11 +10,11 @@ object AdminCategorySave {
 
     data class Request(
         /** 父分类ID */
-        @field:NotEmpty(message = "父分类ID不能为空")
-        val pCategoryId: Int = 0,
+        @field:PositiveOrZero(message = "父分类ID必须大于等于0")
+        val pCategoryId: Long,
 
         /** 分类ID(更新时传) */
-        val categoryId: Int?,
+        val categoryId: Long?,
 
         /** 分类编码 */
         @field:NotEmpty(message = "分类编码不能为空")

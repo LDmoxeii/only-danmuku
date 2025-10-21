@@ -1,5 +1,6 @@
 package edu.only4.danmuku.adapter.portal.api
 
+import cn.dev33.satoken.annotation.SaIgnore
 import cn.dev33.satoken.stp.StpUtil
 import com.only.engine.entity.UserInfo
 import com.only.engine.satoken.utils.LoginHelper
@@ -12,7 +13,10 @@ import edu.only4.danmuku.application.queries.user.GetUserCountInfoQry
 import edu.only4.danmuku.domain.aggregates.user.User
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 
 /**
  * 用户账户管理控制器
@@ -31,6 +35,7 @@ class AccountController {
      *
      * @return 验证码响应对象
      */
+    @SaIgnore
     @PostMapping("/checkCode")
     fun checkCode(): AccountCheckCode.Response {
         val result = Mediator.requests.send(CaptchaGen.Request("web-auth"))
@@ -48,6 +53,7 @@ class AccountController {
      * @param request 用户注册请求参数
      * @return 注册成功响应对象
      */
+    @SaIgnore
     @PostMapping("/register")
     fun register(@RequestBody @Validated request: AccountRegister.Request): AccountRegister.Response {
 //        val captchaValidationResult = Mediator.requests.send(CaptchaValid.Request(request.checkCodeKey, request.checkCode))
@@ -72,6 +78,7 @@ class AccountController {
      * @param response HTTP响应对象，用于设置Cookie
      * @return 登录成功响应对象，包含用户信息和令牌
      */
+    @SaIgnore
     @PostMapping("/login")
     fun login(
         @RequestBody @Validated request: AccountLogin.Request,
