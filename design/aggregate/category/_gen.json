@@ -71,11 +71,6 @@
     },
     {
       "package": "category",
-      "name": "HasChildCategories",
-      "desc": "检查分类是否有子分类"
-    },
-    {
-      "package": "category",
       "name": "GetCategoryList",
       "desc": "获取分类列表"
     },

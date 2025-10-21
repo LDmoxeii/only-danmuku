@@ -389,7 +389,7 @@ class SStatistics(
 
 
     /**
-     * 统计日期
+     * 统计日期（秒级时间戳）
      */
     val statisticsDate: Field<Long> by lazy {
         Field(root.get("statisticsDate"), criteriaBuilder)
@@ -413,7 +413,7 @@ class SStatistics(
 
 
     /**
-     * 创建时间
+     * 创建时间（秒级时间戳）
      */
     val createTime: Field<Long?> by lazy {
         Field(root.get("createTime"), criteriaBuilder)
@@ -437,7 +437,7 @@ class SStatistics(
 
 
     /**
-     * 更新时间
+     * 更新时间（秒级时间戳）
      */
     val updateTime: Field<Long?> by lazy {
         Field(root.get("updateTime"), criteriaBuilder)
@@ -447,7 +447,7 @@ class SStatistics(
     /**
      * 删除标识 0：未删除 id：已删除
      */
-    val deleted: Field<Boolean> by lazy {
+    val deleted: Field<Long> by lazy {
         Field(root.get("deleted"), criteriaBuilder)
     }
 

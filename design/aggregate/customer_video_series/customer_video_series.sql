@@ -15,7 +15,7 @@ CREATE TABLE `customer_video_series`
     `update_user_id`     bigint                                                        NULL DEFAULT NULL COMMENT '更新人ID',
     `update_by`          varchar(32)                                                   NULL DEFAULT NULL COMMENT '更新人名称',
     `update_time`        bigint                                                        NULL DEFAULT NULL COMMENT '更新时间',
-    `deleted`            tinyint(1)                                                         DEFAULT 0 NOT NULL COMMENT '删除标识 0：未删除 id：已删除',
+    `deleted`            bigint                                                             DEFAULT 0 NOT NULL COMMENT '删除标识 0：未删除 id：已删除',
     PRIMARY KEY (`id`) USING BTREE
     )
     ENGINE = InnoDB
@@ -40,7 +40,7 @@ CREATE TABLE `customer_video_series_video`
     `update_user_id` bigint      NULL DEFAULT NULL COMMENT '更新人ID',
     `update_by`      varchar(32) NULL DEFAULT NULL COMMENT '更新人名称',
     `update_time`    bigint      NULL DEFAULT NULL COMMENT '更新时间',
-    `deleted`        tinyint(1)       DEFAULT 0 NOT NULL COMMENT '删除标识 0：未删除 id：已删除',
+    `deleted`        bigint           DEFAULT 0 NOT NULL COMMENT '删除标识 0：未删除 id：已删除',
     PRIMARY KEY (`id`) USING BTREE
     )
     ENGINE = InnoDB

@@ -115,10 +115,10 @@ class CustomerVideoSeries (
 
     /**
      * 删除标识 0：未删除 id：已删除
-     * tinyint(1)
+     * bigint
      */
     @Column(name = "`deleted`")
-    var deleted: Boolean = false,
+    var deleted: Long = 0L,
 ) {
     @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.EAGER, orphanRemoval = true)
     @Fetch(FetchMode.SUBSELECT)

@@ -47,10 +47,10 @@ interface JCustomerVideoSeries {
     val updateTime: Long?
 
     /**
-     * 逻辑删除标识
+     * 逻辑删除标识（0：未删除，非0：已删除）
      */
-    @LogicalDeleted("true")
-    val deleted: Boolean
+    @LogicalDeleted
+    val deleted: Long
 
     /**
      * 关联的系列视频列表

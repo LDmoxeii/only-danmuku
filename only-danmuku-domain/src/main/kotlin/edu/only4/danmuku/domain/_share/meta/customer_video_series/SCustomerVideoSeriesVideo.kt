@@ -312,7 +312,7 @@ class SCustomerVideoSeriesVideo(
     /**
      * 删除标识 0：未删除 id：已删除
      */
-    val deleted: Field<Boolean> by lazy {
+    val deleted: Field<Long> by lazy {
         Field(root.get("deleted"), criteriaBuilder)
     }
 

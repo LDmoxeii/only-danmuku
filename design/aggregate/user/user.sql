@@ -5,8 +5,8 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user`
     (
     `id`              bigint                                                        NOT NULL COMMENT 'ID',
-    `type`      tinyint(1)                                                   NOT NULL DEFAULT 0 COMMENT '帐号类型 @E=0:UNKNOW:未知类型|1:SYS_USER:系统管理员;@T=UserType',
-    `nick_name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '昵称',
+    `type`            tinyint(1)                                                    NOT NULL DEFAULT 0 COMMENT '帐号类型 @E=0:UNKNOW:未知类型|1:SYS_USER:系统管理员;@T=UserType',
+    `nick_name`       varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL COMMENT '昵称',
     `email`           varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '邮箱',
     `password`        varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL COMMENT '密码',
     `join_time`       bigint                                                        NOT NULL COMMENT '加入时间',
@@ -20,7 +20,7 @@ CREATE TABLE `user`
     `update_user_id`  bigint                                                        NULL     DEFAULT NULL COMMENT '更新人ID',
     `update_by`       varchar(32)                                                   NULL     DEFAULT NULL COMMENT '更新人名称',
     `update_time`     bigint                                                        NULL     DEFAULT NULL COMMENT '更新时间',
-    `deleted`         tinyint(1)                                                             DEFAULT 0 NOT NULL COMMENT '删除标识 0：未删除 id：已删除',
+    `deleted`         bigint                                                                 DEFAULT 0 NOT NULL COMMENT '删除标识 0：未删除 id：已删除',
     PRIMARY KEY (`id`) USING BTREE,
     UNIQUE INDEX `idx_key_email` (`email`, `deleted`) USING BTREE
     )

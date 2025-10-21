@@ -141,10 +141,10 @@ class CustomerMessage (
 
     /**
      * 删除标识 0：未删除 id：已删除
-     * tinyint(1)
+     * bigint
      */
     @Column(name = "`deleted`")
-    var deleted: Boolean = false,
+    var deleted: Long = 0L,
 ) {
 
     // 【字段映射结束】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动

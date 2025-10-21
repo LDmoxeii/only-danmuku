@@ -89,10 +89,10 @@ interface JVideoComment {
     val updateTime: Long?
 
     /**
-     * 逻辑删除标识
+     * 逻辑删除标识（0：未删除，非0：已删除）
      */
-    @LogicalDeleted("true")
-    val deleted: Boolean
+    @LogicalDeleted
+    val deleted: Long
 
     /**
      * 关联视频信息（使用真实外键约束，关联非空）
@@ -133,3 +133,6 @@ interface JVideoComment {
     @IdView("replyCustomer")
     val replyCustomerIdView: Long?
 }
+
+
+

@@ -72,7 +72,7 @@ class Statistics (
     var statisticsCount: Int? = null,
 
     /**
-     * 统计日期
+     * 统计日期（秒级时间戳）
      * bigint
      */
     @Column(name = "`statistics_date`")
@@ -93,7 +93,7 @@ class Statistics (
     var createBy: String? = null,
 
     /**
-     * 创建时间
+     * 创建时间（秒级时间戳）
      * bigint
      */
     @Column(name = "`create_time`")
@@ -114,7 +114,7 @@ class Statistics (
     var updateBy: String? = null,
 
     /**
-     * 更新时间
+     * 更新时间（秒级时间戳）
      * bigint
      */
     @Column(name = "`update_time`")
@@ -122,10 +122,10 @@ class Statistics (
 
     /**
      * 删除标识 0：未删除 id：已删除
-     * tinyint(1)
+     * bigint
      */
     @Column(name = "`deleted`")
-    var deleted: Boolean = false,
+    var deleted: Long = 0L,
 ) {
 
     // 【字段映射结束】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动

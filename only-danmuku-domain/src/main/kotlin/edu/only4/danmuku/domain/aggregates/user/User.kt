@@ -1,13 +1,22 @@
 package edu.only4.danmuku.domain.aggregates.user
 
 import cn.hutool.crypto.digest.BCrypt
+
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
+
 import edu.only4.danmuku.domain.aggregates.user.enums.UserType
 import edu.only4.danmuku.domain.aggregates.user.events.UserCreatedDomainEvent
+
 import jakarta.persistence.*
 import jakarta.persistence.Table
+
 import org.hibernate.annotations.*
+import org.hibernate.annotations.DynamicInsert
+import org.hibernate.annotations.DynamicUpdate
+import org.hibernate.annotations.GenericGenerator
+import org.hibernate.annotations.SQLDelete
+import org.hibernate.annotations.Where
 
 /**
  * 帐号;
@@ -147,10 +156,10 @@ class User (
 
     /**
      * 删除标识 0：未删除 id：已删除
-     * tinyint(1)
+     * bigint
      */
     @Column(name = "`deleted`")
-    var deleted: Boolean = false,
+    var deleted: Long = 0L,
 ) {
 
     // 【字段映射结束】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
