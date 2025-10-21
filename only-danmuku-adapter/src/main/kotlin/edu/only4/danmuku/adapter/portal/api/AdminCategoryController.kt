@@ -95,7 +95,7 @@ class AdminCategoryController {
     fun adminCategoryDel(@RequestBody @Validated request: AdminCategoryDel.Request): AdminCategoryDel.Response {
         Mediator.commands.send(
             DeleteCategoryCmd.Request(
-                categoryId = request.categoryId.toLong()
+                categoryId = request.categoryId
             )
         )
         return AdminCategoryDel.Response()

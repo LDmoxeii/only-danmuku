@@ -4,6 +4,7 @@ import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
 import edu.only4.danmuku.application.validater.UniqueCategoryCode
+import edu.only4.danmuku.application.validater.UniqueCategoryCodeTarget
 import edu.only4.danmuku.domain._share.meta.category.SCategory
 import edu.only4.danmuku.domain._share.meta.or
 import edu.only4.danmuku.domain.aggregates.category.factory.CategoryFactory
@@ -102,7 +103,7 @@ object CreateCategoryCmd {
         /** 父分类ID，顶级分类传0 */
         val parentId: Long = 0L,
         /** 分类编码，唯一标识 */
-        val code: String,
+        override val code: String,
         /** 分类名称 */
         val name: String,
         /** 图标路径或URL */
@@ -111,7 +112,9 @@ object CreateCategoryCmd {
         val background: String? = null,
         /** 排序号，同级分类中的显示顺序 */
         val sort: Byte? = null,
-    ) : RequestParam<Response>
+    ) : RequestParam<Response>, UniqueCategoryCodeTarget {
+        override val categoryId: Long? = null
+    }
 
     data class Response(
         /** 新创建的分类ID */

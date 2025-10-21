@@ -1,7 +1,6 @@
 package edu.only4.danmuku.application.validater
 
 import com.only4.cap4k.ddd.core.Mediator
-import edu.only4.danmuku.application.commands.category.UpdateCategoryInfoCmd
 import edu.only4.danmuku.application.queries.category.CategoryExistsByCodeQry
 import jakarta.validation.Constraint
 import jakarta.validation.ConstraintValidator
@@ -10,10 +9,9 @@ import jakarta.validation.Payload
 import kotlin.reflect.KClass
 
 /**
- * 验证分类编码唯一性（更新场景，排除自身）
+ * 验证分类编码唯一性，适配创建/更新等多种场景
  *
- * 用于更新分类时验证新编码是否与其他分类冲突
- * 注意：这是类级别的验证注解，需要同时访问 categoryId 和 code
+ * 将该注解作用在实现 [UniqueCategoryCodeTarget] 的请求模型上，即可自动校验
  */
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)
@@ -26,32 +24,39 @@ annotation class UniqueCategoryCode(
 ) {
 
     /**
-     * 分类编码唯一性验证器（更新场景）
-     *
-     * 验证分类编码是否已被其他分类使用（排除当前分类自身）
+     * 通过读取请求中的栏目编码与当前实体 ID 进行唯一性校验
      */
-    class Validator : ConstraintValidator<UniqueCategoryCode, UpdateCategoryInfoCmd.Request> {
+    class Validator : ConstraintValidator<UniqueCategoryCode, UniqueCategoryCodeTarget> {
 
-        override fun isValid(request: UpdateCategoryInfoCmd.Request?, context: ConstraintValidatorContext): Boolean {
-            // 空对象不验证
-            if (request == null) {
+        override fun isValid(target: UniqueCategoryCodeTarget?, context: ConstraintValidatorContext): Boolean {
+            // 空值跳过
+            if (target == null) {
                 return true
             }
 
-            // 空值由 @NotBlank 等其他注解处理
-            if (request.code.isBlank()) {
+            val code = target.code
+            if (code.isBlank()) {
                 return true
             }
 
-            // 通过 CQRS 查询检查分类编码是否已存在
+            val excludeId = target.categoryId?.takeIf { it != 0L }
+
             val queryResult = Mediator.queries.send(
                 CategoryExistsByCodeQry.Request(
-                    code = request.code,
-                    excludeCategoryId = request.categoryId  // 排除当前分类自身
+                    code = code,
+                    excludeCategoryId = excludeId
                 )
             )
 
             return !queryResult.exists
         }
     }
+}
+
+/**
+ * 提供唯一性校验所需的最小信息载体
+ */
+interface UniqueCategoryCodeTarget {
+    val code: String
+    val categoryId: Long?
 }

@@ -13,8 +13,16 @@ Content-Type: application/json
 Authorization: Bearer {{auth_token}}
 
 {
-  "categoryId": "227760163027783680",
   "pCategoryId": 0,
   "categoryCode": "TEST",
   "categoryName": "测试分类"
+}
+
+### 删除分类
+POST {{host}}/admin/category/delCategory
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+  "categoryId": "227760163027783680"
 }

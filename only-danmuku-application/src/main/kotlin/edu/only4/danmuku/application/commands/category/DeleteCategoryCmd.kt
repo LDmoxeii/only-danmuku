@@ -1,9 +1,11 @@
 package edu.only4.danmuku.application.commands.category
 
+import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
-
+import edu.only4.danmuku.domain._share.meta.category.SCategory
+import edu.only4.danmuku.domain._share.meta.video.SVideo
 import org.springframework.stereotype.Service
 
 /**
@@ -18,11 +20,21 @@ object DeleteCategoryCmd {
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
-            // TODO: 实现删除分类逻辑
-            // 1. 根据ID查找分类聚合根
-            // 2. 检查该分类下是否有子分类，如有则不允许删除
-            // 3. 检查是否有视频使用该分类，如有则不允许删除
-            // 4. 执行软删除(设置deleted标记)
+            val childCategories = Mediator.repositories.find(
+                SCategory.predicate { schema -> schema.parentId eq request.categoryId }
+            )
+            if (childCategories.isNotEmpty()) {
+                throw KnownException("该分类下存在子分类，无法删除")
+            }
+
+            val videosUsingCategory = Mediator.repositories.find(
+                SVideo.predicate { schema -> schema.categoryId eq request.categoryId }
+            )
+            if (videosUsingCategory.isNotEmpty()) {
+                throw KnownException("该分类下存在关联视频，无法删除")
+            }
+
+            Mediator.repositories.remove(SCategory.predicateById(request.categoryId))
 
             Mediator.uow.save()
 
