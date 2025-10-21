@@ -1,22 +1,15 @@
 package edu.only4.danmuku.domain.aggregates.user
 
 import cn.hutool.crypto.digest.BCrypt
-
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
-
 import edu.only4.danmuku.domain.aggregates.user.enums.UserType
+import edu.only4.danmuku.domain.aggregates.user.events.AccountDisabledDomainEvent
+import edu.only4.danmuku.domain.aggregates.user.events.AccountEnabledDomainEvent
 import edu.only4.danmuku.domain.aggregates.user.events.UserCreatedDomainEvent
-
 import jakarta.persistence.*
 import jakarta.persistence.Table
-
 import org.hibernate.annotations.*
-import org.hibernate.annotations.DynamicInsert
-import org.hibernate.annotations.DynamicUpdate
-import org.hibernate.annotations.GenericGenerator
-import org.hibernate.annotations.SQLDelete
-import org.hibernate.annotations.Where
 
 /**
  * 帐号;
@@ -176,6 +169,22 @@ class User (
         // 密码加密
 //        this.password = BCrypt.hashpw(this.password)
         events().attach(this) { UserCreatedDomainEvent(entity = this) }
+    }
+
+    /** 启用账号 */
+    fun enableAccount() {
+        if (!this.status) {
+            this.status = true
+            events().attach(this) { AccountEnabledDomainEvent(entity = this) }
+        }
+    }
+
+    /** 禁用账号 */
+    fun disableAccount() {
+        if (this.status) {
+            this.status = false
+            events().attach(this) { AccountDisabledDomainEvent(entity = this) }
+        }
     }
 
     // 【行为方法结束】

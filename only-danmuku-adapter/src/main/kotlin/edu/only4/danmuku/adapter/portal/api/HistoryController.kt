@@ -1,5 +1,6 @@
 package edu.only4.danmuku.adapter.portal.api
 
+import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.share.PageData
 import edu.only4.danmuku.adapter.portal.api.payload.HistoryClean
@@ -31,8 +32,7 @@ class HistoryController {
      */
     @PostMapping("/loadHistory")
     fun historyLoad(@RequestBody request: HistoryLoad.Request): PageData<HistoryLoad.Response> {
-        // TODO: 从认证上下文获取当前用户ID
-        val currentUserId = 2001L // 临时hardcode，实际应从SecurityContext获取
+        val currentUserId = LoginHelper.getUserId()!!
 
         // 调用查询获取播放历史分页列表
         val queryRequest = GetUserPlayHistoryQry.Request(
@@ -70,8 +70,9 @@ class HistoryController {
      */
     @PostMapping("/cleanHistory")
     fun historyClean(): HistoryClean.Response {
-        // 调用命令清空播放历史
-        Mediator.commands.send(ClearHistoryCmd.Request())
+        val currentUserId = LoginHelper.getUserId()!!
+        // 调用命令清空当前用户的播放历史
+        Mediator.commands.send(ClearHistoryCmd.Request(customerId = currentUserId))
         return HistoryClean.Response()
     }
 
@@ -80,9 +81,11 @@ class HistoryController {
      */
     @PostMapping("/delHistory")
     fun historyDel(@RequestBody @Validated request: HistoryDel.Request): HistoryDel.Response {
-        // 调用命令删除指定播放历史
+        val currentUserId = LoginHelper.getUserId()!!
+        // 调用命令删除当前用户该视频的播放历史
         Mediator.commands.send(
             DelHistoryCmd.Request(
+                customerId = currentUserId,
                 videoId = request.videoId.toLong()
             )
         )

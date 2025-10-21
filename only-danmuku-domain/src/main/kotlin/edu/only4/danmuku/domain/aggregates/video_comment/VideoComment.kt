@@ -1,16 +1,12 @@
 package edu.only4.danmuku.domain.aggregates.video_comment
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
-
+import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
+import edu.only4.danmuku.domain.aggregates.video_comment.events.CommentToppedDomainEvent
+import edu.only4.danmuku.domain.aggregates.video_comment.events.CommentUntoppedDomainEvent
 import jakarta.persistence.*
 import jakarta.persistence.Table
-
 import org.hibernate.annotations.*
-import org.hibernate.annotations.DynamicInsert
-import org.hibernate.annotations.DynamicUpdate
-import org.hibernate.annotations.GenericGenerator
-import org.hibernate.annotations.SQLDelete
-import org.hibernate.annotations.Where
 
 /**
  * 评论;
@@ -170,6 +166,22 @@ class VideoComment (
     // 【字段映射结束】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
 
     // 【行为方法开始】
+
+    /** 置顶评论 */
+    fun top() {
+        if (this.topType != 1.toByte()) {
+            this.topType = 1
+            events().attach(this) { CommentToppedDomainEvent(this) }
+        }
+    }
+
+    /** 取消置顶 */
+    fun untop() {
+        if (this.topType != 0.toByte()) {
+            this.topType = 0
+            events().attach(this) { CommentUntoppedDomainEvent(this) }
+        }
+    }
 
     // 【行为方法结束】
 }

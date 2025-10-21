@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotEmpty
 /**
  * 加载弹幕列表接口载荷
  */
-object DanmuLoad {
+object DanmukuLoad {
 
     data class Request(
         /** 文件ID */

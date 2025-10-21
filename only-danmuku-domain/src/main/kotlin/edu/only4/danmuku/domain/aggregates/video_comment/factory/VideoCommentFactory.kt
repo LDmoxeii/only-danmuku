@@ -10,10 +10,6 @@ import org.springframework.stereotype.Service
 
 /**
  * 评论;
- *
- * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
- * @author cap4k-ddd-codegen
- * @date 2025/10/15
  */
 @Service
 @Aggregate(
@@ -26,7 +22,25 @@ class VideoCommentFactory : AggregateFactory<VideoCommentFactory.Payload, VideoC
 
     override fun create(payload: Payload): VideoComment {
         return VideoComment(
-
+            id = 0L,
+            parentId = payload.parentId,
+            videoId = payload.videoId,
+            videoOwnerId = payload.videoOwnerId,
+            content = payload.content,
+            imgPath = payload.imgPath,
+            customerId = payload.customerId,
+            replyCustomerId = payload.replyCustomerId,
+            topType = 0,
+            postTime = payload.postTime,
+            likeCount = 0,
+            hateCount = 0,
+            createUserId = null,
+            createBy = null,
+            createTime = null,
+            updateUserId = null,
+            updateBy = null,
+            updateTime = null,
+            deleted = 0L,
         )
     }
 
@@ -37,7 +51,14 @@ class VideoCommentFactory : AggregateFactory<VideoCommentFactory.Payload, VideoC
         description = ""
     )
     data class Payload(
-        val name: String
+         val parentId: Long = 0L,
+         val videoId: Long,
+         val videoOwnerId: Long,
+         val content: String,
+         val imgPath: String?,
+         val customerId: Long,
+         val replyCustomerId: Long?,
+         val postTime: Long,
     ) : AggregatePayload<VideoComment>
 
 }

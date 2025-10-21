@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size
 /**
  * 发送弹幕接口载荷
  */
-object DanmuPost {
+object DanmukuPost {
 
     data class Request(
         /** 视频ID */

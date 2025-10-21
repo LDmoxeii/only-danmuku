@@ -1,5 +1,6 @@
 package edu.only4.danmuku.adapter.portal.api
 
+import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.share.PageData
 import edu.only4.danmuku.adapter.portal.api.payload.*
@@ -85,10 +86,12 @@ class CommentController {
     @PostMapping("/postComment")
     fun commentPost(@RequestBody @Validated request: CommentPost.Request): CommentPost.Response {
         // 调用命令发表评论
+        val currentUserId = LoginHelper.getUserId()!!
         val commandResult = Mediator.commands.send(
             PostCommentCmd.Request(
                 videoId = request.videoId.toLong(),
                 replyCommentId = request.replyCommentId?.toLong(),
+                customerId = currentUserId,
                 content = request.content,
                 imgPath = request.imgPath
             )
@@ -99,7 +102,7 @@ class CommentController {
             comment = CommentPost.CommentItem(
                 commentId = commandResult.commentId.toString(),
                 videoId = request.videoId,
-                userId = null, // TODO: 从上下文获取当前用户ID
+                userId = currentUserId.toString(),
                 content = request.content,
                 imgPath = request.imgPath,
                 postTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))

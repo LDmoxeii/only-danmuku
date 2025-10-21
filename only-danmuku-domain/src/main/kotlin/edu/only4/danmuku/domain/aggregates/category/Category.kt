@@ -1,16 +1,9 @@
 package edu.only4.danmuku.domain.aggregates.category
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
-
 import jakarta.persistence.*
 import jakarta.persistence.Table
-
 import org.hibernate.annotations.*
-import org.hibernate.annotations.DynamicInsert
-import org.hibernate.annotations.DynamicUpdate
-import org.hibernate.annotations.GenericGenerator
-import org.hibernate.annotations.SQLDelete
-import org.hibernate.annotations.Where
 
 /**
  * 分类信息;
@@ -240,6 +233,13 @@ class Category (
      */
     fun isDescendantOf(ancestorId: Long): Boolean {
         return nodePath.contains("/$ancestorId/")
+    }
+
+    /**
+     * 是否为指定父分类的直接子级
+     */
+    fun isDirectChildOf(parentId: Long): Boolean {
+        return this.parentId == parentId
     }
 
     // 【行为方法结束】

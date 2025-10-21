@@ -1,8 +1,12 @@
 package edu.only4.danmuku.adapter.portal.api
 
+import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.share.PageData
 import edu.only4.danmuku.adapter.portal.api.payload.*
+import edu.only4.danmuku.application.commands.customer_focus.FocusCmd
+import edu.only4.danmuku.application.commands.customer_focus.UnFocusCmd
+import edu.only4.danmuku.application.commands.customer_profile.UpdateCustomerProfileCmd
 import edu.only4.danmuku.application.queries.customer_action.CustomerCollectedVideoIdsQry
 import edu.only4.danmuku.application.queries.customer_focus.CheckFocusStatusQry
 import edu.only4.danmuku.application.queries.customer_focus.GetFansListQry
@@ -33,8 +37,7 @@ class UHomeController {
      */
     @PostMapping("/getUserInfo")
     fun uHomeGetUserInfo(@RequestBody @Validated request: UHomeGetUserInfo.Request): UHomeGetUserInfo.Response {
-        // TODO: 从上下文获取当前用户ID
-        val currentUserId = 1L // 临时硬编码
+        val currentUserId = LoginHelper.getUserId()!!
 
         // 调用查询获取用户详细信息
         val queryResult = Mediator.queries.send(
@@ -73,89 +76,86 @@ class UHomeController {
             )
         )
     }
-//
-//    /**
-//     * 更新用户信息
-//     */
-//    @PostMapping("/updateUserInfo")
-//    fun uHomeUpdateUserInfo(@RequestBody @Validated request: UHomeUpdateUserInfo.Request): UHomeUpdateUserInfo.Response {
-//        // TODO: 从上下文获取当前用户ID
-//        val userId = 1L // 临时硬编码
-//
-//        // 调用命令更新用户信息
-//        Mediator.commands.send(
-//            UpdateCustomerProfileCmd.Request(
-//                customerId = userId,
-//                nickName = request.nickName,
-//                avatar = request.avatar,
-//                sex = request.sex,
-//                birthday = request.birthday,
-//                school = request.school,
-//                personIntroduction = request.personIntroduction,
-//                noticeInfo = request.noticeInfo
-//            )
-//        )
-//
-//        return UHomeUpdateUserInfo.Response()
-//    }
-//
-//    /**
-//     * 保存用户主题
-//     */
-//    @PostMapping("/saveTheme")
-//    fun uHomeSaveTheme(@RequestBody request: UHomeSaveTheme.Request): UHomeSaveTheme.Response {
-//        // TODO: 从上下文获取当前用户ID并实现保存主题逻辑
-//        // 暂时使用 UpdateCustomerProfileCmd 的主题字段
-//        val userId = 1L // 临时硬编码
-//
-//        Mediator.commands.send(
-//            UpdateCustomerProfileCmd.Request(
-//                customerId = userId,
-//                theme = request.theme
-//            )
-//        )
-//
-//        return UHomeSaveTheme.Response()
-//    }
-//
-//    /**
-//     * 关注用户
-//     */
-//    @PostMapping("/focus")
-//    fun uHomeFocus(@RequestBody @Validated request: UHomeFocus.Request): UHomeFocus.Response {
-//        // TODO: 从上下文获取当前用户ID
-//        val currentUserId = 1L // 临时硬编码
-//
-//        // 调用命令关注用户
-//        Mediator.commands.send(
-//            FocusCmd.Request(
-//                userId = currentUserId,
-//                focusUserId = request.focusUserId.toLong()
-//            )
-//        )
-//
-//        return UHomeFocus.Response()
-//    }
-//
-//    /**
-//     * 取消关注
-//     */
-//    @PostMapping("/cancelFocus")
-//    fun uHomeCancelFocus(@RequestBody @Validated request: UHomeCancelFocus.Request): UHomeCancelFocus.Response {
-//        // TODO: 从上下文获取当前用户ID
-//        val currentUserId = 1L // 临时硬编码
-//
-//        // 调用命令取消关注
-//        Mediator.commands.send(
-//            UnFocusCmd.Request(
-//                userId = currentUserId,
-//                focusUserId = request.focusUserId.toLong()
-//            )
-//        )
-//
-//        return UHomeCancelFocus.Response()
-//    }
-//
+
+    /**
+     * 更新用户信息
+     */
+    @PostMapping("/updateUserInfo")
+    fun uHomeUpdateUserInfo(@RequestBody @Validated request: UHomeUpdateUserInfo.Request): UHomeUpdateUserInfo.Response {
+        val userId = LoginHelper.getUserId()!!
+
+        // 调用命令更新用户信息
+        Mediator.commands.send(
+            UpdateCustomerProfileCmd.Request(
+                customerId = userId,
+                nickName = request.nickName,
+                avatar = request.avatar,
+                sex = request.sex,
+                birthday = request.birthday,
+                school = request.school,
+                personIntroduction = request.personIntroduction,
+                noticeInfo = request.noticeInfo
+            )
+        )
+
+        return UHomeUpdateUserInfo.Response()
+    }
+
+    /**
+     * 保存用户主题
+     */
+    @PostMapping("/saveTheme")
+    fun uHomeSaveTheme(@RequestBody request: UHomeSaveTheme.Request): UHomeSaveTheme.Response {
+        val userId = LoginHelper.getUserId()!!
+
+        Mediator.commands.send(
+            UpdateCustomerProfileCmd.Request(
+                customerId = userId,
+                theme = request.theme
+            )
+        )
+
+        return UHomeSaveTheme.Response()
+    }
+
+    /**
+     * 关注用户
+     */
+    @PostMapping("/focus")
+    fun uHomeFocus(@RequestBody @Validated request: UHomeFocus.Request): UHomeFocus.Response {
+        // TODO: 从上下文获取当前用户ID
+        val currentUserId = LoginHelper.getUserId()!!
+
+        // 调用命令关注用户
+        Mediator.commands.send(
+            FocusCmd.Request(
+                userId = currentUserId,
+                focusUserId = request.focusUserId.toLong()
+            )
+        )
+
+        return UHomeFocus.Response()
+    }
+
+    /**
+     * 取消关注
+     */
+    @PostMapping("/cancelFocus")
+    fun uHomeCancelFocus(@RequestBody @Validated request: UHomeCancelFocus.Request): UHomeCancelFocus.Response {
+        // TODO: 从上下文获取当前用户ID
+        val currentUserId = LoginHelper.getUserId()!!
+
+        // 调用命令取消关注
+        Mediator.commands.send(
+            UnFocusCmd.Request(
+                userId = currentUserId,
+                focusUserId = request.focusUserId.toLong()
+            )
+        )
+
+        return UHomeCancelFocus.Response()
+    }
+
     /**
      * 加载关注列表
      */
@@ -278,8 +278,8 @@ class UHomeController {
         val collectionRequest = CustomerCollectedVideoIdsQry.Request(
             customerId = customerId
         ).apply {
-            pageNum = request.pageNum ?: 1
-            pageSize = request.pageSize ?: 15
+            pageNum = request.pageNum
+            pageSize = request.pageSize
         }
 
         val collectedVideoIds = Mediator.queries.send(collectionRequest)
@@ -287,8 +287,8 @@ class UHomeController {
         // 如果没有收藏的视频，直接返回空列表
         if (collectedVideoIds.list.isEmpty()) {
             return PageData.create(
-                pageNum = request.pageNum ?: 1,
-                pageSize = request.pageSize ?: 15,
+                pageNum = request.pageNum,
+                pageSize = request.pageSize,
                 list = emptyList(),
                 totalCount = 0
             )

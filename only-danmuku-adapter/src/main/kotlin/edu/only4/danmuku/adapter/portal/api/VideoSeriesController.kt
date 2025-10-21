@@ -1,5 +1,6 @@
 package edu.only4.danmuku.adapter.portal.api
 
+import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.adapter.portal.api.payload.*
 import edu.only4.danmuku.application.commands.customer_video_series.CreateCustomerVideoSeriesCmd
@@ -60,8 +61,7 @@ class VideoSeriesController {
      */
     @PostMapping("/saveVideoSeries")
     fun videoSeriesSave(@RequestBody @Validated request: VideoSeriesSave.Request): VideoSeriesSave.Response {
-        // TODO: 从上下文获取当前用户ID
-        val userId = 1L // 临时硬编码
+        val userId = LoginHelper.getUserId()!!
 
         // 调用命令创建或更新系列
         Mediator.commands.send(

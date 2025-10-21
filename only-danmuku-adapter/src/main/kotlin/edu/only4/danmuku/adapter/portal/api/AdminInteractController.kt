@@ -3,7 +3,7 @@ package edu.only4.danmuku.adapter.portal.api
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.share.PageData
 import edu.only4.danmuku.adapter.portal.api.payload.AdminInteractDelComment
-import edu.only4.danmuku.adapter.portal.api.payload.AdminInteractDelDanmu
+import edu.only4.danmuku.adapter.portal.api.payload.AdminInteractDelDanmuku
 import edu.only4.danmuku.adapter.portal.api.payload.AdminInteractLoadComment
 import edu.only4.danmuku.adapter.portal.api.payload.AdminInteractLoadDanmuku
 import edu.only4.danmuku.application.commands.video_comment.DelCommentCmd
@@ -74,14 +74,14 @@ class AdminInteractController {
      * 删除弹幕
      */
     @PostMapping("/delDanmu")
-    fun adminInteractDelDanmu(@RequestBody @Validated request: AdminInteractDelDanmu.Request): AdminInteractDelDanmu.Response {
+    fun adminInteractDelDanmuku(@RequestBody @Validated request: AdminInteractDelDanmuku.Request): AdminInteractDelDanmuku.Response {
         // 调用命令删除弹幕
         Mediator.commands.send(
             DeleteDanmukuCmd.Request(
                 danmukuId = request.danmuId!!
             )
         )
-        return AdminInteractDelDanmu.Response()
+        return AdminInteractDelDanmuku.Response()
     }
 
     /**

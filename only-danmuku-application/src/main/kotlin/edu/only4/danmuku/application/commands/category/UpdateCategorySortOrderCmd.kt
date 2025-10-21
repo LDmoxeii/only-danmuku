@@ -1,8 +1,11 @@
 package edu.only4.danmuku.application.commands.category
 
+import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
+import edu.only4.danmuku.domain._share.meta.category.SCategory
+import jakarta.validation.constraints.NotEmpty
 
 import org.springframework.stereotype.Service
 
@@ -18,10 +21,30 @@ object UpdateCategorySortOrderCmd {
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
-            // TODO: 实现更新分类排序逻辑
-            // 1. 验证所有分类ID都属于同一父分类
-            // 2. 按照categoryIds的顺序，更新每个分类的sort字段
-            // 3. 批量保存更新
+            // 读取所有待排序的分类（单次查询）
+            val categories = Mediator.repositories.find(
+                SCategory.predicateByIds(request.categoryIds)
+            )
+            // 校验：全部存在
+            if (categories.size != request.categoryIds.toSet().size) {
+                throw KnownException("存在无效的分类ID，无法完成排序")
+            }
+            // 校验：所有分类均为该父分类的直接子级
+            val invalidParent = categories.any { !it.isDirectChildOf(request.parentId) }
+            if (invalidParent) {
+                throw KnownException("仅允许调整同一父分类下的子分类顺序")
+            }
+            // 按 ID 建立索引，便于按请求顺序更新
+            val byId = categories.associateBy { it.id }
+
+            // 按照传入顺序设置 sort，从 1 开始递增
+            var sortNo = 1
+            request.categoryIds.forEach { id ->
+                val category = byId[id]
+                    ?: throw KnownException("分类不存在：$id")
+                category.sort = sortNo.toByte()
+                sortNo += 1
+            }
 
             Mediator.uow.save()
 
@@ -34,7 +57,8 @@ object UpdateCategorySortOrderCmd {
         /** 父分类ID，确保只调整同一父分类下的子分类顺序 */
         val parentId: Long = 0L,
         /** 排序后的分类ID列表，按照新的显示顺序排列 */
-        val categoryIds: List<Long>
+        @field:NotEmpty(message = "分类ID列表不能为空")
+        val categoryIds: List<Long>,
     ) : RequestParam<Response>
 
     class Response

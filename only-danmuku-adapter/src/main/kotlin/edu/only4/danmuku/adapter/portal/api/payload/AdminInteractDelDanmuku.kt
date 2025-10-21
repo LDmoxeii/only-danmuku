@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull
 /**
  * 删除弹幕接口载荷
  */
-object AdminInteractDelDanmu {
+object AdminInteractDelDanmuku {
 
     data class Request(
         /** 弹幕ID */

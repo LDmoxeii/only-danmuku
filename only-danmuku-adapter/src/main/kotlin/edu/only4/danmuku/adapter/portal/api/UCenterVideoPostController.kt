@@ -1,6 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api
 
 import com.only.engine.json.misc.JsonUtils
+import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.share.PageData
 import edu.only4.danmuku.adapter.portal.api.payload.*
@@ -35,8 +36,10 @@ class UCenterVideoPostController {
         val fileList = JsonUtils.parseArray(request.uploadFileList, SaveVideoInfoCmd.VideoFileInfo::class.java)
 
         // 调用命令保存视频信息
+        val currentUserId = LoginHelper.getUserId()!!
         Mediator.commands.send(
             SaveVideoInfoCmd.Request(
+                customerId = currentUserId,
                 videoId = request.videoId?.toLong(),
                 videoCover = request.videoCover,
                 videoName = request.videoName,
@@ -58,8 +61,7 @@ class UCenterVideoPostController {
      */
     @PostMapping("/loadVideoList")
     fun loadVideoList(@RequestBody request: UCenterLoadVideoList.Request): PageData<UCenterLoadVideoList.VideoItem> {
-        // TODO: 从上下文获取当前用户ID
-        val currentUserId = 2001L // 临时硬编码
+        val currentUserId = LoginHelper.getUserId()!!
 
         // 构建查询请求
         val queryRequest = GetUserVideoDraftsQry.Request(
@@ -111,8 +113,7 @@ class UCenterVideoPostController {
      */
     @GetMapping("/getVideoCountInfo")
     fun getVideoCountInfo(): UCenterGetVideoCountInfo.Response {
-        // TODO: 从上下文获取当前用户ID
-        val currentUserId = 2001L // 临时硬编码
+        val currentUserId = LoginHelper.getUserId()!!
 
         // 查询审核通过的数量 (status = 3)
         val auditPassCount = Mediator.queries.send(
@@ -150,8 +151,7 @@ class UCenterVideoPostController {
      */
     @PostMapping("/getVideoByVideoId")
     fun getVideoByVideoId(@RequestBody @Validated request: UCenterGetVideoByVideoId.Request): UCenterGetVideoByVideoId.Response {
-        // TODO: 从上下文获取当前用户ID
-        val currentUserId = 2001L // 临时硬编码
+        val currentUserId = LoginHelper.getUserId()!!
 
         // 调用查询获取视频信息
         val queryResult = Mediator.queries.send(
@@ -194,10 +194,10 @@ class UCenterVideoPostController {
      */
     @PostMapping("/saveVideoInteraction")
     fun saveVideoInteraction(@RequestBody @Validated request: UCenterSaveVideoInteraction.Request): UCenterSaveVideoInteraction.Response {
-        // TODO: 从上下文获取当前用户ID
-        val userId = 1L // 临时硬编码
+        val userId = LoginHelper.getUserId()!!
 
         // 调用命令修改视频互动设置
+        val currentUserId = LoginHelper.getUserId()!!
         Mediator.commands.send(
             ChangeVideoInteractionCmd.Request(
                 videoId = request.videoId.toLong(),
@@ -215,6 +215,7 @@ class UCenterVideoPostController {
     @PostMapping("/deleteVideo")
     fun deleteVideo(@RequestBody @Validated request: UCenterDeleteVideo.Request): UCenterDeleteVideo.Response {
         // 调用命令删除视频
+        val currentUserId = LoginHelper.getUserId()!!
         Mediator.commands.send(
             DeleteVideoCmd.Request(
                 videoId = request.videoId.toLong()
@@ -225,3 +226,4 @@ class UCenterVideoPostController {
     }
 
 }
+

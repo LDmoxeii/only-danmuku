@@ -19,6 +19,12 @@ import java.time.format.DateTimeFormatter
 @Validated
 class VideoController {
 
+    companion object {
+        // 简易在线设备心跳表：fileId -> (deviceId -> lastSeenEpochSeconds)
+        private val ONLINE_HEARTBEAT: MutableMap<String, MutableMap<String, Long>> = mutableMapOf()
+        private const val ONLINE_TTL_SECONDS: Long = 60 // 超过该秒数未上报则视为离线
+    }
+
     /**
      * 加载推荐视频
      * @return 响应结果
@@ -205,21 +211,40 @@ class VideoController {
             }
         )
     }
-//
-//    /**
-//     * 上报在线播放数
-//     * @param fileId 文件ID
-//     * @param deviceId 设备ID
-//     * @return 响应结果
-//     */
-//    @PostMapping("/reportVideoPlayOnline")
-//    fun videoReportPlayOnline(@RequestBody @Validated request: VideoReportPlayOnline.Request): VideoReportPlayOnline.Response {
-//        // TODO: 实现上报在线播放数逻辑
-//        // 需要通过Redis记录在线播放设备
-//        // 暂时返回0
-//        return VideoReportPlayOnline.Response(count = 0)
-//    }
-//
+
+    /**
+     * 上报在线播放数
+     * @param fileId 文件ID
+     * @param deviceId 设备ID
+     * @return 响应结果
+     */
+    @PostMapping("/reportVideoPlayOnline")
+    fun videoReportPlayOnline(@RequestBody @Validated request: VideoReportPlayOnline.Request): VideoReportPlayOnline.Response {
+        val fileId = request.fileId
+        val deviceId = request.deviceId ?: "unknown"
+
+        val now = System.currentTimeMillis() / 1000
+
+        // 获取/创建该文件的设备心跳表
+        val deviceMap = ONLINE_HEARTBEAT.getOrPut(fileId) { mutableMapOf() }
+
+        // 更新当前设备心跳时间
+        deviceMap[deviceId] = now
+
+        // 清理过期设备
+        val expiry = now - ONLINE_TTL_SECONDS
+        val iterator = deviceMap.entries.iterator()
+        while (iterator.hasNext()) {
+            val entry = iterator.next()
+            if (entry.value < expiry) {
+                iterator.remove()
+            }
+        }
+
+        // 返回当前在线数量
+        return VideoReportPlayOnline.Response(count = deviceMap.size)
+    }
+
     /**
      * 搜索视频
      * @param keyword 搜索关键词

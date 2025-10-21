@@ -10,10 +10,6 @@ import org.springframework.stereotype.Service
 
 /**
  * 用户关注;
- *
- * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
- * @author cap4k-ddd-codegen
- * @date 2025/10/15
  */
 @Service
 @Aggregate(
@@ -26,7 +22,16 @@ class CustomerFocusFactory : AggregateFactory<CustomerFocusFactory.Payload, Cust
 
     override fun create(payload: Payload): CustomerFocus {
         return CustomerFocus(
-
+            id = 0L,
+            customerId = payload.customerId,
+            focusCustomerId = payload.focusCustomerId,
+            createUserId = null,
+            createBy = null,
+            createTime = null,
+            updateUserId = null,
+            updateBy = null,
+            updateTime = null,
+            deleted = 0L,
         )
     }
 
@@ -37,7 +42,8 @@ class CustomerFocusFactory : AggregateFactory<CustomerFocusFactory.Payload, Cust
         description = ""
     )
     data class Payload(
-        val name: String
-    ) : AggregatePayload<CustomerFocus>
+         val customerId: String,
+         val focusCustomerId: String,
+     ) : AggregatePayload<CustomerFocus>
 
 }

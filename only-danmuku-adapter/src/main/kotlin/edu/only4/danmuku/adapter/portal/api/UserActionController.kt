@@ -1,5 +1,6 @@
 package edu.only4.danmuku.adapter.portal.api
 
+import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.adapter.portal.api.payload.UserActionDo
 import edu.only4.danmuku.application.commands.customer_action.DoActionCmd
@@ -22,8 +23,7 @@ class UserActionController {
      */
     @PostMapping("/doAction")
     fun userActionDo(@RequestBody @Validated request: UserActionDo.Request): UserActionDo.Response {
-        // TODO: 从上下文获取当前用户ID
-        val userId = 1L // 临时硬编码
+        val userId = LoginHelper.getUserId()!!
 
         // 调用命令执行用户行为
         Mediator.commands.send(

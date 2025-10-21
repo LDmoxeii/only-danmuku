@@ -1,19 +1,10 @@
 package edu.only4.danmuku.domain.aggregates.customer_video_series
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
-
 import jakarta.persistence.*
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Table
-
 import org.hibernate.annotations.*
-import org.hibernate.annotations.DynamicInsert
-import org.hibernate.annotations.DynamicUpdate
-import org.hibernate.annotations.Fetch
-import org.hibernate.annotations.FetchMode
-import org.hibernate.annotations.GenericGenerator
-import org.hibernate.annotations.SQLDelete
-import org.hibernate.annotations.Where
 
 /**
  * 用户视频序列归档;
@@ -124,6 +115,30 @@ class CustomerVideoSeries (
     @Fetch(FetchMode.SUBSELECT)
     @JoinColumn(name = "`series_id`", nullable = false)
     var customerVideoSeriesVideos: MutableList<CustomerVideoSeriesVideo> = mutableListOf()
+
+    fun updateBasicInfo(
+        newName: String,
+        newDescription: String?,
+    ) {
+        seriesName = newName
+        seriesDescription = newDescription
+    }
+
+    fun replaceVideos(
+        ownerId: Long,
+        videoIds: List<Long>,
+    ) {
+        customerVideoSeriesVideos.clear()
+        videoIds.forEachIndexed { index, videoId ->
+            customerVideoSeriesVideos.add(
+                CustomerVideoSeriesVideo(
+                    customerId = ownerId,
+                    videoId = videoId,
+                    sort = (index + 1).toByte()
+                )
+            )
+        }
+    }
 
     // 【字段映射结束】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
 

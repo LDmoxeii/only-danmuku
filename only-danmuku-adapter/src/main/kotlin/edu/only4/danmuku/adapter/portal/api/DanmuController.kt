@@ -1,8 +1,9 @@
 package edu.only4.danmuku.adapter.portal.api
 
+import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
-import edu.only4.danmuku.adapter.portal.api.payload.DanmuLoad
-import edu.only4.danmuku.adapter.portal.api.payload.DanmuPost
+import edu.only4.danmuku.adapter.portal.api.payload.DanmukuLoad
+import edu.only4.danmuku.adapter.portal.api.payload.DanmukuPost
 import edu.only4.danmuku.application.commands.video_danmuku.PostDanmukuCmd
 import edu.only4.danmuku.application.queries.video_danmuku.GetDanmukuByFileIdQry
 import org.springframework.validation.annotation.Validated
@@ -27,7 +28,7 @@ class DanmuController {
      * 加载弹幕列表
      */
     @PostMapping("/loadDanmu")
-    fun danmuLoad(@RequestBody @Validated request: DanmuLoad.Request): List<DanmuLoad.DanmukuItem> {
+    fun danmukuLoad(@RequestBody @Validated request: DanmukuLoad.Request): List<DanmukuLoad.DanmukuItem> {
         // 调用查询获取弹幕列表
         val queryResult = Mediator.queries.send(
             GetDanmukuByFileIdQry.Request(
@@ -38,7 +39,7 @@ class DanmuController {
 
         // 转换为前端需要的格式
         return queryResult.map { danmuku ->
-            DanmuLoad.DanmukuItem(
+            DanmukuLoad.DanmukuItem(
                 danmukuId = danmuku.danmukuId.toString(),
                 fileId = danmuku.fileId.toString(),
                 videoId = danmuku.videoId.toString(),
@@ -59,19 +60,21 @@ class DanmuController {
      * 发送弹幕
      */
     @PostMapping("/postDanmu")
-    fun danmuPost(@RequestBody @Validated request: DanmuPost.Request): DanmuPost.Response {
+    fun danmukuPost(@RequestBody @Validated request: DanmukuPost.Request): DanmukuPost.Response {
         // 调用命令发送弹幕
+        val userId = LoginHelper.getUserId()!!
         Mediator.commands.send(
             PostDanmukuCmd.Request(
                 videoId = request.videoId.toLong(),
                 fileId = request.fileId.toLong(),
+                customerId = userId,
                 text = request.text,
                 mode = request.mode ?: 1, // 默认滚动模式
                 color = request.color,
                 time = request.time ?: 0 // 默认0秒
             )
         )
-        return DanmuPost.Response()
+        return DanmukuPost.Response()
     }
 
 }

@@ -1,34 +1,62 @@
 package edu.only4.danmuku.application.commands.customer_profile
 
+import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
-
+import edu.only4.danmuku.domain._share.meta.customer_profile.SCustomerProfile
+import edu.only4.danmuku.domain.aggregates.customer_profile.enums.SexType
+import edu.only4.danmuku.domain.aggregates.customer_profile.enums.ThemeType
 import org.springframework.stereotype.Service
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * 更新用户信息
- *
- * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
- * @author cap4k-ddd-codegen
- * @date 2025/10/15
  */
 object UpdateCustomerProfileCmd {
 
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
+            val profile = Mediator.repositories.findFirst(
+                SCustomerProfile.predicate { it.userId eq request.customerId },
+                persist = false
+            ).getOrNull() ?: throw KnownException("用户资料不存在：${request.customerId}")
+
+            request.nickName?.let { profile.nickName = it }
+            request.avatar?.let { profile.avatar = it }
+            request.sex?.let { profile.sex = SexType.valueOf(it) }
+            profile.birthday = request.birthday ?: profile.birthday
+            profile.school = request.school ?: profile.school
+            profile.personIntroduction = request.personIntroduction ?: profile.personIntroduction
+            profile.noticeInfo = request.noticeInfo ?: profile.noticeInfo
+            request.theme?.let { profile.theme = ThemeType.valueOf(it) }
+
             Mediator.uow.save()
-
-            return Response(
-            )
+            return Response()
         }
-
     }
 
-    class Request(
+    data class Request(
+        /** 用户ID */
+        val customerId: Long,
+        /** 昵称 */
+        val nickName: String? = null,
+        /** 头像 */
+        val avatar: String? = null,
+        /** 性别值，对应 SexType.code */
+        val sex: Int? = null,
+        /** 生日 */
+        val birthday: String? = null,
+        /** 学校 */
+        val school: String? = null,
+        /** 个人简介 */
+        val personIntroduction: String? = null,
+        /** 空间公告 */
+        val noticeInfo: String? = null,
+        /** 主题值，对应 ThemeType.code */
+        val theme: Int? = null,
     ) : RequestParam<Response>
 
-    class Response(
-    )
+    class Response
 }

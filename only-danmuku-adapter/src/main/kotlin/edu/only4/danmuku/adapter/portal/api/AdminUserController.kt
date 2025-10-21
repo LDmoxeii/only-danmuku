@@ -1,5 +1,6 @@
 package edu.only4.danmuku.adapter.portal.api
 
+import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.share.PageData
 import edu.only4.danmuku.adapter.portal.api.payload.AdminUserChangeStatus
@@ -95,7 +96,7 @@ class AdminUserController {
                     EnableAccountCmd.Request(userId = userId)
                 )
             }
-            else -> throw IllegalArgumentException("无效的状态值: $status")
+            else -> throw KnownException("无效的状态值: $status")
         }
 
         return AdminUserChangeStatus.Response()

@@ -10,10 +10,6 @@ import org.springframework.stereotype.Service
 
 /**
  * 视频弹幕;
- *
- * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
- * @author cap4k-ddd-codegen
- * @date 2025/10/15
  */
 @Service
 @Aggregate(
@@ -26,7 +22,22 @@ class VideoDanmukuFactory : AggregateFactory<VideoDanmukuFactory.Payload, VideoD
 
     override fun create(payload: Payload): VideoDanmuku {
         return VideoDanmuku(
-
+            id = 0L,
+            videoId = payload.videoId,
+            fileId = payload.fileId,
+            customerId = payload.customerId,
+            postTime = payload.postTime,
+            text = payload.text,
+            mode = payload.mode,
+            color = payload.color,
+            time = payload.time,
+            createUserId = null,
+            createBy = null,
+            createTime = null,
+            updateUserId = null,
+            updateBy = null,
+            updateTime = null,
+            deleted = 0L,
         )
     }
 
@@ -37,7 +48,14 @@ class VideoDanmukuFactory : AggregateFactory<VideoDanmukuFactory.Payload, VideoD
         description = ""
     )
     data class Payload(
-        val name: String
+         val videoId: Long,
+         val fileId: Long,
+         val customerId: Long,
+         val postTime: Long,
+         val text: String?,
+         val mode: Boolean?,
+         val color: String?,
+         val time: Int?,
     ) : AggregatePayload<VideoDanmuku>
 
 }

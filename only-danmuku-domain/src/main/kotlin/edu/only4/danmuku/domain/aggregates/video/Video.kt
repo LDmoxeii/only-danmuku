@@ -1,19 +1,13 @@
 package edu.only4.danmuku.domain.aggregates.video
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
-
+import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
 import edu.only4.danmuku.domain.aggregates.video.enums.PostType
 import edu.only4.danmuku.domain.aggregates.video.enums.RecommendType
-
+import edu.only4.danmuku.domain.aggregates.video.events.VideoRecommendedDomainEvent
 import jakarta.persistence.*
 import jakarta.persistence.Table
-
 import org.hibernate.annotations.*
-import org.hibernate.annotations.DynamicInsert
-import org.hibernate.annotations.DynamicUpdate
-import org.hibernate.annotations.GenericGenerator
-import org.hibernate.annotations.SQLDelete
-import org.hibernate.annotations.Where
 
 /**
  * 视频信息;
@@ -238,5 +232,28 @@ class Video (
 
     // 【行为方法开始】
 
+    /** 标记为推荐视频 */
+    fun recommend() {
+        if (this.recommendType != RecommendType.RECOMMEND) {
+            this.recommendType = RecommendType.RECOMMEND
+            events().attach(this) { VideoRecommendedDomainEvent(entity = this) }
+        }
+    }
+
+    /** 取消推荐 */
+    fun unrecommend() {
+        if (this.recommendType != RecommendType.NOT_RECOMMEND) {
+            this.recommendType = RecommendType.NOT_RECOMMEND
+        }
+    }
+
+    /** 修改互动设置 */
+    fun changeInteraction(newInteraction: String?) {
+        this.interaction = newInteraction
+    }
+
     // 【行为方法结束】
 }
+
+
+

@@ -26,7 +26,10 @@ class CustomerVideoSeriesFactory : AggregateFactory<CustomerVideoSeriesFactory.P
 
     override fun create(payload: Payload): CustomerVideoSeries {
         return CustomerVideoSeries(
-
+            customerId = payload.customerId,
+            seriesName = payload.seriesName,
+            seriesDescription = payload.seriesDescription,
+            sort = payload.sort
         )
     }
 
@@ -37,7 +40,10 @@ class CustomerVideoSeriesFactory : AggregateFactory<CustomerVideoSeriesFactory.P
         description = ""
     )
     data class Payload(
-        val name: String
-    ) : AggregatePayload<CustomerVideoSeries>
+         val customerId: Long,
+         val seriesName: String,
+         val seriesDescription: String? = null,
+         val sort: Byte = 0,
+     ) : AggregatePayload<CustomerVideoSeries>
 
 }

@@ -1,19 +1,14 @@
 package edu.only4.danmuku.domain.aggregates.video_draft
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
-
+import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
 import edu.only4.danmuku.domain.aggregates.video.enums.PostType
 import edu.only4.danmuku.domain.aggregates.video_draft.enums.VideoStatus
-
+import edu.only4.danmuku.domain.aggregates.video_draft.events.VideoAuditFailedDomainEvent
+import edu.only4.danmuku.domain.aggregates.video_draft.events.VideoAuditPassedDomainEvent
 import jakarta.persistence.*
 import jakarta.persistence.Table
-
 import org.hibernate.annotations.*
-import org.hibernate.annotations.DynamicInsert
-import org.hibernate.annotations.DynamicUpdate
-import org.hibernate.annotations.GenericGenerator
-import org.hibernate.annotations.SQLDelete
-import org.hibernate.annotations.Where
 
 /**
  * 视频信息;
@@ -198,6 +193,26 @@ class VideoDraft (
     // 【字段映射结束】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
 
     // 【行为方法开始】
+    /** 审核通过 */
+    fun reviewPass() {
+        if (this.status != VideoStatus.REVIEW_PASSED) {
+            this.status = VideoStatus.REVIEW_PASSED
+            events().attach(this) { VideoAuditPassedDomainEvent(entity = this) }
+        }
+    }
+
+    /** 审核失败 */
+    fun reviewFail() {
+        if (this.status != VideoStatus.REVIEW_FAILED) {
+            this.status = VideoStatus.REVIEW_FAILED
+            events().attach(this) { VideoAuditFailedDomainEvent(entity = this) }
+        }
+    }
+
+    /** 标记为待审核 */
+    fun markPendingReview() {
+        this.status = VideoStatus.PENDING_REVIEW
+    }
 
     // 【行为方法结束】
 }

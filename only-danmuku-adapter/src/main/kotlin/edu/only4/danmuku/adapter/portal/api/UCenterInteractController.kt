@@ -1,10 +1,11 @@
 package edu.only4.danmuku.adapter.portal.api
 
+import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.share.PageData
-import edu.only4.danmuku.adapter.portal.api.payload.UCenterLoadAllVideo
-import edu.only4.danmuku.adapter.portal.api.payload.UCenterLoadComment
-import edu.only4.danmuku.adapter.portal.api.payload.UCenterLoadDanmu
+import edu.only4.danmuku.adapter.portal.api.payload.*
+import edu.only4.danmuku.application.commands.video_comment.DelCommentCmd
+import edu.only4.danmuku.application.commands.video_danmuku.DeleteDanmukuCmd
 import edu.only4.danmuku.application.queries.video.SearchVideosQry
 import edu.only4.danmuku.application.queries.video_comment.VideoCommentPageQry
 import edu.only4.danmuku.application.queries.video_danmuku.GetDanmukuPageQry
@@ -29,8 +30,7 @@ class UCenterInteractController {
      */
     @GetMapping("/loadAllVideo")
     fun loadAllVideo(): List<UCenterLoadAllVideo.VideoItem> {
-        // TODO: 从上下文获取当前用户ID
-        val currentUserId = 2001L // 临时硬编码
+        val currentUserId = LoginHelper.getUserId()!!
 
         // 调用查询获取当前用户的所有视频
         val queryResult = Mediator.queries.send(
@@ -60,8 +60,7 @@ class UCenterInteractController {
      */
     @PostMapping("/loadComment")
     fun loadComment(@RequestBody request: UCenterLoadComment.Request): PageData<UCenterLoadComment.CommentItem> {
-        // TODO: 从上下文获取当前用户ID
-        val currentUserId = 2001L // 临时硬编码
+        val currentUserId = LoginHelper.getUserId()!!
 
         // 构建查询请求 - 查询视频作者收到的评论
         val queryRequest = VideoCommentPageQry.Request(
@@ -95,29 +94,28 @@ class UCenterInteractController {
             totalCount = queryResult.totalCount
         )
     }
-//
-//    /**
-//     * 删除评论
-//     */
-//    @PostMapping("/delComment")
-//    fun delComment(@RequestBody @Validated request: UCenterDelComment.Request): UCenterDelComment.Response {
-//        // 调用命令删除评论
-//        Mediator.commands.send(
-//            DelCommentCmd.Request(
-//                commentId = request.commentId.toLong()
-//            )
-//        )
-//
-//        return UCenterDelComment.Response()
-//    }
-//
+
+    /**
+     * 删除评论
+     */
+    @PostMapping("/delComment")
+    fun delComment(@RequestBody @Validated request: UCenterDelComment.Request): UCenterDelComment.Response {
+        // 调用命令删除评论
+        Mediator.commands.send(
+            DelCommentCmd.Request(
+                commentId = request.commentId.toLong()
+            )
+        )
+
+        return UCenterDelComment.Response()
+    }
+
     /**
      * 加载用户收到的弹幕
      */
     @PostMapping("/loadDanmu")
     fun loadDanmu(@RequestBody request: UCenterLoadDanmu.Request): PageData<UCenterLoadDanmu.DanmukuItem> {
-        // TODO: 从上下文获取当前用户ID
-        val currentUserId = 2001L // 临时硬编码
+        val currentUserId = LoginHelper.getUserId()!!
 
         // 构建查询请求 - 查询视频作者收到的弹幕
         val queryRequest = GetDanmukuPageQry.Request(
@@ -153,20 +151,20 @@ class UCenterInteractController {
             totalCount = queryResult.totalCount
         )
     }
-//
-//    /**
-//     * 删除弹幕
-//     */
-//    @PostMapping("/delDanmu")
-//    fun delDanmu(@RequestBody @Validated request: UCenterDelDanmu.Request): UCenterDelDanmu.Response {
-//        // 调用命令删除弹幕
-//        Mediator.commands.send(
-//            DeleteDanmukuCmd.Request(
-//                danmukuId = request.danmuId.toLong()
-//            )
-//        )
-//
-//        return UCenterDelDanmu.Response()
-//    }
+
+    /**
+     * 删除弹幕
+     */
+    @PostMapping("/delDanmu")
+    fun delDanmu(@RequestBody @Validated request: UCenterDelDanmu.Request): UCenterDelDanmu.Response {
+        // 调用命令删除弹幕
+        Mediator.commands.send(
+            DeleteDanmukuCmd.Request(
+                danmukuId = request.danmuId.toLong()
+            )
+        )
+
+        return UCenterDelDanmu.Response()
+    }
 
 }
