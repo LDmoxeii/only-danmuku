@@ -9,25 +9,24 @@ import jakarta.validation.Payload
 import kotlin.reflect.KClass
 
 /**
- * 校验父分类是否存在：
- * - parentId == 0L 直接通过（顶级）
- * - parentId != 0L 调用查询判断分类是否存在
+ * 校验分类是否存在：
+ * - 值为 0（顶级）时视为通过（用于父分类场景）
+ * - 其他非空值通过查询判断是否存在
  */
 @Target(AnnotationTarget.FIELD, AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
-@Constraint(validatedBy = [ParentCategoryExists.Validator::class])
+@Constraint(validatedBy = [CategoryExists.Validator::class])
 @MustBeDocumented
-annotation class ParentCategoryExists(
-    val message: String = "父分类不存在",
+annotation class CategoryExists(
+    val message: String = "分类不存在",
     val groups: Array<KClass<*>> = [],
-    val payload: Array<KClass<out Payload>> = []
+    val payload: Array<KClass<out Payload>> = [],
 ) {
-    class Validator : ConstraintValidator<ParentCategoryExists, Long> {
+    class Validator : ConstraintValidator<CategoryExists, Long> {
         override fun isValid(value: Long?, context: ConstraintValidatorContext): Boolean {
-            val pid = value ?: return true
-            if (pid == 0L) return true
-
-            val resp = Mediator.queries.send(CategoryExistsByIdQry.Request(categoryId = pid))
+            val id = value ?: return true
+            if (id == 0L) return true
+            val resp = Mediator.queries.send(CategoryExistsByIdQry.Request(categoryId = id))
             return resp.exists
         }
     }

@@ -35,22 +35,21 @@
 │   - operatorId: String? (可选，用于权限校验)                     │
 │                                                                 │
 │ 验证器：                                                         │
-│   ├─ @CommentExists ❌ (验证评论存在)                            │
-│   └─ @CommentDeletePermission ❌ (验证删除权限)                  │
+│   ├─ @CommentExists ✅ (验证评论存在，依赖 CommentExistsByIdQry) │
+│   └─ @CommentDeletePermission ✅ (验证删除权限)                  │
 │                                                                 │
 │ 处理逻辑：                                                       │
 │   1. 查询评论信息 GetCommentByIdQry ✅                           │
 │      - 如果不存在 → 抛出异常 "评论不存在"                         │
-│   2. 查询视频信息 GetVideoInfoQry ✅                             │
-│      - 验证视频存在性                                            │
-│   3. 权限校验 (如果 operatorId 不为 null):                       │
-│      - 检查 operatorId == video.userId (UP主)                   │
+│   2. 权限校验 (如果 operatorId 不为 null):                       │
+│      - 检查 operatorId == comment.videoOwnerId (UP主)           │
 │      - 或 operatorId == comment.userId (评论作者)               │
 │      - 如果都不匹配 → 抛出异常 "无权限删除该评论"                  │
 │      - 管理员操作时 operatorId = null，跳过权限校验               │
-│   4. VideoComment.markAsDeleted()                               │
+│   3. VideoComment.markAsDeleted()                               │
 │      - 删除评论记录                                              │
-│   5. Mediator.uow.save()                                        │
+│      - 若为一级评论，命令内部同步删除全部二级回复                │
+│   4. Mediator.uow.save()                                        │
 └────────────────────────────┬────────────────────────────────────┘
                              ↓
 ┌─────────────────────────────────────────────────────────────────┐
@@ -78,45 +77,31 @@
 │ 分支 #1: 一级评论删除                                            │
 └─────────────────────────────────────────────────────────────────┘
 ┌─────────────────────────────────────────────────────────────────┐
-│ 事件处理器：CommentDeletedEventHandler (一级评论) ❌             │
+│ 事件监听器：CommentDeletedDomainEventSubscriber ✅              │
 │ 监听事件：CommentDeletedDomainEvent (pCommentId == 0)           │
 │ 触发命令：                                                       │
-│   1. UpdateVideoStatisticsCmd ❌ (更新视频评论数 -1)             │
-│   2. DeleteChildCommentsCmd ❌ (级联删除所有二级回复)             │
-│ 实现路径：adapter/.../events/CommentDeletedEventHandler.kt     │
+│   1. UpdateVideoStatisticsCmd ✅ (更新视频评论数 -1)             │
+│   2. （DelCommentCmd 已在命令内同步清理所有子评论）               │
+│ 实现路径：only-danmuku-application/src/main/kotlin/edu/only4/danmuku/application/subscribers/domain/video_comment/CommentDeletedDomainEventSubscriber.kt │
 └────────────────────────────┬────────────────────────────────────┘
                              ↓
         ┌────────────────────┴────────────────────┐
         ↓                                         ↓
 ┌─────────────────────────────────────────────────────────────────┐
-│ 命令：UpdateVideoStatisticsCmd ❌                                │
-│ 状态：缺失 (需新增到 design/extra/video_statistics_gen.json)    │
+│ 命令：UpdateVideoStatisticsCmd ✅                                │
+│ 状态：已实现                                                     │
 │                                                                 │
 │ 命令参数：                                                       │
-│   - videoId: String                                             │
-│   - field: "comment_count"                                      │
-│   - changeCount: -1                                             │
+│   - videoId: Long                                               │
+│   - commentCountDelta: Int (可正可负，命令内部防止出现负值)        │
+│   - 其余增量字段在需要时填写                                     │
 │                                                                 │
 │ 处理逻辑：                                                       │
-│   1. 查询视频 GetVideoInfoQry ✅                                 │
-│   2. Video.updateStatistics(field, changeCount)                 │
-│   3. Mediator.uow.save()                                        │
+│   1. 加载视频聚合 (SVideo)                                       │
+│   2. 根据增量更新各统计字段，最小值为 0                         │
+│   3. 持久化修改并返回最新统计                                   │
 └─────────────────────────────────────────────────────────────────┘
 
-┌─────────────────────────────────────────────────────────────────┐
-│ 命令：DeleteChildCommentsCmd ❌                                  │
-│ 状态：缺失 (需新增到 design/extra/comment_cascade_gen.json)     │
-│                                                                 │
-│ 命令参数：                                                       │
-│   - pCommentId: Int  // 父评论ID                                │
-│                                                                 │
-│ 处理逻辑：                                                       │
-│   1. 查询所有子评论 GetCommentRepliesQry ✅                      │
-│      - WHERE pCommentId = #{pCommentId}                         │
-│   2. 批量删除子评论                                              │
-│      - 使用 Mediator.repositories.delete()                      │
-│   3. Mediator.uow.save()                                        │
-└─────────────────────────────────────────────────────────────────┘
                              ↓
                       ✅ 一级评论删除完成
 
@@ -124,7 +109,7 @@
 │ 分支 #2: 二级回复删除                                            │
 └─────────────────────────────────────────────────────────────────┘
 ┌─────────────────────────────────────────────────────────────────┐
-│ 事件处理器：CommentDeletedEventHandler (二级回复) ❌             │
+│ 事件监听器：CommentDeletedDomainEventSubscriber ✅              │
 │ 监听事件：CommentDeletedDomainEvent (pCommentId > 0)            │
 │ 触发命令：无 (二级回复删除不更新视频统计，不级联删除)             │
 │ 处理逻辑：                                                       │
@@ -161,20 +146,16 @@ graph TD
     B6 --> C[VideoComment.markAsDeleted<br/>删除评论记录]
     B8 --> C
 
+    C --> C4[若为一级评论: 命令内同步删除子评论 ✅]
     C --> D[领域事件: CommentDeletedDomainEvent ✅<br/>commentId, videoId, pCommentId, deletedBy, operatorId]
 
     D --> E{pCommentId == 0?}
-    E -->|是 一级评论| F1[事件处理器: CommentDeletedEventHandler ❌<br/>一级评论分支]
-    E -->|否 二级回复| F2[事件处理器: CommentDeletedEventHandler ❌<br/>二级回复分支]
+    E -->|是 一级评论| F1[事件监听器: CommentDeletedDomainEventSubscriber ✅<br/>一级评论分支]
+    E -->|否 二级回复| F2[事件监听器: CommentDeletedDomainEventSubscriber ✅<br/>二级回复分支]
 
-    F1 --> G1[命令: UpdateVideoStatisticsCmd ❌<br/>videoId, field=comment_count, changeCount=-1]
-    F1 --> G2[命令: DeleteChildCommentsCmd ❌<br/>pCommentId=commentId]
-
-    G2 --> G2A[查询: GetCommentRepliesQry ✅<br/>获取所有子评论]
-    G2A --> G2B[批量删除子评论]
+    F1 --> G1[命令: UpdateVideoStatisticsCmd ✅<br/>commentCountDelta=-1]
 
     G1 --> H1[✅ 一级评论删除完成<br/>视频统计已更新, 子评论已删除]
-    G2B --> H1
 
     F2 --> H2[记录审计日志<br/>可选: 通知被回复者]
     H2 --> H3[✅ 二级回复删除完成<br/>不更新视频统计]
@@ -190,7 +171,6 @@ graph TD
     style F1 fill:#FFCDD2,stroke:#D32F2F,stroke-width:2px
     style F2 fill:#FFCDD2,stroke:#D32F2F,stroke-width:2px
     style G1 fill:#FFCDD2,stroke:#D32F2F,stroke-width:2px
-    style G2 fill:#FFCDD2,stroke:#D32F2F,stroke-width:2px
     style B7C fill:#FFC107,stroke:#F57C00,stroke-width:2px
 ```
 
@@ -238,7 +218,6 @@ graph TD
 | 序号 | 命令名称 | 描述 | 建议位置 | 优先级 |
 |-----|---------|------|----------|-------|
 | 1 | `UpdateVideoStatisticsCmd` | 更新视频统计信息（点赞/收藏/投币/评论数） | `design/extra/video_statistics_gen.json` | P0 |
-| 2 | `DeleteChildCommentsCmd` | 级联删除所有子评论 | `design/extra/comment_cascade_gen.json` | P0 |
 
 **JSON 定义**（需新增到 `design/extra/video_statistics_gen.json`）：
 ```json
@@ -253,25 +232,11 @@ graph TD
 }
 ```
 
-**JSON 定义**（需新增到 `design/extra/comment_cascade_gen.json`）：
-```json
-{
-  "cmd": [
-    {
-      "package": "video_comment",
-      "name": "DeleteChildComments",
-      "desc": "级联删除子评论"
-    }
-  ]
-}
-```
-
 #### 需要补充的领域事件
 
 | 序号 | 事件名称 | 描述 | 触发时机 | 建议位置 | 优先级 |
 |-----|---------|------|----------|----------|-------|
 | 1 | `VideoStatisticsUpdatedDomainEvent` | 视频统计信息已更新 | 视频统计更新后 | `design/extra/video_statistics_gen.json` | P1 |
-| 2 | `ChildCommentsDeletedDomainEvent` | 子评论已批量删除 | 级联删除完成后 | `design/extra/comment_cascade_gen.json` | P1 |
 
 **JSON 定义**（需新增到 `design/extra/video_statistics_gen.json`）：
 ```json
@@ -291,16 +256,16 @@ graph TD
 
 #### 需要补充的验证器
 
-| 序号 | 验证器名称 | 描述 | 依赖查询 | 实现路径 | 优先级 |
-|-----|-----------|------|----------|----------|-------|
-| 1 | `@CommentExists` | 验证评论存在 | `GetCommentByIdQry` | `application/.../validater/CommentExists.kt` | P0 |
-| 2 | `@CommentDeletePermission` | 验证删除权限（管理员/UP主/评论作者） | `GetCommentByIdQry`<br/>`GetVideoInfoQry` | `application/.../validater/CommentDeletePermission.kt` | P0 |
+| 序号 | 验证器名称                      | 描述                   | 依赖查询                                           | 实现路径                                                   | 优先级 |
+|----|----------------------------|----------------------|------------------------------------------------|--------------------------------------------------------|-----|
+| 1  | `@CommentExists`           | 验证评论存在               | `CommentExistsByIdQry`                         | `application/.../validater/CommentExists.kt`           | ✅   |
+| 2  | `@CommentDeletePermission` | 验证删除权限（管理员/UP主/评论作者） | `CommentExistsByIdQry`<br/>`GetCommentByIdQry` | `application/.../validater/CommentDeletePermission.kt` | ✅   |
 
-#### 需要补充的事件处理器
+#### ✅ 已存在的事件监听器
 
-| 序号 | 处理器名称 | 监听事件 | 触发命令 | 实现路径 | 优先级 |
-|-----|-----------|----------|----------|----------|-------|
-| 1 | `CommentDeletedEventHandler` | `CommentDeletedDomainEvent` | `UpdateVideoStatisticsCmd`<br/>`DeleteChildCommentsCmd`<br/>（仅一级评论） | `adapter/.../events/CommentDeletedEventHandler.kt` | P0 |
+| 序号 | 监听器名称                                 | 监听事件                        | 触发命令                              | 实现路径                                                                                                                                             |
+|----|---------------------------------------|-----------------------------|-----------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
+| 1  | `CommentDeletedDomainEventSubscriber` | `CommentDeletedDomainEvent` | `UpdateVideoStatisticsCmd`（仅一级评论） | `only-danmuku-application/src/main/kotlin/edu/only4/danmuku/application/subscribers/domain/video_comment/CommentDeletedDomainEventSubscriber.kt` |
 
 **优先级说明**：
 - **P0**：核心功能，必须实现
@@ -340,32 +305,31 @@ fun hasDeletePermission(operatorId: String?, comment: VideoComment, video: Video
 
 ### 2. 一级评论 vs 二级回复的删除差异
 
-| 特性 | 一级评论 (`pCommentId = 0`) | 二级回复 (`pCommentId > 0`) |
-|------|---------------------------|---------------------------|
-| **更新视频统计** | ✅ 需要更新 `comment_count -1` | ❌ 不更新统计 |
-| **级联删除** | ✅ 删除所有子评论 | ❌ 不级联删除 |
-| **事件处理** | 触发 2 个命令 | 仅记录日志 |
+| 特性         | 一级评论 (`pCommentId = 0`)                  | 二级回复 (`pCommentId > 0`) |
+|------------|------------------------------------------|-------------------------|
+| **更新视频统计** | ✅ 需要更新 `comment_count -1`                | ❌ 不更新统计                 |
+| **级联删除**   | ✅ 删除所有子评论                                | ❌ 不级联删除                 |
+| **事件处理**   | 触发 `UpdateVideoStatisticsCmd`；子评论已在命令内删除 | 仅记录日志                   |
 
 **判断逻辑**：
 ```kotlin
-if (comment.pCommentId == 0) {
-    // 一级评论：需要更新统计 + 级联删除
-    Mediator.commands.send(UpdateVideoStatisticsCmd.Request(...))
-    Mediator.commands.send(DeleteChildCommentsCmd.Request(...))
-} else {
-    // 二级回复：仅记录日志
-    logger.info("二级回复已删除: commentId=${comment.commentId}")
+if (comment.parentId == 0L) {
+    // 一级评论：命令内直接删除所有子评论
+    Mediator.repositories.remove(
+        SVideoComment.predicate { schema ->
+            schema.parentId eq comment.id
+        }
+    )
 }
+Mediator.repositories.remove(SVideoComment.predicateById(comment.id))
+Mediator.uow.save()
 ```
 
 ### 3. 级联删除子评论
 
 **场景**：删除一级评论时，需同时删除所有二级回复
 
-**实现步骤**：
-1. 查询所有子评论：`GetCommentRepliesQry(pCommentId = commentId)`
-2. 批量删除子评论记录
-3. **不触发子评论的 `CommentDeletedDomainEvent`**（避免递归事件）
+**实现方式**：在 `DelCommentCmd` 中直接使用仓储一次性删除 `parentId = commentId` 的所有评论记录，避免额外命令和事件链路。
 
 **SQL 示例**（easylive-java 实现）：
 ```sql

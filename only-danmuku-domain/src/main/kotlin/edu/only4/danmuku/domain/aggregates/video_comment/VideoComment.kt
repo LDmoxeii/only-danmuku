@@ -2,6 +2,7 @@ package edu.only4.danmuku.domain.aggregates.video_comment
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
+import edu.only4.danmuku.domain.aggregates.video_comment.events.CommentDeletedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video_comment.events.CommentToppedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video_comment.events.CommentUntoppedDomainEvent
 import jakarta.persistence.*
@@ -184,4 +185,9 @@ class VideoComment (
     }
 
     // 【行为方法结束】
+
+    /** 删除钩子：发布评论已删除领域事件 */
+    fun onDelete() {
+        events().attach(this) { CommentDeletedDomainEvent(this) }
+    }
 }

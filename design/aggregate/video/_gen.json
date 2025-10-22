@@ -34,6 +34,11 @@
       "package": "video",
       "name": "UnrecommendVideo",
       "desc": "取消推荐"
+    },
+    {
+      "package ": "video",
+      "name": "UpdateVideoStatistics",
+      "desc": "更新视频统计信息"
     }
   ],
   "de": [

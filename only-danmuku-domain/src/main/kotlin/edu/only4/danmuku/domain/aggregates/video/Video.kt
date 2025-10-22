@@ -252,6 +252,28 @@ class Video (
         this.interaction = newInteraction
     }
 
+    fun applyStatisticsDelta(
+        playCountDelta: Int? = null,
+        likeCountDelta: Int? = null,
+        danmukuCountDelta: Int? = null,
+        commentCountDelta: Int? = null,
+        coinCountDelta: Int? = null,
+        collectCountDelta: Int? = null,
+    ) {
+        fun Int?.applyDelta(delta: Int?): Int? {
+            if (delta == null || delta == 0) return this
+            val updated = (this ?: 0) + delta
+            return kotlin.math.max(updated, 0)
+        }
+
+        playCount = playCount.applyDelta(playCountDelta)
+        likeCount = likeCount.applyDelta(likeCountDelta)
+        danmukuCount = danmukuCount.applyDelta(danmukuCountDelta)
+        commentCount = commentCount.applyDelta(commentCountDelta)
+        coinCount = coinCount.applyDelta(coinCountDelta)
+        collectCount = collectCount.applyDelta(collectCountDelta)
+    }
+
     // 【行为方法结束】
 }
 

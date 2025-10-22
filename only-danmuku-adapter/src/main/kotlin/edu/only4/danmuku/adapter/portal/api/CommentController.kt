@@ -118,7 +118,8 @@ class CommentController {
         // 调用命令删除评论
         Mediator.commands.send(
             DelCommentCmd.Request(
-                commentId = request.commentId.toLong()
+                commentId = request.commentId.toLong(),
+                operatorId = LoginHelper.getUserId()!!
             )
         )
         return CommentUserDel.Response()

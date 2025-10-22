@@ -47,7 +47,7 @@
 │   - background: String                                          │
 │                                                                 │
 │ 验证器：                                                         │
-│   └─ @UniqueCategoryCode ❌ (验证分类编码唯一性)                 │
+│   └─ @UniqueCategoryCode ✅ (验证分类编码唯一性)                 │
 │                                                                 │
 │ 处理逻辑：                                                       │
 │   1. 查询分类编码是否存在 CategoryExistsByCodeQry ✅             │

@@ -1,9 +1,10 @@
 package edu.only4.danmuku.application.commands.video_comment
 
-import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
+import edu.only4.danmuku.application.validater.CommentDeletePermission
+import edu.only4.danmuku.application.validater.CommentExists
 import edu.only4.danmuku.domain._share.meta.video_comment.SVideoComment
 
 import org.springframework.stereotype.Service
@@ -21,14 +22,21 @@ object DelCommentCmd {
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
-            // 校验评论存在
             val comment = Mediator.repositories.findFirst(
                 SVideoComment.predicateById(request.commentId),
                 persist = false
-            ).getOrNull() ?: throw KnownException("评论不存在：${request.commentId}")
+            ).getOrNull() ?: return Response()
 
             // 删除评论（软删）
-            Mediator.repositories.remove(SVideoComment.predicateById(comment.id))
+            Mediator.repositories.remove(SVideoComment.predicateById(request.commentId))
+
+            if (comment.parentId == 0L) {
+                Mediator.repositories.remove(
+                    SVideoComment.predicate { schema ->
+                        schema.parentId eq comment.id
+                    }
+                )
+            }
 
             Mediator.uow.save()
 
@@ -36,9 +44,13 @@ object DelCommentCmd {
         }
     }
 
+    @CommentDeletePermission
     data class Request(
         /** 评论ID */
-        val commentId: Long
+        @field:CommentExists
+        val commentId: Long,
+        /** 操作者ID；null 表示管理员 */
+        val operatorId: Long? = null,
     ) : RequestParam<Response>
 
     class Response

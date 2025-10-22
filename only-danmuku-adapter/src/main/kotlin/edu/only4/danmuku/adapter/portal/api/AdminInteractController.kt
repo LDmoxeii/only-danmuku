@@ -140,7 +140,8 @@ class AdminInteractController {
         // 调用命令删除评论
         Mediator.commands.send(
             DelCommentCmd.Request(
-                commentId = request.commentId!!
+                commentId = request.commentId!!,
+                operatorId = null
             )
         )
         return AdminInteractDelComment.Response()

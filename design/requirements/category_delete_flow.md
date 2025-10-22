@@ -69,9 +69,8 @@ DeleteCategoryCmd 请求
 graph TD
     A["请求: POST /admin/category/delCategory<br/>categoryId"] --> B["控制器: AdminCategoryController ✅<br/>调用 DeleteCategoryCmd"]
     B --> C["命令: DeleteCategoryCmd ✅<br/>需补充级联删除逻辑"]
-
     C --> C1["验证器: @CategoryMustExist ❌<br/>依赖 GetCategoryByIdQry ⚪"]
-    C --> C2["验证器: @CategoryDeletionAllowed ❌<br/>依赖 CountVideosUnderCategoriesQry ❌"]
+    C --> C2["验证器: @CategoryDeletionAllowed ✅<br/>依赖 CountVideosUnderCategoriesQry ✅"]
     C --> C3["仓储: 删除分类聚合及子节点 ❌"]
     C3 --> G["领域事件: CategoryDeletedDomainEvent ✅"]
     G --> H["事件处理器: CategoryDeletedEventHandler ❌<br/>监听删除事件"]
@@ -133,15 +132,15 @@ graph TD
 | 1 | `RefreshCategoryCacheCmd` | 监听分类变更后重建 Redis 分类树 | `design/extra/category_cache_gen.json` | P2 |
 
 ### 需要补充的查询 (Queries)
-| 序号 | 查询名称 | 描述 | 返回值 | 建议位置 | 优先级 |
-|-----|---------|------|--------|----------|-------|
-| 1 | `CountVideosUnderCategoriesQry` | 统计给定分类及其子分类下的视频数量 | `Long` | `design/aggregate/video/_gen.json` 或 `design/extra/video_guard_gen.json` | P0 |
+| 序号 | 查询名称                            | 描述                | 返回值    | 建议位置                                                                                                                                                                                                                                                               | 优先级 |
+|----|---------------------------------|-------------------|--------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|
+| 1  | `CountVideosUnderCategoriesQry` | 统计给定分类及其子分类下的视频数量 | `Long` | 已实现：`only-danmuku-application/src/main/kotlin/edu/only4/danmuku/application/queries/video/CountVideosUnderCategoriesQry.kt`；处理器：`only-danmuku-adapter/src/main/kotlin/edu/only4/danmuku/adapter/application/queries/video/CountVideosUnderCategoriesQryHandler.kt` | ✅   |
 
 ### 需要补充的验证器 (Validators)
-| 序号 | 验证器名称 | 描述 | 依赖查询 | 实现路径 | 优先级 |
-|-----|-----------|------|----------|----------|-------|
-| 1 | `@CategoryMustExist` | 确保待删除分类存在（否则返回 404/业务错误） | `GetCategoryByIdQry` | `only-danmuku-application/.../validator/` | P0 |
-| 2 | `@CategoryDeletionAllowed` | 校验分类及子分类下无视频引用 | `CountVideosUnderCategoriesQry` | `only-danmuku-application/.../validator/` | P0 |
+| 序号 | 验证器名称                      | 描述                       | 依赖查询                            | 实现路径                                                                                                          | 优先级 |
+|----|----------------------------|--------------------------|---------------------------------|---------------------------------------------------------------------------------------------------------------|-----|
+| 1  | `@CategoryMustExist`       | 确保待删除分类存在（否则返回 404/业务错误） | `CategoryExistsByIdQry`         | `only-danmuku-application/src/main/kotlin/edu/only4/danmuku/application/validater/CategoryMustExist.kt`       | ✅   |
+| 2  | `@CategoryDeletionAllowed` | 校验分类及子分类下无视频引用           | `CountVideosUnderCategoriesQry` | `only-danmuku-application/src/main/kotlin/edu/only4/danmuku/application/validater/CategoryDeletionAllowed.kt` | ✅   |
 
 **优先级说明**：
 - **P0**：核心能力，必须补齐
@@ -151,7 +150,11 @@ graph TD
 ---
 
 ## 🔑 关键业务规则
-- **视频绑定校验**：删除前必须确认分类及其所有子分类下没有视频引用，原系统通过 `VideoInfoQuery.setCategoryIdOrPCategoryId` + `videoInfoService.findCountByParam` 实现（`easylive-java/easylive-common/src/main/java/com/easylive/service/impl/CategoryInfoServiceImpl.java:306`）。DDD 设计需要等价的计数查询与验证器。
+
+- **视频绑定校验**：删除前必须确认分类及其所有子分类下没有视频引用，原系统通过
+  `VideoInfoQuery.setCategoryIdOrPCategoryId` + `videoInfoService.findCountByParam` 实现（
+  `easylive-java/easylive-common/src/main/java/com/easylive/service/impl/CategoryInfoServiceImpl.java:306`）。DDD 实现通过
+  `@CategoryDeletionAllowed` 验证器（依赖 `CountVideosUnderCategoriesQry`）完成。
 - **级联删除**：原系统一次调用会删除目标分类与直接子分类（`CategoryInfoQuery.setCategoryIdOrPCategoryId` + `categoryInfoMapper.deleteByParam`，同文件 `:318` 起），DDD 命令需要支持递归删除整棵分类树，而不是简单阻止有子节点的删除。
 - **缓存刷新**：成功删除后需刷新 Redis 分类缓存（`save2Redis()`，同文件 `:325`），DDD 侧应通过 `CategoryDeletedDomainEvent` → `CategoryDeletedEventHandler` → `RefreshCategoryCacheCmd` 完成。
 - **错误提示一致**：当存在视频绑定时需返回“分类下有视频信息，无法删除”类的业务异常，保持与原接口一致的用户体验。
@@ -170,7 +173,9 @@ fun adminCategoryDel(@RequestBody @Validated request: AdminCategoryDel.Request):
     return AdminCategoryDel.Response()
 }
 ```
-> 控制器入口位于 `only-danmuku/only-danmuku-adapter/src/main/kotlin/edu/only4/danmuku/adapter/portal/api/AdminCategoryController.kt:88`。
+
+> 控制器入口位于
+`only-danmuku-adapter/src/main/kotlin/edu/only4/danmuku/adapter/portal/api/AdminCategoryController.kt:94`。
 
 ```kotlin
 override fun exec(request: Request): Response {
@@ -198,6 +203,7 @@ override fun exec(request: Request): Response {
 
 ---
 
-**文档版本**：v1.0  
+**文档版本**：v1.2  
 **创建时间**：2025-10-22  
-**维护者**：开发团队
+**维护者**：开发团队  
+**近期变更**：实现 @CategoryMustExist、@CategoryDeletionAllowed 验证器；删除控制器预检描述；保留命令侧校验与级联删除设计。

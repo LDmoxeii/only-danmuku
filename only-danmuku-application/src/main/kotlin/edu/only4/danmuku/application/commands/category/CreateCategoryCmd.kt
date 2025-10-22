@@ -3,12 +3,9 @@ package edu.only4.danmuku.application.commands.category
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
-
+import edu.only4.danmuku.application.validater.CategoryExists
 import edu.only4.danmuku.application.validater.UniqueCategoryCode
-import edu.only4.danmuku.application.validater.ParentCategoryExists
 import edu.only4.danmuku.application.validater.UniqueCategoryCodeTarget
-import edu.only4.danmuku.domain._share.meta.category.SCategory
-import edu.only4.danmuku.domain._share.meta.or
 import edu.only4.danmuku.domain.aggregates.category.factory.CategoryFactory
 import org.springframework.stereotype.Service
 
@@ -52,7 +49,7 @@ object CreateCategoryCmd {
     @UniqueCategoryCode
     data class Request(
         /** 父分类ID，顶级分类传0 */
-        @field:ParentCategoryExists
+        @field:CategoryExists
         val parentId: Long = 0L,
         /** 分类编码，唯一标识 */
         override val code: String,

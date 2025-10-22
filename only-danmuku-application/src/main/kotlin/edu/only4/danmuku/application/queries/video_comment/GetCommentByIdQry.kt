@@ -4,17 +4,18 @@ import com.only4.cap4k.ddd.core.application.RequestParam
 
 /**
  * 根据ID获取评论
- *
- * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
- * @author cap4k-ddd-codegen
- * @date 2025/10/15
  */
 object GetCommentByIdQry {
 
-    class Request(
-
+    data class Request(
+        val commentId: Long,
     ) : RequestParam<Response>
 
-    class Response(
+    data class Response(
+        val commentId: Long,
+        val videoId: Long,
+        val videoOwnerId: Long,
+        val userId: Long,
+        val parentId: Long,
     )
 }
