@@ -44,9 +44,9 @@
 │   - replyCommentId: Int? (被回复评论ID，可选)                   │
 │                                                                 │
 │ 验证器：                                                         │
-│   ├─ @VideoExists ❌ (验证视频是否存在)                          │
-│   ├─ @CommentNotClosed ❌ (验证视频评论区未关闭)                 │
-│   ├─ @ReplyCommentExists ❌ (验证被回复评论存在且属于该视频)      │
+│   ├─ @VideoExists ✅ (验证视频是否存在)                          │
+│   ├─ @CommentNotClosed ✅ (验证视频评论区未关闭)                 │
+│   ├─ @ReplyCommentExists ✅ (验证被回复评论存在且属于该视频)      │
 │   └─ @NotEmpty, @Size (内容长度验证) ✅                         │
 │                                                                 │
 │ 处理逻辑分支：                                                   │
@@ -96,7 +96,7 @@
         ┌────────────────────┴────────────────────┐
         ↓                                         ↓
 ┌──────────────────────────┐          ┌──────────────────────────┐
-│ 事件处理器 #1 ❌          │          │ 事件处理器 #2 ⚪          │
+│ 事件监听器 #1 ✅          │          │ 事件监听器 #2 ⚪          │
 │ 监听: CommentPostedDE    │          │ 监听: CommentPostedDE    │
 │ 触发: 更新视频评论统计     │          │ 触发: 发送评论通知        │
 │                          │          │                          │
@@ -105,22 +105,17 @@
 └──────┬───────────────────┘          └──────────────────────────┘
        ↓
 ┌─────────────────────────────────────────────────────────────────┐
-│ 命令：UpdateVideoStatisticsCmd ❌                                │
-│ 状态：❌ 缺失 (需新增到 design/extra/)                            │
+│ 命令：UpdateVideoStatisticsCmd ✅                                │
+│ 状态：已实现                                                     │
 │                                                                 │
 │ 请求参数：                                                       │
-│   - videoId: String (视频ID)                                   │
+│   - videoId: Long                                              │
 │   - commentCountDelta: Int (+1)                                │
 │                                                                 │
 │ 处理逻辑：                                                       │
-│   1. 查询 Video 聚合根                                           │
-│   2. video.updateCommentCount(+1)                              │
-│   3. Mediator.uow.save(video)                                  │
-└────────────────────────────┬────────────────────────────────────┘
-                             ↓
-┌─────────────────────────────────────────────────────────────────┐
-│ 领域事件：VideoStatisticsUpdatedDomainEvent ❌                   │
-│ 状态：❌ 缺失 (需新增到 design/extra/)                            │
+│   1. 通过仓储加载 Video 聚合                                      │
+│   2. 调用 video.applyStatisticsDelta(commentCountDelta=+1)     │
+│   3. Mediator.uow.save()                                       │
 └─────────────────────────────────────────────────────────────────┘
                              ↓
                       ✅ 流程完成
@@ -141,11 +136,11 @@ graph TD
     B -->|replyCommentId == null| C1[命令: PostCommentCmd ✅<br/>发表一级评论]
     B -->|replyCommentId != null| C2[命令: ReplyCommentCmd ✅<br/>回复评论]
 
-    C1 --> C1_1[验证器: @VideoExists ❌]
-    C1 --> C1_2[验证器: @CommentNotClosed ❌]
+    C1 --> C1_1[验证器: @VideoExists ✅]
+    C1 --> C1_2[验证器: @CommentNotClosed ✅]
     C1 --> C1_3[Factory: 创建 VideoComment<br/>pCommentId = 0]
 
-    C2 --> C2_1[验证器: @ReplyCommentExists ❌]
+    C2 --> C2_1[验证器: @ReplyCommentExists ✅]
     C2 --> C2_2[查询: GetCommentByIdQry ✅<br/>获取被回复评论]
     C2 --> C2_3{判断被回复评论层级}
 
@@ -156,16 +151,15 @@ graph TD
     C2_4 --> D2[领域事件: CommentRepliedDomainEvent ✅]
     C2_5 --> D2
 
-    D1 --> E1[事件处理器: 更新视频统计 ❌<br/>监听: CommentPosted<br/>触发: UpdateVideoStatistics]
+    D1 --> E1[事件处理器: 更新视频统计 ✅<br/>监听: CommentPosted<br/>触发: UpdateVideoStatistics]
     D1 --> E2[事件处理器: 发送通知 ⚪<br/>可选扩展]
 
     D2 --> E3[事件处理器: 发送回复通知 ⚪<br/>可选扩展]
 
-    E1 --> F[命令: UpdateVideoStatisticsCmd ❌<br/>commentCount +1]
+    E1 --> F[命令: UpdateVideoStatisticsCmd ✅<br/>commentCount +1]
 
-    F --> G[领域事件: VideoStatisticsUpdatedDE ❌]
+    F --> H[✅ 流程完成]
 
-    G --> H[✅ 流程完成]
     E2 --> H
     E3 --> H
 
@@ -175,12 +169,11 @@ graph TD
     style D1 fill:#C8E6C9,stroke:#388E3C,stroke-width:2px
     style D2 fill:#C8E6C9,stroke:#388E3C,stroke-width:2px
     style H fill:#C8E6C9,stroke:#388E3C,stroke-width:3px
-    style C1_1 fill:#FFCDD2,stroke:#D32F2F,stroke-width:2px
-    style C1_2 fill:#FFCDD2,stroke:#D32F2F,stroke-width:2px
-    style C2_1 fill:#FFCDD2,stroke:#D32F2F,stroke-width:2px
-    style E1 fill:#FFCDD2,stroke:#D32F2F,stroke-width:2px
-    style F fill:#FFCDD2,stroke:#D32F2F,stroke-width:2px
-    style G fill:#FFCDD2,stroke:#D32F2F,stroke-width:2px
+    style C1_1 fill:#C8E6C9,stroke:#D32F2F,stroke-width:2px
+    style C1_2 fill:#C8E6C9,stroke:#D32F2F,stroke-width:2px
+    style C2_1 fill:#C8E6C9,stroke:#D32F2F,stroke-width:2px
+    style E1 fill:#C8E6C9,stroke:#D32F2F,stroke-width:2px
+    style F fill:#C8E6C9,stroke:#D32F2F,stroke-width:2px
     style E2 fill:#FFF9C4,stroke:#F57C00,stroke-width:2px
     style E3 fill:#FFF9C4,stroke:#F57C00,stroke-width:2px
 ```
@@ -222,25 +215,6 @@ graph TD
 
 ### ❌ 缺失的设计清单
 
-#### 需要补充的命令
-
-| 序号 | 命令名称 | 描述 | 建议位置 | 优先级 |
-|-----|---------|------|----------|-------|
-| 1 | `UpdateVideoStatisticsCmd` | 更新视频统计信息 | `design/extra/video_statistics_gen.json` | P0 |
-
-**JSON 定义**（需新增到 `design/extra/video_statistics_gen.json`）：
-```json
-{
-  "cmd": [
-    {
-      "package": "video",
-      "name": "UpdateVideoStatistics",
-      "desc": "更新视频统计信息"
-    }
-  ]
-}
-```
-
 #### 需要补充的领域事件
 
 | 序号 | 事件名称 | 描述 | 触发时机 | 建议位置 | 优先级 |
@@ -265,19 +239,17 @@ graph TD
 
 #### 需要补充的验证器
 
-| 序号 | 验证器名称 | 描述 | 依赖查询 | 实现路径 | 优先级 |
-|-----|-----------|------|----------|----------|-------|
-| 1 | `@VideoExists` | 验证视频是否存在 | `GetVideoInfoQry` | `application/commands/video_comment/validater/VideoExistsValidator.kt` | P0 |
-| 2 | `@CommentNotClosed` | 验证视频评论区未关闭 | `GetVideoInfoQry` | `application/commands/video_comment/validater/CommentNotClosedValidator.kt` | P0 |
-| 3 | `@ReplyCommentExists` | 验证被回复评论存在且属于该视频 | `GetCommentByIdQry` | `application/commands/video_comment/validater/ReplyCommentExistsValidator.kt` | P0 |
+| 序号 | 验证器名称                 | 描述              | 依赖查询                | 实现路径                                                                                                     | 优先级 |
+|----|-----------------------|-----------------|---------------------|----------------------------------------------------------------------------------------------------------|-----|
+| 1  | `@VideoExists`        | 验证视频是否存在        | `GetVideoInfoQry`   | `only-danmuku-application/src/main/kotlin/edu/only4/danmuku/application/validater/VideoExists.kt`        | ✅   |
+| 2  | `@CommentNotClosed`   | 验证视频评论区未关闭      | `GetVideoInfoQry`   | `only-danmuku-application/src/main/kotlin/edu/only4/danmuku/application/validater/CommentNotClosed.kt`   | ✅   |
+| 3  | `@ReplyCommentExists` | 验证被回复评论存在且属于该视频 | `GetCommentByIdQry` | `only-danmuku-application/src/main/kotlin/edu/only4/danmuku/application/validater/ReplyCommentExists.kt` | ✅   |
 
 #### 需要补充的事件处理器
 
-| 序号 | 处理器名称 | 监听事件 | 触发命令 | 实现路径 | 优先级 |
-|-----|-----------|----------|----------|----------|-------|
-| 1 | `CommentPostedToUpdateVideoStatisticsHandler` | `CommentPostedDomainEvent` | `UpdateVideoStatisticsCmd` (commentCount +1) | `adapter/application/events/video_comment/CommentPostedToUpdateVideoStatisticsHandler.kt` | P0 |
-| 2 | `CommentPostedToNotifyHandler` | `CommentPostedDomainEvent` | `SendCommentNotificationCmd` (可选) | `adapter/application/events/video_comment/CommentPostedToNotifyHandler.kt` | P2 |
-| 3 | `CommentRepliedToNotifyHandler` | `CommentRepliedDomainEvent` | `SendReplyNotificationCmd` (可选) | `adapter/application/events/video_comment/CommentRepliedToNotifyHandler.kt` | P2 |
+| 序号 | 监听器名称                                | 监听事件                       | 触发命令                                                                                                           | 实现路径                                                                                                                                            | 优先级 |
+|----|--------------------------------------|----------------------------|----------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|-----|
+| 1  | `CommentPostedDomainEventSubscriber` | `CommentPostedDomainEvent` | `UpdateVideoStatisticsCmd` (commentCount +1) `SendCommentNotificationCmd` (可选) `SendReplyNotificationCmd` (可选) | `only-danmuku-application/src/main/kotlin/edu/only4/danmuku/application/subscribers/domain/video_comment/CommentPostedDomainEventSubscriber.kt` | ✅   |
 
 **优先级说明**：
 - **P0**：核心功能，必须实现

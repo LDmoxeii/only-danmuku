@@ -24,6 +24,11 @@
       "package": "customer_video_series",
       "name": "UpdateCustomerVideoSeriesVideoSort",
       "desc": "更新用户视频系列视频排序"
+    },
+    {
+      "package": "customer_video_series",
+      "name": "RemoveVideoFromSeries",
+      "desc": "从系列中移除视频"
     }
   ],
   "de": [],

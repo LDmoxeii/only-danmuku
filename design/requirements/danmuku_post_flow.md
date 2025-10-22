@@ -24,21 +24,26 @@
 └────────────────────────────┬─────────────────────────────┘
                              ↓
 ┌──────────────────────────────────────────────────────────┐
-│ 控制器：VideoDanmuController#postDanmu ✅                  │
+│ 控制器：DanmuController#danmukuPost ✅                    │
 │ 1. Token → currentUserId                                  │
-│ 2. 构建 VideoDanmu 实体（纪录用户、时间、颜色等）          │
-│ 3. 调用 videoDanmuService.saveVideoDanmu                  │
+│ 2. Mediator.commands.send(PostDanmukuCmd.Request)         │
 └────────────────────────────┬─────────────────────────────┘
                              ↓
 ┌──────────────────────────────────────────────────────────┐
-│ 服务：VideoDanmuServiceImpl#saveVideoDanmu ✅             │
-│ 1. 查询视频 videoInfo                                     │
-│    └─ 不存在 → CODE_600                                   │
-│ 2. 判断视频互动配置（interaction 包含 "0" → 禁止弹幕）     │
-│ 3. 若 replyCommentId 不为空 → 校验评论存在及归属          │
-│ 4. 设置视频作者信息、发布时间等                           │
-│ 5. 插入 video_danmu 记录                                  │
-│ 6. 更新视频弹幕统计、同步 ES                              │
+│ 命令：PostDanmukuCmd ✅                                     │
+│ 验证：                                                      │
+│   - @VideoExists                                            │
+│   - @CommentNotClosed / @DanmukuInteractionAllowed ✅        │
+│   - 文本/颜色等格式校验 ✅                                  │
+│ 流程：                                                      │
+│   1. 校验视频、互动设置                                     │
+│   2. 创建 VideoDanmuku 聚合（factory）                      │
+│   3. Mediator.uow.save()                                    │
+└────────────────────────────┬─────────────────────────────┘
+                             ↓
+┌──────────────────────────────────────────────────────────┐
+│ 领域事件：DanmukuPostedDomainEvent ⚪                       │
+│ → 驱动更新统计、推送弹幕、审计等能力                       │
 └──────────────────────────────────────────────────────────┘
 ```
 
@@ -50,15 +55,16 @@
 ### Mermaid 流程图
 ```mermaid
 graph TD
-    A["请求: POST /danmu/postDanmu<br/>videoId, fileId, text, mode, color, time"] --> B["控制器: postDanmu ✅<br/>currentUserId"]
-    B --> C["服务: saveVideoDanmu ✅"]
-    C --> C1{"视频存在?"}
-    C1 -->|否| C2["BusinessException CODE_600 ❌"]
-    C1 -->|是| C3{"弹幕功能已关闭?"}
-    C3 -->|是| C4["BusinessException: UP主已关闭弹幕 ❌"]
-    C3 -->|否| C5["构建弹幕记录<br/>校验回复评论"]
-    C5 --> C6["插入 video_danmu<br/>更新统计/ES"]
-    C6 --> D["返回成功"]
+    A[请求: POST /danmu/postDanmu<br/>videoId,fileId,text,mode,color,time] --> B[控制器: DanmuController ✅<br/>Mediator.commands]
+    B --> C[命令: PostDanmukuCmd ✅]
+    C --> C1{视频存在?}
+    C1 -->|否| X[业务异常: 视频不存在 ❌]
+    C1 -->|是| C2{互动设置允许弹幕?}
+    C2 -->|否| X2[业务异常: 弹幕已关闭 ❌]
+    C2 -->|是| C3[创建 VideoDanmuku 聚合 ✅]
+    C3 --> D[提交事务 ✅]
+    D --> E[领域事件: DanmukuPostedDomainEvent ⚪]
+    E --> F[事件监听器: DanmukuPostedEventHandler ❌<br/>更新统计/推送]
 ```
 
 ---
@@ -66,27 +72,27 @@ graph TD
 ## 📦 设计元素清单
 
 ### ✅ 已存在的设计
-- Controller：`VideoDanmuController#postDanmu`（`easylive-java/.../VideoDanmuController.java:61`）
-- Service 逻辑：`VideoDanmuServiceImpl#saveVideoDanmu`（`easylive-java/.../VideoDanmuServiceImpl.java:200`）
-- 校验点：视频存在、互动设置、回复评论有效性、视频作者信息填充。
+
+- 控制器：`DanmuController#danmukuPost` 使用 Mediator 调用命令（`only-danmuku-adapter/.../DanmuController.kt`）
+- 命令：`PostDanmukuCmd`（`only-danmuku-application/.../commands/video_danmuku/PostDanmukuCmd.kt`）
+- 聚合：`VideoDanmuku` 工厂负责创建并持久化弹幕实体
+- 校验器：`@VideoExists`、`@DanmukuInteractionAllowed`、`@DanmukuTextFormat` 等可复用能力
 
 ### ❌ DDD 需补充的能力
 
-| 类型 | 缺失项 | 描述 | 建议位置 | 优先级 |
-|------|--------|------|----------|-------|
-| 命令 | `PostDanmukuCmd` | 处理弹幕发送、权限校验、统计更新 | `design/aggregate/video_danmuku/_gen.json` | P0 |
-| 验证器 | `@VideoExists` | 校验视频存在 | `only-danmuku-application/.../validator/` | P0 |
-| 验证器 | `@DanmukuInteractionAllowed` | 校验视频互动设置 | 同上 | P0 |
-| 验证器 | `@DanmukuTextFormat` | 校验弹幕文本/颜色/模式 | 同上 | P1 |
-| 查询 | `GetVideoInfo` | 复用视频查询；需确保命令使用 | `design/aggregate/video/_gen.json` | P0 |
-| 事件 | `VideoDanmukuPostedDomainEvent` | 弹幕发送后触发通知/缓存刷新 | `design/aggregate/video_danmuku/_gen.json` | P1 |
-| 事件处理器 | `VideoDanmukuPostedEventHandler` | 刷新弹幕缓存、推送 WebSocket | `only-danmuku-adapter/.../events/VideoDanmukuPostedEventHandler.kt` | P1 |
+| 类型    | 能力                           | 描述                  | 位置                                                                                                              | 状态 |
+|-------|------------------------------|---------------------|-----------------------------------------------------------------------------------------------------------------|----|
+| 验证器   | `@DanmukuInteractionAllowed` | 校验视频互动设置是否允许弹幕      | `only-danmuku-application/src/main/kotlin/edu/only4/danmuku/application/validater/DanmukuInteractionAllowed.kt` | ✅  |
+| 验证器   | `@DanmukuTextFormat`         | 校验弹幕文本/颜色/模式        | `only-danmuku-application/src/main/kotlin/edu/only4/danmuku/application/validater/DanmukuTextFormat.kt`         | ✅  |
+| 事件    | `DanmukuPostedDomainEvent`   | 弹幕发送后驱动统计/通知        | `design/aggregate/video_danmuku/_gen.json`                                                                      | P1 |
+| 事件处理器 | `DanmukuPostedEventHandler`  | 刷新弹幕缓存、推送 WebSocket | `only-danmuku-adapter/.../events/DanmukuPostedEventHandler.kt`                                                  | P1 |
 
 ---
 
 ## 🔑 关键业务规则
-- **互动设置校验**：视频 `interaction` 包含 `0` 表示弹幕关闭；须阻止发送。
-- **文本与参数限制**：文本长度 ≤ 200，颜色为合法 hex 格式；需在接口或命令层校验。
+
+- **互动设置校验**：视频 `interaction` 包含 `0` 表示弹幕关闭；`@DanmukuInteractionAllowed` 会阻止发送。
+- **文本与参数限制**：文本长度 ≤ 200，颜色为合法 hex 格式；`@DanmukuTextFormat` 统一校验文本、颜色、模式和时间。
 - **回复评论处理**：若是回复弹幕，需校验目标评论存在且属于当前视频，补充回复对象昵称/头像。
 - **统计同步**：发送弹幕时更新视频弹幕数、ES 索引等；DDD 中需通过事件或命令完成。
 - **异常处理**：若视频/评论不存在，统一抛 `CODE_600`。
@@ -95,64 +101,55 @@ graph TD
 ---
 
 ## 🧾 控制器与命令示例
-```java
-@RequestMapping("/postDanmu")
-@GlobalInterceptor(checkLogin = true)
-public ResponseVO postDanmu(@NotEmpty String videoId,
-                            @NotEmpty String fileId,
-                            @NotEmpty @Size(max = 200) String text,
-                            @NotNull Integer mode,
-                            @NotEmpty String color,
-                            @NotNull Integer time) {
-    VideoDanmu videoDanmu = new VideoDanmu();
-    videoDanmu.setVideoId(videoId);
-    videoDanmu.setFileId(fileId);
-    videoDanmu.setText(text);
-    videoDanmu.setMode(mode);
-    videoDanmu.setColor(color);
-    videoDanmu.setTime(time);
-    TokenUserInfoDto userInfo = getTokenUserInfoDto();
-    if (userInfo == null) {
-        return getServerErrorResponseVO("用户未登录");
-    }
-    videoDanmu.setUserId(userInfo.getUserId());
-    videoDanmu.setPostTime(new Date());
-    videoDanmuService.saveVideoDanmu(videoDanmu);
-    return getSuccessResponseVO(null);
+```kotlin
+@PostMapping("/postDanmu")
+fun danmukuPost(@RequestBody @Validated request: DanmukuPost.Request): DanmukuPost.Response {
+    Mediator.commands.send(
+        PostDanmukuCmd.Request(
+            videoId = request.videoId.toLong(),
+            fileId = request.fileId.toLong(),
+            customerId = LoginHelper.getUserId()!!,
+            text = request.text,
+            mode = request.mode ?: 1,
+            color = request.color,
+            time = request.time ?: 0
+        )
+    )
+    return DanmukuPost.Response()
 }
 ```
-> 参考：`easylive-java/easylive-web/src/main/java/com/easylive/web/controller/VideoDanmuController.java:61`
+
+> 参考：`only-danmuku-adapter/src/main/kotlin/edu/only4/danmuku/adapter/portal/api/DanmuController.kt`
 
 ```kotlin
-// DDD 命令建议实现
-val video = Mediator.repositories.findFirst(
-    SVideo.predicateById(request.videoId),
-    persist = false
-).getOrNull() ?: throw KnownException("视频不存在：${request.videoId}")
-if (video.interaction.contains("0")) {
-    throw KnownException("UP主已关闭弹幕")
-}
-val danmuku = Mediator.factories.create(VideoDanmukuFactory.Payload(
-    videoId = request.videoId,
-    userId = request.userId,
-    text = request.text,
-    mode = request.mode,
-    color = request.color,
-    time = request.time
-))
+Mediator.factories.create(
+    VideoDanmukuFactory.Payload(
+        videoId = request.videoId,
+        fileId = request.fileId,
+        customerId = request.customerId,
+        postTime = System.currentTimeMillis() / 1000,
+        text = request.text,
+        mode = request.mode != 0,
+        color = request.color,
+        time = request.time
+    )
+)
 Mediator.uow.save()
 ```
 
----
+> 参考：`only-danmuku-application/src/main/kotlin/edu/only4/danmuku/application/commands/video_danmuku/PostDanmukuCmd.kt`
+
+----
 
 ## 📂 传统架构参考
 - 控制器：`easylive-java/easylive-web/src/main/java/com/easylive/web/controller/VideoDanmuController.java:61`
 - 服务实现：`easylive-java/easylive-common/src/main/java/com/easylive/service/impl/VideoDanmuServiceImpl.java:200`
 - 弹幕表定义：`video_danmuku`
 
----
+----
 
-**文档版本**：v1.0  
+**文档版本**：v1.1  
 **创建时间**：2025-10-22  
-**维护者**：开发团队
+**维护者**：开发团队  
+**近期变更**：流程改为请求→命令→事件，更新现有命令与待补能力说明。
 

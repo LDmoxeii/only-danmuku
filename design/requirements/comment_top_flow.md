@@ -17,18 +17,28 @@
 └────────────────────────────┬─────────────────────────────┘
                              ↓
 ┌──────────────────────────────────────────────────────────┐
-│ 控制器：VideoCommentController#topComment ✅               │
-│ 1. Token → currentUserId                                  │
-│ 2. videoCommentService.topComment(commentId, userId)      │
+│ 控制器：CommentController#commentTop ✅                   │
+│ 1. 解析登录用户 → operatorId                             │
+│ 2. Mediator.commands.send(TopCommentCmd.Request)          │
 └────────────────────────────┬─────────────────────────────┘
                              ↓
 ┌──────────────────────────────────────────────────────────┐
-│ 服务：VideoCommentService.topComment ✅                    │
-│ 1. 查询评论信息 → 获取 videoId & 作者信息                 │
-│ 2. 验证 userId 是否为视频作者（或管理员）                 │
-│ 3. 如果该视频已有置顶评论 → 先取消                        │
-│ 4. 更新 comment.topType = TOP                             │
-│ 5. 记录操作（可选：系统消息/日志）                        │
+│ 命令：TopCommentCmd ✅                                     │
+│ 1. 加载评论 & 视频信息                                    │
+│ 2. 校验评论归属/视频作者权限                              │
+│ 3. 若存在其他置顶 → commentRepository.untop(videoId) ✅    │
+│ 4. 调用 VideoComment.top()（聚合行为）                     │
+│ 5. Mediator.uow.save()                                     │
+└────────────────────────────┬─────────────────────────────┘
+                             ↓
+┌──────────────────────────────────────────────────────────┐
+│ 领域事件：CommentToppedDomainEvent ✅                     │
+│ 由聚合在 onTop/onCreate 中自动发布                        │
+└────────────────────────────┬─────────────────────────────┘
+                             ↓
+┌──────────────────────────────────────────────────────────┐
+│ 事件监听器：CommentToppedDomainEventSubscriber ⚪         │
+│ → 后续命令：RefreshVideoCommentTopCmd ❌（刷新缓存/推送） │
 └──────────────────────────────────────────────────────────┘
 ```
 
@@ -40,16 +50,19 @@
 ### Mermaid 流程图
 ```mermaid
 graph TD
-    A["请求: POST /comment/topComment<br/>commentId"] --> B["控制器: VideoCommentController ✅<br/>currentUserId"]
-    B --> C["服务: topComment(commentId, userId) ✅"]
-    C --> C1{"评论存在?"}
-    C1 -->|否| C2["BusinessException CODE_600 ❌"]
-    C1 -->|是| C3["校验视频归属/权限 ✅"]
-    C3 --> C4{"已有置顶评论?"}
-    C4 -->|是| C5["取消旧置顶 ✅"]
-    C4 -->|否| C6["直接置顶 ✅"]
-    C5 --> C6
-    C6 --> D["更新评论状态 → 返回成功"]
+    A[请求: POST /comment/topComment<br/>commentId] --> B[控制器: CommentController ✅<br/>Mediator.commands]
+    B --> C[命令: TopCommentCmd ✅]
+    C --> C1{评论存在?}
+    C1 -->|否| X[业务异常: 评论不存在 ❌]
+    C1 -->|是| C2[校验视频归属 & 权限 ✅]
+    C2 --> C3{已有置顶评论?}
+    C3 -->|是| C4[取消旧置顶 ✅]
+    C3 -->|否| C5[调用 comment.top() ✅]
+    C4 --> C5
+    C5 --> D[保存事务 ✅]
+    D --> E[领域事件: CommentToppedDomainEvent ✅]
+    E --> F[事件监听器: CommentToppedDomainEventSubscriber ⚪]
+    F --> G[命令: RefreshVideoCommentTopCmd ❌<br/>刷新缓存/推送]
 ```
 
 ---
@@ -57,26 +70,24 @@ graph TD
 ## 📦 设计元素清单
 
 ### ✅ 已存在的设计
-- 控制器：`VideoCommentController#topComment`（`easylive-java/.../VideoCommentController.java:227`）
-- 服务接口：`VideoCommentService#topComment` & `cancelTopComment`（具体实现需查看 service）
-- DDD 聚合：
-  - `VideoComment` 聚合未显示，但相关命令/事件可在 `video_comment` 设计中查找  
-  - `CommentTopTypeEnum` 枚举表示置顶状态  
-  - 命令（需补充）：`TopVideoCommentCmd`、`CancelTopVideoCommentCmd`（假设存在或需添加）
-- 现有流程使用传统 service 操作，未使用事件驱动。
+
+- 控制器：`CommentController#commentTop` 使用 Mediator 发送命令（`only-danmuku-adapter/.../CommentController.kt:90`）
+- 命令：`TopCommentCmd`、`UntopCommentCmd`（`only-danmuku-application/.../commands/video_comment`）
+- 聚合行为：`VideoComment.top()` / `VideoComment.untop()` 自动发布对应领域事件
+- 事件监听器：`CommentToppedDomainEventSubscriber`（已生成，待补充缓存刷新逻辑）
+- 验证器：`@VideoCommentOwner` 校验评论归属、操作者权限（
+  `only-danmuku-application/src/main/kotlin/edu/only4/danmuku/application/validater/VideoCommentOwner.kt`）
 
 ---
 
 ## ❌ 缺失的设计清单
 
-| 类型 | 缺失项 | 描述 | 建议位置 | 优先级 |
-|------|--------|------|----------|-------|
-| 命令 | `TopVideoCommentCmd` | 根据 commentId 设置置顶，并处理原置顶评论 | `design/aggregate/video_comment/_gen.json` | P0 |
-| 命令 | `CancelTopVideoCommentCmd` | 取消置顶（用于已有置顶的情况） | 同上 | P0 |
-| 验证器 | `@VideoCommentOwner` | 校验评论归属视频，并验证视频作者 | `only-danmuku-application/.../validator/` | P0 |
-| 查询 | `GetVideoCommentDetailQry` | 根据 commentId 返回详情（含 videoId、作者） | `design/aggregate/video_comment/_gen.json` | P0 |
-| 事件 | `VideoCommentTopChangedDomainEvent` | 置顶变更后通知前端刷新或记录日志 | `design/aggregate/video_comment/_gen.json` | P1 |
-| 事件处理器 | `VideoCommentTopChangedEventHandler` | 刷新缓存、推送通知 | `only-danmuku-adapter/.../events/VideoCommentTopChangedEventHandler.kt` | P1 |
+| 类型    | 缺失项                                     | 描述                   | 建议位置                                           | 优先级 |
+|-------|-----------------------------------------|----------------------|------------------------------------------------|-----|
+| 验证器   | `@CommentTopPermission`                 | 校验置顶操作者是否为视频作者/管理员   | `only-danmuku-application/.../validater/`      | P0  |
+| 查询    | `GetTopCommentByVideoQry`               | 获取视频当前置顶评论，供命令内部互斥处理 | `design/aggregate/video_comment/_gen.json`     | P0  |
+| 命令    | `RefreshVideoCommentTopCmd`             | 置顶变更后同步缓存/通知         | `design/extra/comment_top_gen.json`            | P1  |
+| 事件处理器 | `CommentToppedDomainEventSubscriber` 实现 | 订阅事件后触发刷新命令          | `only-danmuku-application/.../subscribers/...` | P1  |
 
 ---
 
@@ -90,28 +101,28 @@ graph TD
 ---
 
 ## 🧾 控制器与命令示例
-```java
-@RequestMapping("/topComment")
-@GlobalInterceptor(checkLogin = true)
-public ResponseVO topComment(@NotNull Integer commentId) {
-    TokenUserInfoDto tokenUserInfoDto = getTokenUserInfoDto();
-    videoCommentService.topComment(commentId, tokenUserInfoDto.getUserId());
-    return getSuccessResponseVO(null);
+```kotlin
+@PostMapping("/topComment")
+fun commentTop(@RequestBody @Validated request: CommentTop.Request): CommentTop.Response {
+    Mediator.commands.send(
+        TopCommentCmd.Request(
+            commentId = request.commentId.toLong()
+        )
+    )
+    return CommentTop.Response()
 }
 ```
-> 参考：`easylive-java/easylive-web/src/main/java/com/easylive/web/controller/VideoCommentController.java:227`
+
+> 参考：`only-danmuku-adapter/src/main/kotlin/edu/only4/danmuku/adapter/portal/api/CommentController.kt`
 
 ```kotlin
-// DDD 命令建议实现
+// 命令核心逻辑（TopCommentCmd.Handler）
 val comment = Mediator.repositories.findFirst(
     SVideoComment.predicateById(request.commentId),
     persist = false
 ).getOrNull() ?: throw KnownException("评论不存在：${request.commentId}")
-val video = comment.video ?: throw KnownException("评论无视频关联")
-if (video.customerId != request.userId) {
-    throw KnownException("无权置顶该评论")
-}
-video.updateTopComment(comment)
+// TODO: 校验操作者权限、取消旧置顶
+comment.top()
 Mediator.uow.save()
 ```
 
@@ -124,7 +135,8 @@ Mediator.uow.save()
 
 ---
 
-**文档版本**：v1.0  
+**文档版本**：v1.1  
 **创建时间**：2025-10-22  
-**维护者**：开发团队
+**维护者**：开发团队  
+**近期变更**：统一为“请求→命令→事件→命令”流程，补充现有命令/事件监听器与缺口说明。
 

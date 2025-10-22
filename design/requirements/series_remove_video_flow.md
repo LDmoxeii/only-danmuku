@@ -49,23 +49,10 @@
 │   4. Mediator.uow.save(customerVideoSeries)                    │
 └────────────────────────────┬────────────────────────────────────┘
                              ↓
-┌─────────────────────────────────────────────────────────────────┐
-│ 领域事件：VideoRemovedFromSeriesDomainEvent ❌                   │
-│ 状态：❌ 缺失 (需新增到 design/extra/)                            │
-│                                                                 │
-│ 事件载荷：                                                       │
-│ {                                                               │
-│   "userId": "U001",          // 用户ID                          │
-│   "seriesId": 123,           // 系列ID                          │
-│   "videoId": "V001",         // 被移除的视频ID                   │
-│   "removeTime": 1729267200   // 移除时间 (秒级时间戳)            │
-│ }                                                               │
-└────────────────────────────┬────────────────────────────────────┘
-                             ↓
                       ✅ 流程完成
 
 说明：
-- ❌ 主流程所需命令和事件需要补充
+- ❌ 主流程所需命令需要补充
 - 简单的单聚合根操作（删除关联关系）
 - 无需级联操作（仅删除关联，不删除视频）
 - 无需统计更新（视频系列无视频计数字段）
@@ -82,16 +69,13 @@ graph TD
     B --> B3[查询: CustomerVideoSeries by seriesId]
     B --> B4[聚合方法: removeVideo<br/>videoId]
 
-    B4 --> C[领域事件: VideoRemovedFromSeriesDomainEvent ❌<br/>userId, seriesId, videoId, removeTime]
-
-    C --> D[✅ 流程完成]
+    B4 --> D[✅ 流程完成]
 
     style A fill:#E3F2FD,stroke:#1976D2,stroke-width:3px
     style D fill:#C8E6C9,stroke:#388E3C,stroke-width:3px
     style B fill:#FFCDD2,stroke:#D32F2F,stroke-width:2px
     style B1 fill:#FFCDD2,stroke:#D32F2F,stroke-width:2px
     style B2 fill:#FFCDD2,stroke:#D32F2F,stroke-width:2px
-    style C fill:#FFCDD2,stroke:#D32F2F,stroke-width:2px
 ```
 
 **图例说明**：

@@ -30,12 +30,12 @@
 │ 状态：✅ 已定义 (design/aggregate/video_danmuku/_gen.json:10)   │
 │                                                                 │
 │ 命令参数：                                                       │
-│   - danmuId: Int                                                │
-│   - operatorId: String? (可选，用于UP主权限校验)                 │
+│   - danmuId: Long                                               │
+│   - operatorId: Long? (可选，用于UP主权限校验)                   │
 │                                                                 │
 │ 验证器：                                                         │
-│   ├─ @DanmukuExists ❌ (验证弹幕存在)                            │
-│   └─ @DanmukuDeletePermission ❌ (验证删除权限)                  │
+│   ├─ @DanmukuExists ✅ (验证弹幕存在)                            │
+│   └─ @DanmukuDeletePermission ✅ (验证删除权限)                  │
 │                                                                 │
 │ 处理逻辑：                                                       │
 │   1. 查询弹幕信息 GetDanmukuByIdQry ❌                            │
@@ -160,6 +160,8 @@ graph TD
 |-----|---------|------|--------|----------|-------|
 | 1 | `GetDanmukuByIdQry` | 根据ID获取弹幕 | `{ danmukuId, videoId, customerId, content, postTime, fileId }` | `design/extra/danmuku_query_gen.json` | P0 |
 
+> 当前命令通过仓储直接校验弹幕存在性，若后续需要读模型复用，再考虑补充该查询。
+
 **JSON 定义**（需新增到 `design/extra/danmuku_query_gen.json`）：
 ```json
 {
@@ -175,10 +177,10 @@ graph TD
 
 #### 需要补充的验证器
 
-| 序号 | 验证器名称 | 描述 | 依赖查询 | 实现路径 | 优先级 |
-|-----|-----------|------|----------|----------|-------|
-| 1 | `@DanmukuExists` | 验证弹幕存在 | `GetDanmukuByIdQry` | `application/.../validater/DanmukuExists.kt` | P0 |
-| 2 | `@DanmukuDeletePermission` | 验证删除权限（UP主或管理员） | `GetDanmukuByIdQry`<br/>`GetVideoInfoQry` | `application/.../validater/DanmukuDeletePermission.kt` | P0 |
+| 序号 | 验证器名称                      | 描述              | 实现路径                                                                                                          | 状态 |
+|----|----------------------------|-----------------|---------------------------------------------------------------------------------------------------------------|----|
+| 1  | `@DanmukuExists`           | 验证弹幕存在          | `only-danmuku-application/src/main/kotlin/edu/only4/danmuku/application/validater/DanmukuExists.kt`           | ✅  |
+| 2  | `@DanmukuDeletePermission` | 验证删除权限（UP主或管理员） | `only-danmuku-application/src/main/kotlin/edu/only4/danmuku/application/validater/DanmukuDeletePermission.kt` | ✅  |
 
 #### 需要补充的事件处理器
 
@@ -370,6 +372,7 @@ fun batchDelDanmu(
 
 ---
 
-**文档版本**：v1.0
-**创建时间**：2025-10-22
-**维护者**：开发团队
+**文档版本**：v1.1  
+**创建时间**：2025-10-22  
+**维护者**：开发团队  
+**近期变更**：补充 @DanmukuExists、@DanmukuDeletePermission 校验器并同步命令参数说明。

@@ -133,7 +133,8 @@ class CommentController {
         // 调用命令置顶评论
         Mediator.commands.send(
             TopCommentCmd.Request(
-                commentId = request.commentId.toLong()
+                commentId = request.commentId.toLong(),
+                operatorId = LoginHelper.getUserId()!!
             )
         )
         return CommentTop.Response()

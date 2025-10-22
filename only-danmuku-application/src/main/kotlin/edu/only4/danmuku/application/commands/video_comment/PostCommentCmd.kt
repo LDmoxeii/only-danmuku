@@ -4,9 +4,11 @@ import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
+import edu.only4.danmuku.application.validater.CommentNotClosed
+import edu.only4.danmuku.application.validater.ReplyCommentExists
+import edu.only4.danmuku.application.validater.VideoExists
 import edu.only4.danmuku.domain._share.meta.video.SVideo
 import edu.only4.danmuku.domain.aggregates.video_comment.factory.VideoCommentFactory
-
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
 
@@ -46,8 +48,11 @@ object PostCommentCmd {
         }
     }
 
+    @ReplyCommentExists(videoIdField = "videoId", replyCommentIdField = "replyCommentId")
     data class Request(
         /** 视频ID */
+        @field:VideoExists
+        @field:CommentNotClosed
         val videoId: Long,
         /** 回复评论ID */
         val replyCommentId: Long? = null,

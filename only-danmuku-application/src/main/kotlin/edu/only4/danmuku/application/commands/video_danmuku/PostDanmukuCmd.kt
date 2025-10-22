@@ -3,6 +3,9 @@ package edu.only4.danmuku.application.commands.video_danmuku
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
+import edu.only4.danmuku.application.validater.DanmukuInteractionAllowed
+import edu.only4.danmuku.application.validater.DanmukuTextFormat
+import edu.only4.danmuku.application.validater.VideoExists
 import edu.only4.danmuku.domain.aggregates.video_danmuku.factory.VideoDanmukuFactory
 
 import org.springframework.stereotype.Service
@@ -17,26 +20,29 @@ object PostDanmukuCmd {
         override fun exec(request: Request): Response {
             val now = System.currentTimeMillis() / 1000
 
-            Mediator.factories.create(
-                VideoDanmukuFactory.Payload(
-                    videoId = request.videoId,
-                    fileId = request.fileId,
-                    customerId = request.customerId,
-                    postTime = now,
-                    text = request.text,
-                    mode = (request.mode != 0),
-                    color = request.color,
-                    time = request.time
-                )
+            val payload = VideoDanmukuFactory.Payload(
+                videoId = request.videoId,
+                fileId = request.fileId,
+                customerId = request.customerId,
+                postTime = now,
+                text = request.text,
+                mode = request.mode != 0,
+                color = request.color,
+                time = request.time
             )
+
+            Mediator.factories.create(payload)
 
             Mediator.uow.save()
             return Response()
         }
     }
 
+    @DanmukuTextFormat(modeField = "mode", timeField = "time")
     data class Request(
         /** 视频ID */
+        @field:VideoExists
+        @field:DanmukuInteractionAllowed
         val videoId: Long,
         /** 文件ID */
         val fileId: Long,

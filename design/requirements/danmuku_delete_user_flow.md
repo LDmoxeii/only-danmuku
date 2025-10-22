@@ -18,18 +18,21 @@
                              ↓
 ┌──────────────────────────────────────────────────────────┐
 │ 控制器：UCenterInteractController#delDanmu ✅              │
-│ 1. 从 Token 获取当前用户 userId                          │
-│ 2. videoDanmuService.deleteDanmu(userId, danmuId)         │
+│ 1. 从 Token 获取当前用户 operatorId                      │
+│ 2. Mediator.commands.send(DeleteDanmukuCmd.Request)       │
 └────────────────────────────┬─────────────────────────────┘
                              ↓
 ┌──────────────────────────────────────────────────────────┐
-│ 服务：VideoDanmuServiceImpl#deleteDanmu ✅                │
-│ 1. 根据 danmuId 查询弹幕（不存在 → CODE_600）              │
-│ 2. 根据 videoId 查询视频（不存在 → CODE_600）             │
-│ 3. 当 userId != null 时，校验 video.userId == userId       │
-│    └─ 不匹配 → CODE_600（无权限）                         │
-│ 4. 删除弹幕（video_danmu.deleteByDanmuId）                │
-│ 5. ❌ 未更新弹幕计数、未同步 ES、未记录审计               │
+│ 命令：DeleteDanmukuCmd ✅                                  │
+│ 1. @DanmukuExists 验证弹幕存在                            │
+│ 2. @DanmukuDeletePermission 校验操作者权限                │
+│ 3. 仓储加载弹幕并软删除                                   │
+│ 4. Mediator.uow.save()                                    │
+└────────────────────────────┬─────────────────────────────┘
+                             ↓
+┌──────────────────────────────────────────────────────────┐
+│ 领域事件：DanmukuDeletedDomainEvent ⚪                     │
+│ （聚合 onDelete 时发布，待实现统计/审计逻辑）             │
 └──────────────────────────────────────────────────────────┘
 ```
 
@@ -56,24 +59,15 @@ selectByDanmuId(danmuId) == null
 ### Mermaid 流程图
 ```mermaid
 graph TD
-    A["请求: POST /ucenter/delDanmu<br/>danmuId"] --> B["控制器: UCenterInteractController ✅<br/>获取 currentUserId"]
-    B --> C["服务: VideoDanmuServiceImpl.deleteDanmu ✅"]
-
-    C --> C1{"弹幕存在?"}
-    C1 -->|否| C2["BusinessException CODE_600 ❌"]
-    C1 -->|是| C3["查询视频 ✅"]
-    C3 --> C4{"video.userId == currentUserId?"}
-    C4 -->|否| C5["BusinessException CODE_600 ❌"]
-    C4 -->|是| C6["deleteByDanmuId ✅"]
-    C6 --> C7["完成响应（未更新计数/ES） ⚪"]
-
-    style A fill:#E3F2FD,stroke:#1976D2,stroke-width:3px
-    style B fill:#C8E6C9,stroke:#388E3C,stroke-width:2px
-    style C fill:#C8E6C9,stroke:#388E3C,stroke-width:2px
-    style C6 fill:#C8E6C9,stroke:#388E3C,stroke-width:2px
-    style C7 fill:#FFF9C4,stroke:#FBC02D,stroke-width:2px
-    style C2 fill:#FFCDD2,stroke:#D32F2F,stroke-width:2px
-    style C5 fill:#FFCDD2,stroke:#D32F2F,stroke-width:2px
+    A[请求: POST /ucenter/delDanmu<br/>danmuId] --> B[控制器: UCenterInteractController ✅<br/>Mediator.commands]
+    B --> C[命令: DeleteDanmukuCmd ✅]
+    C --> C1{弹幕存在?}
+    C1 -->|否| X[业务异常: 弹幕不存在 ❌]
+    C1 -->|是| C2{@DanmukuDeletePermission ✅}
+    C2 --> C3[仓储软删弹幕 ✅]
+    C3 --> D[提交事务 ✅]
+    D --> E[领域事件: DanmukuDeletedDomainEvent ⚪]
+    E --> F[事件监听器: DanmukuDeletedEventHandler ❌<br/>记录审计/同步缓存]
 ```
 
 ---
@@ -119,11 +113,14 @@ graph TD
 |-----|---------|------|--------|----------|-------|
 | 1 | `GetDanmukuByIdQry` | 根据弹幕 ID 获取详情（含视频/作者） | `DanmukuDetail` | `design/aggregate/video_danmuku/_gen.json` | P0 |
 
+> 当前命令通过仓储直接校验弹幕存在与权限，若后续需要读模型复用，再考虑补充该查询。
+
 #### 需要补充的验证器 (Validators)
-| 序号 | 验证器名称 | 描述 | 依赖查询 | 实现路径 | 优先级 |
-|-----|-----------|------|----------|----------|-------|
-| 1 | `@DanmukuExists` | 校验弹幕存在性 | `GetDanmukuByIdQry` | `only-danmuku-application/.../validator/` | P0 |
-| 2 | `@DanmukuDeletePermission` | 校验操作者与视频作者一致 | `GetDanmukuByIdQry` | `only-danmuku-application/.../validator/` | P0 |
+
+| 序号 | 验证器名称                      | 描述           | 实现路径                                                                                                          | 状态 |
+|----|----------------------------|--------------|---------------------------------------------------------------------------------------------------------------|----|
+| 1  | `@DanmukuExists`           | 校验弹幕存在性      | `only-danmuku-application/src/main/kotlin/edu/only4/danmuku/application/validater/DanmukuExists.kt`           | ✅  |
+| 2  | `@DanmukuDeletePermission` | 校验操作者与视频作者一致 | `only-danmuku-application/src/main/kotlin/edu/only4/danmuku/application/validater/DanmukuDeletePermission.kt` | ✅  |
 
 #### 需要补充的事件处理器 (Event Handlers)
 | 序号 | 处理器名称 | 监听事件 | 触发命令 | 实现路径 | 优先级 |
@@ -160,21 +157,21 @@ public ResponseVO delDanmu(@NotNull Integer danmuId) {
 > 参考：`easylive-java/easylive-web/src/main/java/com/easylive/web/controller/UCenterInteractController.java:154`
 
 ```kotlin
-// DDD 控制器（当前实现缺少 operatorId）
 @PostMapping("/delDanmu")
 fun delDanmu(@RequestBody @Validated request: UCenterDelDanmu.Request): UCenterDelDanmu.Response {
     Mediator.commands.send(
         DeleteDanmukuCmd.Request(
-            danmukuId = request.danmuId.toLong()
+            danmukuId = request.danmuId.toLong(),
+            operatorId = LoginHelper.getUserId()!!
         )
     )
     return UCenterDelDanmu.Response()
 }
 ```
-> 参考：`only-danmuku/only-danmuku-adapter/src/main/kotlin/edu/only4/danmuku/adapter/portal/api/UCenterInteractController.kt:158`
+
+> 参考：`only-danmuku-adapter/src/main/kotlin/edu/only4/danmuku/adapter/portal/api/UCenterInteractController.kt`
 
 ```kotlin
-// 命令处理器（缺少权限校验与事件触发）
 val danmuku = Mediator.repositories.findFirst(
     SVideoDanmuku.predicateById(request.danmukuId),
     persist = false
@@ -183,7 +180,9 @@ val danmuku = Mediator.repositories.findFirst(
 Mediator.repositories.remove(SVideoDanmuku.predicateById(danmuku.id))
 Mediator.uow.save()
 ```
-> 参考：`only-danmuku/only-danmuku-application/src/main/kotlin/edu/only4/danmuku/application/commands/video_danmuku/DeleteDanmukuCmd.kt:18`
+
+> 参考：
+`only-danmuku-application/src/main/kotlin/edu/only4/danmuku/application/commands/video_danmuku/DeleteDanmukuCmd.kt`
 
 ---
 
@@ -194,7 +193,8 @@ Mediator.uow.save()
 
 ---
 
-**文档版本**：v1.0  
+**文档版本**：v1.1  
 **创建时间**：2025-10-22  
-**维护者**：开发团队
+**维护者**：开发团队  
+**近期变更**：调整流程为请求→命令→事件→命令，记录已实现的校验器与命令参数。
 

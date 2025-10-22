@@ -161,7 +161,8 @@ class UCenterInteractController {
         // 调用命令删除弹幕
         Mediator.commands.send(
             DeleteDanmukuCmd.Request(
-                danmukuId = request.danmuId.toLong()
+                danmukuId = request.danmuId.toLong(),
+                operatorId = LoginHelper.getUserId()!!
             )
         )
 

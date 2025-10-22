@@ -140,6 +140,17 @@ class CustomerVideoSeries (
         }
     }
 
+    fun removeVideo(videoId: Long): Boolean {
+        val removed = customerVideoSeriesVideos.removeIf { it.videoId == videoId }
+        if (removed) {
+            customerVideoSeriesVideos.sortBy { it.sort }
+            customerVideoSeriesVideos.forEachIndexed { index, video ->
+                video.sort = (index + 1).toByte()
+            }
+        }
+        return removed
+    }
+
     // 【字段映射结束】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
 
     // 【行为方法开始】

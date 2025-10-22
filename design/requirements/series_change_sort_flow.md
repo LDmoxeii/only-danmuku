@@ -46,30 +46,13 @@
 │   3. 遍历系列ID列表，依次设置 sort 值 (1, 2, 3...)               │
 │      customerVideoSeries.updateSort(newSortValue)              │
 │   4. 批量保存所有聚合根                                           │
-│      Mediator.uow.saveAll(customerVideoSeriesList)             │
-└────────────────────────────┬────────────────────────────────────┘
-                             ↓
-┌─────────────────────────────────────────────────────────────────┐
-│ 领域事件：CustomerVideoSeriesSortUpdatedDomainEvent ❌           │
-│ 状态：❌ 缺失 (需新增到 design/extra/)                            │
-│                                                                 │
-│ 事件载荷：                                                       │
-│ {                                                               │
-│   "userId": "U001",             // 用户ID                       │
-│   "sortUpdates": [              // 排序更新列表                  │
-│     { "seriesId": 123, "oldSort": 3, "newSort": 1 },          │
-│     { "seriesId": 456, "oldSort": 1, "newSort": 2 },          │
-│     { "seriesId": 789, "oldSort": 2, "newSort": 3 }           │
-│   ],                                                            │
-│   "updateTime": 1729267200      // 更新时间 (秒级时间戳)         │
-│ }                                                               │
+│      Mediator.uow.save()                                        │
 └────────────────────────────┬────────────────────────────────────┘
                              ↓
                       ✅ 流程完成
 
 说明：
-- ✅ 主命令已存在，但缺少领域事件
-- ❌ 需补充验证器和领域事件
+- ❌ 需补充验证器
 - 无需事件处理器（排序操作不触发其他业务流程）
 - 批量更新操作（一次可更新多个系列的排序）
 ```
@@ -124,28 +107,6 @@ graph TD
 ---
 
 ### ❌ 缺失的设计清单
-
-#### 需要补充的领域事件
-
-| 序号 | 事件名称 | 描述 | 触发时机 | 建议位置 | 优先级 |
-|-----|---------|------|----------|----------|-------|
-| 1 | `CustomerVideoSeriesSortUpdatedDomainEvent` | 视频系列排序已更新 | 批量更新系列 sort 后 | `design/aggregate/customer_video_series/_gen.json` | P0 |
-
-**JSON 定义**（需补充到 `design/aggregate/customer_video_series/_gen.json`）：
-```json
-{
-  "de": [
-    {
-      "package": "customer_video_series",
-      "name": "CustomerVideoSeriesSortUpdated",
-      "desc": "视频系列排序已更新",
-      "aggregates": ["CustomerVideoSeries"],
-      "entity": "CustomerVideoSeries",
-      "persist": true
-    }
-  ]
-}
-```
 
 #### 需要补充的验证器
 
