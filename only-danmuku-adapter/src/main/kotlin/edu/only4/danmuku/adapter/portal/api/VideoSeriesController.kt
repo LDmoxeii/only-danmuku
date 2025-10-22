@@ -146,8 +146,7 @@ class VideoSeriesController {
      */
     @PostMapping("/saveSeriesVideo")
     fun videoSeriesSaveVideo(@RequestBody @Validated request: VideoSeriesSaveVideo.Request): VideoSeriesSaveVideo.Response {
-        // TODO: 从上下文获取当前用户ID
-        val userId = 1L // 临时硬编码
+        val userId = LoginHelper.getUserId()!!
 
         // 调用命令添加视频到系列
         Mediator.commands.send(
