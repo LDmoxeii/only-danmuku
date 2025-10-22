@@ -13,7 +13,6 @@ Content-Type: application/json
 Authorization: Bearer {{auth_token}}
 
 {
-  "pCategoryId": 227885340533493760,
   "categoryCode": "TEST301",
   "categoryName": "测试分类301"
 }

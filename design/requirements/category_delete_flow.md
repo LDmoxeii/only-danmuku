@@ -23,13 +23,12 @@
                              ↓
 ┌──────────────────────────────────────────────────────────┐
 │ 命令：DeleteCategoryCmd ✅（需补充级联逻辑）               │
-│ 1. 分类存在性检查 @CategoryMustExist ❌（依赖 GetCategoryByIdQry ⚪） │
-│ 2. 收集全部子分类 ID GetCategoryDescendantsQry ❌        │
-│ 3. 统计分类/子分类关联视频 CountVideosUnderCategories ❌ │
-│    ├─ 有视频 → 抛 KnownException 并返回错误              │
-│    └─ 无视频 → 继续                                      │
-│ 4. 执行级联删除分类树 RemoveCategoryHierarchy ❌         │
-│ 5. 发布 CategoryDeletedDomainEvent ✅                    │
+│ 1. 触发验证器                                              │
+│    ├─ @CategoryMustExist ❌（依赖查询，校验分类存在）       │
+│    └─ @CategoryDeletionAllowed ❌（依赖查询，校验无视频引用）│
+│ 2. 命令通过仓储加载要删除的分类聚合及其子节点             │
+│ 3. 执行级联删除分类树 RemoveCategoryHierarchy ❌            │
+│ 4. 发布 CategoryDeletedDomainEvent ✅                    │
 └────────────────────────────┬─────────────────────────────┘
                              ↓
 ┌──────────────────────────────────────────────────────────┐
@@ -37,8 +36,8 @@
 └────────────────────────────┬─────────────────────────────┘
                              ↓
 ┌──────────────────────────────────────────────────────────┐
-│ 事件处理器：CategoryDeletedEventHandler ❌                │
-│ → 命令：RefreshCategoryCacheCmd ❌                        │
+│ 事件处理器：CategoryDeletedEventSubscriber ✅                │
+│ → 命令：RefreshCategoryCacheCmd ⚪                        │
 │    刷新 Redis 分类树缓存                                 │
 └──────────────────────────────────────────────────────────┘
 ```
@@ -46,24 +45,23 @@
 ### 场景 #1：分类可安全删除
 ```
 DeleteCategoryCmd 请求
-    ├─ GetCategoryDescendantsQry ❌ → 收集全部子分类 ID
-    ├─ CountVideosUnderCategoriesQry ❌ → 返回 0 → 允许删除
-    └─ RemoveCategoryHierarchyCmd ❌ → 递归删除分类树
-          ↳ 发布 CategoryDeletedDomainEvent ✅ → 刷新缓存
+    ├─ 校验器确认分类存在、分类树无视频引用
+    ├─ 命令通过仓储加载分类聚合并执行级联删除
+    └─ 发布 CategoryDeletedDomainEvent ✅ → 刷新缓存
 ```
 
 ### 场景 #2：存在关联视频
 ```
 DeleteCategoryCmd 请求
-    ├─ CountVideosUnderCategoriesQry ❌ → 返回 >0
-    └─ 抛出 KnownException("分类下有视频信息，无法删除") → 终止流程
+    ├─ @CategoryDeletionAllowed（依赖查询） → 返回有视频
+    └─ 抛 KnownException("分类下有视频信息，无法删除")
 ```
 
 ### 场景 #3：分类不存在
 ```
 DeleteCategoryCmd 请求
-    ├─ @CategoryMustExist ❌ / GetCategoryByIdQry ⚪ → 未找到分类
-    └─ 抛出 KnownException("分类不存在") → 控制器返回错误
+    ├─ @CategoryMustExist 校验失败 → 分类不存在
+    └─ 抛 KnownException("分类不存在")
 ```
 
 ### Mermaid 流程图
@@ -72,15 +70,10 @@ graph TD
     A["请求: POST /admin/category/delCategory<br/>categoryId"] --> B["控制器: AdminCategoryController ✅<br/>调用 DeleteCategoryCmd"]
     B --> C["命令: DeleteCategoryCmd ✅<br/>需补充级联删除逻辑"]
 
-    C --> C1["验证器: @CategoryMustExist ❌<br/>确保分类存在"]
-    C --> C2["查询: GetCategoryByIdQry ✅<br/>加载分类基础信息"]
-    C --> C3["查询: GetCategoryDescendantsQry ❌<br/>收集全部子分类 ID"]
-    C --> C4["查询: CountVideosUnderCategoriesQry ❌<br/>统计分类/子分类关联视频数"]
-
-    C4 --> D{视频数量 > 0 ?}
-    D -->|是| E["返回错误: 分类下存在视频 ❌<br/>保持原业务提示"]
-    D -->|否| C5["命令: RemoveCategoryHierarchyCmd ❌<br/>批量删除分类树"]
-    C5 --> G["领域事件: CategoryDeletedDomainEvent ✅"]
+    C --> C1["验证器: @CategoryMustExist ❌<br/>依赖 GetCategoryByIdQry ⚪"]
+    C --> C2["验证器: @CategoryDeletionAllowed ❌<br/>依赖 CountVideosUnderCategoriesQry ❌"]
+    C --> C3["仓储: 删除分类聚合及子节点 ❌"]
+    C3 --> G["领域事件: CategoryDeletedDomainEvent ✅"]
     G --> H["事件处理器: CategoryDeletedEventHandler ❌<br/>监听删除事件"]
     H --> I["命令: RefreshCategoryCacheCmd ❌"]
     I --> I1["查询: GetCategoryTreeQry ✅<br/>获取最新分类树"]
@@ -97,10 +90,6 @@ graph TD
 
     style C1 fill:#FFCDD2,stroke:#D32F2F,stroke-width:2px
     style C3 fill:#FFCDD2,stroke:#D32F2F,stroke-width:2px
-    style C4 fill:#FFCDD2,stroke:#D32F2F,stroke-width:2px
-    style C5 fill:#FFCDD2,stroke:#D32F2F,stroke-width:2px
-    style D fill:#FFF9C4,stroke:#FBC02D,stroke-width:2px
-    style E fill:#FFCDD2,stroke:#D32F2F,stroke-width:2px
     style H fill:#FFCDD2,stroke:#D32F2F,stroke-width:2px
     style I fill:#FFCDD2,stroke:#D32F2F,stroke-width:2px
     style I2 fill:#FFCDD2,stroke:#D32F2F,stroke-width:2px
@@ -131,43 +120,28 @@ graph TD
 #### 查询 (Queries)
 | 查询 | 描述 | 状态 | 位置 |
 |------|------|------|------|
-| `GetCategoryTreeQry` | 获取整棵分类树（用于缓存刷新） | ✅ 已定义 | `only-danmuku/only-danmuku-application/src/main/kotlin/edu/only4/danmuku/application/queries/category/GetCategoryTreeQry.kt:12` |
-| `GetCategoryByIdQry` | 根据 ID 获取分类；当前为空载荷 | ⚪ 待完善 | `only-danmuku/only-danmuku-application/src/main/kotlin/edu/only4/danmuku/application/queries/category/GetCategoryByIdQry.kt:12` |
-| `GetSubCategoriesQry` | 生成文件但缺少参数/返回，无法直接使用 | ⚪ 待完善 | `only-danmuku/only-danmuku-application/src/main/kotlin/edu/only4/danmuku/application/queries/category/GetSubCategoriesQry.kt:12` |
-| `GetVideosByCategoryQry` | 按分类拉取视频列表，缺少统计能力 | ⚪ 待完善 | `only-danmuku/only-danmuku-application/src/main/kotlin/edu/only4/danmuku/application/queries/video/GetVideosByCategoryQry.kt:12` |
+| `GetCategoryTreeQry` | 获取整棵分类树（用于缓存刷新等） | ✅ 已定义 | `only-danmuku/only-danmuku-application/src/main/kotlin/edu/only4/danmuku/application/queries/category/GetCategoryTreeQry.kt:12` |
+| `GetCategoryByIdQry` | 根据 ID 获取分类（供校验器使用） | ⚪ 待完善 | `only-danmuku/only-danmuku-application/src/main/kotlin/edu/only4/danmuku/application/queries/category/GetCategoryByIdQry.kt:12` |
 
 ---
 
 ## ❌ 缺失的设计清单
 
 ### 需要补充的命令 (Commands)
-| 序号 | 命令名称 | 描述 | 建议位置 | 优先级 |
-|-----|---------|------|----------|-------|
-| 1 | `RefreshCategoryCacheCmd` | 监听分类变更后重建 Redis 分类树 | `design/extra/category_cache_gen.json` | P0 |
-| 2 | `RemoveCategoryHierarchyCmd` | 根据根分类 ID 删除整棵分类树（子分类递归删除） | `design/aggregate/category/_gen.json` | P0 |
-
-### 需要补充的领域事件 (Domain Events)
-| 序号 | 事件名称 | 描述 | 触发时机 | 建议位置 | 优先级 |
-|-----|---------|------|----------|----------|-------|
-| 1 | `CategoryHierarchyRemovedDomainEvent` | 分类及其子节点被删除，仅当需要告知其他上下游（如统计、搜索索引）时触发 | `design/aggregate/category/_gen.json` | P1 |
+| 序号 | 命令名称 | 描述 | 建议位置 | 优先级  |
+|-----|---------|------|----------|------|
+| 1 | `RefreshCategoryCacheCmd` | 监听分类变更后重建 Redis 分类树 | `design/extra/category_cache_gen.json` | P2 |
 
 ### 需要补充的查询 (Queries)
 | 序号 | 查询名称 | 描述 | 返回值 | 建议位置 | 优先级 |
 |-----|---------|------|--------|----------|-------|
-| 1 | `GetCategoryDescendantsQry` | 根据分类 ID 返回所有后代节点 ID | `List<Long>` | `design/aggregate/category/_gen.json` | P0 |
-| 2 | `CountVideosUnderCategoriesQry` | 统计给定分类及其子分类下的视频数量 | `Long` | `design/aggregate/video/_gen.json` 或 `design/extra/video_guard_gen.json` | P0 |
+| 1 | `CountVideosUnderCategoriesQry` | 统计给定分类及其子分类下的视频数量 | `Long` | `design/aggregate/video/_gen.json` 或 `design/extra/video_guard_gen.json` | P0 |
 
 ### 需要补充的验证器 (Validators)
 | 序号 | 验证器名称 | 描述 | 依赖查询 | 实现路径 | 优先级 |
 |-----|-----------|------|----------|----------|-------|
 | 1 | `@CategoryMustExist` | 确保待删除分类存在（否则返回 404/业务错误） | `GetCategoryByIdQry` | `only-danmuku-application/.../validator/` | P0 |
 | 2 | `@CategoryDeletionAllowed` | 校验分类及子分类下无视频引用 | `CountVideosUnderCategoriesQry` | `only-danmuku-application/.../validator/` | P0 |
-
-### 需要补充的事件处理器 (Event Handlers)
-| 序号 | 处理器名称 | 监听事件 | 触发命令 | 实现路径 | 优先级 |
-|-----|-----------|----------|----------|----------|-------|
-| 1 | `CategoryDeletedEventHandler` | `CategoryDeletedDomainEvent` | `RefreshCategoryCacheCmd` | `only-danmuku-adapter/.../events/CategoryDeletedEventHandler.kt` | P0 |
-| 2 | `CategoryHierarchyRemovedEventHandler` | `CategoryHierarchyRemovedDomainEvent` | （可选）通知搜索/推荐等系统 | `only-danmuku-adapter/.../events/CategoryHierarchyRemovedEventHandler.kt` | P1 |
 
 **优先级说明**：
 - **P0**：核心能力，必须补齐
@@ -200,21 +174,16 @@ fun adminCategoryDel(@RequestBody @Validated request: AdminCategoryDel.Request):
 
 ```kotlin
 override fun exec(request: Request): Response {
-    val childCategories = Mediator.repositories.find(
-        SCategory.predicate { schema -> schema.parentId eq request.categoryId }
-    )
-    if (childCategories.isNotEmpty()) {
-        throw KnownException("该分类下存在子分类，无法删除")
-    }
+    // 假设 @CategoryMustExist 已确认分类存在
+    val category = Mediator.repositories.findFirst(
+        SCategory.predicateById(request.categoryId)
+    ).getOrNull() ?: throw KnownException("分类不存在：${request.categoryId}")
 
-    val videosUsingCategory = Mediator.repositories.find(
-        SVideo.predicate { schema -> schema.categoryId eq request.categoryId }
-    )
-    if (videosUsingCategory.isNotEmpty()) {
-        throw KnownException("该分类下存在关联视频，无法删除")
-    }
+    // 业务验证由验证器完成；命令只负责删除聚合及其子节点
+    Mediator.repositories.remove(SCategory.predicate { schema ->
+        schema.id eq category.id
+    })
 
-    Mediator.repositories.remove(SCategory.predicateById(request.categoryId))
     Mediator.uow.save()
     return Response()
 }

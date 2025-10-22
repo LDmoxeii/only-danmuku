@@ -23,6 +23,7 @@ object DeleteCategoryCmd {
             val childCategories = Mediator.repositories.find(
                 SCategory.predicate { schema -> schema.parentId eq request.categoryId }
             )
+
             if (childCategories.isNotEmpty()) {
                 throw KnownException("该分类下存在子分类，无法删除")
             }

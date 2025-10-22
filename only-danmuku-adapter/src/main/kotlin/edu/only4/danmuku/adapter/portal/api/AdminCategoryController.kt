@@ -59,7 +59,8 @@ class AdminCategoryController {
      * 保存/更新分类
      */
     @PostMapping("/saveCategory")
-    fun adminCategorySave(@RequestBody @Validated request: AdminCategorySave.Request): AdminCategorySave.Response {
+    fun
+            adminCategorySave(@RequestBody @Validated request: AdminCategorySave.Request): AdminCategorySave.Response {
         // 判断是创建还是更新
         if (request.categoryId == null) {
             // 创建新分类

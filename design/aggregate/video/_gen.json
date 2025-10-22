@@ -118,6 +118,11 @@
       "package": "video",
       "name": "GetVideoPlayFiles",
       "desc": "获取视频播放文件列表"
+    },
+    {
+      "package": "video",
+      "name": "CountVideosUnderCategories",
+      "desc": "统计分类及其子分类下的视频数量"
     }
   ]
 }

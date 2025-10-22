@@ -1,6 +1,8 @@
 package edu.only4.danmuku.domain.aggregates.category
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
+import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
+import edu.only4.danmuku.domain.aggregates.category.events.CategoryCreatedDomainEvent
 import jakarta.persistence.*
 import jakarta.persistence.Table
 import org.hibernate.annotations.*
@@ -136,6 +138,10 @@ class Category (
 
     // 【行为方法开始】
 
+    fun onCreate() {
+        events().attach(this) { CategoryCreatedDomainEvent(id) }
+    }
+
     fun updateBasicInfo(
         newName: String,
         newIcon: String?,
@@ -156,23 +162,9 @@ class Category (
         return Pair(oldPath, this.nodePath)
     }
 
-    fun changeCode(newCode: String): Pair<String, String> {
-        val oldPath = this.nodePath
+    fun changeCode(newCode: String) {
+        // 修改编码不再影响路径（路径改为基于ID）
         this.code = newCode
-
-        val parentPath = if (parentId == 0L) {
-            ""
-        } else {
-            val parts = oldPath.trim('/').split('/')
-            if (parts.size > 1) {
-                "/" + parts.dropLast(1).joinToString("/") + "/"
-            } else {
-                ""
-            }
-        }
-        updateNodePath(parentPath)
-
-        return Pair(oldPath, this.nodePath)
     }
 
     fun isParentChanged(newParentId: Long): Boolean {
@@ -197,9 +189,9 @@ class Category (
      */
     fun updateNodePath(parentPath: String = "") {
         nodePath = if (parentPath.isEmpty()) {
-            "/$code/"  // 根节点：/1/
+            "/$id/"  // 根节点：/1/
         } else {
-            "$parentPath$code/"  // 子节点：/1/101/
+            "$parentPath$id/"  // 子节点：/1/101/
         }
     }
 
@@ -240,6 +232,17 @@ class Category (
      */
     fun isDirectChildOf(parentId: Long): Boolean {
         return this.parentId == parentId
+    }
+
+    /**
+     * 依据父路径变更重定位当前节点路径
+     * @param oldPrefix 旧父路径前缀，例如 "/1/101/"
+     * @param newPrefix 新父路径前缀，例如 "/1/102/"
+     */
+    fun rebaseNodePath(oldPrefix: String, newPrefix: String) {
+        if (nodePath.startsWith(oldPrefix)) {
+            nodePath = nodePath.replaceFirst(oldPrefix, newPrefix)
+        }
     }
 
     // 【行为方法结束】

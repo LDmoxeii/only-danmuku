@@ -1,23 +1,22 @@
 package edu.only4.danmuku.application.subscribers.domain.category
 
+import com.only4.cap4k.ddd.core.Mediator
+import edu.only4.danmuku.application.commands.category.FinalizeCategoryAfterCreateCmd
 import edu.only4.danmuku.domain.aggregates.category.events.CategoryCreatedDomainEvent
 
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Service
 
 /**
- * 分类已创建
- *
- * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
- * 警告：可以在本文件中添加自定义事件处理方法
- * @author cap4k-ddd-codegen
- * @date 2025/10/21
+ * 分类已创建 → 触发二阶段命令回填排序与路径
  */
 @Service
 class CategoryCreatedDomainEventSubscriber {
 
     @EventListener(CategoryCreatedDomainEvent::class)
     fun on(event: CategoryCreatedDomainEvent) {
-
+        Mediator.commands.send(
+            FinalizeCategoryAfterCreateCmd.Request(categoryId = event.id)
+        )
     }
 }
