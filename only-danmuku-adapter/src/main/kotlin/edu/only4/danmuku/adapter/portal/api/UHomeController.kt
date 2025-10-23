@@ -123,10 +123,8 @@ class UHomeController {
      */
     @PostMapping("/focus")
     fun uHomeFocus(@RequestBody @Validated request: UHomeFocus.Request): UHomeFocus.Response {
-        // TODO: 从上下文获取当前用户ID
         val currentUserId = LoginHelper.getUserId()!!
 
-        // 调用命令关注用户
         Mediator.commands.send(
             FocusCmd.Request(
                 userId = currentUserId,

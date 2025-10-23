@@ -1,7 +1,5 @@
 package edu.only4.danmuku.application.subscribers.domain.customer_focus
 
-import com.only4.cap4k.ddd.core.Mediator
-import edu.only4.danmuku.application.commands.customer_profile.UpdateCustomerStatisticCmd
 import edu.only4.danmuku.domain.aggregates.customer_focus.events.UserUnfocusedDomainEvent
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Service
@@ -18,33 +16,8 @@ import org.springframework.stereotype.Service
 class UserUnfocusedDomainEventSubscriber {
 
     @EventListener(UserUnfocusedDomainEvent::class)
-    fun on1(event: UserUnfocusedDomainEvent) {
+    fun on(event: UserUnfocusedDomainEvent) {
         val entity = event.entity
-        val followerId = entity.customerId.toLong()
-
-        // 1) 关注者的关注数 -1
-        Mediator.commands.send(
-            UpdateCustomerStatisticCmd.Request(
-                targetCustomerId = followerId,
-                focusCountDelta = -1
-            )
-        )
-
-        // TODO: 发送取消关注通知（可选）
-    }
-
-    @EventListener(UserUnfocusedDomainEvent::class)
-    fun on2(event: UserUnfocusedDomainEvent) {
-        val entity = event.entity
-        val followeeId = entity.focusCustomerId.toLong()
-
-        // 2) 被关注者的粉丝数 -1
-        Mediator.commands.send(
-            UpdateCustomerStatisticCmd.Request(
-                targetCustomerId = followeeId,
-                fansCountDelta = -1
-            )
-        )
 
         // TODO: 发送取消关注通知（可选）
     }
