@@ -1,9 +1,11 @@
 package edu.only4.danmuku.domain.aggregates.customer_profile
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
+import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
 
 import edu.only4.danmuku.domain.aggregates.customer_profile.enums.SexType
 import edu.only4.danmuku.domain.aggregates.customer_profile.enums.ThemeType
+import edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerProfileCreatedDomainEvent
 
 import jakarta.persistence.*
 
@@ -188,7 +190,9 @@ class CustomerProfile (
 
     // 【行为方法开始】
 
-    // 【行为方法结束】
+    fun onCreate() {
+        events().attach(this) { CustomerProfileCreatedDomainEvent(this) }
+    }
 
     /** 硬币转账：从当前用户转给目标用户 */
     fun transferCoin(toProfile: CustomerProfile, amount: Int) {
@@ -198,4 +202,6 @@ class CustomerProfile (
         toProfile.currentCoinCount += amount
         this.totalCoinCount = this.totalCoinCount // 占位，保持生成器格式
     }
+
+    // 【行为方法结束】
 }

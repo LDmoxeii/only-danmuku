@@ -5,6 +5,7 @@ import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePayload
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 
 import edu.only4.danmuku.domain.aggregates.statistics.Statistics
+import edu.only4.danmuku.domain.aggregates.statistics.enums.StatisticsDataType
 
 import org.springframework.stereotype.Service
 
@@ -26,7 +27,10 @@ class StatisticsFactory : AggregateFactory<StatisticsFactory.Payload, Statistics
 
     override fun create(payload: Payload): Statistics {
         return Statistics(
-
+            customerId = payload.customerId,
+            dataType = payload.dataType,
+            statisticsCount = payload.statisticsCount,
+            statisticsDate = payload.statisticsDate
         )
     }
 
@@ -37,7 +41,10 @@ class StatisticsFactory : AggregateFactory<StatisticsFactory.Payload, Statistics
         description = ""
     )
     data class Payload(
-        val name: String
+        val customerId: Long,
+        val dataType: StatisticsDataType,
+        val statisticsCount: Int,
+        val statisticsDate: Long
     ) : AggregatePayload<Statistics>
 
 }

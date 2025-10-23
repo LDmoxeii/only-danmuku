@@ -1,4 +1,4 @@
-package edu.only4.danmuku.application.commands
+package edu.only4.danmuku.application.commands.video
 
 import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.Mediator

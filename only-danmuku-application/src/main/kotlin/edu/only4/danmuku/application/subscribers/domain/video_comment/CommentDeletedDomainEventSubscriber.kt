@@ -1,7 +1,7 @@
 package edu.only4.danmuku.application.subscribers.domain.video_comment
 
 import com.only4.cap4k.ddd.core.Mediator
-import edu.only4.danmuku.application.commands.UpdateVideoStatisticsCmd
+import edu.only4.danmuku.application.commands.video.UpdateVideoStatisticsCmd
 import edu.only4.danmuku.domain.aggregates.video_comment.events.CommentDeletedDomainEvent
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Service
