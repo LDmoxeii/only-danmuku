@@ -12,11 +12,11 @@ object ApplyCustomerDislikedCommentCmd {
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
-            val comment = Mediator.Companion.repositories.findFirst(
-                SVideoComment.Companion.predicateById(request.commentId)
+            val comment = Mediator.repositories.findFirst(
+                SVideoComment.predicateById(request.commentId)
             ).get()
             comment.updateStatistics(likeChange = 0, hateChange = +1)
-            Mediator.Companion.uow.save()
+            Mediator.uow.save()
             return Response()
         }
     }

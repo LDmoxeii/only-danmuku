@@ -10,6 +10,10 @@ import edu.only4.danmuku.domain.aggregates.customer_action.events.CustomerCollec
 import edu.only4.danmuku.domain.aggregates.customer_action.events.CustomerDislikedCommentDomainEvent
 import edu.only4.danmuku.domain.aggregates.customer_action.events.CustomerLikedCommentDomainEvent
 import edu.only4.danmuku.domain.aggregates.customer_action.events.CustomerLikedVideoDomainEvent
+import edu.only4.danmuku.domain.aggregates.customer_action.events.CustomerUncollectedVideoDomainEvent
+import edu.only4.danmuku.domain.aggregates.customer_action.events.CustomerUndislikedCommentDomainEvent
+import edu.only4.danmuku.domain.aggregates.customer_action.events.CustomerUnlikedCommentDomainEvent
+import edu.only4.danmuku.domain.aggregates.customer_action.events.CustomerUnlikedVideoDomainEvent
 
 import jakarta.persistence.*
 import jakarta.persistence.Table
@@ -172,13 +176,13 @@ class CustomerAction (
         when (actionType) {
             UNKNOW -> Unit
 
-            LIKE_COMMENT -> events().attach(this) { CustomerDislikedCommentDomainEvent(this) }
+            LIKE_COMMENT -> events().attach(this) { CustomerUnlikedCommentDomainEvent(this) }
 
-            HATE_COMMENT -> Unit
+            HATE_COMMENT -> events().attach(this) { CustomerUndislikedCommentDomainEvent(this) }
 
-            LIKE_VIDEO -> Unit
+            LIKE_VIDEO -> events().attach(this) { CustomerUnlikedVideoDomainEvent(this) }
 
-            FAVORITE_VIDEO -> events().attach(this) {  }
+            FAVORITE_VIDEO -> events().attach(this) { CustomerUncollectedVideoDomainEvent(this) }
 
             COIN_VIDEO -> Unit
         }

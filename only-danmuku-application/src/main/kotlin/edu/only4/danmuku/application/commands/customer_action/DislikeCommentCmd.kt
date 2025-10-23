@@ -54,16 +54,11 @@ object DislikeCommentCmd {
             var hadOpposite = false
 
             if (hateActions.isNotEmpty()) {
-                // 已点踩 → 取消点踩
                 hateActions.forEach(Mediator.uow::remove)
-
-                // TODO 发出取消点踩事件 -> 评论统计命令
-                comment.updateStatistics(likeChange = 0, hateChange = -1)
                 isCancel = true
             } else {
                 if (likeActions.isNotEmpty()) {
                     likeActions.forEach(Mediator.uow::remove)
-                    comment.updateStatistics(likeChange = -1, hateChange = 0)
                     hadOpposite = true
                 }
 

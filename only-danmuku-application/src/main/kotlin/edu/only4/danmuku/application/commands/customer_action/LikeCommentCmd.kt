@@ -54,22 +54,14 @@ object LikeCommentCmd {
             var hadOpposite = false
 
             if (likeActions.isNotEmpty()) {
-                // 已点赞 → 取消点赞
                 likeActions.forEach(Mediator.uow::remove)
-                comment.updateStatistics(likeChange = -1, hateChange = 0)
                 isCancel = true
             } else {
-                // 未点赞
                 if (hateActions.isNotEmpty()) {
-                    // 移除点踩记录并回滚点踩统计
                     hateActions.forEach(Mediator.uow::remove)
-
-                    // TODO 发出取消点踩事件 -> 评论统计命令
-                    comment.updateStatistics(likeChange = 0, hateChange = -1)
                     hadOpposite = true
                 }
 
-                // 创建点赞记录（统计+1由事件处理器处理）
                 Mediator.factories.create(
                     CustomerActionFactory.Payload(
                         customerId = request.customerId.toString(),

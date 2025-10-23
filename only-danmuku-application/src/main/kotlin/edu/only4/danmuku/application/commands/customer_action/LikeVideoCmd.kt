@@ -36,13 +36,6 @@ object LikeVideoCmd {
             if (existing.isNotEmpty()) {
                 // 已点赞 → 取消点赞并减少统计
                 existing.forEach(Mediator.uow::remove)
-                val video = Mediator.repositories.findOne(
-                    SVideo.predicateById(request.videoId),
-                    persist = false
-                ).getOrNull() ?: throw KnownException("视频不存在")
-
-                // TODO 取消点缀事件
-                video.updateLikeCount(-1)
                 isCancel = true
             } else {
                 // 未点赞 → 创建点赞动作（统计增长由领域事件处理器负责）

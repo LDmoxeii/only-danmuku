@@ -14,8 +14,6 @@ import kotlin.jvm.optionals.getOrNull
 
 /**
  * 收藏视频（Toggle 逻辑）
- * - 已收藏 → 取消收藏
- * - 未收藏 → 新增收藏
  */
 object CollectVideoCmd {
 
@@ -37,15 +35,7 @@ object CollectVideoCmd {
             val isCancel: Boolean
 
             if (existingAction.isNotEmpty()) {
-                // 已收藏 → 删除记录（取消收藏），并减少视频收藏统计
                 existingAction.forEach(Mediator.uow::remove)
-
-                // TODO 发出删除收藏事件 -> 减少视频收藏统计命令
-                val video = Mediator.repositories.findOne(
-                    SVideo.predicateById(request.videoId),
-                    persist = false
-                ).getOrNull() ?: throw KnownException("视频不存在")
-                video.updateCollectCount(-1)
 
                 isCancel = true
             } else {
@@ -55,7 +45,6 @@ object CollectVideoCmd {
                     persist = false
                 ).getOrNull() ?: throw KnownException("视频不存在")
 
-                // 未收藏 → 创建记录（新增收藏）
                 Mediator.factories.create(
                     CustomerActionFactory.Payload(
                         customerId = request.customerId.toString(),

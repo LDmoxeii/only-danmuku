@@ -2,27 +2,26 @@ package edu.only4.danmuku.application.subscribers.domain.customer_action
 
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.application.commands.UpdateVideoStatisticsCmd
-import edu.only4.danmuku.domain.aggregates.customer_action.events.CustomerLikedVideoDomainEvent
+import edu.only4.danmuku.domain.aggregates.customer_action.events.CustomerUncollectedVideoDomainEvent
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Service
 
 /**
- * 用户已点赞视频
+ * 用户已取消收藏视频事件监听器
  *
- * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
- * 警告：可以在本文件中添加自定义事件处理方法
  * @author cap4k-ddd-codegen
- * @date 2025/10/21
+ * @date 2025/10/23
  */
 @Service
-class CustomerLikedVideoDomainEventSubscriber {
+class CustomerUncollectedVideoDomainEventSubscriber {
 
-    @EventListener(CustomerLikedVideoDomainEvent::class)
-    fun on(event: CustomerLikedVideoDomainEvent) {
+    @EventListener(CustomerUncollectedVideoDomainEvent::class)
+    fun on(event: CustomerUncollectedVideoDomainEvent) {
+        // 发送更新视频统计数据命令，将收藏数减1
         Mediator.commands.send(
             UpdateVideoStatisticsCmd.Request(
                 videoId = event.entity.videoId.toLong(),
-                likeCountDelta = 1
+                collectCountDelta = -1
             )
         )
     }

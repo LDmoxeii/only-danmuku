@@ -1,8 +1,8 @@
 package edu.only4.danmuku.application.subscribers.domain.customer_action
 
 import com.only4.cap4k.ddd.core.Mediator
+import edu.only4.danmuku.application.commands.UpdateVideoStatisticsCmd
 import edu.only4.danmuku.application.commands.customer_profile.TransferCoinCmd
-import edu.only4.danmuku.application.commands.video.IncreaseVideoCoinCountCmd
 import edu.only4.danmuku.domain.aggregates.customer_action.events.CustomerCoinGivenDomainEvent
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Service
@@ -30,10 +30,11 @@ class CustomerCoinGivenDomainEventSubscriber {
     @EventListener(CustomerCoinGivenDomainEvent::class)
     fun on2(event: CustomerCoinGivenDomainEvent) {
         val action = event.entity
+
         Mediator.commands.send(
-            IncreaseVideoCoinCountCmd.Request(
+            UpdateVideoStatisticsCmd.Request(
                 videoId = action.videoId.toLong(),
-                coinCount = action.actionCount
+                coinCountDelta = action.actionCount
             )
         )
     }

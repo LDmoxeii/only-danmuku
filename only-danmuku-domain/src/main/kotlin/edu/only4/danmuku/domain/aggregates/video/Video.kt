@@ -234,17 +234,15 @@ class Video (
 
     /** 标记为推荐视频 */
     fun recommend() {
-        if (this.recommendType != RecommendType.RECOMMEND) {
-            this.recommendType = RecommendType.RECOMMEND
-            events().attach(this) { VideoRecommendedDomainEvent(entity = this) }
-        }
+        if (this.recommendType == RecommendType.RECOMMEND) return
+        this.recommendType = RecommendType.RECOMMEND
+        events().attach(this) { VideoRecommendedDomainEvent(entity = this) }
     }
 
     /** 取消推荐 */
     fun unrecommend() {
-        if (this.recommendType != RecommendType.NOT_RECOMMEND) {
-            this.recommendType = RecommendType.NOT_RECOMMEND
-        }
+        if (this.recommendType == RecommendType.NOT_RECOMMEND) return
+        this.recommendType = RecommendType.NOT_RECOMMEND
     }
 
     /** 修改互动设置 */
@@ -275,21 +273,6 @@ class Video (
     }
 
     // 【行为方法结束】
-
-    /** 点赞数变更 */
-    fun updateLikeCount(change: Int) {
-        applyStatisticsDelta(likeCountDelta = change)
-    }
-
-    /** 收藏数变更 */
-    fun updateCollectCount(change: Int) {
-        applyStatisticsDelta(collectCountDelta = change)
-    }
-
-    /** 投币数变更 */
-    fun updateCoinCount(change: Int) {
-        applyStatisticsDelta(coinCountDelta = change)
-    }
 }
 
 
