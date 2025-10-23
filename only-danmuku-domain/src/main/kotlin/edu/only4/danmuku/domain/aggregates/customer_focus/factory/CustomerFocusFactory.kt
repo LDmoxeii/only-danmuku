@@ -3,9 +3,7 @@ package edu.only4.danmuku.domain.aggregates.customer_focus.factory
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregateFactory
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePayload
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
-
 import edu.only4.danmuku.domain.aggregates.customer_focus.CustomerFocus
-
 import org.springframework.stereotype.Service
 
 /**
@@ -21,7 +19,7 @@ import org.springframework.stereotype.Service
 class CustomerFocusFactory : AggregateFactory<CustomerFocusFactory.Payload, CustomerFocus> {
 
     override fun create(payload: Payload): CustomerFocus {
-        return CustomerFocus(
+        val entity = CustomerFocus(
             id = 0L,
             customerId = payload.customerId,
             focusCustomerId = payload.focusCustomerId,
@@ -33,6 +31,7 @@ class CustomerFocusFactory : AggregateFactory<CustomerFocusFactory.Payload, Cust
             updateTime = null,
             deleted = 0L,
         )
+        return entity
     }
 
      @Aggregate(

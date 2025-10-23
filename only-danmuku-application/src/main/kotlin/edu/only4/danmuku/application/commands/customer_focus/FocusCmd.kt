@@ -1,11 +1,12 @@
 package edu.only4.danmuku.application.commands.customer_focus
 
-import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
 import edu.only4.danmuku.domain._share.meta.customer_focus.SCustomerFocus
 import edu.only4.danmuku.domain.aggregates.customer_focus.factory.CustomerFocusFactory
+import edu.only4.danmuku.application.validater.NotSelf
+import edu.only4.danmuku.application.validater.TargetUserExists
 import org.springframework.stereotype.Service
 
 /**
@@ -16,10 +17,6 @@ object FocusCmd {
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
-            if (request.userId == request.focusUserId) {
-                throw KnownException("不能关注自己")
-            }
-
             val userIdStr = request.userId.toString()
             val focusIdStr = request.focusUserId.toString()
 
@@ -45,6 +42,8 @@ object FocusCmd {
         }
     }
 
+    @NotSelf(userIdField = "userId", targetIdField = "focusUserId")
+    @TargetUserExists(targetIdField = "focusUserId")
     data class Request(
         val userId: Long,
         val focusUserId: Long,

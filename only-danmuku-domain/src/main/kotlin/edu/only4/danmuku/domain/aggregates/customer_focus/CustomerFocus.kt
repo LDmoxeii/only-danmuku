@@ -1,6 +1,9 @@
 package edu.only4.danmuku.domain.aggregates.customer_focus
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
+import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
+import edu.only4.danmuku.domain.aggregates.customer_focus.events.UserFocusedDomainEvent
+import edu.only4.danmuku.domain.aggregates.customer_focus.events.UserUnfocusedDomainEvent
 
 import jakarta.persistence.*
 import jakarta.persistence.Table
@@ -107,6 +110,14 @@ class CustomerFocus (
     // 【字段映射结束】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
 
     // 【行为方法开始】
+
+    fun onCreate() {
+        events().attach(this) { UserFocusedDomainEvent(this) }
+    }
+
+    fun onDelete() {
+        events().attach(this) { UserUnfocusedDomainEvent(this) }
+    }
 
     // 【行为方法结束】
 }
