@@ -29,4 +29,10 @@ class CommentPostedDomainEventSubscriber {
             )
         }
     }
+
+    @EventListener(CommentPostedDomainEvent::class)
+    fun on1(event: CommentPostedDomainEvent) {
+        val comment = event.entity
+        // TODO: 发送评论通知
+    }
 }
