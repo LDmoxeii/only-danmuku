@@ -3,6 +3,7 @@ package edu.only4.danmuku.domain.aggregates.category
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
 import edu.only4.danmuku.domain.aggregates.category.events.CategoryCreatedDomainEvent
+import edu.only4.danmuku.domain.aggregates.category.events.CategoryDeletedDomainEvent
 import jakarta.persistence.*
 import jakarta.persistence.Table
 import org.hibernate.annotations.*
@@ -140,6 +141,10 @@ class Category (
 
     fun onCreate() {
         events().attach(this) { CategoryCreatedDomainEvent(id) }
+    }
+
+    fun onDeleted() {
+        events().attach(this) { CategoryDeletedDomainEvent(this) }
     }
 
     fun updateBasicInfo(

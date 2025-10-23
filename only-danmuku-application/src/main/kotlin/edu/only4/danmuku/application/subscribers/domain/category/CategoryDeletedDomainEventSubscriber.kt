@@ -18,6 +18,6 @@ class CategoryDeletedDomainEventSubscriber {
 
     @EventListener(CategoryDeletedDomainEvent::class)
     fun on(event: CategoryDeletedDomainEvent) {
-
+        // TODO: 刷新 Redis 分类树缓存
     }
 }

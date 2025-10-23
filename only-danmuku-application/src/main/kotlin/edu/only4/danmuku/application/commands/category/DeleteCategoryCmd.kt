@@ -24,7 +24,7 @@ object DeleteCategoryCmd {
             val token = "/${request.categoryId}/"
             Mediator.repositories.remove(
                 SCategory.predicate { schema ->
-                    schema.nodePath like "$token%"
+                    schema.nodePath like "%$token%"
                 }
             )
 
