@@ -143,6 +143,11 @@ class Category (
         events().attach(this) { CategoryCreatedDomainEvent(id) }
     }
 
+    fun onUpdate() {
+        // TODO: 触发缓存删除
+//        events().attach(this) { CategoryUpdatedDomainEvent(this) }
+    }
+
     fun onDeleted() {
         events().attach(this) { CategoryDeletedDomainEvent(this) }
     }
@@ -193,7 +198,7 @@ class Category (
      * @param parentPath 父节点的路径，根节点传空字符串
      */
     fun updateNodePath(parentPath: String = "") {
-        nodePath = if (parentPath.isEmpty()) {
+        nodePath = if (parentPath.isBlank()) {
             "/$id/"  // 根节点：/1/
         } else {
             "$parentPath$id/"  // 子节点：/1/101/

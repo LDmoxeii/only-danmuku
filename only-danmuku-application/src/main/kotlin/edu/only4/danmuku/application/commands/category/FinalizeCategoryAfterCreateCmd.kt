@@ -15,38 +15,22 @@ object FinalizeCategoryAfterCreateCmd {
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
-            val category = Mediator.repositories.findFirst(
+            val category = Mediator.repositories.findOne(
                 SCategory.predicateById(request.categoryId)
             ).get()
 
             // 读取父节点与同级节点
-            val related = if (category.parentId != 0L) {
-                Mediator.repositories.find(
-                    SCategory.predicate(
-                        { schema ->
-                            schema.all(
-                                (schema.id neq request.categoryId),
-                                (schema.id eq category.parentId) or (schema.parentId eq category.parentId)
-                            )
-
-                        },
-                        { schema -> schema.sort.asc() }
-                    )
+            val related = Mediator.repositories.find(
+                SCategory.predicate(
+                    { schema ->
+                        schema.all(
+                            (schema.id neq request.categoryId),
+                            (schema.id eq category.parentId) or (schema.parentId eq category.parentId)
+                        )
+                    },
+                    { schema -> schema.sort.asc() }
                 )
-            } else {
-                Mediator.repositories.find(
-                    SCategory.predicate(
-                        {
-                            it.all(
-                                (it.id neq request.categoryId),
-                                it.parentId eq 0L
-                            )
-
-                        },
-                        { it.sort.asc() }
-                    )
-                )
-            }
+            )
 
             val parent = related.find { it.id == category.parentId }
             val siblings = related.filter { it.parentId == category.parentId && it.id != category.id }

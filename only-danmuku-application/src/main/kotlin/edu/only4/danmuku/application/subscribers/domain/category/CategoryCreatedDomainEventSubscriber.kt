@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service
 class CategoryCreatedDomainEventSubscriber {
 
     @EventListener(CategoryCreatedDomainEvent::class)
-    fun on(event: CategoryCreatedDomainEvent) {
+    fun on1(event: CategoryCreatedDomainEvent) {
         Mediator.commands.send(
             FinalizeCategoryAfterCreateCmd.Request(categoryId = event.id)
         )

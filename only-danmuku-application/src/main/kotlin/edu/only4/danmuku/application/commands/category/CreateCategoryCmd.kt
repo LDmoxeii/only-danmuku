@@ -21,10 +21,8 @@ object CreateCategoryCmd {
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
-            // 不在创建命令中调整排序和路径；仅保留请求中的初始排序（默认为0，表示待计算）
             val initialSort: Byte = request.sort ?: 0
 
-            // 5. 创建新分类
             val category = Mediator.factories.create(
                 CategoryFactory.Payload(
                     parentId = request.parentId,
@@ -36,7 +34,6 @@ object CreateCategoryCmd {
                 )
             )
 
-            // 单次提交：仅创建分类。排序和节点路径将在事件订阅中二次命令完成
             Mediator.uow.save()
 
             return Response(
