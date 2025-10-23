@@ -18,9 +18,8 @@ object RemoveVideoFromSeriesCmd {
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
-            val series = Mediator.repositories.findFirst(
+            val series = Mediator.repositories.findOne(
                 SCustomerVideoSeries.predicateById(request.seriesId),
-                persist = false
             ).getOrNull() ?: throw KnownException("视频系列不存在：${request.seriesId}")
 
             val removed = series.removeVideo(request.videoId)
