@@ -1,6 +1,8 @@
 package edu.only4.danmuku.domain.aggregates.video_danmuku
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
+import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
+import edu.only4.danmuku.domain.aggregates.video_danmuku.events.DanmukuPostedDomainEvent
 
 import jakarta.persistence.*
 import jakarta.persistence.Table
@@ -149,6 +151,8 @@ class VideoDanmuku (
     // 【字段映射结束】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
 
     // 【行为方法开始】
-
+    fun onCreate() {
+        events().attach(this) { DanmukuPostedDomainEvent(this) }
+    }
     // 【行为方法结束】
 }

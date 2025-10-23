@@ -21,25 +21,16 @@ object UpdateCustomerVideoSeriesSortCmd {
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
-            // 1. 批量查询所有待排序的系列（单次查询）
             val seriesList = Mediator.repositories.find(
-                SCustomerVideoSeries.predicate { schema ->
-                    schema.all(
-                        schema.id.`in`(request.seriesIds),
-                        schema.customerId.eq(request.userId)
-                    )
-                }
+                SCustomerVideoSeries.predicateByIds(request.seriesIds)
             )
 
-            // 2. 校验：所有系列都存在（验证器已保证归属权）
             if (seriesList.size != request.seriesIds.toSet().size) {
-                throw KnownException("部分系列不存在或不属于当前用户")
+                throw KnownException("部分系列不存在")
             }
 
-            // 3. 按 ID 建立索引，便于按请求顺序更新
             val byId = seriesList.associateBy { it.id }
 
-            // 4. 按照传入顺序设置 sort，从 1 开始递增
             var sortNo = 1
             request.seriesIds.forEach { seriesId ->
                 val series = byId[seriesId]
@@ -48,7 +39,6 @@ object UpdateCustomerVideoSeriesSortCmd {
                 sortNo += 1
             }
 
-            // 5. 批量保存所有聚合根
             Mediator.uow.save()
 
             return Response()

@@ -20,17 +20,17 @@ import org.springframework.stereotype.Service
 )
 class VideoDanmukuFactory : AggregateFactory<VideoDanmukuFactory.Payload, VideoDanmuku> {
 
-    override fun create(payload: Payload): VideoDanmuku {
+    override fun create(entityPayload: Payload): VideoDanmuku {
         return VideoDanmuku(
             id = 0L,
-            videoId = payload.videoId,
-            fileId = payload.fileId,
-            customerId = payload.customerId,
-            postTime = payload.postTime,
-            text = payload.text,
-            mode = payload.mode,
-            color = payload.color,
-            time = payload.time,
+            videoId = entityPayload.videoId,
+            fileId = entityPayload.fileId,
+            customerId = entityPayload.customerId,
+            postTime = entityPayload.postTime,
+            text = entityPayload.text,
+            mode = entityPayload.mode,
+            color = entityPayload.color,
+            time = entityPayload.time,
             createUserId = null,
             createBy = null,
             createTime = null,
