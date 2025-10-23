@@ -195,24 +195,21 @@ class VideoDraft (
     // 【行为方法开始】
     /** 审核通过 */
     fun reviewPass() {
-        if (this.status != VideoStatus.REVIEW_PASSED) {
-            this.status = VideoStatus.REVIEW_PASSED
-            events().attach(this) { VideoAuditPassedDomainEvent(entity = this) }
-        }
+        if (this.status == VideoStatus.REVIEW_PASSED) return
+        this.status = VideoStatus.REVIEW_PASSED
+        events().attach(this) { VideoAuditPassedDomainEvent(entity = this) }
     }
 
     /** 审核失败 */
     fun reviewFail() {
-        if (this.status != VideoStatus.REVIEW_FAILED) {
-            this.status = VideoStatus.REVIEW_FAILED
-            events().attach(this) { VideoAuditFailedDomainEvent(entity = this) }
-        }
+        if (this.status == VideoStatus.REVIEW_FAILED) return
+        this.status = VideoStatus.REVIEW_FAILED
+        events().attach(this) { VideoAuditFailedDomainEvent(entity = this) }
     }
 
     /** 标记为待审核 */
     fun markPendingReview() {
         this.status = VideoStatus.PENDING_REVIEW
     }
-
     // 【行为方法结束】
 }
