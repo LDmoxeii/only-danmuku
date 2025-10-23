@@ -29,15 +29,17 @@ object FocusCmd {
                 }
             ).isNotEmpty()
 
-            if (!exists) {
-                Mediator.factories.create(
-                    CustomerFocusFactory.Payload(
-                        customerId = userIdStr,
-                        focusCustomerId = focusIdStr
-                    )
+            if (exists) return Response()
+
+
+            Mediator.factories.create(
+                CustomerFocusFactory.Payload(
+                    customerId = userIdStr,
+                    focusCustomerId = focusIdStr
                 )
-                Mediator.uow.save()
-            }
+            )
+            Mediator.uow.save()
+
             return Response()
         }
     }

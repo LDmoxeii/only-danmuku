@@ -40,6 +40,7 @@ object CollectVideoCmd {
                 // 已收藏 → 删除记录（取消收藏），并减少视频收藏统计
                 existingAction.forEach(Mediator.uow::remove)
 
+                // TODO 发出删除收藏事件 -> 减少视频收藏统计命令
                 val video = Mediator.repositories.findOne(
                     SVideo.predicateById(request.videoId),
                     persist = false

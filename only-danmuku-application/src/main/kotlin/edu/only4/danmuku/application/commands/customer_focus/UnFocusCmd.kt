@@ -29,9 +29,7 @@ object UnFocusCmd {
                 persist = false
             )
 
-            toRemove.forEach { entity ->
-                Mediator.uow.remove(entity)
-            }
+            toRemove.forEach(Mediator.uow::remove)
 
             Mediator.uow.save()
             return Response()

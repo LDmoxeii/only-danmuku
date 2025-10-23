@@ -178,7 +178,7 @@ class CustomerAction (
 
             LIKE_VIDEO -> Unit
 
-            FAVORITE_VIDEO -> Unit
+            FAVORITE_VIDEO -> events().attach(this) {  }
 
             COIN_VIDEO -> Unit
         }

@@ -63,6 +63,8 @@ object LikeCommentCmd {
                 if (hateActions.isNotEmpty()) {
                     // 移除点踩记录并回滚点踩统计
                     hateActions.forEach(Mediator.uow::remove)
+
+                    // TODO 发出取消点踩事件 -> 评论统计命令
                     comment.updateStatistics(likeChange = 0, hateChange = -1)
                     hadOpposite = true
                 }

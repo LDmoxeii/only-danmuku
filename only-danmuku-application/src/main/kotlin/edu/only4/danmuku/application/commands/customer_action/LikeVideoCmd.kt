@@ -40,6 +40,8 @@ object LikeVideoCmd {
                     SVideo.predicateById(request.videoId),
                     persist = false
                 ).getOrNull() ?: throw KnownException("视频不存在")
+
+                // TODO 取消点缀事件
                 video.updateLikeCount(-1)
                 isCancel = true
             } else {
