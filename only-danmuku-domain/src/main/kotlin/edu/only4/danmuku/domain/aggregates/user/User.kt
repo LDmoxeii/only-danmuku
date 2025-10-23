@@ -173,18 +173,16 @@ class User (
 
     /** 启用账号 */
     fun enableAccount() {
-        if (!this.status) {
-            this.status = true
-            events().attach(this) { AccountEnabledDomainEvent(entity = this) }
-        }
+        if (this.status) return
+        this.status = true
+        events().attach(this) { AccountEnabledDomainEvent(entity = this) }
     }
 
     /** 禁用账号 */
     fun disableAccount() {
-        if (this.status) {
-            this.status = false
-            events().attach(this) { AccountDisabledDomainEvent(entity = this) }
-        }
+        if (!(this.status)) return
+        this.status = false
+        events().attach(this) { AccountDisabledDomainEvent(entity = this) }
     }
 
     fun updateLoginInfo(loginTime: Long, loginIp: String) {
