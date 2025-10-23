@@ -158,7 +158,6 @@ class UCenterInteractController {
      */
     @PostMapping("/delDanmu")
     fun delDanmu(@RequestBody @Validated request: UCenterDelDanmu.Request): UCenterDelDanmu.Response {
-        // 调用命令删除弹幕
         Mediator.commands.send(
             DeleteDanmukuCmd.Request(
                 danmukuId = request.danmuId.toLong(),
