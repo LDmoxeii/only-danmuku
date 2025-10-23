@@ -2,18 +2,12 @@ package edu.only4.danmuku.domain.aggregates.customer_profile
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
-
 import edu.only4.danmuku.domain.aggregates.customer_profile.enums.SexType
 import edu.only4.danmuku.domain.aggregates.customer_profile.enums.ThemeType
 import edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerProfileCreatedDomainEvent
-
 import jakarta.persistence.*
-
-import org.hibernate.annotations.DynamicInsert
-import org.hibernate.annotations.DynamicUpdate
-import org.hibernate.annotations.GenericGenerator
-import org.hibernate.annotations.SQLDelete
-import org.hibernate.annotations.Where
+import jakarta.persistence.Table
+import org.hibernate.annotations.*
 
 /**
  * 用户信息;
@@ -201,6 +195,27 @@ class CustomerProfile (
         this.currentCoinCount -= amount
         toProfile.currentCoinCount += amount
         this.totalCoinCount = this.totalCoinCount // 占位，保持生成器格式
+    }
+
+    /** 更新用户资料信息 */
+    fun updateProfileInfo(
+        nickName: String? = null,
+        avatar: String? = null,
+        sex: SexType? = null,
+        birthday: String? = null,
+        school: String? = null,
+        personIntroduction: String? = null,
+        noticeInfo: String? = null,
+        theme: ThemeType? = null,
+    ) {
+        nickName?.let { this.nickName = it }
+        avatar?.let { this.avatar = it }
+        sex?.let { this.sex = it }
+        birthday?.let { this.birthday = it }
+        school?.let { this.school = it }
+        personIntroduction?.let { this.personIntroduction = it }
+        noticeInfo?.let { this.noticeInfo = it }
+        theme?.let { this.theme = it }
     }
 
     // 【行为方法结束】

@@ -6,7 +6,6 @@ import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
 import edu.only4.danmuku.application.validater.CategoryMustExist
 import edu.only4.danmuku.application.validater.UniqueCategoryCode
-import edu.only4.danmuku.application.validater.UniqueCategoryCodeTarget
 import edu.only4.danmuku.domain._share.meta.category.SCategory
 import edu.only4.danmuku.domain.aggregates.category.Category
 import org.springframework.stereotype.Service
@@ -78,19 +77,19 @@ object UpdateCategoryInfoCmd {
     data class Request(
         /** 分类ID */
         @field:CategoryMustExist
-        override val categoryId: Long,
+        val categoryId: Long,
         /** 父分类ID */
         @field:CategoryMustExist
         val parentId: Long = 0L,
         /** 分类编码 */
-        override val code: String,
+        val code: String,
         /** 分类名称 */
         val name: String,
         /** 图标路径或URL */
         val icon: String? = null,
         /** 背景图路径或URL */
         val background: String? = null,
-    ) : RequestParam<Response>, UniqueCategoryCodeTarget
+    ) : RequestParam<Response>
 
     class Response
 }

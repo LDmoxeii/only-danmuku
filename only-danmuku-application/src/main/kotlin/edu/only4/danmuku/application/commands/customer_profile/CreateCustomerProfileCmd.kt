@@ -23,6 +23,7 @@ object CreateCustomerProfileCmd {
                     userid = request.userid,
                     nickName = request.nickName,
                     email = request.email,
+                    registerCoinCount = request.registerCoinCount,
                 )
             )
 
@@ -37,6 +38,7 @@ object CreateCustomerProfileCmd {
         val userid: Long,
         val nickName: String,
         val email: String,
+        val registerCoinCount: Int,
     ) : RequestParam<Response>
 
     class Response(

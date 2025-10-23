@@ -4,6 +4,7 @@ import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
 import edu.only4.danmuku.application.validater.UniqueUserEmail
+import edu.only4.danmuku.application.validater.UniqueUserNickname
 import edu.only4.danmuku.domain.aggregates.user.enums.UserType
 import edu.only4.danmuku.domain.aggregates.user.factory.UserFactory
 import org.springframework.stereotype.Service
@@ -35,8 +36,9 @@ object RegisterAccountCmd {
 
     }
 
+    @UniqueUserEmail
+    @UniqueUserNickname
     class Request(
-        @field:UniqueUserEmail
         val email: String,
         val nickName: String,
         val registerPassword: String,

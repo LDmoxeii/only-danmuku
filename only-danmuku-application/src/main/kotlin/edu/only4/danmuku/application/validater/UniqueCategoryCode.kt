@@ -7,11 +7,12 @@ import jakarta.validation.ConstraintValidator
 import jakarta.validation.ConstraintValidatorContext
 import jakarta.validation.Payload
 import kotlin.reflect.KClass
+import kotlin.reflect.full.memberProperties
 
 /**
  * 验证分类编码唯一性，适配创建/更新等多种场景
  *
- * 将该注解作用在实现 [UniqueCategoryCodeTarget] 的请求模型上，即可自动校验
+ * 默认读取 `code` 和 `categoryId` 字段，可通过注解参数自定义
  */
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)
@@ -20,43 +21,45 @@ import kotlin.reflect.KClass
 annotation class UniqueCategoryCode(
     val message: String = "分类编码已被其他分类使用",
     val groups: Array<KClass<*>> = [],
-    val payload: Array<KClass<out Payload>> = []
+    val payload: Array<KClass<out Payload>> = [],
+    val codeField: String = "code",
+    val categoryIdField: String = "categoryId",
 ) {
 
     /**
      * 通过读取请求中的栏目编码与当前实体 ID 进行唯一性校验
      */
-    class Validator : ConstraintValidator<UniqueCategoryCode, UniqueCategoryCodeTarget> {
+    class Validator : ConstraintValidator<UniqueCategoryCode, Any> {
+        private lateinit var codeProperty: String
+        private lateinit var categoryIdProperty: String
 
-        override fun isValid(target: UniqueCategoryCodeTarget?, context: ConstraintValidatorContext): Boolean {
-            // 空值跳过
-            if (target == null) {
-                return true
-            }
+        override fun initialize(constraintAnnotation: UniqueCategoryCode) {
+            codeProperty = constraintAnnotation.codeField
+            categoryIdProperty = constraintAnnotation.categoryIdField
+        }
 
-            val code = target.code
-            if (code.isBlank()) {
-                return true
-            }
+        override fun isValid(value: Any?, context: ConstraintValidatorContext): Boolean {
+            if (value == null) return true
 
-            val excludeId = target.categoryId?.takeIf { it != 0L }
+            val props = value::class.memberProperties.associateBy { it.name }
+            val code = (props[codeProperty]?.getter?.call(value) as? String)?.trim().orEmpty()
+            if (code.isBlank()) return true
 
-            val queryResult = Mediator.queries.send(
-                CategoryExistsByCodeQry.Request(
-                    code = code,
-                    excludeCategoryId = excludeId
+            val excludeId = categoryIdProperty
+                .takeIf { it.isNotBlank() }
+                ?.let { props[it]?.getter?.call(value) as? Long? }
+                ?.takeIf { it != 0L }
+
+            val queryResult = runCatching {
+                Mediator.queries.send(
+                    CategoryExistsByCodeQry.Request(
+                        code = code,
+                        excludeCategoryId = excludeId
+                    )
                 )
-            )
+            }.getOrNull() ?: return false
 
             return !queryResult.exists
         }
     }
-}
-
-/**
- * 提供唯一性校验所需的最小信息载体
- */
-interface UniqueCategoryCodeTarget {
-    val code: String
-    val categoryId: Long?
 }

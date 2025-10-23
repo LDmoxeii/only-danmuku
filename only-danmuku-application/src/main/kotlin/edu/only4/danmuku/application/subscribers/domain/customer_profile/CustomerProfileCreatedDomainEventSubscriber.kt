@@ -3,7 +3,6 @@ package edu.only4.danmuku.application.subscribers.domain.customer_profile
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.application.commands.statistics.AddStatisticsInfoCmd
 import edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerProfileCreatedDomainEvent
-
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Service
 

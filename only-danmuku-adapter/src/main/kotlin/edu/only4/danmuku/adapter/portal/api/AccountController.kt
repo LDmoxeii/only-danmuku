@@ -3,6 +3,7 @@ package edu.only4.danmuku.adapter.portal.api
 import cn.dev33.satoken.annotation.SaIgnore
 import cn.dev33.satoken.stp.StpUtil
 import com.only.engine.entity.UserInfo
+import com.only.engine.misc.ServletUtils.getClientIP
 import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.adapter.portal.api.payload.*
@@ -91,18 +92,16 @@ class AccountController {
             UpdateLoginInfoCmd.Request(
                 email = request.email,
                 password = request.password,
-                loginIp = "127.0.0.1",
+                loginIp = getClientIP()!!,
             )
         )
 
         LoginHelper.login(UserInfo(userAccount.userId, userAccount.userType.code, userAccount.username))
 
-        val token = StpUtil.getTokenValue()
-
         return AccountLogin.Response(
             userId = userAccount.userId.toString(),
             nickName = userAccount.username,
-            token = token
+            token = StpUtil.getTokenValue()
         )
     }
 

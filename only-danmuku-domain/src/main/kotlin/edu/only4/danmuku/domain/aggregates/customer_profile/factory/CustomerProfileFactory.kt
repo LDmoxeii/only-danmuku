@@ -29,6 +29,8 @@ class CustomerProfileFactory : AggregateFactory<CustomerProfileFactory.Payload, 
             userId = entityPayload.userid,
             nickName = entityPayload.nickName,
             email = entityPayload.email,
+            totalCoinCount = entityPayload.registerCoinCount,
+            currentCoinCount = entityPayload.registerCoinCount
         )
     }
 
@@ -42,6 +44,7 @@ class CustomerProfileFactory : AggregateFactory<CustomerProfileFactory.Payload, 
         val userid: Long,
         val nickName: String,
         val email: String,
+        val registerCoinCount: Int,
     ) : AggregatePayload<CustomerProfile>
 
 }

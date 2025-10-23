@@ -4,6 +4,7 @@ import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
+import edu.only4.danmuku.application.validater.UniqueUserNickname
 import edu.only4.danmuku.domain._share.meta.customer_profile.SCustomerProfile
 import edu.only4.danmuku.domain.aggregates.customer_profile.enums.SexType
 import edu.only4.danmuku.domain.aggregates.customer_profile.enums.ThemeType
@@ -23,20 +24,23 @@ object UpdateCustomerProfileCmd {
                 persist = false
             ).getOrNull() ?: throw KnownException("用户资料不存在：${request.customerId}")
 
-            request.nickName?.let { profile.nickName = it }
-            request.avatar?.let { profile.avatar = it }
-            request.sex?.let { profile.sex = SexType.valueOf(it) }
-            profile.birthday = request.birthday ?: profile.birthday
-            profile.school = request.school ?: profile.school
-            profile.personIntroduction = request.personIntroduction ?: profile.personIntroduction
-            profile.noticeInfo = request.noticeInfo ?: profile.noticeInfo
-            request.theme?.let { profile.theme = ThemeType.valueOf(it) }
+            profile.updateProfileInfo(
+                nickName = request.nickName,
+                avatar = request.avatar,
+                sex = request.sex?.let { SexType.valueOf(it) },
+                birthday = request.birthday,
+                school = request.school,
+                personIntroduction = request.personIntroduction,
+                noticeInfo = request.noticeInfo,
+                theme = request.theme?.let { ThemeType.valueOf(it) }
+            )
 
             Mediator.uow.save()
             return Response()
         }
     }
 
+    @UniqueUserNickname(userIdField = "customerId", nicknameField = "nickName")
     data class Request(
         /** 用户ID */
         val customerId: Long,
