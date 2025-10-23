@@ -1,8 +1,15 @@
 package edu.only4.danmuku.domain.aggregates.customer_action
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
+import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
 
 import edu.only4.danmuku.domain.aggregates.customer_action.enums.ActionType
+import edu.only4.danmuku.domain.aggregates.customer_action.enums.ActionType.*
+import edu.only4.danmuku.domain.aggregates.customer_action.events.CustomerCoinGivenDomainEvent
+import edu.only4.danmuku.domain.aggregates.customer_action.events.CustomerCollectedVideoDomainEvent
+import edu.only4.danmuku.domain.aggregates.customer_action.events.CustomerDislikedCommentDomainEvent
+import edu.only4.danmuku.domain.aggregates.customer_action.events.CustomerLikedCommentDomainEvent
+import edu.only4.danmuku.domain.aggregates.customer_action.events.CustomerLikedVideoDomainEvent
 
 import jakarta.persistence.*
 import jakarta.persistence.Table
@@ -144,6 +151,38 @@ class CustomerAction (
     // 【字段映射结束】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
 
     // 【行为方法开始】
+
+    fun onCreate() {
+        when(actionType) {
+            UNKNOW -> Unit
+
+            LIKE_VIDEO -> events().attach(this) { CustomerLikedVideoDomainEvent(this) }
+
+            LIKE_COMMENT -> events().attach(this) { CustomerLikedCommentDomainEvent(this) }
+
+            HATE_COMMENT -> events().attach(this) { CustomerDislikedCommentDomainEvent(this) }
+
+            FAVORITE_VIDEO -> events().attach(this) { CustomerCollectedVideoDomainEvent(this) }
+
+            COIN_VIDEO -> events().attach(this) { CustomerCoinGivenDomainEvent(this) }
+        }
+    }
+
+    fun onDelete() {
+        when (actionType) {
+            UNKNOW -> Unit
+
+            LIKE_COMMENT -> events().attach(this) { CustomerDislikedCommentDomainEvent(this) }
+
+            HATE_COMMENT -> Unit
+
+            LIKE_VIDEO -> Unit
+
+            FAVORITE_VIDEO -> Unit
+
+            COIN_VIDEO -> Unit
+        }
+    }
 
     // 【行为方法结束】
 }

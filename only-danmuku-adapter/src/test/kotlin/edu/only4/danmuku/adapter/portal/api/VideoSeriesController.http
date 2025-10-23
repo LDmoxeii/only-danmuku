@@ -85,11 +85,7 @@ POST {{host}}/uhome/series/changeVideoSeriesSort
 Content-Type: application/json
 
 {
-  "seriesIds": [
-    "5001",
-    "5002",
-    "5003"
-  ]
+  "seriesIds": "5001,5002,5003"
 }
 
 ### 加载系列及关联视频

@@ -189,4 +189,13 @@ class CustomerProfile (
     // 【行为方法开始】
 
     // 【行为方法结束】
+
+    /** 硬币转账：从当前用户转给目标用户 */
+    fun transferCoin(toProfile: CustomerProfile, amount: Int) {
+        require(amount > 0) { "转账金额必须大于0" }
+        require(this.currentCoinCount >= amount) { "硬币余额不足" }
+        this.currentCoinCount -= amount
+        toProfile.currentCoinCount += amount
+        this.totalCoinCount = this.totalCoinCount // 占位，保持生成器格式
+    }
 }

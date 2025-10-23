@@ -195,4 +195,10 @@ class VideoComment (
     fun onDelete() {
         events().attach(this) { CommentDeletedDomainEvent(this) }
     }
+
+    /** 更新评论统计：like/hate 增量 */
+    fun updateStatistics(likeChange: Int, hateChange: Int) {
+        this.likeCount = ((this.likeCount ?: 0) + likeChange).coerceAtLeast(0)
+        this.hateCount = ((this.hateCount ?: 0) + hateChange).coerceAtLeast(0)
+    }
 }

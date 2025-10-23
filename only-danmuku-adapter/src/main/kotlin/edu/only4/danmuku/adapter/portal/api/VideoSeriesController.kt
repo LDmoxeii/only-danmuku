@@ -114,10 +114,14 @@ class VideoSeriesController {
     fun videoSeriesChangeSort(@RequestBody @Validated request: VideoSeriesChangeSort.Request): VideoSeriesChangeSort.Response {
         val userId = LoginHelper.getUserId()!!
 
+        // 解析逗号分隔的 seriesIds 字符串为 List<Long>
+        val seriesIdList = request.seriesIds.split(",")
+            .map { it.trim().toLong() }
+
         Mediator.commands.send(
             UpdateCustomerVideoSeriesSortCmd.Request(
                 userId = userId,
-                seriesIds = request.seriesIds
+                seriesIds = seriesIdList
             )
         )
 

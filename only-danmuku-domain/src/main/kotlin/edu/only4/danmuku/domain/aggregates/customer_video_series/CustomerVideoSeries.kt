@@ -155,5 +155,13 @@ class CustomerVideoSeries (
 
     // 【行为方法开始】
 
+    /**
+     * 更新系列排序值
+     * @param newSort 新的排序值
+     */
+    fun updateSort(newSort: Byte) {
+        this.sort = newSort
+    }
+
     // 【行为方法结束】
 }

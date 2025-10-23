@@ -275,6 +275,21 @@ class Video (
     }
 
     // 【行为方法结束】
+
+    /** 点赞数变更 */
+    fun updateLikeCount(change: Int) {
+        applyStatisticsDelta(likeCountDelta = change)
+    }
+
+    /** 收藏数变更 */
+    fun updateCollectCount(change: Int) {
+        applyStatisticsDelta(collectCountDelta = change)
+    }
+
+    /** 投币数变更 */
+    fun updateCoinCount(change: Int) {
+        applyStatisticsDelta(coinCountDelta = change)
+    }
 }
 
 
