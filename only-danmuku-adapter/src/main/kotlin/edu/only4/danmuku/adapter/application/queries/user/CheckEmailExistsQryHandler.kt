@@ -3,10 +3,11 @@ package edu.only4.danmuku.adapter.application.queries.user
 import com.only4.cap4k.ddd.core.application.query.Query
 import edu.only4.danmuku.application.queries._share.model.user.JUser
 import edu.only4.danmuku.application.queries._share.model.user.email
+import edu.only4.danmuku.application.queries._share.model.user.id
 import edu.only4.danmuku.application.queries.user.CheckEmailExistsQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
-import org.babyfish.jimmer.sql.kt.ast.expression.ne
+import org.babyfish.jimmer.sql.kt.ast.expression.`ne?`
 import org.babyfish.jimmer.sql.kt.exists
 import org.springframework.stereotype.Service
 
@@ -26,7 +27,7 @@ class CheckEmailExistsQryHandler(
         // 使用 Jimmer exists() 方法检查邮箱是否存在（性能最优）
         val exists = sqlClient.exists(JUser::class) {
             where(table.email eq request.email)
-            request.excludeUserId?.let { where(table.id ne it) }
+            where(table.id `ne?` request.excludeUserId)
         }
 
         return CheckEmailExistsQry.Response(
