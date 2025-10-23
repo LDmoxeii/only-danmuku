@@ -1,19 +1,11 @@
 package edu.only4.danmuku.domain.aggregates.video_file_draft
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
-
 import edu.only4.danmuku.domain.aggregates.video_file_draft.enums.TransferResult
 import edu.only4.danmuku.domain.aggregates.video_file_draft.enums.UpdateType
-
 import jakarta.persistence.*
 import jakarta.persistence.Table
-
 import org.hibernate.annotations.*
-import org.hibernate.annotations.DynamicInsert
-import org.hibernate.annotations.DynamicUpdate
-import org.hibernate.annotations.GenericGenerator
-import org.hibernate.annotations.SQLDelete
-import org.hibernate.annotations.Where
 
 /**
  * 视频文件信息;
@@ -182,6 +174,68 @@ class VideoFileDraft (
     // 【字段映射结束】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
 
     // 【行为方法开始】
+
+    /**
+     * 标记转码开始
+     */
+    fun startTransfer() {
+        this.transferResult = TransferResult.TRANSCODING
+        this.updateType = UpdateType.HAS_UPDATE
+    }
+
+    /**
+     * 标记转码成功并更新文件信息
+     *
+     * @param duration 视频时长(秒)
+     * @param fileSize 文件大小(字节)
+     * @param filePath 文件路径
+     */
+    fun markTransferSuccess(duration: Int, fileSize: Long, filePath: String) {
+        this.transferResult = TransferResult.SUCCESS
+        this.duration = duration
+        this.fileSize = fileSize
+        this.filePath = filePath
+        this.updateType = UpdateType.NO_UPDATE
+    }
+
+    /**
+     * 标记转码失败
+     */
+    fun markTransferFailed() {
+        this.transferResult = TransferResult.FAILED
+    }
+
+    /**
+     * 更新文件基本信息
+     *
+     * @param fileName 文件名
+     * @param fileSize 文件大小
+     */
+    fun updateFileInfo(fileName: String?, fileSize: Long?) {
+        fileName?.let { this.fileName = it }
+        fileSize?.let { this.fileSize = it }
+    }
+
+    /**
+     * 检查是否正在转码中
+     */
+    fun isTranscoding(): Boolean {
+        return this.transferResult == TransferResult.TRANSCODING
+    }
+
+    /**
+     * 检查转码是否成功
+     */
+    fun isTransferSuccess(): Boolean {
+        return this.transferResult == TransferResult.SUCCESS
+    }
+
+    /**
+     * 检查转码是否失败
+     */
+    fun isTransferFailed(): Boolean {
+        return this.transferResult == TransferResult.FAILED
+    }
 
     // 【行为方法结束】
 }

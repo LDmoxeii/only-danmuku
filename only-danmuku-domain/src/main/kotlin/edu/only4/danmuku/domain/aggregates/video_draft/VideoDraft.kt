@@ -193,6 +193,7 @@ class VideoDraft (
     // 【字段映射结束】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
 
     // 【行为方法开始】
+
     /** 审核通过 */
     fun reviewPass() {
         if (this.status == VideoStatus.REVIEW_PASSED) return
@@ -211,5 +212,53 @@ class VideoDraft (
     fun markPendingReview() {
         this.status = VideoStatus.PENDING_REVIEW
     }
+
+    /** 标记为转码中 */
+    fun markTranscoding() {
+        this.status = VideoStatus.TRANSCODING
+    }
+
+    /** 标记为转码失败 */
+    fun markTranscodeFailed() {
+        this.status = VideoStatus.TRANSCODE_FAILED
+    }
+
+    /**
+     * 更新视频总时长
+     *
+     * @param duration 总时长(秒)
+     */
+    fun updateDuration(duration: Int) {
+        this.duration = duration
+    }
+
+    /**
+     * 检查是否正在转码中
+     */
+    fun isTranscoding(): Boolean {
+        return this.status == VideoStatus.TRANSCODING
+    }
+
+    /**
+     * 检查转码是否失败
+     */
+    fun isTranscodeFailed(): Boolean {
+        return this.status == VideoStatus.TRANSCODE_FAILED
+    }
+
+    /**
+     * 检查是否待审核
+     */
+    fun isPendingReview(): Boolean {
+        return this.status == VideoStatus.PENDING_REVIEW
+    }
+
+    /**
+     * 检查是否审核通过
+     */
+    fun isReviewPassed(): Boolean {
+        return this.status == VideoStatus.REVIEW_PASSED
+    }
+
     // 【行为方法结束】
 }
