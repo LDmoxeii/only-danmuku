@@ -145,10 +145,10 @@ class CommentController {
      */
     @PostMapping("/cancelTopComment")
     fun commentCancelTop(@RequestBody @Validated request: CommentCancelTop.Request): CommentCancelTop.Response {
-        // 调用命令取消置顶评论
         Mediator.commands.send(
             UntopCommentCmd.Request(
-                commentId = request.commentId.toLong()
+                commentId = request.commentId.toLong(),
+                operatorId = LoginHelper.getUserId()!!
             )
         )
         return CommentCancelTop.Response()

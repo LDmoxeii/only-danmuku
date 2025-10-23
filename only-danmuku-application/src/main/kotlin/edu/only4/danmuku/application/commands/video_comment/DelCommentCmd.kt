@@ -22,13 +22,13 @@ object DelCommentCmd {
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
-            val comment = Mediator.repositories.findFirst(
+            val comment = Mediator.repositories.findOne(
                 SVideoComment.predicateById(request.commentId),
                 persist = false
             ).getOrNull() ?: return Response()
 
             // 删除评论（软删）
-            Mediator.repositories.remove(SVideoComment.predicateById(request.commentId))
+            Mediator.uow.remove(comment)
 
             if (comment.parentId == 0L) {
                 Mediator.repositories.remove(

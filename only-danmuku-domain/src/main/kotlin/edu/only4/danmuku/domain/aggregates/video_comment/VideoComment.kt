@@ -171,25 +171,23 @@ class VideoComment (
 
     /** 置顶评论 */
     fun top() {
-        if (this.topType != 1.toByte()) {
-            this.topType = 1
-            events().attach(this) { CommentToppedDomainEvent(this) }
-        }
+        if (topType == 1.toByte()) return
+        this.topType = 1
+        events().attach(this) { CommentToppedDomainEvent(this) }
+
     }
 
     /** 取消置顶 */
     fun untop() {
-        if (this.topType != 0.toByte()) {
-            this.topType = 0
-            events().attach(this) { CommentUntoppedDomainEvent(this) }
-        }
+        if (topType == 0.toByte()) return
+        this.topType = 0
+        events().attach(this) { CommentUntoppedDomainEvent(this) }
+
     }
 
     fun onCreate() {
         events().attach(this) { CommentPostedDomainEvent(this) }
     }
-
-    // 【行为方法结束】
 
     /** 删除钩子：发布评论已删除领域事件 */
     fun onDelete() {
@@ -201,4 +199,6 @@ class VideoComment (
         this.likeCount = ((this.likeCount ?: 0) + likeChange).coerceAtLeast(0)
         this.hateCount = ((this.hateCount ?: 0) + hateChange).coerceAtLeast(0)
     }
+
+    // 【行为方法结束】
 }

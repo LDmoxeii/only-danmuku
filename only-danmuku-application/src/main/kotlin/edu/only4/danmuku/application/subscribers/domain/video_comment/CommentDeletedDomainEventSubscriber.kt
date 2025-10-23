@@ -29,4 +29,10 @@ class CommentDeletedDomainEventSubscriber {
             )
         }
     }
+
+    @EventListener(CommentDeletedDomainEvent::class)
+    fun on1(event: CommentDeletedDomainEvent) {
+        val comment = event.entity
+        // TODO 发送通知
+    }
 }

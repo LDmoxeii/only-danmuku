@@ -4,6 +4,7 @@ import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
+import edu.only4.danmuku.application.validater.VideoCommentOwner
 import edu.only4.danmuku.domain._share.meta.video_comment.SVideoComment
 
 import org.springframework.stereotype.Service
@@ -17,20 +18,23 @@ object UntopCommentCmd {
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
-            val comment = Mediator.repositories.findFirst(
+            val comment = Mediator.repositories.findOne(
                 SVideoComment.predicateById(request.commentId),
-                persist = false
             ).getOrNull() ?: throw KnownException("评论不存在：${request.commentId}")
 
             comment.untop()
+
             Mediator.uow.save()
             return Response()
         }
     }
 
+    @VideoCommentOwner
     data class Request(
         /** 评论ID */
-        val commentId: Long
+        val commentId: Long,
+        /** 操作者ID */
+        val operatorId: Long
     ) : RequestParam<Response>
 
     class Response
