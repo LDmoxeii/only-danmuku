@@ -20,8 +20,9 @@ object DeleteDanmukuCmd {
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
-            // 删除弹幕（软删）
-            Mediator.repositories.remove(SVideoDanmuku.predicateById(request.danmukuId))
+            Mediator.repositories.remove(
+                SVideoDanmuku.predicateById(request.danmukuId)
+            )
 
             Mediator.uow.save()
 

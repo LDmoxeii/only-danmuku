@@ -75,7 +75,6 @@ class AdminInteractController {
      */
     @PostMapping("/delDanmu")
     fun adminInteractDelDanmuku(@RequestBody @Validated request: AdminInteractDelDanmuku.Request): AdminInteractDelDanmuku.Response {
-        // 调用命令删除弹幕
         Mediator.commands.send(
             DeleteDanmukuCmd.Request(
                 danmukuId = request.danmuId!!
