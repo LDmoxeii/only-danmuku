@@ -7,6 +7,7 @@ import com.only4.cap4k.ddd.core.application.command.Command
 import edu.only4.danmuku.application.validater.CommentExists
 import edu.only4.danmuku.application.validater.VideoCommentOwner
 import edu.only4.danmuku.domain._share.meta.video_comment.SVideoComment
+import edu.only4.danmuku.domain.aggregates.video_comment.VideoComment
 
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
@@ -19,7 +20,7 @@ object TopCommentCmd {
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
-            val comment = Mediator.repositories.findFirst(
+            val comment = Mediator.repositories.findOne(
                 SVideoComment.predicateById(request.commentId)
             ).getOrNull() ?: throw KnownException("评论不存在：${request.commentId}")
 
@@ -33,8 +34,9 @@ object TopCommentCmd {
                 }
             )
 
-            existingTopComments.forEach { it.untop() }
+            existingTopComments.forEach(VideoComment::untop)
             comment.top()
+
             Mediator.uow.save()
             return Response()
         }
