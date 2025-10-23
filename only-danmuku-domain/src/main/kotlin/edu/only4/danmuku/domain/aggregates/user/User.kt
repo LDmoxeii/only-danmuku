@@ -187,5 +187,10 @@ class User (
         }
     }
 
+    fun updateLoginInfo(loginTime: Long, loginIp: String) {
+        this.lastLoginTime = loginTime
+        this.lastLoginIp = loginIp
+    }
+
     // 【行为方法结束】
 }

@@ -132,5 +132,13 @@ class Statistics (
 
     // 【行为方法开始】
 
+    /**
+     * 更新统计数量
+     * @param delta 增量（正数表示增加，负数表示减少）
+     */
+    fun updateCount(delta: Int) {
+        this.statisticsCount = (this.statisticsCount ?: 0) + delta
+    }
+
     // 【行为方法结束】
 }

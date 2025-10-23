@@ -6,7 +6,7 @@ import com.only4.cap4k.ddd.core.application.command.Command
 import edu.only4.danmuku.domain._share.meta.customer_focus.SCustomerFocus
 import edu.only4.danmuku.domain.aggregates.customer_focus.factory.CustomerFocusFactory
 import edu.only4.danmuku.application.validater.NotSelf
-import edu.only4.danmuku.application.validater.TargetUserExists
+import edu.only4.danmuku.application.validater.UserExists
 import org.springframework.stereotype.Service
 
 /**
@@ -45,7 +45,7 @@ object FocusCmd {
     }
 
     @NotSelf(userIdField = "userId", targetIdField = "focusUserId")
-    @TargetUserExists(targetIdField = "focusUserId")
+    @UserExists(targetIdField = "focusUserId")
     data class Request(
         val userId: Long,
         val focusUserId: Long,

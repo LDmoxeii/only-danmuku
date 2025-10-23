@@ -13,18 +13,18 @@ import kotlin.reflect.full.memberProperties
 /** 校验目标用户是否存在（基于 User.id） */
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)
-@Constraint(validatedBy = [TargetUserExists.Validator::class])
+@Constraint(validatedBy = [UserExists.Validator::class])
 @MustBeDocumented
-annotation class TargetUserExists(
+annotation class UserExists(
     val message: String = "目标用户不存在",
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [],
-    val targetIdField: String = "focusUserId",
+    val targetIdField: String = "userId",
 ) {
-    class Validator : ConstraintValidator<TargetUserExists, Any> {
+    class Validator : ConstraintValidator<UserExists, Any> {
         private lateinit var targetIdField: String
 
-        override fun initialize(annotation: TargetUserExists) {
+        override fun initialize(annotation: UserExists) {
             targetIdField = annotation.targetIdField
         }
 

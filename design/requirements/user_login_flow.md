@@ -47,18 +47,8 @@
 │   ├─ @ValidEmail ✅ (邮箱格式验证)                               │
 │   ├─ @NotEmpty ✅ (密码非空验证)                                 │
 │   ├─ @UserExists ❌ (验证用户存在)                               │
-│   ├─ @CorrectPassword ❌ (验证密码正确)                          │
-│   └─ @UserNotDisabled ❌ (验证账号未被禁用)                      │
 │                                                                 │
 │ 处理逻辑：                                                       │
-│   1. 查询用户信息 GetUserByEmailQry ❌                           │
-│      - 如果不存在 → 抛出异常 "账号或者密码错误"                   │
-│   2. 验证密码:                                                  │
-│      - password == user.password (MD5/BCrypt)                  │
-│      - 如果不匹配 → 抛出异常 "账号或者密码错误"                   │
-│   3. 验证账号状态:                                               │
-│      - user.status == ENABLED                                  │
-│      - 如果禁用 → 抛出异常 "账号已禁用"                          │
 │   4. User.recordLogin(loginTime, loginIp)                       │
 │      - 更新 lastLoginTime = 当前时间                             │
 │      - 更新 lastLoginIp = 登录IP                                │

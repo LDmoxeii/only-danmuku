@@ -7,10 +7,9 @@ import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.adapter.portal.api.payload.*
 import edu.only4.danmuku.application.commands.user.RegisterAccountCmd
+import edu.only4.danmuku.application.commands.user.UpdateLoginInfoCmd
 import edu.only4.danmuku.application.distributed.clients.CaptchaGen
-import edu.only4.danmuku.application.queries.user.GetAccountInfoByEmailQry
 import edu.only4.danmuku.application.queries.user.GetUserCountInfoQry
-import edu.only4.danmuku.domain.aggregates.user.User
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
@@ -87,21 +86,22 @@ class AccountController {
 //        val captchaValidationResult = Mediator.requests.send(CaptchaValid.Request(request.checkCodeKey, request.checkCode))
 //        require(captchaValidationResult.result) { "验证码错误" }
 
-        val userAccount = Mediator.queries.send(
-            GetAccountInfoByEmailQry.Request(
-                email = request.email
+
+        val userAccount = Mediator.commands.send(
+            UpdateLoginInfoCmd.Request(
+                email = request.email,
+                password = request.password,
+                loginIp = "127.0.0.1",
             )
         )
 
-        val isPasswordCorrect = User.isPasswordCorrect(userAccount.password, request.password)
-        require(isPasswordCorrect) { "密码错误" }
+        LoginHelper.login(UserInfo(userAccount.userId, userAccount.userType.code, userAccount.username))
 
-        LoginHelper.login(UserInfo(userAccount.id, userAccount.type.code, userAccount.email))
         val token = StpUtil.getTokenValue()
 
         return AccountLogin.Response(
-            userId = userAccount.id.toString(),
-            nickName = userAccount.nickName,
+            userId = userAccount.userId.toString(),
+            nickName = userAccount.username,
             token = token
         )
     }
