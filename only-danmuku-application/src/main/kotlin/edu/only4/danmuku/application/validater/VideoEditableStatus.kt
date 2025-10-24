@@ -2,6 +2,7 @@ package edu.only4.danmuku.application.validater
 
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.application.queries.video_draft.GetVideoDraftInfoQry
+import edu.only4.danmuku.domain.aggregates.video_draft.enums.VideoStatus
 import jakarta.validation.Constraint
 import jakarta.validation.ConstraintValidator
 import jakarta.validation.ConstraintValidatorContext
@@ -9,24 +10,28 @@ import jakarta.validation.Payload
 import kotlin.reflect.KClass
 import kotlin.reflect.full.memberProperties
 
-/** 校验视频草稿是否存在（通过查询层） */
-@Target(AnnotationTarget.CLASS, AnnotationTarget.FIELD, AnnotationTarget.VALUE_PARAMETER)
+/**
+ * 校验视频草稿是否处于可编辑状态（基于查询层，不直接依赖仓储）
+ *
+ * 可编辑：status != REVIEW_PASSED
+ */
+@Target(AnnotationTarget.CLASS, AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
-@Constraint(validatedBy = [VideoDraftExists.Validator::class])
+@Constraint(validatedBy = [VideoEditableStatus.Validator::class])
 @MustBeDocumented
-annotation class VideoDraftExists(
-    val message: String = "视频草稿不存在",
+annotation class VideoEditableStatus(
+    val message: String = "视频草稿状态不可编辑",
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [],
     val videoIdField: String = "videoId",
     val userIdField: String = "customerId",
 ) {
 
-    class Validator : ConstraintValidator<VideoDraftExists, Any> {
+    class Validator : ConstraintValidator<VideoEditableStatus, Any> {
         private lateinit var videoIdProperty: String
         private lateinit var userIdProperty: String
 
-        override fun initialize(constraintAnnotation: VideoDraftExists) {
+        override fun initialize(constraintAnnotation: VideoEditableStatus) {
             videoIdProperty = constraintAnnotation.videoIdField
             userIdProperty = constraintAnnotation.userIdField
         }
@@ -41,15 +46,17 @@ annotation class VideoDraftExists(
                         userId = userId
                     )
                 )
-            }.getOrNull()
+            }.getOrNull() ?: return false
 
-            return resp != null
+            val statusEnum = VideoStatus.valueOf(resp.videoInfo.status)
+            return statusEnum != VideoStatus.REVIEW_PASSED
         }
 
         private fun extractIds(source: Any?): Pair<Long, Long>? {
             if (source == null) return null
             return when (source) {
-                is Number, is String -> null
+                is Number -> null // 仅数字无法区分 userId
+                is String -> null // 同上
                 else -> {
                     val props = source::class.memberProperties.associateBy { it.name }
                     val vRaw = props[videoIdProperty]?.getter?.call(source)

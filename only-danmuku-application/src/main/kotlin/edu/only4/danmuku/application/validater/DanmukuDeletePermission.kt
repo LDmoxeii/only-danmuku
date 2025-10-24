@@ -1,19 +1,15 @@
 package edu.only4.danmuku.application.validater
 
 import com.only4.cap4k.ddd.core.Mediator
-import edu.only4.danmuku.domain._share.meta.video.SVideo
-import edu.only4.danmuku.domain._share.meta.video_danmuku.SVideoDanmuku
+import edu.only4.danmuku.application.queries.video_danmuku.GetDanmukuOwnerQry
 import jakarta.validation.Constraint
 import jakarta.validation.ConstraintValidator
 import jakarta.validation.ConstraintValidatorContext
 import jakarta.validation.Payload
-import kotlin.jvm.optionals.getOrNull
 import kotlin.reflect.KClass
 import kotlin.reflect.full.memberProperties
 
-/**
- * 校验弹幕删除权限（UP主或管理员）
- */
+/** 校验弹幕删除权限（UP主或管理员）。使用查询层，不直接依赖仓储 */
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)
 @Constraint(validatedBy = [DanmukuDeletePermission.Validator::class])
@@ -44,18 +40,11 @@ annotation class DanmukuDeletePermission(
             // 管理员（operatorId == null）直接通过
             if (operatorId == null) return true
 
-            val danmuku = Mediator.repositories.findFirst(
-                SVideoDanmuku.predicateById(danmukuId),
-                persist = false
-            ).getOrNull() ?: return true
+            val resp = runCatching {
+                Mediator.queries.send(GetDanmukuOwnerQry.Request(danmukuId = danmukuId))
+            }.getOrNull() ?: return false
 
-            val video = Mediator.repositories.findFirst(
-                SVideo.predicateById(danmuku.videoId),
-                persist = false
-            ).getOrNull() ?: return false
-
-            return video.customerId == operatorId
+            return resp.ownerId == operatorId
         }
     }
 }
-
