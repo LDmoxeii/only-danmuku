@@ -24,9 +24,19 @@ import org.springframework.stereotype.Service
 )
 class VideoPlayHistoryFactory : AggregateFactory<VideoPlayHistoryFactory.Payload, VideoPlayHistory> {
 
-    override fun create(payload: Payload): VideoPlayHistory {
+    override fun create(entityPayload: Payload): VideoPlayHistory {
         return VideoPlayHistory(
-
+            id = 0L,
+            customerId = entityPayload.customerId,
+            videoId = entityPayload.videoId,
+            fileIndex = entityPayload.fileIndex,
+            createUserId = null,
+            createBy = null,
+            createTime = entityPayload.createTime,
+            updateUserId = null,
+            updateBy = null,
+            updateTime = entityPayload.updateTime ?: entityPayload.createTime,
+            deleted = 0L,
         )
     }
 
@@ -37,7 +47,11 @@ class VideoPlayHistoryFactory : AggregateFactory<VideoPlayHistoryFactory.Payload
         description = ""
     )
     data class Payload(
-        val name: String
+        val customerId: Long,
+        val videoId: Long,
+        val fileIndex: Int,
+        val createTime: Long,
+        val updateTime: Long? = null,
     ) : AggregatePayload<VideoPlayHistory>
 
 }

@@ -1,6 +1,7 @@
 package edu.only4.danmuku
 
 import edu.only4.danmuku.application._share.enums.config.properties.SysSettingProperties
+import edu.only4.danmuku.application._share.enums.config.properties.VideoAppProperties
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.context.properties.EnableConfigurationProperties
@@ -15,7 +16,7 @@ import org.springframework.scheduling.annotation.EnableScheduling
  */
 @SpringBootApplication
 @EnableScheduling
-@EnableConfigurationProperties(SysSettingProperties::class)
+@EnableConfigurationProperties(SysSettingProperties::class, VideoAppProperties::class)
 @EnableJpaRepositories(basePackages = ["edu.only4.danmuku.adapter.domain.repositories"])
 @EntityScan(basePackages = ["edu.only4.danmuku.domain.aggregates"])
 class StartApplication

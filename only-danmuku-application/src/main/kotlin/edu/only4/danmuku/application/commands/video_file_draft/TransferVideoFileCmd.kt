@@ -9,11 +9,10 @@ import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
 import edu.only4.danmuku.domain._share.meta.video_draft.SVideoDraft
 import edu.only4.danmuku.domain._share.meta.video_file_draft.SVideoFileDraft
-import edu.only4.danmuku.domain.aggregates.video_draft.enums.VideoStatus
 import edu.only4.danmuku.domain.aggregates.video_file_draft.VideoFileDraft
 import edu.only4.danmuku.domain.aggregates.video_file_draft.enums.TransferResult
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Value
+import edu.only4.danmuku.application._share.enums.config.properties.VideoAppProperties
 import org.springframework.stereotype.Service
 import java.io.File
 import java.nio.file.Files
@@ -42,19 +41,17 @@ object TransferVideoFileCmd {
 
     @Service
     class Handler(
-        @Value("\${app.video.tempFolder:/tmp/video/temp}") private val tempFolder: String,
-        @Value("\${app.video.targetFolder:/data/video}") private val targetFolder: String,
-        @Value("\${app.video.tsSegmentSeconds:10}") private val tsSegmentSeconds: Int,
+        private val videoProps: VideoAppProperties,
     ) : Command<Request, Response> {
 
         override fun exec(request: Request): Response {
-            val updateFile = VideoFileDraft()
+            var videoFileDraft: VideoFileDraft? = null
             var transferSuccess = false
             var errorMessage: String? = null
 
             try {
                 // 1. 查询视频文件草稿信息
-                val videoFileDraft = Mediator.repositories.findOne(
+                videoFileDraft = Mediator.repositories.findOne(
                     SVideoFileDraft.predicate {
                         it.all(
                             (it.uploadId eq request.uploadId),
@@ -64,6 +61,9 @@ object TransferVideoFileCmd {
                 ).orElseThrow { IllegalArgumentException("视频文件不存在: uploadId=${request.uploadId}") }
 
                 logger.info("开始转码视频文件: fileId=${videoFileDraft.fileId}, uploadId=${videoFileDraft.uploadId}")
+
+                // 标记开始转码（领域方法）
+                videoFileDraft.startTransfer()
 
                 // 2. 构建文件路径
                 val tempFilePath = buildTempFilePath(videoFileDraft.customerId, videoFileDraft.uploadId)
@@ -93,7 +93,6 @@ object TransferVideoFileCmd {
 
                 // 6. 获取视频时长
                 val duration = getVideoDuration(mergedVideoPath)
-                updateFile.duration = duration
                 logger.info("视频时长: ${duration}秒")
 
                 // 7. 获取视频编码并转码（如果需要）
@@ -116,47 +115,28 @@ object TransferVideoFileCmd {
 
                 // 8. 转码为 TS 格式
                 val tsFolder = File(targetFilePath)
-                convertVideoToTs(tsFolder, finalVideoPath, tsSegmentSeconds)
+                convertVideoToTs(tsFolder, finalVideoPath, videoProps.tsSegmentSeconds)
                 logger.info("视频已转码为 TS 格式: $targetFilePath")
 
                 // 9. 删除合并后的原视频文件
                 File(finalVideoPath).delete()
                 logger.info("原始合并文件已删除: $finalVideoPath")
 
-                // 10. 更新文件信息
-                updateFile.fileSize = calculateTsFolderSize(tsFolder)
-                updateFile.filePath = targetFilePath
-                updateFile.transferResult = TransferResult.SUCCESS
+                // 10. 更新文件信息（领域方法）
+                val fileSize = calculateTsFolderSize(tsFolder)
+                videoFileDraft.markTransferSuccess(duration, fileSize, targetFilePath)
                 transferSuccess = true
 
                 logger.info("视频文件转码成功: fileId=${videoFileDraft.fileId}")
 
             } catch (e: Exception) {
                 logger.error("视频文件转码失败: uploadId=${request.uploadId}", e)
-                updateFile.transferResult = TransferResult.FAILED
+                // 标记失败（领域方法）
+                videoFileDraft?.markTransferFailed()
                 errorMessage = e.message
             } finally {
-                // 11. 更新文件状态
-                val videoFileDraft = Mediator.repositories.findOne(
-                    SVideoFileDraft.predicate {
-                        it.all(
-                            (it.uploadId eq request.uploadId),
-                            (it.customerId eq request.customerId)
-                        )
-                    }
-                ).orElse(null)
-
-                if (videoFileDraft != null) {
-                    videoFileDraft.transferResult = updateFile.transferResult
-                    videoFileDraft.duration = updateFile.duration
-                    videoFileDraft.fileSize = updateFile.fileSize
-                    videoFileDraft.filePath = updateFile.filePath
-
-                    // 12. 更新视频草稿状态
-                    updateVideoDraftStatus(videoFileDraft.videoId)
-
-                    Mediator.uow.save()
-                }
+                updateVideoDraftStatus(videoFileDraft!!.videoId)
+                Mediator.uow.save()
             }
 
             return Response(
@@ -169,14 +149,14 @@ object TransferVideoFileCmd {
          * 构建临时文件路径
          */
         private fun buildTempFilePath(customerId: Long, uploadId: Long): String {
-            return "$tempFolder/$customerId/$uploadId"
+            return "${videoProps.tempFolder}/$customerId/$uploadId"
         }
 
         /**
          * 构建目标文件路径
          */
         private fun buildTargetFilePath(customerId: Long, videoId: Long): String {
-            return "$targetFolder/$customerId/$videoId"
+            return "${videoProps.targetFolder}/$customerId/$videoId"
         }
 
         /**
@@ -253,14 +233,14 @@ object TransferVideoFileCmd {
             if (videoDraft != null) {
                 when {
                     hasFailedFiles -> {
-                        // 有失败文件，标记为转码失败
-                        videoDraft.status = VideoStatus.TRANSCODE_FAILED
+                        // 有失败文件，标记为转码失败（领域方法）
+                        videoDraft.markTranscodeFailed()
                         logger.info("视频转码失败: videoId=$videoId")
                     }
 
                     hasTranscodingFiles -> {
-                        // 还有文件在转码中，保持转码中状态
-                        videoDraft.status = VideoStatus.TRANSCODING
+                        // 还有文件在转码中，保持转码中状态（领域方法）
+                        videoDraft.markTranscoding()
                         logger.info("视频转码中: videoId=$videoId")
                     }
 
@@ -268,9 +248,9 @@ object TransferVideoFileCmd {
                         // 所有文件都转码成功，标记为待审核
                         videoDraft.markPendingReview()
 
-                        // 计算总时长
+                        // 计算总时长并更新（领域方法）
                         val totalDuration = allFiles.mapNotNull { it.duration }.sum()
-                        videoDraft.duration = totalDuration
+                        videoDraft.updateDuration(totalDuration)
 
                         logger.info("视频转码完成，待审核: videoId=$videoId, 总时长=${totalDuration}秒")
                     }
