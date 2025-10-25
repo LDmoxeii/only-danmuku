@@ -6,7 +6,7 @@ export edu.only4.danmuku.application.queries._share.model.video_file_draft.JVide
  * 用于获取视频草稿的文件列表
  */
 VideoFileDraftItem {
-    fileId
+    id
     uploadId
     fileIndex
     fileName

@@ -9,8 +9,8 @@ object AdminAccountCheckCode {
 
     data class Response(
         /** 验证码Base64编码 */
-        var checkCode: String? = null,
+        var checkCode: String,
         /** 验证码唯一键 */
-        var checkCodeKey: String? = null
+        var checkCodeKey: String? = null,
     )
 }

@@ -20,11 +20,6 @@ interface JVideoDraft {
     val id: Long
 
     /**
-     * 视频ID
-     */
-    val videoId: Long
-
-    /**
      * 视频封面
      */
     val videoCover: String

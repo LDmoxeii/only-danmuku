@@ -4,7 +4,7 @@ import com.only4.cap4k.ddd.core.application.query.Query
 import edu.only4.danmuku.application.queries._share.draft.video_draft.VideoDraftDetail
 import edu.only4.danmuku.application.queries._share.draft.video_file_draft.VideoFileDraftItem
 import edu.only4.danmuku.application.queries._share.model.video_draft.customerId
-import edu.only4.danmuku.application.queries._share.model.video_draft.videoId
+import edu.only4.danmuku.application.queries._share.model.video_draft.id
 import edu.only4.danmuku.application.queries.video_draft.GetVideoDraftInfoQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
@@ -27,7 +27,7 @@ class GetVideoDraftInfoQryHandler(
 
         // 查询视频草稿信息
         val draftList = sqlClient.findAll(VideoDraftDetail::class) {
-            where(table.videoId eq request.videoId)
+            where(table.id eq request.videoId)
             where(table.customerId eq request.userId)
         }
 
@@ -44,7 +44,7 @@ class GetVideoDraftInfoQryHandler(
 
         return GetVideoDraftInfoQry.Response(
             videoInfo = GetVideoDraftInfoQry.VideoInfo(
-                videoId = draft.videoId,
+                videoId = draft.id,
                 videoCover = draft.videoCover,
                 videoName = draft.videoName,
                 pCategoryId = draft.pCategoryId?.toInt(),
@@ -57,7 +57,7 @@ class GetVideoDraftInfoQryHandler(
             ),
             videoFileList = videoFiles.map { file ->
                 GetVideoDraftInfoQry.VideoFileItem(
-                    fileId = file.fileId,
+                    fileId = file.id,
                     uploadId = file.uploadId.toString(),
                     fileIndex = file.fileIndex,
                     fileName = file.fileName ?: "",

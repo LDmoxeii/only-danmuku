@@ -20,11 +20,6 @@ interface JVideoFile {
     val id: Long
 
     /**
-     * 文件ID
-     */
-    val fileId: Long
-
-    /**
      * 用户ID
      */
     val customerId: Long

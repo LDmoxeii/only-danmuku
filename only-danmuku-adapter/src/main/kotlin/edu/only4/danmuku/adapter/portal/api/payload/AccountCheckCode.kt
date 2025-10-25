@@ -4,22 +4,6 @@ object AccountCheckCode {
 
     data class Response(
         val captchaId: String,
-        val byte: ByteArray,
-    ) {
-        override fun equals(other: Any?): Boolean {
-            if (this === other) return true
-            if (other !is Response) return false
-
-            if (captchaId != other.captchaId) return false
-            if (!byte.contentEquals(other.byte)) return false
-
-            return true
-        }
-
-        override fun hashCode(): Int {
-            var result = captchaId.hashCode()
-            result = 31 * result + byte.contentHashCode()
-            return result
-        }
-    }
+        val byte: String,
+    )
 }

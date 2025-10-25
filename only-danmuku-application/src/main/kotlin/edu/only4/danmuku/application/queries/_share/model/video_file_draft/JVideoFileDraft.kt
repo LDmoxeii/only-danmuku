@@ -20,11 +20,6 @@ interface JVideoFileDraft {
     val id: Long
 
     /**
-     * 文件ID
-     */
-    val fileId: Long
-
-    /**
      * 上传ID
      */
     val uploadId: Long

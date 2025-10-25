@@ -7,7 +7,6 @@ export edu.only4.danmuku.application.queries._share.model.video_file.JVideoFile
  */
 VideoFileItem {
     id
-    fileId
     videoId
     fileName
     fileIndex

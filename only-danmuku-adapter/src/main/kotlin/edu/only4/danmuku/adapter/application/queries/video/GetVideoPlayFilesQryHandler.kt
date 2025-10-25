@@ -37,7 +37,7 @@ class GetVideoPlayFilesQryHandler(
         // 转换为查询响应
         return fileList.map { file ->
             GetVideoPlayFilesQry.Response(
-                fileId = file.fileId,
+                fileId = file.id,
                 videoId = file.videoId,
                 fileIndex = file.fileIndex,
                 fileName = file.fileName,

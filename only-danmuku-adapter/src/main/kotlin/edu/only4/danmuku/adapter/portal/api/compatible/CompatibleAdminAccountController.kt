@@ -1,4 +1,4 @@
-package edu.only4.danmuku.adapter.portal.api
+package edu.only4.danmuku.adapter.portal.api.compatible
 
 import cn.dev33.satoken.annotation.SaIgnore
 import cn.dev33.satoken.stp.StpUtil
@@ -7,41 +7,46 @@ import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.adapter.portal.api.payload.AdminAccountCheckCode
 import edu.only4.danmuku.adapter.portal.api.payload.AdminAccountLogin
-import edu.only4.danmuku.adapter.portal.api.payload.AdminAccountLogout
 import edu.only4.danmuku.application.distributed.clients.CaptchaGen
+import edu.only4.danmuku.application.distributed.clients.CaptchaValid
 import edu.only4.danmuku.application.queries.user.GetAccountInfoByEmailQry
 import edu.only4.danmuku.domain.aggregates.user.User
-import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.*
+import jakarta.validation.constraints.NotEmpty
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/admin/account/v2")
-@Validated
-class AdminAccountController {
+@RequestMapping("/admin/account")
+class CompatibleAdminAccountController {
 
     @SaIgnore
     @PostMapping("/checkCode")
     fun adminAccountCheckCode(): AdminAccountCheckCode.Response {
         val result = Mediator.requests.send(CaptchaGen.Request("web-auth"))
         return AdminAccountCheckCode.Response(
-            result.byte,
+            "data:image/png;base64,${result.byte}",
             result.captchaId
         )
     }
 
     @SaIgnore
     @PostMapping("/login")
-    fun adminAccountLogin(@RequestBody @Validated request: AdminAccountLogin.Request): AdminAccountLogin.Response {
-        //        val captchaValidationResult = Mediator.requests.send(CaptchaValid.Request(request.checkCodeKey, request.checkCode))
-//        require(captchaValidationResult.result) { "验证码错误" }
-
+    fun adminAccountLogin(
+        @NotEmpty account: String,
+        @NotEmpty password: String,
+        @NotEmpty checkCode: String,
+        @NotEmpty checkCodeKey: String,
+    ): AdminAccountLogin.Response {
+        val captchaValidationResult = Mediator.requests.send(CaptchaValid.Request(checkCodeKey, checkCode))
+        require(captchaValidationResult.result) { "验证码错误" }
         val userAccount = Mediator.queries.send(
             GetAccountInfoByEmailQry.Request(
-                email = request.account
+                email = account
             )
         )
 
-        val isPasswordCorrect = User.isPasswordCorrect(userAccount.password, request.password)
+        val isPasswordCorrect = User.isPasswordCorrect(userAccount.password, password)
         require(isPasswordCorrect) { "密码错误" }
 
         LoginHelper.login(UserInfo(userAccount.id, userAccount.type.code, userAccount.email))
@@ -54,11 +59,4 @@ class AdminAccountController {
             token = token
         )
     }
-
-    @PostMapping("/logout")
-    fun adminAccountLogout(): AdminAccountLogout.Response {
-        StpUtil.logout()
-        return AdminAccountLogout.Response()
-    }
-
 }

@@ -6,7 +6,7 @@ export edu.only4.danmuku.application.queries._share.model.video_draft.JVideoDraf
  * 用于用户视频草稿分页查询
  */
 VideoDraftPageItem {
-    videoId
+    id
     videoCover
     videoName
     createTime
@@ -19,7 +19,7 @@ VideoDraftPageItem {
  * 用于获取视频草稿完整信息
  */
 VideoDraftDetail {
-    videoId
+    id
     videoCover
     videoName
     pCategoryId

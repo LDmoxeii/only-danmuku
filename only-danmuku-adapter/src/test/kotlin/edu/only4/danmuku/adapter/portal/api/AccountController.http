@@ -1,5 +1,5 @@
 ### 获取验证码
-POST {{host}}/account/checkCode
+POST {{host}}/account/v2/checkCode
 
 > {%
     // 自动保存验证码 key
