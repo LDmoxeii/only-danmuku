@@ -25,9 +25,6 @@ import java.time.ZoneId
 @Validated
 class AdminVideoController {
 
-    /**
-     * 加载视频列表(分页)
-     */
     @PostMapping("/loadVideoList")
     fun adminVideoLoadList(@RequestBody request: AdminVideoLoadList.Request): PageData<AdminVideoLoadList.VideoItem> {
         // 调用查询获取视频分页列表
@@ -77,12 +74,8 @@ class AdminVideoController {
         )
     }
 
-    /**
-     * 推荐视频
-     */
     @PostMapping("/recommendVideo")
     fun adminVideoRecommend(@RequestBody @Validated request: AdminVideoRecommend.Request): AdminVideoRecommend.Response {
-        // 调用命令推荐视频
         Mediator.commands.send(
             RecommendVideoCmd.Request(
                 videoId = request.videoId!!.toLong()

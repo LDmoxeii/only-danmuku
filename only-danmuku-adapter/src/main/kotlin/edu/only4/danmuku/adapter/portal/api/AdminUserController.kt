@@ -1,12 +1,10 @@
 package edu.only4.danmuku.adapter.portal.api
 
-import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.share.PageData
 import edu.only4.danmuku.adapter.portal.api.payload.AdminUserChangeStatus
 import edu.only4.danmuku.adapter.portal.api.payload.AdminUserLoad
-import edu.only4.danmuku.application.commands.user.DisableAccountCmd
-import edu.only4.danmuku.application.commands.user.EnableAccountCmd
+import edu.only4.danmuku.application.commands.user.ChangeAccountStatusCmd
 import edu.only4.danmuku.application.queries.user.GetUsersByStatusQry
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
@@ -25,9 +23,6 @@ import java.time.ZoneId
 @Validated
 class AdminUserController {
 
-    /**
-     * 加载用户列表(分页)
-     */
     @PostMapping("/loadUser")
     fun adminUserLoad(@RequestBody request: AdminUserLoad.Request): PageData<AdminUserLoad.UserItem> {
         // 调用查询获取用户分页列表
@@ -75,29 +70,19 @@ class AdminUserController {
     }
 
     /**
-     * 修改用户状态
+     * 切换用户状态
      */
     @PostMapping("/changeStatus")
     fun adminUserChangeStatus(@RequestBody @Validated request: AdminUserChangeStatus.Request): AdminUserChangeStatus.Response {
         val userId = request.userId!!.toLong()
-        val status = request.status!!
+        val status = request.status!! == 1
 
-        // 根据状态调用不同的命令
-        when (status) {
-            0 -> {
-                // 禁用账号
-                Mediator.commands.send(
-                    DisableAccountCmd.Request(userId = userId)
-                )
-            }
-            1 -> {
-                // 启用账号
-                Mediator.commands.send(
-                    EnableAccountCmd.Request(userId = userId)
-                )
-            }
-            else -> throw KnownException("无效的状态值: $status")
-        }
+        Mediator.commands.send(
+            ChangeAccountStatusCmd.Request(
+                userId = userId,
+                status = status
+            )
+        )
 
         return AdminUserChangeStatus.Response()
     }

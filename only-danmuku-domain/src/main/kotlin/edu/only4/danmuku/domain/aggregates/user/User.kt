@@ -185,6 +185,17 @@ class User (
         events().attach(this) { AccountDisabledDomainEvent(entity = this) }
     }
 
+    /** 切换账号状态 */
+    fun changeStatus(newStatus: Boolean) {
+        if (this.status == newStatus) return
+        this.status = newStatus
+        if (newStatus) {
+            events().attach(this) { AccountEnabledDomainEvent(entity = this) }
+        } else {
+            events().attach(this) { AccountDisabledDomainEvent(entity = this) }
+        }
+    }
+
     fun updateLoginInfo(loginTime: Long, loginIp: String) {
         this.lastLoginTime = loginTime
         this.lastLoginIp = loginIp
