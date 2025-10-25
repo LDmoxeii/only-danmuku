@@ -5,6 +5,7 @@ import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
 
 import edu.only4.danmuku.domain.aggregates.video.enums.PostType
 import edu.only4.danmuku.domain.aggregates.video.enums.RecommendType
+import edu.only4.danmuku.domain.aggregates.video.events.VideoDeletedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video.events.VideoRecommendedDomainEvent
 
 import jakarta.persistence.*
@@ -243,6 +244,10 @@ class Video (
     // 【字段映射结束】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
 
     // 【行为方法开始】
+
+    fun onDelete() {
+        events().attach(this) { VideoDeletedDomainEvent(entity = this) }
+    }
 
     /** 标记为推荐视频 */
     fun recommend() {

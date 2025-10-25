@@ -218,7 +218,8 @@ class UCenterVideoPostController {
         val currentUserId = LoginHelper.getUserId()!!
         Mediator.commands.send(
             DeleteVideoCmd.Request(
-                videoId = request.videoId.toLong()
+                videoId = request.videoId.toLong(),
+                operatorId = currentUserId
             )
         )
 

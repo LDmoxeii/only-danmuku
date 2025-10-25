@@ -204,6 +204,16 @@ class CustomerProfile (
         this.currentCoinCount += amount
     }
 
+    /** 在删除视频后回收对应奖励硬币（可能超出） */
+    fun reclaimRewardCoins(amount: Int) {
+        require(amount >= 0) { "扣款数量不得小于0" }
+        if (amount == 0) return
+        val deduction = amount.coerceAtMost(this.currentCoinCount)
+        this.currentCoinCount -= deduction
+        this.totalCoinCount = (this.totalCoinCount - deduction).coerceAtLeast(0)
+    }
+
+
     fun updateProfileInfo(
         nickName: String? = null,
         avatar: String? = null,

@@ -1,30 +1,24 @@
-package edu.only4.danmuku.application.commands.video_danmuku
+package edu.only4.danmuku.application.commands.video
 
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
-import edu.only4.danmuku.domain._share.meta.video_danmuku.SVideoDanmuku
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 /**
- * 批量删除弹幕
- *
- * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
- * @author cap4k-ddd-codegen
- * @date 2025/10/15
+ * 从 ES 中删除视频搜索文档信息 (未实现, 标记 TODO)
  */
-object BatchDeleteDanmukuCmd {
+object RemoveVideoSearchIndexCmd {
+
+    private val logger = LoggerFactory.getLogger(RemoveVideoSearchIndexCmd::class.java)
 
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
-            // 根据视频 ID 批量删除所有弹幕数据
-            Mediator.repositories.remove(
-                SVideoDanmuku.predicate { it.videoId eq request.videoId }
-            )
-
+            // TODO: 调用 ES 中删除逻辑
+            logger.info("RemoveVideoSearchIndexCmd 未实现, 待接入 ES: videoId={}", request.videoId)
             Mediator.uow.save()
-
             return Response()
         }
     }
@@ -35,3 +29,4 @@ object BatchDeleteDanmukuCmd {
 
     class Response
 }
+

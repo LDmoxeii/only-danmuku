@@ -1,27 +1,22 @@
-package edu.only4.danmuku.application.commands.video_draft
+package edu.only4.danmuku.application.commands.video_comment
 
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
-import edu.only4.danmuku.domain._share.meta.video_draft.SVideoDraft
+import edu.only4.danmuku.domain._share.meta.video_comment.SVideoComment
 import org.springframework.stereotype.Service
 
 /**
- * 删除视频草稿
- *
- * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
- * @author cap4k-ddd-codegen
- * @date 2025/10/15
+ * 批量删除评论
  */
-object DeleteVideoDraftCmd {
+object BatchDeleteCommentCmd {
 
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
-            // 删除视频草稿（包括级联删除附属的文件草稿）
-            // 由于配置了 orphanRemoval = true 和 CascadeType.ALL，会自动删除 videoFileDrafts
+            // 根据视频 ID 批量删除所有评论（包括主评论和回复）
             Mediator.repositories.remove(
-                SVideoDraft.predicate { it.id eq request.videoId }
+                SVideoComment.predicate { it.videoId eq request.videoId }
             )
 
             Mediator.uow.save()
@@ -36,3 +31,4 @@ object DeleteVideoDraftCmd {
 
     class Response
 }
+
