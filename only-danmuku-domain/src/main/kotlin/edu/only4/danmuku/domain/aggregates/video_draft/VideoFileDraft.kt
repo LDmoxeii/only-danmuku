@@ -1,9 +1,11 @@
 package edu.only4.danmuku.domain.aggregates.video_draft
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
+import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
 
 import edu.only4.danmuku.domain.aggregates.video_draft.enums.TransferResult
 import edu.only4.danmuku.domain.aggregates.video_draft.enums.UpdateType
+import edu.only4.danmuku.domain.aggregates.video_draft.events.VideoFileDraftCreatedDomainEvent
 
 import jakarta.persistence.*
 
@@ -179,6 +181,10 @@ class VideoFileDraft(
 
     // 【行为方法开始】
 
+    fun onCreate() {
+        events().attach(this) { VideoFileDraftCreatedDomainEvent(this) }
+    }
+
     /**
      * 标记转码开始
      */
@@ -239,6 +245,54 @@ class VideoFileDraft(
      */
     fun isTransferFailed(): Boolean {
         return this.transferResult == TransferResult.FAILED
+    }
+
+    data class UploadSpec(
+        val uploadId: Long,
+        val fileIndex: Int,
+        val fileName: String,
+        val fileSize: Long,
+        val duration: Int,
+    )
+
+    data class BuildResult(
+        val fileDrafts: List<VideoFileDraft>,
+        val totalDuration: Int,
+    )
+
+    companion object {
+        fun buildFromUploads(
+            customerId: Long,
+            videoDraft: VideoDraft,
+            uploads: List<UploadSpec>,
+        ): BuildResult {
+            if (uploads.isEmpty()) {
+                return BuildResult(emptyList(), 0)
+            }
+            val seenUploadIds = mutableSetOf<Long>()
+            var totalDuration = 0
+            val sorted = uploads.sortedBy { it.fileIndex }
+            val fileDrafts = sorted.mapIndexed { index, upload ->
+                if (!seenUploadIds.add(upload.uploadId)) {
+                    throw IllegalArgumentException("Duplicate uploadId: ${upload.uploadId}")
+                }
+                totalDuration += upload.duration
+                VideoFileDraft(
+                    uploadId = upload.uploadId,
+                    customerId = customerId,
+                    fileIndex = index + 1,
+                    fileName = upload.fileName,
+                    fileSize = upload.fileSize,
+                    updateType = UpdateType.HAS_UPDATE,
+                    transferResult = TransferResult.TRANSCODING,
+                    duration = upload.duration
+                ).also {
+                    it.videoDraft = videoDraft
+                    it.onCreate()
+                }
+            }
+            return BuildResult(fileDrafts = fileDrafts, totalDuration = totalDuration)
+        }
     }
 
     // 【行为方法结束】

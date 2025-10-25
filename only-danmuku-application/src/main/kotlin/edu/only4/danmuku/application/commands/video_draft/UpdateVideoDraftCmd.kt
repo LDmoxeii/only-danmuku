@@ -4,10 +4,14 @@ import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
+import edu.only4.danmuku.application.validater.MaxVideoPCount
 import edu.only4.danmuku.application.validater.VideoDraftExists
 import edu.only4.danmuku.application.validater.VideoEditableStatus
 import edu.only4.danmuku.domain._share.meta.video_draft.SVideoDraft
 import edu.only4.danmuku.domain.aggregates.video.enums.PostType
+import edu.only4.danmuku.domain.aggregates.video_draft.VideoFileDraft
+import edu.only4.danmuku.domain.aggregates.video_draft.enums.TransferResult
+import edu.only4.danmuku.domain.aggregates.video_draft.enums.UpdateType
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
 
@@ -22,11 +26,21 @@ object UpdateVideoDraftCmd {
             val draft = Mediator.repositories.findFirst(
                 SVideoDraft.predicate { it.id eq request.videoId },
                 persist = false
-            ).getOrNull() ?: throw KnownException("视频草稿不存在：${request.videoId}")
+            ).getOrNull() ?: throw KnownException("视频草稿不存在: ${request.videoId}")
 
             if (draft.customerId != request.customerId) {
                 throw KnownException("无权编辑该视频草稿")
             }
+
+            val originalVideoName = draft.videoName
+            val originalVideoCover = draft.videoCover
+            val originalPCategoryId = draft.pCategoryId
+            val originalCategoryId = draft.categoryId
+            val originalPostType = draft.postType
+            val originalOriginInfo = draft.originInfo
+            val originalTags = draft.tags
+            val originalIntroduction = draft.introduction
+            val originalDuration = draft.duration
 
             request.videoName?.let { draft.videoName = it }
             request.videoCover?.let { draft.videoCover = it }
@@ -37,8 +51,102 @@ object UpdateVideoDraftCmd {
             draft.tags = request.tags
             draft.introduction = request.introduction
 
-            // 仅修改基础信息：标记为待审核
-            draft.markPendingReview()
+            var hasNewFiles = false
+            var hasRemovedFiles = false
+            var hasFileMetaChange = false
+
+            request.uploadFileList?.let { uploadFileList ->
+                if (uploadFileList.isEmpty()) {
+                    if (draft.videoFileDrafts.isNotEmpty()) {
+                        hasRemovedFiles = true
+                        draft.videoFileDrafts.clear()
+                        draft.duration = null
+                    }
+                    return@let
+                }
+
+                val existingFileMap = draft.videoFileDrafts.associateBy { it.uploadId }.toMutableMap()
+                val seenUploadIds = mutableSetOf<Long>()
+                val sortedUploads = uploadFileList.sortedBy { it.fileIndex }
+
+                val rebuiltList = mutableListOf<VideoFileDraft>()
+                sortedUploads.forEachIndexed { index, fileInfo ->
+                    val uploadId = fileInfo.uploadId.toLongOrNull()
+                        ?: throw KnownException("非法的 uploadId: ${fileInfo.uploadId}")
+                    if (!seenUploadIds.add(uploadId)) {
+                        throw KnownException("重复的 uploadId: ${fileInfo.uploadId}")
+                    }
+
+                    val normalizedIndex = index + 1
+                    val existingFile = existingFileMap.remove(uploadId)
+                    if (existingFile != null) {
+                        if (existingFile.fileIndex != normalizedIndex) {
+                            existingFile.fileIndex = normalizedIndex
+                            hasFileMetaChange = true
+                        }
+                        if (fileInfo.fileName != existingFile.fileName) {
+                            existingFile.fileName = fileInfo.fileName
+                            hasFileMetaChange = true
+                        }
+                        if (fileInfo.fileSize != existingFile.fileSize) {
+                            existingFile.fileSize = fileInfo.fileSize
+                            hasFileMetaChange = true
+                        }
+                        val currentDuration = existingFile.duration ?: 0
+                        if (fileInfo.duration != currentDuration) {
+                            existingFile.duration = fileInfo.duration
+                            hasFileMetaChange = true
+                        }
+                        rebuiltList.add(existingFile)
+                    } else {
+                        hasNewFiles = true
+                        val newFile = VideoFileDraft(
+                            uploadId = uploadId,
+                            customerId = request.customerId,
+                            fileIndex = normalizedIndex,
+                            fileName = fileInfo.fileName,
+                            fileSize = fileInfo.fileSize,
+                            updateType = UpdateType.HAS_UPDATE,
+                            transferResult = TransferResult.TRANSCODING,
+                            duration = fileInfo.duration
+                        ).apply {
+                            videoDraft = draft
+                            onCreate()
+                        }
+                        rebuiltList.add(newFile)
+                    }
+                }
+
+                if (existingFileMap.isNotEmpty()) {
+                    hasRemovedFiles = true
+                }
+
+                draft.videoFileDrafts.clear()
+                draft.videoFileDrafts.addAll(rebuiltList)
+
+                val totalDuration = sortedUploads.sumOf { it.duration }
+                val normalizedDuration = totalDuration.takeIf { it > 0 }
+                if (normalizedDuration != draft.duration) {
+                    draft.duration = normalizedDuration
+                    hasFileMetaChange = true
+                }
+            }
+
+            val basicInfoChanged =
+                draft.videoName != originalVideoName ||
+                        draft.videoCover != originalVideoCover ||
+                        draft.pCategoryId != originalPCategoryId ||
+                        draft.categoryId != originalCategoryId ||
+                        draft.postType != originalPostType ||
+                        draft.originInfo != originalOriginInfo ||
+                        draft.tags != originalTags ||
+                        draft.introduction != originalIntroduction ||
+                        draft.duration != originalDuration
+
+            when {
+                hasNewFiles -> draft.markTranscoding()
+                basicInfoChanged || hasFileMetaChange || hasRemovedFiles -> draft.markPendingReview()
+            }
 
             Mediator.uow.save()
             return Response(videoId = draft.id)
@@ -47,6 +155,7 @@ object UpdateVideoDraftCmd {
 
     @VideoDraftExists
     @VideoEditableStatus
+    @MaxVideoPCount(countField = "uploadFileList", videoIdField = "videoId")
     data class Request(
         val videoId: Long,
         val customerId: Long,
@@ -58,7 +167,16 @@ object UpdateVideoDraftCmd {
         val originInfo: String? = null,
         val tags: String? = null,
         val introduction: String? = null,
+        val uploadFileList: List<VideoFileInfo>? = null,
     ) : RequestParam<Response>
+
+    data class VideoFileInfo(
+        val uploadId: String,
+        val fileIndex: Int,
+        val fileName: String,
+        val fileSize: Long,
+        val duration: Int,
+    )
 
     data class Response(
         val videoId: Long,
