@@ -3,6 +3,7 @@ package edu.only4.danmuku.application.commands.video_draft
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
+import edu.only4.danmuku.domain.aggregates.video.enums.PostType
 import edu.only4.danmuku.domain.aggregates.video_draft.enums.VideoStatus
 import edu.only4.danmuku.domain.aggregates.video_draft.factory.VideoDraftFactory
 import org.springframework.stereotype.Service
@@ -32,7 +33,7 @@ object CreateVideoDraftCmd {
             )
             Mediator.uow.save()
 
-            return Response(videoId = draft.videoId)
+            return Response(videoId = draft.id)
         }
     }
 
@@ -43,7 +44,7 @@ object CreateVideoDraftCmd {
         val videoCover: String? = null,
         val pCategoryId: Long,
         val categoryId: Long? = null,
-        val postType: edu.only4.danmuku.domain.aggregates.video.enums.PostType = edu.only4.danmuku.domain.aggregates.video.enums.PostType.valueOf(1),
+        val postType: PostType = PostType.valueOf(1),
         val originInfo: String? = null,
         val tags: String? = null,
         val introduction: String? = null,

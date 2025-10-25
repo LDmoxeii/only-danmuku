@@ -24,7 +24,7 @@ import org.springframework.data.jpa.domain.Specification
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/10/21
+ * @date 2025/10/25
  */
 class SVideoDraft(
     private val root: Path<VideoDraft>,
@@ -33,8 +33,6 @@ class SVideoDraft(
     class PROPERTY_NAMES {
 
         val id = "id"
-
-        val videoId = "videoId"
 
         val videoCover = "videoCover"
 
@@ -384,14 +382,6 @@ class SVideoDraft(
 
 
     /**
-     * 视频ID
-     */
-    val videoId: Field<Long> by lazy {
-        Field(root.get("videoId"), criteriaBuilder)
-    }
-
-
-    /**
      * 视频封面
      */
     val videoCover: Field<String> by lazy {
@@ -542,6 +532,13 @@ class SVideoDraft(
         Field(root.get("deleted"), criteriaBuilder)
     }
 
+
+    /**
+     * 关联: OneToMany - VideoFileDraft
+     */
+    val videoFileDrafts: Field<Any> by lazy {
+        Field(root.get("videoFileDrafts"), criteriaBuilder)
+    }
 
 
     /**

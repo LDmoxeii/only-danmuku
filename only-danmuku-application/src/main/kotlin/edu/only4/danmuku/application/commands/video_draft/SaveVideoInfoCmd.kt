@@ -5,7 +5,6 @@ import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
 import edu.only4.danmuku.domain._share.meta.video_draft.SVideoDraft
-import edu.only4.danmuku.domain._share.meta.video_file_draft.SVideoFileDraft
 import edu.only4.danmuku.domain.aggregates.video.enums.PostType
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
@@ -26,7 +25,7 @@ object SaveVideoInfoCmd {
             val draft = Mediator.repositories.findFirst(
                 SVideoDraft.predicate { schema ->
                     schema.all(
-                        schema.videoId eq videoId,
+                        schema.id eq videoId,
                         schema.customerId eq request.customerId
                     )
                 },
@@ -45,14 +44,7 @@ object SaveVideoInfoCmd {
             draft.duration = totalDuration
 
             // 先移除原有文件草稿（如需重建文件清单）
-            Mediator.repositories.remove(
-                SVideoFileDraft.predicate { schema ->
-                    schema.all(
-                        schema.videoId eq videoId,
-                        schema.customerId eq request.customerId
-                    )
-                }
-            )
+            // TODO 删除文件草稿
             // 如需保存新文件草稿，可在此处创建对应记录（略）
 
             Mediator.uow.save()

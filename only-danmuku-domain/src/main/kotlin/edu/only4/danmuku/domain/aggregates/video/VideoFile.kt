@@ -1,11 +1,9 @@
-package edu.only4.danmuku.domain.aggregates.video_file
+package edu.only4.danmuku.domain.aggregates.video
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 
 import jakarta.persistence.*
-import jakarta.persistence.Table
 
-import org.hibernate.annotations.*
 import org.hibernate.annotations.DynamicInsert
 import org.hibernate.annotations.DynamicUpdate
 import org.hibernate.annotations.GenericGenerator
@@ -18,9 +16,15 @@ import org.hibernate.annotations.Where
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2025/10/21
+ * @date 2025/10/25
  */
-@Aggregate(aggregate = "VideoFile", name = "VideoFile", root = true, type = Aggregate.TYPE_ENTITY, description = "视频文件信息，")
+@Aggregate(
+    aggregate = "Video",
+    name = "VideoFile",
+    root = false,
+    type = Aggregate.TYPE_ENTITY,
+    description = "视频文件信息，"
+)
 @Entity
 @Table(name = "`video_file`")
 @DynamicInsert
@@ -41,25 +45,11 @@ class VideoFile (
     var id: Long = 0L,
 
     /**
-     * 唯一ID
-     * bigint
-     */
-    @Column(name = "`file_id`")
-    var fileId: Long = 0L,
-
-    /**
      * 用户ID
      * bigint
      */
     @Column(name = "`customer_id`")
     var customerId: Long = 0L,
-
-    /**
-     * 视频ID
-     * bigint
-     */
-    @Column(name = "`video_id`")
-    var videoId: Long = 0L,
 
     /**
      * 文件名
@@ -145,6 +135,9 @@ class VideoFile (
     @Column(name = "`deleted`")
     var deleted: Long = 0L,
 ) {
+    @ManyToOne(cascade = [], fetch = FetchType.EAGER)
+    @JoinColumn(name = "`video_id`", nullable = false, insertable = false, updatable = false)
+    var video: Video? = null
 
     // 【字段映射结束】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
 

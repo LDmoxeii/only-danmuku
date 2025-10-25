@@ -20,7 +20,7 @@ object UpdateVideoDraftCmd {
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
             val draft = Mediator.repositories.findFirst(
-                SVideoDraft.predicate { it.videoId eq request.videoId },
+                SVideoDraft.predicate { it.id eq request.videoId },
                 persist = false
             ).getOrNull() ?: throw KnownException("视频草稿不存在：${request.videoId}")
 
@@ -41,7 +41,7 @@ object UpdateVideoDraftCmd {
             draft.markPendingReview()
 
             Mediator.uow.save()
-            return Response(videoId = draft.videoId)
+            return Response(videoId = draft.id)
         }
     }
 

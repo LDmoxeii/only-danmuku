@@ -28,8 +28,6 @@ class VideoDraftFactory : AggregateFactory<VideoDraftFactory.Payload, VideoDraft
 
     override fun create(entityPayload: Payload): VideoDraft {
         return VideoDraft(
-            id = 0L,
-            videoId = entityPayload.videoId,
             videoCover = entityPayload.videoCover ?: "",
             videoName = entityPayload.videoName,
             customerId = entityPayload.customerId,

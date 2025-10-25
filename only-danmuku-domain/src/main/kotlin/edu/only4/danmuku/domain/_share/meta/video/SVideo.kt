@@ -24,7 +24,7 @@ import org.springframework.data.jpa.domain.Specification
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/10/21
+ * @date 2025/10/25
  */
 class SVideo(
     private val root: Path<Video>,
@@ -602,6 +602,13 @@ class SVideo(
         Field(root.get("deleted"), criteriaBuilder)
     }
 
+
+    /**
+     * 关联: OneToMany - VideoFile
+     */
+    val videoFiles: Field<Any> by lazy {
+        Field(root.get("videoFiles"), criteriaBuilder)
+    }
 
 
     /**

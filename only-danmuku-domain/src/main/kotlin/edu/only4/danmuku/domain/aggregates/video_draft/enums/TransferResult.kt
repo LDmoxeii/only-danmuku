@@ -1,4 +1,4 @@
-package edu.only4.danmuku.domain.aggregates.video_file_draft.enums
+package edu.only4.danmuku.domain.aggregates.video_draft.enums
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 
@@ -8,9 +8,9 @@ import jakarta.persistence.AttributeConverter
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/10/21
+ * @date 2025/10/25
  */
-@Aggregate(aggregate = "VideoFileDraft", name = "TransferResult", type = "enum", description = "")
+@Aggregate(aggregate = "VideoDraft", name = "TransferResult", type = "enum", description = "")
 enum class TransferResult(
     val code: Int,
     val desc: String

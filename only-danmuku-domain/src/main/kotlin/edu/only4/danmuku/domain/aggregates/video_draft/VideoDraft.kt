@@ -2,13 +2,21 @@ package edu.only4.danmuku.domain.aggregates.video_draft
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
+
 import edu.only4.danmuku.domain.aggregates.video.enums.PostType
 import edu.only4.danmuku.domain.aggregates.video_draft.enums.VideoStatus
 import edu.only4.danmuku.domain.aggregates.video_draft.events.VideoAuditFailedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video_draft.events.VideoAuditPassedDomainEvent
+
 import jakarta.persistence.*
-import jakarta.persistence.Table
-import org.hibernate.annotations.*
+
+import org.hibernate.annotations.DynamicInsert
+import org.hibernate.annotations.DynamicUpdate
+import org.hibernate.annotations.Fetch
+import org.hibernate.annotations.FetchMode
+import org.hibernate.annotations.GenericGenerator
+import org.hibernate.annotations.SQLDelete
+import org.hibernate.annotations.Where
 
 /**
  * 视频信息;
@@ -16,7 +24,7 @@ import org.hibernate.annotations.*
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2025/10/21
+ * @date 2025/10/25
  */
 @Aggregate(aggregate = "VideoDraft", name = "VideoDraft", root = true, type = Aggregate.TYPE_ENTITY, description = "视频信息，")
 @Entity
@@ -37,13 +45,6 @@ class VideoDraft (
     @GenericGenerator(name = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator", strategy = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator")
     @Column(name = "`id`", insertable = false, updatable = false)
     var id: Long = 0L,
-
-    /**
-     * 视频ID
-     * bigint
-     */
-    @Column(name = "`video_id`")
-    var videoId: Long = 0L,
 
     /**
      * 视频封面
@@ -189,6 +190,10 @@ class VideoDraft (
     @Column(name = "`deleted`")
     var deleted: Long = 0L,
 ) {
+    @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.EAGER, orphanRemoval = true)
+    @Fetch(FetchMode.SUBSELECT)
+    @JoinColumn(name = "`video_id`", nullable = false)
+    var videoFileDrafts: MutableList<VideoFileDraft> = mutableListOf()
 
     // 【字段映射结束】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
 

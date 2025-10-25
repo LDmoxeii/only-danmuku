@@ -23,7 +23,7 @@ object AuditVideoCmd {
         override fun exec(request: Request): Response {
             // 根据视频ID找到对应草稿
             val draft = Mediator.repositories.findFirst(
-                SVideoDraft.predicate { it.videoId eq request.videoId },
+                SVideoDraft.predicate { it.id eq request.videoId },
                 persist = false
             ).getOrNull() ?: throw KnownException("视频草稿不存在：${request.videoId}")
 

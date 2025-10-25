@@ -1,6 +1,4 @@
-package edu.only4.danmuku.domain._share.meta.video_file
-
-import com.only4.cap4k.ddd.domain.repo.JpaPredicate
+package edu.only4.danmuku.domain._share.meta.video
 
 import edu.only4.danmuku.domain._share.meta.ExpressionBuilder
 import edu.only4.danmuku.domain._share.meta.Field
@@ -8,7 +6,7 @@ import edu.only4.danmuku.domain._share.meta.OrderBuilder
 import edu.only4.danmuku.domain._share.meta.PredicateBuilder
 import edu.only4.danmuku.domain._share.meta.SchemaSpecification
 import edu.only4.danmuku.domain._share.meta.SubqueryConfigure
-import edu.only4.danmuku.domain.aggregates.video_file.VideoFile
+import edu.only4.danmuku.domain.aggregates.video.VideoFile
 
 import jakarta.persistence.criteria.*
 
@@ -22,7 +20,7 @@ import org.springframework.data.jpa.domain.Specification
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/10/21
+ * @date 2025/10/25
  */
 class SVideoFile(
     private val root: Path<VideoFile>,
@@ -31,8 +29,6 @@ class SVideoFile(
     class PROPERTY_NAMES {
 
         val id = "id"
-
-        val fileId = "fileId"
 
         val customerId = "customerId"
 
@@ -224,138 +220,6 @@ class SVideoFile(
             subqueryConfigure.configure(sq, schema)
             return sq
         }
-        /**
-         * 构建查询条件
-         *
-         * @param id 主键
-         * @return
-         */
-        @JvmStatic
-        fun predicateById(id: Any): JpaPredicate<VideoFile> {
-            return JpaPredicate.byId(VideoFile::class.java, id)
-        }
-
-        /**
-        * 构建查询条件
-        *
-        * @param ids 主键
-        * @return
-        */
-        @JvmStatic
-        fun predicateByIds(ids: Iterable<*>): JpaPredicate<VideoFile> {
-            @Suppress("UNCHECKED_CAST")
-            return JpaPredicate.byIds(VideoFile::class.java, ids as Iterable<Any>)
-        }
-
-        /**
-         * 构建查询条件
-         *
-         * @param ids 主键
-         * @return
-         */
-        @JvmStatic
-        fun predicateByIds(vararg ids: Any): JpaPredicate<VideoFile> {
-            return JpaPredicate.byIds(VideoFile::class.java, ids.toList())
-        }
-
-        /**
-         * 构建查询条件
-         *
-         * @param builder 查询条件构造器
-         * @return
-         */
-        @JvmStatic
-        fun predicate(builder: PredicateBuilder<SVideoFile>): JpaPredicate<VideoFile> {
-            return JpaPredicate.bySpecification(VideoFile::class.java, specify(builder))
-        }
-
-        /**
-         * 构建查询条件
-         *
-         * @param builder  查询条件构造器
-         * @param distinct 是否去重
-         * @return
-         */
-        @JvmStatic
-        fun predicate(builder: PredicateBuilder<SVideoFile>, distinct: Boolean): JpaPredicate<VideoFile> {
-            return JpaPredicate.bySpecification(VideoFile::class.java, specify(builder, distinct))
-        }
-
-        /**
-         * 构建查询条件
-         *
-         * @param builder       查询条件构造器
-         * @param orderBuilders 排序构造器
-         * @return
-         */
-        @JvmStatic
-        fun predicate(
-            builder: PredicateBuilder<SVideoFile>,
-            orderBuilders: List<OrderBuilder<SVideoFile>>,
-        ): JpaPredicate<VideoFile> {
-            return JpaPredicate.bySpecification(VideoFile::class.java, specify(builder, false, orderBuilders))
-        }
-
-        /**
-         * 构建查询条件
-         *
-         * @param builder       查询条件构造器
-         * @param orderBuilders 排序构造器
-         * @return
-         */
-        @JvmStatic
-        fun predicate(
-            builder: PredicateBuilder<SVideoFile>,
-            vararg orderBuilders: OrderBuilder<SVideoFile>,
-        ): JpaPredicate<VideoFile> {
-            return JpaPredicate.bySpecification(VideoFile::class.java, specify(builder, false, *orderBuilders))
-        }
-
-        /**
-         * 构建查询条件
-         *
-         * @param builder       查询条件构造器
-         * @param distinct      是否去重
-         * @param orderBuilders 排序构造器
-         * @return
-         */
-        @JvmStatic
-        fun predicate(
-            builder: PredicateBuilder<SVideoFile>,
-            distinct: Boolean,
-            orderBuilders: List<OrderBuilder<SVideoFile>>,
-        ): JpaPredicate<VideoFile> {
-            return JpaPredicate.bySpecification(VideoFile::class.java, specify(builder, distinct, orderBuilders))
-        }
-
-        /**
-         * 构建查询条件
-         *
-         * @param builder       查询条件构造器
-         * @param distinct      是否去重
-         * @param orderBuilders 排序构造器
-         * @return
-         */
-        @JvmStatic
-        fun predicate(
-            builder: PredicateBuilder<SVideoFile>,
-            distinct: Boolean,
-            vararg orderBuilders: OrderBuilder<SVideoFile>,
-        ): JpaPredicate<VideoFile> {
-            return JpaPredicate.bySpecification(VideoFile::class.java, specify(builder, distinct, *orderBuilders))
-        }
-
-        /**
-         * 构建查询条件
-         *
-         * @param specifier 查询条件构造器
-         * @return
-         */
-        @JvmStatic
-        fun predicate(specifier: SchemaSpecification<VideoFile, SVideoFile>): JpaPredicate<VideoFile> {
-            return JpaPredicate.bySpecification(VideoFile::class.java, specify(specifier))
-        }
-
     }
 
     fun _criteriaBuilder(): CriteriaBuilder = criteriaBuilder
@@ -368,14 +232,6 @@ class SVideoFile(
      */
     val id: Field<Long> by lazy {
         Field(root.get("id"), criteriaBuilder)
-    }
-
-
-    /**
-     * 唯一ID
-     */
-    val fileId: Field<Long> by lazy {
-        Field(root.get("fileId"), criteriaBuilder)
     }
 
 
@@ -490,6 +346,13 @@ class SVideoFile(
         Field(root.get("deleted"), criteriaBuilder)
     }
 
+
+    /**
+     * 关联: ManyToOne - Video
+     */
+    val video: Field<Any> by lazy {
+        Field(root.get("video"), criteriaBuilder)
+    }
 
 
     /**

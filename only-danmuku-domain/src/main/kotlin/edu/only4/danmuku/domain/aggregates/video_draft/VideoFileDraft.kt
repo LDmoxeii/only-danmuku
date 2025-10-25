@@ -1,11 +1,17 @@
-package edu.only4.danmuku.domain.aggregates.video_file_draft
+package edu.only4.danmuku.domain.aggregates.video_draft
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
-import edu.only4.danmuku.domain.aggregates.video_file_draft.enums.TransferResult
-import edu.only4.danmuku.domain.aggregates.video_file_draft.enums.UpdateType
+
+import edu.only4.danmuku.domain.aggregates.video_draft.enums.TransferResult
+import edu.only4.danmuku.domain.aggregates.video_draft.enums.UpdateType
+
 import jakarta.persistence.*
-import jakarta.persistence.Table
-import org.hibernate.annotations.*
+
+import org.hibernate.annotations.DynamicInsert
+import org.hibernate.annotations.DynamicUpdate
+import org.hibernate.annotations.GenericGenerator
+import org.hibernate.annotations.SQLDelete
+import org.hibernate.annotations.Where
 
 /**
  * 视频文件信息;
@@ -13,16 +19,22 @@ import org.hibernate.annotations.*
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2025/10/21
+ * @date 2025/10/25
  */
-@Aggregate(aggregate = "VideoFileDraft", name = "VideoFileDraft", root = true, type = Aggregate.TYPE_ENTITY, description = "视频文件信息，")
+@Aggregate(
+    aggregate = "VideoDraft",
+    name = "VideoFileDraft",
+    root = false,
+    type = Aggregate.TYPE_ENTITY,
+    description = "视频文件信息，"
+)
 @Entity
 @Table(name = "`video_file_draft`")
 @DynamicInsert
 @DynamicUpdate
 @SQLDelete(sql = "update `video_file_draft` set `deleted` = `id` where `id` = ?")
 @Where(clause = "`deleted` = 0")
-class VideoFileDraft (
+class VideoFileDraft(
     // 【字段映射开始】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
 
     /**
@@ -31,16 +43,12 @@ class VideoFileDraft (
      */
     @Id
     @GeneratedValue(generator = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator")
-    @GenericGenerator(name = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator", strategy = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator")
+    @GenericGenerator(
+        name = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator",
+        strategy = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator"
+    )
     @Column(name = "`id`", insertable = false, updatable = false)
     var id: Long = 0L,
-
-    /**
-     * 唯一ID
-     * bigint
-     */
-    @Column(name = "`file_id`")
-    var fileId: Long = 0L,
 
     /**
      * 上传ID
@@ -55,13 +63,6 @@ class VideoFileDraft (
      */
     @Column(name = "`customer_id`")
     var customerId: Long = 0L,
-
-    /**
-     * 视频ID
-     * bigint
-     */
-    @Column(name = "`video_id`")
-    var videoId: Long = 0L,
 
     /**
      * 文件索引
@@ -170,6 +171,9 @@ class VideoFileDraft (
     @Column(name = "`deleted`")
     var deleted: Long = 0L,
 ) {
+    @ManyToOne(cascade = [], fetch = FetchType.EAGER)
+    @JoinColumn(name = "`video_id`", nullable = false, insertable = false, updatable = false)
+    var videoDraft: VideoDraft? = null
 
     // 【字段映射结束】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
 
