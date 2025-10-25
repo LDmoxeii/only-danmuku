@@ -27,7 +27,6 @@ object DelCommentCmd {
                 persist = false
             ).getOrNull() ?: return Response()
 
-            // 删除评论（软删）
             Mediator.uow.remove(comment)
 
             if (comment.parentId == 0L) {

@@ -19,17 +19,11 @@ import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 
-/**
- * 管理员互动管理控制器 - 处理弹幕和评论管理
- */
 @RestController
 @RequestMapping("/admin/interact")
 @Validated
 class AdminInteractController {
 
-    /**
-     * 加载弹幕列表(分页)
-     */
     @PostMapping("/loadDanmu")
     fun adminInteractLoadDanmuku(@RequestBody request: AdminInteractLoadDanmuku.Request): PageData<AdminInteractLoadDanmuku.Response> {
         // 调用查询获取弹幕分页列表
@@ -70,9 +64,6 @@ class AdminInteractController {
         )
     }
 
-    /**
-     * 删除弹幕
-     */
     @PostMapping("/delDanmu")
     fun adminInteractDelDanmuku(@RequestBody @Validated request: AdminInteractDelDanmuku.Request): AdminInteractDelDanmuku.Response {
         Mediator.commands.send(
@@ -83,9 +74,6 @@ class AdminInteractController {
         return AdminInteractDelDanmuku.Response()
     }
 
-    /**
-     * 加载评论列表(分页)
-     */
     @PostMapping("/loadComment")
     fun adminInteractLoadComment(@RequestBody request: AdminInteractLoadComment.Request): PageData<AdminInteractLoadComment.Response> {
         // 调用查询获取评论分页列表
@@ -131,12 +119,8 @@ class AdminInteractController {
         )
     }
 
-    /**
-     * 删除评论
-     */
     @PostMapping("/delComment")
     fun adminInteractDelComment(@RequestBody @Validated request: AdminInteractDelComment.Request): AdminInteractDelComment.Response {
-        // 调用命令删除评论
         Mediator.commands.send(
             DelCommentCmd.Request(
                 commentId = request.commentId!!,

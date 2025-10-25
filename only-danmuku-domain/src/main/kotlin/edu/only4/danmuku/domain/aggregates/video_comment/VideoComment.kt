@@ -200,5 +200,10 @@ class VideoComment (
         this.hateCount = ((this.hateCount ?: 0) + hateChange).coerceAtLeast(0)
     }
 
+    /** 判断是否为根评论（非回复） */
+    fun isRootComment(): Boolean {
+        return this.parentId == 0L
+    }
+
     // 【行为方法结束】
 }

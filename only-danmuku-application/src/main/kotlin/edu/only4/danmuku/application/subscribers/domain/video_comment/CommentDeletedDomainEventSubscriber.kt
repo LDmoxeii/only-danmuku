@@ -20,14 +20,13 @@ class CommentDeletedDomainEventSubscriber {
     @EventListener(CommentDeletedDomainEvent::class)
     fun on(event: CommentDeletedDomainEvent) {
         val comment = event.entity
-        if (comment.parentId == 0L) {
-            Mediator.commands.send(
-                UpdateVideoStatisticsCmd.Request(
-                    videoId = comment.videoId,
-                    commentCountDelta = -1
-                )
+        if (!(comment.isRootComment())) return
+        Mediator.commands.send(
+            UpdateVideoStatisticsCmd.Request(
+                videoId = comment.videoId,
+                commentCountDelta = -1
             )
-        }
+        )
     }
 
     @EventListener(CommentDeletedDomainEvent::class)
