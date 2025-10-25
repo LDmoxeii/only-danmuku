@@ -1,9 +1,11 @@
 package edu.only4.danmuku.adapter.portal.api
 
+import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.adapter.portal.api.payload.AdminFileGetResource
 import edu.only4.danmuku.adapter.portal.api.payload.AdminFileGetVideoResource
 import edu.only4.danmuku.adapter.portal.api.payload.AdminFileGetVideoResourceTs
 import edu.only4.danmuku.adapter.portal.api.payload.AdminFileUploadImage
+import edu.only4.danmuku.application.commands.file.SaveImageCmd
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
@@ -19,9 +21,14 @@ class AdminFileController {
      * 上传图片
      */
     @PostMapping("/uploadImage")
-    fun adminFileUploadImage(@RequestBody @Validated request: AdminFileUploadImage.Request): AdminFileUploadImage.Response {
-        // TODO: 实现上传图片逻辑
-        return AdminFileUploadImage.Response()
+    fun adminFileUploadImage(@ModelAttribute @Validated request: AdminFileUploadImage.Request): AdminFileUploadImage.Response {
+        val result = Mediator.commands.send(
+            SaveImageCmd.Request(
+                file = request.file,
+                createThumbnail = request.createThumbnail
+            )
+        )
+        return AdminFileUploadImage.Response(filePath = result.filePath)
     }
 
     /**

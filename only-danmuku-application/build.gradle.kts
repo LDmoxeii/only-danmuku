@@ -6,10 +6,13 @@ plugins {
 dependencies {
     api(libs.spring.data)
     api(libs.spring.validation)
+    api(libs.spring.web)
     api(project(":only-danmuku-domain"))
 
     api(libs.ddd.integration.event.http)
     api(libs.ddd.integration.event.http.jpa)
+
+    api(libs.hutool.core)
 
     api(libs.engine.common)
     api(libs.engine.json)

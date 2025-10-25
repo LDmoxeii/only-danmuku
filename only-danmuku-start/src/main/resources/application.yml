@@ -187,3 +187,14 @@ jimmer:
   database-validation-mode: ERROR
   show-sql: true
   pretty-sql: true
+
+app:
+  file:
+    project-folder: /data/only-danmuku
+    file-folder: file
+    file-cover: cover/
+    thumbnail-width: 200
+  video:
+    temp-folder: /data/only-danmuku/file/temp
+    target-folder: /data/only-danmuku/file/video
+    ts-segment-seconds: 10
