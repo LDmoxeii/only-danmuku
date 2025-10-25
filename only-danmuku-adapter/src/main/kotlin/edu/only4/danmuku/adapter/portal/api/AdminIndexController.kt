@@ -20,16 +20,11 @@ import org.springframework.web.bind.annotation.RestController
 @Validated
 class AdminIndexController {
 
-    /**
-     * 获取实时统计信息
-     */
     @PostMapping("/getActualTimeStatisticsInfo")
     fun adminIndexGetActualTimeStatistics(): AdminIndexGetActualTimeStatistics.Response {
-        // 获取前一天的统计数据
         val preDayData = Mediator.queries.send(GetPreviousDayStatisticsInfoQry.Request())
         val totalData = Mediator.queries.send(GetTotalStatisticsInfoQry.Request())
 
-        // 转换为 StatisticsData 对象
         val preDayDataObj = AdminIndexGetActualTimeStatistics.StatisticsData(
             videoViewCount = preDayData.videoViewCount,
             videoLikeCount = preDayData.videoLikeCount,
@@ -54,17 +49,12 @@ class AdminIndexController {
         )
     }
 
-    /**
-     * 获取周统计信息
-     */
     @PostMapping("/getWeekStatisticsInfo")
     fun adminIndexGetWeekStatistics(@RequestBody request: AdminIndexGetWeekStatistics.Request): AdminIndexGetWeekStatistics.Response {
-        // 获取最近7天的统计数据
         val weekData = Mediator.queries.send(
             GetWeekStatisticsInfoQry.Request(dataType = request.dataType)
         )
 
-        // 转换为 WeekStatisticsItem 对象列表
         val resultList = weekData.map { item ->
             AdminIndexGetWeekStatistics.WeekStatisticsItem(
                 statisticsDate = item.date,
