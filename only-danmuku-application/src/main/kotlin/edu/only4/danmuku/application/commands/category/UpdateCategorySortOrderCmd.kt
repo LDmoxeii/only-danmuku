@@ -25,7 +25,6 @@ object UpdateCategorySortOrderCmd {
                 SCategory.predicateByIds(request.categoryIds)
             )
 
-            // 校验：全部存在
             if (categories.size != request.categoryIds.toSet().size) {
                 throw KnownException("存在无效的分类ID，无法完成排序")
             }
@@ -35,10 +34,8 @@ object UpdateCategorySortOrderCmd {
                 throw KnownException("仅允许调整同一父分类下的子分类顺序")
             }
 
-            // 按 ID 建立索引，便于按请求顺序更新
             val byId = categories.associateBy { it.id }
 
-            // 按照传入顺序设置 sort，从 1 开始递增
             var sortNo = 1
             request.categoryIds.forEach { id ->
                 val category = byId[id]!!
@@ -55,10 +52,8 @@ object UpdateCategorySortOrderCmd {
     }
 
     data class Request(
-        /** 父分类ID，确保只调整同一父分类下的子分类顺序 */
         @field:CategoryMustExist
         val parentId: Long = 0L,
-        /** 排序后的分类ID列表，按照新的显示顺序排列 */
         @field:NotEmpty(message = "分类ID列表不能为空")
         val categoryIds: List<Long>,
     ) : RequestParam<Response>

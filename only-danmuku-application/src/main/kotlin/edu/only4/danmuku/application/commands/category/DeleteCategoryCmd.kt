@@ -20,7 +20,6 @@ object DeleteCategoryCmd {
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
-            // 级联删除：根据 nodePath 删除整棵子树（包含自身）
             val token = "/${request.categoryId}/"
             Mediator.repositories.remove(
                 SCategory.predicate { schema ->

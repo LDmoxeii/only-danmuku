@@ -31,7 +31,6 @@ class CountVideosUnderCategoriesQryHandler(
             return CountVideosUnderCategoriesQry.Response(totalCount = 0L)
         }
 
-        // 利用基于ID的节点路径，按“包含 /{ancestorId}/” 直接获取所有子孙分类ID
         val categoryIdsToCheck = buildSet {
             requestedIds.forEach { ancestorId ->
                 val token = "/$ancestorId/"

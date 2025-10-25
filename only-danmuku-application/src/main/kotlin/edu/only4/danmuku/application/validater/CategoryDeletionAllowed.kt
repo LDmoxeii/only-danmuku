@@ -22,7 +22,7 @@ annotation class CategoryDeletionAllowed(
 ) {
     class Validator : ConstraintValidator<CategoryDeletionAllowed, Long> {
         override fun isValid(value: Long?, context: ConstraintValidatorContext): Boolean {
-            val id = value ?: return true // 交由其他注解处理
+            val id = value ?: return true
             if (id <= 0L) return true
             val total = Mediator.queries.send(
                 CountVideosUnderCategoriesQry.Request(categoryIds = listOf(id))

@@ -62,7 +62,6 @@ object UpdateCategoryInfoCmd {
             }
 
             if (category.isCodeChanged(request.code)) {
-                // 路径基于ID，编码变更不再影响路径
                 category.changeCode(newCode = request.code)
             }
 
