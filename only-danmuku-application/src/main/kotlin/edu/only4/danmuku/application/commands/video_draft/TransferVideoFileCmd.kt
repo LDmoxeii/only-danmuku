@@ -1,6 +1,5 @@
 package edu.only4.danmuku.application.commands.video_draft
 
-import com.only.engine.exception.KnownException
 import com.only.engine.misc.convertHevcToMp4
 import com.only.engine.misc.convertVideoToTs
 import com.only.engine.misc.getVideoCodec
@@ -9,13 +8,13 @@ import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
 import edu.only4.danmuku.application._share.enums.config.properties.VideoAppProperties
-import edu.only4.danmuku.domain._share.meta.video_draft.SVideoDraft
+import edu.only4.danmuku.domain.aggregates.video_draft.VideoDraft
+import edu.only4.danmuku.domain.aggregates.video_draft.VideoFileDraft
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
-import kotlin.jvm.optionals.getOrNull
 
 /**
  * 转码视频文件：封装文件处理流程并更新聚合状态
@@ -30,40 +29,33 @@ object TransferVideoFileCmd {
     ) : Command<Request, Response> {
 
         override fun exec(request: Request): Response {
-            val videoDraft = Mediator.repositories.findFirst(
-                SVideoDraft.predicate { schema ->
-                    schema.all(
-                        schema.id eq request.videoId,
-                        schema.customerId eq request.customerId
-                    )
-                },
-                persist = true
-            ).getOrNull() ?: throw KnownException("视频草稿不存在: ")
+            val videoDraft = request.videoDraft
+            val fileDraft = request.fileDraft
 
-            val fileDraft = videoDraft.videoFileDrafts.firstOrNull { it.uploadId == request.uploadId }
-                ?: throw KnownException("视频文件草稿不存在: uploadId=")
+            Mediator.uow.persist(fileDraft)
 
-            var duration: Int?
-            var fileSize: Long?
-            var outputPath: String?
-            var errorMessage: String?
+            var duration: Int? = null
+            var fileSize: Long? = null
+            var outputPath: String? = null
+            var errorMessage: String? = null
 
             try {
                 logger.info(
                     "开始转码视频文件: videoId={}, uploadId={}, customerId={}",
-                    request.videoId,
-                    request.uploadId,
-                    request.customerId
+                    videoDraft.id,
+                    fileDraft.uploadId,
+                    fileDraft.customerId
                 )
 
                 fileDraft.startTransfer()
+                Mediator.uow.save()
 
-                val tempFilePath = buildTempFilePath(request.customerId, request.uploadId)
-                val targetFilePath = buildTargetFilePath(request.customerId, request.videoId)
+                val tempFilePath = buildTempFilePath(fileDraft.customerId, fileDraft.uploadId)
+                val targetFilePath = buildTargetFilePath(fileDraft.customerId, videoDraft.id)
 
                 val tempFileDir = File(tempFilePath)
-                if (!tempFileDir.exists() || !tempFileDir.isDirectory) {
-                    throw IllegalStateException("临时文件目录不存在: ")
+                require(tempFileDir.exists() && tempFileDir.isDirectory) {
+                    "临时文件目录不存在: $tempFilePath"
                 }
 
                 val targetFileDir = File(targetFilePath)
@@ -76,7 +68,7 @@ object TransferVideoFileCmd {
                 tempFileDir.deleteRecursively()
                 logger.info("临时目录已清理: {}", tempFilePath)
 
-                val mergedVideoPath = "/merged_video.mp4"
+                val mergedVideoPath = "$targetFilePath/merged_video.mp4"
                 mergeVideoChunks(targetFilePath, mergedVideoPath)
                 logger.info("视频分片合并完成: {}", mergedVideoPath)
 
@@ -85,7 +77,7 @@ object TransferVideoFileCmd {
                 logger.info("视频时长: {}秒, 编码: {}", duration, codec)
 
                 val finalVideoPath = if (codec.equals("hevc", ignoreCase = true)) {
-                    val tempHevcPath = ".hevc"
+                    val tempHevcPath = "$mergedVideoPath.hevc"
                     File(mergedVideoPath).renameTo(File(tempHevcPath))
                     logger.info("检测到 HEVC 编码，开始转码为 H.264")
                     convertHevcToMp4(tempHevcPath, mergedVideoPath)
@@ -111,11 +103,12 @@ object TransferVideoFileCmd {
                 fileDraft.markTransferFailed(errorMessage)
                 logger.error(
                     "视频文件转码失败: videoId={}, uploadId={}, customerId={}",
-                    request.videoId,
-                    request.uploadId,
-                    request.customerId,
+                    videoDraft.id,
+                    fileDraft.uploadId,
+                    fileDraft.customerId,
                     ex
                 )
+                Mediator.uow.save()
                 return Response(success = false, errorMessage = errorMessage)
             } finally {
                 Mediator.uow.save()
@@ -130,11 +123,11 @@ object TransferVideoFileCmd {
         }
 
         private fun buildTempFilePath(customerId: Long, uploadId: Long): String {
-            return "//"
+            return "${videoProps.tempFolder}/$customerId/$uploadId"
         }
 
         private fun buildTargetFilePath(customerId: Long, videoId: Long): String {
-            return "//"
+            return "${videoProps.targetFolder}/$customerId/$videoId"
         }
 
         private fun copyDirectory(source: File, target: File) {
@@ -154,7 +147,7 @@ object TransferVideoFileCmd {
         private fun mergeVideoChunks(dirPath: String, outputPath: String) {
             val dir = File(dirPath)
             if (!dir.exists() || !dir.isDirectory) {
-                throw IllegalStateException("分片目录不存在: ")
+                throw IllegalStateException("分片目录不存在: $dirPath")
             }
 
             val chunkFiles = dir.listFiles { file ->
@@ -179,9 +172,8 @@ object TransferVideoFileCmd {
     }
 
     data class Request(
-        val videoId: Long,
-        val uploadId: Long,
-        val customerId: Long,
+        val videoDraft: VideoDraft,
+        val fileDraft: VideoFileDraft,
     ) : RequestParam<Response>
 
     data class Response(

@@ -26,9 +26,8 @@ class VideoFileDraftCreatedDomainEventSubscriber {
         try {
             Mediator.commands.send(
                 TransferVideoFileCmd.Request(
-                    videoId = videoDraft.id,
-                    uploadId = fileDraft.uploadId,
-                    customerId = fileDraft.customerId
+                    videoDraft = videoDraft,
+                    fileDraft = fileDraft
                 )
             )
         } catch (ex: Exception) {

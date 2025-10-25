@@ -109,10 +109,7 @@ object UpdateVideoDraftCmd {
                             updateType = UpdateType.HAS_UPDATE,
                             transferResult = TransferResult.TRANSCODING,
                             duration = fileInfo.duration
-                        ).apply {
-                            videoDraft = draft
-                            onCreate()
-                        }
+                        )
                         rebuiltList.add(newFile)
                     }
                 }
