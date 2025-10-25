@@ -140,7 +140,6 @@ class UHomeController {
      */
     @PostMapping("/cancelFocus")
     fun uHomeCancelFocus(@RequestBody @Validated request: UHomeCancelFocus.Request): UHomeCancelFocus.Response {
-        // TODO: 从上下文获取当前用户ID
         val currentUserId = LoginHelper.getUserId()!!
 
         // 调用命令取消关注
@@ -159,8 +158,7 @@ class UHomeController {
      */
     @PostMapping("/loadFocusList")
     fun uHomeLoadFocusList(@RequestBody request: UHomeLoadFocusList.Request): PageData<UHomeLoadFocusList.UserItem> {
-        // TODO: 从上下文获取当前用户ID
-        val userId = request.userId?.toLong() ?: 1L // 临时硬编码
+        val userId = LoginHelper.getUserId()!!
 
         // 调用查询获取关注列表
         val queryRequest = GetFocusListQry.Request(
@@ -194,8 +192,7 @@ class UHomeController {
      */
     @PostMapping("/loadFansList")
     fun uHomeLoadFansList(@RequestBody request: UHomeLoadFansList.Request): PageData<UHomeLoadFansList.UserItem> {
-        // TODO: 从上下文获取当前用户ID
-        val userId = request.userId?.toLong() ?: 1L // 临时硬编码
+        val userId = LoginHelper.getUserId()!!
 
         // 调用查询获取粉丝列表
         val queryRequest = GetFansListQry.Request(
@@ -269,8 +266,7 @@ class UHomeController {
      */
     @PostMapping("/loadUserCollection")
     fun uHomeLoadUserCollection(@RequestBody @Validated request: UHomeLoadUserCollection.Request): PageData<UHomeLoadUserCollection.VideoItem> {
-        // TODO: 从上下文获取当前用户ID
-        val customerId = request.userId?.toLong() ?: 1L
+        val customerId = LoginHelper.getUserId()!!
 
         // 调用查询获取用户收藏的视频ID列表
         val collectionRequest = CustomerCollectedVideoIdsQry.Request(

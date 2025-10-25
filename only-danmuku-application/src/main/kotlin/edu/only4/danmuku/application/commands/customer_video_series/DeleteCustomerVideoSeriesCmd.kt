@@ -3,7 +3,7 @@ package edu.only4.danmuku.application.commands.customer_video_series
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
-
+import edu.only4.danmuku.domain._share.meta.customer_video_series.SCustomerVideoSeries
 import org.springframework.stereotype.Service
 
 /**
@@ -18,12 +18,21 @@ object DeleteCustomerVideoSeriesCmd {
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
+            // 删除视频系列（包括级联删除系列中的视频关联）
+            // 由于配置了 orphanRemoval = true 和 CascadeType.ALL，会自动删除 customerVideoSeriesVideos
+            Mediator.repositories.remove(
+                SCustomerVideoSeries.predicate { schema ->
+                    schema.all(
+                        schema.id eq request.seriesId,
+                        schema.customerId eq request.userId
+                    )
+                }
+            )
+
             Mediator.uow.save()
 
-            return Response(
-            )
+            return Response()
         }
-
     }
 
     data class Request(
@@ -33,6 +42,5 @@ object DeleteCustomerVideoSeriesCmd {
         val seriesId: Long
     ) : RequestParam<Response>
 
-    class Response(
-    )
+    class Response
 }

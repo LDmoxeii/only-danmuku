@@ -249,17 +249,16 @@ class Video (
         events().attach(this) { VideoDeletedDomainEvent(entity = this) }
     }
 
-    /** 标记为推荐视频 */
-    fun recommend() {
-        if (this.recommendType == RecommendType.RECOMMEND) return
-        this.recommendType = RecommendType.RECOMMEND
-        events().attach(this) { VideoRecommendedDomainEvent(entity = this) }
-    }
-
-    /** 取消推荐 */
-    fun unrecommend() {
-        if (this.recommendType == RecommendType.NOT_RECOMMEND) return
-        this.recommendType = RecommendType.NOT_RECOMMEND
+    /** 切换推荐状态 */
+    fun toggleRecommend() {
+        if (this.recommendType == RecommendType.RECOMMEND) {
+            // 当前是推荐状态，切换为未推荐
+            this.recommendType = RecommendType.NOT_RECOMMEND
+        } else {
+            // 当前是未推荐状态，切换为推荐
+            this.recommendType = RecommendType.RECOMMEND
+            events().attach(this) { VideoRecommendedDomainEvent(entity = this) }
+        }
     }
 
     /** 修改互动设置 */

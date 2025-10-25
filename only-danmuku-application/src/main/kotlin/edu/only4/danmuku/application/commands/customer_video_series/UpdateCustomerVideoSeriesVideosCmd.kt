@@ -24,15 +24,15 @@ object UpdateCustomerVideoSeriesVideosCmd {
         override fun exec(request: Request): Response {
             val series = Mediator.repositories.findFirst(
                 SCustomerVideoSeries.predicateById(request.seriesId)
-            ).getOrNull() ?: throw KnownException("ϵ�в�����: ${request.seriesId}")
+            ).getOrNull() ?: throw KnownException("系列不存在: ${request.seriesId}")
 
             if (series.customerId != request.userId) {
-                throw KnownException("û��Ȩ�޲�����ϵ��")
+                throw KnownException("没有权限操作该系列")
             }
 
             val incomingVideoIds = parseVideoIds(request.videoIds)
             if (incomingVideoIds.isEmpty()) {
-                throw KnownException("��ƵID�б�����Ϊ��")
+                throw KnownException("视频ID列表不能为空")
             }
 
             val currentVideoIds = series.customerVideoSeriesVideos
@@ -88,9 +88,9 @@ object UpdateCustomerVideoSeriesVideosCmd {
                 if (trimmed.isEmpty()) {
                     return@forEach
                 }
-                val id = trimmed.toLongOrNull() ?: throw KnownException("��Ч����ƵID: $trimmed")
+                val id = trimmed.toLongOrNull() ?: throw KnownException("无效的视频ID: $trimmed")
                 if (id <= 0) {
-                    throw KnownException("��Ч����ƵID: $trimmed")
+                    throw KnownException("无效的视频ID: $trimmed")
                 }
                 if (dedupe.add(id)) {
                     result.add(id)
@@ -114,13 +114,13 @@ object UpdateCustomerVideoSeriesVideosCmd {
             if (videos.size != videoIds.size) {
                 val foundIds = videos.map { it.id }.toSet()
                 val missing = videoIds.filterNot(foundIds::contains)
-                throw KnownException("������Ƶ������: ${missing.joinToString(",")}")
+                throw KnownException("以下视频不存在: ${missing.joinToString(",")}")
             }
         }
 
         private fun ensureVideoListSize(size: Int) {
             if (size > Byte.MAX_VALUE) {
-                throw KnownException("����ϵ�����֧�� ${Byte.MAX_VALUE} ����Ƶ")
+                throw KnownException("视频系列最多支持 ${Byte.MAX_VALUE} 个视频")
             }
         }
     }

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
 
 /**
- * 推荐视频
+ * 切换视频推荐状态
  */
 object RecommendVideoCmd {
 
@@ -21,7 +21,8 @@ object RecommendVideoCmd {
                 SVideo.predicateById(request.videoId)
             ).getOrNull() ?: throw KnownException("视频不存在：${request.videoId}")
 
-            video.recommend()
+            // 切换推荐状态（推荐 <-> 未推荐）
+            video.toggleRecommend()
 
             Mediator.uow.save()
             return Response()

@@ -196,8 +196,6 @@ class UCenterVideoPostController {
     fun saveVideoInteraction(@RequestBody @Validated request: UCenterSaveVideoInteraction.Request): UCenterSaveVideoInteraction.Response {
         val userId = LoginHelper.getUserId()!!
 
-        // 调用命令修改视频互动设置
-        val currentUserId = LoginHelper.getUserId()!!
         Mediator.commands.send(
             ChangeVideoInteractionCmd.Request(
                 videoId = request.videoId.toLong(),
