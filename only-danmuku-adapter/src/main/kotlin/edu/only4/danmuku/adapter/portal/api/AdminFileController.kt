@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*
  * 管理员文件管理控制器
  */
 @RestController
-@RequestMapping("/admin/file")
+@RequestMapping("/admin/file/v2")
 @Validated
 class AdminFileController {
 

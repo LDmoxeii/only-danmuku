@@ -20,7 +20,7 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 
 @RestController
-@RequestMapping("/admin/interact")
+@RequestMapping("/admin/interact/v2")
 @Validated
 class AdminInteractController {
 

@@ -23,7 +23,7 @@ import java.time.format.DateTimeFormatter
  * 播放历史控制器
  */
 @RestController
-@RequestMapping("/history")
+@RequestMapping("/history/v2")
 @Validated
 class HistoryController {
 

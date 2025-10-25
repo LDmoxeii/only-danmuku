@@ -23,7 +23,7 @@ import java.time.format.DateTimeFormatter
  * 处理视频上传、编辑、删除等操作
  */
 @RestController
-@RequestMapping("/ucenter")
+@RequestMapping("/ucenter/v2")
 @Validated
 class UCenterVideoPostController {
 

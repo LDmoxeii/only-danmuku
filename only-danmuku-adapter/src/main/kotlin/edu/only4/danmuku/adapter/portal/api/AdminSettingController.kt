@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController
  * 管理员系统设置控制器
  */
 @RestController
-@RequestMapping("/admin/setting")
+@RequestMapping("/admin/setting/v2")
 @Validated
 class AdminSettingController(
     private val sysSettingProperties: SysSettingProperties,

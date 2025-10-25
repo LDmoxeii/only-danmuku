@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController
  * 用户行为控制器
  */
 @RestController
-@RequestMapping("/userAction")
+@RequestMapping("/userAction/v2")
 @Validated
 class UserActionController {
 

@@ -19,7 +19,7 @@ import java.time.ZoneId
  * 管理员用户管理控制器
  */
 @RestController
-@RequestMapping("/admin/user")
+@RequestMapping("/admin/user/v2")
 @Validated
 class AdminUserController {
 

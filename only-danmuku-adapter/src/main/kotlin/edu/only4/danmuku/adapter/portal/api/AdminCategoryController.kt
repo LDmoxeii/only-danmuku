@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController
  * 管理员分类管理控制器
  */
 @RestController
-@RequestMapping("/admin/category")
+@RequestMapping("/admin/category/v2")
 @Validated
 class AdminCategoryController {
 

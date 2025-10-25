@@ -21,7 +21,7 @@ import java.time.format.DateTimeFormatter
  * 处理用户收到的评论、弹幕等互动信息
  */
 @RestController
-@RequestMapping("/ucenter")
+@RequestMapping("/ucenter/v2")
 @Validated
 class UCenterInteractController {
 

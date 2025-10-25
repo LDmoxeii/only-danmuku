@@ -21,7 +21,7 @@ import java.time.ZoneId
  * 管理员视频管理控制器
  */
 @RestController
-@RequestMapping("/admin/videoInfo")
+@RequestMapping("/admin/videoInfo/v2")
 @Validated
 class AdminVideoController {
 

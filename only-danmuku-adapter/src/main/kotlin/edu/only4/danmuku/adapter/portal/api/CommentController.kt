@@ -23,7 +23,7 @@ import java.time.format.DateTimeFormatter
  * 视频评论控制器
  */
 @RestController
-@RequestMapping("/comment")
+@RequestMapping("/comment/v2")
 @Validated
 class CommentController {
 

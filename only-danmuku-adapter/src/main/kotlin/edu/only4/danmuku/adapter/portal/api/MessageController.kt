@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*
  * 用户消息控制器
  */
 @RestController
-@RequestMapping("/message")
+@RequestMapping("/message/v2")
 @Validated
 class MessageController {
 

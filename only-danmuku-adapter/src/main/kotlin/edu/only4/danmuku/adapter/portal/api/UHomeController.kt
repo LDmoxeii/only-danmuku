@@ -28,7 +28,7 @@ import java.time.format.DateTimeFormatter
  * 处理用户信息、关注、视频列表等操作
  */
 @RestController
-@RequestMapping("/uhome")
+@RequestMapping("/uhome/v2")
 @Validated
 class UHomeController {
 

@@ -15,7 +15,7 @@ import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/admin/account")
+@RequestMapping("/admin/account/v2")
 @Validated
 class AdminAccountController {
 

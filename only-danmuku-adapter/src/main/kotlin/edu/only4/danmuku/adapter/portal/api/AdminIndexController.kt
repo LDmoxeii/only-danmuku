@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController
  * 管理员统计信息控制器
  */
 @RestController
-@RequestMapping("/admin/index")
+@RequestMapping("/admin/index/v2")
 @Validated
 class AdminIndexController {
 

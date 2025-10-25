@@ -20,7 +20,7 @@ import java.time.format.DateTimeFormatter
  * 视频弹幕控制器
  */
 @RestController
-@RequestMapping("/danmu")
+@RequestMapping("/danmu/v2")
 @Validated
 class DanmuController {
 

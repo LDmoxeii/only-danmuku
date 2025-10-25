@@ -22,7 +22,7 @@ import java.time.format.DateTimeFormatter
  * 视频系列控制器
  */
 @RestController
-@RequestMapping("/uhome/series")
+@RequestMapping("/uhome/series/v2")
 @Validated
 class VideoSeriesController {
 

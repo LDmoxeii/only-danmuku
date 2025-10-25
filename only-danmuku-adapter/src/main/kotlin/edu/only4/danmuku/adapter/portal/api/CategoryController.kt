@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController
  * 3. 提供两种实现的性能对比
  */
 @RestController
-@RequestMapping("/category")
+@RequestMapping("/category/v2")
 @Validated
 class CategoryController {
 

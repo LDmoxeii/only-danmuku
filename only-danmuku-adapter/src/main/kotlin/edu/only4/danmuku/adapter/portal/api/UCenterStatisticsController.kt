@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*
  * 处理用户数据统计信息查询
  */
 @RestController
-@RequestMapping("/ucenter")
+@RequestMapping("/ucenter/v2")
 @Validated
 class UCenterStatisticsController {
 

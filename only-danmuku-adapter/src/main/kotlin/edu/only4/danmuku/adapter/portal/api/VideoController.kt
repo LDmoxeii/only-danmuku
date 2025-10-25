@@ -15,7 +15,7 @@ import java.time.format.DateTimeFormatter
  * 视频浏览控制器 - 处理视频列表加载、搜索、详情查看等操作
  */
 @RestController
-@RequestMapping("/video")
+@RequestMapping("/video/v2")
 @Validated
 class VideoController {
 

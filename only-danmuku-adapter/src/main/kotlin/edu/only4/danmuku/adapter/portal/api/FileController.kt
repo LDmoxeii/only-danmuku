@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*
  * 文件操作控制器 - 处理文件上传、资源获取等操作
  */
 @RestController
-@RequestMapping("/file")
+@RequestMapping("/file/v2")
 @Validated
 class FileController {
 
