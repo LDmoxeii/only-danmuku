@@ -2,18 +2,13 @@ package edu.only4.danmuku.domain.aggregates.video_draft
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
-
 import edu.only4.danmuku.domain.aggregates.video_draft.enums.TransferResult
 import edu.only4.danmuku.domain.aggregates.video_draft.enums.UpdateType
 import edu.only4.danmuku.domain.aggregates.video_draft.events.VideoFileDraftCreatedDomainEvent
-
+import edu.only4.danmuku.domain.aggregates.video_draft.events.VideoFileDraftTranscodedDomainEvent
 import jakarta.persistence.*
-
-import org.hibernate.annotations.DynamicInsert
-import org.hibernate.annotations.DynamicUpdate
-import org.hibernate.annotations.GenericGenerator
-import org.hibernate.annotations.SQLDelete
-import org.hibernate.annotations.Where
+import jakarta.persistence.Table
+import org.hibernate.annotations.*
 
 /**
  * 视频文件信息;
@@ -206,13 +201,19 @@ class VideoFileDraft(
         this.fileSize = fileSize
         this.filePath = filePath
         this.updateType = UpdateType.NO_UPDATE
+        events().attach(this) {
+            VideoFileDraftTranscodedDomainEvent(entity = this, success = true)
+        }
     }
 
     /**
      * 标记转码失败
      */
-    fun markTransferFailed() {
+    fun markTransferFailed(errorMessage: String? = null) {
         this.transferResult = TransferResult.FAILED
+        events().attach(this) {
+            VideoFileDraftTranscodedDomainEvent(entity = this, success = false, errorMessage = errorMessage)
+        }
     }
 
     /**
