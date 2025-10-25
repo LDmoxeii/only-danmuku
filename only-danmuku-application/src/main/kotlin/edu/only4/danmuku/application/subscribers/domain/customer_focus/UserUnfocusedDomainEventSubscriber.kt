@@ -25,7 +25,7 @@ class UserUnfocusedDomainEventSubscriber {
         Mediator.commands.send(
             UpdateStatisticsInfoCmd.Request(
                 customerId = entity.customerId.toLong(),
-                dataType = StatisticsDataType.USER_FOLLOW,
+                dataType = StatisticsDataType.FANS,
                 countDelta = -1
             )
         )

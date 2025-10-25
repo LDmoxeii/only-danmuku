@@ -20,7 +20,7 @@ import org.hibernate.annotations.Where
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2025/10/21
+ * @date 2025/10/25
  */
 @Aggregate(aggregate = "Statistics", name = "Statistics", root = true, type = Aggregate.TYPE_ENTITY, description = "统计信息，")
 @Entity
@@ -51,13 +51,13 @@ class Statistics (
 
     /**
      * 数据统计类型
-     * 0:UNKNOW:未知类型
-     * 1:VIDEO_VIEW:视频观看
-     * 2:VIDEO_LIKE:视频点赞
-     * 3:VIDEO_COMMENT:视频评论
-     * 4:VIDEO_SHARE:视频分享
-     * 5:USER_FOLLOW:用户关注
-     * 6:USER_LOGIN:用户登录
+     * 0:PLAY:播放量
+     * 1:FANS:粉丝
+     * 2:LIKE:点赞
+     * 3:COLLECTION:收藏
+     * 4:COIN:投币
+     * 5:COMMENT:评论
+     * 6:DANMU:弹幕
      * tinyint(1)
      */
     @Convert(converter = StatisticsDataType.Converter::class)

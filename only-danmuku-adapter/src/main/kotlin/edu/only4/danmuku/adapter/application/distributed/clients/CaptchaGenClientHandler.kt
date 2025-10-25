@@ -22,7 +22,7 @@ class CaptchaGenClientHandler(
             category = CaptchaCategory.LINE,
             charsetPolicy = CharsetPolicy.MATH,
             channel = CaptchaChannel.INLINE,
-            length = 3,
+            length = 1,
             width = 100,
             height = 42
         )

@@ -29,20 +29,14 @@ class GetTotalStatisticsInfoQryHandler(
             .groupingBy { StatisticsDataType.valueOf(it.dataType.toInt()) }
             .fold(0) { acc, item -> acc + (item.statisticsCount ?: 0) }
 
-        val videoViewCount = countsByType[StatisticsDataType.VIDEO_VIEW] ?: 0
-        val videoLikeCount = countsByType[StatisticsDataType.VIDEO_LIKE] ?: 0
-        val videoCommentCount = countsByType[StatisticsDataType.VIDEO_COMMENT] ?: 0
-        val videoShareCount = countsByType[StatisticsDataType.VIDEO_SHARE] ?: 0
-        val userFollowCount = countsByType[StatisticsDataType.USER_FOLLOW] ?: 0
-        val userLoginCount = countsByType[StatisticsDataType.USER_LOGIN] ?: 0
-
         return GetTotalStatisticsInfoQry.Response(
-            videoViewCount = videoViewCount,
-            videoLikeCount = videoLikeCount,
-            videoCommentCount = videoCommentCount,
-            videoShareCount = videoShareCount,
-            userFollowCount = userFollowCount,
-            userLoginCount = userLoginCount
+            userCount = countsByType[StatisticsDataType.FANS] ?: 0,        // 粉丝
+            playCount = countsByType[StatisticsDataType.PLAY] ?: 0,        // 播放量
+            commentCount = countsByType[StatisticsDataType.COMMENT] ?: 0,  // 评论
+            danmuCount = countsByType[StatisticsDataType.DANMU] ?: 0,      // 弹幕
+            likeCount = countsByType[StatisticsDataType.LIKE] ?: 0,        // 点赞
+            collectCount = countsByType[StatisticsDataType.COLLECTION] ?: 0, // 收藏
+            coinCount = countsByType[StatisticsDataType.COIN] ?: 0         // 投币
         )
     }
 }

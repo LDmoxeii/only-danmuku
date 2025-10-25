@@ -11,20 +11,27 @@ import com.only4.cap4k.ddd.core.application.RequestParam
  */
 object GetTotalStatisticsInfoQry {
 
-    class Request: RequestParam<Response>
+    class Request : RequestParam<Response>
 
+    /**
+     * 总统计数据响应
+     *
+     * 对应 easylive 的 totalCountInfo 格式，按字段名分类
+     */
     data class Response(
-        /** 视频观看数 */
-        val videoViewCount: Int = 0,
-        /** 视频点赞数 */
-        val videoLikeCount: Int = 0,
-        /** 视频评论数 */
-        val videoCommentCount: Int = 0,
-        /** 视频分享数 */
-        val videoShareCount: Int = 0,
-        /** 用户关注数 */
-        val userFollowCount: Int = 0,
-        /** 用户登录数 */
-        val userLoginCount: Int = 0,
-        )
+        /** 用户数 */
+        val userCount: Int = 0,
+        /** 播放量 */
+        val playCount: Int = 0,
+        /** 评论数 */
+        val commentCount: Int = 0,
+        /** 弹幕数 */
+        val danmuCount: Int = 0,
+        /** 点赞数 */
+        val likeCount: Int = 0,
+        /** 收藏数 */
+        val collectCount: Int = 0,
+        /** 投币数 */
+        val coinCount: Int = 0,
+    )
 }

@@ -16,30 +16,25 @@ object GetPreviousDayStatisticsInfoQry {
         val userId: Long? = null,
     ) : RequestParam<Response>
 
+    /**
+     * 前一天统计数据响应
+     *
+     * 对应 easylive 的 preDayData 格式，按统计类型分类
+     */
     data class Response(
-        /** 前一天视频观看数 */
-        val videoViewCount: Int = 0,
-        /** 前一天视频点赞数 */
-        val videoLikeCount: Int = 0,
-        /** 前一天视频评论数 */
-        val videoCommentCount: Int = 0,
-        /** 前一天视频分享数 */
-        val videoShareCount: Int = 0,
-        /** 前一天用户关注数 */
-        val userFollowCount: Int = 0,
-        /** 前一天用户登录数 */
-        val userLoginCount: Int = 0,
-        /** 总视频观看数 */
-        val totalVideoViewCount: Int = 0,
-        /** 总视频点赞数 */
-        val totalVideoLikeCount: Int = 0,
-        /** 总视频评论数 */
-        val totalVideoCommentCount: Int = 0,
-        /** 总视频分享数 */
-        val totalVideoShareCount: Int = 0,
-        /** 总用户关注数 */
-        val totalUserFollowCount: Int = 0,
-        /** 总用户登录数 */
-        val totalUserLoginCount: Int = 0,
+        /** 用户数（对应 FANS 类型） */
+        val userCount: Int = 0,
+        /** 播放量（对应 PLAY 类型） */
+        val playCount: Int = 0,
+        /** 评论数（对应 COMMENT 类型） */
+        val commentCount: Int = 0,
+        /** 弹幕数（对应 DANMU 类型） */
+        val danmuCount: Int = 0,
+        /** 点赞数（对应 LIKE 类型） */
+        val likeCount: Int = 0,
+        /** 收藏数（对应 COLLECTION 类型） */
+        val collectCount: Int = 0,
+        /** 投币数（对应 COIN 类型） */
+        val coinCount: Int = 0,
     )
 }

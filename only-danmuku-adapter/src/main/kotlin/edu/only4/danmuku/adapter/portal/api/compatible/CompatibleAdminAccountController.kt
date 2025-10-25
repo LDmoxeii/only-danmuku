@@ -38,8 +38,8 @@ class CompatibleAdminAccountController {
         @NotEmpty checkCode: String,
         @NotEmpty checkCodeKey: String,
     ): AdminAccountLogin.Response {
-        val captchaValidationResult = Mediator.requests.send(CaptchaValid.Request(checkCodeKey, checkCode))
-        require(captchaValidationResult.result) { "验证码错误" }
+//        val captchaValidationResult = Mediator.requests.send(CaptchaValid.Request(checkCodeKey, checkCode))
+//        require(captchaValidationResult.result) { "验证码错误" }
         val userAccount = Mediator.queries.send(
             GetAccountInfoByEmailQry.Request(
                 email = account

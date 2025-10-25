@@ -10,18 +10,13 @@ object AdminIndexGetWeekStatistics {
         val dataType: Int = 0
     )
 
-    data class Response(
-        /** 7天统计数据列表 */
-        var list: List<WeekStatisticsItem>? = null
-    )
-
     /**
      * 周统计数据项
      */
     data class WeekStatisticsItem(
-        /** 统计日期（时间戳） */
-        var statisticsDate: Long,
+        /** 记录统计数据对应的日期，格式通常为YYYY-MM-DD */
+        var statisticsDate: String,
         /** 统计数量 */
-        var statisticsCount: Int
+        var statisticsCount: Int,
     )
 }

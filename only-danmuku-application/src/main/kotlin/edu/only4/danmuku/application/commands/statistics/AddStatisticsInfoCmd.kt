@@ -29,12 +29,13 @@ object AddStatisticsInfoCmd {
 
             // 为用户创建初始统计记录（各类型统计数量初始化为0）
             val statisticsTypes = listOf(
-                StatisticsDataType.VIDEO_VIEW,
-                StatisticsDataType.VIDEO_LIKE,
-                StatisticsDataType.VIDEO_COMMENT,
-                StatisticsDataType.VIDEO_SHARE,
-                StatisticsDataType.USER_FOLLOW,
-                StatisticsDataType.USER_LOGIN
+                StatisticsDataType.PLAY,
+                StatisticsDataType.FANS,
+                StatisticsDataType.LIKE,
+                StatisticsDataType.COLLECTION,
+                StatisticsDataType.COIN,
+                StatisticsDataType.COMMENT,
+                StatisticsDataType.DANMU
             )
 
             statisticsTypes.forEach { dataType ->
