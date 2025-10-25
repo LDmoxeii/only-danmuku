@@ -8,7 +8,6 @@ import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.adapter.portal.api.payload.AdminAccountCheckCode
 import edu.only4.danmuku.adapter.portal.api.payload.AdminAccountLogin
 import edu.only4.danmuku.application.distributed.clients.CaptchaGen
-import edu.only4.danmuku.application.distributed.clients.CaptchaValid
 import edu.only4.danmuku.application.queries.user.GetAccountInfoByEmailQry
 import edu.only4.danmuku.domain.aggregates.user.User
 import jakarta.validation.constraints.NotEmpty
@@ -35,7 +34,7 @@ class CompatibleAdminAccountController {
     fun adminAccountLogin(
         @NotEmpty account: String,
         @NotEmpty password: String,
-        @NotEmpty checkCode: String,
+        checkCode: String,
         @NotEmpty checkCodeKey: String,
     ): AdminAccountLogin.Response {
 //        val captchaValidationResult = Mediator.requests.send(CaptchaValid.Request(checkCodeKey, checkCode))

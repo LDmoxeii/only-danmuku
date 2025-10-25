@@ -26,13 +26,6 @@ import java.time.format.DateTimeFormatter
 @Validated
 class CompatibleAdminIndexController {
 
-    /**
-     * 获取实时统计信息
-     *
-     * 返回格式：
-     * - preDayData: Map<统计类型, 统计数量>
-     * - totalCountInfo: Map<字段名, 统计数量>
-     */
     @PostMapping("/getActualTimeStatisticsInfo")
     fun adminIndexGetActualTimeStatistics(): AdminIndexGetActualTimeStatistics.Response {
         val preDayData = Mediator.queries.send(GetPreviousDayStatisticsInfoQry.Request())
@@ -66,11 +59,6 @@ class CompatibleAdminIndexController {
         )
     }
 
-    /**
-     * 获取周统计信息
-     *
-     * 返回7天的统计数据列表
-     */
     @PostMapping("/getWeekStatisticsInfo")
     fun adminIndexGetWeekStatistics(dataType: Int): List<WeekStatisticsItem> {
         val weekData = Mediator.queries.send(
