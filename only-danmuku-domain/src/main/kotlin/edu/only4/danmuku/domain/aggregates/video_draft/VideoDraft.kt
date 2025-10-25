@@ -267,3 +267,4 @@ class VideoDraft (
 
     // 【行为方法结束】
 }
+

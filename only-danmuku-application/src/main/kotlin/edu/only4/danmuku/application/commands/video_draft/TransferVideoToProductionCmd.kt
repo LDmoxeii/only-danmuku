@@ -3,32 +3,42 @@ package edu.only4.danmuku.application.commands.video_draft
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
-
+import edu.only4.danmuku.domain._share.meta.video.SVideo
+import edu.only4.danmuku.domain.aggregates.video.factory.VideoFactory
+import edu.only4.danmuku.domain.aggregates.video_draft.VideoDraft
 import org.springframework.stereotype.Service
+import kotlin.jvm.optionals.getOrNull
 
 /**
- * 转移视频到正式环境
- *
- * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
- * @author cap4k-ddd-codegen
- * @date 2025/10/15
+ * 转移视频草稿及文件到正式表
  */
 object TransferVideoToProductionCmd {
 
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
+            val draft = request.videoDraft
+
+            val existingVideo = Mediator.repositories.findFirst(
+                SVideo.predicateById(draft.id),
+                persist = true
+            ).getOrNull()
+
+            val targetVideo = existingVideo ?: Mediator.factories.create(
+                VideoFactory.Payload(videoDraft = draft)
+            )
+
             Mediator.uow.save()
 
-            return Response(
-            )
+            return Response(videoId = targetVideo.id)
         }
-
     }
 
-    class Request(
+    data class Request(
+        val videoDraft: VideoDraft,
     ) : RequestParam<Response>
 
-    class Response(
+    data class Response(
+        val videoId: Long,
     )
 }

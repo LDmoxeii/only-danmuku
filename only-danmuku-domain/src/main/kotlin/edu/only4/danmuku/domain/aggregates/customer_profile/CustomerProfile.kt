@@ -198,6 +198,12 @@ class CustomerProfile (
     }
 
     /** 更新用户资料信息 */
+    fun rewardCoins(amount: Int) {
+        require(amount > 0) { "奖励数量必须大于0" }
+        this.totalCoinCount += amount
+        this.currentCoinCount += amount
+    }
+
     fun updateProfileInfo(
         nickName: String? = null,
         avatar: String? = null,
@@ -220,3 +226,4 @@ class CustomerProfile (
 
     // 【行为方法结束】
 }
+
