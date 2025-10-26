@@ -7,7 +7,6 @@ import com.only.engine.misc.getVideoDuration
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
-import edu.only4.danmuku.application._share.enums.config.properties.VideoAppProperties
 import edu.only4.danmuku.domain.aggregates.video_draft.VideoDraft
 import edu.only4.danmuku.domain.aggregates.video_draft.VideoFileDraft
 import org.slf4j.LoggerFactory
@@ -25,109 +24,111 @@ object TransferVideoFileCmd {
 
     @Service
     class Handler(
-        private val videoProps: VideoAppProperties,
     ) : Command<Request, Response> {
 
         override fun exec(request: Request): Response {
-            val videoDraft = request.videoDraft
-            val fileDraft = request.fileDraft
-
-            Mediator.uow.persist(fileDraft)
-
-            var duration: Int? = null
-            var fileSize: Long? = null
-            var outputPath: String? = null
-            var errorMessage: String? = null
-
-            try {
-                logger.info(
-                    "开始转码视频文件: videoId={}, uploadId={}, customerId={}",
-                    videoDraft.id,
-                    fileDraft.uploadId,
-                    fileDraft.customerId
-                )
-
-                fileDraft.startTransfer()
-                Mediator.uow.save()
-
-                val tempFilePath = buildTempFilePath(fileDraft.customerId, fileDraft.uploadId)
-                val targetFilePath = buildTargetFilePath(fileDraft.customerId, videoDraft.id)
-
-                val tempFileDir = File(tempFilePath)
-                require(tempFileDir.exists() && tempFileDir.isDirectory) {
-                    "临时文件目录不存在: $tempFilePath"
-                }
-
-                val targetFileDir = File(targetFilePath)
-                if (!targetFileDir.exists()) {
-                    targetFileDir.mkdirs()
-                }
-                copyDirectory(tempFileDir, targetFileDir)
-                logger.info("文件已复制到目标目录: {}", targetFilePath)
-
-                tempFileDir.deleteRecursively()
-                logger.info("临时目录已清理: {}", tempFilePath)
-
-                val mergedVideoPath = "$targetFilePath/merged_video.mp4"
-                mergeVideoChunks(targetFilePath, mergedVideoPath)
-                logger.info("视频分片合并完成: {}", mergedVideoPath)
-
-                duration = getVideoDuration(mergedVideoPath)
-                val codec = getVideoCodec(mergedVideoPath)
-                logger.info("视频时长: {}秒, 编码: {}", duration, codec)
-
-                val finalVideoPath = if (codec.equals("hevc", ignoreCase = true)) {
-                    val tempHevcPath = "$mergedVideoPath.hevc"
-                    File(mergedVideoPath).renameTo(File(tempHevcPath))
-                    logger.info("检测到 HEVC 编码，开始转码为 H.264")
-                    convertHevcToMp4(tempHevcPath, mergedVideoPath)
-                    File(tempHevcPath).delete()
-                    mergedVideoPath
-                } else {
-                    mergedVideoPath
-                }
-
-                val tsFolder = File(targetFilePath)
-                convertVideoToTs(tsFolder, finalVideoPath, videoProps.tsSegmentSeconds)
-                logger.info("视频已转换为 TS 格式: {}", targetFilePath)
-
-                File(finalVideoPath).delete()
-
-                fileSize = calculateTsFolderSize(tsFolder)
-                outputPath = targetFilePath
-
-                fileDraft.markTransferSuccess(duration, fileSize, targetFilePath)
-                logger.info("视频文件转码成功: fileDraftId={}", fileDraft.id)
-            } catch (ex: Exception) {
-                errorMessage = ex.message
-                fileDraft.markTransferFailed(errorMessage)
-                logger.error(
-                    "视频文件转码失败: videoId={}, uploadId={}, customerId={}",
-                    videoDraft.id,
-                    fileDraft.uploadId,
-                    fileDraft.customerId,
-                    ex
-                )
-                Mediator.uow.save()
-                return Response(success = false, errorMessage = errorMessage)
-            } finally {
-                Mediator.uow.save()
-            }
-
-            return Response(
-                success = true,
-                duration = duration,
-                fileSize = fileSize,
-                filePath = outputPath,
-            )
+            TODO("调整路径相关")
+//            val videoDraft = request.videoDraft
+//            val fileDraft = request.fileDraft
+//
+//            Mediator.uow.persist(fileDraft)
+//
+//            var duration: Int? = null
+//            var fileSize: Long? = null
+//            var outputPath: String? = null
+//            var errorMessage: String? = null
+//
+//            try {
+//                logger.info(
+//                    "开始转码视频文件: videoId={}, uploadId={}, customerId={}",
+//                    videoDraft.id,
+//                    fileDraft.uploadId,
+//                    fileDraft.customerId
+//                )
+//
+//                fileDraft.startTransfer()
+//                Mediator.uow.save()
+//
+//                val tempFilePath = buildTempFilePath(fileDraft.customerId, fileDraft.uploadId)
+//                val targetFilePath = buildTargetFilePath(fileDraft.customerId, videoDraft.id)
+//
+//                val tempFileDir = File(tempFilePath)
+//                require(tempFileDir.exists() && tempFileDir.isDirectory) {
+//                    "临时文件目录不存在: $tempFilePath"
+//                }
+//
+//                val targetFileDir = File(targetFilePath)
+//                if (!targetFileDir.exists()) {
+//                    targetFileDir.mkdirs()
+//                }
+//                copyDirectory(tempFileDir, targetFileDir)
+//                logger.info("文件已复制到目标目录: {}", targetFilePath)
+//
+//                tempFileDir.deleteRecursively()
+//                logger.info("临时目录已清理: {}", tempFilePath)
+//
+//                val mergedVideoPath = "$targetFilePath/merged_video.mp4"
+//                mergeVideoChunks(targetFilePath, mergedVideoPath)
+//                logger.info("视频分片合并完成: {}", mergedVideoPath)
+//
+//                duration = getVideoDuration(mergedVideoPath)
+//                val codec = getVideoCodec(mergedVideoPath)
+//                logger.info("视频时长: {}秒, 编码: {}", duration, codec)
+//
+//                val finalVideoPath = if (codec.equals("hevc", ignoreCase = true)) {
+//                    val tempHevcPath = "$mergedVideoPath.hevc"
+//                    File(mergedVideoPath).renameTo(File(tempHevcPath))
+//                    logger.info("检测到 HEVC 编码，开始转码为 H.264")
+//                    convertHevcToMp4(tempHevcPath, mergedVideoPath)
+//                    File(tempHevcPath).delete()
+//                    mergedVideoPath
+//                } else {
+//                    mergedVideoPath
+//                }
+//
+//                val tsFolder = File(targetFilePath)
+//                convertVideoToTs(tsFolder, finalVideoPath, videoProps.tsSegmentSeconds)
+//                logger.info("视频已转换为 TS 格式: {}", targetFilePath)
+//
+//                File(finalVideoPath).delete()
+//
+//                fileSize = calculateTsFolderSize(tsFolder)
+//                outputPath = targetFilePath
+//
+//                fileDraft.markTransferSuccess(duration, fileSize, targetFilePath)
+//                logger.info("视频文件转码成功: fileDraftId={}", fileDraft.id)
+//            } catch (ex: Exception) {
+//                errorMessage = ex.message
+//                fileDraft.markTransferFailed(errorMessage)
+//                logger.error(
+//                    "视频文件转码失败: videoId={}, uploadId={}, customerId={}",
+//                    videoDraft.id,
+//                    fileDraft.uploadId,
+//                    fileDraft.customerId,
+//                    ex
+//                )
+//                Mediator.uow.save()
+//                return Response(success = false, errorMessage = errorMessage)
+//            } finally {
+//                Mediator.uow.save()
+//            }
+//
+//            return Response(
+//                success = true,
+//                duration = duration,
+//                fileSize = fileSize,
+//                filePath = outputPath,
+//            )
         }
 
         private fun buildTempFilePath(customerId: Long, uploadId: Long): String {
-            return "${videoProps.tempFolder}/$customerId/$uploadId"
+            TODO("调整路径相关")
+//            return "${videoProps.tempFolder}/$customerId/$uploadId"
         }
 
         private fun buildTargetFilePath(customerId: Long, videoId: Long): String {
-            return "${videoProps.targetFolder}/$customerId/$videoId"
+            TODO("调整路径相关")
+//            return "${videoProps.targetFolder}/$customerId/$videoId"
         }
 
         private fun copyDirectory(source: File, target: File) {

@@ -1,4 +1,4 @@
-package edu.only4.danmuku.application._share.enums.config.properties
+package edu.only4.danmuku.application._share.config.properties
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 

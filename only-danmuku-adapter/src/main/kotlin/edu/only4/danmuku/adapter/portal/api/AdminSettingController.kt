@@ -2,7 +2,7 @@ package edu.only4.danmuku.adapter.portal.api
 
 import edu.only4.danmuku.adapter.portal.api.payload.AdminSettingGet
 import edu.only4.danmuku.adapter.portal.api.payload.AdminSettingSave
-import edu.only4.danmuku.application._share.enums.config.properties.SysSettingProperties
+import edu.only4.danmuku.application._share.config.properties.SysSettingProperties
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody

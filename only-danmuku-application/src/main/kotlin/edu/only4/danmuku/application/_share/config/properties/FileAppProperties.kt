@@ -1,4 +1,4 @@
-package edu.only4.danmuku.application._share.enums.config.properties
+package edu.only4.danmuku.application._share.config.properties
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 
@@ -13,8 +13,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties
  */
 @ConfigurationProperties(prefix = "app.file")
 class FileAppProperties {
-    var projectFolder: String = "/data/app"
-    var fileFolder: String = "file"
-    var fileCover: String = "cover/"
-    var thumbnailWidth: Int = 200
+    var projectFolder: String = "C:/Users/LD_moxeii/Documents/code/only-workspace/only-danmuku/"
+
+    var showFFmpegLog: Boolean = true
 }

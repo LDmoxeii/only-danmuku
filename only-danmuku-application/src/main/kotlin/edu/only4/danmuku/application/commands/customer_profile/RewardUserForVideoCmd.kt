@@ -4,7 +4,7 @@ import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
-import edu.only4.danmuku.application._share.enums.config.properties.SysSettingProperties
+import edu.only4.danmuku.application._share.config.properties.SysSettingProperties
 import edu.only4.danmuku.domain._share.meta.customer_profile.SCustomerProfile
 import edu.only4.danmuku.domain._share.meta.video.SVideo
 import org.springframework.stereotype.Service

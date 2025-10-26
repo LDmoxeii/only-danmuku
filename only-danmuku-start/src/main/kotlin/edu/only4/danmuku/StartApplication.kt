@@ -1,8 +1,7 @@
 package edu.only4.danmuku
 
-import edu.only4.danmuku.application._share.enums.config.properties.FileAppProperties
-import edu.only4.danmuku.application._share.enums.config.properties.SysSettingProperties
-import edu.only4.danmuku.application._share.enums.config.properties.VideoAppProperties
+import edu.only4.danmuku.application._share.config.properties.FileAppProperties
+import edu.only4.danmuku.application._share.config.properties.SysSettingProperties
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.context.properties.EnableConfigurationProperties
@@ -19,7 +18,6 @@ import org.springframework.scheduling.annotation.EnableScheduling
 @EnableScheduling
 @EnableConfigurationProperties(
     SysSettingProperties::class,
-    VideoAppProperties::class,
     FileAppProperties::class
 )
 @EnableJpaRepositories(basePackages = ["edu.only4.danmuku.adapter.domain.repositories"])

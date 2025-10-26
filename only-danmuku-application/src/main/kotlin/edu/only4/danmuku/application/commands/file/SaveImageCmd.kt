@@ -2,9 +2,11 @@ package edu.only4.danmuku.application.commands.file
 
 import cn.hutool.core.util.IdUtil
 import com.only.engine.exception.KnownException
+import com.only.engine.misc.createImageThumbnail
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
-import edu.only4.danmuku.application._share.enums.config.properties.FileAppProperties
+import edu.only4.danmuku.application._share.constants.Constants
+import edu.only4.danmuku.application._share.config.properties.FileAppProperties
 import jakarta.validation.constraints.NotNull
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
@@ -21,7 +23,7 @@ object SaveImageCmd {
 
     private val logger = LoggerFactory.getLogger(SaveImageCmd::class.java)
     private const val RANDOM_STRING_LENGTH = 30
-    private val DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd")
+    private val MONTH_FORMATTER = DateTimeFormatter.ofPattern("yyyyMM")
 
     @Service
     class Handler(
@@ -29,8 +31,8 @@ object SaveImageCmd {
     ) : Command<Request, Response> {
         override fun exec(request: Request): Response {
             // 1. 构建日期目录
-            val day = LocalDate.now().format(DATE_FORMATTER)
-            val folder = File(fileProps.projectFolder, "${fileProps.fileFolder}/${fileProps.fileCover}$day")
+            val month = LocalDate.now().format(MONTH_FORMATTER)
+            val folder = File(fileProps.projectFolder, "${Constants.FILE_FOLDER}${Constants.FILE_COVER}$month")
 
             // 2. 确保目录存在
             if (!folder.exists() && !folder.mkdirs()) {
@@ -56,7 +58,7 @@ object SaveImageCmd {
             // 5. 生成缩略图（如果需要）
             if (request.createThumbnail) {
                 try {
-                    com.only.engine.misc.createImageThumbnail(targetFile.absolutePath, showLog = false)
+                    createImageThumbnail(targetFile.absolutePath, showLog = fileProps.showFFmpegLog)
                     logger.info("缩略图生成成功")
                 } catch (e: Exception) {
                     logger.warn("缩略图生成失败: ${e.message}", e)
@@ -65,7 +67,7 @@ object SaveImageCmd {
             }
 
             // 6. 返回相对路径
-            val relativePath = "${fileProps.fileCover}$day/$randomFileName"
+            val relativePath = "${Constants.FILE_COVER}$month/$randomFileName"
             return Response(filePath = relativePath)
         }
     }

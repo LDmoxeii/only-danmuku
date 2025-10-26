@@ -190,11 +190,7 @@ jimmer:
 
 app:
   file:
-    project-folder: /data/only-danmuku
-    file-folder: file
-    file-cover: cover/
-    thumbnail-width: 200
+    project-folder: C:/Users/LD_moxeii/Documents/code/only-workspace/only-danmuku/
+    show-f-fmpeg-log: true
   video:
-    temp-folder: /data/only-danmuku/file/temp
-    target-folder: /data/only-danmuku/file/video
     ts-segment-seconds: 10

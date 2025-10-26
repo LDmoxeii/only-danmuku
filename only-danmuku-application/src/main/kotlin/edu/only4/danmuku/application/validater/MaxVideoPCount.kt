@@ -1,7 +1,7 @@
 package edu.only4.danmuku.application.validater
 
 import com.only4.cap4k.ddd.core.Mediator
-import edu.only4.danmuku.application._share.enums.config.properties.SysSettingProperties
+import edu.only4.danmuku.application._share.config.properties.SysSettingProperties
 import edu.only4.danmuku.domain._share.meta.video_draft.SVideoDraft
 import jakarta.validation.Constraint
 import jakarta.validation.ConstraintValidator
