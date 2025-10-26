@@ -3,6 +3,7 @@ package edu.only4.danmuku.adapter.application.queries.video_draft
 import com.only4.cap4k.ddd.core.application.query.PageQuery
 import com.only4.cap4k.ddd.core.share.PageData
 import edu.only4.danmuku.application.queries._share.draft.video_draft.VideoDraftPageItem
+import edu.only4.danmuku.application.queries._share.model.video_draft.JVideoDraft
 import edu.only4.danmuku.application.queries._share.model.video_draft.customerId
 import edu.only4.danmuku.application.queries._share.model.video_draft.status
 import edu.only4.danmuku.application.queries._share.model.video_draft.videoName
@@ -30,7 +31,7 @@ class GetUserVideoDraftsQryHandler(
 
         // 查询用户视频草稿列表
         val pageResult =
-            sqlClient.createQuery(edu.only4.danmuku.application.queries._share.model.video_draft.JVideoDraft::class) {
+            sqlClient.createQuery(JVideoDraft::class) {
                 where(table.customerId eq request.userId)
                 where(table.status `eq?` request.status?.toByte())
                 where(table.videoName `ilike?` request.videoNameFuzzy)

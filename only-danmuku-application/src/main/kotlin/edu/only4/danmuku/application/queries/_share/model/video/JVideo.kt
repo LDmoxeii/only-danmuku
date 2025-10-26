@@ -1,6 +1,7 @@
 package edu.only4.danmuku.application.queries._share.model.video
 
 import edu.only4.danmuku.application.queries._share.model.customer_profile.JCustomerProfile
+import edu.only4.danmuku.application.queries._share.model.video_draft.JVideoDraft as VideoDraftView
 import org.babyfish.jimmer.sql.*
 
 /**
@@ -16,6 +17,12 @@ interface JVideo {
      */
     @Id
     val id: Long
+
+    /**
+     * 视频草稿ID
+     */
+    @IdView("videoDraft")
+    val videoDraftId: Long
 
     /**
      * 视频封面
@@ -111,6 +118,13 @@ interface JVideo {
      * 更新时间
      */
     val updateTime: Long?
+
+    /**
+     * 关联的视频草稿
+     */
+    @OneToOne
+    @JoinColumn(name = "video_draft_id")
+    val videoDraft: VideoDraftView
 
     /**
      * 关联的用户档案

@@ -8,11 +8,6 @@ import jakarta.validation.ConstraintValidatorContext
 import jakarta.validation.Payload
 import kotlin.reflect.KClass
 
-/**
- * 校验分类是否存在（用于删除、更新等严格场景）。
- * - 0 或 null 视为非法，返回 false
- * - 其他情况调用查询确认存在
- */
 @Target(AnnotationTarget.FIELD, AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
 @Constraint(validatedBy = [CategoryMustExist.Validator::class])
@@ -24,8 +19,8 @@ annotation class CategoryMustExist(
 ) {
     class Validator : ConstraintValidator<CategoryMustExist, Long> {
         override fun isValid(value: Long?, context: ConstraintValidatorContext): Boolean {
-            val id = value ?: return false
-            if (id <= 0L) return false
+            val id = value ?: return true
+            if (id == 0L) return true
             val resp = Mediator.queries.send(CategoryExistsByIdQry.Request(categoryId = id))
             return resp.exists
         }

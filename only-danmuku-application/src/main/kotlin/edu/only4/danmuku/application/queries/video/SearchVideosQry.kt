@@ -14,10 +14,14 @@ object SearchVideosQry {
     data class Request(
         /** 用户ID - 过滤指定用户的视频 */
         val userId: Long? = null,
+        /** 父分类Id */
+        val categoryParentId: Long? = null,
+        /** 分类Id */
+        val categoryId: Long? = null,
         /** 视频名称模糊查询 */
         val videoNameFuzzy: String? = null,
         /** 视频状态 */
-        val status: Int? = null,
+        val recommendType: Int? = null,
     ) : PageQueryParam<Response>()
 
     data class Response(

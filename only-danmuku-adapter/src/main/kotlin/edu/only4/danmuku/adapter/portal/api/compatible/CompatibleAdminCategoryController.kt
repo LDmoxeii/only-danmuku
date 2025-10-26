@@ -9,13 +9,10 @@ import edu.only4.danmuku.application.commands.category.CreateCategoryCmd
 import edu.only4.danmuku.application.commands.category.DeleteCategoryCmd
 import edu.only4.danmuku.application.commands.category.UpdateCategoryInfoCmd
 import edu.only4.danmuku.application.commands.category.UpdateCategorySortOrderCmd
-import edu.only4.danmuku.application.queries.category.GetCategoryListQry
 import edu.only4.danmuku.application.queries.category.GetCategoryTreeQry
 import jakarta.validation.constraints.NotEmpty
-import org.jetbrains.annotations.NotNull
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -28,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController
 class CompatibleAdminCategoryController {
 
     @RequestMapping("/loadCategory")
-    fun adminCategoryLoad(request: AdminCategoryLoad.Request): List<AdminCategoryLoad.Response> {
+    fun adminCategoryLoad(): List<AdminCategoryLoad.Response> {
         val treeResult = Mediator.qry.send(GetCategoryTreeQry.Request())
         return treeResult.map { qryResponseToApiResponse(it) }
     }
@@ -36,18 +33,18 @@ class CompatibleAdminCategoryController {
 
     @RequestMapping("/saveCategory")
     fun adminCategorySave(
-        pCategoryId: Long,
+        parentId: Long,
         categoryId: Long?,
         @NotEmpty categoryCode: String,
         @NotEmpty categoryName: String,
-        icon: String,
-        background: String,
+        icon: String?,
+        background: String?,
     ): AdminCategorySave.Response {
         when (categoryId) {
             null -> {
                 Mediator.commands.send(
                     CreateCategoryCmd.Request(
-                        parentId = pCategoryId,
+                        parentId = parentId,
                         code = categoryCode,
                         name = categoryName,
                         icon = icon,
@@ -60,7 +57,7 @@ class CompatibleAdminCategoryController {
                 Mediator.commands.send(
                     UpdateCategoryInfoCmd.Request(
                         categoryId = categoryId,
-                        parentId = pCategoryId,
+                        parentId = parentId,
                         code = categoryCode,
                         name = categoryName,
                         icon = icon,
@@ -73,23 +70,26 @@ class CompatibleAdminCategoryController {
     }
 
     @PostMapping("/delCategory")
-    fun adminCategoryDel(@RequestBody @Validated request: AdminCategoryDel.Request): AdminCategoryDel.Response {
+    fun adminCategoryDel(categoryId: Long): AdminCategoryDel.Response {
         Mediator.commands.send(
             DeleteCategoryCmd.Request(
-                categoryId = request.categoryId
+                categoryId = categoryId
             )
         )
         return AdminCategoryDel.Response()
     }
 
     @PostMapping("/changeSort")
-    fun adminCategoryChangeSort(@RequestBody @Validated request: AdminCategoryChangeSort.Request): AdminCategoryChangeSort.Response {
-        val categoryIdList = request.categoryIds.split(",")
+    fun adminCategoryChangeSort(
+        parentId: Long,
+        categoryIds: String,
+    ): AdminCategoryChangeSort.Response {
+        val categoryIdList = categoryIds.split(",")
             .map { it.trim().toLong() }
 
         Mediator.commands.send(
             UpdateCategorySortOrderCmd.Request(
-                parentId = request.pCategoryId.toLong(),
+                parentId = parentId,
                 categoryIds = categoryIdList
             )
         )
@@ -99,12 +99,12 @@ class CompatibleAdminCategoryController {
     private fun qryResponseToApiResponse(node: GetCategoryTreeQry.Response): AdminCategoryLoad.Response {
         return AdminCategoryLoad.Response(
             categoryId = node.categoryId,
-            code = node.code,
-            name = node.name,
+            categoryCode = node.code,
+            categoryName = node.name,
             parentId = node.parentId,
             icon = node.icon,
             background = node.background,
-            sort = node.sort,
+            sort = node.sort.toInt(),
             children = node.children.map { qryResponseToApiResponse(it) }
         )
     }

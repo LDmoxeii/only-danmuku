@@ -185,7 +185,7 @@ class VideoController {
         // 调用搜索查询获取相关视频(最多10个)
         val queryRequest = SearchVideosQry.Request(
             videoNameFuzzy = request.keyword,
-            status = null
+            recommendType = null
         ).apply {
             pageNum = 1
             pageSize = 10
@@ -260,7 +260,7 @@ class VideoController {
         // 调用搜索查询
         val queryRequest = SearchVideosQry.Request(
             videoNameFuzzy = request.keyword,
-            status = null
+            recommendType = null
         ).apply {
             pageNum = request.pageNo ?: 1
             pageSize = 30

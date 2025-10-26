@@ -30,8 +30,12 @@ class SearchVideosQryHandler(
             where(table.customerId `eq?` request.userId)
             // 视频名称模糊查询
             where(table.videoName `ilike?` request.videoNameFuzzy)
+            // 父分类过滤
+            where(table.pCategoryId `eq?` request.categoryParentId)
+            // 分类过滤
+            where(table.categoryId `eq?` request.categoryId)
             // 状态过滤 (这里过滤的是推荐状态)
-            where(table.recommendType `eq?` request.status?.toByte())
+            where(table.recommendType `eq?` request.recommendType?.toByte())
             // 按创建时间倒序
             orderBy(table.createTime.desc())
             // DTO 投影
@@ -48,7 +52,7 @@ class SearchVideosQryHandler(
                 nickName = video.customer.nickName,
                 avatar = video.customer.avatar,
                 duration = video.duration,
-                status = video.recommendType.toInt(),
+                status = video.videoDraft.status.toInt(),
                 createTime = video.createTime ?: 0L,
                 lastUpdateTime = video.updateTime,
                 playCount = video.playCount,

@@ -5,27 +5,22 @@ package edu.only4.danmuku.adapter.portal.api.payload
  */
 object AdminCategoryLoad {
 
-    data class Request(
-        /** 是否转换为树形结构 */
-        val convert2Tree: Boolean? = null
-    )
-
     data class Response(
         /** 分类ID */
-        var categoryId: Long? = null,
+        var categoryId: Long,
         /** 分类编码 */
-        var code: String? = null,
+        var categoryCode: String,
         /** 分类名称 */
-        var name: String? = null,
+        var categoryName: String,
         /** 父分类ID */
-        var parentId: Long? = null,
+        var parentId: Long?,
         /** 图标 */
-        var icon: String? = null,
+        var icon: String?,
         /** 背景图 */
-        var background: String? = null,
+        var background: String?,
         /** 排序 */
-        var sort: Byte? = null,
+        var sort: Int,
         /** 子分类列表 (仅树形结构时有值) */
-        var children: List<Response>? = null
+        var children: List<Response>,
     )
 }

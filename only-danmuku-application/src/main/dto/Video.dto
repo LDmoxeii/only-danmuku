@@ -7,6 +7,7 @@ export edu.only4.danmuku.application.queries._share.model.video.JVideo
  */
 VideoSearchItem {
     id
+    videoDraftId
     videoCover
     videoName
     duration
@@ -20,6 +21,10 @@ VideoSearchItem {
     collectCount
     recommendType
     customerId
+
+    videoDraft {
+        status
+    }
 
     customer {
         nickName

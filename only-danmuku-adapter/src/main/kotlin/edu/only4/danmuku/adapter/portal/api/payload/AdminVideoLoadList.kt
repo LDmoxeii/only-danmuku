@@ -11,8 +11,12 @@ object AdminVideoLoadList {
     class Request(
         /** 视频名称模糊查询 */
         val videoNameFuzzy: String? = null,
+        /** 父分类Id */
+        val categoryParentId: Long? = null,
+        /** 分类Id */
+        val categoryId: Long? = null,
         /** 视频状态 */
-        val status: Int? = null
+        val recommendType: Int? = null,
     ) : PageParam()
 
     /**

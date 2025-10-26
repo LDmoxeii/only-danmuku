@@ -230,7 +230,7 @@ class UHomeController {
         val queryRequest = SearchVideosQry.Request(
             userId = request.userId?.toLong(),
             videoNameFuzzy = request.videoName,
-            status = null // 用户主页显示所有状态的视频
+            recommendType = null // 用户主页显示所有状态的视频
         ).apply {
             pageNum = request.pageNum
             pageSize = if (request.type != null) 10 else request.pageSize
@@ -293,7 +293,7 @@ class UHomeController {
         val videosRequest = SearchVideosQry.Request(
             userId = null,
             videoNameFuzzy = null,
-            status = null
+            recommendType = null
         ).apply {
             pageNum = 1
             pageSize = videoIds.size

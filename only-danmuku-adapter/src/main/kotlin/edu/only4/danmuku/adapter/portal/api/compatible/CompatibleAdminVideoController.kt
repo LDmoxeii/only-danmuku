@@ -1,4 +1,4 @@
-package edu.only4.danmuku.adapter.portal.api
+package edu.only4.danmuku.adapter.portal.api.compatible
 
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.share.PageData
@@ -21,15 +21,17 @@ import java.time.ZoneId
  * 管理员视频管理控制器
  */
 @RestController
-@RequestMapping("/admin/videoInfo/v2")
+@RequestMapping("/admin/videoInfo")
 @Validated
-class AdminVideoController {
+class CompatibleAdminVideoController {
 
     @PostMapping("/loadVideoList")
-    fun adminVideoLoadList(@RequestBody request: AdminVideoLoadList.Request): PageData<AdminVideoLoadList.VideoItem> {
+    fun adminVideoLoadList(request: AdminVideoLoadList.Request): PageData<AdminVideoLoadList.VideoItem> {
         // 调用查询获取视频分页列表
         val queryRequest = SearchVideosQry.Request(
             videoNameFuzzy = request.videoNameFuzzy,
+            categoryParentId = request.categoryParentId,
+            categoryId = request.categoryId,
             recommendType = request.recommendType
         ).apply {
             pageNum = request.pageNum

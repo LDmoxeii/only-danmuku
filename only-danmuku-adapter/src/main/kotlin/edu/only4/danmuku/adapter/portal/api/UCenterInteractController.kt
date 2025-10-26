@@ -37,7 +37,7 @@ class UCenterInteractController {
             SearchVideosQry.Request(
                 userId = currentUserId,
                 videoNameFuzzy = null,
-                status = null
+                recommendType = null
             )
         )
 

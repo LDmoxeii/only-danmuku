@@ -3,6 +3,7 @@ package edu.only4.danmuku.adapter.application.queries.category
 import com.only4.cap4k.ddd.core.application.query.ListQuery
 import edu.only4.danmuku.application.queries._share.draft.category.CategoryTreeNode
 import edu.only4.danmuku.application.queries._share.model.category.parentId
+import edu.only4.danmuku.application.queries._share.model.category.sort
 import edu.only4.danmuku.application.queries.category.GetCategoryTreeQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
@@ -24,6 +25,7 @@ class GetCategoryTreeQryHandler(
 
         val readModel = sqlClient.findAll(CategoryTreeNode::class) {
             where(table.parentId eq 0L)
+            orderBy(table.sort)
         }
 
         return readModel.map { readModelToResponse(it) }
@@ -38,8 +40,11 @@ class GetCategoryTreeQryHandler(
             icon = dto.icon,
             background = dto.background,
             sort = dto.sort,
-            // 递归转换子分类
-            children = dto.children?.map { readModelToResponse(it) } ?: emptyList()
+            // 递归转换子分类，并按 sort 排序
+            children = dto.children
+                ?.sortedBy { it.sort }  // 对子节点按 sort 字段排序
+                ?.map { readModelToResponse(it) }  // 递归转换（会对所有层级排序）
+                ?: emptyList()
         )
     }
 }
