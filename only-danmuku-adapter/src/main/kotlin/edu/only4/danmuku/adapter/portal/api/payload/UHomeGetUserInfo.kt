@@ -29,8 +29,8 @@ object UHomeGetUserInfo {
         var noticeInfo: String? = null,
         var theme: Int? = null,
         var currentCoinCount: Int? = null,
-        var fansCount: Int? = null,
-        var focusCount: Int? = null,
-        var haveFocus: Boolean? = null
+        var fansCount: Long? = null,
+        var focusCount: Long? = null,
+        var haveFocus: Boolean? = null,
     )
 }

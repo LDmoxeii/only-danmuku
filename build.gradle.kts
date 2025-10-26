@@ -30,7 +30,7 @@ codegen {
         username.set("root")
         password.set("123456")
         schema.set("only_danmuku")
-        tables.set("video_post,video_file_post,video,video_file")
+        tables.set("statistics")
         ignoreTables.set("")
     }
 

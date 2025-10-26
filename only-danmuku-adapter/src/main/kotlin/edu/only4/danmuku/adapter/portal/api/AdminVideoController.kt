@@ -1,21 +1,19 @@
 package edu.only4.danmuku.adapter.portal.api
 
 import com.only4.cap4k.ddd.core.Mediator
-import com.only4.cap4k.ddd.core.share.PageData
-import edu.only4.danmuku.adapter.portal.api.payload.*
+import edu.only4.danmuku.adapter.portal.api.payload.AdminVideoAudit
+import edu.only4.danmuku.adapter.portal.api.payload.AdminVideoDelete
+import edu.only4.danmuku.adapter.portal.api.payload.AdminVideoLoadPList
+import edu.only4.danmuku.adapter.portal.api.payload.AdminVideoRecommend
 import edu.only4.danmuku.application.commands.video.DeleteVideoCmd
 import edu.only4.danmuku.application.commands.video.RecommendVideoCmd
 import edu.only4.danmuku.application.commands.video_draft.AuditVideoCmd
 import edu.only4.danmuku.application.queries.video.GetVideoPlayFilesQry
-import edu.only4.danmuku.application.queries.video.SearchVideosQry
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
 
 /**
  * 管理员视频管理控制器
@@ -24,55 +22,6 @@ import java.time.ZoneId
 @RequestMapping("/admin/videoInfo/v2")
 @Validated
 class AdminVideoController {
-
-    @PostMapping("/loadVideoList")
-    fun adminVideoLoadList(@RequestBody request: AdminVideoLoadList.Request): PageData<AdminVideoLoadList.VideoItem> {
-        // 调用查询获取视频分页列表
-        val queryRequest = SearchVideosQry.Request(
-            videoNameFuzzy = request.videoNameFuzzy,
-            recommendType = request.recommendType
-        ).apply {
-            pageNum = request.pageNum
-            pageSize = request.pageSize
-        }
-
-        val queryResult = Mediator.queries.send(queryRequest)
-
-        // 转换为前端需要的格式
-        return PageData.create(
-            pageNum = queryResult.pageNum,
-            pageSize = queryResult.pageSize,
-            list = queryResult.list.map { video ->
-                AdminVideoLoadList.VideoItem(
-                    videoId = video.videoId.toString(),
-                    videoCover = video.videoCover,
-                    videoName = video.videoName,
-                    userId = video.userId.toString(),
-                    nickName = video.nickName,
-                    duration = video.duration,
-                    status = video.status,
-                    createTime = LocalDateTime.ofInstant(
-                        Instant.ofEpochSecond(video.createTime),
-                        ZoneId.systemDefault()
-                    ),
-                    lastUpdateTime = video.lastUpdateTime?.let {
-                        LocalDateTime.ofInstant(
-                            Instant.ofEpochSecond(it),
-                            ZoneId.systemDefault()
-                        )
-                    },
-                    playCount = video.playCount,
-                    likeCount = video.likeCount,
-                    danmuCount = video.danmuCount,
-                    commentCount = video.commentCount,
-                    coinCount = video.coinCount,
-                    collectCount = video.collectCount,
-                    recommendType = video.recommendType
-                )
-            },
-            totalCount = queryResult.totalCount
-        )
-    }
 
     @PostMapping("/recommendVideo")
     fun adminVideoRecommend(@RequestBody @Validated request: AdminVideoRecommend.Request): AdminVideoRecommend.Response {

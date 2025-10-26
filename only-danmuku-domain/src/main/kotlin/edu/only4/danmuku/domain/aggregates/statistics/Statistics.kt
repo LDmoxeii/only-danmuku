@@ -20,7 +20,7 @@ import org.hibernate.annotations.Where
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2025/10/25
+ * @date 2025/10/26
  */
 @Aggregate(aggregate = "Statistics", name = "Statistics", root = true, type = Aggregate.TYPE_ENTITY, description = "统计信息，")
 @Entity

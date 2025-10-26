@@ -6,8 +6,8 @@ import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
 import edu.only4.danmuku.application.validater.MaxVideoPCount
 import edu.only4.danmuku.domain.aggregates.video.enums.PostType
-import edu.only4.danmuku.domain.aggregates.video_draft.enums.VideoStatus
 import edu.only4.danmuku.domain.aggregates.video_post.VideoFilePost
+import edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus
 import edu.only4.danmuku.domain.aggregates.video_post.factory.VideoPostFactory
 import org.springframework.stereotype.Service
 

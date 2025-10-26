@@ -2,7 +2,7 @@ package edu.only4.danmuku.application.validater
 
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.application.queries.video_draft.GetVideoDraftInfoQry
-import edu.only4.danmuku.domain.aggregates.video_draft.enums.VideoStatus
+import edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus
 import jakarta.validation.Constraint
 import jakarta.validation.ConstraintValidator
 import jakarta.validation.ConstraintValidatorContext

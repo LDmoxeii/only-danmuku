@@ -12,11 +12,11 @@ object VideoLoad {
      */
     data class Request(
         /** 父分类ID */
-        val pCategoryId: Int? = null,
+        val pCategoryId: Long? = null,
         /** 分类ID */
-        val categoryId: Int? = null,
+        val categoryId: Long? = null,
         /** 页码 */
-        val pageNo: Int? = null
+        val pageNo: Int? = null,
     )
 
     /**

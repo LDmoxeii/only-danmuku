@@ -6,7 +6,7 @@ CREATE TABLE statistics
     (
     `id`               bigint      NOT NULL COMMENT 'ID',
     `customer_id`      bigint      NOT NULL COMMENT '用户ID',
-    `data_type` tinyint(1) NOT NULL DEFAULT 0 COMMENT '数据统计类型 @E=0:PLAY:播放量|1:FANS:粉丝|2:LIKE:点赞|3:COLLECTION:收藏|4:COIN:投币|5:COMMENT:评论|6:DANMU:弹幕;@T=StatisticsDataType',
+    `data_type` tinyint(1) NOT NULL DEFAULT 0 COMMENT '数据统计类型 @E=0:UNKNOW:未知类型|1:PLAY:播放量|2:FANS:粉丝|3:LIKE:点赞|4:COLLECTION:收藏|5:COIN:投币|6:COMMENT:评论|7:DANMUKU:弹幕;@T=StatisticsDataType',
     `statistics_count` int(11)     NULL     DEFAULT NULL COMMENT '统计数量',
     `statistics_date`  bigint      NOT NULL COMMENT '统计日期（秒级时间戳）',
     `create_user_id`   bigint      NULL     DEFAULT NULL COMMENT '创建人ID',

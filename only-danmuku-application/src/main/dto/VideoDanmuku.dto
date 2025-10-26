@@ -3,6 +3,7 @@ export edu.only4.danmuku.application.queries._share.model.VideoDanmuku
 
 DanmukuPageItem {
     id
+    fileId
     video {
         id
         videoCover

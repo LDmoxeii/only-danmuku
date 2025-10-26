@@ -8,6 +8,7 @@ import edu.only4.danmuku.application.commands.video.RecommendVideoCmd
 import edu.only4.danmuku.application.commands.video_draft.AuditVideoCmd
 import edu.only4.danmuku.application.queries.video.GetVideoPlayFilesQry
 import edu.only4.danmuku.application.queries.video.SearchVideosQry
+import edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -53,6 +54,7 @@ class CompatibleAdminVideoController {
                     nickName = video.nickName,
                     duration = video.duration,
                     status = video.status,
+                    statusName = VideoStatus.valueOf(video.status).desc,
                     createTime = LocalDateTime.ofInstant(
                         Instant.ofEpochSecond(video.createTime),
                         ZoneId.systemDefault()
@@ -77,10 +79,10 @@ class CompatibleAdminVideoController {
     }
 
     @PostMapping("/recommendVideo")
-    fun adminVideoRecommend(@RequestBody @Validated request: AdminVideoRecommend.Request): AdminVideoRecommend.Response {
+    fun adminVideoRecommend(videoId: Long): AdminVideoRecommend.Response {
         Mediator.commands.send(
             RecommendVideoCmd.Request(
-                videoId = request.videoId!!.toLong()
+                videoId = videoId
             )
         )
         return AdminVideoRecommend.Response()
@@ -90,13 +92,17 @@ class CompatibleAdminVideoController {
      * 审核视频
      */
     @PostMapping("/auditVideo")
-    fun adminVideoAudit(@RequestBody @Validated request: AdminVideoAudit.Request): AdminVideoAudit.Response {
+    fun adminVideoAudit(
+        videoId: Long,
+        status: Int,
+        reason: String,
+    ): AdminVideoAudit.Response {
         // 调用命令审核视频
         Mediator.commands.send(
             AuditVideoCmd.Request(
-                videoId = request.videoId!!.toLong(),
-                status = request.status!!,
-                reason = request.reason
+                videoId = videoId,
+                status = status,
+                reason = reason
             )
         )
         return AdminVideoAudit.Response()
@@ -106,11 +112,11 @@ class CompatibleAdminVideoController {
      * 删除视频
      */
     @PostMapping("/deleteVideo")
-    fun adminVideoDelete(@RequestBody @Validated request: AdminVideoDelete.Request): AdminVideoDelete.Response {
+    fun adminVideoDelete(videoId: Long): AdminVideoDelete.Response {
         // 调用命令删除视频
         Mediator.commands.send(
             DeleteVideoCmd.Request(
-                videoId = request.videoId!!.toLong()
+                videoId = videoId
             )
         )
         return AdminVideoDelete.Response()
@@ -120,11 +126,11 @@ class CompatibleAdminVideoController {
      * 加载视频分片列表
      */
     @PostMapping("/loadVideoPList")
-    fun adminVideoLoadPList(@RequestBody @Validated request: AdminVideoLoadPList.Request): List<AdminVideoLoadPList.Response> {
+    fun adminVideoLoadPList(videoId: Long): List<AdminVideoLoadPList.Response> {
         // 调用查询获取视频文件列表
         val queryResultList = Mediator.queries.send(
             GetVideoPlayFilesQry.Request(
-                videoId = request.videoId!!.toLong()
+                videoId = videoId
             )
         )
 

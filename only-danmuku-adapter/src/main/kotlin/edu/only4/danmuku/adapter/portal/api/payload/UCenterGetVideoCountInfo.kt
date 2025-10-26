@@ -9,10 +9,10 @@ object UCenterGetVideoCountInfo {
 
     data class Response(
         /** 审核通过数 */
-        var auditPassCount: Int? = null,
+        var auditPassCount: Long? = null,
         /** 审核失败数 */
-        var auditFailCount: Int? = null,
+        var auditFailCount: Long? = null,
         /** 进行中数量 */
-        var inProgress: Int? = null
+        var inProgress: Long? = null,
     )
 }

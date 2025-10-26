@@ -40,7 +40,7 @@ object SearchVideosQry {
         /** 视频时长(秒) */
         val duration: Int? = null,
         /** 视频状态 */
-        val status: Int? = null,
+        val status: Int,
         /** 创建时间 */
         val createTime: Long,
         /** 最后更新时间 */

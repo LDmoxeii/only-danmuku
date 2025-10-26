@@ -116,6 +116,44 @@ VALUES (1005, 4001, 2001, 'cover_docker.jpg', 'Docker 容器技术', 1, 102, 1, 
         'Docker容器化技术实战应用', '111', 2700, 9200, 612, 5, 76, 48, 325, 2, '2024-10-20 16:00:00', 2001,
         'user_zhang', 1729286400, 2001, 'user_zhang', 1729359600, 0);
 
+-- 补充未发布的视频记录 (对应审核失败和进行中的video_post)
+INSERT INTO video (id, video_post_id, customer_id, video_cover, video_name, p_category_id, category_id, post_type,
+                   origin_info, tags,
+                   introduction, interaction, duration, play_count, like_count, danmuku_count, comment_count,
+                   coin_count, collect_count, recommend_type, last_play_time, create_user_id, create_by, create_time,
+                   update_user_id, update_by, update_time, deleted)
+VALUES (1006, 4003, 2001, 'cover_failed1.jpg', '测试审核失败视频1', 2, 201, 1, NULL, '测试,审核',
+        '这是一个审核失败的测试视频', '111', 600, 0, 0, 0, 0, 0, 0, 1, NULL, 2001,
+        'user_zhang', 1729440000, 2001, 'user_zhang', 1729440000, 0);
+
+INSERT INTO video (id, video_post_id, customer_id, video_cover, video_name, p_category_id, category_id, post_type,
+                   origin_info, tags,
+                   introduction, interaction, duration, play_count, like_count, danmuku_count, comment_count,
+                   coin_count, collect_count, recommend_type, last_play_time, create_user_id, create_by, create_time,
+                   update_user_id, update_by, update_time, deleted)
+VALUES (1007, 4004, 2001, 'cover_transcoding.jpg', '转码中的视频', 1, 103, 1, NULL, 'Docker,容器',
+        'Docker容器化技术实战', '111', 3000, 0, 0, 0, 0, 0, 0, 1, NULL, 2001,
+        'user_zhang', 1729526400, 2001, 'user_zhang', 1729526400, 0);
+
+INSERT INTO video (id, video_post_id, customer_id, video_cover, video_name, p_category_id, category_id, post_type,
+                   origin_info, tags,
+                   introduction, interaction, duration, play_count, like_count, danmuku_count, comment_count,
+                   coin_count, collect_count, recommend_type, last_play_time, create_user_id, create_by, create_time,
+                   update_user_id, update_by, update_time, deleted)
+VALUES (1008, 4005, 2001, 'cover_failed_transcode.jpg', '转码失败的视频', 2, 202, 2, 'https://example.com/original',
+        'Python,转载', '转码失败需要重新上传', '111', 0, 0, 0, 0, 0, 0, 0, 1, NULL, 2001,
+        'user_zhang', 1729612800, 2001, 'user_zhang', 1729612800, 0);
+
+INSERT INTO video (id, video_post_id, customer_id, video_cover, video_name, p_category_id, category_id, post_type,
+                   origin_info, tags,
+                   introduction, interaction, duration, play_count, like_count, danmuku_count, comment_count,
+                   coin_count, collect_count, recommend_type, last_play_time, create_user_id, create_by, create_time,
+                   update_user_id, update_by, update_time, deleted)
+VALUES (1009, 4006, 2001, 'cover_pending_review.jpg', '待审核视频', 1, 104, 1, NULL, 'Kubernetes,云原生',
+        'Kubernetes入门到实战', '111', 4200, 0, 0, 0, 0, 0, 0, 1, NULL, 2001,
+        'user_zhang', 1729699200, 2001, 'user_zhang', 1729699200, 0);
+
+
 -- ----------------------------
 -- Test data for video_file
 -- ----------------------------

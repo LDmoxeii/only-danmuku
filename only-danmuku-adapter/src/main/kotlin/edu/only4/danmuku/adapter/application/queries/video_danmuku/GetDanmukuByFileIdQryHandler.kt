@@ -1,12 +1,11 @@
 package edu.only4.danmuku.adapter.application.queries.video_danmuku
 
 import com.only4.cap4k.ddd.core.application.query.ListQuery
-import edu.only4.danmuku.application.queries._share.draft.video_danmuku.DanmukuPageItem
 import edu.only4.danmuku.application.queries._share.model.VideoDanmuku
+import edu.only4.danmuku.application.queries._share.model.dto.VideoDanmuku.DanmukuPageItem
 import edu.only4.danmuku.application.queries._share.model.id
-import edu.only4.danmuku.application.queries._share.model.video_danmuku.fileId
-import edu.only4.danmuku.application.queries._share.model.video_danmuku.time
-import edu.only4.danmuku.application.queries._share.model.video_danmuku.videoId
+import edu.only4.danmuku.application.queries._share.model.time
+import edu.only4.danmuku.application.queries._share.model.videoId
 import edu.only4.danmuku.application.queries.video_danmuku.GetDanmukuByFileIdQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.asc
@@ -43,8 +42,8 @@ class GetDanmukuByFileIdQryHandler(
             GetDanmukuByFileIdQry.Response(
                 danmukuId = danmuku.id,
                 fileId = danmuku.fileId,
-                videoId = danmuku.videoId,
-                userId = danmuku.customerId,
+                videoId = danmuku.video.id,
+                userId = danmuku.customer.id,
                 text = danmuku.text ?: "",
                 mode = danmuku.mode?.toInt() ?: 1, // 默认滚动模式
                 color = danmuku.color ?: "#FFFFFF", // 默认白色

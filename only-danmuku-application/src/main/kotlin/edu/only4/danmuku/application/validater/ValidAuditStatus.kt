@@ -1,6 +1,6 @@
 package edu.only4.danmuku.application.validater
 
-import edu.only4.danmuku.domain.aggregates.video_draft.enums.VideoStatus
+import edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus
 import jakarta.validation.Constraint
 import jakarta.validation.ConstraintValidator
 import jakarta.validation.ConstraintValidatorContext

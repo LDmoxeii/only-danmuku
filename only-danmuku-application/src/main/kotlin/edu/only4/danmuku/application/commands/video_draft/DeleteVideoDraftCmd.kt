@@ -3,7 +3,7 @@ package edu.only4.danmuku.application.commands.video_draft
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
-import edu.only4.danmuku.domain._share.meta.video_draft.SVideoDraft
+import edu.only4.danmuku.domain._share.meta.video_post.SVideoPost
 import org.springframework.stereotype.Service
 
 /**
@@ -21,7 +21,7 @@ object DeleteVideoDraftCmd {
             // 删除视频草稿（包括级联删除附属的文件草稿）
             // 由于配置了 orphanRemoval = true 和 CascadeType.ALL，会自动删除 videoFileDrafts
             Mediator.repositories.remove(
-                SVideoDraft.predicate { it.id eq request.videoId }
+                SVideoPost.predicate { it.id eq request.videoId }
             )
 
             Mediator.uow.save()

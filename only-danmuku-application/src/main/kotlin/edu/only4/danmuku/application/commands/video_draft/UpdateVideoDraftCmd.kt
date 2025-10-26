@@ -9,8 +9,6 @@ import edu.only4.danmuku.application.validater.VideoDraftExists
 import edu.only4.danmuku.application.validater.VideoEditableStatus
 import edu.only4.danmuku.domain._share.meta.video_post.SVideoPost
 import edu.only4.danmuku.domain.aggregates.video.enums.PostType
-import edu.only4.danmuku.domain.aggregates.video_draft.enums.TransferResult
-import edu.only4.danmuku.domain.aggregates.video_draft.enums.UpdateType
 import edu.only4.danmuku.domain.aggregates.video_post.VideoFilePost
 import edu.only4.danmuku.domain.aggregates.video_post.enums.TransferResult
 import edu.only4.danmuku.domain.aggregates.video_post.enums.UpdateType

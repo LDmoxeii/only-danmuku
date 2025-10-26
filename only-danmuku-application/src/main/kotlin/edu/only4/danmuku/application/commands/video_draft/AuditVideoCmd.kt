@@ -7,8 +7,8 @@ import com.only4.cap4k.ddd.core.application.command.Command
 import edu.only4.danmuku.application.validater.ValidAuditStatus
 import edu.only4.danmuku.application.validater.VideoDraftExists
 import edu.only4.danmuku.application.validater.VideoDraftStatusPending
-import edu.only4.danmuku.domain._share.meta.video_draft.SVideoDraft
-import edu.only4.danmuku.domain.aggregates.video_draft.enums.VideoStatus
+import edu.only4.danmuku.domain._share.meta.video_post.SVideoPost
+import edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus
 
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
@@ -23,7 +23,7 @@ object AuditVideoCmd {
         override fun exec(request: Request): Response {
             // 根据视频ID找到对应草稿
             val draft = Mediator.repositories.findFirst(
-                SVideoDraft.predicate { it.id eq request.videoId },
+                SVideoPost.predicate { it.id eq request.videoId },
                 persist = false
             ).getOrNull() ?: throw KnownException("视频草稿不存在：${request.videoId}")
 

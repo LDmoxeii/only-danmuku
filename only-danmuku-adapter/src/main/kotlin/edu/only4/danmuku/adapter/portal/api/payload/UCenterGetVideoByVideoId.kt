@@ -31,9 +31,9 @@ object UCenterGetVideoByVideoId {
         /** 视频名称 */
         var videoName: String? = null,
         /** 父分类ID */
-        var pCategoryId: Int? = null,
+        var pCategoryId: Long? = null,
         /** 分类ID */
-        var categoryId: Int? = null,
+        var categoryId: Long? = null,
         /** 上传类型(0自制/1转载) */
         var postType: Int? = null,
         /** 标签 */
@@ -43,7 +43,7 @@ object UCenterGetVideoByVideoId {
         /** 互动设置 */
         var interaction: String? = null,
         /** 状态 */
-        var status: Int? = null
+        var status: Int? = null,
     )
 
     /**

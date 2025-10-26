@@ -17,6 +17,9 @@ interface VideoDanmuku : BaseEntity {
     @JoinColumn(name = "customer_id")
     val customer: User
 
+    @Column(name = "file_id")
+    val fileId: Long
+
     @Column(name = "post_time")
     val postTime: Long?
 
