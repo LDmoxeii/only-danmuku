@@ -54,7 +54,7 @@ object VideoCommentPageQry {
         /** 讨厌数 */
         val hateCount: Int? = 0,
         /** 是否置顶 */
-        val topType: Byte? = 0,
+        val topType: Int? = 0,
         /** 子评论数量 */
         val childrenCount: Int = 0,
         /** 子评论列表 */

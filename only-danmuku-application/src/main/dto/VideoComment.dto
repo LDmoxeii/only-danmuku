@@ -1,36 +1,31 @@
-export edu.only4.danmuku.application.queries._share.model.video_comment.JVideoComment
-    -> package edu.only4.danmuku.application.queries._share.draft.video_comment
+export edu.only4.danmuku.application.queries._share.model.VideoComment
+    -> package edu.only4.danmuku.application.queries._share.model.dto.VideoComment
 
-/**
- * 评论分页查询 DTO
- * 包含视频信息和用户信息
- */
 CommentPageItem {
     id
-    parentId
-    videoId
-    customerId
-    content
-    imgPath
-    replyCustomerIdView
-    topType
-    postTime
-    likeCount
-    hateCount
-
     video {
-        videoName
+        id
+        id(customer)
         videoCover
-        customerId
+        videoName
     }
-
     customer {
-        nickName
-        avatar
+        id
+        relation {
+            nickName
+            avatar
+        }
     }
-
     replyCustomer {
         id
         nickName
     }
+    id(parent)
+    content
+    imgPath
+    topType
+    postTime
+    likeCount
+    hateCount
 }
+

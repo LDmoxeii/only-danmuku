@@ -1,0 +1,26 @@
+export edu.only4.danmuku.application.queries._share.model.VideoPost
+    -> package edu.only4.danmuku.application.queries._share.model.dto.VideoPost
+
+VideoPostPageItem {
+    id
+    createTime
+    updateTime
+    videoCover
+    videoName
+    status
+}
+
+
+VideoPostDetail {
+    id
+    id(parentCategory)
+    id(category)
+    videoCover
+    videoName
+    status
+    postType
+    tags
+    introduction
+    interaction
+}
+

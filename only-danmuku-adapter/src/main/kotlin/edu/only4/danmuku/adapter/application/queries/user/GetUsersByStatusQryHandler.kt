@@ -2,12 +2,12 @@ package edu.only4.danmuku.adapter.application.queries.user
 
 import com.only4.cap4k.ddd.core.application.query.PageQuery
 import com.only4.cap4k.ddd.core.share.PageData
-import edu.only4.danmuku.application.queries._share.draft.customer_profile.ProfileWithUser
-import edu.only4.danmuku.application.queries._share.model.customer_profile.JCustomerProfile
-import edu.only4.danmuku.application.queries._share.model.customer_profile.nickName
-import edu.only4.danmuku.application.queries._share.model.customer_profile.user
-import edu.only4.danmuku.application.queries._share.model.user.joinTime
-import edu.only4.danmuku.application.queries._share.model.user.status
+import edu.only4.danmuku.application.queries._share.model.CustomerProfile
+import edu.only4.danmuku.application.queries._share.model.dto.CustomerProfile.ProfileWithUser
+import edu.only4.danmuku.application.queries._share.model.joinTime
+import edu.only4.danmuku.application.queries._share.model.nickName
+import edu.only4.danmuku.application.queries._share.model.status
+import edu.only4.danmuku.application.queries._share.model.user
 import edu.only4.danmuku.application.queries.user.GetUsersByStatusQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.desc
@@ -29,11 +29,11 @@ class GetUsersByStatusQryHandler(
 
     override fun exec(request: GetUsersByStatusQry.Request): PageData<GetUsersByStatusQry.UserItem> {
         // 使用 Jimmer 查询用户档案，关联用户表
-        val pageResult = sqlClient.createQuery(JCustomerProfile::class) {
+        val pageResult = sqlClient.createQuery(CustomerProfile::class) {
             // 昵称模糊查询
             where(table.nickName `ilike?` request.nickNameFuzzy)
             // 状态过滤
-            where(table.user.status `eq?` request.status?.toByte())
+            where(table.user.status `eq?` request.status)
             // 按加入时间倒序
             orderBy(table.user.joinTime.desc())
             // DTO 投影
@@ -47,15 +47,15 @@ class GetUsersByStatusQryHandler(
                 email = profile.user.email,
                 nickName = profile.nickName,
                 avatar = profile.avatar,
-                sex = profile.sex.toInt(),
+                sex = profile.sex,
                 birthday = profile.birthday,
                 school = profile.school,
                 personalSignature = profile.personIntroduction,
-                status = profile.user.status.toInt(),
+                status = profile.user.status,
                 joinTime = profile.user.joinTime,
                 lastLoginTime = profile.user.lastLoginTime,
                 currentCoinCount = profile.currentCoinCount,
-                theme = profile.theme.toInt()
+                theme = profile.theme
             )
         }
 

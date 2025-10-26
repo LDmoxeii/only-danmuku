@@ -1,8 +1,8 @@
 package edu.only4.danmuku.adapter.application.queries.category
 
 import com.only4.cap4k.ddd.core.application.query.Query
-import edu.only4.danmuku.application.queries._share.model.category.JCategory
-import edu.only4.danmuku.application.queries._share.model.category.id
+import edu.only4.danmuku.application.queries._share.model.Category
+import edu.only4.danmuku.application.queries._share.model.id
 import edu.only4.danmuku.application.queries.category.CategoryExistsByIdQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
@@ -18,7 +18,7 @@ class CategoryExistsByIdQryHandler(
 ) : Query<CategoryExistsByIdQry.Request, CategoryExistsByIdQry.Response> {
 
     override fun exec(request: CategoryExistsByIdQry.Request): CategoryExistsByIdQry.Response {
-        val exists = sqlClient.exists(JCategory::class) {
+        val exists = sqlClient.exists(Category::class) {
             where(table.id eq request.categoryId)
         }
         return CategoryExistsByIdQry.Response(exists = exists)

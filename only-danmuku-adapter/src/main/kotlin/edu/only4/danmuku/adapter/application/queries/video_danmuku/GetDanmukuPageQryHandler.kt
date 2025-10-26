@@ -3,12 +3,12 @@ package edu.only4.danmuku.adapter.application.queries.video_danmuku
 import com.only4.cap4k.ddd.core.application.query.PageQuery
 import com.only4.cap4k.ddd.core.share.PageData
 import com.only4.cap4k.ddd.domain.repo.toSpringData
-import edu.only4.danmuku.application.queries._share.draft.video_danmuku.DanmukuPageItem
-import edu.only4.danmuku.application.queries._share.model.video.customerId
-import edu.only4.danmuku.application.queries._share.model.video.videoName
-import edu.only4.danmuku.application.queries._share.model.video_danmuku.JVideoDanmuku
-import edu.only4.danmuku.application.queries._share.model.video_danmuku.postTime
-import edu.only4.danmuku.application.queries._share.model.video_danmuku.video
+import edu.only4.danmuku.application.queries._share.model.VideoDanmuku
+import edu.only4.danmuku.application.queries._share.model.customerId
+import edu.only4.danmuku.application.queries._share.model.dto.VideoDanmuku.DanmukuPageItem
+import edu.only4.danmuku.application.queries._share.model.postTime
+import edu.only4.danmuku.application.queries._share.model.video
+import edu.only4.danmuku.application.queries._share.model.videoName
 import edu.only4.danmuku.application.queries.video_danmuku.GetDanmukuPageQry
 import org.babyfish.jimmer.spring.repository.orderBy
 import org.babyfish.jimmer.sql.kt.KSqlClient
@@ -32,7 +32,7 @@ class GetDanmukuPageQryHandler(
     override fun exec(request: GetDanmukuPageQry.Request): PageData<GetDanmukuPageQry.Response> {
 
         // 使用 Jimmer 分页查询弹幕数据
-        val pageResult = sqlClient.createQuery(JVideoDanmuku::class) {
+        val pageResult = sqlClient.createQuery(VideoDanmuku::class) {
             // 视频作者ID过滤（可选）- 查询该作者所有视频收到的弹幕
             where(table.video.customerId `eq?` request.videoUserId)
             // 支持按视频名称模糊查询
@@ -49,10 +49,10 @@ class GetDanmukuPageQryHandler(
         val responseList = pageResult.rows.map { item ->
             GetDanmukuPageQry.Response(
                 danmukuId = item.id,
-                videoId = item.videoId,
+                videoId = item.video.id,
                 videoName = item.video.videoName,
                 videoCover = item.video.videoCover,
-                customerId = item.customerId,
+                customerId = item.customer.id,
                 customerNickname = item.customer.nickName,
                 text = item.text,
                 mode = item.mode?.toInt(),

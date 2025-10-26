@@ -7,11 +7,13 @@ import com.only4.cap4k.ddd.core.application.command.Command
 import edu.only4.danmuku.application.validater.MaxVideoPCount
 import edu.only4.danmuku.application.validater.VideoDraftExists
 import edu.only4.danmuku.application.validater.VideoEditableStatus
-import edu.only4.danmuku.domain._share.meta.video_draft.SVideoDraft
+import edu.only4.danmuku.domain._share.meta.video_post.SVideoPost
 import edu.only4.danmuku.domain.aggregates.video.enums.PostType
-import edu.only4.danmuku.domain.aggregates.video_draft.VideoFileDraft
 import edu.only4.danmuku.domain.aggregates.video_draft.enums.TransferResult
 import edu.only4.danmuku.domain.aggregates.video_draft.enums.UpdateType
+import edu.only4.danmuku.domain.aggregates.video_post.VideoFilePost
+import edu.only4.danmuku.domain.aggregates.video_post.enums.TransferResult
+import edu.only4.danmuku.domain.aggregates.video_post.enums.UpdateType
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
 
@@ -24,7 +26,7 @@ object UpdateVideoDraftCmd {
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
             val draft = Mediator.repositories.findFirst(
-                SVideoDraft.predicate { it.id eq request.videoId },
+                SVideoPost.predicate { it.id eq request.videoId },
                 persist = false
             ).getOrNull() ?: throw KnownException("视频草稿不存在: ${request.videoId}")
 
@@ -57,19 +59,19 @@ object UpdateVideoDraftCmd {
 
             request.uploadFileList?.let { uploadFileList ->
                 if (uploadFileList.isEmpty()) {
-                    if (draft.videoFileDrafts.isNotEmpty()) {
+                    if (draft.videoFilePosts.isNotEmpty()) {
                         hasRemovedFiles = true
-                        draft.videoFileDrafts.clear()
+                        draft.videoFilePosts.clear()
                         draft.duration = null
                     }
                     return@let
                 }
 
-                val existingFileMap = draft.videoFileDrafts.associateBy { it.uploadId }.toMutableMap()
+                val existingFileMap = draft.videoFilePosts.associateBy { it.uploadId }.toMutableMap()
                 val seenUploadIds = mutableSetOf<Long>()
                 val sortedUploads = uploadFileList.sortedBy { it.fileIndex }
 
-                val rebuiltList = mutableListOf<VideoFileDraft>()
+                val rebuiltList = mutableListOf<VideoFilePost>()
                 sortedUploads.forEachIndexed { index, fileInfo ->
                     val uploadId = fileInfo.uploadId.toLongOrNull()
                         ?: throw KnownException("非法的 uploadId: ${fileInfo.uploadId}")
@@ -100,7 +102,7 @@ object UpdateVideoDraftCmd {
                         rebuiltList.add(existingFile)
                     } else {
                         hasNewFiles = true
-                        val newFile = VideoFileDraft(
+                        val newFile = VideoFilePost(
                             uploadId = uploadId,
                             customerId = request.customerId,
                             fileIndex = normalizedIndex,
@@ -118,8 +120,8 @@ object UpdateVideoDraftCmd {
                     hasRemovedFiles = true
                 }
 
-                draft.videoFileDrafts.clear()
-                draft.videoFileDrafts.addAll(rebuiltList)
+                draft.videoFilePosts.clear()
+                draft.videoFilePosts.addAll(rebuiltList)
 
                 val totalDuration = sortedUploads.sumOf { it.duration }
                 val normalizedDuration = totalDuration.takeIf { it > 0 }

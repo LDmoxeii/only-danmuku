@@ -1,10 +1,6 @@
-export edu.only4.danmuku.application.queries._share.model.statistics.JStatistics
-    -> package edu.only4.danmuku.application.queries._share.draft.statistics
+export edu.only4.danmuku.application.queries._share.model.Statistics
+    -> package edu.only4.danmuku.application.queries._share.model.dto.Statistics
 
-/**
- * 统计信息简单 DTO
- * 用于按统计类型和日期查询
- */
 StatisticsSimple {
     id
     dataType
@@ -12,11 +8,9 @@ StatisticsSimple {
     statisticsDate
 }
 
-/**
- * 前一天统计数据 DTO
- * 用于聚合查询各类型的统计数据
- */
+
 PreviousDayStatistics {
     dataType
     statisticsCount
 }
+

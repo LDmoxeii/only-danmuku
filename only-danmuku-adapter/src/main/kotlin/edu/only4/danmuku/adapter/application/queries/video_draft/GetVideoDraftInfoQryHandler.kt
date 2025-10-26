@@ -1,15 +1,15 @@
 package edu.only4.danmuku.adapter.application.queries.video_draft
 
 import com.only4.cap4k.ddd.core.application.query.Query
-import edu.only4.danmuku.application.queries._share.draft.video_draft.VideoDraftDetail
-import edu.only4.danmuku.application.queries._share.draft.video_file_draft.VideoFileDraftItem
-import edu.only4.danmuku.application.queries._share.model.video_draft.customerId
-import edu.only4.danmuku.application.queries._share.model.video_draft.id
+import edu.only4.danmuku.application.queries._share.model.customerId
+import edu.only4.danmuku.application.queries._share.model.dto.VideoFilePost.VideoFilePostItem
+import edu.only4.danmuku.application.queries._share.model.dto.VideoPost.VideoPostDetail
+import edu.only4.danmuku.application.queries._share.model.id
+import edu.only4.danmuku.application.queries._share.model.videoId
 import edu.only4.danmuku.application.queries.video_draft.GetVideoDraftInfoQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.springframework.stereotype.Service
-import edu.only4.danmuku.application.queries._share.model.video_file_draft.videoId as fileVideoId
 
 /**
  * 获取视频草稿信息
@@ -26,7 +26,7 @@ class GetVideoDraftInfoQryHandler(
     override fun exec(request: GetVideoDraftInfoQry.Request): GetVideoDraftInfoQry.Response {
 
         // 查询视频草稿信息
-        val draftList = sqlClient.findAll(VideoDraftDetail::class) {
+        val draftList = sqlClient.findAll(VideoPostDetail::class) {
             where(table.id eq request.videoId)
             where(table.customerId eq request.userId)
         }
@@ -38,8 +38,8 @@ class GetVideoDraftInfoQryHandler(
         val draft = draftList.first()
 
         // 查询视频文件列表
-        val videoFiles = sqlClient.findAll(VideoFileDraftItem::class) {
-            where(table.fileVideoId eq request.videoId)
+        val videoFiles = sqlClient.findAll(VideoFilePostItem::class) {
+            where(table.videoId eq request.videoId)
         }
 
         return GetVideoDraftInfoQry.Response(
@@ -47,18 +47,18 @@ class GetVideoDraftInfoQryHandler(
                 videoId = draft.id,
                 videoCover = draft.videoCover,
                 videoName = draft.videoName,
-                pCategoryId = draft.pCategoryId?.toInt(),
-                categoryId = draft.categoryId?.toInt(),
-                postType = draft.postType?.toInt(),
+                pCategoryId = draft.parentCategoryId,
+                categoryId = draft.categoryId,
+                postType = draft.postType,
                 tags = draft.tags,
                 introduction = draft.introduction,
                 interaction = draft.interaction,
-                status = draft.status.toInt()
+                status = draft.status
             ),
             videoFileList = videoFiles.map { file ->
                 GetVideoDraftInfoQry.VideoFileItem(
                     fileId = file.id,
-                    uploadId = file.uploadId.toString(),
+                    uploadId = file.id.toString(),
                     fileIndex = file.fileIndex,
                     fileName = file.fileName ?: "",
                     fileSize = file.fileSize ?: 0L,

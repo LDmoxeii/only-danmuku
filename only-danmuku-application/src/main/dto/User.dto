@@ -1,26 +1,11 @@
-export edu.only4.danmuku.application.queries._share.model.user.JUser
-    -> package edu.only4.danmuku.application.queries._share.draft.user
+export edu.only4.danmuku.application.queries._share.model.User
+    -> package edu.only4.danmuku.application.queries._share.model.dto.User
 
-/**
- * 用户账户信息 DTO
- * 用于登录认证,包含密码等敏感信息
- */
 UserAccountInfo {
     id
+    type
     nickName
     email
     password
-    type
 }
 
-/**
- * 用户列表查询 DTO
- * 仅包含用户账号信息
- */
-UserSimple {
-    id
-    email
-    status
-    joinTime
-    lastLoginTime
-}

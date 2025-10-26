@@ -13,11 +13,11 @@ object GetVideosByCategoryQry {
 
     data class Request(
         /** 父分类ID */
-        val pCategoryId: Int? = null,
+        val pCategoryId: Long? = null,
         /** 分类ID */
-        val categoryId: Int? = null,
+        val categoryId: Long? = null,
         /** 推荐类型 (0:非推荐, 1:推荐) */
-        val recommendType: Int? = null
+        val recommendType: Int? = null,
     ) : PageQueryParam<Response>()
 
     data class Response(

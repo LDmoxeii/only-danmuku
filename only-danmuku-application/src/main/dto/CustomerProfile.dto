@@ -1,44 +1,23 @@
-export edu.only4.danmuku.application.queries._share.model.customer_profile.JCustomerProfile
-    -> package edu.only4.danmuku.application.queries._share.draft.customer_profile
+export edu.only4.danmuku.application.queries._share.model.CustomerProfile
+    -> package edu.only4.danmuku.application.queries._share.model.dto.CustomerProfile
 
-/**
- * 用户档案查询 DTO
- * 包含用户账号和档案信息
- */
 ProfileWithUser {
     id
-    nickName
-    avatar
-    sex
-    birthday
-    school
-    personIntroduction
-    currentCoinCount
-    theme
-
     user {
         id
         email
-        status
         joinTime
         lastLoginTime
+        status
     }
-}
-
-/**
- * 用户主页简单信息 DTO
- * 用于用户主页查询
- */
-CustomerProfileSimple {
-    id
-    userId
     nickName
     avatar
+    email
     sex
     birthday
     school
     personIntroduction
-    noticeInfo
-    theme
     currentCoinCount
+    theme
 }
+

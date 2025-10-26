@@ -1,8 +1,7 @@
 package edu.only4.danmuku.adapter.application.queries.customer_action
 
 import com.only4.cap4k.ddd.core.application.query.Query
-import edu.only4.danmuku.application.queries._share.model.customer_action.JCustomerAction
-import edu.only4.danmuku.application.queries._share.model.customer_action.*
+import edu.only4.danmuku.application.queries._share.model.*
 import edu.only4.danmuku.application.queries.customer_action.GetUserActionByVideoQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
@@ -18,11 +17,11 @@ class GetUserActionByVideoQryHandler(
 ) : Query<GetUserActionByVideoQry.Request, GetUserActionByVideoQry.Response> {
 
     override fun exec(request: GetUserActionByVideoQry.Request): GetUserActionByVideoQry.Response {
-        val actions = sqlClient.createQuery(JCustomerAction::class) {
+        val actions = sqlClient.createQuery(CustomerAction::class) {
             where(table.customerId eq request.customerId)
             where(table.videoId eq request.videoId)
             where(table.commentId `eq?` request.commentId)
-            where(table.actionType `eq?` request.actionType?.toByte())
+            where(table.actionType `eq?` request.actionType)
             select(table)
         }.execute()
 
@@ -33,7 +32,7 @@ class GetUserActionByVideoQryHandler(
             action = action?.let {
                 GetUserActionByVideoQry.ActionDetail(
                     id = it.id,
-                    actionType = it.actionType.toInt(),
+                    actionType = it.actionType,
                     actionCount = it.actionCount,
                     actionTime = it.actionTime
                 )

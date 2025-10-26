@@ -4,7 +4,7 @@ import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.application.commands.customer_profile.RewardUserForVideoCmd
 import edu.only4.danmuku.application.commands.file.CleanTempFilesCmd
 import edu.only4.danmuku.application.commands.video_draft.TransferVideoToProductionCmd
-import edu.only4.danmuku.domain.aggregates.video_draft.events.VideoAuditPassedDomainEvent
+import edu.only4.danmuku.domain.aggregates.video_post.events.VideoAuditPassedDomainEvent
 import org.slf4j.LoggerFactory
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Service
@@ -38,7 +38,7 @@ class VideoAuditPassedDomainEventSubscriber {
         try {
             Mediator.commands.send(
                 TransferVideoToProductionCmd.Request(
-                    videoDraft = videoDraft
+                    videoPost = videoDraft
                 )
             )
         } catch (ex: Exception) {

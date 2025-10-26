@@ -29,13 +29,13 @@ object GetVideoDraftInfoQry {
         val videoId: Long,
         val videoCover: String?,
         val videoName: String?,
-        val pCategoryId: Int?,
-        val categoryId: Int?,
+        val pCategoryId: Long?,
+        val categoryId: Long?,
         val postType: Int?,
         val tags: String?,
         val introduction: String?,
         val interaction: String?,
-        val status: Int
+        val status: Int,
     )
 
     data class VideoFileItem(

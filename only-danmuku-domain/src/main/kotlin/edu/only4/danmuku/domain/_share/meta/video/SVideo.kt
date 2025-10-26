@@ -24,7 +24,7 @@ import org.springframework.data.jpa.domain.Specification
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/10/25
+ * @date 2025/10/26
  */
 class SVideo(
     private val root: Path<Video>,
@@ -33,6 +33,8 @@ class SVideo(
     class PROPERTY_NAMES {
 
         val id = "id"
+
+        val videoPostId = "videoPostId"
 
         val customerId = "customerId"
 
@@ -392,6 +394,14 @@ class SVideo(
      */
     val id: Field<Long> by lazy {
         Field(root.get("id"), criteriaBuilder)
+    }
+
+
+    /**
+     * 视频草稿ID
+     */
+    val videoPostId: Field<Long> by lazy {
+        Field(root.get("videoPostId"), criteriaBuilder)
     }
 
 

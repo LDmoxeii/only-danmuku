@@ -1,10 +1,11 @@
 package edu.only4.danmuku.adapter.application.queries.video
 
 import com.only4.cap4k.ddd.core.application.query.ListQuery
-import edu.only4.danmuku.application.queries._share.draft.video.VideoListItem
-import edu.only4.danmuku.application.queries._share.model.video.playCount
-import edu.only4.danmuku.application.queries._share.model.video.recommendType
+import edu.only4.danmuku.application.queries._share.model.dto.Video.VideoListItem
+import edu.only4.danmuku.application.queries._share.model.playCount
+import edu.only4.danmuku.application.queries._share.model.recommendType
 import edu.only4.danmuku.application.queries.video.GetRecommendVideosQry
+import org.babyfish.jimmer.sql.ast.impl.table.AssociationTableProxyImpl.table
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.desc
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
@@ -25,7 +26,7 @@ class GetRecommendVideosQryHandler(
     override fun exec(request: GetRecommendVideosQry.Request): List<GetRecommendVideosQry.Response> {
         // 查询推荐视频列表 (recommendType = 2 表示已推荐)
         val videoList = sqlClient.findAll(VideoListItem::class) {
-            where(table.recommendType eq 2.toByte())
+            where(table.recommendType eq 2)
             orderBy(table.playCount.desc())  // 按播放数降序
         }
 
@@ -35,9 +36,9 @@ class GetRecommendVideosQryHandler(
                 videoId = video.id,
                 videoCover = video.videoCover,
                 videoName = video.videoName,
-                userId = video.customerId,
-                nickName = video.customer.nickName,
-                avatar = video.customer.avatar,
+                userId = video.customer.id,
+                nickName = video.customer.relation!!.nickName,
+                avatar = video.customer.relation!!.nickName,
                 playCount = video.playCount,
                 likeCount = video.likeCount,
                 createTime = video.createTime ?: 0L

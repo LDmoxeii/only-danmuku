@@ -1,43 +1,24 @@
-export edu.only4.danmuku.application.queries._share.model.category.JCategory
-    -> package edu.only4.danmuku.application.queries._share.draft.category
+export edu.only4.danmuku.application.queries._share.model.Category
+    -> package edu.only4.danmuku.application.queries._share.model.dto.Category
 
 CategoryTreeNode {
     id
-    parentId
+    id(parent)
+    children*
     nodePath
     sort
     code
     name
     icon
     background
-
-    // 递归加载所有子分类（* 表示递归，自动使用相同的字段定义）
-    children*
 }
 
 CategorySimple {
     id
+    id(parent)
+    sort
     code
     name
-    parentId
     icon
     background
-    sort
-}
-
-CategoryWithChildren {
-    id
-    code
-    name
-    parentId
-    icon
-    background
-    sort
-
-    children {
-        id
-        code
-        name
-        sort
-    }
 }

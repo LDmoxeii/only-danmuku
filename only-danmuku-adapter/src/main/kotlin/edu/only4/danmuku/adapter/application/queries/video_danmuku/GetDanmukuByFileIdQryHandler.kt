@@ -2,7 +2,8 @@ package edu.only4.danmuku.adapter.application.queries.video_danmuku
 
 import com.only4.cap4k.ddd.core.application.query.ListQuery
 import edu.only4.danmuku.application.queries._share.draft.video_danmuku.DanmukuPageItem
-import edu.only4.danmuku.application.queries._share.model.video_danmuku.JVideoDanmuku
+import edu.only4.danmuku.application.queries._share.model.VideoDanmuku
+import edu.only4.danmuku.application.queries._share.model.id
 import edu.only4.danmuku.application.queries._share.model.video_danmuku.fileId
 import edu.only4.danmuku.application.queries._share.model.video_danmuku.time
 import edu.only4.danmuku.application.queries._share.model.video_danmuku.videoId
@@ -26,9 +27,9 @@ class GetDanmukuByFileIdQryHandler(
 
     override fun exec(request: GetDanmukuByFileIdQry.Request): List<GetDanmukuByFileIdQry.Response> {
         // 使用 Jimmer 查询弹幕列表
-        val danmukuList = sqlClient.createQuery(JVideoDanmuku::class) {
+        val danmukuList = sqlClient.createQuery(VideoDanmuku::class) {
             // 按文件ID过滤
-            where(table.fileId eq request.fileId)
+            where(table.id eq request.fileId)
             // 按视频ID过滤
             where(table.videoId eq request.videoId)
             // 按弹幕时间（展示时间）排序，保证播放顺序

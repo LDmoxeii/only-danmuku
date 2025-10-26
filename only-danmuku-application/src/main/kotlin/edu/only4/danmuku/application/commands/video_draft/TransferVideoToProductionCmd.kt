@@ -5,7 +5,7 @@ import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
 import edu.only4.danmuku.domain._share.meta.video.SVideo
 import edu.only4.danmuku.domain.aggregates.video.factory.VideoFactory
-import edu.only4.danmuku.domain.aggregates.video_draft.VideoDraft
+import edu.only4.danmuku.domain.aggregates.video_post.VideoPost
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
 
@@ -17,7 +17,7 @@ object TransferVideoToProductionCmd {
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
-            val draft = request.videoDraft
+            val draft = request.videoPost
 
             val existingVideo = Mediator.repositories.findFirst(
                 SVideo.predicateById(draft.id),
@@ -25,7 +25,7 @@ object TransferVideoToProductionCmd {
             ).getOrNull()
 
             val targetVideo = existingVideo ?: Mediator.factories.create(
-                VideoFactory.Payload(videoDraft = draft)
+                VideoFactory.Payload(videoPost = draft)
             )
 
             Mediator.uow.save()
@@ -35,7 +35,7 @@ object TransferVideoToProductionCmd {
     }
 
     data class Request(
-        val videoDraft: VideoDraft,
+        val videoPost: VideoPost,
     ) : RequestParam<Response>
 
     data class Response(

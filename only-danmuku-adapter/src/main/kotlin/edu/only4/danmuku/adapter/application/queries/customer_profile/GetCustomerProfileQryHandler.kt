@@ -1,13 +1,16 @@
 package edu.only4.danmuku.adapter.application.queries.customer_profile
 
+import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.application.query.Query
-import edu.only4.danmuku.application.queries._share.draft.customer_focus.CustomerFocusSimple
-import edu.only4.danmuku.application.queries._share.draft.customer_profile.CustomerProfileSimple
-import edu.only4.danmuku.application.queries._share.model.customer_focus.customerId
-import edu.only4.danmuku.application.queries._share.model.customer_focus.focusCustomerId
-import edu.only4.danmuku.application.queries._share.model.customer_profile.userId
+import edu.only4.danmuku.application.queries._share.model.CustomerFocus
+import edu.only4.danmuku.application.queries._share.model.CustomerProfile
+import edu.only4.danmuku.application.queries._share.model.customerId
+import edu.only4.danmuku.application.queries._share.model.fetchBy
+import edu.only4.danmuku.application.queries._share.model.focusCustomerId
+import edu.only4.danmuku.application.queries._share.model.userId
 import edu.only4.danmuku.application.queries.customer_profile.GetCustomerProfileQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
+import org.babyfish.jimmer.sql.kt.ast.expression.count
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.springframework.stereotype.Service
 
@@ -25,26 +28,22 @@ class GetCustomerProfileQryHandler(
 
     override fun exec(request: GetCustomerProfileQry.Request): GetCustomerProfileQry.Response {
 
-        // 查询用户档案信息
-        val profiles = sqlClient.findAll(CustomerProfileSimple::class) {
+        val profile = sqlClient.createQuery(CustomerProfile::class) {
             where(table.userId eq request.customerId)
-        }
+            select(table.fetchBy {
+                allScalarFields()
+            })
+        }.fetchOneOrNull() ?: throw KnownException("用户档案不存在: customerId=${request.customerId}")
 
-        if (profiles.isEmpty()) {
-            throw IllegalArgumentException("用户档案不存在: customerId=${request.customerId}")
-        }
-
-        val profile = profiles.first()
-
-        // 统计粉丝数（有多少人关注了该用户）
-        val fansCount = sqlClient.findAll(CustomerFocusSimple::class) {
+        val fansCount = sqlClient.createQuery(CustomerFocus::class) {
             where(table.focusCustomerId eq request.customerId)
-        }.size
+            select(count(table.customerId))
+        }.fetchOne()
 
-        // 统计关注数（该用户关注了多少人）
-        val focusCount = sqlClient.findAll(CustomerFocusSimple::class) {
+        val focusCount = sqlClient.createQuery(CustomerFocus::class) {
             where(table.customerId eq request.customerId)
-        }.size
+            select(count(table.focusCustomerId))
+        }.fetchOne()
 
         return GetCustomerProfileQry.Response(
             customerId = profile.userId,

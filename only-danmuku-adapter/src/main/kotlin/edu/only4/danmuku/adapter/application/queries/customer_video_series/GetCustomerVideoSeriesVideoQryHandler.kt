@@ -1,8 +1,8 @@
 package edu.only4.danmuku.adapter.application.queries.customer_video_series
 
 import com.only4.cap4k.ddd.core.application.query.ListQuery
-import edu.only4.danmuku.application.queries._share.draft.customer_video_series.CustomerVideoSeriesDetail
-import edu.only4.danmuku.application.queries._share.model.customer_video_series.customerId
+import edu.only4.danmuku.application.queries._share.model.customerId
+import edu.only4.danmuku.application.queries._share.model.dto.CustomerVideoSeries.CustomerVideoSeriesDetail
 import edu.only4.danmuku.application.queries.customer_video_series.GetCustomerVideoSeriesVideoQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
@@ -32,14 +32,14 @@ class GetCustomerVideoSeriesVideoQryHandler(
                 seriesId = series.id,
                 seriesName = series.seriesName,
                 seriesDescription = series.seriesDescription,
-                sort = series.sort.toInt(),
+                sort = series.sort,
                 videoList = series.seriesVideos.map { seriesVideo ->
                     GetCustomerVideoSeriesVideoQry.VideoItem(
-                        videoId = seriesVideo.videoId,
+                        videoId = seriesVideo.video.id,
                         videoCover = seriesVideo.video.videoCover,
                         videoName = seriesVideo.video.videoName,
                         playCount = seriesVideo.video.playCount,
-                        sort = seriesVideo.sort.toInt()
+                        sort = seriesVideo.sort
                     )
                 }
             )

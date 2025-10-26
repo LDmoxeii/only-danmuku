@@ -2,8 +2,12 @@ package edu.only4.danmuku.adapter.application.queries.video
 
 import com.only4.cap4k.ddd.core.application.query.PageQuery
 import com.only4.cap4k.ddd.core.share.PageData
-import edu.only4.danmuku.application.queries._share.draft.video.VideoListItem
-import edu.only4.danmuku.application.queries._share.model.video.*
+import edu.only4.danmuku.application.queries._share.model.Video
+import edu.only4.danmuku.application.queries._share.model.categoryId
+import edu.only4.danmuku.application.queries._share.model.createTime
+import edu.only4.danmuku.application.queries._share.model.dto.Video.VideoListItem
+import edu.only4.danmuku.application.queries._share.model.parentCategoryId
+import edu.only4.danmuku.application.queries._share.model.recommendType
 import edu.only4.danmuku.application.queries.video.GetVideosByCategoryQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.desc
@@ -24,13 +28,13 @@ class GetVideosByCategoryQryHandler(
 
     override fun exec(request: GetVideosByCategoryQry.Request): PageData<GetVideosByCategoryQry.Response> {
         // 查询视频列表，支持父分类、子分类和推荐类型过滤
-        val pageResult = sqlClient.createQuery(JVideo::class) {
+        val pageResult = sqlClient.createQuery(Video::class) {
             // 父分类过滤 (如果提供)
-            where(table.pCategoryId `eq?` request.pCategoryId?.toLong())
+            where(table.parentCategoryId `eq?` request.pCategoryId)
             // 子分类过滤 (如果提供)
-            where(table.categoryId `eq?` request.categoryId?.toLong())
+            where(table.categoryId `eq?` request.categoryId)
             // 推荐类型过滤 (如果提供)
-            where(table.recommendType `eq?` request.recommendType?.toByte())
+            where(table.recommendType `eq?` request.recommendType)
             // 按创建时间降序
             orderBy(table.createTime.desc())
             // DTO投影
@@ -43,9 +47,9 @@ class GetVideosByCategoryQryHandler(
                 videoId = video.id,
                 videoCover = video.videoCover,
                 videoName = video.videoName,
-                userId = video.customerId,
-                nickName = video.customer.nickName,
-                avatar = video.customer.avatar,
+                userId = video.customer.id,
+                nickName = video.customer.relation!!.nickName,
+                avatar = video.customer.relation!!.avatar,
                 playCount = video.playCount,
                 likeCount = video.likeCount,
                 createTime = video.createTime ?: 0L

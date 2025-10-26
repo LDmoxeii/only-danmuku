@@ -1,9 +1,9 @@
 package edu.only4.danmuku.adapter.application.queries.category
 
 import com.only4.cap4k.ddd.core.application.query.ListQuery
-import edu.only4.danmuku.application.queries._share.draft.category.CategoryTreeNode
-import edu.only4.danmuku.application.queries._share.model.category.parentId
-import edu.only4.danmuku.application.queries._share.model.category.sort
+import edu.only4.danmuku.application.queries._share.model.dto.Category.CategoryTreeNode
+import edu.only4.danmuku.application.queries._share.model.parentId
+import edu.only4.danmuku.application.queries._share.model.sort
 import edu.only4.danmuku.application.queries.category.GetCategoryTreeQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.eq

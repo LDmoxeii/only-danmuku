@@ -2,13 +2,21 @@ package edu.only4.danmuku.adapter.application.queries.video_comment
 
 import com.only4.cap4k.ddd.core.application.query.PageQuery
 import com.only4.cap4k.ddd.core.share.PageData
-import edu.only4.danmuku.application.queries._share.draft.video_comment.CommentPageItem
-import edu.only4.danmuku.application.queries._share.model.video.customerId
-import edu.only4.danmuku.application.queries._share.model.video.videoName
-import edu.only4.danmuku.application.queries._share.model.video_comment.*
+import edu.only4.danmuku.application.queries._share.model.VideoComment
+import edu.only4.danmuku.application.queries._share.model.customerId
+import edu.only4.danmuku.application.queries._share.model.dto.VideoComment.CommentPageItem
+import edu.only4.danmuku.application.queries._share.model.parentId
+import edu.only4.danmuku.application.queries._share.model.postTime
+import edu.only4.danmuku.application.queries._share.model.video
+import edu.only4.danmuku.application.queries._share.model.videoId
+import edu.only4.danmuku.application.queries._share.model.videoName
 import edu.only4.danmuku.application.queries.video_comment.VideoCommentPageQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
-import org.babyfish.jimmer.sql.kt.ast.expression.*
+import org.babyfish.jimmer.sql.kt.ast.expression.asc
+import org.babyfish.jimmer.sql.kt.ast.expression.desc
+import org.babyfish.jimmer.sql.kt.ast.expression.eq
+import org.babyfish.jimmer.sql.kt.ast.expression.`eq?`
+import org.babyfish.jimmer.sql.kt.ast.expression.`ilike?`
 import org.springframework.stereotype.Service
 
 /**
@@ -25,7 +33,7 @@ class VideoCommentPageQryHandler(
 
     override fun exec(request: VideoCommentPageQry.Request): PageData<VideoCommentPageQry.Response> {
         // 使用 Jimmer 查询评论分页数据，使用 DTO 投影
-        val pageResult = sqlClient.createQuery(JVideoComment::class) {
+        val pageResult = sqlClient.createQuery(VideoComment::class) {
             // 视频ID精确查询（可选）
             where(table.videoId `eq?` request.videoId)
             // 视频作者ID过滤（可选）- 查询该作者所有视频收到的评论
@@ -65,16 +73,16 @@ class VideoCommentPageQryHandler(
 
         return VideoCommentPageQry.Response(
             commentId = item.id,
-            parentCommentId = item.parentId,
-            videoId = item.videoId,
+            parentCommentId = item.parentId ?: 0,
+            videoId = item.video.id,
             videoUserId = item.video.customerId,
             videoName = item.video.videoName,
             videoCover = item.video.videoCover,
             content = item.content,
             imgPath = item.imgPath,
-            customerId = item.customerId,
-            customerNickname = item.customer.nickName,
-            customerAvatar = item.customer.avatar,
+            customerId = item.customer.id,
+            customerNickname = item.customer.relation!!.nickName,
+            customerAvatar = item.customer.relation!!.avatar,
             replyCustomerId = item.replyCustomer?.id,
             replyCustomerNickname = item.replyCustomer?.nickName,
             postTime = item.postTime,
@@ -91,7 +99,7 @@ class VideoCommentPageQryHandler(
      */
     private fun loadChildComments(parentCommentId: Long): List<VideoCommentPageQry.Response> {
         // 查询子评论列表
-        val childComments = sqlClient.createQuery(JVideoComment::class) {
+        val childComments = sqlClient.createQuery(VideoComment::class) {
             where(table.parentId eq parentCommentId)
             orderBy(table.postTime.asc()) // 子评论按时间正序
             select(table.fetch(CommentPageItem::class))

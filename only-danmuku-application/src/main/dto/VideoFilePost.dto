@@ -1,0 +1,13 @@
+export edu.only4.danmuku.application.queries._share.model.VideoFilePost
+    -> package edu.only4.danmuku.application.queries._share.model.dto.VideoFilePost
+
+VideoFilePostItem {
+    id
+    id(video)
+    fileIndex
+    fileName
+    fileSize
+    filePath
+    duration
+}
+

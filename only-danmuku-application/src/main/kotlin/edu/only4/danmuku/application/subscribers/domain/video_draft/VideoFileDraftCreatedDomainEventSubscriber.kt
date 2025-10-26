@@ -2,7 +2,7 @@ package edu.only4.danmuku.application.subscribers.domain.video_draft
 
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.application.commands.video_draft.TransferVideoFileCmd
-import edu.only4.danmuku.domain.aggregates.video_draft.events.VideoFileDraftCreatedDomainEvent
+import edu.only4.danmuku.domain.aggregates.video_post.events.VideoFileDraftCreatedDomainEvent
 import org.slf4j.LoggerFactory
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Service
@@ -18,7 +18,7 @@ class VideoFileDraftCreatedDomainEventSubscriber {
     @EventListener(VideoFileDraftCreatedDomainEvent::class)
     fun on(event: VideoFileDraftCreatedDomainEvent) {
         val fileDraft = event.entity
-        val videoDraft = fileDraft.videoDraft
+        val videoDraft = fileDraft.videoPost
         if (videoDraft == null) {
             logger.warn("忽略视频文件草稿创建事件，缺少 videoDraft: uploadId={}", fileDraft.uploadId)
             return
@@ -26,7 +26,7 @@ class VideoFileDraftCreatedDomainEventSubscriber {
         try {
             Mediator.commands.send(
                 TransferVideoFileCmd.Request(
-                    videoDraft = videoDraft,
+                    videoPost = videoDraft,
                     fileDraft = fileDraft
                 )
             )

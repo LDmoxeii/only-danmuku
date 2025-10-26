@@ -2,8 +2,14 @@ package edu.only4.danmuku.adapter.application.queries.video
 
 import com.only4.cap4k.ddd.core.application.query.PageQuery
 import com.only4.cap4k.ddd.core.share.PageData
-import edu.only4.danmuku.application.queries._share.draft.video.VideoSearchItem
-import edu.only4.danmuku.application.queries._share.model.video.*
+import edu.only4.danmuku.application.queries._share.model.Video
+import edu.only4.danmuku.application.queries._share.model.categoryId
+import edu.only4.danmuku.application.queries._share.model.createTime
+import edu.only4.danmuku.application.queries._share.model.customerId
+import edu.only4.danmuku.application.queries._share.model.dto.Video.VideoSearchItem
+import edu.only4.danmuku.application.queries._share.model.parentCategoryId
+import edu.only4.danmuku.application.queries._share.model.recommendType
+import edu.only4.danmuku.application.queries._share.model.videoName
 import edu.only4.danmuku.application.queries.video.SearchVideosQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.desc
@@ -25,17 +31,17 @@ class SearchVideosQryHandler(
 
     override fun exec(request: SearchVideosQry.Request): PageData<SearchVideosQry.Response> {
         // 使用 Jimmer 查询视频列表，关联用户档案表
-        val pageResult = sqlClient.createQuery(JVideo::class) {
+        val pageResult = sqlClient.createQuery(Video::class) {
             // 用户ID过滤
             where(table.customerId `eq?` request.userId)
             // 视频名称模糊查询
             where(table.videoName `ilike?` request.videoNameFuzzy)
             // 父分类过滤
-            where(table.pCategoryId `eq?` request.categoryParentId)
+            where(table.parentCategoryId `eq?` request.categoryParentId)
             // 分类过滤
             where(table.categoryId `eq?` request.categoryId)
             // 状态过滤 (这里过滤的是推荐状态)
-            where(table.recommendType `eq?` request.recommendType?.toByte())
+            where(table.recommendType `eq?` request.recommendType)
             // 按创建时间倒序
             orderBy(table.createTime.desc())
             // DTO 投影
@@ -48,11 +54,11 @@ class SearchVideosQryHandler(
                 videoId = video.id,
                 videoCover = video.videoCover,
                 videoName = video.videoName,
-                userId = video.customerId,
-                nickName = video.customer.nickName,
-                avatar = video.customer.avatar,
+                userId = video.customer.id,
+                nickName = video.customer.relation!!.nickName,
+                avatar = video.customer.relation!!.avatar,
                 duration = video.duration,
-                status = video.videoDraft.status.toInt(),
+                status = video.videoPost.status,
                 createTime = video.createTime ?: 0L,
                 lastUpdateTime = video.updateTime,
                 playCount = video.playCount,
@@ -61,7 +67,7 @@ class SearchVideosQryHandler(
                 commentCount = video.commentCount,
                 coinCount = video.coinCount,
                 collectCount = video.collectCount,
-                recommendType = video.recommendType.toInt()
+                recommendType = video.recommendType
             )
         }
 

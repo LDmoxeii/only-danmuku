@@ -22,6 +22,6 @@ object GetVideoDraftCountByStatusQry {
 
     data class Response(
         /** 数量 */
-        val count: Int
+        val count: Long,
     )
 }

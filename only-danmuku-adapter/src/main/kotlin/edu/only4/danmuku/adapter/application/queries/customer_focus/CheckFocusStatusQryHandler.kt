@@ -1,9 +1,9 @@
 package edu.only4.danmuku.adapter.application.queries.customer_focus
 
 import com.only4.cap4k.ddd.core.application.query.Query
-import edu.only4.danmuku.application.queries._share.draft.customer_focus.CustomerFocusSimple
-import edu.only4.danmuku.application.queries._share.model.customer_focus.customerId
-import edu.only4.danmuku.application.queries._share.model.customer_focus.focusCustomerId
+import edu.only4.danmuku.application.queries._share.model.customerId
+import edu.only4.danmuku.application.queries._share.model.dto.CustomerFocus.CustomerFocusSimple
+import edu.only4.danmuku.application.queries._share.model.focusCustomerId
 import edu.only4.danmuku.application.queries.customer_focus.CheckFocusStatusQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.eq

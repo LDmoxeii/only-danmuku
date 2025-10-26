@@ -19,14 +19,14 @@ object GetCustomerProfileQry {
         val customerId: Long,
         val nickName: String,
         val avatar: String?,
-        val sex: Byte,
+        val sex: Int,
         val birthday: String?,
         val school: String?,
         val personIntroduction: String?,
         val noticeInfo: String?,
-        val theme: Byte,
+        val theme: Int,
         val currentCoinCount: Int,
-        val fansCount: Int = 0,
-        val focusCount: Int = 0,
+        val fansCount: Long = 0,
+        val focusCount: Long = 0,
     )
 }

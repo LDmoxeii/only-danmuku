@@ -1,10 +1,10 @@
 package edu.only4.danmuku.adapter.application.queries.statistics
 
 import com.only4.cap4k.ddd.core.application.query.ListQuery
-import edu.only4.danmuku.application.queries._share.draft.statistics.StatisticsSimple
-import edu.only4.danmuku.application.queries._share.model.statistics.customerId
-import edu.only4.danmuku.application.queries._share.model.statistics.dataType
-import edu.only4.danmuku.application.queries._share.model.statistics.statisticsDate
+import edu.only4.danmuku.application.queries._share.model.customerId
+import edu.only4.danmuku.application.queries._share.model.dataType
+import edu.only4.danmuku.application.queries._share.model.dto.Statistics.StatisticsSimple
+import edu.only4.danmuku.application.queries._share.model.statisticsDate
 import edu.only4.danmuku.application.queries.statistics.GetWeekStatisticsInfoQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
@@ -36,7 +36,7 @@ class GetWeekStatisticsInfoQryHandler(
         // 查询最近7天的统计数据，支持按 dataType 和 userId 过滤
         val statisticsList = sqlClient.findAll(StatisticsSimple::class) {
             where(table.statisticsDate ge sevenDaysAgoStartOfDay)
-            where(table.dataType eq request.dataType.toByte())
+            where(table.dataType eq request.dataType)
             where(table.customerId `eq?` request.userId)
         }
 

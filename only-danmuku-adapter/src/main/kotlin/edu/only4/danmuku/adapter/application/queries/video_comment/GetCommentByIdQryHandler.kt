@@ -1,8 +1,8 @@
 package edu.only4.danmuku.adapter.application.queries.video_comment
 
 import com.only4.cap4k.ddd.core.application.query.Query
-import edu.only4.danmuku.application.queries._share.model.video_comment.JVideoComment
-import edu.only4.danmuku.application.queries._share.model.video_comment.id
+import edu.only4.danmuku.application.queries._share.model.VideoComment
+import edu.only4.danmuku.application.queries._share.model.id
 import edu.only4.danmuku.application.queries.video_comment.GetCommentByIdQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
@@ -21,17 +21,17 @@ class GetCommentByIdQryHandler(
 ) : Query<GetCommentByIdQry.Request, GetCommentByIdQry.Response> {
 
     override fun exec(request: GetCommentByIdQry.Request): GetCommentByIdQry.Response {
-        val item = sqlClient.createQuery(JVideoComment::class) {
+        val item = sqlClient.createQuery(VideoComment::class) {
             where(table.id eq request.commentId)
             select(table)
         }.execute().firstOrNull() ?: throw RuntimeException("评论不存在: ${request.commentId}")
 
         return GetCommentByIdQry.Response(
             commentId = item.id,
-            videoId = item.videoId,
-            videoOwnerId = item.videoOwnerId,
-            userId = item.customerId,
-            parentId = item.parentId,
+            videoId = item.video.id,
+            videoOwnerId = item.videoOwner.id,
+            userId = item.customer.id,
+            parentId = item.parentId ?: 0L,
         )
     }
 }

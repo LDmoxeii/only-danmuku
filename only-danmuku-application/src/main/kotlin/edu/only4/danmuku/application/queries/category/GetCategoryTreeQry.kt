@@ -30,8 +30,8 @@ object GetCategoryTreeQry {
         /** 背景图 */
         val background: String? = null,
         /** 排序号 */
-        val sort: Byte,
+        val sort: Int,
         /** 子分类列表 */
-        val children: List<Response> = emptyList()
+        val children: List<Response> = emptyList(),
     )
 }

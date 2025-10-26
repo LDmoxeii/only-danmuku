@@ -1,8 +1,8 @@
 package edu.only4.danmuku.adapter.application.queries.video
 
 import com.only4.cap4k.ddd.core.application.query.Query
-import edu.only4.danmuku.application.queries._share.draft.video.VideoFullInfo
-import edu.only4.danmuku.application.queries._share.model.video.id
+import edu.only4.danmuku.application.queries._share.model.dto.Video.VideoFullInfo
+import edu.only4.danmuku.application.queries._share.model.id
 import edu.only4.danmuku.application.queries.video.GetVideoInfoQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
@@ -32,9 +32,9 @@ class GetVideoInfoQryHandler(
             videoId = video.id,
             videoCover = video.videoCover,
             videoName = video.videoName,
-            userId = video.customerId,
-            nickName = video.customer.nickName,
-            avatar = video.customer.avatar,
+            userId = video.customer.id,
+            nickName = video.customer.relation!!.nickName,
+            avatar = video.customer.relation!!.avatar,
             introduction = video.introduction,
             interaction = video.interaction,
             duration = video.duration,

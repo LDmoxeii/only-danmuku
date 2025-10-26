@@ -1,14 +1,7 @@
 package edu.only4.danmuku.application.commands.video_draft
 
-import com.only.engine.misc.convertHevcToMp4
-import com.only.engine.misc.convertVideoToTs
-import com.only.engine.misc.getVideoCodec
-import com.only.engine.misc.getVideoDuration
-import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
-import edu.only4.danmuku.domain.aggregates.video_draft.VideoDraft
-import edu.only4.danmuku.domain.aggregates.video_draft.VideoFileDraft
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import java.io.File
@@ -173,8 +166,8 @@ object TransferVideoFileCmd {
     }
 
     data class Request(
-        val videoDraft: VideoDraft,
-        val fileDraft: VideoFileDraft,
+        val videoPost: VideoPost,
+        val fileDraft: VideoFilePost,
     ) : RequestParam<Response>
 
     data class Response(

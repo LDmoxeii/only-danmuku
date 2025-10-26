@@ -1,13 +1,10 @@
-export edu.only4.danmuku.application.queries._share.model.customer_focus.JCustomerFocus
-    -> package edu.only4.danmuku.application.queries._share.draft.customer_focus
+export edu.only4.danmuku.application.queries._share.model.CustomerFocus
+    -> package edu.only4.danmuku.application.queries._share.model.dto.CustomerFocus
 
-/**
- * 用户关注简单信息 DTO
- * 用于关注关系查询
- */
 CustomerFocusSimple {
     id
-    customerId
-    focusCustomerId
     createTime
+    id(customer)
+    id(focusCustomer)
 }
+

@@ -2,7 +2,7 @@ package edu.only4.danmuku.application.validater
 
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.application._share.config.properties.SysSettingProperties
-import edu.only4.danmuku.domain._share.meta.video_draft.SVideoDraft
+import edu.only4.danmuku.domain._share.meta.video_post.SVideoPost
 import jakarta.validation.Constraint
 import jakarta.validation.ConstraintValidator
 import jakarta.validation.ConstraintValidatorContext
@@ -68,9 +68,9 @@ annotation class MaxVideoPCount(
                 }.getOrNull()
                 if (videoId != null && videoId > 0) {
                     val existing = Mediator.repositories.findOne(
-                        SVideoDraft.predicate { it.id eq videoId }
+                        SVideoPost.predicate { it.id eq videoId }
                     )
-                    actual = existing.getOrNull()?.videoFileDrafts?.size ?: 0
+                    actual = existing.getOrNull()?.videoFilePosts?.size ?: 0
                 }
             }
             return actual <= maxCount

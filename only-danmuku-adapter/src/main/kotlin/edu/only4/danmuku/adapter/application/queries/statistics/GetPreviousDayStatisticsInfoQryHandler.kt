@@ -1,9 +1,9 @@
 package edu.only4.danmuku.adapter.application.queries.statistics
 
 import com.only4.cap4k.ddd.core.application.query.Query
-import edu.only4.danmuku.application.queries._share.draft.statistics.StatisticsSimple
-import edu.only4.danmuku.application.queries._share.model.statistics.customerId
-import edu.only4.danmuku.application.queries._share.model.statistics.statisticsDate
+import edu.only4.danmuku.application.queries._share.model.customerId
+import edu.only4.danmuku.application.queries._share.model.dto.Statistics.StatisticsSimple
+import edu.only4.danmuku.application.queries._share.model.statisticsDate
 import edu.only4.danmuku.application.queries.statistics.GetPreviousDayStatisticsInfoQry
 import edu.only4.danmuku.domain.aggregates.statistics.enums.StatisticsDataType
 import org.babyfish.jimmer.sql.kt.KSqlClient
@@ -40,7 +40,7 @@ class GetPreviousDayStatisticsInfoQryHandler(
 
         // 按数据类型分组统计 - 前一天数据
         val previousDayCountsByType = previousDayStatisticsList
-            .groupingBy { StatisticsDataType.valueOf(it.dataType.toInt()) }
+            .groupingBy { StatisticsDataType.valueOf(it.dataType) }
             .fold(0) { acc, item -> acc + (item.statisticsCount ?: 0) }
 
         return GetPreviousDayStatisticsInfoQry.Response(

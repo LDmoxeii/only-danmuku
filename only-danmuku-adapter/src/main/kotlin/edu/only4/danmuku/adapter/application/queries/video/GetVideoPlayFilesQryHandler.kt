@@ -1,10 +1,10 @@
 package edu.only4.danmuku.adapter.application.queries.video
 
 import com.only4.cap4k.ddd.core.application.query.ListQuery
-import edu.only4.danmuku.application.queries._share.draft.video_file.VideoFileItem
-import edu.only4.danmuku.application.queries._share.model.video_file.JVideoFile
-import edu.only4.danmuku.application.queries._share.model.video_file.fileIndex
-import edu.only4.danmuku.application.queries._share.model.video_file.videoId
+import edu.only4.danmuku.application.queries._share.model.VideoFile
+import edu.only4.danmuku.application.queries._share.model.dto.VideoFile.VideoFileItem
+import edu.only4.danmuku.application.queries._share.model.fileIndex
+import edu.only4.danmuku.application.queries._share.model.videoId
 import edu.only4.danmuku.application.queries.video.GetVideoPlayFilesQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.asc
@@ -25,7 +25,7 @@ class GetVideoPlayFilesQryHandler(
 
     override fun exec(request: GetVideoPlayFilesQry.Request): List<GetVideoPlayFilesQry.Response> {
         // 使用 Jimmer 查询视频文件列表
-        val fileList = sqlClient.createQuery(JVideoFile::class) {
+        val fileList = sqlClient.createQuery(VideoFile::class) {
             // 按视频ID过滤
             where(table.videoId eq request.videoId)
             // 按文件索引排序

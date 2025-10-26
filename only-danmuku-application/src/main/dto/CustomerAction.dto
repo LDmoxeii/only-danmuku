@@ -1,14 +1,11 @@
-export edu.only4.danmuku.application.queries._share.model.customer_action.JCustomerAction
-    -> package edu.only4.danmuku.application.queries._share.draft.customer_action
+export edu.only4.danmuku.application.queries._share.model.CustomerAction
+    -> package edu.only4.danmuku.application.queries._share.model.dto.CustomerAction
 
-/**
- * 用户行为简单信息 DTO
- * 用于用户行为查询
- */
 CustomerActionSimple {
     id
-    customerId
-    videoId
+    id(customer)
+    id(video)
     actionType
     actionTime
 }
+

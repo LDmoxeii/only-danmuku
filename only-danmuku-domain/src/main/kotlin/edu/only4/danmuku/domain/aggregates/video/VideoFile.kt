@@ -16,7 +16,7 @@ import org.hibernate.annotations.Where
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2025/10/25
+ * @date 2025/10/26
  */
 @Aggregate(
     aggregate = "Video",
@@ -50,6 +50,13 @@ class VideoFile (
      */
     @Column(name = "`customer_id`")
     var customerId: Long = 0L,
+
+    /**
+     * 视频文件草稿ID
+     * bigint
+     */
+    @Column(name = "`video_file_post_id`")
+    var videoFilePostId: Long = 0L,
 
     /**
      * 文件名

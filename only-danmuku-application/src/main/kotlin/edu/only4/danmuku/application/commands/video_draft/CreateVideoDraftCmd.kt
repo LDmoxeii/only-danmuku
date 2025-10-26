@@ -6,9 +6,9 @@ import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
 import edu.only4.danmuku.application.validater.MaxVideoPCount
 import edu.only4.danmuku.domain.aggregates.video.enums.PostType
-import edu.only4.danmuku.domain.aggregates.video_draft.VideoFileDraft
 import edu.only4.danmuku.domain.aggregates.video_draft.enums.VideoStatus
-import edu.only4.danmuku.domain.aggregates.video_draft.factory.VideoDraftFactory
+import edu.only4.danmuku.domain.aggregates.video_post.VideoFilePost
+import edu.only4.danmuku.domain.aggregates.video_post.factory.VideoPostFactory
 import org.springframework.stereotype.Service
 
 /**
@@ -20,7 +20,7 @@ object CreateVideoDraftCmd {
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
             val draft = Mediator.factories.create(
-                VideoDraftFactory.Payload(
+                VideoPostFactory.Payload(
                     videoId = request.videoId,
                     customerId = request.customerId,
                     videoName = request.videoName,
@@ -39,7 +39,7 @@ object CreateVideoDraftCmd {
                 val uploadSpecs = request.uploadFileList.map { file ->
                     val uploadId = file.uploadId.toLongOrNull()
                         ?: throw KnownException("非法的 uploadId: ${file.uploadId}")
-                    VideoFileDraft.UploadSpec(
+                    VideoFilePost.UploadSpec(
                         uploadId = uploadId,
                         fileIndex = file.fileIndex,
                         fileName = file.fileName,
@@ -49,9 +49,9 @@ object CreateVideoDraftCmd {
                 }
 
                 val buildResult = runCatching {
-                    VideoFileDraft.buildFromUploads(
+                    VideoFilePost.buildFromUploads(
                         customerId = request.customerId,
-                        videoDraft = draft,
+                        videoPost = draft,
                         uploads = uploadSpecs
                     )
                 }.getOrElse { ex ->
@@ -61,8 +61,8 @@ object CreateVideoDraftCmd {
                     throw ex
                 }
 
-                draft.videoFileDrafts.clear()
-                draft.videoFileDrafts.addAll(buildResult.fileDrafts)
+                draft.videoFilePosts.clear()
+                draft.videoFilePosts.addAll(buildResult.fileDrafts)
                 draft.duration = buildResult.totalDuration.takeIf { it > 0 }
             }
 

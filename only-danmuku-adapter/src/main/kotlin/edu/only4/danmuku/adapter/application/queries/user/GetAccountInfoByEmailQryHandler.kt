@@ -1,8 +1,8 @@
 package edu.only4.danmuku.adapter.application.queries.user
 
 import com.only4.cap4k.ddd.core.application.query.Query
-import edu.only4.danmuku.application.queries._share.draft.user.UserAccountInfo
-import edu.only4.danmuku.application.queries._share.model.user.email
+import edu.only4.danmuku.application.queries._share.model.dto.User.UserAccountInfo
+import edu.only4.danmuku.application.queries._share.model.email
 import edu.only4.danmuku.application.queries.user.GetAccountInfoByEmailQry
 import edu.only4.danmuku.domain.aggregates.user.enums.UserType
 import org.babyfish.jimmer.sql.kt.KSqlClient
@@ -33,7 +33,7 @@ class GetAccountInfoByEmailQryHandler(
             nickName = userAccountInfo.nickName,
             email = userAccountInfo.email,
             password = userAccountInfo.password,
-            type = UserType.valueOf(userAccountInfo.type.toInt())
+            type = UserType.valueOf(userAccountInfo.type)
         )
     }
 }

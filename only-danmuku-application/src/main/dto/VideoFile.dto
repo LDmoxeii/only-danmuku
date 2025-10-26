@@ -1,16 +1,13 @@
-export edu.only4.danmuku.application.queries._share.model.video_file.JVideoFile
-    -> package edu.only4.danmuku.application.queries._share.draft.video_file
+export edu.only4.danmuku.application.queries._share.model.VideoFile
+    -> package edu.only4.danmuku.application.queries._share.model.dto.VideoFile
 
-/**
- * 视频文件查询 DTO
- * 包含视频分片文件信息
- */
 VideoFileItem {
     id
-    videoId
+    id(video)
     fileName
     fileIndex
     fileSize
     filePath
     duration
 }
+

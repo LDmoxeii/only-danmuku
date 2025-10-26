@@ -1,9 +1,9 @@
 package edu.only4.danmuku.adapter.application.queries.category
 
 import com.only4.cap4k.ddd.core.application.query.Query
-import edu.only4.danmuku.application.queries._share.model.category.JCategory
-import edu.only4.danmuku.application.queries._share.model.category.code
-import edu.only4.danmuku.application.queries._share.model.category.id
+import edu.only4.danmuku.application.queries._share.model.Category
+import edu.only4.danmuku.application.queries._share.model.code
+import edu.only4.danmuku.application.queries._share.model.id
 import edu.only4.danmuku.application.queries.category.CategoryExistsByCodeQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
@@ -25,7 +25,7 @@ class CategoryExistsByCodeQryHandler(
 
     override fun exec(request: CategoryExistsByCodeQry.Request): CategoryExistsByCodeQry.Response {
         // 使用 Jimmer exists() 进行高效的存在性查询
-        val exists = sqlClient.exists(JCategory::class) {
+        val exists = sqlClient.exists(Category::class) {
             where(table.code eq request.code)
             where(table.id `ne?` request.excludeCategoryId)
         }

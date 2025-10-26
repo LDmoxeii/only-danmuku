@@ -6,7 +6,7 @@ import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 
 import edu.only4.danmuku.domain.aggregates.video.Video
 import edu.only4.danmuku.domain.aggregates.video.VideoFile
-import edu.only4.danmuku.domain.aggregates.video_draft.VideoDraft
+import edu.only4.danmuku.domain.aggregates.video_post.VideoPost
 
 import org.springframework.stereotype.Service
 
@@ -27,7 +27,7 @@ import org.springframework.stereotype.Service
 class VideoFactory : AggregateFactory<VideoFactory.Payload, Video> {
 
     override fun create(entityPayload: Payload): Video {
-        val draft = entityPayload.videoDraft
+        val draft = entityPayload.videoPost
         return Video().apply {
             id = draft.id
             customerId = draft.customerId
@@ -50,7 +50,7 @@ class VideoFactory : AggregateFactory<VideoFactory.Payload, Video> {
             deleted = 0L
 
             videoFiles.clear()
-            draft.videoFileDrafts
+            draft.videoFilePosts
                 .filter { it.isTransferSuccess() }
                 .sortedBy { it.fileIndex }
                 .forEach { fileDraft ->
@@ -81,7 +81,7 @@ class VideoFactory : AggregateFactory<VideoFactory.Payload, Video> {
         description = ""
     )
     data class Payload(
-         val videoDraft: VideoDraft,
+         val videoPost: VideoPost,
      ) : AggregatePayload<Video>
 
 }

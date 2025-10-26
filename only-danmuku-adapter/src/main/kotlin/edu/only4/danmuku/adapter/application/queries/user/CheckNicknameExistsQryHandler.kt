@@ -1,9 +1,9 @@
 package edu.only4.danmuku.adapter.application.queries.user
 
 import com.only4.cap4k.ddd.core.application.query.Query
-import edu.only4.danmuku.application.queries._share.model.user.JUser
-import edu.only4.danmuku.application.queries._share.model.user.id
-import edu.only4.danmuku.application.queries._share.model.user.nickName
+import edu.only4.danmuku.application.queries._share.model.User
+import edu.only4.danmuku.application.queries._share.model.id
+import edu.only4.danmuku.application.queries._share.model.nickName
 import edu.only4.danmuku.application.queries.user.CheckNicknameExistsQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
@@ -20,7 +20,7 @@ class CheckNicknameExistsQryHandler(
 ) : Query<CheckNicknameExistsQry.Request, CheckNicknameExistsQry.Response> {
 
     override fun exec(request: CheckNicknameExistsQry.Request): CheckNicknameExistsQry.Response {
-        val exists = sqlClient.exists(JUser::class) {
+        val exists = sqlClient.exists(User::class) {
             where(table.nickName eq request.nickName)
             where(table.id `ne?` request.excludeUserId)
         }

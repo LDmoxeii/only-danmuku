@@ -1,12 +1,12 @@
 package edu.only4.danmuku.adapter.application.queries.user
 
 import com.only4.cap4k.ddd.core.application.query.Query
-import edu.only4.danmuku.application.queries._share.model.customer_focus.JCustomerFocus
-import edu.only4.danmuku.application.queries._share.model.customer_focus.customerId
-import edu.only4.danmuku.application.queries._share.model.customer_focus.focusCustomerId
-import edu.only4.danmuku.application.queries._share.model.customer_profile.JCustomerProfile
-import edu.only4.danmuku.application.queries._share.model.customer_profile.currentCoinCount
-import edu.only4.danmuku.application.queries._share.model.customer_profile.id
+import edu.only4.danmuku.application.queries._share.model.CustomerFocus
+import edu.only4.danmuku.application.queries._share.model.CustomerProfile
+import edu.only4.danmuku.application.queries._share.model.currentCoinCount
+import edu.only4.danmuku.application.queries._share.model.customerId
+import edu.only4.danmuku.application.queries._share.model.focusCustomerId
+import edu.only4.danmuku.application.queries._share.model.id
 import edu.only4.danmuku.application.queries.user.GetUserCountInfoQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.count
@@ -28,7 +28,7 @@ class GetUserCountInfoQryHandler(
     override fun exec(request: GetUserCountInfoQry.Request): GetUserCountInfoQry.Response {
         // 1. 查询粉丝数 (有多少人关注了我)
         val fansCount = sqlClient
-            .createQuery(JCustomerFocus::class) {
+            .createQuery(CustomerFocus::class) {
                 where(table.focusCustomerId eq request.customerId)
                 select(count(table))
             }
@@ -37,7 +37,7 @@ class GetUserCountInfoQryHandler(
 
         // 2. 查询关注数 (我关注了多少人)
         val focusCount = sqlClient
-            .createQuery(JCustomerFocus::class) {
+            .createQuery(CustomerFocus::class) {
                 where(table.customerId eq request.customerId)
                 select(count(table))
             }
@@ -46,7 +46,7 @@ class GetUserCountInfoQryHandler(
 
         // 3. 查询当前硬币数
         val currentCoinCount = sqlClient
-            .createQuery(JCustomerProfile::class) {
+            .createQuery(CustomerProfile::class) {
                 where(table.id eq request.customerId)
                 select(table.currentCoinCount)
             }

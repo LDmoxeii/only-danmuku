@@ -1,91 +1,38 @@
-export edu.only4.danmuku.application.queries._share.model.video.JVideo
-    -> package edu.only4.danmuku.application.queries._share.draft.video
+export edu.only4.danmuku.application.queries._share.model.Video
+    -> package edu.only4.danmuku.application.queries._share.model.dto.Video
 
-/**
- * 视频搜索查询 DTO
- * 包含视频信息和作者信息
- */
-VideoSearchItem {
-    id
-    videoDraftId
-    videoCover
-    videoName
-    duration
-    createTime
-    updateTime
-    playCount
-    likeCount
-    danmukuCount
-    commentCount
-    coinCount
-    collectCount
-    recommendType
-    customerId
-
-    videoDraft {
-        status
-    }
-
-    customer {
-        nickName
-        avatar
-    }
-}
-
-/**
- * 视频列表项 DTO
- * 用于推荐、分类、热门列表等
- */
 VideoListItem {
     id
+    createTime
+    customer {
+        id
+        relation {
+            nickName
+            avatar
+        }
+    }
     videoCover
     videoName
-    createTime
     playCount
     likeCount
     recommendType
-    customerId
-
-    customer {
-        nickName
-        avatar
-    }
 }
 
-/**
- * 视频详情 DTO
- * 包含完整的视频信息和作者信息
- */
-VideoDetailItem {
-    id
-    videoCover
-    videoName
-    duration
-    createTime
-    playCount
-    likeCount
-    danmukuCount
-    commentCount
-    coinCount
-    collectCount
-    customerId
 
-    customer {
-        nickName
-        avatar
-    }
-}
-
-/**
- * 视频详细信息 DTO
- * 用于视频播放页面
- */
 VideoFullInfo {
     id
+    createTime
+    customer {
+        id
+        relation {
+            nickName
+            avatar
+        }
+    }
+    id(parentCategory)
+    id(category)
     videoCover
     videoName
-    pCategoryId
-    categoryId
     postType
     introduction
     interaction
@@ -97,11 +44,32 @@ VideoFullInfo {
     coinCount
     collectCount
     recommendType
-    createTime
-    customerId
-
-    customer {
-        nickName
-        avatar
-    }
 }
+
+
+VideoSearchItem {
+    id
+    createTime
+    updateTime
+    videoPost {
+        status
+    }
+    customer {
+        id
+        relation {
+            avatar
+            nickName
+        }
+    }
+    videoCover
+    videoName
+    duration
+    playCount
+    likeCount
+    danmukuCount
+    commentCount
+    coinCount
+    collectCount
+    recommendType
+}
+

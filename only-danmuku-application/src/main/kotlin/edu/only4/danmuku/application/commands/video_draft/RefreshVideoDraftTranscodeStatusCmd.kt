@@ -5,6 +5,7 @@ import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
 import edu.only4.danmuku.domain._share.meta.video_draft.SVideoDraft
+import edu.only4.danmuku.domain._share.meta.video_post.SVideoPost
 import edu.only4.danmuku.domain.aggregates.video_draft.enums.VideoStatus
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
@@ -18,12 +19,12 @@ object RefreshVideoDraftTranscodeStatusCmd {
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
             val draft = Mediator.repositories.findFirst(
-                SVideoDraft.predicate { it.id eq request.videoId },
+                SVideoPost.predicate { it.id eq request.videoId },
                 persist = true
             ).getOrNull() ?: throw KnownException("视频草稿不存在: ${request.videoId}")
 
-            val hasFailedFiles = draft.videoFileDrafts.any { it.isTransferFailed() }
-            val hasTranscodingFiles = draft.videoFileDrafts.any { it.isTranscoding() }
+            val hasFailedFiles = draft.videoFilePosts.any { it.isTransferFailed() }
+            val hasTranscodingFiles = draft.videoFilePosts.any { it.isTranscoding() }
 
             val targetStatus = when {
                 hasFailedFiles -> {
@@ -38,7 +39,7 @@ object RefreshVideoDraftTranscodeStatusCmd {
 
                 else -> {
                     draft.markPendingReview()
-                    val totalDuration = draft.videoFileDrafts.mapNotNull { it.duration }.sum()
+                    val totalDuration = draft.videoFilePosts.mapNotNull { it.duration }.sum()
                     draft.updateDuration(totalDuration)
                     VideoStatus.PENDING_REVIEW
                 }
