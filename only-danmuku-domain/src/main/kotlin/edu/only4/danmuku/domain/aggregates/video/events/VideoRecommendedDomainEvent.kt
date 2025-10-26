@@ -13,7 +13,7 @@ import edu.only4.danmuku.domain.aggregates.video.Video
  * @author cap4k-ddd-codegen
  * @date 2025/10/21
  */
-@DomainEvent(persist = true)
+@DomainEvent(persist = false)
 @Aggregate(
     aggregate = "Video",
     name = "VideoRecommendedDomainEvent",

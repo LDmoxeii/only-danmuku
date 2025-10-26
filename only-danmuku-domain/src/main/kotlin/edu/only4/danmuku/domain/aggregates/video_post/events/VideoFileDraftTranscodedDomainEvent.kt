@@ -7,7 +7,7 @@ import edu.only4.danmuku.domain.aggregates.video_post.VideoFilePost
 /**
  * 视频文件草稿转码完成（成功或失败）
  */
-@DomainEvent(persist = true)
+@DomainEvent(persist = false)
 @Aggregate(
     aggregate = "VideoDraft",
     name = "VideoFileDraftTranscodedDomainEvent",

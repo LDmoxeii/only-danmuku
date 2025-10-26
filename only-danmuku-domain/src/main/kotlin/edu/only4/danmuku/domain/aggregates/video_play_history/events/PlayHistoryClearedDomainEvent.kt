@@ -13,7 +13,7 @@ import edu.only4.danmuku.domain.aggregates.video_play_history.VideoPlayHistory
  * @author cap4k-ddd-codegen
  * @date 2025/10/21
  */
-@DomainEvent(persist = true)
+@DomainEvent(persist = false)
 @Aggregate(
     aggregate = "VideoPlayHistory",
     name = "PlayHistoryClearedDomainEvent",

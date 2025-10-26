@@ -10,7 +10,7 @@ import edu.only4.danmuku.domain.aggregates.customer_action.CustomerAction
  * @author cap4k-ddd-codegen
  * @date 2025/10/23
  */
-@DomainEvent(persist = true)
+@DomainEvent(persist = false)
 @Aggregate(
     aggregate = "CustomerAction",
     name = "CustomerUndislikedCommentDomainEvent",

@@ -7,7 +7,7 @@ import edu.only4.danmuku.domain.aggregates.video_post.VideoFilePost
 /**
  * 视频文件草稿已创建
  */
-@DomainEvent(persist = true)
+@DomainEvent(persist = false)
 @Aggregate(
     aggregate = "VideoDraft",
     name = "VideoFileDraftCreatedDomainEvent",
