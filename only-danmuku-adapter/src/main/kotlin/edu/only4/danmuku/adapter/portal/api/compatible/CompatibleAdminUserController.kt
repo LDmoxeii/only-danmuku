@@ -1,4 +1,4 @@
-package edu.only4.danmuku.adapter.portal.api
+package edu.only4.danmuku.adapter.portal.api.compatible
 
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.share.PageData
@@ -19,9 +19,9 @@ import java.time.ZoneId
  * 管理员用户管理控制器
  */
 @RestController
-@RequestMapping("/admin/user/v2")
+@RequestMapping("/admin/user")
 @Validated
-class AdminUserController {
+class CompatibleAdminUserController {
 
     @PostMapping("/loadUser")
     fun adminUserLoad(@RequestBody request: AdminUserLoad.Request): PageData<AdminUserLoad.UserItem> {
@@ -73,9 +73,9 @@ class AdminUserController {
      * 切换用户状态
      */
     @PostMapping("/changeStatus")
-    fun adminUserChangeStatus(@RequestBody @Validated request: AdminUserChangeStatus.Request): AdminUserChangeStatus.Response {
-        val userId = request.userId!!.toLong()
-        val status = request.status!! == 1
+    fun adminUserChangeStatus(userId: Long, status: Int): AdminUserChangeStatus.Response {
+        val userId = userId
+        val status = status == 1
 
         Mediator.commands.send(
             ChangeAccountStatusCmd.Request(

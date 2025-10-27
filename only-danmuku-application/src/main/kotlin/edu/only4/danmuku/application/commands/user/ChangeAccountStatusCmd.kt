@@ -5,7 +5,6 @@ import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
 import edu.only4.danmuku.domain._share.meta.user.SUser
-import jakarta.validation.constraints.NotNull
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
 
@@ -30,11 +29,8 @@ object ChangeAccountStatusCmd {
 
     data class Request(
         /** 用户ID */
-        @field:NotNull(message = "用户ID不能为空")
         val userId: Long,
-
         /** 状态：true-启用，false-禁用 */
-        @field:NotNull(message = "状态不能为空")
         val status: Boolean,
     ) : RequestParam<Response>
 

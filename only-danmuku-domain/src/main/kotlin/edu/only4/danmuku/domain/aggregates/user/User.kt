@@ -171,20 +171,6 @@ class User (
         events().attach(this) { UserCreatedDomainEvent(entity = this) }
     }
 
-    /** 启用账号 */
-    fun enableAccount() {
-        if (this.status) return
-        this.status = true
-        events().attach(this) { AccountEnabledDomainEvent(entity = this) }
-    }
-
-    /** 禁用账号 */
-    fun disableAccount() {
-        if (!(this.status)) return
-        this.status = false
-        events().attach(this) { AccountDisabledDomainEvent(entity = this) }
-    }
-
     /** 切换账号状态 */
     fun changeStatus(newStatus: Boolean) {
         if (this.status == newStatus) return
