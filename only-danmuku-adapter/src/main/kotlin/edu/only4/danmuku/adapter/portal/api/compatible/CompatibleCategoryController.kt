@@ -1,29 +1,24 @@
-package edu.only4.danmuku.adapter.portal.api
+package edu.only4.danmuku.adapter.portal.api.compatible
 
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.adapter.portal.api.payload.CategoryLoadAll
 import edu.only4.danmuku.application.queries.category.GetCategoryTreeQry
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 /**
- * 分类控制器 - 优化版（支持 Jimmer）
+ * 分类控制器
  *
- * 优化点：
- * 1. 保留原有基于 CQRS 的实现（方式 1）
- * 2. 新增直接使用 Jimmer DTO 的实现（方式 2 - 可选）
- * 3. 提供两种实现的性能对比
  */
 @RestController
-@RequestMapping("/category/v2")
+@RequestMapping("/category")
 @Validated
-class CategoryController {
+class CompatibleCategoryController {
 
     @PostMapping("/loadAllCategory")
-    fun categoryLoadAll(@RequestBody @Validated request: CategoryLoadAll.Request): List<CategoryLoadAll.Response> {
+    fun categoryLoadAll(): List<CategoryLoadAll.Response> {
         // 获取树形结构
         val treeResult = Mediator.qry.send(GetCategoryTreeQry.Request())
         // 转换为前端需要的格式
