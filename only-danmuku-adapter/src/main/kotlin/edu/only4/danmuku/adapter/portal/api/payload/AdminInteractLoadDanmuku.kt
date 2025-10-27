@@ -1,6 +1,5 @@
 package edu.only4.danmuku.adapter.portal.api.payload
 
-import com.only4.cap4k.ddd.core.share.PageData
 import com.only4.cap4k.ddd.core.share.PageParam
 import java.time.LocalDateTime
 

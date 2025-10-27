@@ -2,8 +2,12 @@ package edu.only4.danmuku.adapter.application.queries.customer_profile
 
 import com.only4.cap4k.ddd.core.application.query.PageQuery
 import com.only4.cap4k.ddd.core.share.PageData
-import edu.only4.danmuku.application.queries._share.model.*
-import edu.only4.danmuku.application.queries._share.model.dto.CustomerProfile.ProfileWithUser
+import edu.only4.danmuku.application.queries._share.model.CustomerProfile
+import edu.only4.danmuku.application.queries._share.model.fetchBy
+import edu.only4.danmuku.application.queries._share.model.joinTime
+import edu.only4.danmuku.application.queries._share.model.nickName
+import edu.only4.danmuku.application.queries._share.model.status
+import edu.only4.danmuku.application.queries._share.model.user
 import edu.only4.danmuku.application.queries.customer_profile.GetCustomerProfilePageQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.desc
@@ -28,24 +32,29 @@ class GetCustomerProfilePageQryHandler(
             where(table.nickName `ilike?` request.nickNameFuzzy)
             where(table.user.status `eq?` request.status)
             orderBy(table.user.joinTime.desc())
-            select(table.fetch(ProfileWithUser::class))
+            select(table.fetchBy {
+                allScalarFields()
+                user {
+                    allScalarFields()
+                }
+            })
         }.fetchPage(request.pageNum - 1, request.pageSize)
 
         val responseList = pageResult.rows.map { profile ->
             GetCustomerProfilePageQry.UserItem(
                 userId = profile.user.id,
-                email = profile.user.email,
-                nickName = profile.nickName,
                 avatar = profile.avatar,
-                sex = profile.sex,
+                nickName = profile.nickName,
+                email = profile.email,
                 birthday = profile.birthday,
-                school = profile.school,
-                personalSignature = profile.personIntroduction,
-                status = profile.user.status,
                 joinTime = profile.user.joinTime,
                 lastLoginTime = profile.user.lastLoginTime,
+                sex = profile.sex,
+                lastLoginIp = profile.user.lastLoginIp,
+                personIntroduction = profile.personIntroduction,
                 currentCoinCount = profile.currentCoinCount,
-                theme = profile.theme
+                totalCoinCount = profile.totalCoinCount,
+                status = profile.user.status,
             )
         }
 

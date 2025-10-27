@@ -2,6 +2,7 @@ package edu.only4.danmuku.domain.aggregates.video_danmuku
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
+import edu.only4.danmuku.domain.aggregates.video_danmuku.events.DanmukuDeletedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video_danmuku.events.DanmukuPostedDomainEvent
 
 import jakarta.persistence.*
@@ -154,5 +155,10 @@ class VideoDanmuku (
     fun onCreate() {
         events().attach(this) { DanmukuPostedDomainEvent(this) }
     }
+
+    fun onDelete() {
+        events().attach(this) { DanmukuDeletedDomainEvent(this) }
+    }
+
     // 【行为方法结束】
 }

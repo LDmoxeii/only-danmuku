@@ -3,7 +3,7 @@ package edu.only4.danmuku.application.commands.video
 import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
-import com.only4.cap4k.ddd.core.application.command.Command
+import com.only4.cap4k.ddd.core.application.command.NoneResultCommandParam
 import edu.only4.danmuku.domain._share.meta.video.SVideo
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
@@ -14,11 +14,10 @@ import kotlin.jvm.optionals.getOrNull
 object UpdateVideoStatisticsCmd {
 
     @Service
-    class Handler : Command<Request, Response> {
-        override fun exec(request: Request): Response {
+    class Handler : NoneResultCommandParam<Request>() {
+        override fun exec(request: Request) {
             val video = Mediator.repositories.findFirst(
                 SVideo.predicateById(request.videoId),
-                persist = false
             ).getOrNull() ?: throw KnownException("视频不存在：${request.videoId}")
 
             video.applyStatisticsDelta(
@@ -31,16 +30,6 @@ object UpdateVideoStatisticsCmd {
             )
 
             Mediator.uow.save()
-
-            return Response(
-                videoId = video.id,
-                playCount = video.playCount,
-                likeCount = video.likeCount,
-                danmukuCount = video.danmukuCount,
-                commentCount = video.commentCount,
-                coinCount = video.coinCount,
-                collectCount = video.collectCount
-            )
         }
     }
 
@@ -52,15 +41,5 @@ object UpdateVideoStatisticsCmd {
         val commentCountDelta: Int? = null,
         val coinCountDelta: Int? = null,
         val collectCountDelta: Int? = null,
-    ) : RequestParam<Response>
-
-    data class Response(
-        val videoId: Long,
-        val playCount: Int?,
-        val likeCount: Int?,
-        val danmukuCount: Int?,
-        val commentCount: Int?,
-        val coinCount: Int?,
-        val collectCount: Int?,
-    )
+    ) : RequestParam<Unit>
 }

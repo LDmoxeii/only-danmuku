@@ -7,7 +7,6 @@ import edu.only4.danmuku.adapter.portal.api.payload.AdminSettingSave
 import edu.only4.danmuku.application._share.config.properties.SysSettingProperties
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -37,7 +36,7 @@ class CompatibleAdminSettingController(
     }
 
     @PostMapping("/saveSetting")
-    fun adminSettingSave(@RequestBody @Validated request: AdminSettingSave.Request) {
+    fun adminSettingSave(request: AdminSettingSave.Request) {
         val properties = SysSettingProperties().apply {
             registerCoinCount = request.registerCoinCount
             postVideoCoinCount = request.postVideoCoinCount

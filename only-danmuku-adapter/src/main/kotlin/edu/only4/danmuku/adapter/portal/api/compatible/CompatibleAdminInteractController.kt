@@ -10,7 +10,6 @@ import edu.only4.danmuku.application.queries.video_comment.VideoCommentPageQry
 import edu.only4.danmuku.application.queries.video_danmuku.GetVideoDanmukuPageQry
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.time.Instant
@@ -23,7 +22,9 @@ import java.time.ZoneId
 class CompatibleAdminInteractController {
 
     @PostMapping("/loadDanmu")
-    fun getDanmukuPage(@RequestBody request: AdminInteractLoadDanmuku.Request): PageData<AdminInteractLoadDanmuku.Response> {
+    fun getDanmukuPage(
+        request: AdminInteractLoadDanmuku.Request,
+    ): PageData<AdminInteractLoadDanmuku.Response> {
         val queryRequest = GetVideoDanmukuPageQry.Request(
             videoNameFuzzy = request.videoNameFuzzy
         ).apply {
@@ -60,16 +61,18 @@ class CompatibleAdminInteractController {
     }
 
     @PostMapping("/delDanmu")
-    fun deleteDanmuku(danmuId: Long) {
+    fun deleteDanmuku(danmukuId: Long) {
         Mediator.commands.send(
             DeleteVideoDanmukuCmd.Request(
-                danmukuId = danmuId
+                danmukuId = danmukuId
             )
         )
     }
 
     @PostMapping("/loadComment")
-    fun getVideoCommentPage(@RequestBody request: AdminInteractLoadComment.Request): PageData<AdminInteractLoadComment.Response> {
+    fun getVideoCommentPage(
+        request: AdminInteractLoadComment.Request,
+    ): PageData<AdminInteractLoadComment.Response> {
         val queryRequest = VideoCommentPageQry.Request(
             videoNameFuzzy = request.videoNameFuzzy
         ).apply {

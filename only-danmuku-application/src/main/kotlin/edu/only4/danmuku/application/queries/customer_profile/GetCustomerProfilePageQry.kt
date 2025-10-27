@@ -12,38 +12,23 @@ import com.only4.cap4k.ddd.core.application.query.PageQueryParam
 object GetCustomerProfilePageQry {
 
     data class Request(
-        /** 昵称模糊查询 */
         val nickNameFuzzy: String? = null,
-        /** 用户状态: 0-禁用 1-正常 */
         val status: Int? = null
     ) : PageQueryParam<UserItem>()
 
     data class UserItem(
-        /** 用户ID */
-        val userId: Long,
-        /** 邮箱 */
-        val email: String? = null,
-        /** 昵称 */
-        val nickName: String? = null,
-        /** 头像 */
-        val avatar: String? = null,
-        /** 性别: 0-女 1-男 */
-        val sex: Int? = null,
-        /** 生日 */
-        val birthday: String? = null,
-        /** 学校 */
-        val school: String? = null,
-        /** 个性签名 */
-        val personalSignature: String? = null,
-        /** 用户状态: 0-禁用 1-正常 */
-        val status: Int? = null,
-        /** 注册时间 */
-        val joinTime: Long,
-        /** 最后登录时间 */
-        val lastLoginTime: Long? = null,
-        /** 当前硬币数 */
-        val currentCoinCount: Int? = null,
-        /** 主题 */
-        val theme: Int? = null
+        var userId: Long,
+        var avatar: String?,
+        var nickName: String?,
+        var email: String?,
+        var birthday: String?,
+        var joinTime: Long,
+        var lastLoginTime: Long?,
+        var sex: Int?,
+        var lastLoginIp: String?,
+        var personIntroduction: String?,
+        var currentCoinCount: Int?,
+        var totalCoinCount: Int?,
+        var status: Int?,
     )
 }
