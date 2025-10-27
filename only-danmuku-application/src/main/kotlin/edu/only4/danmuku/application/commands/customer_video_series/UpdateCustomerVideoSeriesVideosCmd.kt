@@ -22,6 +22,7 @@ object UpdateCustomerVideoSeriesVideosCmd {
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
+            // TODO：移动校验逻辑到自定义校验器， 更新只能更新基础信息
             val series = Mediator.repositories.findFirst(
                 SCustomerVideoSeries.predicateById(request.seriesId)
             ).getOrNull() ?: throw KnownException("系列不存在: ${request.seriesId}")

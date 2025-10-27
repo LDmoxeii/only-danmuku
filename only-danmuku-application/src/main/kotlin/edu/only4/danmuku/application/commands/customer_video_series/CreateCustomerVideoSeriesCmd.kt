@@ -24,6 +24,7 @@ object CreateCustomerVideoSeriesCmd {
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
+            // TODO： 需要将校验逻辑移动到自定义校验器实现
             val normalizedName = request.seriesName.trim()
             if (normalizedName.isEmpty()) {
                 throw KnownException("系列名称不能为空")
@@ -34,14 +35,12 @@ object CreateCustomerVideoSeriesCmd {
             incomingVideoIds?.let { ensureVideoListSize(it) }
 
             val duplicated = Mediator.repositories.findFirst(
-                SCustomerVideoSeries.predicate(
-                    { schema ->
-                        schema.all(
-                            schema.customerId eq request.userId,
-                            schema.seriesName eq normalizedName
-                        )
-                    }
-                ),
+                SCustomerVideoSeries.predicate { schema ->
+                    schema.all(
+                        schema.customerId eq request.userId,
+                        schema.seriesName eq normalizedName
+                    )
+                },
                 persist = false
             ).getOrNull()
 
