@@ -1,10 +1,12 @@
 package edu.only4.danmuku.adapter.application.queries.statistics
 
 import com.only4.cap4k.ddd.core.application.query.Query
+import edu.only4.danmuku.application.queries._share.model.customerId
 import edu.only4.danmuku.application.queries._share.model.dto.Statistics.PreviousDayStatistics
 import edu.only4.danmuku.application.queries.statistics.GetTotalStatisticsInfoQry
 import edu.only4.danmuku.domain.aggregates.statistics.enums.StatisticsDataType
 import org.babyfish.jimmer.sql.kt.KSqlClient
+import org.babyfish.jimmer.sql.kt.ast.expression.`eq?`
 import org.springframework.stereotype.Service
 
 /**
@@ -22,7 +24,9 @@ class GetTotalStatisticsInfoQryHandler(
     override fun exec(request: GetTotalStatisticsInfoQry.Request): GetTotalStatisticsInfoQry.Response {
 
         // 查询所有统计数据（不限日期）
-        val statisticsList = sqlClient.findAll(PreviousDayStatistics::class)
+        val statisticsList = sqlClient.findAll(PreviousDayStatistics::class) {
+            where(table.customerId `eq?` request.userId)
+        }
 
         // 按数据类型分组统计（合并）
         val countsByType = statisticsList

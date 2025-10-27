@@ -11,7 +11,10 @@ import com.only4.cap4k.ddd.core.application.RequestParam
  */
 object GetTotalStatisticsInfoQry {
 
-    class Request : RequestParam<Response>
+    class Request(
+        /** 用户ID - 可选，不传则查询全局统计 */
+        val userId: Long? = null,
+    ) : RequestParam<Response>
 
     /**
      * 总统计数据响应

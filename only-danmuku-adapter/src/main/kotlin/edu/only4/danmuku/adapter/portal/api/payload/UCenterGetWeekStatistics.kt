@@ -13,7 +13,7 @@ object UCenterGetWeekStatistics {
     /**
      * 统计项
      */
-    data class StatisticsItem(
+    data class WeekStatisticsItem(
         /** 统计日期 */
         var statisticsDate: String? = null,
         /** 统计数量 */
