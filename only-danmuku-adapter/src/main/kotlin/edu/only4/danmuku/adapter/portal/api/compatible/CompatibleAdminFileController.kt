@@ -2,12 +2,10 @@ package edu.only4.danmuku.adapter.portal.api.compatible
 
 import cn.dev33.satoken.annotation.SaIgnore
 import com.only4.cap4k.ddd.core.Mediator
-import edu.only4.danmuku.adapter.portal.api.payload.AdminFileGetResource
-import edu.only4.danmuku.adapter.portal.api.payload.AdminFileGetVideoResource
-import edu.only4.danmuku.adapter.portal.api.payload.AdminFileGetVideoResourceTs
-import edu.only4.danmuku.adapter.portal.api.payload.AdminFileUploadImage
 import edu.only4.danmuku.application.commands.file.SaveImageCmd
 import edu.only4.danmuku.application.queries.file.GetFileResourceQry
+import edu.only4.danmuku.application.queries.file.GetVideoResourceQry
+import edu.only4.danmuku.application.queries.file.GetVideoResourceTsQry
 import jakarta.servlet.http.HttpServletResponse
 import org.jetbrains.annotations.NotNull
 import org.slf4j.LoggerFactory
@@ -78,6 +76,62 @@ class CompatibleAdminFileController {
     }
 
     /**
+     * 获取视频资源(m3u8)
+     */
+    @GetMapping("/videoResource/{fileId}")
+    fun adminFileGetVideoResource(
+        @PathVariable fileId: String,
+        response: HttpServletResponse,
+    ) {
+        // 使用查询处理器获取视频资源信息
+        val result = Mediator.queries.send(
+            GetVideoResourceQry.Request(fileId = fileId)
+        )
+
+        // 如果文件不存在，返回404
+        if (!result.exists) {
+            response.status = HttpServletResponse.SC_NOT_FOUND
+            return
+        }
+
+        // 设置响应内容类型为HLS流媒体格式
+        response.contentType = "application/vnd.apple.mpegurl"
+
+        // 读取文件并写入响应流
+        readFile(response, result.filePath)
+    }
+
+    /**
+     * 获取视频TS分片
+     */
+    @GetMapping("/videoResource/{fileId}/{ts}")
+    fun adminFileGetVideoResourceTs(
+        @PathVariable fileId: String,
+        @PathVariable ts: String,
+        response: HttpServletResponse,
+    ) {
+        // 使用查询处理器获取TS分片资源信息
+        val result = Mediator.queries.send(
+            GetVideoResourceTsQry.Request(
+                fileId = fileId,
+                ts = ts
+            )
+        )
+
+        // 如果文件不存在，返回404
+        if (!result.exists) {
+            response.status = HttpServletResponse.SC_NOT_FOUND
+            return
+        }
+
+        // 设置响应内容类型为MPEG传输流
+        response.contentType = "video/mp2t"
+
+        // 读取文件并写入响应流
+        readFile(response, result.filePath)
+    }
+
+    /**
      * 读取文件并写入响应流
      */
     private fun readFile(response: HttpServletResponse, filePath: String) {
@@ -100,27 +154,6 @@ class CompatibleAdminFileController {
         } catch (e: Exception) {
             logger.error("读取文件异常: $filePath", e)
         }
-    }
-
-    /**
-     * 获取视频资源(m3u8)
-     */
-    @GetMapping("/videoResource/{fileId}")
-    fun adminFileGetVideoResource(@PathVariable fileId: String = ""): AdminFileGetVideoResource.Response {
-        // TODO: 实现获取视频资源(m3u8)逻辑
-        return AdminFileGetVideoResource.Response()
-    }
-
-    /**
-     * 获取视频TS分片
-     */
-    @GetMapping("/videoResource/{fileId}/{ts}")
-    fun adminFileGetVideoResourceTs(
-        @PathVariable fileId: String = "",
-        @PathVariable ts: String = "",
-    ): AdminFileGetVideoResourceTs.Response {
-        // TODO: 实现获取视频TS分片逻辑
-        return AdminFileGetVideoResourceTs.Response()
     }
 
 }
