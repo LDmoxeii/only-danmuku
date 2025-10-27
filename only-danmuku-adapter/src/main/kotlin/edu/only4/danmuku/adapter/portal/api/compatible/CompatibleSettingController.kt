@@ -1,5 +1,6 @@
 package edu.only4.danmuku.adapter.portal.api.compatible
 
+import cn.dev33.satoken.annotation.SaIgnore
 import com.only.engine.redis.misc.RedisUtils
 import edu.only4.danmuku.adapter.portal.api._share.constant.Constants
 import edu.only4.danmuku.adapter.portal.api.payload.AdminSettingGet
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
+@SaIgnore
 @RestController
 @RequestMapping("/sysSetting")
 @Validated

@@ -32,6 +32,7 @@ class GetCustomerProfileQryHandler(
             where(table.userId eq request.customerId)
             select(table.fetchBy {
                 allScalarFields()
+                user()
             })
         }.fetchOneOrNull() ?: throw KnownException("用户档案不存在: customerId=${request.customerId}")
 

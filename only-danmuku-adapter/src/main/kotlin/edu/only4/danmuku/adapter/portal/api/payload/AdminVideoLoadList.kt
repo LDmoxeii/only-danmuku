@@ -10,35 +10,35 @@ object AdminVideoLoadList {
 
     class Request(
         /** 视频名称模糊查询 */
-        val videoNameFuzzy: String? = null,
+        val videoNameFuzzy: String?,
         /** 父分类Id */
-        val categoryParentId: Long? = null,
+        val categoryParentId: Long?,
         /** 分类Id */
-        val categoryId: Long? = null,
+        val categoryId: Long?,
         /** 视频状态 */
-        val recommendType: Int? = null,
+        val recommendType: Int?,
     ) : PageParam()
 
     /**
      * 视频项
      */
     data class VideoItem(
-        var videoId: String? = null,
-        var videoCover: String? = null,
-        var videoName: String? = null,
-        var userId: String? = null,
-        var nickName: String? = null,
-        var duration: Int? = null,
+        var videoId: String?,
+        var videoCover: String?,
+        var videoName: String?,
+        var userId: String?,
+        var nickName: String?,
+        var duration: Int?,
         var status: Int,
         var statusName: String,
-        var createTime: LocalDateTime? = null,
-        var lastUpdateTime: LocalDateTime? = null,
-        var playCount: Int? = null,
-        var likeCount: Int? = null,
-        var danmuCount: Int? = null,
-        var commentCount: Int? = null,
-        var coinCount: Int? = null,
-        var collectCount: Int? = null,
-        var recommendType: Int? = null,
+        var createTime: LocalDateTime?,
+        var lastUpdateTime: LocalDateTime?,
+        var playCount: Int?,
+        var likeCount: Int?,
+        var danmuCount: Int?,
+        var commentCount: Int?,
+        var coinCount: Int?,
+        var collectCount: Int?,
+        var recommendType: Int?,
     )
 }

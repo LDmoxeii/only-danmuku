@@ -13,6 +13,7 @@ import edu.only4.danmuku.adapter.portal.api.payload.AccountUserCountInfo
 import edu.only4.danmuku.application.commands.user.RegisterAccountCmd
 import edu.only4.danmuku.application.commands.user.UpdateLoginInfoCmd
 import edu.only4.danmuku.application.distributed.clients.CaptchaGen
+import edu.only4.danmuku.application.queries.customer_profile.GetCustomerProfileQry
 import edu.only4.danmuku.application.queries.user.GetUserCountInfoQry
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotEmpty
@@ -34,7 +35,7 @@ class CompatibleAccountController {
         val result = Mediator.requests.send(CaptchaGen.Request("web-auth"))
         return AccountCheckCode.Response(
             result.captchaId,
-            result.byte
+            "data:image/png;base64,${result.byte}",
         )
     }
 
@@ -80,11 +81,19 @@ class CompatibleAccountController {
             )
         )
 
+        val customerProfile = Mediator.queries.send(
+            GetCustomerProfileQry.Request(
+                customerId = userAccount.userId
+            )
+        )
+
         LoginHelper.login(UserInfo(userAccount.userId, userAccount.userType.code, userAccount.username))
 
         return AccountLogin.Response(
-            userId = userAccount.userId.toString(),
+            userId = userAccount.userId,
             nickName = userAccount.username,
+            avatar = customerProfile.avatar,
+            expireAt = StpUtil.getTokenTimeout(),
             token = StpUtil.getTokenValue()
         )
     }

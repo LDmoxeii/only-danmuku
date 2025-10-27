@@ -13,7 +13,7 @@ CREATE TABLE `user`
     `last_login_time` bigint                                                        NULL     DEFAULT NULL COMMENT '最后登录时间',
     `last_login_ip`   varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NULL     DEFAULT NULL COMMENT '最后登录IP',
     `status`          tinyint(1)                                                    NOT NULL DEFAULT 1 COMMENT '0:禁用 1:正常',
-    `related_id`      int(11)                                                       NULL     DEFAULT NULL COMMENT '关联ID; 用户、管理员 = 0',
+    `related_id` bigint NULL DEFAULT NULL COMMENT '关联ID; 用户、管理员 = 0',
     `create_user_id`  bigint                                                        NULL     DEFAULT NULL COMMENT '创建人ID',
     `create_by`       varchar(32)                                                   NULL     DEFAULT NULL COMMENT '创建人名称',
     `create_time`     bigint                                                        NULL     DEFAULT NULL COMMENT '创建时间',

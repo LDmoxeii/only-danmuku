@@ -100,10 +100,10 @@ class User (
 
     /**
      * 关联ID; 用户、管理员 = 0
-     * int
+     * bigint
      */
     @Column(name = "`related_id`")
-    var relatedId: Int? = null,
+    var relatedId: Long? = null,
 
     /**
      * 创建人ID

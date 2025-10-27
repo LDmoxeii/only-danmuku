@@ -2,6 +2,7 @@ package edu.only4.danmuku.application.subscribers.domain.customer_profile
 
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.application.commands.statistics.AddStatisticsInfoCmd
+import edu.only4.danmuku.application.commands.user.RelationProfileCmd
 import edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerProfileCreatedDomainEvent
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Service
@@ -19,10 +20,20 @@ class CustomerProfileCreatedDomainEventSubscriber {
 
     @EventListener(CustomerProfileCreatedDomainEvent::class)
     fun on(event: CustomerProfileCreatedDomainEvent) {
-        // 为新用户初始化统计数据
         Mediator.commands.send(
             AddStatisticsInfoCmd.Request(
                 customerId = event.entity.userId
+            )
+        )
+    }
+
+    @EventListener(CustomerProfileCreatedDomainEvent::class)
+    fun on1(event: CustomerProfileCreatedDomainEvent) {
+        val customerProfile = event.entity
+        Mediator.commands.send(
+            RelationProfileCmd.Request(
+                userId = customerProfile.userId,
+                profileId = customerProfile.userId
             )
         )
     }
