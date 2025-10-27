@@ -1,4 +1,4 @@
-package edu.only4.danmuku.adapter.portal.api
+package edu.only4.danmuku.adapter.portal.api.compatible
 
 import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
@@ -25,7 +25,7 @@ import java.time.format.DateTimeFormatter
 @RestController
 @RequestMapping("/history/v2")
 @Validated
-class HistoryController {
+class CompatibleVideoHistoryController {
 
     /**
      * 加载播放历史
@@ -80,13 +80,13 @@ class HistoryController {
      * 删除指定播放历史
      */
     @PostMapping("/delHistory")
-    fun historyDel(@RequestBody @Validated request: HistoryDel.Request): HistoryDel.Response {
+    fun historyDel(videoId: Long): HistoryDel.Response {
         val currentUserId = LoginHelper.getUserId()!!
         // 调用命令删除当前用户该视频的播放历史
         Mediator.commands.send(
             DelHistoryCmd.Request(
                 customerId = currentUserId,
-                videoId = request.videoId.toLong()
+                videoId = videoId
             )
         )
         return HistoryDel.Response()
