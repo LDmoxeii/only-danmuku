@@ -4,6 +4,7 @@ import com.only4.cap4k.ddd.core.application.query.Query
 import edu.only4.danmuku.application._share.config.properties.FileAppProperties
 import edu.only4.danmuku.application._share.constants.Constants
 import edu.only4.danmuku.application.queries._share.model.VideoFile
+import edu.only4.danmuku.application.queries._share.model.category.id
 import edu.only4.danmuku.application.queries.file.GetVideoResourceTsQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
@@ -23,7 +24,7 @@ class GetVideoResourceTsQryHandler(
         // 根据文件ID查询视频文件信息
         val videoFile = sqlClient.createQuery(VideoFile::class) {
             where(table.id eq request.fileId.toLongOrNull())
-            select(table.fetch(VideoFile::filePath))
+            select(table)
         }.fetchOneOrNull()
 
         if (videoFile == null) {

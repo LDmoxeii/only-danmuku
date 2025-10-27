@@ -22,8 +22,8 @@ object GetVideoResourceQry {
         /** 文件是否存在 */
         val exists: Boolean,
         /** 视频ID（用于记录播放信息） */
-        val videoId: Long?,
+        val videoId: Long,
         /** 文件索引（用于记录播放信息） */
-        val fileIndex: Int?,
+        val fileIndex: Int,
     )
 }
