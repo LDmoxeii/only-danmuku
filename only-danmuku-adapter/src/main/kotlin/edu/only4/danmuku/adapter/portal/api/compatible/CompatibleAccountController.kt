@@ -1,4 +1,4 @@
-package edu.only4.danmuku.adapter.portal.api
+package edu.only4.danmuku.adapter.portal.api.compatible
 
 import cn.dev33.satoken.annotation.SaIgnore
 import cn.dev33.satoken.stp.StpUtil
@@ -11,7 +11,12 @@ import edu.only4.danmuku.application.commands.user.RegisterAccountCmd
 import edu.only4.danmuku.application.commands.user.UpdateLoginInfoCmd
 import edu.only4.danmuku.application.distributed.clients.CaptchaGen
 import edu.only4.danmuku.application.queries.user.GetUserCountInfoQry
+import io.reactivex.rxjava3.internal.util.QueueDrainHelper.request
 import jakarta.servlet.http.HttpServletResponse
+import jakarta.validation.constraints.Email
+import jakarta.validation.constraints.NotEmpty
+import jakarta.validation.constraints.Pattern
+import jakarta.validation.constraints.Size
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -19,9 +24,9 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/account/v2")
+@RequestMapping("/account")
 @Validated
-class AccountController {
+class CompatibleAccountController {
 
     @SaIgnore
     @PostMapping("/checkCode")
@@ -35,15 +40,21 @@ class AccountController {
 
     @SaIgnore
     @PostMapping("/register")
-    fun register(@RequestBody @Validated request: AccountRegister.Request): AccountRegister.Response {
+    fun register(
+        @NotEmpty(message = "邮箱不能为空") @Email(message = "邮箱格式不正确") @Size(max = 150, message = "邮箱长度不能超过150个字符") email: String,
+        @NotEmpty(message = "昵称不能为空") @Size(max = 20, message = "昵称长度不能超过20个字符") nickName: String,
+        @NotEmpty(message = "密码不能为空") @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d)[a-zA-Z\\d]{8,18}$", message = "密码必须为8-18位字母和数字组合") registerPassword: String,
+        @NotEmpty(message = "验证码不能为空") checkCodeKey: String,
+        @NotEmpty(message = "验证码不能为空") checkCode: String,
+    ): AccountRegister.Response {
 //        val captchaValidationResult = Mediator.requests.send(CaptchaValid.Request(request.checkCodeKey, request.checkCode))
 //        require(captchaValidationResult.result) { "验证码错误" }
 
         Mediator.cmd.send(
             RegisterAccountCmd.Request(
-                email = request.email,
-                nickName = request.nickName,
-                registerPassword = request.registerPassword
+                email = email,
+                nickName = nickName,
+                registerPassword = registerPassword
             )
         )
         return AccountRegister.Response()
@@ -52,7 +63,10 @@ class AccountController {
     @SaIgnore
     @PostMapping("/login")
     fun login(
-        @RequestBody @Validated request: AccountLogin.Request,
+        @NotEmpty(message = "邮箱不能为空") @Email(message = "邮箱格式不正确") @Size(max = 150, message = "邮箱长度不能超过150个字符") email: String,
+        @NotEmpty(message = "密码不能为空") @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d)[a-zA-Z\\d]{8,18}$", message = "密码必须为8-18位字母和数字组合") password: String,
+        @NotEmpty(message = "验证码不能为空") checkCodeKey: String,
+        @NotEmpty(message = "验证码不能为空") checkCode: String,
     ): AccountLogin.Response {
 //        val captchaValidationResult = Mediator.requests.send(CaptchaValid.Request(request.checkCodeKey, request.checkCode))
 //        require(captchaValidationResult.result) { "验证码错误" }
@@ -60,8 +74,8 @@ class AccountController {
 
         val userAccount = Mediator.commands.send(
             UpdateLoginInfoCmd.Request(
-                email = request.email,
-                password = request.password,
+                email = email,
+                password = password,
                 loginIp = getClientIP()!!,
             )
         )
