@@ -1,4 +1,4 @@
-package edu.only4.danmuku.adapter.portal.api
+package edu.only4.danmuku.adapter.portal.api.compatible
 
 import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
@@ -23,7 +23,7 @@ import java.time.format.DateTimeFormatter
 @RestController
 @RequestMapping("/ucenter/v2")
 @Validated
-class UCenterInteractController {
+class CompatibleUCenterInteractController {
 
     /**
      * 加载所有视频
@@ -99,11 +99,11 @@ class UCenterInteractController {
      * 删除评论
      */
     @PostMapping("/delComment")
-    fun delComment(@RequestBody @Validated request: UCenterDelComment.Request): UCenterDelComment.Response {
+    fun delComment(commentId: Long): UCenterDelComment.Response {
         // 调用命令删除评论
         Mediator.commands.send(
             DelCommentCmd.Request(
-                commentId = request.commentId.toLong(),
+                commentId = commentId,
                 operatorId = LoginHelper.getUserId()!!
             )
         )
@@ -157,10 +157,10 @@ class UCenterInteractController {
      * 删除弹幕
      */
     @PostMapping("/delDanmu")
-    fun delDanmu(@RequestBody @Validated request: UCenterDelDanmu.Request): UCenterDelDanmu.Response {
+    fun delDanmu(danmuId: Long): UCenterDelDanmu.Response {
         Mediator.commands.send(
             DeleteDanmukuCmd.Request(
-                danmukuId = request.danmuId.toLong(),
+                danmukuId = danmuId,
                 operatorId = LoginHelper.getUserId()!!
             )
         )
