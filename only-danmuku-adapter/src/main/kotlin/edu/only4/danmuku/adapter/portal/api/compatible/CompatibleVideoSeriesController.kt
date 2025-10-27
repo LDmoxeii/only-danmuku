@@ -10,9 +10,7 @@ import edu.only4.danmuku.adapter.portal.api.payload.VideoSeriesSaveVideo
 import edu.only4.danmuku.application.commands.customer_video_series.DeleteCustomerVideoSeriesCmd
 import edu.only4.danmuku.application.commands.customer_video_series.RemoveVideoFromSeriesCmd
 import edu.only4.danmuku.application.commands.customer_video_series.UpdateCustomerVideoSeriesSortCmd
-import edu.only4.danmuku.application.commands.customer_video_series.UpdateCustomerVideoSeriesVideosCmd
 import edu.only4.danmuku.application.queries.customer_video_series.GetCustomerVideoSeriesListQry
-import io.reactivex.rxjava3.internal.util.QueueDrainHelper.request
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.Size
 import org.springframework.validation.annotation.Validated
@@ -31,7 +29,7 @@ import java.time.format.DateTimeFormatter
 @RestController
 @RequestMapping("/uhome/series")
 @Validated
-class VideoSeriesController {
+class CompatibleVideoSeriesController {
 
     /**
      * 加载视频系列列表

@@ -1,66 +1,64 @@
-package edu.only4.danmuku.adapter.portal.api
+package edu.only4.danmuku.adapter.portal.api.compatible
 
 import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.adapter.portal.api.payload.UserActionDo
-import edu.only4.danmuku.application.commands.customer_action.CollectVideoCmd
-import edu.only4.danmuku.application.commands.customer_action.DislikeCommentCmd
-import edu.only4.danmuku.application.commands.customer_action.GiveVideoCoinCmd
-import edu.only4.danmuku.application.commands.customer_action.LikeCommentCmd
-import edu.only4.danmuku.application.commands.customer_action.LikeVideoCmd
+import edu.only4.danmuku.application.commands.customer_action.*
 import edu.only4.danmuku.domain.aggregates.customer_action.enums.ActionType
+import io.reactivex.rxjava3.internal.util.QueueDrainHelper.request
+import jakarta.validation.constraints.Max
+import jakarta.validation.constraints.Min
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
-/**
- * 用户行为控制器
- */
 @RestController
-@RequestMapping("/userAction/v2")
+@RequestMapping("/userAction")
 @Validated
-class UserActionController {
+class CompatibleUserActionController {
 
-    /**
-     * 执行用户行为(点赞/收藏/投币/评论赞踩)
-     */
     @PostMapping("/doAction")
-    fun userActionDo(@RequestBody @Validated request: UserActionDo.Request): UserActionDo.Response {
+    fun userActionDo(
+        videoId: Long,
+        actionType: Int,
+        @Max(2) @Min(1) actionCount: Int,
+        commentId: Long?,
+    ): UserActionDo.Response {
         val userId = LoginHelper.getUserId()!!
 
-        when (ActionType.valueOf(request.actionType)) {
+        when (ActionType.valueOf(actionType)) {
             ActionType.LIKE_VIDEO -> Mediator.commands.send(
                 LikeVideoCmd.Request(
-                    videoId = request.videoId.toLong(),
+                    videoId = videoId,
                     customerId = userId
                 )
             )
             ActionType.FAVORITE_VIDEO -> Mediator.commands.send(
                 CollectVideoCmd.Request(
-                    videoId = request.videoId.toLong(),
+                    videoId = videoId,
                     customerId = userId
                 )
             )
             ActionType.COIN_VIDEO -> Mediator.commands.send(
                 GiveVideoCoinCmd.Request(
-                    videoId = request.videoId.toLong(),
+                    videoId = videoId,
                     customerId = userId,
-                    coinCount = request.actionCount ?: 1
+                    coinCount = actionCount
                 )
             )
             ActionType.LIKE_COMMENT -> Mediator.commands.send(
                 LikeCommentCmd.Request(
-                    videoId = request.videoId.toLong(),
-                    commentId = request.commentId!!.toLong(),
+                    videoId = videoId,
+                    commentId = commentId!!,
                     customerId = userId
                 )
             )
             ActionType.HATE_COMMENT -> Mediator.commands.send(
                 DislikeCommentCmd.Request(
-                    videoId = request.videoId.toLong(),
-                    commentId = request.commentId!!.toLong(),
+                    videoId = videoId,
+                    commentId = commentId!!,
                     customerId = userId
                 )
             )
