@@ -1,4 +1,4 @@
-package edu.only4.danmuku.adapter.portal.api
+package edu.only4.danmuku.adapter.portal.api.compatible
 
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.share.PageData
@@ -20,9 +20,9 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 
 @RestController
-@RequestMapping("/admin/interact/v2")
+@RequestMapping("/admin/interact")
 @Validated
-class AdminInteractController {
+class CompatibleAdminInteractController {
 
     @PostMapping("/loadDanmu")
     fun adminInteractLoadDanmuku(@RequestBody request: AdminInteractLoadDanmuku.Request): PageData<AdminInteractLoadDanmuku.Response> {
@@ -65,10 +65,10 @@ class AdminInteractController {
     }
 
     @PostMapping("/delDanmu")
-    fun adminInteractDelDanmuku(@RequestBody @Validated request: AdminInteractDelDanmuku.Request): AdminInteractDelDanmuku.Response {
+    fun adminInteractDelDanmuku(danmuId: Long): AdminInteractDelDanmuku.Response {
         Mediator.commands.send(
             DeleteDanmukuCmd.Request(
-                danmukuId = request.danmuId!!
+                danmukuId = danmuId
             )
         )
         return AdminInteractDelDanmuku.Response()
@@ -120,11 +120,10 @@ class AdminInteractController {
     }
 
     @PostMapping("/delComment")
-    fun adminInteractDelComment(@RequestBody @Validated request: AdminInteractDelComment.Request): AdminInteractDelComment.Response {
+    fun adminInteractDelComment(commentId: Long): AdminInteractDelComment.Response {
         Mediator.commands.send(
             DelCommentCmd.Request(
-                commentId = request.commentId!!,
-                operatorId = null
+                commentId = commentId,
             )
         )
         return AdminInteractDelComment.Response()
