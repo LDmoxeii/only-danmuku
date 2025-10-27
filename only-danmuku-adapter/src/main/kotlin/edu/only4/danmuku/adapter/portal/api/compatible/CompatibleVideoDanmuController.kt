@@ -1,4 +1,4 @@
-package edu.only4.danmuku.adapter.portal.api
+package edu.only4.danmuku.adapter.portal.api.compatible
 
 import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
@@ -6,6 +6,9 @@ import edu.only4.danmuku.adapter.portal.api.payload.DanmukuLoad
 import edu.only4.danmuku.adapter.portal.api.payload.DanmukuPost
 import edu.only4.danmuku.application.commands.video_danmuku.PostDanmukuCmd
 import edu.only4.danmuku.application.queries.video_danmuku.GetDanmukuByFileIdQry
+import io.reactivex.rxjava3.internal.util.QueueDrainHelper.request
+import jakarta.validation.constraints.NotEmpty
+import jakarta.validation.constraints.Size
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -22,7 +25,7 @@ import java.time.format.DateTimeFormatter
 @RestController
 @RequestMapping("/danmu/v2")
 @Validated
-class DanmuController {
+class CompatibleVideoDanmuController {
 
     /**
      * 加载弹幕列表
@@ -30,7 +33,7 @@ class DanmuController {
     @PostMapping("/loadDanmu")
     fun danmukuLoad(@RequestBody @Validated request: DanmukuLoad.Request): List<DanmukuLoad.DanmukuItem> {
         // 调用查询获取弹幕列表
-        val queryResult = Mediator.queries.send(
+        val queryResult = Mediator.Companion.queries.send(
             GetDanmukuByFileIdQry.Request(
                 fileId = request.fileId.toLong(),
                 videoId = request.videoId.toLong()
@@ -60,18 +63,25 @@ class DanmuController {
      * 发送弹幕
      */
     @PostMapping("/postDanmu")
-    fun danmukuPost(@RequestBody @Validated request: DanmukuPost.Request): DanmukuPost.Response {
+    fun danmukuPost(
+        videoId: Long,
+        fileId: Long,
+        @NotEmpty @Size(max = 200) text: String,
+        mode: Int,
+        @NotEmpty color: String,
+        time: Int,
+    ): DanmukuPost.Response {
         // 调用命令发送弹幕
         val userId = LoginHelper.getUserId()!!
         Mediator.commands.send(
             PostDanmukuCmd.Request(
-                videoId = request.videoId.toLong(),
-                fileId = request.fileId.toLong(),
+                videoId = videoId,
+                fileId = fileId,
                 customerId = userId,
-                text = request.text,
-                mode = request.mode ?: 1, // 默认滚动模式
-                color = request.color,
-                time = request.time ?: 0 // 默认0秒
+                text = text,
+                mode = mode,
+                color = color,
+                time = time
             )
         )
         return DanmukuPost.Response()
