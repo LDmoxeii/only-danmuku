@@ -22,7 +22,7 @@ object SaveVideoInfoCmd {
             val totalDuration = request.uploadFileList.sumOf { it.duration }
 
             // 查找草稿
-            val draft = Mediator.repositories.findFirst(
+            val draft = Mediator.repositories.findOne(
                 SVideoPost.predicate { schema ->
                     schema.all(
                         schema.id eq videoId,
@@ -35,8 +35,8 @@ object SaveVideoInfoCmd {
             // 更新草稿基础信息
             draft.videoCover = request.videoCover
             draft.videoName = request.videoName
-            draft.pCategoryId = request.pCategoryId.toLong()
-            draft.categoryId = request.categoryId?.toLong()
+            draft.pCategoryId = request.parentCategoryId
+            draft.categoryId = request.categoryId
             draft.postType = PostType.valueOf(request.postType)
             draft.tags = request.tags
             draft.introduction = request.introduction
@@ -62,9 +62,9 @@ object SaveVideoInfoCmd {
         /** 视频名称 */
         val videoName: String,
         /** 父分类ID */
-        val pCategoryId: Int,
+        val parentCategoryId: Long,
         /** 分类ID */
-        val categoryId: Int? = null,
+        val categoryId: Long? = null,
         /** 上传类型(0自制/1转载) */
         val postType: Int,
         /** 标签 */

@@ -4,8 +4,7 @@ import com.only4.cap4k.ddd.core.application.query.Query
 import edu.only4.danmuku.application._share.config.properties.FileAppProperties
 import edu.only4.danmuku.application._share.constants.Constants
 import edu.only4.danmuku.application.queries._share.model.VideoFile
-import edu.only4.danmuku.application.queries._share.model.category.fetchBy
-import edu.only4.danmuku.application.queries._share.model.category.id
+import edu.only4.danmuku.application.queries._share.model.id
 import edu.only4.danmuku.application.queries.file.GetVideoResourceQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.eq

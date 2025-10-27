@@ -1,4 +1,4 @@
-package edu.only4.danmuku.adapter.portal.api
+package edu.only4.danmuku.adapter.portal.api.compatible
 
 import com.only.engine.json.misc.JsonUtils
 import com.only.engine.satoken.utils.LoginHelper
@@ -11,6 +11,8 @@ import edu.only4.danmuku.application.commands.video_draft.SaveVideoInfoCmd
 import edu.only4.danmuku.application.queries.video_draft.GetUserVideoDraftsQry
 import edu.only4.danmuku.application.queries.video_draft.GetVideoDraftCountByStatusQry
 import edu.only4.danmuku.application.queries.video_draft.GetVideoDraftInfoQry
+import jakarta.validation.constraints.NotEmpty
+import jakarta.validation.constraints.Size
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import java.time.Instant
@@ -23,32 +25,43 @@ import java.time.format.DateTimeFormatter
  * 处理视频上传、编辑、删除等操作
  */
 @RestController
-@RequestMapping("/ucenter/v2")
+@RequestMapping("/ucenter")
 @Validated
-class UCenterVideoPostController {
+class CompatibleUCenterVideoPostController {
 
     /**
      * 发布视频
      */
     @PostMapping("/postVideo")
-    fun postVideo(@RequestBody @Validated request: UCenterPostVideo.Request): UCenterPostVideo.Response {
+    fun postVideo(
+        videoId: Long,
+        @NotEmpty videoCover: String,
+        @NotEmpty @Size(max = 100) videoName: String,
+        parentCategoryId: Long,
+        categoryId: Long?,
+        postType: Int,
+        @NotEmpty @Size(max = 300) tags: String,
+        @Size(max = 2000) introduction: String,
+        @Size(max = 3) interaction: String,
+        @NotEmpty uploadFileList: String,
+    ): UCenterPostVideo.Response {
         // 解析上传文件列表 JSON
-        val fileList = JsonUtils.parseArray(request.uploadFileList, SaveVideoInfoCmd.VideoFileInfo::class.java)
+        val fileList = JsonUtils.parseArray(uploadFileList, SaveVideoInfoCmd.VideoFileInfo::class.java)
 
         // 调用命令保存视频信息
         val currentUserId = LoginHelper.getUserId()!!
         Mediator.commands.send(
             SaveVideoInfoCmd.Request(
                 customerId = currentUserId,
-                videoId = request.videoId?.toLong(),
-                videoCover = request.videoCover,
-                videoName = request.videoName,
-                pCategoryId = request.pCategoryId,
-                categoryId = request.categoryId,
-                postType = request.postType,
-                tags = request.tags,
-                introduction = request.introduction,
-                interaction = request.interaction,
+                videoId = videoId,
+                videoCover = videoCover,
+                videoName = videoName,
+                parentCategoryId = parentCategoryId,
+                categoryId = categoryId,
+                postType = postType,
+                tags = tags,
+                introduction = introduction,
+                interaction = interaction,
                 uploadFileList = fileList
             )
         )
