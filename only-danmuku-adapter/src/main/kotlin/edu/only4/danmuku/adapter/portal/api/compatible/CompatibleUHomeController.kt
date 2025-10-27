@@ -1,4 +1,4 @@
-package edu.only4.danmuku.adapter.portal.api
+package edu.only4.danmuku.adapter.portal.api.compatible
 
 import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
@@ -13,6 +13,8 @@ import edu.only4.danmuku.application.queries.customer_focus.GetFansListQry
 import edu.only4.danmuku.application.queries.customer_focus.GetFocusListQry
 import edu.only4.danmuku.application.queries.customer_profile.GetCustomerProfileQry
 import edu.only4.danmuku.application.queries.video.SearchVideosQry
+import jakarta.validation.constraints.NotEmpty
+import jakarta.validation.constraints.Size
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -23,35 +25,31 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
-/**
- * 用户主页控制器
- * 处理用户信息、关注、视频列表等操作
- */
 @RestController
-@RequestMapping("/uhome/v2")
+@RequestMapping("/uhome")
 @Validated
-class UHomeController {
+class CompatibleUHomeController {
 
     /**
      * 获取用户信息
      */
     @PostMapping("/getUserInfo")
-    fun uHomeGetUserInfo(@RequestBody @Validated request: UHomeGetUserInfo.Request): UHomeGetUserInfo.Response {
+    fun uHomeGetUserInfo(userId :Long): UHomeGetUserInfo.Response {
         val currentUserId = LoginHelper.getUserId()!!
 
         // 调用查询获取用户详细信息
         val queryResult = Mediator.queries.send(
             GetCustomerProfileQry.Request(
-                customerId = request.userId.toLong()
+                customerId = userId
             )
         )
 
         // 检查当前用户是否关注了该用户
-        val haveFocus = if (currentUserId != request.userId.toLong()) {
+        val haveFocus = if (currentUserId != userId) {
             Mediator.queries.send(
                 CheckFocusStatusQry.Request(
                     userId = currentUserId,
-                    focusUserId = request.userId.toLong()
+                    focusUserId = userId
                 )
             ).haveFocus
         } else {
@@ -63,12 +61,12 @@ class UHomeController {
                 userId = queryResult.customerId.toString(),
                 nickName = queryResult.nickName,
                 avatar = queryResult.avatar,
-                sex = queryResult.sex.toInt(),
+                sex = queryResult.sex,
                 birthday = queryResult.birthday,
                 school = queryResult.school,
                 personIntroduction = queryResult.personIntroduction,
                 noticeInfo = queryResult.noticeInfo,
-                theme = queryResult.theme.toInt(),
+                theme = queryResult.theme,
                 currentCoinCount = queryResult.currentCoinCount,
                 fansCount = queryResult.fansCount,
                 focusCount = queryResult.focusCount,
@@ -81,20 +79,30 @@ class UHomeController {
      * 更新用户信息
      */
     @PostMapping("/updateUserInfo")
-    fun uHomeUpdateUserInfo(@RequestBody @Validated request: UHomeUpdateUserInfo.Request): UHomeUpdateUserInfo.Response {
+    fun uHomeUpdateUserInfo(
+        @NotEmpty @Size(max = 20) nickName: String,
+        @NotEmpty @Size(max = 100) avatar: String,
+        sex: Int, birthday: String?,
+        @Size(max = 150) school: String?,
+        @Size(max = 80) personIntroduction: String?,
+        @Size(max = 300) noticeInfo: String?,
+    ): UHomeUpdateUserInfo.Response {
         val userId = LoginHelper.getUserId()!!
-
-        // 调用命令更新用户信息
+        // TODO
+        // 需要判断是否有足够的硬币修改昵称，
+        // 如果修改了昵称，需要发出事件，并触发扣减硬币命令
+        // 如果修改了昵称，还需要触发修改token的命令
+        // 如果修改头像信息，也需要出发修改token的命令
         Mediator.commands.send(
             UpdateCustomerProfileCmd.Request(
                 customerId = userId,
-                nickName = request.nickName,
-                avatar = request.avatar,
-                sex = request.sex,
-                birthday = request.birthday,
-                school = request.school,
-                personIntroduction = request.personIntroduction,
-                noticeInfo = request.noticeInfo
+                nickName = nickName,
+                avatar = avatar,
+                sex = sex,
+                birthday = birthday,
+                school = school,
+                personIntroduction = personIntroduction,
+                noticeInfo = noticeInfo
             )
         )
 
@@ -122,13 +130,13 @@ class UHomeController {
      * 关注用户
      */
     @PostMapping("/focus")
-    fun uHomeFocus(@RequestBody @Validated request: UHomeFocus.Request): UHomeFocus.Response {
+    fun uHomeFocus(focusUserId: Long): UHomeFocus.Response {
         val currentUserId = LoginHelper.getUserId()!!
 
         Mediator.commands.send(
             FocusCmd.Request(
                 userId = currentUserId,
-                focusUserId = request.focusUserId.toLong()
+                focusUserId = focusUserId
             )
         )
 
@@ -139,14 +147,14 @@ class UHomeController {
      * 取消关注
      */
     @PostMapping("/cancelFocus")
-    fun uHomeCancelFocus(@RequestBody @Validated request: UHomeCancelFocus.Request): UHomeCancelFocus.Response {
+    fun uHomeCancelFocus(focusUserId: Long): UHomeCancelFocus.Response {
         val currentUserId = LoginHelper.getUserId()!!
 
         // 调用命令取消关注
         Mediator.commands.send(
             UnFocusCmd.Request(
                 userId = currentUserId,
-                focusUserId = request.focusUserId.toLong()
+                focusUserId = focusUserId
             )
         )
 
