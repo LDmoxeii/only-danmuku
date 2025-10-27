@@ -26,6 +26,11 @@ object PostCommentCmd {
                 persist = false
             ).getOrNull() ?: throw KnownException("视频不存在：${request.videoId}")
 
+            // TODO： 是否回复顶级评论
+            // 判断是否是回复其他评论的情况
+            // 如果被回复的是顶级评论，则将当前评论设为该顶级评论的子评论
+            // 如果被回复的是子评论，则继承其父评论ID，并设置被回复用户信息
+            // 如果不是回复其他评论，则设置为顶级评论（pCommentId=0）
             val parentId = request.replyCommentId ?: 0L
             val now = System.currentTimeMillis() / 1000
 

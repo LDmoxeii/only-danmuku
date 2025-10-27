@@ -1,14 +1,22 @@
-package edu.only4.danmuku.adapter.portal.api
+package edu.only4.danmuku.adapter.portal.api.compatible
 
 import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.share.PageData
-import edu.only4.danmuku.adapter.portal.api.payload.*
+import edu.only4.danmuku.adapter.portal.api.payload.CommentCancelTop
+import edu.only4.danmuku.adapter.portal.api.payload.CommentLoad
+import edu.only4.danmuku.adapter.portal.api.payload.CommentPost
+import edu.only4.danmuku.adapter.portal.api.payload.CommentTop
+import edu.only4.danmuku.adapter.portal.api.payload.CommentUserDel
 import edu.only4.danmuku.application.commands.video_comment.DelCommentCmd
 import edu.only4.danmuku.application.commands.video_comment.PostCommentCmd
 import edu.only4.danmuku.application.commands.video_comment.TopCommentCmd
 import edu.only4.danmuku.application.commands.video_comment.UntopCommentCmd
 import edu.only4.danmuku.application.queries.video_comment.VideoCommentPageQry
+import edu.only4.danmuku.domain.aggregates.video_comment.VideoComment_.content
+import io.reactivex.rxjava3.internal.util.QueueDrainHelper.request
+import jakarta.validation.constraints.NotEmpty
+import jakarta.validation.constraints.Size
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -23,9 +31,9 @@ import java.time.format.DateTimeFormatter
  * 视频评论控制器
  */
 @RestController
-@RequestMapping("/comment/v2")
+@RequestMapping("/comment")
 @Validated
-class CommentController {
+class CompatibleVideoCommentController {
 
     /**
      * 加载评论列表(分页)
@@ -84,41 +92,39 @@ class CommentController {
      * 发表评论
      */
     @PostMapping("/postComment")
-    fun commentPost(@RequestBody @Validated request: CommentPost.Request): CommentPost.Response {
+    fun commentPost(
+        videoId: Long,
+        replyCommentId: Long?,
+        @NotEmpty @Size(max = 500) content: String,
+        @Size(max = 50) imgPath: String?,
+    ): CommentPost.Response {
         // 调用命令发表评论
         val currentUserId = LoginHelper.getUserId()!!
-        val commandResult = Mediator.commands.send(
+        // TODO： 是否回复顶级评论
+
+        Mediator.commands.send(
             PostCommentCmd.Request(
-                videoId = request.videoId.toLong(),
-                replyCommentId = request.replyCommentId?.toLong(),
+                videoId = videoId,
+                replyCommentId = replyCommentId,
                 customerId = currentUserId,
-                content = request.content,
-                imgPath = request.imgPath
+                content = content,
+                imgPath = imgPath
             )
         )
 
         // 返回评论对象
-        return CommentPost.Response(
-            comment = CommentPost.CommentItem(
-                commentId = commandResult.commentId.toString(),
-                videoId = request.videoId,
-                userId = currentUserId.toString(),
-                content = request.content,
-                imgPath = request.imgPath,
-                postTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
-            )
-        )
+        return CommentPost.Response()
     }
 
     /**
      * 用户删除评论
      */
     @PostMapping("/userDelComment")
-    fun commentUserDel(@RequestBody @Validated request: CommentUserDel.Request): CommentUserDel.Response {
+    fun commentUserDel(commentId: Long): CommentUserDel.Response {
         // 调用命令删除评论
         Mediator.commands.send(
             DelCommentCmd.Request(
-                commentId = request.commentId.toLong(),
+                commentId = commentId,
                 operatorId = LoginHelper.getUserId()!!
             )
         )
@@ -129,11 +135,11 @@ class CommentController {
      * 置顶评论
      */
     @PostMapping("/topComment")
-    fun commentTop(@RequestBody @Validated request: CommentTop.Request): CommentTop.Response {
+    fun commentTop(commentId: Long): CommentTop.Response {
         // 调用命令置顶评论
         Mediator.commands.send(
             TopCommentCmd.Request(
-                commentId = request.commentId.toLong(),
+                commentId = commentId,
                 operatorId = LoginHelper.getUserId()!!
             )
         )
@@ -144,10 +150,10 @@ class CommentController {
      * 取消置顶评论
      */
     @PostMapping("/cancelTopComment")
-    fun commentCancelTop(@RequestBody @Validated request: CommentCancelTop.Request): CommentCancelTop.Response {
+    fun commentCancelTop(commentId: Long): CommentCancelTop.Response {
         Mediator.commands.send(
             UntopCommentCmd.Request(
-                commentId = request.commentId.toLong(),
+                commentId = commentId,
                 operatorId = LoginHelper.getUserId()!!
             )
         )
