@@ -21,4 +21,9 @@ object Constants {
      * Redis键：Admin端Token
      */
     const val REDIS_KEY_TOKEN_ADMIN: String = REDIS_KEY_PREFIX + "token:admin:" // Redis键：Admin端Token
+
+    /**
+     * 系统设置相关Redis键
+     */
+    const val REDIS_KEY_SYS_SETTING: String = REDIS_KEY_PREFIX + "sysSetting:" // Redis键：系统设置
 }
