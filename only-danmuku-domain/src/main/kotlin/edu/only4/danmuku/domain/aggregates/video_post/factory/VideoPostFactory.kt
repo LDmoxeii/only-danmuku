@@ -57,7 +57,6 @@ class VideoPostFactory : AggregateFactory<VideoPostFactory.Payload, VideoPost> {
         description = ""
     )
     data class Payload(
-         val videoId: Long,
          val customerId: Long,
          val videoName: String,
          val videoCover: String? = null,

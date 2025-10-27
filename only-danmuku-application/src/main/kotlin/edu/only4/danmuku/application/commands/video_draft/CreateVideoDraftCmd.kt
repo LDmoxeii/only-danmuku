@@ -21,11 +21,10 @@ object CreateVideoDraftCmd {
         override fun exec(request: Request): Response {
             val draft = Mediator.factories.create(
                 VideoPostFactory.Payload(
-                    videoId = request.videoId,
                     customerId = request.customerId,
                     videoName = request.videoName,
                     videoCover = request.videoCover,
-                    pCategoryId = request.pCategoryId,
+                    pCategoryId = request.parentCategoryId,
                     categoryId = request.categoryId,
                     postType = request.postType,
                     originInfo = request.originInfo,
@@ -48,18 +47,10 @@ object CreateVideoDraftCmd {
                     )
                 }
 
-                val buildResult = runCatching {
-                    VideoFilePost.buildFromUploads(
-                        customerId = request.customerId,
-                        videoPost = draft,
-                        uploads = uploadSpecs
-                    )
-                }.getOrElse { ex ->
-                    if (ex is IllegalArgumentException) {
-                        throw KnownException(ex.message ?: "非法的上传文件参数")
-                    }
-                    throw ex
-                }
+                val buildResult = VideoFilePost.buildFromUploads(
+                    customerId = request.customerId,
+                    uploads = uploadSpecs
+                )
 
                 draft.videoFilePosts.clear()
                 draft.videoFilePosts.addAll(buildResult.fileDrafts)
@@ -74,16 +65,16 @@ object CreateVideoDraftCmd {
 
     @MaxVideoPCount(countField = "uploadFileList", videoIdField = "videoId")
     data class Request(
-        val videoId: Long,
         val customerId: Long,
         val videoName: String,
         val videoCover: String? = null,
-        val pCategoryId: Long,
+        val parentCategoryId: Long,
         val categoryId: Long? = null,
         val postType: PostType = PostType.valueOf(1),
         val originInfo: String? = null,
         val tags: String? = null,
         val introduction: String? = null,
+        val interaction: String,
         val uploadFileList: List<VideoFileInfo> = emptyList(),
     ) : RequestParam<Response>
 

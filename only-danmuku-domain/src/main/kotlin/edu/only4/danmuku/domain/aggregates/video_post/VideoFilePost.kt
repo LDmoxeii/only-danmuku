@@ -274,7 +274,6 @@ class VideoFilePost(
     companion object {
         fun buildFromUploads(
             customerId: Long,
-            videoPost: VideoPost,
             uploads: List<UploadSpec>,
         ): BuildResult {
             if (uploads.isEmpty()) {
@@ -297,10 +296,7 @@ class VideoFilePost(
                     updateType = UpdateType.HAS_UPDATE,
                     transferResult = TransferResult.TRANSCODING,
                     duration = upload.duration
-                ).also {
-                    it.videoPost = videoPost
-                    it.onCreate()
-                }
+                )
             }
             return BuildResult(fileDrafts = fileDrafts, totalDuration = totalDuration)
         }

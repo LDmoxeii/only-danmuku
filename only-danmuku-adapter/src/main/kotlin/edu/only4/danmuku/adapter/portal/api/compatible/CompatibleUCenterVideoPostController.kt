@@ -7,10 +7,11 @@ import com.only4.cap4k.ddd.core.share.PageData
 import edu.only4.danmuku.adapter.portal.api.payload.*
 import edu.only4.danmuku.application.commands.video.ChangeVideoInteractionCmd
 import edu.only4.danmuku.application.commands.video.DeleteVideoCmd
-import edu.only4.danmuku.application.commands.video_draft.SaveVideoInfoCmd
+import edu.only4.danmuku.application.commands.video_draft.CreateVideoDraftCmd
 import edu.only4.danmuku.application.queries.video_draft.GetUserVideoDraftsQry
 import edu.only4.danmuku.application.queries.video_draft.GetVideoDraftCountByStatusQry
 import edu.only4.danmuku.application.queries.video_draft.GetVideoDraftInfoQry
+import edu.only4.danmuku.domain.aggregates.video.enums.PostType
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.Size
 import org.springframework.validation.annotation.Validated
@@ -34,7 +35,7 @@ class CompatibleUCenterVideoPostController {
      */
     @PostMapping("/postVideo")
     fun postVideo(
-        videoId: Long,
+        videoId: Long?,
         @NotEmpty videoCover: String,
         @NotEmpty @Size(max = 100) videoName: String,
         parentCategoryId: Long,
@@ -46,19 +47,19 @@ class CompatibleUCenterVideoPostController {
         @NotEmpty uploadFileList: String,
     ): UCenterPostVideo.Response {
         // 解析上传文件列表 JSON
-        val fileList = JsonUtils.parseArray(uploadFileList, SaveVideoInfoCmd.VideoFileInfo::class.java)
+        val fileList = JsonUtils.parseArray(uploadFileList, CreateVideoDraftCmd.VideoFileInfo::class.java)
 
+        // TODO: 通过是否传入ID， 判断是否新增还是更新
         // 调用命令保存视频信息
         val currentUserId = LoginHelper.getUserId()!!
         Mediator.commands.send(
-            SaveVideoInfoCmd.Request(
+            CreateVideoDraftCmd.Request(
                 customerId = currentUserId,
-                videoId = videoId,
                 videoCover = videoCover,
                 videoName = videoName,
                 parentCategoryId = parentCategoryId,
                 categoryId = categoryId,
-                postType = postType,
+                postType = PostType.valueOf(postType),
                 tags = tags,
                 introduction = introduction,
                 interaction = interaction,
@@ -209,6 +210,7 @@ class CompatibleUCenterVideoPostController {
     fun saveVideoInteraction(@RequestBody @Validated request: UCenterSaveVideoInteraction.Request): UCenterSaveVideoInteraction.Response {
         val userId = LoginHelper.getUserId()!!
 
+        // TODO：未发出事件，并同步视频草稿互动配置
         Mediator.commands.send(
             ChangeVideoInteractionCmd.Request(
                 videoId = request.videoId.toLong(),
