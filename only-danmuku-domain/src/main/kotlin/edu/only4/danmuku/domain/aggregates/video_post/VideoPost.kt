@@ -4,6 +4,7 @@ import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
 
 import edu.only4.danmuku.domain.aggregates.video.enums.PostType
+import edu.only4.danmuku.domain.aggregates.video_post.enums.UpdateType
 import edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus
 import edu.only4.danmuku.domain.aggregates.video_post.events.VideoAuditFailedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video_post.events.VideoAuditPassedDomainEvent
@@ -209,6 +210,7 @@ class VideoPost(
     fun reviewPass() {
         if (this.status == VideoStatus.REVIEW_PASSED) return
         this.status = VideoStatus.REVIEW_PASSED
+        this.videoFilePosts.forEach{ it.updateType(UpdateType.NO_UPDATE)}
         events().attach(this) { VideoAuditPassedDomainEvent(entity = this) }
     }
 

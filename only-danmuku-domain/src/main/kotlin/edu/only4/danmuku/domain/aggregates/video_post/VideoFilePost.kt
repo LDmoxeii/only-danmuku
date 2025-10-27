@@ -186,6 +186,10 @@ class VideoFilePost(
         events().attach(this) { VideoFileDraftCreatedDomainEvent(this) }
     }
 
+    fun updateType(typpe: UpdateType) {
+        this.updateType = typpe
+    }
+
     /**
      * 标记转码开始
      */

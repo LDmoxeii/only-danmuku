@@ -14,7 +14,6 @@ object BatchDeleteCommentCmd {
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
-            // 根据视频 ID 批量删除所有评论（包括主评论和回复）
             Mediator.repositories.remove(
                 SVideoComment.predicate { it.videoId eq request.videoId }
             )

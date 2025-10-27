@@ -4,7 +4,6 @@ import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
-import java.io.File
 
 /**
  * 清理视频草稿产生的临时文件

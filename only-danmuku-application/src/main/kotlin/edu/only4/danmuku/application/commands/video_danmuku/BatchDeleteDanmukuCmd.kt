@@ -18,7 +18,6 @@ object BatchDeleteDanmukuCmd {
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
-            // 根据视频 ID 批量删除所有弹幕数据
             Mediator.repositories.remove(
                 SVideoDanmuku.predicate { it.videoId eq request.videoId }
             )

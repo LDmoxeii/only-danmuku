@@ -37,7 +37,6 @@ object AdjustAuthorCoinAfterDeleteCmd {
 
     data class Request(
         val authorId: Long,
-        val videoId: Long,
     ) : RequestParam<Response>
 
     data class Response(

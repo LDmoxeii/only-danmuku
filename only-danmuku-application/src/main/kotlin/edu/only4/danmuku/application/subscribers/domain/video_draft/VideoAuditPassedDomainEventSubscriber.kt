@@ -20,45 +20,33 @@ class VideoAuditPassedDomainEventSubscriber {
     @EventListener(VideoAuditPassedDomainEvent::class)
     fun on(event: VideoAuditPassedDomainEvent) {
         val videoDraft = event.entity
-        try {
-            Mediator.commands.send(
-                RewardUserForVideoCmd.Request(
-                    customerId = videoDraft.customerId,
-                    videoId = videoDraft.id,
-                )
+        Mediator.commands.send(
+            RewardUserForVideoCmd.Request(
+                customerId = videoDraft.customerId,
             )
-        } catch (ex: Exception) {
-            logger.error("首次发布奖励命令执行失败: videoId={}", videoDraft.id, ex)
-        }
+        )
     }
 
     @EventListener(VideoAuditPassedDomainEvent::class)
     fun on1(event: VideoAuditPassedDomainEvent) {
         val videoDraft = event.entity
-        try {
-            Mediator.commands.send(
-                TransferVideoToProductionCmd.Request(
-                    videoPost = videoDraft
-                )
+        Mediator.commands.send(
+            TransferVideoToProductionCmd.Request(
+                videoPost = videoDraft
             )
-        } catch (ex: Exception) {
-            logger.error("转移视频至正式库失败: videoId={}", videoDraft.id, ex)
-        }
+        )
     }
 
     @EventListener(VideoAuditPassedDomainEvent::class)
     fun on2(event: VideoAuditPassedDomainEvent) {
         val videoDraft = event.entity
-        try {
-            Mediator.commands.send(
-                CleanTempFilesCmd.Request(
-                    customerId = videoDraft.customerId,
-                    videoId = videoDraft.id,
-                )
+        TODO("为实现， 等待摸清临时文件来源")
+        Mediator.commands.send(
+            CleanTempFilesCmd.Request(
+                customerId = videoDraft.customerId,
+                videoId = videoDraft.id,
             )
-        } catch (ex: Exception) {
-            logger.error("清理临时文件失败: videoId={}", videoDraft.id, ex)
-        }
+        )
     }
 
     @EventListener(VideoAuditPassedDomainEvent::class)

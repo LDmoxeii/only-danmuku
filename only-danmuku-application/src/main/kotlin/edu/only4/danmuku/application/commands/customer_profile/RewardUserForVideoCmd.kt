@@ -20,14 +20,6 @@ object RewardUserForVideoCmd {
         private val sysSettingProperties: SysSettingProperties,
     ) : Command<Request, Response> {
         override fun exec(request: Request): Response {
-            val existingVideo = Mediator.repositories.findFirst(
-                SVideo.predicateById(request.videoId),
-                persist = false
-            ).getOrNull()
-            if (existingVideo != null) {
-                return Response(rewarded = false, coinAmount = 0)
-            }
-
             val profile = Mediator.repositories.findFirst(
                 SCustomerProfile.predicate { it.userId eq request.customerId },
                 persist = true
@@ -43,7 +35,6 @@ object RewardUserForVideoCmd {
 
     data class Request(
         val customerId: Long,
-        val videoId: Long,
     ) : RequestParam<Response>
 
     data class Response(
