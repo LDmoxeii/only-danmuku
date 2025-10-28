@@ -27,10 +27,13 @@ object UHomeGetUserInfo {
         var school: String? = null,
         var personIntroduction: String? = null,
         var noticeInfo: String? = null,
+        var grade: Int? = null,
         var theme: Int? = null,
         var currentCoinCount: Int? = null,
         var fansCount: Long? = null,
         var focusCount: Long? = null,
+        var likeCount: Int? = null,
+        var playCount: Int? = null,
         var haveFocus: Boolean? = null,
     )
 }

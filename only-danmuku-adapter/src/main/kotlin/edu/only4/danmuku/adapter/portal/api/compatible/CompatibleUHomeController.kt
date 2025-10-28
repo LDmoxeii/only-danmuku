@@ -13,6 +13,7 @@ import edu.only4.danmuku.application.queries.customer_focus.GetFansListQry
 import edu.only4.danmuku.application.queries.customer_focus.GetFocusListQry
 import edu.only4.danmuku.application.queries.customer_profile.GetCustomerProfileQry
 import edu.only4.danmuku.application.queries.video.SearchVideosQry
+import edu.only4.danmuku.application.queries.statistics.GetTotalStatisticsInfoQry
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.Size
 import org.springframework.validation.annotation.Validated
@@ -34,8 +35,7 @@ class CompatibleUHomeController {
      * 获取用户信息
      */
     @PostMapping("/getUserInfo")
-    fun uHomeGetUserInfo(userId :Long): UHomeGetUserInfo.Response {
-        val currentUserId = LoginHelper.getUserId()!!
+    fun uHomeGetUserInfo(userId: Long): UHomeGetUserInfo.UserInfo {
 
         // 调用查询获取用户详细信息
         val queryResult = Mediator.queries.send(
@@ -44,34 +44,39 @@ class CompatibleUHomeController {
             )
         )
 
-        // 检查当前用户是否关注了该用户
-        val haveFocus = if (currentUserId != userId) {
-            Mediator.queries.send(
-                CheckFocusStatusQry.Request(
-                    userId = currentUserId,
-                    focusUserId = userId
-                )
-            ).haveFocus
-        } else {
-            false
-        }
+        // 汇总统计：播放量与点赞数
+        val stats = Mediator.queries.send(
+            GetTotalStatisticsInfoQry.Request(userId = userId)
+        )
 
-        return UHomeGetUserInfo.Response(
-            userInfo = UHomeGetUserInfo.UserInfo(
-                userId = queryResult.customerId.toString(),
-                nickName = queryResult.nickName,
-                avatar = queryResult.avatar,
-                sex = queryResult.sex,
-                birthday = queryResult.birthday,
-                school = queryResult.school,
-                personIntroduction = queryResult.personIntroduction,
-                noticeInfo = queryResult.noticeInfo,
-                theme = queryResult.theme,
-                currentCoinCount = queryResult.currentCoinCount,
-                fansCount = queryResult.fansCount,
-                focusCount = queryResult.focusCount,
-                haveFocus = haveFocus
-            )
+        val haveFocus = LoginHelper.getUserId()?.let {
+            if (it != userId) {
+                Mediator.queries.send(
+                    CheckFocusStatusQry.Request(
+                        userId = it,
+                        focusUserId = userId
+                    )
+                ).haveFocus
+            } else false
+        } ?: false
+
+        return UHomeGetUserInfo.UserInfo(
+            userId = queryResult.customerId.toString(),
+            nickName = queryResult.nickName,
+            avatar = queryResult.avatar,
+            sex = queryResult.sex,
+            birthday = queryResult.birthday,
+            school = queryResult.school,
+            personIntroduction = queryResult.personIntroduction,
+            noticeInfo = queryResult.noticeInfo,
+            grade = null,
+            theme = queryResult.theme,
+            currentCoinCount = queryResult.currentCoinCount,
+            fansCount = queryResult.fansCount,
+            focusCount = queryResult.focusCount,
+            likeCount = stats.likeCount,
+            playCount = stats.playCount,
+            haveFocus = haveFocus
         )
     }
 
