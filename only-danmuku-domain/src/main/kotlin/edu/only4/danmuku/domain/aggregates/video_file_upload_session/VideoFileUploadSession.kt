@@ -198,5 +198,16 @@ class VideoFileUploadSession(
         this.updateTime = now
     }
 
+    /**
+     * 初始化会话的临时目录并进入上传中状态
+     */
+    fun initTempAndStartUploading(tempPath: String, now: Long) {
+        this.tempPath = tempPath
+        if (this.status == UploadStatus.CREATED) {
+            this.status = UploadStatus.UPLOADING
+        }
+        this.updateTime = now
+    }
+
     // 【行为方法结束】
 }
