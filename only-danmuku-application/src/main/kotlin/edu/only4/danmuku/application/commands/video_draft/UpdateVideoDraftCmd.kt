@@ -9,9 +9,7 @@ import edu.only4.danmuku.application.validater.VideoDraftExists
 import edu.only4.danmuku.application.validater.VideoEditableStatus
 import edu.only4.danmuku.domain._share.meta.video_post.SVideoPost
 import edu.only4.danmuku.domain.aggregates.video.enums.PostType
-import edu.only4.danmuku.domain.aggregates.video_post.VideoFilePost
-import edu.only4.danmuku.domain.aggregates.video_post.enums.TransferResult
-import edu.only4.danmuku.domain.aggregates.video_post.enums.UpdateType
+import edu.only4.danmuku.domain.aggregates.video_post.VideoPost
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
 
@@ -32,118 +30,38 @@ object UpdateVideoDraftCmd {
                 throw KnownException("无权编辑该视频草稿")
             }
 
-            val originalVideoName = draft.videoName
-            val originalVideoCover = draft.videoCover
-            val originalPCategoryId = draft.pCategoryId
-            val originalCategoryId = draft.categoryId
-            val originalPostType = draft.postType
-            val originalOriginInfo = draft.originInfo
-            val originalTags = draft.tags
-            val originalIntroduction = draft.introduction
-            val originalDuration = draft.duration
+            val basicChanged = draft.applyBasicInfo(
+                videoName = request.videoName,
+                videoCover = request.videoCover,
+                pCategoryId = request.pCategoryId,
+                categoryId = request.categoryId,
+                postType = request.postType,
+                originInfo = request.originInfo,
+                tags = request.tags,
+                introduction = request.introduction,
+                interaction = request.interaction,
+            )
 
-            request.videoName?.let { draft.videoName = it }
-            request.videoCover?.let { draft.videoCover = it }
-            request.pCategoryId?.let { draft.pCategoryId = it }
-            draft.categoryId = request.categoryId
-            draft.postType = request.postType ?: draft.postType
-            draft.originInfo = request.originInfo
-            draft.tags = request.tags
-            draft.introduction = request.introduction
-
-            var hasNewFiles = false
-            var hasRemovedFiles = false
-            var hasFileMetaChange = false
-
+            var outcome: VideoPost.FileEditOutcome? = null
             request.uploadFileList?.let { uploadFileList ->
                 if (uploadFileList.isEmpty()) {
-                    if (draft.videoFilePosts.isNotEmpty()) {
-                        hasRemovedFiles = true
-                        draft.videoFilePosts.clear()
-                        draft.duration = null
-                    }
-                    return@let
-                }
-
-                val existingFileMap = draft.videoFilePosts.associateBy { it.uploadId }.toMutableMap()
-                val seenUploadIds = mutableSetOf<Long>()
-                val sortedUploads = uploadFileList.sortedBy { it.fileIndex }
-
-                val rebuiltList = mutableListOf<VideoFilePost>()
-                sortedUploads.forEachIndexed { index, fileInfo ->
-                    val uploadId = fileInfo.uploadId.toLongOrNull()
-                        ?: throw KnownException("非法的 uploadId: ${fileInfo.uploadId}")
-                    if (!seenUploadIds.add(uploadId)) {
-                        throw KnownException("重复的 uploadId: ${fileInfo.uploadId}")
-                    }
-
-                    val normalizedIndex = index + 1
-                    val existingFile = existingFileMap.remove(uploadId)
-                    if (existingFile != null) {
-                        if (existingFile.fileIndex != normalizedIndex) {
-                            existingFile.fileIndex = normalizedIndex
-                            hasFileMetaChange = true
-                        }
-                        if (fileInfo.fileName != existingFile.fileName) {
-                            existingFile.fileName = fileInfo.fileName
-                            hasFileMetaChange = true
-                        }
-                        if (fileInfo.fileSize != existingFile.fileSize) {
-                            existingFile.fileSize = fileInfo.fileSize
-                            hasFileMetaChange = true
-                        }
-                        val currentDuration = existingFile.duration ?: 0
-                        if (fileInfo.duration != currentDuration) {
-                            existingFile.duration = fileInfo.duration
-                            hasFileMetaChange = true
-                        }
-                        rebuiltList.add(existingFile)
-                    } else {
-                        hasNewFiles = true
-                        val newFile = VideoFilePost(
-                            uploadId = uploadId,
-                            customerId = request.customerId,
-                            fileIndex = normalizedIndex,
-                            fileName = fileInfo.fileName,
-                            fileSize = fileInfo.fileSize,
-                            updateType = UpdateType.HAS_UPDATE,
-                            transferResult = TransferResult.TRANSCODING,
-                            duration = fileInfo.duration
+                    outcome = draft.applyFileEdits(request.customerId, emptyList())
+                } else {
+                    val specs = uploadFileList.sortedBy { it.fileIndex }.map {
+                        VideoPost.FileEditSpec(
+                            fileId = it.fileId,
+                            uploadId = it.uploadId,
+                            fileIndex = it.fileIndex,
+                            fileName = it.fileName,
+                            fileSize = it.fileSize,
+                            duration = it.duration
                         )
-                        rebuiltList.add(newFile)
                     }
-                }
-
-                if (existingFileMap.isNotEmpty()) {
-                    hasRemovedFiles = true
-                }
-
-                draft.videoFilePosts.clear()
-                draft.videoFilePosts.addAll(rebuiltList)
-
-                val totalDuration = sortedUploads.sumOf { it.duration }
-                val normalizedDuration = totalDuration.takeIf { it > 0 }
-                if (normalizedDuration != draft.duration) {
-                    draft.duration = normalizedDuration
-                    hasFileMetaChange = true
+                    outcome = draft.applyFileEdits(request.customerId, specs)
                 }
             }
 
-            val basicInfoChanged =
-                draft.videoName != originalVideoName ||
-                        draft.videoCover != originalVideoCover ||
-                        draft.pCategoryId != originalPCategoryId ||
-                        draft.categoryId != originalCategoryId ||
-                        draft.postType != originalPostType ||
-                        draft.originInfo != originalOriginInfo ||
-                        draft.tags != originalTags ||
-                        draft.introduction != originalIntroduction ||
-                        draft.duration != originalDuration
-
-            when {
-                hasNewFiles -> draft.markTranscoding()
-                basicInfoChanged || hasFileMetaChange || hasRemovedFiles -> draft.markPendingReview()
-            }
+            draft.adjustStatusAfterEdit(basicChanged, outcome)
 
             Mediator.uow.save()
             return Response(videoId = draft.id)
@@ -164,15 +82,17 @@ object UpdateVideoDraftCmd {
         val originInfo: String? = null,
         val tags: String? = null,
         val introduction: String? = null,
+        val interaction: String? = null,
         val uploadFileList: List<VideoFileInfo>? = null,
     ) : RequestParam<Response>
 
     data class VideoFileInfo(
-        val uploadId: String,
+        val fileId: Long? = null,
+        val uploadId: Long? = null,
         val fileIndex: Int,
         val fileName: String,
-        val fileSize: Long,
-        val duration: Int,
+        val fileSize: Long? = null,
+        val duration: Int? = null,
     )
 
     data class Response(

@@ -9,6 +9,7 @@ import edu.only4.danmuku.domain.aggregates.video_post.VideoPost
 import edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus
 
 import org.springframework.stereotype.Service
+import java.time.Instant
 
 /**
  * 视频信息;
@@ -27,6 +28,7 @@ import org.springframework.stereotype.Service
 class VideoPostFactory : AggregateFactory<VideoPostFactory.Payload, VideoPost> {
 
     override fun create(entityPayload: Payload): VideoPost {
+        val now = Instant.now().epochSecond
         return VideoPost(
             videoCover = entityPayload.videoCover ?: "",
             videoName = entityPayload.videoName,
@@ -42,10 +44,10 @@ class VideoPostFactory : AggregateFactory<VideoPostFactory.Payload, VideoPost> {
             duration = null,
             createUserId = null,
             createBy = null,
-            createTime = null,
+            createTime = now,
             updateUserId = null,
             updateBy = null,
-            updateTime = null,
+            updateTime = now,
             deleted = 0L,
         )
     }

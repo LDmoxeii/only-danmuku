@@ -11,6 +11,7 @@ import edu.only4.danmuku.adapter.portal.api.payload.UCenterPostVideo
 import edu.only4.danmuku.application.commands.video.ChangeVideoInteractionCmd
 import edu.only4.danmuku.application.commands.video.DeleteVideoCmd
 import edu.only4.danmuku.application.commands.video_draft.CreateVideoDraftCmd
+import edu.only4.danmuku.application.commands.video_draft.UpdateVideoDraftCmd
 import edu.only4.danmuku.application.queries.video_draft.GetUserVideoDraftsQry
 import edu.only4.danmuku.application.queries.video_draft.GetVideoDraftCountByStatusQry
 import edu.only4.danmuku.application.queries.video_draft.GetVideoDraftInfoQry
@@ -44,26 +45,64 @@ class CompatibleUCenterVideoPostController {
         @Size(max = 3) interaction: String?,
         @NotEmpty uploadFileList: String,
     ): UCenterPostVideo.Response {
-        // 解析上传文件列表 JSON
-        val fileList = JsonUtils.parseArray(uploadFileList, CreateVideoDraftCmd.VideoFileInfo::class.java)
-
-        // TODO: 通过是否传入ID， 判断是否新增还是更新
-        // 调用命令保存视频信息
         val currentUserId = LoginHelper.getUserId()!!
-        Mediator.commands.send(
-            CreateVideoDraftCmd.Request(
-                customerId = currentUserId,
-                videoCover = videoCover,
-                videoName = videoName,
-                parentCategoryId = parentCategoryId,
-                categoryId = categoryId,
-                postType = PostType.valueOf(postType),
-                tags = tags,
-                introduction = introduction,
-                interaction = interaction,
-                uploadFileList = fileList
+
+        // 解析上传文件列表 JSON（兼容 uploadId/fileId 混合场景）
+        val mixedList = JsonUtils.parseArray(uploadFileList, UCenterPostVideo.MixedFileItem::class.java)
+
+        if (videoId == null) {
+            // 新增：创建视频草稿，仅保留带 uploadId 的条目
+            val createFileList = mixedList.mapIndexed { idx, item ->
+                CreateVideoDraftCmd.VideoFileInfo(
+                    uploadId = item.uploadId,
+                    fileIndex = idx + 1,
+                    fileName = item.fileName ?: "",
+                    fileSize = 0,
+                    duration = 0
+                )
+            }
+            Mediator.commands.send(
+                CreateVideoDraftCmd.Request(
+                    customerId = currentUserId,
+                    videoCover = videoCover,
+                    videoName = videoName,
+                    parentCategoryId = parentCategoryId,
+                    categoryId = categoryId,
+                    postType = PostType.valueOf(postType),
+                    tags = tags,
+                    introduction = introduction,
+                    interaction = interaction,
+                    uploadFileList = createFileList
+                )
             )
-        )
+        } else {
+            // 更新：更新视频草稿（含互动配置），支持 fileId 与 uploadId 混合
+            val updateFileList = mixedList.mapIndexed { idx, item ->
+                UpdateVideoDraftCmd.VideoFileInfo(
+                    fileId = item.fileId,
+                    uploadId = item.uploadId,
+                    fileIndex = idx + 1,
+                    fileName = item.fileName ?: "",
+                    fileSize = null,
+                    duration = null
+                )
+            }
+            Mediator.commands.send(
+                UpdateVideoDraftCmd.Request(
+                    videoId = videoId,
+                    customerId = currentUserId,
+                    videoName = videoName,
+                    videoCover = videoCover,
+                    pCategoryId = parentCategoryId,
+                    categoryId = categoryId,
+                    postType = PostType.valueOf(postType),
+                    tags = tags,
+                    introduction = introduction,
+                    interaction = interaction,
+                    uploadFileList = updateFileList
+                )
+            )
+        }
 
         return UCenterPostVideo.Response()
     }

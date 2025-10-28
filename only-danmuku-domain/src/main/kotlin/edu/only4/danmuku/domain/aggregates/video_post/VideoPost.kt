@@ -4,6 +4,7 @@ import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
 
 import edu.only4.danmuku.domain.aggregates.video.enums.PostType
+import edu.only4.danmuku.domain.aggregates.video_post.enums.TransferResult
 import edu.only4.danmuku.domain.aggregates.video_post.enums.UpdateType
 import edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus
 import edu.only4.danmuku.domain.aggregates.video_post.events.VideoAuditFailedDomainEvent
@@ -274,4 +275,200 @@ class VideoPost(
     }
 
     // 【行为方法结束】
+
+    // 【语义化编辑方法开始】
+
+    data class FileEditSpec(
+        val fileId: Long? = null,
+        val uploadId: Long? = null,
+        val fileIndex: Int,
+        val fileName: String,
+        val fileSize: Long? = null,
+        val duration: Int? = null,
+    )
+
+    data class FileEditOutcome(
+        val hasNewFiles: Boolean,
+        val hasRemovedFiles: Boolean,
+        val hasFileMetaChange: Boolean,
+        val totalDuration: Int,
+    )
+
+    /**
+     * 应用基础信息变更（仅对非空字段生效）
+     * @return 是否发生了基础信息变化
+     */
+    fun applyBasicInfo(
+        videoName: String? = null,
+        videoCover: String? = null,
+        pCategoryId: Long? = null,
+        categoryId: Long? = null,
+        postType: PostType? = null,
+        originInfo: String? = null,
+        tags: String? = null,
+        introduction: String? = null,
+        interaction: String? = null,
+    ): Boolean {
+        var changed = false
+        videoName?.let {
+            if (this.videoName != it) {
+                this.videoName = it; changed = true
+            }
+        }
+        videoCover?.let {
+            if (this.videoCover != it) {
+                this.videoCover = it; changed = true
+            }
+        }
+        pCategoryId?.let {
+            if (this.pCategoryId != it) {
+                this.pCategoryId = it; changed = true
+            }
+        }
+        categoryId?.let {
+            if (this.categoryId != it) {
+                this.categoryId = it; changed = true
+            }
+        }
+        postType?.let {
+            if (this.postType != it) {
+                this.postType = it; changed = true
+            }
+        }
+        originInfo?.let {
+            if (this.originInfo != it) {
+                this.originInfo = it; changed = true
+            }
+        }
+        tags?.let {
+            if (this.tags != it) {
+                this.tags = it; changed = true
+            }
+        }
+        introduction?.let {
+            if (this.introduction != it) {
+                this.introduction = it; changed = true
+            }
+        }
+        interaction?.let {
+            if (this.interaction != it) {
+                this.interaction = it; changed = true
+            }
+        }
+        return changed
+    }
+
+    /**
+     * 应用文件变更列表（按 fileId 或 uploadId 匹配）
+     * - 支持新增（仅 uploadId）/保留（fileId 或 uploadId）/删除（未出现在列表中的既有）
+     * - 重排 fileIndex
+     * - 可选更新 fileName/fileSize/duration
+     * - 同步汇总总时长并写入 VideoPost.duration
+     */
+    fun applyFileEdits(customerId: Long, edits: List<FileEditSpec>): FileEditOutcome {
+        var hasNewFiles = false
+        var hasRemovedFiles = false
+        var hasFileMetaChange = false
+
+        val byId = this.videoFilePosts.associateBy { it.id }.toMutableMap()
+        val byUploadId = this.videoFilePosts.associateBy { it.uploadId }.toMutableMap()
+        val seenIds = mutableSetOf<Long>()
+        val seenUploadIds = mutableSetOf<Long>()
+
+        val rebuilt = mutableListOf<VideoFilePost>()
+        edits.forEachIndexed { index, spec ->
+            val normalizedIndex = index + 1
+            val existing = when {
+                spec.fileId != null -> {
+                    val id = spec.fileId
+                    if (!seenIds.add(id)) throw IllegalArgumentException("重复的 fileId: $id")
+                    byId.remove(id)
+                }
+
+                spec.uploadId != null -> {
+                    val uid = spec.uploadId
+                    if (!seenUploadIds.add(uid)) throw IllegalArgumentException("重复的 uploadId: $uid")
+                    byUploadId.remove(uid)
+                }
+
+                else -> throw IllegalArgumentException("缺少 uploadId 或 fileId")
+            }
+
+            if (existing != null) {
+                if (existing.fileIndex != normalizedIndex) {
+                    existing.fileIndex = normalizedIndex
+                    hasFileMetaChange = true
+                }
+                if (spec.fileName != existing.fileName) {
+                    existing.fileName = spec.fileName
+                    hasFileMetaChange = true
+                }
+                spec.fileSize?.let { sz ->
+                    if (existing.fileSize != sz) {
+                        existing.fileSize = sz
+                        hasFileMetaChange = true
+                    }
+                }
+                spec.duration?.let { du ->
+                    val current = existing.duration ?: 0
+                    if (du != current) {
+                        existing.duration = du
+                        hasFileMetaChange = true
+                    }
+                }
+                rebuilt.add(existing)
+            } else {
+                // 新增：必须通过 uploadId 创建占位草稿文件
+                val uid = spec.uploadId ?: throw IllegalArgumentException("新增文件缺少 uploadId")
+                val newFile = VideoFilePost(
+                    uploadId = uid,
+                    customerId = customerId,
+                    fileIndex = normalizedIndex,
+                    fileName = spec.fileName,
+                    fileSize = spec.fileSize,
+                    updateType = UpdateType.HAS_UPDATE,
+                    transferResult = TransferResult.TRANSCODING,
+                    duration = spec.duration
+                )
+                rebuilt.add(newFile)
+                hasNewFiles = true
+            }
+        }
+
+        if (byId.isNotEmpty() || byUploadId.isNotEmpty()) {
+            hasRemovedFiles = true
+        }
+
+        this.videoFilePosts.clear()
+        this.videoFilePosts.addAll(rebuilt)
+
+        val totalDuration = edits.sumOf { it.duration ?: 0 }
+        val normalized = totalDuration.takeIf { it > 0 }
+        if (this.duration != normalized) {
+            this.duration = normalized
+            hasFileMetaChange = true
+        }
+
+        return FileEditOutcome(
+            hasNewFiles = hasNewFiles,
+            hasRemovedFiles = hasRemovedFiles,
+            hasFileMetaChange = hasFileMetaChange,
+            totalDuration = totalDuration
+        )
+    }
+
+    /**
+     * 编辑后根据变更结果调整状态
+     */
+    fun adjustStatusAfterEdit(basicChanged: Boolean, outcome: FileEditOutcome?) {
+        val hasNew = outcome?.hasNewFiles == true
+        val hasMeta = outcome?.hasFileMetaChange == true
+        val hasRemoved = outcome?.hasRemovedFiles == true
+        when {
+            hasNew -> this.markTranscoding()
+            (basicChanged || hasMeta || hasRemoved) -> this.markPendingReview()
+        }
+    }
+
+    // 【语义化编辑方法结束】
 }

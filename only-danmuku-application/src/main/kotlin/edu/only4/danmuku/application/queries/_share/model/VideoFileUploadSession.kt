@@ -4,6 +4,7 @@ import org.babyfish.jimmer.sql.Column
 import org.babyfish.jimmer.sql.Entity
 import org.babyfish.jimmer.sql.Id
 import org.babyfish.jimmer.sql.IdView
+import org.babyfish.jimmer.sql.JoinColumn
 import org.babyfish.jimmer.sql.LogicalDeleted
 import org.babyfish.jimmer.sql.OneToOne
 import org.babyfish.jimmer.sql.Table
@@ -19,7 +20,7 @@ interface VideoFileUploadSession {
     val customerId: Long
 
     @OneToOne
-    @Column(name = "customer_id")
+    @JoinColumn(name = "customer_id")
     val customer: User
 
     @Column(name = "file_name")

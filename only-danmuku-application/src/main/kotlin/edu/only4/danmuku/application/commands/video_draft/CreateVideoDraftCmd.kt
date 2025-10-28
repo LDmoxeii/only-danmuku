@@ -1,6 +1,5 @@
 package edu.only4.danmuku.application.commands.video_draft
 
-import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
@@ -36,8 +35,7 @@ object CreateVideoDraftCmd {
 
             if (request.uploadFileList.isNotEmpty()) {
                 val uploadSpecs = request.uploadFileList.map { file ->
-                    val uploadId = file.uploadId.toLongOrNull()
-                        ?: throw KnownException("非法的 uploadId: ${file.uploadId}")
+                    val uploadId = file.uploadId
                     VideoFilePost.UploadSpec(
                         uploadId = uploadId,
                         fileIndex = file.fileIndex,
@@ -79,7 +77,7 @@ object CreateVideoDraftCmd {
     ) : RequestParam<Response>
 
     data class VideoFileInfo(
-        val uploadId: String,
+        val uploadId: Long,
         val fileIndex: Int,
         val fileName: String,
         val fileSize: Long,
