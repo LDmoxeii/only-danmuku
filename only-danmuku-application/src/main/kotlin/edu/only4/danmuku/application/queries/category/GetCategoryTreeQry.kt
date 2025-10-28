@@ -17,21 +17,13 @@ object GetCategoryTreeQry {
      * 分类树节点
      */
     data class Response(
-        /** 分类ID */
         val categoryId: Long,
-        /** 分类编码 */
         val code: String,
-        /** 分类名称 */
         val name: String,
-        /** 父分类ID */
-        val parentId: Long?,
-        /** 图标 */
+        val parentId: Long,
         val icon: String? = null,
-        /** 背景图 */
         val background: String? = null,
-        /** 排序号 */
         val sort: Int,
-        /** 子分类列表 */
         val children: List<Response> = emptyList(),
     )
 }

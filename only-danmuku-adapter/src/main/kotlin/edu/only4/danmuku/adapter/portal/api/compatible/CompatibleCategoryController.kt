@@ -19,21 +19,20 @@ class CompatibleCategoryController {
 
     @PostMapping("/loadAllCategory")
     fun categoryLoadAll(): List<CategoryLoadAll.Response> {
-        // 获取树形结构
         val treeResult = Mediator.qry.send(GetCategoryTreeQry.Request())
-        // 转换为前端需要的格式
         return treeResult.map { qryResponseToApiResponse(it) }
 
     }
 
     private fun qryResponseToApiResponse(node: GetCategoryTreeQry.Response): CategoryLoadAll.Response {
         return CategoryLoadAll.Response(
-            categoryId = node.categoryId.toString(),
-            code = node.code,
-            name = node.name,
+            categoryId = node.categoryId,
+            categoryCode = node.code,
+            categoryName = node.name,
+            parentCategoryId = node.parentId,
             icon = node.icon,
             background = node.background,
-            sort = node.sort.toInt(),
+            sort = node.sort,
             children = node.children.map { qryResponseToApiResponse(it) }
         )
     }

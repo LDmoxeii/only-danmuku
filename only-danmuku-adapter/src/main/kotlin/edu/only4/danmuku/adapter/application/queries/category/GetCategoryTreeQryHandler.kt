@@ -36,7 +36,7 @@ class GetCategoryTreeQryHandler(
             categoryId = dto.id,
             code = dto.code,
             name = dto.name,
-            parentId = dto.parentId,
+            parentId = dto.parentId!!,
             icon = dto.icon,
             background = dto.background,
             sort = dto.sort,
