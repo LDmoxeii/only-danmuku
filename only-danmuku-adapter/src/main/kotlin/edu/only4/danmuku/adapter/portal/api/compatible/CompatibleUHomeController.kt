@@ -289,53 +289,35 @@ class CompatibleUHomeController {
             pageSize = request.pageSize
         }
 
-        val collectedVideoIds = Mediator.queries.send(collectionRequest)
+        val collectedActions = Mediator.queries.send(collectionRequest)
 
         // 如果没有收藏的视频，直接返回空列表
-        if (collectedVideoIds.list.isEmpty()) {
-            return PageData.create(
-                pageNum = request.pageNum,
-                pageSize = request.pageSize,
-                list = emptyList(),
-                totalCount = 0
-            )
+        if (collectedActions.list.isEmpty()) {
+            return PageData.empty()
         }
 
-        // 根据视频ID列表查询视频详情
-        val videoIds = collectedVideoIds.list.map { it.videoId }
-        val videosRequest = SearchVideosQry.Request(
-            userId = null,
-            videoNameFuzzy = null,
-            recommendType = null
-        ).apply {
-            pageNum = 1
-            pageSize = videoIds.size
-        }
-
-        val videosResult = Mediator.queries.send(videosRequest)
-        val videoMap = videosResult.list.filter { videoIds.contains(it.videoId) }
-            .associateBy { it.videoId }
-
-        // 转换为前端需要的格式
+        // 转换为前端需要的格式（与注释示例保持一致）
         return PageData.create(
             pageNum = collectionRequest.pageNum,
             pageSize = collectionRequest.pageSize,
-            list = collectedVideoIds.list.mapNotNull { collected ->
-                videoMap[collected.videoId]?.let { video ->
-                    UHomeLoadUserCollection.VideoItem(
-                        videoId = video.videoId.toString(),
-                        videoCover = video.videoCover,
-                        videoName = video.videoName,
-                        collectTime = LocalDateTime.ofInstant(
-                            Instant.ofEpochSecond(video.createTime),
-                            ZoneId.systemDefault()
-                        ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
-                        playCount = video.playCount,
-                        likeCount = video.likeCount,
-                    )
-                }
+            list = collectedActions.list.map { action ->
+                UHomeLoadUserCollection.VideoItem(
+                    actionId = action.actionId,
+                    videoId = action.videoId.toString(),
+                    videoUserId = action.videoUserId.toString(),
+                    commentId = action.commentId ?: 0L,
+                    actionType = action.actionType,
+                    actionCount = action.actionCount,
+                    userId = action.userId.toString(),
+                    actionTime = LocalDateTime.ofInstant(
+                        Instant.ofEpochSecond(action.actionTime),
+                        ZoneId.systemDefault()
+                    ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
+                    videoName = action.videoName ?: "",
+                    videoCover = action.videoCover ?: ""
+                )
             },
-            totalCount = collectedVideoIds.totalCount
+            totalCount = collectedActions.totalCount
         )
     }
 

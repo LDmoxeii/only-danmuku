@@ -15,11 +15,15 @@ object UHomeLoadUserCollection {
     ) : PageParam()
 
     data class VideoItem(
-        var videoId: String? = null,
-        var videoCover: String? = null,
-        var videoName: String? = null,
-        var playCount: Int? = null,
-        var likeCount: Int? = null,
-        var collectTime: String? = null
+        var actionId: Long,
+        var videoId: String,
+        var videoUserId: String,
+        var commentId: Long,
+        var actionType: Int,
+        var actionCount: Int,
+        var userId: String,
+        var actionTime: String,
+        var videoName: String,
+        var videoCover: String,
     )
 }

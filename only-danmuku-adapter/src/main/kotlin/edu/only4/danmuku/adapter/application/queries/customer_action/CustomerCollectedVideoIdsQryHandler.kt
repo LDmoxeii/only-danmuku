@@ -38,7 +38,16 @@ class CustomerCollectedVideoIdsQryHandler(
             pageSize = request.pageSize,
             list = pageResult.rows.map { action ->
                 CustomerCollectedVideoIdsQry.Response(
-                    videoId = action.videoId
+                    actionId = action.id,
+                    videoId = action.video.id,
+                    videoUserId = action.videoOwnerId,
+                    commentId = action.commentId,
+                    actionType = action.actionType,
+                    actionCount = action.actionCount,
+                    userId = action.customerId,
+                    actionTime = action.actionTime,
+                    videoName = action.video.videoName,
+                    videoCover = action.video.videoCover,
                 )
             },
             totalCount = pageResult.totalRowCount

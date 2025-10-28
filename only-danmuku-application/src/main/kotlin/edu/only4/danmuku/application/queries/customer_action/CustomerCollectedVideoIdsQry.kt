@@ -16,6 +16,15 @@ object CustomerCollectedVideoIdsQry {
     ) : PageQueryParam<Response>()
 
     data class Response(
+        val actionId: Long,
         val videoId: Long,
+        val videoUserId: Long,
+        val commentId: Long?,
+        val actionType: Int,
+        val actionCount: Int,
+        val userId: Long,
+        val actionTime: Long,
+        val videoName: String?,
+        val videoCover: String?,
     )
 }

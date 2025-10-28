@@ -4,8 +4,15 @@ export edu.only4.danmuku.application.queries._share.model.CustomerAction
 CustomerActionSimple {
     id
     id(customer)
-    id(video)
+    id(videoOwner)
+    id(comment)
     actionType
+    actionCount
     actionTime
+    video {
+        id
+        videoName
+        videoCover
+    }
 }
 
