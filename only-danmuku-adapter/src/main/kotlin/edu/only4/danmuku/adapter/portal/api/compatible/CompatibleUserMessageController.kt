@@ -1,12 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.compatible
 
-import edu.only4.danmuku.adapter.portal.api.payload.MessageDel
-import edu.only4.danmuku.adapter.portal.api.payload.MessageGetNoReadCount
-import edu.only4.danmuku.adapter.portal.api.payload.MessageGetNoReadCountGroup
-import edu.only4.danmuku.adapter.portal.api.payload.MessageLoad
-import edu.only4.danmuku.adapter.portal.api.payload.MessageReadAll
+import edu.only4.danmuku.adapter.portal.api.payload.*
 import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -23,7 +18,7 @@ class CompatibleUserMessageController {
     /**
      * 获取未读消息数
      */
-    @GetMapping("/getNoReadCount")
+    @PostMapping("/getNoReadCount")
     fun messageGetNoReadCount(): MessageGetNoReadCount.Response {
         // TODO: 实现获取未读消息数逻辑
         return MessageGetNoReadCount.Response()
@@ -32,7 +27,7 @@ class CompatibleUserMessageController {
     /**
      * 获取未读消息数(分组)
      */
-    @GetMapping("/getNoReadCountGroup")
+    @PostMapping("/getNoReadCountGroup")
     fun messageGetNoReadCountGroup(): MessageGetNoReadCountGroup.Response {
         // TODO: 实现获取未读消息数(分组)逻辑
         return MessageGetNoReadCountGroup.Response()

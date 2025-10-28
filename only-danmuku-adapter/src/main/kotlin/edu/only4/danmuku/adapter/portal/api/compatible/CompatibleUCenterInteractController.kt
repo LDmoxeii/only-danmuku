@@ -10,7 +10,10 @@ import edu.only4.danmuku.application.queries.video.SearchVideosQry
 import edu.only4.danmuku.application.queries.video_comment.VideoCommentPageQry
 import edu.only4.danmuku.application.queries.video_danmuku.GetDanmukuPageQry
 import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -28,7 +31,7 @@ class CompatibleUCenterInteractController {
     /**
      * 加载所有视频
      */
-    @GetMapping("/loadAllVideo")
+    @PostMapping("/loadAllVideo")
     fun loadAllVideo(): List<UCenterLoadAllVideo.VideoItem> {
         val currentUserId = LoginHelper.getUserId()!!
 

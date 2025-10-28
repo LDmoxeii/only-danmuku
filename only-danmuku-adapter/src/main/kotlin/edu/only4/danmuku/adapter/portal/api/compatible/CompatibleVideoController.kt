@@ -5,7 +5,10 @@ import edu.only4.danmuku.adapter.portal.api.payload.*
 import edu.only4.danmuku.application.queries.video.*
 import edu.only4.danmuku.application.queries.video_file.GetVideoFilesByVideoIdQry
 import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -29,7 +32,7 @@ class CompatibleVideoController {
      * 加载推荐视频
      * @return 响应结果
      */
-    @GetMapping("/loadRecommendVideo")
+    @PostMapping("/loadRecommendVideo")
     fun videoLoadRecommend(): VideoLoadRecommend.Response {
         // 调用查询获取推荐视频列表
         val videoList = Mediator.queries.send(GetRecommendVideosQry.Request())
@@ -296,7 +299,7 @@ class CompatibleVideoController {
      * 获取热门搜索关键词
      * @return 响应结果
      */
-    @GetMapping("/getSearchKeywordTop")
+    @PostMapping("/getSearchKeywordTop")
     fun videoGetSearchKeywordTop(): VideoGetSearchKeywordTop.Response {
         // TODO: 实现从Redis获取热门搜索关键词逻辑
         // redisComponent.getKeywordTop(10)

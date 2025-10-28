@@ -15,7 +15,10 @@ import edu.only4.danmuku.domain.aggregates.video.enums.PostType
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.Size
 import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -125,7 +128,7 @@ class CompatibleUCenterVideoPostController {
     /**
      * 获取视频统计信息
      */
-    @GetMapping("/getVideoCountInfo")
+    @PostMapping("/getVideoCountInfo")
     fun getVideoCountInfo(): UCenterGetVideoCountInfo.Response {
         val currentUserId = LoginHelper.getUserId()!!
 

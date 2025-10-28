@@ -2,11 +2,7 @@ package edu.only4.danmuku.adapter.portal.api.compatible
 
 import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
-import edu.only4.danmuku.adapter.portal.api.payload.VideoSeriesChangeSort
-import edu.only4.danmuku.adapter.portal.api.payload.VideoSeriesDel
-import edu.only4.danmuku.adapter.portal.api.payload.VideoSeriesDelVideo
-import edu.only4.danmuku.adapter.portal.api.payload.VideoSeriesLoad
-import edu.only4.danmuku.adapter.portal.api.payload.VideoSeriesSaveVideo
+import edu.only4.danmuku.adapter.portal.api.payload.*
 import edu.only4.danmuku.application.commands.customer_video_series.DeleteCustomerVideoSeriesCmd
 import edu.only4.danmuku.application.commands.customer_video_series.RemoveVideoFromSeriesCmd
 import edu.only4.danmuku.application.commands.customer_video_series.UpdateCustomerVideoSeriesSortCmd

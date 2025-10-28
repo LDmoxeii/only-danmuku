@@ -5,12 +5,10 @@ import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.adapter.portal.api.payload.UserActionDo
 import edu.only4.danmuku.application.commands.customer_action.*
 import edu.only4.danmuku.domain.aggregates.customer_action.enums.ActionType
-import io.reactivex.rxjava3.internal.util.QueueDrainHelper.request
 import jakarta.validation.constraints.Max
 import jakarta.validation.constraints.Min
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 

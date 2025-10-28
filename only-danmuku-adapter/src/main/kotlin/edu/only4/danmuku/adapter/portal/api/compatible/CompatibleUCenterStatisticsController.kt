@@ -8,7 +8,6 @@ import edu.only4.danmuku.application.queries.statistics.GetPreviousDayStatistics
 import edu.only4.danmuku.application.queries.statistics.GetTotalStatisticsInfoQry
 import edu.only4.danmuku.application.queries.statistics.GetWeekStatisticsInfoQry
 import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -24,7 +23,7 @@ class CompatibleUCenterStatisticsController {
     /**
      * 获取实时统计信息
      */
-    @GetMapping("/getActualTimeStatisticsInfo")
+    @PostMapping("/getActualTimeStatisticsInfo")
     fun getActualTimeStatistics(): UCenterGetActualTimeStatistics.Response {
         val currentUserId = LoginHelper.getUserId()!!
         val preDayData = Mediator.queries.send(GetPreviousDayStatisticsInfoQry.Request(currentUserId))

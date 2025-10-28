@@ -24,14 +24,14 @@ import org.springframework.web.bind.annotation.RestController
 @Validated
 class CompatibleAdminCategoryController {
 
-    @RequestMapping("/loadCategory")
+    @PostMapping("/loadCategory")
     fun adminCategoryLoad(): List<AdminCategoryLoad.Response> {
         val treeResult = Mediator.qry.send(GetCategoryTreeQry.Request())
         return treeResult.map { qryResponseToApiResponse(it) }
     }
 
 
-    @RequestMapping("/saveCategory")
+    @PostMapping("/saveCategory")
     fun adminCategorySave(
         parentId: Long,
         categoryId: Long?,

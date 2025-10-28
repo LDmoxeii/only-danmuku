@@ -11,7 +11,6 @@ import edu.only4.danmuku.application.commands.user.RegisterAccountCmd
 import edu.only4.danmuku.application.commands.user.UpdateLoginInfoCmd
 import edu.only4.danmuku.application.distributed.clients.CaptchaGen
 import edu.only4.danmuku.application.queries.user.GetUserCountInfoQry
-import io.reactivex.rxjava3.internal.util.QueueDrainHelper.request
 import jakarta.servlet.http.HttpServletResponse
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotEmpty
@@ -19,7 +18,6 @@ import jakarta.validation.constraints.Pattern
 import jakarta.validation.constraints.Size
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 

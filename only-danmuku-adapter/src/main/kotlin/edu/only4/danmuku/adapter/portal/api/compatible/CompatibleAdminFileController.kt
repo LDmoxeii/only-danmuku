@@ -25,7 +25,7 @@ class CompatibleAdminFileController {
 
     private val logger = LoggerFactory.getLogger(CompatibleAdminFileController::class.java)
 
-    @RequestMapping("/uploadImage")
+    @PostMapping("/uploadImage")
     fun adminFileUploadImage(
         @NotNull file: MultipartFile,
         @NotNull createThumbnail: Boolean,
@@ -40,7 +40,7 @@ class CompatibleAdminFileController {
     }
 
     @SaIgnore
-    @GetMapping("/getResource")
+    @PostMapping("/getResource")
     fun adminFileGetResource(
         @RequestParam sourceName: String,
         response: HttpServletResponse,

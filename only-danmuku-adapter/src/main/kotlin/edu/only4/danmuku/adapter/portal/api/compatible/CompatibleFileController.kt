@@ -35,7 +35,7 @@ class CompatibleFileController {
      * 获取资源文件
      */
     @SaIgnore
-    @GetMapping("/getResource")
+    @PostMapping("/getResource")
     fun fileGetResource(
         response: HttpServletResponse,
         @NotEmpty sourceName: String,
