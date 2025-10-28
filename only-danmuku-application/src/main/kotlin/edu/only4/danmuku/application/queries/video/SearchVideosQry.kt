@@ -22,6 +22,8 @@ object SearchVideosQry {
         val videoNameFuzzy: String? = null,
         /** 视频状态 */
         val recommendType: Int? = null,
+        /** 排除的视频ID列表（可选） */
+        val excludeVideoIds: List<Long>? = null,
     ) : PageQueryParam<Response>()
 
     data class Response(

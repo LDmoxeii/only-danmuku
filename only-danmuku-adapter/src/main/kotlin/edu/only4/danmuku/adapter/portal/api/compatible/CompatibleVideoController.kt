@@ -207,10 +207,11 @@ class CompatibleVideoController {
         @NotEmpty keyword: String,
         videoId: Long,
     ): List<VideoGetRecommend.VideoItem> {
-        // 调用搜索查询获取相关视频(最多10个)
+        // 调用搜索查询获取相关视频(最多10个)，将排除逻辑下放到查询处理器
         val queryRequest = SearchVideosQry.Request(
             videoNameFuzzy = keyword,
-            recommendType = null
+            recommendType = null,
+            excludeVideoIds = listOf(videoId)
         ).apply {
             pageNum = 1
             pageSize = 10
@@ -218,10 +219,7 @@ class CompatibleVideoController {
 
         val queryResult = Mediator.queries.send(queryRequest)
 
-        // 过滤掉当前视频
-        val filteredList = queryResult.list.filter { it.videoId != videoId }
-
-        return filteredList.map { video ->
+        return queryResult.list.map { video ->
             VideoGetRecommend.VideoItem(
                 videoId = video.videoId,
                 videoCover = video.videoCover,
@@ -230,7 +228,24 @@ class CompatibleVideoController {
                 nickName = video.nickName,
                 avatar = video.avatar,
                 playCount = video.playCount,
-                likeCount = video.likeCount
+                likeCount = video.likeCount,
+                createTime = video.createTime,
+                lastUpdateTime = video.lastUpdateTime,
+                parentCategoryId = video.parentCategoryId,
+                categoryId = video.categoryId,
+                postType = video.postType,
+                originInfo = video.originInfo,
+                tags = video.tags,
+                introduction = video.introduction,
+                duration = video.duration,
+                status = video.status,
+                danmuCount = video.danmuCount,
+                commentCount = video.commentCount,
+                coinCount = video.coinCount,
+                collectCount = video.collectCount,
+                recommendType = video.recommendType,
+                lastPlayTime = video.lastPlayTime,
+                categoryFullName = video.categoryFullName
             )
         }
     }

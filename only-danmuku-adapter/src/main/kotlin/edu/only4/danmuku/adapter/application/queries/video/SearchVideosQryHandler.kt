@@ -9,13 +9,16 @@ import edu.only4.danmuku.application.queries._share.model.customerId
 import edu.only4.danmuku.application.queries._share.model.dto.Video.VideoSearchItem
 import edu.only4.danmuku.application.queries._share.model.fetchBy
 import edu.only4.danmuku.application.queries._share.model.parentCategoryId
+import edu.only4.danmuku.application.queries._share.model.id
 import edu.only4.danmuku.application.queries._share.model.recommendType
 import edu.only4.danmuku.application.queries._share.model.videoName
 import edu.only4.danmuku.application.queries.video.SearchVideosQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.desc
+import org.babyfish.jimmer.sql.kt.ast.expression.notIn
 import org.babyfish.jimmer.sql.kt.ast.expression.`eq?`
 import org.babyfish.jimmer.sql.kt.ast.expression.`ilike?`
+import org.babyfish.jimmer.sql.kt.ast.expression.`valueNotIn?`
 import org.springframework.stereotype.Service
 
 /**
@@ -43,6 +46,10 @@ class SearchVideosQryHandler(
             where(table.categoryId `eq?` request.categoryId)
             // 状态过滤 (这里过滤的是推荐状态)
             where(table.recommendType `eq?` request.recommendType)
+            // 排除视频ID集合
+            if (!request.excludeVideoIds.isNullOrEmpty()) {
+                where(table.id `valueNotIn?` request.excludeVideoIds!!)
+            }
             // 按创建时间倒序
             orderBy(table.createTime.desc())
             // DTO投影
