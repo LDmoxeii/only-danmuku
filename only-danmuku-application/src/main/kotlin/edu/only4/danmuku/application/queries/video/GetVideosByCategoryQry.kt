@@ -12,32 +12,35 @@ import com.only4.cap4k.ddd.core.application.query.PageQueryParam
 object GetVideosByCategoryQry {
 
     data class Request(
-        /** 父分类ID */
-        val pCategoryId: Long? = null,
-        /** 分类ID */
+        val parentCategoryId: Long? = null,
         val categoryId: Long? = null,
-        /** 推荐类型 (0:非推荐, 1:推荐) */
         val recommendType: Int? = null,
     ) : PageQueryParam<Response>()
 
     data class Response(
-        /** 视频ID */
-        val videoId: Long,
-        /** 视频封面 */
-        val videoCover: String? = null,
-        /** 视频名称 */
-        val videoName: String? = null,
-        /** 作者ID */
-        val userId: Long,
-        /** 作者昵称 */
-        val nickName: String? = null,
-        /** 作者头像 */
-        val avatar: String? = null,
-        /** 播放数 */
-        val playCount: Int? = null,
-        /** 点赞数 */
-        val likeCount: Int? = null,
-        /** 创建时间 */
-        val createTime: Long
+        var videoId: Long,
+        var videoCover: String?,
+        var videoName: String?,
+        var userId: Long?,
+        var createTime: Long,
+        var lastUpdateTime: Long?,
+        var parentCategoryId: Long,
+        var categoryId: Long?,
+        var postType: Int,
+        var originInfo: String?,
+        var tags: String?,
+        var introduction: String?,
+        var duration: Int,
+        var playCount: Int,
+        var likeCount: Int,
+        var danmuCount: Int,
+        var commentCount: Int,
+        var coinCount: Int,
+        var collectCount: Int,
+        var recommendType: Int,
+        var lastPlayTime: Long?,
+        var nickName: String? = null,
+        var avatar: String? = null,
+        var categoryFullName: String?,
     )
 }

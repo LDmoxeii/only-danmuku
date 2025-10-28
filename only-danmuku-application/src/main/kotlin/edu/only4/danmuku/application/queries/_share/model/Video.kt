@@ -13,6 +13,12 @@ interface Video : BaseEntity {
     @IdView
     val customerId: Long
 
+    @IdView
+    val parentCategoryId: Long
+
+    @IdView
+    val categoryId: Long?
+
     @OneToOne
     @JoinColumn(name = "video_post_id")
     val videoPost: VideoPost
@@ -54,25 +60,25 @@ interface Video : BaseEntity {
     val interaction: String?
 
     @Column(name = "duration")
-    val duration: Int?
+    val duration: Int
 
     @Column(name = "play_count")
-    val playCount: Int?
+    val playCount: Int
 
     @Column(name = "like_count")
-    val likeCount: Int?
+    val likeCount: Int
 
     @Column(name = "danmuku_count")
-    val danmukuCount: Int?
+    val danmukuCount: Int
 
     @Column(name = "comment_count")
-    val commentCount: Int?
+    val commentCount: Int
 
     @Column(name = "coin_count")
-    val coinCount: Int?
+    val coinCount: Int
 
     @Column(name = "collect_count")
-    val collectCount: Int?
+    val collectCount: Int
 
     /**
      * 推荐状态 @E=0:UNKNOW:未知状态|1:NOT_RECOMMEND:未推荐|2:RECOMMEND:已推荐;@T=RecommendType
@@ -81,5 +87,5 @@ interface Video : BaseEntity {
     val recommendType: Int
 
     @Column(name = "last_play_time")
-    val lastPlayTime: LocalDateTime?
+    val lastPlayTime: Long?
 }

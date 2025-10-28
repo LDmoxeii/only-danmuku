@@ -2,12 +2,7 @@ package edu.only4.danmuku.adapter.application.queries.video
 
 import com.only4.cap4k.ddd.core.application.query.PageQuery
 import com.only4.cap4k.ddd.core.share.PageData
-import edu.only4.danmuku.application.queries._share.model.Video
-import edu.only4.danmuku.application.queries._share.model.categoryId
-import edu.only4.danmuku.application.queries._share.model.createTime
-import edu.only4.danmuku.application.queries._share.model.dto.Video.VideoListItem
-import edu.only4.danmuku.application.queries._share.model.parentCategoryId
-import edu.only4.danmuku.application.queries._share.model.recommendType
+import edu.only4.danmuku.application.queries._share.model.*
 import edu.only4.danmuku.application.queries.video.GetVideosByCategoryQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.desc
@@ -30,7 +25,7 @@ class GetVideosByCategoryQryHandler(
         // 查询视频列表，支持父分类、子分类和推荐类型过滤
         val pageResult = sqlClient.createQuery(Video::class) {
             // 父分类过滤 (如果提供)
-            where(table.parentCategoryId `eq?` request.pCategoryId)
+            where(table.parentCategoryId `eq?` request.parentCategoryId)
             // 子分类过滤 (如果提供)
             where(table.categoryId `eq?` request.categoryId)
             // 推荐类型过滤 (如果提供)
@@ -38,7 +33,21 @@ class GetVideosByCategoryQryHandler(
             // 按创建时间降序
             orderBy(table.createTime.desc())
             // DTO投影
-            select(table.fetch(VideoListItem::class))
+            select(table.fetchBy {
+                allScalarFields()
+                customer {
+                    allScalarFields()
+                    relation {
+                        allScalarFields()
+                    }
+                }
+                parentCategory {
+                    allScalarFields()
+                }
+                category {
+                    allScalarFields()
+                }
+            })
         }.fetchPage(request.pageNum - 1, request.pageSize)
 
         // 转换为响应格式
@@ -47,12 +56,27 @@ class GetVideosByCategoryQryHandler(
                 videoId = video.id,
                 videoCover = video.videoCover,
                 videoName = video.videoName,
-                userId = video.customer.id,
-                nickName = video.customer.relation!!.nickName,
-                avatar = video.customer.relation!!.avatar,
+                userId = video.customerId,
+                createTime = video.createTime!!,
+                lastUpdateTime = video.updateTime,
+                parentCategoryId = video.parentCategoryId,
+                categoryId = video.categoryId,
+                postType = video.postType,
+                originInfo = video.originInfo,
+                tags = video.tags,
+                introduction = video.introduction,
+                duration = video.duration,
                 playCount = video.playCount,
                 likeCount = video.likeCount,
-                createTime = video.createTime ?: 0L
+                danmuCount = video.danmukuCount,
+                commentCount = video.commentCount,
+                coinCount = video.coinCount,
+                collectCount = video.collectCount,
+                recommendType = video.recommendType,
+                lastPlayTime = video.lastPlayTime,
+                nickName = video.customer.nickName,
+                avatar = video.customer.relation!!.avatar,
+                categoryFullName = video.parentCategory.name + video.category?.name,
             )
         }
 

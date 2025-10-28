@@ -26,4 +26,9 @@ object Constants {
      * 系统设置相关Redis键
      */
     const val REDIS_KEY_SYS_SETTING: String = REDIS_KEY_PREFIX + "sysSetting:" // Redis键：系统设置
+
+    /**
+     * 视频搜索次数相关Redis键
+     */
+    val REDIS_KEY_VIDEO_SEARCH_COUNT: String = REDIS_KEY_PREFIX + "video:search:" // Redis键：视频搜索次数
 }
