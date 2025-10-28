@@ -19,7 +19,6 @@ import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.Size
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.time.Instant
@@ -41,8 +40,8 @@ class CompatibleUCenterVideoPostController {
         categoryId: Long?,
         postType: Int,
         @NotEmpty @Size(max = 300) tags: String,
-        @Size(max = 2000) introduction: String,
-        @Size(max = 3) interaction: String,
+        @Size(max = 2000) introduction: String?,
+        @Size(max = 3) interaction: String?,
         @NotEmpty uploadFileList: String,
     ): UCenterPostVideo.Response {
         // 解析上传文件列表 JSON
@@ -70,7 +69,7 @@ class CompatibleUCenterVideoPostController {
     }
 
     @PostMapping("/loadVideoList")
-    fun getVideoPage(@RequestBody request: UCenterLoadVideoList.Request): PageData<UCenterLoadVideoList.VideoItem> {
+    fun getVideoPage(request: UCenterLoadVideoList.Request): PageData<UCenterLoadVideoList.VideoItem> {
         val currentUserId = LoginHelper.getUserId()!!
 
         val queryRequest = GetUserVideoDraftsQry.Request(

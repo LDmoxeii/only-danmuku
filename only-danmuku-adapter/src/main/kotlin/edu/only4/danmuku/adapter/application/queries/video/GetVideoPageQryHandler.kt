@@ -30,7 +30,7 @@ class GetVideoPageQryHandler(
             where(table.parentCategoryId `eq?` request.categoryParentId)
             where(table.categoryId `eq?` request.categoryId)
             where(table.recommendType `eq?` request.recommendType)
-                where(table.id `valueNotIn?` request.excludeVideoIds!!)
+            where(table.id `valueNotIn?` request.excludeVideoIds)
             // 按创建时间倒序
             orderBy(table.createTime.desc())
             // DTO投影

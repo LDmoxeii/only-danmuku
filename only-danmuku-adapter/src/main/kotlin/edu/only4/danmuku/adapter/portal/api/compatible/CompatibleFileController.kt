@@ -4,10 +4,12 @@ import cn.dev33.satoken.annotation.SaIgnore
 import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.adapter.portal.api.payload.FileDelUploadVideo
-import edu.only4.danmuku.adapter.portal.api.payload.FilePreUploadVideo
 import edu.only4.danmuku.adapter.portal.api.payload.FileUploadVideo
 import edu.only4.danmuku.application.commands.file.UploadImageCmd
+import edu.only4.danmuku.application.commands.file_upload_session.CreateUploadSessionCmd
 import edu.only4.danmuku.application.commands.video.AddPlayCountCmd
+import edu.only4.danmuku.application.commands.file_upload_session.UploadVideoChunkCmd
+import edu.only4.danmuku.application.commands.file_upload_session.DeleteUploadSessionCmd
 import edu.only4.danmuku.application.commands.video_play_history.AddPlayHistoryCmd
 import edu.only4.danmuku.application.queries.file.GetFileResourceQry
 import edu.only4.danmuku.application.queries.file.GetVideoResourceQry
@@ -32,7 +34,7 @@ class CompatibleFileController {
     private val logger = LoggerFactory.getLogger(CompatibleAdminFileController::class.java)
 
     @SaIgnore
-    @PostMapping("/getResource")
+    @GetMapping("/getResource")
     fun getResource(
         @NotEmpty sourceName: String,
         response: HttpServletResponse,
@@ -66,17 +68,39 @@ class CompatibleFileController {
      * 预上传视频
      */
     @PostMapping("/preUploadVideo")
-    fun filePreUploadVideo(@RequestBody @Validated request: FilePreUploadVideo.Request): FilePreUploadVideo.Response {
-        // TODO: 实现预上传视频逻辑
-        return FilePreUploadVideo.Response()
+    fun filePreUploadVideo(
+        @NotEmpty fileName: String,
+        chunks: Int,
+    ): Long {
+        val currentUserId = LoginHelper.getUserId()!!
+        val result = Mediator.commands.send(
+            CreateUploadSessionCmd.Request(
+                customerId = currentUserId,
+                fileName = fileName,
+                chunks = chunks
+            )
+        )
+        return result.uploadId
     }
 
     /**
      * 上传视频分片
      */
     @PostMapping("/uploadVideo")
-    fun fileUploadVideo(@RequestBody @Validated request: FileUploadVideo.Request): FileUploadVideo.Response {
-        // TODO: 实现上传视频分片逻辑
+    fun fileUploadVideo(
+        chunkFile: MultipartFile,
+        chunkIndex: Int,
+        uploadId: Long,
+    ): FileUploadVideo.Response {
+        val currentUserId = LoginHelper.getUserId()!!
+        Mediator.commands.send(
+            UploadVideoChunkCmd.Request(
+                customerId = currentUserId,
+                uploadId = uploadId,
+                chunkIndex = chunkIndex,
+                chunkFile = chunkFile
+            )
+        )
         return FileUploadVideo.Response()
     }
 
@@ -84,8 +108,16 @@ class CompatibleFileController {
      * 删除上传中的视频
      */
     @PostMapping("/delUploadVideo")
-    fun fileDelUploadVideo(@RequestBody @Validated request: FileDelUploadVideo.Request): FileDelUploadVideo.Response {
-        // TODO: 实现删除上传中的视频逻辑
+    fun fileDelUploadVideo(
+        uploadId: Long,
+    ): FileDelUploadVideo.Response {
+        val currentUserId = LoginHelper.getUserId()!!
+        Mediator.commands.send(
+            DeleteUploadSessionCmd.Request(
+                customerId = currentUserId,
+                uploadId = uploadId
+            )
+        )
         return FileDelUploadVideo.Response()
     }
 

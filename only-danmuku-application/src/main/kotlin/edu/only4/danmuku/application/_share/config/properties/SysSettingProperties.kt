@@ -18,7 +18,7 @@ class SysSettingProperties {
      * 单个视频允许的最大大小（单位：MB），默认值为10MB。
      * 该参数用于限制用户上传的每个视频的最大容量，以确保服务器存储稳定性与传输效率。
      */
-    var videoSize: Int = 10
+    var videoSize: Int = 100
 
     /**
      * 单个视频的最大分片数量，默认值为10。

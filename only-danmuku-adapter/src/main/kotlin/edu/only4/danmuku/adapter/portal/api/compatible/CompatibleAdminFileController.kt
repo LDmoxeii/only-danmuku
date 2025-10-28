@@ -40,7 +40,7 @@ class CompatibleAdminFileController {
     }
 
     @SaIgnore
-    @PostMapping("/getResource")
+    @GetMapping("/getResource")
     fun getResource(
         @RequestParam sourceName: String,
         response: HttpServletResponse,

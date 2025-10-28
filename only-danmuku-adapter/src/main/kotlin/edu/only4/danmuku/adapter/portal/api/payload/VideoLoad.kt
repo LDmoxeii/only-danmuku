@@ -5,7 +5,7 @@ import com.only4.cap4k.ddd.core.share.PageParam
 object VideoLoad {
 
     data class Request(
-        val pCategoryId: Long?,
+        val categoryParentId: Long?,
         val categoryId: Long?,
     ): PageParam()
 

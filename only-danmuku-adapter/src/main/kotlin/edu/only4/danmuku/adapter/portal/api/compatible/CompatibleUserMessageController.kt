@@ -37,7 +37,7 @@ class CompatibleUserMessageController {
      * 标记全部已读
      */
     @PostMapping("/readAll")
-    fun messageReadAll(@RequestBody request: MessageReadAll.Request): MessageReadAll.Response {
+    fun messageReadAll(request: MessageReadAll.Request): MessageReadAll.Response {
         // TODO: 实现标记全部已读逻辑
         return MessageReadAll.Response()
     }
@@ -46,7 +46,7 @@ class CompatibleUserMessageController {
      * 加载消息列表
      */
     @PostMapping("/loadMessage")
-    fun messageLoad(@RequestBody @Validated request: MessageLoad.Request): MessageLoad.Response {
+    fun messageLoad(@Validated request: MessageLoad.Request): MessageLoad.Response {
         // TODO: 实现加载消息列表逻辑
         return MessageLoad.Response()
     }
@@ -55,7 +55,7 @@ class CompatibleUserMessageController {
      * 删除消息
      */
     @PostMapping("/delMessage")
-    fun messageDel(@RequestBody @Validated request: MessageDel.Request): MessageDel.Response {
+    fun messageDel(@Validated request: MessageDel.Request): MessageDel.Response {
         // TODO: 实现删除消息逻辑
         return MessageDel.Response()
     }

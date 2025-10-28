@@ -1,7 +1,9 @@
 package edu.only4.danmuku.adapter.application.queries.category
 
 import com.only4.cap4k.ddd.core.application.query.ListQuery
+import edu.only4.danmuku.application.queries._share.model.Category
 import edu.only4.danmuku.application.queries._share.model.dto.Category.CategoryTreeNode
+import edu.only4.danmuku.application.queries._share.model.fetchBy
 import edu.only4.danmuku.application.queries._share.model.parentId
 import edu.only4.danmuku.application.queries._share.model.sort
 import edu.only4.danmuku.application.queries.category.GetCategoryTreeQry
@@ -36,7 +38,7 @@ class GetCategoryTreeQryHandler(
             categoryId = dto.id,
             code = dto.code,
             name = dto.name,
-            parentId = dto.parentId!!,
+            parentId = dto.parentId ?: 0,
             icon = dto.icon,
             background = dto.background,
             sort = dto.sort,

@@ -1,0 +1,202 @@
+package edu.only4.danmuku.domain.aggregates.video_file_upload_session
+
+import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
+
+import edu.only4.danmuku.domain.aggregates.video_file_upload_session.enums.UploadStatus
+
+import jakarta.persistence.*
+
+import org.hibernate.annotations.DynamicInsert
+import org.hibernate.annotations.DynamicUpdate
+import org.hibernate.annotations.GenericGenerator
+import org.hibernate.annotations.SQLDelete
+import org.hibernate.annotations.Where
+
+/**
+ * 视频分片上传会话; 用于跟踪预上传与分片进度
+ *
+ * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
+ * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
+ * @author cap4k-ddd-codegen
+ * @date 2025/10/28
+ */
+@Aggregate(
+    aggregate = "VideoFileUploadSession",
+    name = "VideoFileUploadSession",
+    root = true,
+    type = Aggregate.TYPE_ENTITY,
+    description = "视频分片上传会话， 用于跟踪预上传与分片进度"
+)
+@Entity
+@Table(name = "`video_file_upload_session`")
+@DynamicInsert
+@DynamicUpdate
+@SQLDelete(sql = "update `video_file_upload_session` set `deleted` = `id` where `id` = ?")
+@Where(clause = "`deleted` = 0")
+class VideoFileUploadSession(
+    // 【字段映射开始】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
+
+    /**
+     * ID
+     * bigint
+     */
+    @Id
+    @GeneratedValue(generator = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator")
+    @GenericGenerator(
+        name = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator",
+        strategy = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator"
+    )
+    @Column(name = "`id`", insertable = false, updatable = false)
+    var id: Long = 0L,
+
+    /**
+     * 用户ID
+     * bigint
+     */
+    @Column(name = "`customer_id`")
+    var customerId: Long = 0L,
+
+    /**
+     * 文件名
+     * varchar(200)
+     */
+    @Column(name = "`file_name`")
+    var fileName: String? = null,
+
+    /**
+     * 分片总数
+     * int
+     */
+    @Column(name = "`chunks`")
+    var chunks: Int = 0,
+
+    /**
+     * 当前已上传的最大分片索引
+     * int
+     */
+    @Column(name = "`chunk_index`")
+    var chunkIndex: Int = 0,
+
+    /**
+     * 累计已上传大小（字节）
+     * bigint
+     */
+    @Column(name = "`file_size`")
+    var fileSize: Long? = 0L,
+
+    /**
+     * 临时目录（绝对或相对路径）
+     * varchar(128)
+     */
+    @Column(name = "`temp_path`")
+    var tempPath: String? = null,
+
+    /**
+     * 状态
+     * 0:UNKNOW:未知类型
+     * 1:CREATED:已创建
+     * 2:UPLOADING:上传中
+     * 3:DONE:完成
+     * 4:ABORTED:已放弃
+     * 5:EXPIRED:已过期
+     * tinyint(1)
+     */
+    @Convert(converter = UploadStatus.Converter::class)
+    @Column(name = "`status`")
+    var status: UploadStatus = UploadStatus.valueOf(0),
+
+    /**
+     * 视频时长（秒，可选）
+     * int
+     */
+    @Column(name = "`duration`")
+    var duration: Int? = null,
+
+    /**
+     * 创建时间（秒时间戳）
+     * bigint
+     */
+    @Column(name = "`create_time`")
+    var createTime: Long? = null,
+
+    /**
+     * 更新时间（秒时间戳）
+     * bigint
+     */
+    @Column(name = "`update_time`")
+    var updateTime: Long? = null,
+
+    /**
+     * 过期时间（秒时间戳）
+     * bigint
+     */
+    @Column(name = "`expires_at`")
+    var expiresAt: Long? = null,
+
+    /**
+     * 删除标识 0：未删除 id：已删除
+     * bigint
+     */
+    @Column(name = "`deleted`")
+    var deleted: Long = 0L,
+) {
+
+    // 【字段映射结束】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
+
+    // 【行为方法开始】
+
+    /** 校验归属 */
+    fun ensureOwnedBy(userId: Long) {
+        if (this.customerId != userId) {
+            throw IllegalArgumentException("没有权限操作该上传")
+        }
+    }
+
+    /** 校验会话处于活跃可上传状态 */
+    fun ensureActive() {
+        if (this.status == UploadStatus.ABORTED || this.status == UploadStatus.EXPIRED) {
+            throw IllegalStateException("上传会话不可用")
+        }
+    }
+
+    /**
+     * 校验分片是否允许上传（允许重传，同步推进，不允许跳跃）
+     */
+    fun ensureChunkAllowed(incomingChunkIndex: Int) {
+        if (incomingChunkIndex < 0 || incomingChunkIndex > this.chunks - 1) {
+            throw IllegalArgumentException("分片索引非法")
+        }
+        if ((incomingChunkIndex - 1) > this.chunkIndex) {
+            throw IllegalArgumentException("分片索引非法")
+        }
+    }
+
+    /**
+     * 处理分片已写入后的状态推进
+     */
+    fun onChunkUploaded(incomingChunkIndex: Int, addedBytes: Long, now: Long) {
+        if (this.status == UploadStatus.CREATED) {
+            this.status = UploadStatus.UPLOADING
+        }
+        if (incomingChunkIndex > this.chunkIndex) {
+            this.chunkIndex = incomingChunkIndex
+        }
+        this.fileSize = (this.fileSize ?: 0L) + addedBytes
+        this.updateTime = now
+    }
+
+    /** 若已到最后一个分片，则标记完成 */
+    fun tryMarkDoneIfComplete() {
+        if (this.chunkIndex >= this.chunks - 1) {
+            this.status = UploadStatus.DONE
+        }
+    }
+
+    /** 终止会话（放弃上传） */
+    fun abort(now: Long) {
+        this.status = UploadStatus.ABORTED
+        this.updateTime = now
+    }
+
+    // 【行为方法结束】
+}

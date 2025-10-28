@@ -149,7 +149,7 @@ class CompatibleUHomeController {
     }
 
     @PostMapping("/loadFocusList")
-    fun getFocusPage(@RequestBody request: UHomeLoadFocusList.Request): PageData<UHomeLoadFocusList.UserItem> {
+    fun getFocusPage(request: UHomeLoadFocusList.Request): PageData<UHomeLoadFocusList.UserItem> {
         val userId = LoginHelper.getUserId()!!
 
         val queryRequest = GetFocusPageQry.Request(
@@ -179,7 +179,7 @@ class CompatibleUHomeController {
     }
 
     @PostMapping("/loadFansList")
-    fun getFansPage(@RequestBody request: UHomeLoadFansList.Request): PageData<UHomeLoadFansList.UserItem> {
+    fun getFansPage(request: UHomeLoadFansList.Request): PageData<UHomeLoadFansList.UserItem> {
         val userId = LoginHelper.getUserId()!!
 
         val queryRequest = GetFansListQry.Request(
@@ -208,7 +208,7 @@ class CompatibleUHomeController {
     }
 
     @PostMapping("/loadVideoList")
-    fun getVideoPage(@RequestBody @Validated request: UHomeLoadVideoList.Request): PageData<UHomeLoadVideoList.VideoItem> {
+    fun getVideoPage(@Validated request: UHomeLoadVideoList.Request): PageData<UHomeLoadVideoList.VideoItem> {
         val queryRequest = GetVideoPageQry.Request(
             userId = request.userId.toLong(),
             videoNameFuzzy = request.videoName,
@@ -242,7 +242,7 @@ class CompatibleUHomeController {
     }
 
     @PostMapping("/loadUserCollection")
-    fun getCollectionPage(@RequestBody @Validated request: UHomeLoadUserCollection.Request): PageData<UHomeLoadUserCollection.VideoItem> {
+    fun getCollectionPage(@Validated request: UHomeLoadUserCollection.Request): PageData<UHomeLoadUserCollection.VideoItem> {
         val customerId = LoginHelper.getUserId()!!
 
         // 调用查询获取用户收藏的视频ID列表

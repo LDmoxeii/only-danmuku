@@ -74,7 +74,7 @@ object CreateVideoDraftCmd {
         val originInfo: String? = null,
         val tags: String? = null,
         val introduction: String? = null,
-        val interaction: String,
+        val interaction: String?,
         val uploadFileList: List<VideoFileInfo> = emptyList(),
     ) : RequestParam<Response>
 

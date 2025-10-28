@@ -31,7 +31,7 @@ class CompatibleVideoHistoryController {
      * 加载播放历史
      */
     @PostMapping("/loadHistory")
-    fun historyLoad(@RequestBody request: HistoryLoad.Request): PageData<HistoryLoad.Response> {
+    fun historyLoad(request: HistoryLoad.Request): PageData<HistoryLoad.Response> {
         val currentUserId = LoginHelper.getUserId()!!
 
         // 调用查询获取播放历史分页列表

@@ -52,7 +52,7 @@ class CompatibleUCenterInteractController {
     }
 
     @PostMapping("/loadComment")
-    fun getUserCommentPage(@RequestBody request: UCenterLoadComment.Request): PageData<UCenterLoadComment.CommentItem> {
+    fun getUserCommentPage(request: UCenterLoadComment.Request): PageData<UCenterLoadComment.CommentItem> {
         val currentUserId = LoginHelper.getUserId()!!
 
         val queryRequest = VideoCommentPageQry.Request(
@@ -96,7 +96,7 @@ class CompatibleUCenterInteractController {
     }
 
     @PostMapping("/loadDanmu")
-    fun getVideoDanmukuPage(@RequestBody request: UCenterLoadDanmu.Request): PageData<UCenterLoadDanmu.DanmukuItem> {
+    fun getVideoDanmukuPage(request: UCenterLoadDanmu.Request): PageData<UCenterLoadDanmu.DanmukuItem> {
         val currentUserId = LoginHelper.getUserId()!!
 
         val queryRequest = GetVideoDanmukuPageQry.Request(

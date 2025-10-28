@@ -1,5 +1,6 @@
 package edu.only4.danmuku.adapter.portal.api.compatible
 
+import cn.dev33.satoken.annotation.SaIgnore
 import com.only.engine.redis.misc.RedisUtils
 import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
@@ -29,6 +30,7 @@ import java.time.format.DateTimeFormatter
 @Validated
 class CompatibleVideoController {
 
+    @SaIgnore
     @PostMapping("/loadRecommendVideo")
     fun getRecommendVideos(): Collection<VideoLoadRecommend.VideoItem> {
         val videoList = Mediator.queries.send(GetRecommendVideosQry.Request())
@@ -51,12 +53,13 @@ class CompatibleVideoController {
         }
     }
 
+    @SaIgnore
     @PostMapping("/loadVideo")
-    fun getVideoPage(@RequestBody request: VideoLoad.Request): PageData<VideoLoad.VideoItem> {
-        val recommendType = if (request.categoryId == null && request.pCategoryId == null) 0 else null
+    fun getVideoPage(request: VideoLoad.Request): PageData<VideoLoad.VideoItem> {
+        val recommendType = if (request.categoryId == null && request.categoryParentId == null) 0 else null
 
         val queryRequest = GetVideoPageQry.Request(
-            categoryParentId = request.pCategoryId,
+            categoryParentId = request.categoryParentId,
             categoryId = request.categoryId,
             recommendType = recommendType
         ).apply {
@@ -290,7 +293,7 @@ class CompatibleVideoController {
     }
 
     @PostMapping("/search")
-    fun searchVideo(@RequestBody @Validated request: VideoSearch.Request): PageData<VideoSearch.VideoItem> {
+    fun searchVideo(@Validated request: VideoSearch.Request): PageData<VideoSearch.VideoItem> {
         RedisUtils.incrZSetScore(Constants.REDIS_KEY_VIDEO_SEARCH_COUNT, request.keyword, 1.0)
 
         val queryRequest = GetVideoPageQry.Request(
@@ -352,12 +355,13 @@ class CompatibleVideoController {
         )
     }
 
+    @SaIgnore
     @PostMapping("/getSearchKeywordTop")
     fun getSearchKeywordTop(): Collection<String> =
         RedisUtils.getCacheZSetRange(Constants.REDIS_KEY_VIDEO_SEARCH_COUNT, 0, 9)
 
     @PostMapping("/loadHotVideoList")
-    fun getHotVidePage(@RequestBody request: VideoLoadHot.Request): PageData<VideoLoadHot.VideoItem> {
+    fun getHotVidePage(request: VideoLoadHot.Request): PageData<VideoLoadHot.VideoItem> {
         val queryRequest = GetHotVideoPageQry.Request(lastPlayHour = 24).apply {
             pageNum = request.pageNum
             pageSize = request.pageSize
