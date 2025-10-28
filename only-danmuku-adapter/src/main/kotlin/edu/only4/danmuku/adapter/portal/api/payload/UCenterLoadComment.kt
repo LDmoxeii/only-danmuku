@@ -8,7 +8,6 @@ import com.only4.cap4k.ddd.core.share.PageParam
 object UCenterLoadComment {
 
     data class Request(
-        /** 视频ID */
         val videoId: String? = null
     ) : PageParam()
 

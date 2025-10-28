@@ -1,15 +1,9 @@
 package edu.only4.danmuku.adapter.application.queries.video_danmuku
 
 import com.only4.cap4k.ddd.core.application.query.ListQuery
-import edu.only4.danmuku.application.queries._share.model.VideoDanmuku
-import edu.only4.danmuku.application.queries._share.model.dto.VideoDanmuku.DanmukuPageItem
-import edu.only4.danmuku.application.queries._share.model.fetchBy
-import edu.only4.danmuku.application.queries._share.model.id
-import edu.only4.danmuku.application.queries._share.model.time
-import edu.only4.danmuku.application.queries._share.model.videoId
-import edu.only4.danmuku.application.queries.video_danmuku.GetDanmukuByFileIdQry
+import edu.only4.danmuku.application.queries._share.model.*
+import edu.only4.danmuku.application.queries.video_danmuku.GetDanmukuListByFileIdQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
-import org.babyfish.jimmer.sql.kt.ast.expression.all
 import org.babyfish.jimmer.sql.kt.ast.expression.asc
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.springframework.stereotype.Service
@@ -22,11 +16,11 @@ import org.springframework.stereotype.Service
  * @date 2025/10/15
  */
 @Service
-class GetDanmukuByFileIdQryHandler(
+class GetDanmukuListByFileIdQryHandler(
     private val sqlClient: KSqlClient,
-) : ListQuery<GetDanmukuByFileIdQry.Request, GetDanmukuByFileIdQry.Response> {
+) : ListQuery<GetDanmukuListByFileIdQry.Request, GetDanmukuListByFileIdQry.Response> {
 
-    override fun exec(request: GetDanmukuByFileIdQry.Request): List<GetDanmukuByFileIdQry.Response> {
+    override fun exec(request: GetDanmukuListByFileIdQry.Request): List<GetDanmukuListByFileIdQry.Response> {
         // 使用 Jimmer 查询弹幕列表
         val danmukuList = sqlClient.createQuery(VideoDanmuku::class) {
             // 按文件ID过滤
@@ -49,7 +43,7 @@ class GetDanmukuByFileIdQryHandler(
 
         // 转换为查询响应
         return danmukuList.map { danmuku ->
-            GetDanmukuByFileIdQry.Response(
+            GetDanmukuListByFileIdQry.Response(
                 danmukuId = danmuku.id,
                 fileId = danmuku.fileId,
                 videoId = danmuku.video.id,

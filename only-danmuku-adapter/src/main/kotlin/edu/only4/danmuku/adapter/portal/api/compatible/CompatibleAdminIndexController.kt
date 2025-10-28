@@ -23,11 +23,10 @@ import java.time.format.DateTimeFormatter
 class CompatibleAdminIndexController {
 
     @PostMapping("/getActualTimeStatisticsInfo")
-    fun adminIndexGetActualTimeStatistics(): AdminIndexGetActualTimeStatistics.Response {
+    fun getActualTimeStatistics(): AdminIndexGetActualTimeStatistics.Response {
         val preDayData = Mediator.queries.send(GetPreviousDayStatisticsInfoQry.Request())
         val totalData = Mediator.queries.send(GetTotalStatisticsInfoQry.Request())
 
-        // 构建前一天数据的 Map（按统计类型分类）
         val preDayDataMap = mapOf(
             1 to preDayData.playCount,      // 播放量 (PLAY)
             2 to preDayData.userCount,      // 用户数 (FANS)
@@ -35,18 +34,17 @@ class CompatibleAdminIndexController {
             4 to preDayData.collectCount,   // 收藏 (COLLECTION)
             5 to preDayData.coinCount,      // 投币 (COIN)
             6 to preDayData.commentCount,   // 评论 (COMMENT)
-            7 to preDayData.danmuCount      // 弹幕 (DANMUKU)
+            7 to preDayData.danmukuCount      // 弹幕 (DANMUKU)
         )
 
-        // 构建总统计信息的 Map（按字段名分类）
         val totalCountInfoMap = mapOf(
-            "userCount" to totalData.userCount,
             "playCount" to totalData.playCount,
-            "commentCount" to totalData.commentCount,
-            "danmuCount" to totalData.danmuCount,
+            "userCount" to totalData.userCount,
             "likeCount" to totalData.likeCount,
             "collectCount" to totalData.collectCount,
-            "coinCount" to totalData.coinCount
+            "coinCount" to totalData.coinCount,
+            "commentCount" to totalData.commentCount,
+            "danmuCount" to totalData.danmukuCount
         )
 
         return AdminIndexGetActualTimeStatistics.Response(

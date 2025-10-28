@@ -1,14 +1,10 @@
-package edu.only4.danmuku.adapter.application.queries.user
+package edu.only4.danmuku.adapter.application.queries.customer_profile
 
 import com.only4.cap4k.ddd.core.application.query.PageQuery
 import com.only4.cap4k.ddd.core.share.PageData
-import edu.only4.danmuku.application.queries._share.model.CustomerProfile
+import edu.only4.danmuku.application.queries._share.model.*
 import edu.only4.danmuku.application.queries._share.model.dto.CustomerProfile.ProfileWithUser
-import edu.only4.danmuku.application.queries._share.model.joinTime
-import edu.only4.danmuku.application.queries._share.model.nickName
-import edu.only4.danmuku.application.queries._share.model.status
-import edu.only4.danmuku.application.queries._share.model.user
-import edu.only4.danmuku.application.queries.user.GetUsersByStatusQry
+import edu.only4.danmuku.application.queries.customer_profile.GetCustomerProfilePageQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.desc
 import org.babyfish.jimmer.sql.kt.ast.expression.`eq?`
@@ -16,33 +12,27 @@ import org.babyfish.jimmer.sql.kt.ast.expression.`ilike?`
 import org.springframework.stereotype.Service
 
 /**
- * 按状态获取用户列表
+ * 获取客户档案分页
  *
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * @author cap4k-ddd-codegen
  * @date 2025/10/15
  */
 @Service
-class GetUsersByStatusQryHandler(
+class GetCustomerProfilePageQryHandler(
     private val sqlClient: KSqlClient,
-) : PageQuery<GetUsersByStatusQry.Request, GetUsersByStatusQry.UserItem> {
+) : PageQuery<GetCustomerProfilePageQry.Request, GetCustomerProfilePageQry.UserItem> {
 
-    override fun exec(request: GetUsersByStatusQry.Request): PageData<GetUsersByStatusQry.UserItem> {
-        // 使用 Jimmer 查询用户档案，关联用户表
+    override fun exec(request: GetCustomerProfilePageQry.Request): PageData<GetCustomerProfilePageQry.UserItem> {
         val pageResult = sqlClient.createQuery(CustomerProfile::class) {
-            // 昵称模糊查询
             where(table.nickName `ilike?` request.nickNameFuzzy)
-            // 状态过滤
             where(table.user.status `eq?` request.status)
-            // 按加入时间倒序
             orderBy(table.user.joinTime.desc())
-            // DTO 投影
             select(table.fetch(ProfileWithUser::class))
         }.fetchPage(request.pageNum - 1, request.pageSize)
 
-        // 转换为查询响应
         val responseList = pageResult.rows.map { profile ->
-            GetUsersByStatusQry.UserItem(
+            GetCustomerProfilePageQry.UserItem(
                 userId = profile.user.id,
                 email = profile.user.email,
                 nickName = profile.nickName,
@@ -60,7 +50,7 @@ class GetUsersByStatusQryHandler(
         }
 
         // 返回分页结果
-        return PageData.create(
+        return PageData.Companion.create(
             pageNum = request.pageNum,
             pageSize = request.pageSize,
             list = responseList,

@@ -3,27 +3,16 @@ package edu.only4.danmuku.application.queries.video
 import com.only4.cap4k.ddd.core.application.query.PageQueryParam
 
 /**
- * 搜索视频
+ * 获取热门视频列表
  *
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * @author cap4k-ddd-codegen
  * @date 2025/10/15
  */
-object SearchVideosQry {
+object GetHotVideoPageQry {
 
     data class Request(
-        /** 用户ID - 过滤指定用户的视频 */
-        val userId: Long? = null,
-        /** 父分类Id */
-        val categoryParentId: Long? = null,
-        /** 分类Id */
-        val categoryId: Long? = null,
-        /** 视频名称模糊查询 */
-        val videoNameFuzzy: String? = null,
-        /** 视频状态 */
-        val recommendType: Int? = null,
-        /** 排除的视频ID列表（可选） */
-        val excludeVideoIds: List<Long>? = null,
+        val lastPlayHour: Int = 24,
     ) : PageQueryParam<Response>()
 
     data class Response(
@@ -40,7 +29,6 @@ object SearchVideosQry {
         var tags: String?,
         var introduction: String?,
         var duration: Int,
-        val status: Int,
         var playCount: Int,
         var likeCount: Int,
         var danmuCount: Int,

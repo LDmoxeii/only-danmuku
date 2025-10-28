@@ -1,8 +1,6 @@
 package edu.only4.danmuku.adapter.portal.api.compatible
 
 import com.only4.cap4k.ddd.core.Mediator
-import edu.only4.danmuku.adapter.portal.api.payload.AdminCategoryChangeSort
-import edu.only4.danmuku.adapter.portal.api.payload.AdminCategoryDel
 import edu.only4.danmuku.adapter.portal.api.payload.AdminCategoryLoad
 import edu.only4.danmuku.adapter.portal.api.payload.AdminCategorySave
 import edu.only4.danmuku.application.commands.category.CreateCategoryCmd
@@ -25,14 +23,14 @@ import org.springframework.web.bind.annotation.RestController
 class CompatibleAdminCategoryController {
 
     @PostMapping("/loadCategory")
-    fun adminCategoryLoad(): List<AdminCategoryLoad.Response> {
+    fun getCategoryTree(): List<AdminCategoryLoad.Response> {
         val treeResult = Mediator.qry.send(GetCategoryTreeQry.Request())
-        return treeResult.map { qryResponseToApiResponse(it) }
+        return treeResult.map { coverToResponse(it) }
     }
 
 
     @PostMapping("/saveCategory")
-    fun adminCategorySave(
+    fun addCategory(
         parentId: Long,
         categoryId: Long?,
         @NotEmpty categoryCode: String,
@@ -70,20 +68,19 @@ class CompatibleAdminCategoryController {
     }
 
     @PostMapping("/delCategory")
-    fun adminCategoryDel(categoryId: Long): AdminCategoryDel.Response {
+    fun deleteCategory(categoryId: Long) {
         Mediator.commands.send(
             DeleteCategoryCmd.Request(
                 categoryId = categoryId
             )
         )
-        return AdminCategoryDel.Response()
     }
 
     @PostMapping("/changeSort")
-    fun adminCategoryChangeSort(
+    fun changeCategorySort(
         parentId: Long,
         categoryIds: String,
-    ): AdminCategoryChangeSort.Response {
+    ) {
         val categoryIdList = categoryIds.split(",")
             .map { it.trim().toLong() }
 
@@ -93,10 +90,9 @@ class CompatibleAdminCategoryController {
                 categoryIds = categoryIdList
             )
         )
-        return AdminCategoryChangeSort.Response()
     }
 
-    private fun qryResponseToApiResponse(node: GetCategoryTreeQry.Response): AdminCategoryLoad.Response {
+    private fun coverToResponse(node: GetCategoryTreeQry.Response): AdminCategoryLoad.Response {
         return AdminCategoryLoad.Response(
             categoryId = node.categoryId,
             categoryCode = node.code,
@@ -104,8 +100,8 @@ class CompatibleAdminCategoryController {
             parentId = node.parentId,
             icon = node.icon,
             background = node.background,
-            sort = node.sort.toInt(),
-            children = node.children.map { qryResponseToApiResponse(it) }
+            sort = node.sort,
+            children = node.children.map { coverToResponse(it) }
         )
     }
 

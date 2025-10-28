@@ -7,7 +7,7 @@ import edu.only4.danmuku.application.queries._share.model.customerId
 import edu.only4.danmuku.application.queries._share.model.dto.CustomerFocus.CustomerFocusSimple
 import edu.only4.danmuku.application.queries._share.model.fetchBy
 import edu.only4.danmuku.application.queries._share.model.focusCustomerId
-import edu.only4.danmuku.application.queries.customer_focus.GetFocusListQry
+import edu.only4.danmuku.application.queries.customer_focus.GetFocusPageQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.springframework.stereotype.Service
@@ -20,11 +20,11 @@ import org.springframework.stereotype.Service
  * @date 2025/10/15
  */
 @Service
-class GetFocusListQryHandler(
+class GetFocusPageQryHandler(
     private val sqlClient: KSqlClient,
-) : PageQuery<GetFocusListQry.Request, GetFocusListQry.Response> {
+) : PageQuery<GetFocusPageQry.Request, GetFocusPageQry.Response> {
 
-    override fun exec(request: GetFocusListQry.Request): PageData<GetFocusListQry.Response> {
+    override fun exec(request: GetFocusPageQry.Request): PageData<GetFocusPageQry.Response> {
 
         // 查询当前用户的关注列表
         val pageResult =
@@ -50,7 +50,7 @@ class GetFocusListQryHandler(
                     where(table.focusCustomerId eq focus.focusCustomerId)
                 }.size
 
-                GetFocusListQry.Response(
+                GetFocusPageQry.Response(
                     focusUserId = focus.focusCustomerId,
                     nickName = focus.customer.relation!!.nickName,
                     avatar = focus.customer.relation!!.avatar,

@@ -8,17 +8,13 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
-/**
- * 分类控制器
- *
- */
 @RestController
 @RequestMapping("/category")
 @Validated
 class CompatibleCategoryController {
 
     @PostMapping("/loadAllCategory")
-    fun categoryLoadAll(): List<CategoryLoadAll.Response> {
+    fun getCategoryTree(): List<CategoryLoadAll.Response> {
         val treeResult = Mediator.qry.send(GetCategoryTreeQry.Request())
         return treeResult.map { qryResponseToApiResponse(it) }
 

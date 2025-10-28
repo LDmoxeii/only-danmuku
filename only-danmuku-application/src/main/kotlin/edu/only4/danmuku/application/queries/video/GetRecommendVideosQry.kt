@@ -1,6 +1,6 @@
 package edu.only4.danmuku.application.queries.video
 
-import com.only4.cap4k.ddd.core.application.RequestParam
+import com.only4.cap4k.ddd.core.application.query.ListQueryParam
 
 /**
  * 获取推荐视频列表
@@ -11,7 +11,7 @@ import com.only4.cap4k.ddd.core.application.RequestParam
  */
 object GetRecommendVideosQry {
 
-    class Request : RequestParam<List<Response>>
+    class Request : ListQueryParam<Response>
 
     data class Response(
         /** 视频ID */

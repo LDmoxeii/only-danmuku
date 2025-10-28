@@ -3,11 +3,10 @@ package edu.only4.danmuku.adapter.application.queries.video
 import com.only4.cap4k.ddd.core.application.query.PageQuery
 import com.only4.cap4k.ddd.core.share.PageData
 import edu.only4.danmuku.application.queries._share.model.Video
-import edu.only4.danmuku.application.queries._share.model.dto.Video.VideoListItem
 import edu.only4.danmuku.application.queries._share.model.fetchBy
 import edu.only4.danmuku.application.queries._share.model.likeCount
 import edu.only4.danmuku.application.queries._share.model.playCount
-import edu.only4.danmuku.application.queries.video.GetHotVideosQry
+import edu.only4.danmuku.application.queries.video.GetHotVideoPageQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.desc
 import org.springframework.stereotype.Service
@@ -20,11 +19,11 @@ import org.springframework.stereotype.Service
  * @date 2025/10/15
  */
 @Service
-class GetHotVideosQryHandler(
+class GetHotVideoPageQryHandler(
     private val sqlClient: KSqlClient,
-) : PageQuery<GetHotVideosQry.Request, GetHotVideosQry.Response> {
+) : PageQuery<GetHotVideoPageQry.Request, GetHotVideoPageQry.Response> {
 
-    override fun exec(request: GetHotVideosQry.Request): PageData<GetHotVideosQry.Response> {
+    override fun exec(request: GetHotVideoPageQry.Request): PageData<GetHotVideoPageQry.Response> {
         // 查询热门视频列表 (按播放数和点赞数排序)
         // 注意: 这里暂时忽略 lastPlayHour 参数，因为需要播放历史表来实现精确过滤
         // 简化实现：直接按播放数降序返回热门视频
@@ -51,7 +50,7 @@ class GetHotVideosQryHandler(
 
         // 转换为响应格式
         val responseList = pageResult.rows.map { video ->
-            GetHotVideosQry.Response(
+            GetHotVideoPageQry.Response(
                 videoId = video.id,
                 videoCover = video.videoCover,
                 videoName = video.videoName,

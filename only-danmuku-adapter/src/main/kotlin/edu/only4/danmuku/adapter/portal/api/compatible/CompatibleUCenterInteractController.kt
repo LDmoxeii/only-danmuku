@@ -3,12 +3,14 @@ package edu.only4.danmuku.adapter.portal.api.compatible
 import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.share.PageData
-import edu.only4.danmuku.adapter.portal.api.payload.*
-import edu.only4.danmuku.application.commands.video_comment.DelCommentCmd
-import edu.only4.danmuku.application.commands.video_danmuku.DeleteDanmukuCmd
-import edu.only4.danmuku.application.queries.video.SearchVideosQry
+import edu.only4.danmuku.adapter.portal.api.payload.UCenterLoadAllVideo
+import edu.only4.danmuku.adapter.portal.api.payload.UCenterLoadComment
+import edu.only4.danmuku.adapter.portal.api.payload.UCenterLoadDanmu
+import edu.only4.danmuku.application.commands.video_comment.DeleteVideoCommentCmd
+import edu.only4.danmuku.application.commands.video_danmuku.DeleteVideoDanmukuCmd
+import edu.only4.danmuku.application.queries.video.GetVideoAllList
 import edu.only4.danmuku.application.queries.video_comment.VideoCommentPageQry
-import edu.only4.danmuku.application.queries.video_danmuku.GetDanmukuPageQry
+import edu.only4.danmuku.application.queries.video_danmuku.GetVideoDanmukuPageQry
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -19,33 +21,24 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
-/**
- * 用户中心-互动管理控制器
- * 处理用户收到的评论、弹幕等互动信息
- */
 @RestController
-@RequestMapping("/ucenter/v2")
+@RequestMapping("/ucenter")
 @Validated
 class CompatibleUCenterInteractController {
 
-    /**
-     * 加载所有视频
-     */
     @PostMapping("/loadAllVideo")
-    fun loadAllVideo(): List<UCenterLoadAllVideo.VideoItem> {
+    fun getVideoAllList(): List<UCenterLoadAllVideo.VideoItem> {
         val currentUserId = LoginHelper.getUserId()!!
 
         // 调用查询获取当前用户的所有视频
         val queryResult = Mediator.queries.send(
-            SearchVideosQry.Request(
+            GetVideoAllList.Request(
                 userId = currentUserId,
-                videoNameFuzzy = null,
-                recommendType = null
             )
         )
 
         // 转换为前端需要的格式
-        return queryResult.list.map { video ->
+        return queryResult.map { video ->
             UCenterLoadAllVideo.VideoItem(
                 videoId = video.videoId.toString(),
                 videoCover = video.videoCover,
@@ -58,17 +51,12 @@ class CompatibleUCenterInteractController {
         }
     }
 
-    /**
-     * 加载用户收到的评论
-     */
     @PostMapping("/loadComment")
-    fun loadComment(@RequestBody request: UCenterLoadComment.Request): PageData<UCenterLoadComment.CommentItem> {
+    fun getUserCommentPage(@RequestBody request: UCenterLoadComment.Request): PageData<UCenterLoadComment.CommentItem> {
         val currentUserId = LoginHelper.getUserId()!!
 
-        // 构建查询请求 - 查询视频作者收到的评论
         val queryRequest = VideoCommentPageQry.Request(
-            videoUserId = currentUserId, // 过滤当前用户作为视频作者收到的评论
-            videoNameFuzzy = null // 可以扩展支持视频名称搜索
+            videoUserId = currentUserId,
         ).apply {
             pageNum = request.pageNum
             pageSize = request.pageSize
@@ -76,7 +64,6 @@ class CompatibleUCenterInteractController {
 
         val queryResult = Mediator.queries.send(queryRequest)
 
-        // 转换为前端需要的格式
         return PageData.create(
             pageNum = queryResult.pageNum,
             pageSize = queryResult.pageSize,
@@ -98,33 +85,22 @@ class CompatibleUCenterInteractController {
         )
     }
 
-    /**
-     * 删除评论
-     */
     @PostMapping("/delComment")
-    fun delComment(commentId: Long): UCenterDelComment.Response {
-        // 调用命令删除评论
+    fun deleteVideoComment(commentId: Long) {
         Mediator.commands.send(
-            DelCommentCmd.Request(
+            DeleteVideoCommentCmd.Request(
                 commentId = commentId,
                 operatorId = LoginHelper.getUserId()!!
             )
         )
-
-        return UCenterDelComment.Response()
     }
 
-    /**
-     * 加载用户收到的弹幕
-     */
     @PostMapping("/loadDanmu")
-    fun loadDanmu(@RequestBody request: UCenterLoadDanmu.Request): PageData<UCenterLoadDanmu.DanmukuItem> {
+    fun getVideoDanmukuPage(@RequestBody request: UCenterLoadDanmu.Request): PageData<UCenterLoadDanmu.DanmukuItem> {
         val currentUserId = LoginHelper.getUserId()!!
 
-        // 构建查询请求 - 查询视频作者收到的弹幕
-        val queryRequest = GetDanmukuPageQry.Request(
-            videoUserId = currentUserId, // 过滤当前用户作为视频作者收到的弹幕
-            videoNameFuzzy = null // 可以扩展支持视频名称搜索
+        val queryRequest = GetVideoDanmukuPageQry.Request(
+            videoUserId = currentUserId,
         ).apply {
             pageNum = request.pageNum
             pageSize = request.pageSize
@@ -132,7 +108,6 @@ class CompatibleUCenterInteractController {
 
         val queryResult = Mediator.queries.send(queryRequest)
 
-        // 转换为前端需要的格式
         return PageData.create(
             pageNum = queryResult.pageNum,
             pageSize = queryResult.pageSize,
@@ -156,19 +131,14 @@ class CompatibleUCenterInteractController {
         )
     }
 
-    /**
-     * 删除弹幕
-     */
     @PostMapping("/delDanmu")
-    fun delDanmu(danmuId: Long): UCenterDelDanmu.Response {
+    fun deleteVideoDanmuku(danmuId: Long) {
         Mediator.commands.send(
-            DeleteDanmukuCmd.Request(
+            DeleteVideoDanmukuCmd.Request(
                 danmukuId = danmuId,
                 operatorId = LoginHelper.getUserId()!!
             )
         )
-
-        return UCenterDelDanmu.Response()
     }
 
 }

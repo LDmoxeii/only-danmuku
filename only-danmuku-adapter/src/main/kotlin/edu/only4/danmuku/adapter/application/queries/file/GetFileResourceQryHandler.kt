@@ -20,10 +20,8 @@ class GetFileResourceQryHandler(
     override fun exec(request: GetFileResourceQry.Request): GetFileResourceQry.Response {
         val sourceName = request.sourceName
 
-        // 获取文件后缀
         val fileSuffix = getFileSuffix(sourceName)
 
-        // 构造完整文件路径
         val fullPath = fileProps.projectFolder + Constants.FILE_FOLDER + sourceName
         val file = File(fullPath)
 
@@ -34,9 +32,6 @@ class GetFileResourceQryHandler(
         )
     }
 
-    /**
-     * 获取文件后缀名
-     */
     private fun getFileSuffix(fileName: String): String {
         val lastDotIndex = fileName.lastIndexOf('.')
         return if (lastDotIndex > 0) {

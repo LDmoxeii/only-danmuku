@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service
  * @author cap4k-ddd-codegen
  * @date 2025/10/15
  */
-object DeleteDanmukuCmd {
+object DeleteVideoDanmukuCmd {
 
     @Service
     class Handler : Command<Request, Response> {

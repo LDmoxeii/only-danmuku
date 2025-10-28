@@ -2,14 +2,12 @@ package edu.only4.danmuku.adapter.portal.api.compatible
 
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.share.PageData
-import edu.only4.danmuku.adapter.portal.api.payload.AdminInteractDelComment
-import edu.only4.danmuku.adapter.portal.api.payload.AdminInteractDelDanmuku
 import edu.only4.danmuku.adapter.portal.api.payload.AdminInteractLoadComment
 import edu.only4.danmuku.adapter.portal.api.payload.AdminInteractLoadDanmuku
-import edu.only4.danmuku.application.commands.video_comment.DelCommentCmd
-import edu.only4.danmuku.application.commands.video_danmuku.DeleteDanmukuCmd
+import edu.only4.danmuku.application.commands.video_comment.DeleteVideoCommentCmd
+import edu.only4.danmuku.application.commands.video_danmuku.DeleteVideoDanmukuCmd
 import edu.only4.danmuku.application.queries.video_comment.VideoCommentPageQry
-import edu.only4.danmuku.application.queries.video_danmuku.GetDanmukuPageQry
+import edu.only4.danmuku.application.queries.video_danmuku.GetVideoDanmukuPageQry
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -25,9 +23,8 @@ import java.time.ZoneId
 class CompatibleAdminInteractController {
 
     @PostMapping("/loadDanmu")
-    fun adminInteractLoadDanmuku(@RequestBody request: AdminInteractLoadDanmuku.Request): PageData<AdminInteractLoadDanmuku.Response> {
-        // 调用查询获取弹幕分页列表
-        val queryRequest = GetDanmukuPageQry.Request(
+    fun getDanmukuPage(@RequestBody request: AdminInteractLoadDanmuku.Request): PageData<AdminInteractLoadDanmuku.Response> {
+        val queryRequest = GetVideoDanmukuPageQry.Request(
             videoNameFuzzy = request.videoNameFuzzy
         ).apply {
             pageNum = request.pageNum
@@ -35,10 +32,8 @@ class CompatibleAdminInteractController {
             sort.addAll(request.sort)
         }
 
-
         val queryResult = Mediator.queries.send(queryRequest)
 
-        // 转换为前端需要的格式
         return PageData.create(
             pageNum = queryResult.pageNum,
             pageSize = queryResult.pageSize,
@@ -65,18 +60,16 @@ class CompatibleAdminInteractController {
     }
 
     @PostMapping("/delDanmu")
-    fun adminInteractDelDanmuku(danmuId: Long): AdminInteractDelDanmuku.Response {
+    fun deleteDanmuku(danmuId: Long) {
         Mediator.commands.send(
-            DeleteDanmukuCmd.Request(
+            DeleteVideoDanmukuCmd.Request(
                 danmukuId = danmuId
             )
         )
-        return AdminInteractDelDanmuku.Response()
     }
 
     @PostMapping("/loadComment")
-    fun adminInteractLoadComment(@RequestBody request: AdminInteractLoadComment.Request): PageData<AdminInteractLoadComment.Response> {
-        // 调用查询获取评论分页列表
+    fun getVideoCommentPage(@RequestBody request: AdminInteractLoadComment.Request): PageData<AdminInteractLoadComment.Response> {
         val queryRequest = VideoCommentPageQry.Request(
             videoNameFuzzy = request.videoNameFuzzy
         ).apply {
@@ -85,10 +78,8 @@ class CompatibleAdminInteractController {
             sort.addAll(request.sort)
         }
 
-
         val queryResult = Mediator.queries.send(queryRequest)
 
-        // 转换为前端需要的格式
         return PageData.create(
             pageNum = queryResult.pageNum,
             pageSize = queryResult.pageSize,
@@ -106,7 +97,7 @@ class CompatibleAdminInteractController {
                     replyNickName = comment.replyCustomerNickname,
                     content = comment.content,
                     imgPath = comment.imgPath,
-                    topType = comment.topType?.toInt(),
+                    topType = comment.topType,
                     likeCount = comment.likeCount,
                     hateCount = comment.hateCount,
                     postTime = LocalDateTime.ofInstant(
@@ -120,13 +111,12 @@ class CompatibleAdminInteractController {
     }
 
     @PostMapping("/delComment")
-    fun adminInteractDelComment(commentId: Long): AdminInteractDelComment.Response {
+    fun deleteVideoComment(commentId: Long) {
         Mediator.commands.send(
-            DelCommentCmd.Request(
+            DeleteVideoCommentCmd.Request(
                 commentId = commentId,
             )
         )
-        return AdminInteractDelComment.Response()
     }
 
 }

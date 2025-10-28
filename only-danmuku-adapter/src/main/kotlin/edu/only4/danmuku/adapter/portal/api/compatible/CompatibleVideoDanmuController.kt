@@ -3,14 +3,12 @@ package edu.only4.danmuku.adapter.portal.api.compatible
 import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.adapter.portal.api.payload.DanmukuLoad
-import edu.only4.danmuku.adapter.portal.api.payload.DanmukuPost
 import edu.only4.danmuku.application.commands.video_danmuku.PostDanmukuCmd
-import edu.only4.danmuku.application.queries.video_danmuku.GetDanmukuByFileIdQry
+import edu.only4.danmuku.application.queries.video_danmuku.GetDanmukuListByFileIdQry
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.Size
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.time.Instant
@@ -18,9 +16,6 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
-/**
- * 视频弹幕控制器
- */
 @RestController
 @RequestMapping("/danmu")
 @Validated
@@ -30,12 +25,15 @@ class CompatibleVideoDanmuController {
      * 加载弹幕列表
      */
     @PostMapping("/loadDanmu")
-    fun danmukuLoad(@RequestBody @Validated request: DanmukuLoad.Request): List<DanmukuLoad.DanmukuItem> {
+    fun getVideoDanmukuList(
+        fileId: Long,
+        videoId: Long,
+    ): List<DanmukuLoad.DanmukuItem> {
         // 调用查询获取弹幕列表
         val queryResult = Mediator.queries.send(
-            GetDanmukuByFileIdQry.Request(
-                fileId = request.fileId.toLong(),
-                videoId = request.videoId.toLong()
+            GetDanmukuListByFileIdQry.Request(
+                fileId = fileId,
+                videoId = videoId
             )
         )
 
@@ -62,19 +60,15 @@ class CompatibleVideoDanmuController {
         return list
     }
 
-    /**
-     * 发送弹幕
-     */
     @PostMapping("/postDanmu")
-    fun danmukuPost(
+    fun postDanmuku(
         videoId: Long,
         fileId: Long,
         @NotEmpty @Size(max = 200) text: String,
         mode: Int,
         @NotEmpty color: String,
         time: Int,
-    ): DanmukuPost.Response {
-        // 调用命令发送弹幕
+    ) {
         val userId = LoginHelper.getUserId()!!
         Mediator.commands.send(
             PostDanmukuCmd.Request(
@@ -87,7 +81,6 @@ class CompatibleVideoDanmuController {
                 time = time
             )
         )
-        return DanmukuPost.Response()
     }
 
 }

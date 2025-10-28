@@ -6,32 +6,31 @@ import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.share.PageData
 import edu.only4.danmuku.adapter.portal.api._share.constant.Constants
 import edu.only4.danmuku.adapter.portal.api.payload.*
-import edu.only4.danmuku.application.queries.video.*
 import edu.only4.danmuku.application.queries.customer_action.GetUserActionsByVideoIdQry
+import edu.only4.danmuku.application.queries.video.GetHotVideoPageQry
+import edu.only4.danmuku.application.queries.video.GetRecommendVideosQry
+import edu.only4.danmuku.application.queries.video.GetVideoInfoQry
+import edu.only4.danmuku.application.queries.video.GetVideoPageQry
 import edu.only4.danmuku.application.queries.video_file.GetVideoFilesByVideoIdQry
-import io.reactivex.rxjava3.internal.util.QueueDrainHelper.request
 import jakarta.validation.constraints.NotEmpty
-import java.time.Duration
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.time.Duration
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
-/**
- * 视频浏览控制器 - 处理视频列表加载、搜索、详情查看等操作
- */
 @RestController
 @RequestMapping("/video")
 @Validated
 class CompatibleVideoController {
 
     @PostMapping("/loadRecommendVideo")
-    fun videoLoadRecommend(): Collection<VideoLoadRecommend.VideoItem> {
+    fun getRecommendVideos(): Collection<VideoLoadRecommend.VideoItem> {
         val videoList = Mediator.queries.send(GetRecommendVideosQry.Request())
 
         return videoList.map { video ->
@@ -53,11 +52,11 @@ class CompatibleVideoController {
     }
 
     @PostMapping("/loadVideo")
-    fun videoLoad(@RequestBody request: VideoLoad.Request): PageData<VideoLoad.VideoItem> {
+    fun getVideoPage(@RequestBody request: VideoLoad.Request): PageData<VideoLoad.VideoItem> {
         val recommendType = if (request.categoryId == null && request.pCategoryId == null) 0 else null
 
-        val queryRequest = GetVideosByCategoryQry.Request(
-            parentCategoryId = request.pCategoryId,
+        val queryRequest = GetVideoPageQry.Request(
+            categoryParentId = request.pCategoryId,
             categoryId = request.categoryId,
             recommendType = recommendType
         ).apply {
@@ -118,7 +117,7 @@ class CompatibleVideoController {
     }
 
     @PostMapping("/loadVideoPList")
-    fun videoLoadPList(
+    fun getVideoPList(
         videoId: Long,
     ): List<VideoLoadPList.FileItem> {
         val fileList = Mediator.queries.send(
@@ -140,7 +139,7 @@ class CompatibleVideoController {
     }
 
     @PostMapping("/getVideoInfo")
-    fun videoGetInfo(
+    fun getVideoInfo(
         videoId: Long
     ): VideoGetInfo.Response {
         val currentUserId = LoginHelper.getUserId()
@@ -203,12 +202,11 @@ class CompatibleVideoController {
     }
 
     @PostMapping("/getVideoRecommend")
-    fun videoGetRecommend(
+    fun getRecommendVideo(
         @NotEmpty keyword: String,
         videoId: Long,
     ): List<VideoGetRecommend.VideoItem> {
-        // 调用搜索查询获取相关视频(最多10个)，将排除逻辑下放到查询处理器
-        val queryRequest = SearchVideosQry.Request(
+        val queryRequest = GetVideoPageQry.Request(
             videoNameFuzzy = keyword,
             recommendType = null,
             excludeVideoIds = listOf(videoId)
@@ -251,7 +249,7 @@ class CompatibleVideoController {
     }
 
     @PostMapping("/reportVideoPlayOnline")
-    fun videoReportPlayOnline(
+    fun reportVideoPlayOnline(
         fileId: Long,
         deviceId: Long,
     ): Long {
@@ -292,12 +290,11 @@ class CompatibleVideoController {
     }
 
     @PostMapping("/search")
-    fun videoSearch(@RequestBody @Validated request: VideoSearch.Request): PageData<VideoSearch.VideoItem> {
+    fun searchVideo(@RequestBody @Validated request: VideoSearch.Request): PageData<VideoSearch.VideoItem> {
         RedisUtils.incrZSetScore(Constants.REDIS_KEY_VIDEO_SEARCH_COUNT, request.keyword, 1.0)
 
-        val queryRequest = SearchVideosQry.Request(
+        val queryRequest = GetVideoPageQry.Request(
             videoNameFuzzy = request.keyword,
-            recommendType = null
         ).apply {
             pageNum = request.pageNum
             pageSize = request.pageSize
@@ -356,12 +353,12 @@ class CompatibleVideoController {
     }
 
     @PostMapping("/getSearchKeywordTop")
-    fun videoGetSearchKeywordTop(): Collection<String> =
+    fun getSearchKeywordTop(): Collection<String> =
         RedisUtils.getCacheZSetRange(Constants.REDIS_KEY_VIDEO_SEARCH_COUNT, 0, 9)
 
     @PostMapping("/loadHotVideoList")
-    fun videoLoadHot(@RequestBody request: VideoLoadHot.Request): PageData<VideoLoadHot.VideoItem> {
-        val queryRequest = GetHotVideosQry.Request(lastPlayHour = 24).apply {
+    fun getHotVidePage(@RequestBody request: VideoLoadHot.Request): PageData<VideoLoadHot.VideoItem> {
+        val queryRequest = GetHotVideoPageQry.Request(lastPlayHour = 24).apply {
             pageNum = request.pageNum
             pageSize = request.pageSize
         }

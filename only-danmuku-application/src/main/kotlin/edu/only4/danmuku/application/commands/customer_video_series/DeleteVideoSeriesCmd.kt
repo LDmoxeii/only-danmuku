@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service
  * @author cap4k-ddd-codegen
  * @date 2025/10/15
  */
-object DeleteCustomerVideoSeriesCmd {
+object DeleteVideoSeriesCmd {
 
     @Service
     class Handler : Command<Request, Response> {

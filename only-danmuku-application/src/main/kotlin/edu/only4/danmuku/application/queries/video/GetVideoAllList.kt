@@ -1,23 +1,21 @@
 package edu.only4.danmuku.application.queries.video
 
-import com.only4.cap4k.ddd.core.application.query.PageQueryParam
+import com.only4.cap4k.ddd.core.application.query.ListQueryParam
 
 /**
- * 按分类获取视频列表
+ * 获取所有视频
  *
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * @author cap4k-ddd-codegen
  * @date 2025/10/15
  */
-object GetVideosByCategoryQry {
+object GetVideoAllList {
 
     data class Request(
-        val parentCategoryId: Long? = null,
-        val categoryId: Long? = null,
-        val recommendType: Int? = null,
-    ) : PageQueryParam<Response>()
+        val userId: Long,
+    ) : ListQueryParam<VideoItem>
 
-    data class Response(
+    data class VideoItem(
         var videoId: Long,
         var videoCover: String?,
         var videoName: String?,
@@ -31,6 +29,7 @@ object GetVideosByCategoryQry {
         var tags: String?,
         var introduction: String?,
         var duration: Int,
+        val status: Int,
         var playCount: Int,
         var likeCount: Int,
         var danmuCount: Int,

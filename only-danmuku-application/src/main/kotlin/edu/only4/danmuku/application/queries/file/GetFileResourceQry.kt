@@ -12,18 +12,14 @@ import jakarta.validation.constraints.NotEmpty
 object GetFileResourceQry {
 
     data class Request(
-        /** 资源文件相对路径 */
         @field:NotEmpty(message = "资源文件路径不能为空")
         @field:SafeFilePath
         val sourceName: String,
     ) : RequestParam<Response>
 
     data class Response(
-        /** 文件的完整路径 */
         val filePath: String,
-        /** 文件后缀（如 .jpg, .png） */
         val fileSuffix: String,
-        /** 文件是否存在 */
         val exists: Boolean,
     )
 }

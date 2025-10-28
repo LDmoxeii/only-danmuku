@@ -6,7 +6,7 @@ import edu.only4.danmuku.application.queries._share.model.CustomerAction
 import edu.only4.danmuku.application.queries._share.model.actionType
 import edu.only4.danmuku.application.queries._share.model.customerId
 import edu.only4.danmuku.application.queries._share.model.dto.CustomerAction.CustomerActionSimple
-import edu.only4.danmuku.application.queries.customer_action.CustomerCollectedVideoIdsQry
+import edu.only4.danmuku.application.queries.customer_action.GetCollectionPageQry
 import edu.only4.danmuku.domain.aggregates.customer_action.enums.ActionType
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
@@ -20,11 +20,11 @@ import org.springframework.stereotype.Service
  * @date 2025/10/15
  */
 @Service
-class CustomerCollectedVideoIdsQryHandler(
+class GetCollectionPageQryHandler(
     private val sqlClient: KSqlClient,
-) : PageQuery<CustomerCollectedVideoIdsQry.Request, CustomerCollectedVideoIdsQry.Response> {
+) : PageQuery<GetCollectionPageQry.Request, GetCollectionPageQry.Response> {
 
-    override fun exec(request: CustomerCollectedVideoIdsQry.Request): PageData<CustomerCollectedVideoIdsQry.Response> {
+    override fun exec(request: GetCollectionPageQry.Request): PageData<GetCollectionPageQry.Response> {
 
         val pageResult =
             sqlClient.createQuery(CustomerAction::class) {
@@ -37,7 +37,7 @@ class CustomerCollectedVideoIdsQryHandler(
             pageNum = request.pageNum,
             pageSize = request.pageSize,
             list = pageResult.rows.map { action ->
-                CustomerCollectedVideoIdsQry.Response(
+                GetCollectionPageQry.Response(
                     actionId = action.id,
                     videoId = action.video.id,
                     videoUserId = action.videoOwnerId,

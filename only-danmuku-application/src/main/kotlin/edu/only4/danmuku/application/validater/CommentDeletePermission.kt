@@ -1,7 +1,7 @@
 package edu.only4.danmuku.application.validater
 
 import com.only4.cap4k.ddd.core.Mediator
-import edu.only4.danmuku.application.commands.video_comment.DelCommentCmd
+import edu.only4.danmuku.application.commands.video_comment.DeleteVideoCommentCmd
 import edu.only4.danmuku.application.queries.video_comment.CommentExistsByIdQry
 import edu.only4.danmuku.application.queries.video_comment.GetCommentByIdQry
 import jakarta.validation.Constraint
@@ -24,8 +24,8 @@ annotation class CommentDeletePermission(
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [],
 ) {
-    class Validator : ConstraintValidator<CommentDeletePermission, DelCommentCmd.Request> {
-        override fun isValid(value: DelCommentCmd.Request?, context: ConstraintValidatorContext): Boolean {
+    class Validator : ConstraintValidator<CommentDeletePermission, DeleteVideoCommentCmd.Request> {
+        override fun isValid(value: DeleteVideoCommentCmd.Request?, context: ConstraintValidatorContext): Boolean {
             if (value == null) return true
             val operatorId = value.operatorId ?: return true // 管理员
 

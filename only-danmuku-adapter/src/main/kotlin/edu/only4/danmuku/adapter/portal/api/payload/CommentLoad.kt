@@ -1,8 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.payload
 
-import com.only4.cap4k.ddd.core.share.PageParam
 import com.only4.cap4k.ddd.core.share.PageData
-import jakarta.validation.constraints.NotEmpty
+import com.only4.cap4k.ddd.core.share.PageParam
 
 /**
  * 加载评论列表接口载荷
@@ -10,11 +9,7 @@ import jakarta.validation.constraints.NotEmpty
 object CommentLoad {
 
     data class Request(
-        /** 视频ID */
-        @field:NotEmpty(message = "视频ID不能为空")
-        val videoId: String = "",
-        /** 排序类型 */
-        val orderType: Int? = null
+        val videoId: Long,
     ) : PageParam()
 
     /**

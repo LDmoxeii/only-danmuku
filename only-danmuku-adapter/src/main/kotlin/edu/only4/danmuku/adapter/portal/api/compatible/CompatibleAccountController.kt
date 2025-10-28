@@ -6,12 +6,14 @@ import com.only.engine.entity.UserInfo
 import com.only.engine.misc.ServletUtils.getClientIP
 import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
-import edu.only4.danmuku.adapter.portal.api.payload.*
+import edu.only4.danmuku.adapter.portal.api.payload.AccountCheckCode
+import edu.only4.danmuku.adapter.portal.api.payload.AccountLogin
+import edu.only4.danmuku.adapter.portal.api.payload.AccountRegister
+import edu.only4.danmuku.adapter.portal.api.payload.AccountUserCountInfo
 import edu.only4.danmuku.application.commands.user.RegisterAccountCmd
 import edu.only4.danmuku.application.commands.user.UpdateLoginInfoCmd
 import edu.only4.danmuku.application.distributed.clients.CaptchaGen
 import edu.only4.danmuku.application.queries.user.GetUserCountInfoQry
-import jakarta.servlet.http.HttpServletResponse
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.Pattern
@@ -88,37 +90,21 @@ class CompatibleAccountController {
     }
 
     @PostMapping("/autoLogin")
-    fun autoLogin(response: HttpServletResponse): AccountAutoLogin.Response? {
-        return AccountAutoLogin.Response()
-    }
+    fun autoLogin() = Unit
 
-    /**
-     * 用户登出
-     *
-     * 清除用户的登录状态和Cookie中的令牌信息
-     *
-     * @param response HTTP响应对象，用于清除Cookie
-     * @return 登出成功响应对象
-     */
     @PostMapping("/logout")
-    fun logout(response: HttpServletResponse): AccountLogout.Response {
-        StpUtil.logout()
-        return AccountLogout.Response()
-    }
+    fun logout() = StpUtil.logout()
 
     @PostMapping("/getUserCountInfo")
     fun getUserCountInfo(): AccountUserCountInfo.Response {
-        // 1. 从Token中获取当前用户ID
         val currentUserId = LoginHelper.getUserId()!!
 
-        // 2. 查询用户统计信息
         val userCountInfo = Mediator.queries.send(
             GetUserCountInfoQry.Request(
                 customerId = currentUserId
             )
         )
 
-        // 3. 转换为响应对象
         return AccountUserCountInfo.Response(
             fansCount = userCountInfo.fansCount,
             currentCoinCount = userCountInfo.currentCoinCount,

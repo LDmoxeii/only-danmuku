@@ -3,19 +3,18 @@ package edu.only4.danmuku.adapter.portal.api.compatible
 import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.share.PageData
-import edu.only4.danmuku.adapter.portal.api.payload.*
-import edu.only4.danmuku.application.commands.video_comment.DelCommentCmd
+import edu.only4.danmuku.adapter.portal.api.payload.CommentLoad
+import edu.only4.danmuku.application.commands.video_comment.DeleteVideoCommentCmd
 import edu.only4.danmuku.application.commands.video_comment.PostCommentCmd
 import edu.only4.danmuku.application.commands.video_comment.TopCommentCmd
 import edu.only4.danmuku.application.commands.video_comment.UntopCommentCmd
-import edu.only4.danmuku.application.queries.video_comment.VideoCommentPageQry
 import edu.only4.danmuku.application.queries.customer_action.GetUserActionsByVideoIdQry
+import edu.only4.danmuku.application.queries.video_comment.VideoCommentPageQry
 import edu.only4.danmuku.domain.aggregates.customer_action.enums.ActionType
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.Size
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.time.Instant
@@ -23,24 +22,15 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
-/**
- * 视频评论控制器
- */
 @RestController
 @RequestMapping("/comment")
 @Validated
 class CompatibleVideoCommentController {
 
-    /**
-     * 加载评论列表(分页)
-     */
     @PostMapping("/loadComment")
-    fun commentLoad(request: CommentLoad.Request): CommentLoad.Result {
-
-        // 调用查询获取评论分页列表
+    fun getVideoCommentPage(request: CommentLoad.Request): CommentLoad.Result {
         val queryRequest = VideoCommentPageQry.Request(
-            videoId = request.videoId.toLong(),
-            videoNameFuzzy = null
+            videoId = request.videoId,
         ).apply {
             pageNum = request.pageNum
             pageSize = request.pageSize
@@ -48,36 +38,31 @@ class CompatibleVideoCommentController {
 
         val queryResult = Mediator.queries.send(queryRequest)
 
-        // 当前登录用户
         val currentUserId = LoginHelper.getUserId()
 
-        // 加载用户在该视频下的行为列表，用于标记是否点赞过评论
         val actionList = if (currentUserId != null) {
             Mediator.queries.send(
                 GetUserActionsByVideoIdQry.Request(
                     userId = currentUserId,
-                    videoId = request.videoId.toLong()
+                    videoId = request.videoId
                 )
             )
         } else emptyList()
 
-        // 构建已点赞的评论ID集合
         val likedCommentIds: Set<Long> = actionList
             .filter { it.actionType == ActionType.LIKE_COMMENT.code && it.commentId != null }
             .mapNotNull { it.commentId }
             .toSet()
 
-        // 转换为前端需要的格式
         val pageData = PageData.create(
             pageNum = queryResult.pageNum,
             pageSize = queryResult.pageSize,
             list = queryResult.list.map { comment ->
-                toCommentItem(comment, likedCommentIds)
+                coverToCommentItem(comment, likedCommentIds)
             },
             totalCount = queryResult.totalCount
         )
 
-        // 映射用户行为列表返回（时间格式与视频详情一致）
         val userActions = actionList.map { act ->
             CommentLoad.UserAction(
                 actionId = act.actionId,
@@ -102,10 +87,10 @@ class CompatibleVideoCommentController {
         )
     }
 
-    /**
-     * 递归转换评论响应为前端格式
-     */
-    private fun toCommentItem(comment: VideoCommentPageQry.Response, likedCommentIds: Set<Long>): CommentLoad.Response {
+    private fun coverToCommentItem(
+        comment: VideoCommentPageQry.Response,
+        likedCommentIds: Set<Long>
+    ): CommentLoad.Response {
         return CommentLoad.Response(
             commentId = comment.commentId.toString(),
             pCommentId = comment.parentCommentId.toString(),
@@ -130,20 +115,17 @@ class CompatibleVideoCommentController {
                 ZoneId.systemDefault()
             ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
             childrenCount = comment.childrenCount,
-            children = comment.children?.map { child -> toCommentItem(child, likedCommentIds) }
+            children = comment.children?.map { child -> coverToCommentItem(child, likedCommentIds) }
         )
     }
 
-    /**
-     * 发表评论
-     */
     @PostMapping("/postComment")
-    fun commentPost(
+    fun postComment(
         videoId: Long,
         replyCommentId: Long?,
         @NotEmpty @Size(max = 500) content: String,
         @Size(max = 50) imgPath: String?,
-    ): CommentPost.Response {
+    ) {
         // 调用命令发表评论
         val currentUserId = LoginHelper.getUserId()!!
         // TODO： 是否回复顶级评论
@@ -157,53 +139,37 @@ class CompatibleVideoCommentController {
                 imgPath = imgPath
             )
         )
-
-        // 返回评论对象
-        return CommentPost.Response()
     }
 
-    /**
-     * 用户删除评论
-     */
     @PostMapping("/userDelComment")
-    fun commentUserDel(commentId: Long): CommentUserDel.Response {
+    fun deleteVideoComment(commentId: Long) {
         // 调用命令删除评论
         Mediator.commands.send(
-            DelCommentCmd.Request(
+            DeleteVideoCommentCmd.Request(
                 commentId = commentId,
                 operatorId = LoginHelper.getUserId()!!
             )
         )
-        return CommentUserDel.Response()
     }
 
-    /**
-     * 置顶评论
-     */
     @PostMapping("/topComment")
-    fun commentTop(commentId: Long): CommentTop.Response {
-        // 调用命令置顶评论
+    fun topVideoComment(commentId: Long) {
         Mediator.commands.send(
             TopCommentCmd.Request(
                 commentId = commentId,
                 operatorId = LoginHelper.getUserId()!!
             )
         )
-        return CommentTop.Response()
     }
 
-    /**
-     * 取消置顶评论
-     */
     @PostMapping("/cancelTopComment")
-    fun commentCancelTop(commentId: Long): CommentCancelTop.Response {
+    fun cancelTopVideoComment(commentId: Long) {
         Mediator.commands.send(
             UntopCommentCmd.Request(
                 commentId = commentId,
                 operatorId = LoginHelper.getUserId()!!
             )
         )
-        return CommentCancelTop.Response()
     }
 
 }

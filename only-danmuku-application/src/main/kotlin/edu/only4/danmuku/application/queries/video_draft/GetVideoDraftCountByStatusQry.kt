@@ -12,7 +12,6 @@ import com.only4.cap4k.ddd.core.application.RequestParam
 object GetVideoDraftCountByStatusQry {
 
     data class Request(
-        /** 用户ID */
         val userId: Long,
         /** 状态 */
         val status: Int? = null,

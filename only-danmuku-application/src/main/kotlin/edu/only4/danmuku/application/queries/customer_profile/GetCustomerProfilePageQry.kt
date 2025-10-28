@@ -1,4 +1,4 @@
-package edu.only4.danmuku.application.queries.user
+package edu.only4.danmuku.application.queries.customer_profile
 
 import com.only4.cap4k.ddd.core.application.query.PageQueryParam
 
@@ -9,7 +9,7 @@ import com.only4.cap4k.ddd.core.application.query.PageQueryParam
  * @author cap4k-ddd-codegen
  * @date 2025/10/15
  */
-object GetUsersByStatusQry {
+object GetCustomerProfilePageQry {
 
     data class Request(
         /** 昵称模糊查询 */

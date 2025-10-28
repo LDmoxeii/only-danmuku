@@ -17,7 +17,7 @@ import kotlin.jvm.optionals.getOrNull
  * @author cap4k-ddd-codegen
  * @date 2025/10/15
  */
-object DelCommentCmd {
+object DeleteVideoCommentCmd {
 
     @Service
     class Handler : Command<Request, Response> {

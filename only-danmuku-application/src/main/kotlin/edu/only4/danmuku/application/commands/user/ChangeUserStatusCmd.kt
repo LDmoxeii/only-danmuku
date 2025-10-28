@@ -11,7 +11,7 @@ import kotlin.jvm.optionals.getOrNull
 /**
  * 切换账号状态命令
  */
-object ChangeAccountStatusCmd {
+object ChangeUserStatusCmd {
 
     @Service
     class Handler : Command<Request, Response> {
@@ -28,9 +28,7 @@ object ChangeAccountStatusCmd {
     }
 
     data class Request(
-        /** 用户ID */
         val userId: Long,
-        /** 状态：true-启用，false-禁用 */
         val status: Boolean,
     ) : RequestParam<Response>
 

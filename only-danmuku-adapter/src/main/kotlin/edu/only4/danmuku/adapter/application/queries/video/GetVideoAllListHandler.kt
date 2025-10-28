@@ -1,48 +1,32 @@
 package edu.only4.danmuku.adapter.application.queries.video
 
-import com.only4.cap4k.ddd.core.application.query.PageQuery
-import com.only4.cap4k.ddd.core.share.PageData
-import edu.only4.danmuku.application.queries._share.model.*
-import edu.only4.danmuku.application.queries.video.SearchVideosQry
+import com.only4.cap4k.ddd.core.application.query.ListQuery
+import edu.only4.danmuku.application.queries._share.model.Video
+import edu.only4.danmuku.application.queries._share.model.createTime
+import edu.only4.danmuku.application.queries._share.model.customerId
+import edu.only4.danmuku.application.queries._share.model.fetchBy
+import edu.only4.danmuku.application.queries.video.GetVideoAllList
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.desc
 import org.babyfish.jimmer.sql.kt.ast.expression.`eq?`
-import org.babyfish.jimmer.sql.kt.ast.expression.`ilike?`
-import org.babyfish.jimmer.sql.kt.ast.expression.`valueNotIn?`
 import org.springframework.stereotype.Service
 
 /**
- * 搜索视频
+ * 获取视频分页列表
  *
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * @author cap4k-ddd-codegen
  * @date 2025/10/15
  */
 @Service
-class SearchVideosQryHandler(
+class GetVideoAllListHandler(
     private val sqlClient: KSqlClient,
-) : PageQuery<SearchVideosQry.Request, SearchVideosQry.Response> {
+) : ListQuery<GetVideoAllList.Request, GetVideoAllList.VideoItem> {
 
-    override fun exec(request: SearchVideosQry.Request): PageData<SearchVideosQry.Response> {
-        // 使用 Jimmer 查询视频列表，关联用户档案表
-        val pageResult = sqlClient.createQuery(Video::class) {
-            // 用户ID过滤
+    override fun exec(request: GetVideoAllList.Request): List<GetVideoAllList.VideoItem> {
+        val videos = sqlClient.createQuery(Video::class) {
             where(table.customerId `eq?` request.userId)
-            // 视频名称模糊查询
-            where(table.videoName `ilike?` request.videoNameFuzzy)
-            // 父分类过滤
-            where(table.parentCategoryId `eq?` request.categoryParentId)
-            // 分类过滤
-            where(table.categoryId `eq?` request.categoryId)
-            // 状态过滤 (这里过滤的是推荐状态)
-            where(table.recommendType `eq?` request.recommendType)
-            // 排除视频ID集合
-            if (!request.excludeVideoIds.isNullOrEmpty()) {
-                where(table.id `valueNotIn?` request.excludeVideoIds!!)
-            }
-            // 按创建时间倒序
             orderBy(table.createTime.desc())
-            // DTO投影
             select(table.fetchBy {
                 allScalarFields()
                 customer {
@@ -61,11 +45,11 @@ class SearchVideosQryHandler(
                     status()
                 }
             })
-        }.fetchPage(request.pageNum - 1, request.pageSize)
+        }.execute()
 
-        // 转换为查询响应
-        val responseList = pageResult.rows.map { video ->
-            SearchVideosQry.Response(
+
+        val responseList = videos.map { video ->
+            GetVideoAllList.VideoItem(
                 videoId = video.id,
                 videoCover = video.videoCover,
                 videoName = video.videoName,
@@ -94,12 +78,6 @@ class SearchVideosQryHandler(
             )
         }
 
-        // 返回分页结果
-        return PageData.create(
-            pageNum = request.pageNum,
-            pageSize = request.pageSize,
-            list = responseList,
-            totalCount = pageResult.totalRowCount
-        )
+        return responseList
     }
 }

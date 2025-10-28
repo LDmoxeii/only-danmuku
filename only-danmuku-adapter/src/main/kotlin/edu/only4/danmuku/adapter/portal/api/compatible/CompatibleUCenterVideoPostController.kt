@@ -4,7 +4,10 @@ import com.only.engine.json.misc.JsonUtils
 import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.share.PageData
-import edu.only4.danmuku.adapter.portal.api.payload.*
+import edu.only4.danmuku.adapter.portal.api.payload.UCenterGetVideoByVideoId
+import edu.only4.danmuku.adapter.portal.api.payload.UCenterGetVideoCountInfo
+import edu.only4.danmuku.adapter.portal.api.payload.UCenterLoadVideoList
+import edu.only4.danmuku.adapter.portal.api.payload.UCenterPostVideo
 import edu.only4.danmuku.application.commands.video.ChangeVideoInteractionCmd
 import edu.only4.danmuku.application.commands.video.DeleteVideoCmd
 import edu.only4.danmuku.application.commands.video_draft.CreateVideoDraftCmd
@@ -24,18 +27,11 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
-/**
- * 用户中心-视频发布控制器
- * 处理视频上传、编辑、删除等操作
- */
 @RestController
 @RequestMapping("/ucenter")
 @Validated
 class CompatibleUCenterVideoPostController {
 
-    /**
-     * 发布视频
-     */
     @PostMapping("/postVideo")
     fun postVideo(
         videoId: Long?,
@@ -73,14 +69,10 @@ class CompatibleUCenterVideoPostController {
         return UCenterPostVideo.Response()
     }
 
-    /**
-     * 加载用户发布的视频列表
-     */
     @PostMapping("/loadVideoList")
-    fun loadVideoList(@RequestBody request: UCenterLoadVideoList.Request): PageData<UCenterLoadVideoList.VideoItem> {
+    fun getVideoPage(@RequestBody request: UCenterLoadVideoList.Request): PageData<UCenterLoadVideoList.VideoItem> {
         val currentUserId = LoginHelper.getUserId()!!
 
-        // 构建查询请求
         val queryRequest = GetUserVideoDraftsQry.Request(
             userId = currentUserId,
             status = request.status,
@@ -93,7 +85,6 @@ class CompatibleUCenterVideoPostController {
 
         val queryResult = Mediator.queries.send(queryRequest)
 
-        // 转换为前端需要的格式
         return PageData.create(
             pageNum = queryResult.pageNum,
             pageSize = queryResult.pageSize,
@@ -125,9 +116,6 @@ class CompatibleUCenterVideoPostController {
         )
     }
 
-    /**
-     * 获取视频统计信息
-     */
     @PostMapping("/getVideoCountInfo")
     fun getVideoCountInfo(): UCenterGetVideoCountInfo.Response {
         val currentUserId = LoginHelper.getUserId()!!
@@ -163,22 +151,19 @@ class CompatibleUCenterVideoPostController {
         )
     }
 
-    /**
-     * 获取视频编辑信息
-     */
     @PostMapping("/getVideoByVideoId")
-    fun getVideoByVideoId(@RequestBody @Validated request: UCenterGetVideoByVideoId.Request): UCenterGetVideoByVideoId.Response {
+    fun getVideoByVideoId(
+        videoId: Long
+    ): UCenterGetVideoByVideoId.Response {
         val currentUserId = LoginHelper.getUserId()!!
 
-        // 调用查询获取视频信息
         val queryResult = Mediator.queries.send(
             GetVideoDraftInfoQry.Request(
-                videoId = request.videoId.toLong(),
+                videoId = videoId,
                 userId = currentUserId
             )
         )
 
-        // 转换为前端需要的格式
         return UCenterGetVideoByVideoId.Response(
             videoInfo = UCenterGetVideoByVideoId.VideoInfo(
                 videoId = queryResult.videoInfo.videoId.toString(),
@@ -206,40 +191,34 @@ class CompatibleUCenterVideoPostController {
         )
     }
 
-    /**
-     * 保存视频互动设置
-     */
     @PostMapping("/saveVideoInteraction")
-    fun saveVideoInteraction(@RequestBody @Validated request: UCenterSaveVideoInteraction.Request): UCenterSaveVideoInteraction.Response {
+    fun saveVideoInteraction(
+        videoId: Long,
+        interaction: String
+    ) {
         val userId = LoginHelper.getUserId()!!
 
         // TODO：未发出事件，并同步视频草稿互动配置
         Mediator.commands.send(
             ChangeVideoInteractionCmd.Request(
-                videoId = request.videoId.toLong(),
+                videoId = videoId,
                 userId = userId,
-                interaction = request.interaction
+                interaction = interaction
             )
         )
-
-        return UCenterSaveVideoInteraction.Response()
     }
 
-    /**
-     * 删除视频
-     */
     @PostMapping("/deleteVideo")
-    fun deleteVideo(@RequestBody @Validated request: UCenterDeleteVideo.Request): UCenterDeleteVideo.Response {
-        // 调用命令删除视频
+    fun deleteVideo(
+        videoId: Long,
+    ) {
         val currentUserId = LoginHelper.getUserId()!!
         Mediator.commands.send(
             DeleteVideoCmd.Request(
-                videoId = request.videoId.toLong(),
+                videoId = videoId,
                 operatorId = currentUserId
             )
         )
-
-        return UCenterDeleteVideo.Response()
     }
 
 }

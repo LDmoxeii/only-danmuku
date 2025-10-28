@@ -20,16 +20,12 @@ import java.time.format.DateTimeFormatter
 @Validated
 class CompatibleUCenterStatisticsController {
 
-    /**
-     * 获取实时统计信息
-     */
     @PostMapping("/getActualTimeStatisticsInfo")
     fun getActualTimeStatistics(): UCenterGetActualTimeStatistics.Response {
         val currentUserId = LoginHelper.getUserId()!!
         val preDayData = Mediator.queries.send(GetPreviousDayStatisticsInfoQry.Request(currentUserId))
         val totalData = Mediator.queries.send(GetTotalStatisticsInfoQry.Request(currentUserId))
 
-        // 构建前一天数据的 Map（按统计类型分类）
         val preDayDataMap = mapOf(
             1 to preDayData.playCount,      // 播放量 (PLAY)
             2 to preDayData.userCount,      // 用户数 (FANS)
@@ -37,18 +33,17 @@ class CompatibleUCenterStatisticsController {
             4 to preDayData.collectCount,   // 收藏 (COLLECTION)
             5 to preDayData.coinCount,      // 投币 (COIN)
             6 to preDayData.commentCount,   // 评论 (COMMENT)
-            7 to preDayData.danmuCount      // 弹幕 (DANMUKU)
+            7 to preDayData.danmukuCount      // 弹幕 (DANMUKU)
         )
 
-        // 构建总统计信息的 Map（按字段名分类）
         val totalCountInfoMap = mapOf(
-            "userCount" to totalData.userCount,
             "playCount" to totalData.playCount,
-            "commentCount" to totalData.commentCount,
-            "danmuCount" to totalData.danmuCount,
+            "userCount" to totalData.userCount,
             "likeCount" to totalData.likeCount,
             "collectCount" to totalData.collectCount,
-            "coinCount" to totalData.coinCount
+            "coinCount" to totalData.coinCount,
+            "commentCount" to totalData.commentCount,
+            "danmuCount" to totalData.danmukuCount
         )
 
         return UCenterGetActualTimeStatistics.Response(
@@ -57,9 +52,6 @@ class CompatibleUCenterStatisticsController {
         )
     }
 
-    /**
-     * 获取周统计信息
-     */
     @PostMapping("/getWeekStatisticsInfo")
     fun getWeekStatistics(dataType: Int): List<UCenterGetWeekStatistics.WeekStatisticsItem> {
         val currentUserId = LoginHelper.getUserId()!!
@@ -74,7 +66,6 @@ class CompatibleUCenterStatisticsController {
         val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
         val resultList = weekData.map { item ->
-            // 将时间戳转换为日期字符串 YYYY-MM-DD
             val dateStr = Instant.ofEpochSecond(item.date)
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate()

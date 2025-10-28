@@ -2,12 +2,13 @@ package edu.only4.danmuku.adapter.portal.api.compatible
 
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.share.PageData
-import edu.only4.danmuku.adapter.portal.api.payload.*
+import edu.only4.danmuku.adapter.portal.api.payload.AdminVideoLoadList
+import edu.only4.danmuku.adapter.portal.api.payload.AdminVideoLoadPList
 import edu.only4.danmuku.application.commands.video.DeleteVideoCmd
 import edu.only4.danmuku.application.commands.video.RecommendVideoCmd
 import edu.only4.danmuku.application.commands.video_draft.AuditVideoCmd
+import edu.only4.danmuku.application.queries.video.GetVideoPageQry
 import edu.only4.danmuku.application.queries.video.GetVideoPlayFilesQry
-import edu.only4.danmuku.application.queries.video.SearchVideosQry
 import edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
@@ -26,9 +27,8 @@ import java.time.ZoneId
 class CompatibleAdminVideoController {
 
     @PostMapping("/loadVideoList")
-    fun adminVideoLoadList(request: AdminVideoLoadList.Request): PageData<AdminVideoLoadList.VideoItem> {
-        // 调用查询获取视频分页列表
-        val queryRequest = SearchVideosQry.Request(
+    fun getVideoPage(request: AdminVideoLoadList.Request): PageData<AdminVideoLoadList.VideoItem> {
+        val queryRequest = GetVideoPageQry.Request(
             videoNameFuzzy = request.videoNameFuzzy,
             categoryParentId = request.categoryParentId,
             categoryId = request.categoryId,
@@ -40,7 +40,6 @@ class CompatibleAdminVideoController {
 
         val queryResult = Mediator.queries.send(queryRequest)
 
-        // 转换为前端需要的格式
         return PageData.create(
             pageNum = queryResult.pageNum,
             pageSize = queryResult.pageSize,
@@ -78,25 +77,20 @@ class CompatibleAdminVideoController {
     }
 
     @PostMapping("/recommendVideo")
-    fun adminVideoRecommend(videoId: Long): AdminVideoRecommend.Response {
+    fun recommendVideo(videoId: Long) {
         Mediator.commands.send(
             RecommendVideoCmd.Request(
                 videoId = videoId
             )
         )
-        return AdminVideoRecommend.Response()
     }
 
-    /**
-     * 审核视频
-     */
     @PostMapping("/auditVideo")
-    fun adminVideoAudit(
+    fun auditVideo(
         videoId: Long,
         status: Int,
         reason: String,
-    ): AdminVideoAudit.Response {
-        // 调用命令审核视频
+    ) {
         Mediator.commands.send(
             AuditVideoCmd.Request(
                 videoId = videoId,
@@ -104,36 +98,25 @@ class CompatibleAdminVideoController {
                 reason = reason
             )
         )
-        return AdminVideoAudit.Response()
     }
 
-    /**
-     * 删除视频
-     */
     @PostMapping("/deleteVideo")
-    fun adminVideoDelete(videoId: Long): AdminVideoDelete.Response {
-        // 调用命令删除视频
+    fun deleteVideo(videoId: Long) {
         Mediator.commands.send(
             DeleteVideoCmd.Request(
                 videoId = videoId
             )
         )
-        return AdminVideoDelete.Response()
     }
 
-    /**
-     * 加载视频分片列表
-     */
     @PostMapping("/loadVideoPList")
-    fun adminVideoLoadPList(videoId: Long): List<AdminVideoLoadPList.Response> {
-        // 调用查询获取视频文件列表
+    fun getVideoPList(videoId: Long): List<AdminVideoLoadPList.Response> {
         val queryResultList = Mediator.queries.send(
             GetVideoPlayFilesQry.Request(
                 videoId = videoId
             )
         )
 
-        // 转换为前端需要的格式
         return queryResultList.map { file ->
             AdminVideoLoadPList.Response(
                 fileId = file.fileId.toString(),

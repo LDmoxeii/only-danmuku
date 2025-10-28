@@ -6,7 +6,7 @@ import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.adapter.portal.api.payload.FileDelUploadVideo
 import edu.only4.danmuku.adapter.portal.api.payload.FilePreUploadVideo
 import edu.only4.danmuku.adapter.portal.api.payload.FileUploadVideo
-import edu.only4.danmuku.application.commands.file.SaveImageCmd
+import edu.only4.danmuku.application.commands.file.UploadImageCmd
 import edu.only4.danmuku.application.commands.video.AddPlayCountCmd
 import edu.only4.danmuku.application.commands.video_play_history.AddPlayHistoryCmd
 import edu.only4.danmuku.application.queries.file.GetFileResourceQry
@@ -31,27 +31,21 @@ class CompatibleFileController {
 
     private val logger = LoggerFactory.getLogger(CompatibleAdminFileController::class.java)
 
-    /**
-     * 获取资源文件
-     */
     @SaIgnore
     @PostMapping("/getResource")
-    fun fileGetResource(
-        response: HttpServletResponse,
+    fun getResource(
         @NotEmpty sourceName: String,
+        response: HttpServletResponse,
     ) {
-        // 使用查询处理器获取文件信息
         val result = Mediator.queries.send(
             GetFileResourceQry.Request(sourceName = sourceName)
         )
 
-        // 如果文件不存在，直接返回
         if (!result.exists) {
             response.status = HttpServletResponse.SC_NOT_FOUND
             return
         }
 
-        // 设置响应内容类型
         val contentType = when (result.fileSuffix.lowercase()) {
             ".jpg", ".jpeg" -> "image/jpeg"
             ".png" -> "image/png"
@@ -63,10 +57,8 @@ class CompatibleFileController {
         }
         response.contentType = contentType
 
-        // 设置缓存控制头（30天）
         response.setHeader("Cache-Control", "max-age=2592000")
 
-        // 读取文件并写入响应流
         readFile(response, result.filePath)
     }
 
@@ -97,16 +89,13 @@ class CompatibleFileController {
         return FileDelUploadVideo.Response()
     }
 
-    /**
-     * 上传图片
-     */
     @PostMapping("/uploadImage")
-    fun fileUploadImage(
+    fun uploadImage(
         file: MultipartFile,
         createThumbnail: Boolean,
     ): String {
         val result = Mediator.commands.send(
-            SaveImageCmd.Request(
+            UploadImageCmd.Request(
                 file = file,
                 createThumbnail = createThumbnail
             )
@@ -114,38 +103,29 @@ class CompatibleFileController {
         return result.filePath
     }
 
-    /**
-     * 获取视频资源(m3u8)
-     */
     @SaIgnore
     @GetMapping("/videoResource/{fileId}")
-    fun fileGetVideoResource(
+    fun getVideoResource(
         @PathVariable fileId: String,
         response: HttpServletResponse,
     ) {
-        // 使用查询处理器获取视频资源信息
         val result = Mediator.queries.send(
             GetVideoResourceQry.Request(fileId = fileId)
         )
 
-        // 如果文件不存在，返回404
         if (!result.exists) {
             response.status = HttpServletResponse.SC_NOT_FOUND
             return
         }
 
-        // 设置响应内容类型为HLS流媒体格式
         response.contentType = "application/vnd.apple.mpegurl"
 
-        // 读取文件并写入响应流
         readFile(response, result.filePath)
 
-        // 1. 增加视频播放量
         Mediator.commands.send(
             AddPlayCountCmd.Request(videoId = result.videoId)
         )
 
-        // 2. 如果用户已登录，记录播放历史
         val currentUserId = LoginHelper.getUserId() ?: return
 
         Mediator.commands.send(
@@ -157,16 +137,12 @@ class CompatibleFileController {
         )
     }
 
-    /**
-     * 获取视频TS分片
-     */
     @GetMapping("/videoResource/{fileId}/{ts}")
-    fun fileGetVideoResourceTs(
+    fun getVideoResourceTs(
         @PathVariable fileId: String,
         @PathVariable ts: String,
         response: HttpServletResponse,
     ) {
-        // 使用查询处理器获取TS分片资源信息
         val result = Mediator.queries.send(
             GetVideoResourceTsQry.Request(
                 fileId = fileId,
@@ -174,22 +150,16 @@ class CompatibleFileController {
             )
         )
 
-        // 如果文件不存在，返回404
         if (!result.exists) {
             response.status = HttpServletResponse.SC_NOT_FOUND
             return
         }
 
-        // 设置响应内容类型为MPEG传输流
         response.contentType = "video/mp2t"
 
-        // 读取文件并写入响应流
         readFile(response, result.filePath)
     }
 
-    /**
-     * 读取文件并写入响应流
-     */
     private fun readFile(response: HttpServletResponse, filePath: String) {
         val file = File(filePath)
         if (!file.exists()) {

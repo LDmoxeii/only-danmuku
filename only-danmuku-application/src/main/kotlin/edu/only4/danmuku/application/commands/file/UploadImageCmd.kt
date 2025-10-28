@@ -5,8 +5,8 @@ import com.only.engine.exception.KnownException
 import com.only.engine.misc.createImageThumbnail
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
-import edu.only4.danmuku.application._share.constants.Constants
 import edu.only4.danmuku.application._share.config.properties.FileAppProperties
+import edu.only4.danmuku.application._share.constants.Constants
 import jakarta.validation.constraints.NotNull
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
@@ -19,9 +19,9 @@ import java.time.format.DateTimeFormatter
  * 保存图片命令
  *
  */
-object SaveImageCmd {
+object UploadImageCmd {
 
-    private val logger = LoggerFactory.getLogger(SaveImageCmd::class.java)
+    private val logger = LoggerFactory.getLogger(UploadImageCmd::class.java)
     private const val RANDOM_STRING_LENGTH = 30
     private val MONTH_FORMATTER = DateTimeFormatter.ofPattern("yyyyMM")
 

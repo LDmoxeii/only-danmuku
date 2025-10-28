@@ -9,7 +9,7 @@ import com.only4.cap4k.ddd.core.application.query.ListQueryParam
  * @author cap4k-ddd-codegen
  * @date 2025/10/15
  */
-object GetDanmukuByFileIdQry {
+object GetDanmukuListByFileIdQry {
 
     data class Request(
         val fileId: Long,

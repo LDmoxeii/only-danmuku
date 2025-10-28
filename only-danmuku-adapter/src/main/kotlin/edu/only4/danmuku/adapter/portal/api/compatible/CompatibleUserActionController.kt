@@ -2,7 +2,6 @@ package edu.only4.danmuku.adapter.portal.api.compatible
 
 import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
-import edu.only4.danmuku.adapter.portal.api.payload.UserActionDo
 import edu.only4.danmuku.application.commands.customer_action.*
 import edu.only4.danmuku.domain.aggregates.customer_action.enums.ActionType
 import jakarta.validation.constraints.Max
@@ -18,12 +17,12 @@ import org.springframework.web.bind.annotation.RestController
 class CompatibleUserActionController {
 
     @PostMapping("/doAction")
-    fun userActionDo(
+    fun doAction(
         videoId: Long,
         actionType: Int,
         @Max(2) @Min(1) actionCount: Int,
         commentId: Long?,
-    ): UserActionDo.Response {
+    ) {
         val userId = LoginHelper.getUserId()!!
 
         when (ActionType.valueOf(actionType)) {
@@ -62,8 +61,6 @@ class CompatibleUserActionController {
             )
             else -> Unit
         }
-
-        return UserActionDo.Response()
     }
 
 }

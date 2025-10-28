@@ -7,13 +7,13 @@ import edu.only4.danmuku.adapter.portal.api.payload.*
 import edu.only4.danmuku.application.commands.customer_focus.FocusCmd
 import edu.only4.danmuku.application.commands.customer_focus.UnFocusCmd
 import edu.only4.danmuku.application.commands.customer_profile.UpdateCustomerProfileCmd
-import edu.only4.danmuku.application.queries.customer_action.CustomerCollectedVideoIdsQry
+import edu.only4.danmuku.application.queries.customer_action.GetCollectionPageQry
 import edu.only4.danmuku.application.queries.customer_focus.CheckFocusStatusQry
 import edu.only4.danmuku.application.queries.customer_focus.GetFansListQry
-import edu.only4.danmuku.application.queries.customer_focus.GetFocusListQry
+import edu.only4.danmuku.application.queries.customer_focus.GetFocusPageQry
 import edu.only4.danmuku.application.queries.customer_profile.GetCustomerProfileQry
-import edu.only4.danmuku.application.queries.video.SearchVideosQry
 import edu.only4.danmuku.application.queries.statistics.GetTotalStatisticsInfoQry
+import edu.only4.danmuku.application.queries.video.GetVideoPageQry
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.Size
 import org.springframework.validation.annotation.Validated
@@ -31,20 +31,15 @@ import java.time.format.DateTimeFormatter
 @Validated
 class CompatibleUHomeController {
 
-    /**
-     * 获取用户信息
-     */
     @PostMapping("/getUserInfo")
-    fun uHomeGetUserInfo(userId: Long): UHomeGetUserInfo.UserInfo {
+    fun getCustomerProfile(userId: Long): UHomeGetUserInfo.UserInfo {
 
-        // 调用查询获取用户详细信息
         val queryResult = Mediator.queries.send(
             GetCustomerProfileQry.Request(
                 customerId = userId
             )
         )
 
-        // 汇总统计：播放量与点赞数
         val stats = Mediator.queries.send(
             GetTotalStatisticsInfoQry.Request(userId = userId)
         )
@@ -80,18 +75,15 @@ class CompatibleUHomeController {
         )
     }
 
-    /**
-     * 更新用户信息
-     */
     @PostMapping("/updateUserInfo")
-    fun uHomeUpdateUserInfo(
+    fun updateCustomerProfile(
         @NotEmpty @Size(max = 20) nickName: String,
         @NotEmpty @Size(max = 100) avatar: String,
         sex: Int, birthday: String?,
         @Size(max = 150) school: String?,
         @Size(max = 80) personIntroduction: String?,
         @Size(max = 300) noticeInfo: String?,
-    ): UHomeUpdateUserInfo.Response {
+    ) {
         val userId = LoginHelper.getUserId()!!
         // TODO
         // 需要判断是否有足够的硬币修改昵称，
@@ -110,32 +102,26 @@ class CompatibleUHomeController {
                 noticeInfo = noticeInfo
             )
         )
-
-        return UHomeUpdateUserInfo.Response()
     }
 
-    /**
-     * 保存用户主题
-     */
     @PostMapping("/saveTheme")
-    fun uHomeSaveTheme(@RequestBody request: UHomeSaveTheme.Request): UHomeSaveTheme.Response {
+    fun uHomeSaveTheme(
+        theme: Int
+    ): UHomeSaveTheme.Response {
         val userId = LoginHelper.getUserId()!!
 
         Mediator.commands.send(
             UpdateCustomerProfileCmd.Request(
                 customerId = userId,
-                theme = request.theme
+                theme = theme
             )
         )
 
         return UHomeSaveTheme.Response()
     }
 
-    /**
-     * 关注用户
-     */
     @PostMapping("/focus")
-    fun uHomeFocus(focusUserId: Long): UHomeFocus.Response {
+    fun uHomeFocus(focusUserId: Long) {
         val currentUserId = LoginHelper.getUserId()!!
 
         Mediator.commands.send(
@@ -144,15 +130,13 @@ class CompatibleUHomeController {
                 focusUserId = focusUserId
             )
         )
-
-        return UHomeFocus.Response()
     }
 
     /**
      * 取消关注
      */
     @PostMapping("/cancelFocus")
-    fun uHomeCancelFocus(focusUserId: Long): UHomeCancelFocus.Response {
+    fun uHomeCancelFocus(focusUserId: Long) {
         val currentUserId = LoginHelper.getUserId()!!
 
         // 调用命令取消关注
@@ -162,19 +146,13 @@ class CompatibleUHomeController {
                 focusUserId = focusUserId
             )
         )
-
-        return UHomeCancelFocus.Response()
     }
 
-    /**
-     * 加载关注列表
-     */
     @PostMapping("/loadFocusList")
-    fun uHomeLoadFocusList(@RequestBody request: UHomeLoadFocusList.Request): PageData<UHomeLoadFocusList.UserItem> {
+    fun getFocusPage(@RequestBody request: UHomeLoadFocusList.Request): PageData<UHomeLoadFocusList.UserItem> {
         val userId = LoginHelper.getUserId()!!
 
-        // 调用查询获取关注列表
-        val queryRequest = GetFocusListQry.Request(
+        val queryRequest = GetFocusPageQry.Request(
             userId = userId
         ).apply {
             pageNum = request.pageNum
@@ -200,14 +178,10 @@ class CompatibleUHomeController {
         )
     }
 
-    /**
-     * 加载粉丝列表
-     */
     @PostMapping("/loadFansList")
-    fun uHomeLoadFansList(@RequestBody request: UHomeLoadFansList.Request): PageData<UHomeLoadFansList.UserItem> {
+    fun getFansPage(@RequestBody request: UHomeLoadFansList.Request): PageData<UHomeLoadFansList.UserItem> {
         val userId = LoginHelper.getUserId()!!
 
-        // 调用查询获取粉丝列表
         val queryRequest = GetFansListQry.Request(
             userId = userId
         ).apply {
@@ -217,7 +191,6 @@ class CompatibleUHomeController {
 
         val queryResult = Mediator.queries.send(queryRequest)
 
-        // 转换为前端需要的格式
         return PageData.create(
             pageNum = queryResult.pageNum,
             pageSize = queryResult.pageSize,
@@ -234,16 +207,11 @@ class CompatibleUHomeController {
         )
     }
 
-    /**
-     * 加载用户视频列表
-     */
     @PostMapping("/loadVideoList")
-    fun uHomeLoadVideoList(@RequestBody @Validated request: UHomeLoadVideoList.Request): PageData<UHomeLoadVideoList.VideoItem> {
-        // 构建查询请求，添加 userId 过滤
-        val queryRequest = SearchVideosQry.Request(
+    fun getVideoPage(@RequestBody @Validated request: UHomeLoadVideoList.Request): PageData<UHomeLoadVideoList.VideoItem> {
+        val queryRequest = GetVideoPageQry.Request(
             userId = request.userId.toLong(),
             videoNameFuzzy = request.videoName,
-            recommendType = null // 用户主页显示所有状态的视频
         ).apply {
             pageNum = request.pageNum
             pageSize = if (request.type != null) 10 else request.pageSize
@@ -251,7 +219,6 @@ class CompatibleUHomeController {
 
         val queryResult = Mediator.queries.send(queryRequest)
 
-        // 转换为前端需要的格式
         return PageData.create(
             pageNum = queryResult.pageNum,
             pageSize = queryResult.pageSize,
@@ -274,15 +241,12 @@ class CompatibleUHomeController {
         )
     }
 
-    /**
-     * 加载用户收藏列表
-     */
     @PostMapping("/loadUserCollection")
-    fun uHomeLoadUserCollection(@RequestBody @Validated request: UHomeLoadUserCollection.Request): PageData<UHomeLoadUserCollection.VideoItem> {
+    fun getCollectionPage(@RequestBody @Validated request: UHomeLoadUserCollection.Request): PageData<UHomeLoadUserCollection.VideoItem> {
         val customerId = LoginHelper.getUserId()!!
 
         // 调用查询获取用户收藏的视频ID列表
-        val collectionRequest = CustomerCollectedVideoIdsQry.Request(
+        val collectionRequest = GetCollectionPageQry.Request(
             customerId = customerId
         ).apply {
             pageNum = request.pageNum

@@ -29,27 +29,22 @@ annotation class SafeFilePath(
             value: String?,
             context: ConstraintValidatorContext,
         ): Boolean {
-            // 空值由 @NotEmpty 等注解处理
             if (value.isNullOrBlank()) {
                 return true
             }
 
-            // 检查路径遍历字符
             if (value.contains("..") || value.contains("./")) {
                 return false
             }
 
-            // 检查反斜杠（统一使用正斜杠）
             if (value.contains("\\")) {
                 return false
             }
 
-            // 检查是否为绝对路径
             if (value.startsWith("/")) {
                 return false
             }
 
-            // 检查Windows盘符
             if (value.contains(":")) {
                 return false
             }

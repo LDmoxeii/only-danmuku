@@ -11,9 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
-/**
- * 管理员系统设置控制器
- */
 @RestController
 @RequestMapping("/admin/setting")
 @Validated
@@ -21,9 +18,6 @@ class CompatibleAdminSettingController(
     private val sysSettingProperties: SysSettingProperties,
 ) {
 
-    /**
-     * 获取系统设置信息
-     */
     @PostMapping("/getSetting")
     fun adminSettingGet(): AdminSettingGet.Response {
         val properties = RedisUtils.getCacheObject<SysSettingProperties>(Constants.REDIS_KEY_SYS_SETTING)
@@ -42,11 +36,8 @@ class CompatibleAdminSettingController(
         )
     }
 
-    /**
-     * 保存系统设置信息
-     */
     @PostMapping("/saveSetting")
-    fun adminSettingSave(@RequestBody @Validated request: AdminSettingSave.Request): AdminSettingSave.Response {
+    fun adminSettingSave(@RequestBody @Validated request: AdminSettingSave.Request) {
         val properties = SysSettingProperties().apply {
             registerCoinCount = request.registerCoinCount
             postVideoCoinCount = request.postVideoCoinCount
@@ -58,7 +49,6 @@ class CompatibleAdminSettingController(
         }
 
         RedisUtils.setCacheObject(Constants.REDIS_KEY_SYS_SETTING, properties)
-        return AdminSettingSave.Response()
     }
 
 }

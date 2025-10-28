@@ -9,7 +9,7 @@ import com.only4.cap4k.ddd.core.application.query.PageQueryParam
  * @author cap4k-ddd-codegen
  * @date 2025/10/15
  */
-object GetFocusListQry {
+object GetFocusPageQry {
 
     data class Request(
         val userId: Long,

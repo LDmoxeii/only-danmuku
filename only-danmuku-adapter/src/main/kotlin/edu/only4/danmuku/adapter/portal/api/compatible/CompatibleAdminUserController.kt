@@ -2,10 +2,9 @@ package edu.only4.danmuku.adapter.portal.api.compatible
 
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.share.PageData
-import edu.only4.danmuku.adapter.portal.api.payload.AdminUserChangeStatus
 import edu.only4.danmuku.adapter.portal.api.payload.AdminUserLoad
-import edu.only4.danmuku.application.commands.user.ChangeAccountStatusCmd
-import edu.only4.danmuku.application.queries.user.GetUsersByStatusQry
+import edu.only4.danmuku.application.commands.user.ChangeUserStatusCmd
+import edu.only4.danmuku.application.queries.customer_profile.GetCustomerProfilePageQry
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -15,18 +14,14 @@ import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 
-/**
- * 管理员用户管理控制器
- */
 @RestController
 @RequestMapping("/admin/user")
 @Validated
 class CompatibleAdminUserController {
 
     @PostMapping("/loadUser")
-    fun adminUserLoad(@RequestBody request: AdminUserLoad.Request): PageData<AdminUserLoad.UserItem> {
-        // 调用查询获取用户分页列表
-        val queryRequest = GetUsersByStatusQry.Request(
+    fun getUserPage(@RequestBody request: AdminUserLoad.Request): PageData<AdminUserLoad.UserItem> {
+        val queryRequest = GetCustomerProfilePageQry.Request(
             nickNameFuzzy = request.nickNameFuzzy,
             status = request.status
         ).apply {
@@ -36,7 +31,6 @@ class CompatibleAdminUserController {
 
         val queryResult = Mediator.queries.send(queryRequest)
 
-        // 转换为前端需要的格式
         return PageData.create(
             pageNum = queryResult.pageNum,
             pageSize = queryResult.pageSize,
@@ -69,22 +63,16 @@ class CompatibleAdminUserController {
         )
     }
 
-    /**
-     * 切换用户状态
-     */
     @PostMapping("/changeStatus")
-    fun adminUserChangeStatus(userId: Long, status: Int): AdminUserChangeStatus.Response {
-        val userId = userId
+    fun changeUserStatus(userId: Long, status: Int) {
         val status = status == 1
 
         Mediator.commands.send(
-            ChangeAccountStatusCmd.Request(
+            ChangeUserStatusCmd.Request(
                 userId = userId,
                 status = status
             )
         )
-
-        return AdminUserChangeStatus.Response()
     }
 
 }

@@ -3,34 +3,35 @@ package edu.only4.danmuku.adapter.application.queries.video
 import com.only4.cap4k.ddd.core.application.query.PageQuery
 import com.only4.cap4k.ddd.core.share.PageData
 import edu.only4.danmuku.application.queries._share.model.*
-import edu.only4.danmuku.application.queries.video.GetVideosByCategoryQry
+import edu.only4.danmuku.application.queries.video.GetVideoPageQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.desc
 import org.babyfish.jimmer.sql.kt.ast.expression.`eq?`
+import org.babyfish.jimmer.sql.kt.ast.expression.`ilike?`
+import org.babyfish.jimmer.sql.kt.ast.expression.`valueNotIn?`
 import org.springframework.stereotype.Service
 
 /**
- * 按分类获取视频列表
+ * 获取视频分页列表
  *
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * @author cap4k-ddd-codegen
  * @date 2025/10/15
  */
 @Service
-class GetVideosByCategoryQryHandler(
+class GetVideoPageQryHandler(
     private val sqlClient: KSqlClient,
-) : PageQuery<GetVideosByCategoryQry.Request, GetVideosByCategoryQry.Response> {
+) : PageQuery<GetVideoPageQry.Request, GetVideoPageQry.Response> {
 
-    override fun exec(request: GetVideosByCategoryQry.Request): PageData<GetVideosByCategoryQry.Response> {
-        // 查询视频列表，支持父分类、子分类和推荐类型过滤
+    override fun exec(request: GetVideoPageQry.Request): PageData<GetVideoPageQry.Response> {
         val pageResult = sqlClient.createQuery(Video::class) {
-            // 父分类过滤 (如果提供)
-            where(table.parentCategoryId `eq?` request.parentCategoryId)
-            // 子分类过滤 (如果提供)
+            where(table.customerId `eq?` request.userId)
+            where(table.videoName `ilike?` request.videoNameFuzzy)
+            where(table.parentCategoryId `eq?` request.categoryParentId)
             where(table.categoryId `eq?` request.categoryId)
-            // 推荐类型过滤 (如果提供)
             where(table.recommendType `eq?` request.recommendType)
-            // 按创建时间降序
+                where(table.id `valueNotIn?` request.excludeVideoIds!!)
+            // 按创建时间倒序
             orderBy(table.createTime.desc())
             // DTO投影
             select(table.fetchBy {
@@ -47,12 +48,14 @@ class GetVideosByCategoryQryHandler(
                 category {
                     allScalarFields()
                 }
+                videoPost {
+                    status()
+                }
             })
         }.fetchPage(request.pageNum - 1, request.pageSize)
 
-        // 转换为响应格式
         val responseList = pageResult.rows.map { video ->
-            GetVideosByCategoryQry.Response(
+            GetVideoPageQry.Response(
                 videoId = video.id,
                 videoCover = video.videoCover,
                 videoName = video.videoName,
@@ -66,6 +69,7 @@ class GetVideosByCategoryQryHandler(
                 tags = video.tags,
                 introduction = video.introduction,
                 duration = video.duration,
+                status = video.videoPost.status,
                 playCount = video.playCount,
                 likeCount = video.likeCount,
                 danmuCount = video.danmukuCount,

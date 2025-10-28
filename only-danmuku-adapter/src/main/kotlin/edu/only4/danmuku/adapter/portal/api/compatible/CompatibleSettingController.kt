@@ -9,9 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
-/**
- * 管理员系统设置控制器
- */
 @RestController
 @RequestMapping("/sysSetting")
 @Validated
@@ -19,11 +16,8 @@ class CompatibleSettingController(
     private val sysSettingProperties: SysSettingProperties,
 ) {
 
-    /**
-     * 获取系统设置信息
-     */
     @PostMapping("/getSetting")
-    fun adminSettingGet(): AdminSettingGet.Response {
+    fun getSetting(): AdminSettingGet.Response {
         val properties = RedisUtils.getCacheObject<SysSettingProperties>(Constants.REDIS_KEY_SYS_SETTING)
             ?: sysSettingProperties.also {
                 RedisUtils.setCacheObject(Constants.REDIS_KEY_SYS_SETTING, it)

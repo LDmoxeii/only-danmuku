@@ -9,7 +9,7 @@ import com.only4.cap4k.ddd.core.application.query.PageQueryParam
  * @author cap4k-ddd-codegen
  * @date 2025/10/15
  */
-object CustomerCollectedVideoIdsQry {
+object GetCollectionPageQry {
 
     data class Request(
         val customerId: Long,

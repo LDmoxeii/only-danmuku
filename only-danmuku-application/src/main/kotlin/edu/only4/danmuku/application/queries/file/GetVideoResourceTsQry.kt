@@ -11,10 +11,8 @@ import jakarta.validation.constraints.NotEmpty
 object GetVideoResourceTsQry {
 
     data class Request(
-        /** 视频文件ID */
         @field:NotEmpty(message = "视频文件ID不能为空")
         val fileId: String,
-        /** TS文件名 */
         @field:NotEmpty(message = "TS文件名不能为空")
         val ts: String,
     ) : RequestParam<Response>

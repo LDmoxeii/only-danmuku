@@ -7,9 +7,7 @@ import com.only4.cap4k.ddd.core.share.PageParam
  */
 object UHomeLoadFansList {
 
-    data class Request(
-        val userId: String? = null
-    ) : PageParam()
+    class Request : PageParam()
 
     data class UserItem(
         var userId: String? = null,

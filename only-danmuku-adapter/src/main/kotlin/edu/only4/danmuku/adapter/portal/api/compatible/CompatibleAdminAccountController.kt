@@ -34,7 +34,7 @@ class CompatibleAdminAccountController {
     fun adminAccountLogin(
         @NotEmpty account: String,
         @NotEmpty password: String,
-        checkCode: String,
+        @NotEmpty checkCode: String,
         @NotEmpty checkCodeKey: String,
     ): AdminAccountLogin.Response {
 //        val captchaValidationResult = Mediator.requests.send(CaptchaValid.Request(checkCodeKey, checkCode))
