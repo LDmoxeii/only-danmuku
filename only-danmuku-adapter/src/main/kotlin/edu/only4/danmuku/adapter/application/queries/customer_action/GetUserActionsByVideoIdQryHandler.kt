@@ -1,8 +1,7 @@
 package edu.only4.danmuku.adapter.application.queries.customer_action
 
 import com.only4.cap4k.ddd.core.application.query.ListQuery
-import edu.only4.danmuku.application.queries._share.model.CustomerAction
-import edu.only4.danmuku.application.queries._share.model.fetchBy
+import edu.only4.danmuku.application.queries._share.model.*
 import edu.only4.danmuku.application.queries.customer_action.GetUserActionsByVideoIdQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
@@ -23,19 +22,18 @@ class GetUserActionsByVideoIdQryHandler(
             select(
                 table.fetchBy {
                     allScalarFields()
-                    customer { id() }
-                    videoOwner { id() }
+                    customer()
+                    videoOwner()
                     video {
-                        id()
                         videoName()
                         videoCover()
                     }
-                    comment { id() }
+                    comment()
                 }
             )
         }.execute()
 
-        return actions.map { it ->
+        return actions.map {
             GetUserActionsByVideoIdQry.Response(
                 actionId = it.id,
                 userId = it.customer.id,

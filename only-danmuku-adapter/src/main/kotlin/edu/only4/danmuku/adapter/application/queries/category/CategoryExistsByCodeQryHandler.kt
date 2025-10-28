@@ -24,7 +24,6 @@ class CategoryExistsByCodeQryHandler(
 ) : Query<CategoryExistsByCodeQry.Request, CategoryExistsByCodeQry.Response> {
 
     override fun exec(request: CategoryExistsByCodeQry.Request): CategoryExistsByCodeQry.Response {
-        // 使用 Jimmer exists() 进行高效的存在性查询
         val exists = sqlClient.exists(Category::class) {
             where(table.code eq request.code)
             where(table.id `ne?` request.excludeCategoryId)

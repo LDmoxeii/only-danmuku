@@ -2,6 +2,7 @@ package edu.only4.danmuku.adapter.application.queries.file
 
 import com.only4.cap4k.ddd.core.application.query.Query
 import edu.only4.danmuku.application._share.config.properties.FileAppProperties
+import edu.only4.danmuku.application._share.constants.Constants
 import edu.only4.danmuku.application.queries.file.GetFileResourceQry
 import org.springframework.stereotype.Service
 import java.io.File
@@ -16,10 +17,6 @@ class GetFileResourceQryHandler(
     private val fileProps: FileAppProperties,
 ) : Query<GetFileResourceQry.Request, GetFileResourceQry.Response> {
 
-    companion object {
-        private const val FILE_FOLDER = "file/"
-    }
-
     override fun exec(request: GetFileResourceQry.Request): GetFileResourceQry.Response {
         val sourceName = request.sourceName
 
@@ -27,7 +24,7 @@ class GetFileResourceQryHandler(
         val fileSuffix = getFileSuffix(sourceName)
 
         // 构造完整文件路径
-        val fullPath = fileProps.projectFolder + FILE_FOLDER + sourceName
+        val fullPath = fileProps.projectFolder + Constants.FILE_FOLDER + sourceName
         val file = File(fullPath)
 
         return GetFileResourceQry.Response(
