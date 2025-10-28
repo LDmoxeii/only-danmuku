@@ -7,6 +7,7 @@ import edu.only4.danmuku.application.queries._share.model.categoryId
 import edu.only4.danmuku.application.queries._share.model.createTime
 import edu.only4.danmuku.application.queries._share.model.customerId
 import edu.only4.danmuku.application.queries._share.model.dto.Video.VideoSearchItem
+import edu.only4.danmuku.application.queries._share.model.fetchBy
 import edu.only4.danmuku.application.queries._share.model.parentCategoryId
 import edu.only4.danmuku.application.queries._share.model.recommendType
 import edu.only4.danmuku.application.queries._share.model.videoName
@@ -44,8 +45,25 @@ class SearchVideosQryHandler(
             where(table.recommendType `eq?` request.recommendType)
             // 按创建时间倒序
             orderBy(table.createTime.desc())
-            // DTO 投影
-            select(table.fetch(VideoSearchItem::class))
+            // DTO投影
+            select(table.fetchBy {
+                allScalarFields()
+                customer {
+                    allScalarFields()
+                    relation {
+                        allScalarFields()
+                    }
+                }
+                parentCategory {
+                    allScalarFields()
+                }
+                category {
+                    allScalarFields()
+                }
+                videoPost {
+                    status()
+                }
+            })
         }.fetchPage(request.pageNum - 1, request.pageSize)
 
         // 转换为查询响应
@@ -54,20 +72,28 @@ class SearchVideosQryHandler(
                 videoId = video.id,
                 videoCover = video.videoCover,
                 videoName = video.videoName,
-                userId = video.customer.id,
-                nickName = video.customer.relation!!.nickName,
-                avatar = video.customer.relation!!.avatar,
+                userId = video.customerId,
+                createTime = video.createTime!!,
+                lastUpdateTime = video.updateTime,
+                parentCategoryId = video.parentCategoryId,
+                categoryId = video.categoryId,
+                postType = video.postType,
+                originInfo = video.originInfo,
+                tags = video.tags,
+                introduction = video.introduction,
                 duration = video.duration,
                 status = video.videoPost.status,
-                createTime = video.createTime ?: 0L,
-                lastUpdateTime = video.updateTime,
                 playCount = video.playCount,
                 likeCount = video.likeCount,
                 danmuCount = video.danmukuCount,
                 commentCount = video.commentCount,
                 coinCount = video.coinCount,
                 collectCount = video.collectCount,
-                recommendType = video.recommendType
+                recommendType = video.recommendType,
+                lastPlayTime = video.lastPlayTime,
+                nickName = video.customer.nickName,
+                avatar = video.customer.relation!!.avatar,
+                categoryFullName = video.parentCategory.name + video.category?.name,
             )
         }
 

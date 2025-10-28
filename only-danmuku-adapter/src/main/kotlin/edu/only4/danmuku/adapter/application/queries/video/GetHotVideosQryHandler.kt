@@ -4,6 +4,7 @@ import com.only4.cap4k.ddd.core.application.query.PageQuery
 import com.only4.cap4k.ddd.core.share.PageData
 import edu.only4.danmuku.application.queries._share.model.Video
 import edu.only4.danmuku.application.queries._share.model.dto.Video.VideoListItem
+import edu.only4.danmuku.application.queries._share.model.fetchBy
 import edu.only4.danmuku.application.queries._share.model.likeCount
 import edu.only4.danmuku.application.queries._share.model.playCount
 import edu.only4.danmuku.application.queries.video.GetHotVideosQry
@@ -31,7 +32,21 @@ class GetHotVideosQryHandler(
             // 按播放数降序，点赞数作为次要排序
             orderBy(table.playCount.desc(), table.likeCount.desc())
             // DTO投影
-            select(table.fetch(VideoListItem::class))
+            select(table.fetchBy {
+                allScalarFields()
+                customer {
+                    allScalarFields()
+                    relation {
+                        allScalarFields()
+                    }
+                }
+                parentCategory {
+                    allScalarFields()
+                }
+                category {
+                    allScalarFields()
+                }
+            })
         }.fetchPage(request.pageNum - 1, request.pageSize)
 
         // 转换为响应格式
@@ -40,12 +55,27 @@ class GetHotVideosQryHandler(
                 videoId = video.id,
                 videoCover = video.videoCover,
                 videoName = video.videoName,
-                userId = video.customer.id,
-                nickName = video.customer.relation!!.nickName,
-                avatar = video.customer.relation!!.avatar,
+                userId = video.customerId,
+                createTime = video.createTime!!,
+                lastUpdateTime = video.updateTime,
+                parentCategoryId = video.parentCategoryId,
+                categoryId = video.categoryId,
+                postType = video.postType,
+                originInfo = video.originInfo,
+                tags = video.tags,
+                introduction = video.introduction,
+                duration = video.duration,
                 playCount = video.playCount,
                 likeCount = video.likeCount,
-                createTime = video.createTime ?: 0L
+                danmuCount = video.danmukuCount,
+                commentCount = video.commentCount,
+                coinCount = video.coinCount,
+                collectCount = video.collectCount,
+                recommendType = video.recommendType,
+                lastPlayTime = video.lastPlayTime,
+                nickName = video.customer.nickName,
+                avatar = video.customer.relation!!.avatar,
+                categoryFullName = video.parentCategory.name + video.category?.name,
             )
         }
 

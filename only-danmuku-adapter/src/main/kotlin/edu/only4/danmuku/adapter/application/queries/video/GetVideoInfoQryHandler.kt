@@ -1,7 +1,9 @@
 package edu.only4.danmuku.adapter.application.queries.video
 
 import com.only4.cap4k.ddd.core.application.query.Query
+import edu.only4.danmuku.application.queries._share.model.Video
 import edu.only4.danmuku.application.queries._share.model.dto.Video.VideoFullInfo
+import edu.only4.danmuku.application.queries._share.model.fetchBy
 import edu.only4.danmuku.application.queries._share.model.id
 import edu.only4.danmuku.application.queries.video.GetVideoInfoQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
@@ -21,12 +23,18 @@ class GetVideoInfoQryHandler(
 ) : Query<GetVideoInfoQry.Request, GetVideoInfoQry.Response> {
 
     override fun exec(request: GetVideoInfoQry.Request): GetVideoInfoQry.Response {
-        // 查询视频完整信息
-        val videoList = sqlClient.findAll(VideoFullInfo::class) {
+        val video  = sqlClient.createQuery(Video::class) {
             where(table.id eq request.videoId)
-        }
-
-        val video = videoList.first()
+            select(table.fetchBy {
+                allScalarFields()
+                customer {
+                    allScalarFields()
+                    relation {
+                        allScalarFields()
+                    }
+                }
+            })
+        }.fetchOne()
 
         return GetVideoInfoQry.Response(
             videoId = video.id,
@@ -44,7 +52,10 @@ class GetVideoInfoQryHandler(
             commentCount = video.commentCount,
             coinCount = video.coinCount,
             collectCount = video.collectCount,
-            createTime = video.createTime ?: 0L
+            createTime = video.createTime!!,
+            postType = video.postType,
+            originInfo = video.originInfo,
+            tags = video.tags,
         )
     }
 }

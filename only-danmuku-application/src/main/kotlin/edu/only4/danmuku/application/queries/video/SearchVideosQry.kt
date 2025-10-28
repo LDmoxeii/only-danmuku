@@ -25,39 +25,30 @@ object SearchVideosQry {
     ) : PageQueryParam<Response>()
 
     data class Response(
-        /** 视频ID */
-        val videoId: Long,
-        /** 视频封面 */
-        val videoCover: String? = null,
-        /** 视频名称 */
-        val videoName: String? = null,
-        /** 作者ID */
-        val userId: Long,
-        /** 作者昵称 */
-        val nickName: String? = null,
-        /** 作者头像 */
-        val avatar: String? = null,
-        /** 视频时长(秒) */
-        val duration: Int? = null,
-        /** 视频状态 */
+        var videoId: Long,
+        var videoCover: String?,
+        var videoName: String?,
+        var userId: Long?,
+        var createTime: Long,
+        var lastUpdateTime: Long?,
+        var parentCategoryId: Long,
+        var categoryId: Long?,
+        var postType: Int,
+        var originInfo: String?,
+        var tags: String?,
+        var introduction: String?,
+        var duration: Int,
         val status: Int,
-        /** 创建时间 */
-        val createTime: Long,
-        /** 最后更新时间 */
-        val lastUpdateTime: Long? = null,
-        /** 播放数 */
-        val playCount: Int? = null,
-        /** 点赞数 */
-        val likeCount: Int? = null,
-        /** 弹幕数 */
-        val danmuCount: Int? = null,
-        /** 评论数 */
-        val commentCount: Int? = null,
-        /** 投币数 */
-        val coinCount: Int? = null,
-        /** 收藏数 */
-        val collectCount: Int? = null,
-        /** 推荐类型 */
-        val recommendType: Int? = null,
+        var playCount: Int,
+        var likeCount: Int,
+        var danmuCount: Int,
+        var commentCount: Int,
+        var coinCount: Int,
+        var collectCount: Int,
+        var recommendType: Int,
+        var lastPlayTime: Long?,
+        var nickName: String? = null,
+        var avatar: String? = null,
+        var categoryFullName: String?,
     )
 }

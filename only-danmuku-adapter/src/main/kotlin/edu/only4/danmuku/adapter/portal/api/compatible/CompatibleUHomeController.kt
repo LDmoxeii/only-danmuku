@@ -236,7 +236,7 @@ class CompatibleUHomeController {
     fun uHomeLoadVideoList(@RequestBody @Validated request: UHomeLoadVideoList.Request): PageData<UHomeLoadVideoList.VideoItem> {
         // 构建查询请求，添加 userId 过滤
         val queryRequest = SearchVideosQry.Request(
-            userId = request.userId?.toLong(),
+            userId = request.userId.toLong(),
             videoNameFuzzy = request.videoName,
             recommendType = null // 用户主页显示所有状态的视频
         ).apply {

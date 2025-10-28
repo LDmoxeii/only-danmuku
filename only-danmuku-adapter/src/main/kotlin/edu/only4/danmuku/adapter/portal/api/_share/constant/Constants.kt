@@ -31,4 +31,18 @@ object Constants {
      * 视频搜索次数相关Redis键
      */
     val REDIS_KEY_VIDEO_SEARCH_COUNT: String = REDIS_KEY_PREFIX + "video:search:" // Redis键：视频搜索次数
+
+    /**
+     * 视频在线相关 Redis 键
+     */
+    const val REDIS_KEY_VIDEO_PLAY_COUNT_ONLINE_PREFIX: String = REDIS_KEY_PREFIX + "video:play:online:"
+    const val REDIS_KEY_VIDEO_PLAY_COUNT_ONLINE: String = REDIS_KEY_VIDEO_PLAY_COUNT_ONLINE_PREFIX + "count:%s"
+    const val REDIS_KEY_VIDEO_PLAY_COUNT_USER_PREFIX: String = "user:"
+    const val REDIS_KEY_VIDEO_PLAY_COUNT_USER: String = REDIS_KEY_VIDEO_PLAY_COUNT_ONLINE_PREFIX + REDIS_KEY_VIDEO_PLAY_COUNT_USER_PREFIX + "%s:%s"
+
+    /**
+     * 视频在线心跳 TTL（秒）
+     */
+    const val VIDEO_PLAY_ONLINE_DEVICE_TTL_SEC: Long = 8
+    const val VIDEO_PLAY_ONLINE_COUNT_TTL_SEC: Long = 10
 }
