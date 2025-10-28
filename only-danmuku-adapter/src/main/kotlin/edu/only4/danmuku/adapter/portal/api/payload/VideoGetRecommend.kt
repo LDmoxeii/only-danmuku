@@ -30,10 +30,10 @@ object VideoGetRecommend {
     )
 
     data class VideoItem(
-        var videoId: String? = null,
+        var videoId: Long,
         var videoCover: String? = null,
         var videoName: String? = null,
-        var userId: String? = null,
+        var userId: Long,
         var nickName: String? = null,
         var avatar: String? = null,
         var playCount: Int? = null,

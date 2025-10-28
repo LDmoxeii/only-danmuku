@@ -1,6 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.payload
 
 import com.only4.cap4k.ddd.core.share.PageParam
+import com.only4.cap4k.ddd.core.share.PageData
 import jakarta.validation.constraints.NotEmpty
 
 /**
@@ -28,6 +29,10 @@ object CommentLoad {
         var videoId: String? = null,
         /** 视频用户ID */
         var videoUserId: String? = null,
+        /** 视频名称 */
+        var videoName: String? = null,
+        /** 视频封面 */
+        var videoCover: String? = null,
         /** 评论内容 */
         var content: String? = null,
         /** 图片路径 */
@@ -40,15 +45,47 @@ object CommentLoad {
         var avatar: String? = null,
         /** 点赞数 */
         var likeCount: Int? = null,
+        /** 讨厌数 */
+        var hateCount: Int? = null,
         /** 是否点赞 */
         var haveLike: Int? = null,
         /** 是否置顶 */
         var topType: Int? = null,
+        /** 回复用户ID */
+        var replyUserId: String? = null,
+        /** 回复用户昵称 */
+        var replyNickName: String? = null,
+        /** 回复用户头像 */
+        var replyAvatar: String? = null,
         /** 发布时间 */
         var postTime: String? = null,
         /** 子评论数量 */
         var childrenCount: Int? = null,
         /** 子评论列表 */
         var children: List<Response>? = null,
+    )
+
+    /**
+     * 评论加载响应（包含评论分页数据与用户行为列表）
+     */
+    data class Result(
+        var commentData: PageData<Response>,
+        var userActionList: List<UserAction>? = null
+    )
+
+    /**
+     * 用户行为（该请求专用）
+     */
+    data class UserAction(
+        var actionId: Long,
+        var userId: Long,
+        var videoId: Long,
+        var videoName: String,
+        var videoCover: String,
+        var videoUserId: Long,
+        var commentId: Long?,
+        var actionType: Int?,
+        var actionCount: Int?,
+        var cationTime: String,
     )
 }

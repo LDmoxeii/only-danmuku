@@ -9,6 +9,8 @@ import edu.only4.danmuku.adapter.portal.api.payload.*
 import edu.only4.danmuku.application.queries.video.*
 import edu.only4.danmuku.application.queries.customer_action.GetUserActionsByVideoIdQry
 import edu.only4.danmuku.application.queries.video_file.GetVideoFilesByVideoIdQry
+import io.reactivex.rxjava3.internal.util.QueueDrainHelper.request
+import jakarta.validation.constraints.NotEmpty
 import java.time.Duration
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
@@ -201,10 +203,13 @@ class CompatibleVideoController {
     }
 
     @PostMapping("/getVideoRecommend")
-    fun videoGetRecommend(@RequestBody @Validated request: VideoGetRecommend.Request): VideoGetRecommend.Response {
+    fun videoGetRecommend(
+        @NotEmpty keyword: String,
+        videoId: Long,
+    ): List<VideoGetRecommend.VideoItem> {
         // 调用搜索查询获取相关视频(最多10个)
         val queryRequest = SearchVideosQry.Request(
-            videoNameFuzzy = request.keyword,
+            videoNameFuzzy = keyword,
             recommendType = null
         ).apply {
             pageNum = 1
@@ -214,22 +219,20 @@ class CompatibleVideoController {
         val queryResult = Mediator.queries.send(queryRequest)
 
         // 过滤掉当前视频
-        val filteredList = queryResult.list.filter { it.videoId.toString() != request.videoId }
+        val filteredList = queryResult.list.filter { it.videoId != videoId }
 
-        return VideoGetRecommend.Response(
-            list = filteredList.map { video ->
-                VideoGetRecommend.VideoItem(
-                    videoId = video.videoId.toString(),
-                    videoCover = video.videoCover,
-                    videoName = video.videoName,
-                    userId = video.userId.toString(),
-                    nickName = video.nickName,
-                    avatar = video.avatar,
-                    playCount = video.playCount,
-                    likeCount = video.likeCount
-                )
-            }
-        )
+        return filteredList.map { video ->
+            VideoGetRecommend.VideoItem(
+                videoId = video.videoId,
+                videoCover = video.videoCover,
+                videoName = video.videoName,
+                userId = video.userId!!,
+                nickName = video.nickName,
+                avatar = video.avatar,
+                playCount = video.playCount,
+                likeCount = video.likeCount
+            )
+        }
     }
 
     @PostMapping("/reportVideoPlayOnline")

@@ -3,11 +3,13 @@ package edu.only4.danmuku.adapter.application.queries.video_danmuku
 import com.only4.cap4k.ddd.core.application.query.ListQuery
 import edu.only4.danmuku.application.queries._share.model.VideoDanmuku
 import edu.only4.danmuku.application.queries._share.model.dto.VideoDanmuku.DanmukuPageItem
+import edu.only4.danmuku.application.queries._share.model.fetchBy
 import edu.only4.danmuku.application.queries._share.model.id
 import edu.only4.danmuku.application.queries._share.model.time
 import edu.only4.danmuku.application.queries._share.model.videoId
 import edu.only4.danmuku.application.queries.video_danmuku.GetDanmukuByFileIdQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
+import org.babyfish.jimmer.sql.kt.ast.expression.all
 import org.babyfish.jimmer.sql.kt.ast.expression.asc
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.springframework.stereotype.Service
@@ -34,7 +36,15 @@ class GetDanmukuByFileIdQryHandler(
             // 按弹幕时间（展示时间）排序，保证播放顺序
             orderBy(table.time.asc())
             // DTO 投影
-            select(table.fetch(DanmukuPageItem::class))
+            select(table.fetchBy {
+                allScalarFields()
+                customer {
+                    allScalarFields()
+                }
+                video {
+                    allScalarFields()
+                }
+            })
         }.execute()
 
         // 转换为查询响应
@@ -48,7 +58,10 @@ class GetDanmukuByFileIdQryHandler(
                 mode = danmuku.mode?.toInt() ?: 1, // 默认滚动模式
                 color = danmuku.color ?: "#FFFFFF", // 默认白色
                 time = danmuku.time ?: 0,
-                postTime = danmuku.postTime ?: 0L
+                postTime = danmuku.postTime ?: 0L,
+                videoName = danmuku.video.videoName,
+                videoCover = danmuku.video.videoCover,
+                nickName = danmuku.customer.nickName,
             )
         }
     }

@@ -37,6 +37,14 @@ object DanmukuLoad {
         /** 弹幕时间(秒) */
         var time: Int? = null,
         /** 发布时间 */
-        var postTime: String? = null
+        var postTime: String? = null,
+        /** 视频名称 */
+        var videoName: String? = null,
+        /** 视频封面 */
+        var videoCover: String? = null,
+        /** 发送者昵称 */
+        var nickName: String? = null,
     )
+
+    // 弹幕无用户行为附加返回
 }

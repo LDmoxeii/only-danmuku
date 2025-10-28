@@ -22,7 +22,7 @@ import java.time.format.DateTimeFormatter
  * 视频弹幕控制器
  */
 @RestController
-@RequestMapping("/danmu/v2")
+@RequestMapping("/danmu")
 @Validated
 class CompatibleVideoDanmuController {
 
@@ -32,7 +32,7 @@ class CompatibleVideoDanmuController {
     @PostMapping("/loadDanmu")
     fun danmukuLoad(@RequestBody @Validated request: DanmukuLoad.Request): List<DanmukuLoad.DanmukuItem> {
         // 调用查询获取弹幕列表
-        val queryResult = Mediator.Companion.queries.send(
+        val queryResult = Mediator.queries.send(
             GetDanmukuByFileIdQry.Request(
                 fileId = request.fileId.toLong(),
                 videoId = request.videoId.toLong()
@@ -40,7 +40,7 @@ class CompatibleVideoDanmuController {
         )
 
         // 转换为前端需要的格式
-        return queryResult.map { danmuku ->
+        val list = queryResult.map { danmuku ->
             DanmukuLoad.DanmukuItem(
                 danmukuId = danmuku.danmukuId.toString(),
                 fileId = danmuku.fileId.toString(),
@@ -53,9 +53,13 @@ class CompatibleVideoDanmuController {
                 postTime = LocalDateTime.ofInstant(
                     Instant.ofEpochSecond(danmuku.postTime),
                     ZoneId.systemDefault()
-                ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+                ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
+                videoName = danmuku.videoName,
+                videoCover = danmuku.videoCover,
+                nickName = danmuku.nickName
             )
         }
+        return list
     }
 
     /**
