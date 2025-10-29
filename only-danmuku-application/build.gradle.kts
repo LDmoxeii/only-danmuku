@@ -1,6 +1,8 @@
+import jdk.tools.jlink.resources.plugins
+
 plugins {
     id("buildsrc.convention.kotlin-jvm")
-    id("com.google.devtools.ksp") version "2.1.20-2.0.0"
+    alias(libs.plugins.ksp)
 }
 
 dependencies {
