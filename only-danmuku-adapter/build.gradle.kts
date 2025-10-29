@@ -17,6 +17,7 @@ dependencies {
     api(libs.engine.satoken)
     api(libs.engine.web)
     api(libs.engine.doc)
+    api(libs.engine.translation)
 
     implementation(libs.blazebit.persistence.querydsl)
 

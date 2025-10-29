@@ -1,5 +1,6 @@
 package edu.only4.danmuku.adapter.portal.api.payload
 
+import com.only.engine.translation.annotation.Translation
 import com.only4.cap4k.ddd.core.share.PageParam
 import java.time.LocalDateTime
 
@@ -30,7 +31,8 @@ object AdminVideoLoadList {
         var nickName: String?,
         var duration: Int?,
         var status: Int,
-        var statusName: String,
+        @get:Translation(type = "video_status_code_to_desc", mapper = "status")
+        var statusName: String? = null,
         var createTime: LocalDateTime?,
         var lastUpdateTime: LocalDateTime?,
         var playCount: Int?,

@@ -9,7 +9,6 @@ import edu.only4.danmuku.application.commands.video.RecommendVideoCmd
 import edu.only4.danmuku.application.commands.video_draft.AuditVideoCmd
 import edu.only4.danmuku.application.queries.video.GetVideoPageQry
 import edu.only4.danmuku.application.queries.video.GetVideoPlayFilesQry
-import edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -52,7 +51,6 @@ class CompatibleAdminVideoController {
                     nickName = video.nickName,
                     duration = video.duration,
                     status = video.status,
-                    statusName = VideoStatus.valueOf(video.status).desc,
                     createTime = LocalDateTime.ofInstant(
                         Instant.ofEpochSecond(video.createTime),
                         ZoneId.systemDefault()
