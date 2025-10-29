@@ -2,7 +2,6 @@ package edu.only4.danmuku.application.subscribers.domain.video_draft
 
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.application.commands.video.ChangeVideoInteractionCmd
-import edu.only4.danmuku.application.queries.video.VideoExistByVideoPostIdQry
 import edu.only4.danmuku.domain.aggregates.video_post.events.VideoPostInteractionChangedDomainEvent
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Service
@@ -21,18 +20,12 @@ class VideoInteractionChangedDomainEventSubscriber {
     @EventListener(VideoPostInteractionChangedDomainEvent::class)
     fun on(event: VideoPostInteractionChangedDomainEvent) {
         val videoPost = event.entity
-        val qryResponse = Mediator.queries.send(
-            VideoExistByVideoPostIdQry.Request(videoPost.id)
-        )
-        if (qryResponse.exist
-        ) {
-            Mediator.commands.send(
-                ChangeVideoInteractionCmd.Request(
-                    qryResponse.videoId!!,
-                    videoPost.customerId,
-                    videoPost.interaction
-                )
+        Mediator.commands.send(
+            ChangeVideoInteractionCmd.Request(
+                videoPost.id,
+                videoPost.customerId,
+                videoPost.interaction
             )
-        }
+        )
     }
 }
