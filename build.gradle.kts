@@ -1,7 +1,9 @@
+import jdk.tools.jlink.resources.plugins
+
 // [cap4k-ddd-codegen-gradle-plugin:do-not-overwrite]
 plugins {
     id("buildsrc.convention.kotlin-jvm")
-    id("com.only4.codegen") version "0.1.5-SNAPSHOT"
+    id("com.only4.codegen") version "0.2.0-SNAPSHOT"
 }
 
 dependencies {
