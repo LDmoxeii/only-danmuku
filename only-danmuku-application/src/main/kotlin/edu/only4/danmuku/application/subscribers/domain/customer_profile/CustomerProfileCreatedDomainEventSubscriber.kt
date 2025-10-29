@@ -33,7 +33,7 @@ class CustomerProfileCreatedDomainEventSubscriber {
         Mediator.commands.send(
             RelationProfileCmd.Request(
                 userId = customerProfile.userId,
-                profileId = customerProfile.userId
+                profileId = customerProfile.id
             )
         )
     }
