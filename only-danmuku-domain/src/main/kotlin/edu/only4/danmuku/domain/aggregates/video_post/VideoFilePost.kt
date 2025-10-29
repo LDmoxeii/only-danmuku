@@ -4,7 +4,6 @@ import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
 import edu.only4.danmuku.domain.aggregates.video_post.enums.TransferResult
 import edu.only4.danmuku.domain.aggregates.video_post.enums.UpdateType
-import edu.only4.danmuku.domain.aggregates.video_post.events.VideoFileDraftCreatedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video_post.events.VideoFileDraftTranscodedDomainEvent
 import jakarta.persistence.*
 import jakarta.persistence.Table
@@ -176,10 +175,6 @@ class VideoFilePost(
 
     // 【行为方法开始】
 
-    fun onCreate() {
-        events().attach(this) { VideoFileDraftCreatedDomainEvent(this) }
-    }
-
     fun updateType(typpe: UpdateType) {
         this.updateType = typpe
     }
@@ -255,4 +250,70 @@ class VideoFilePost(
     // UploadSpec / BuildResult / buildFromUploads 迁移至 VideoPost
 
     // 【行为方法结束】
+
+    /**
+     * 聚合方法：执行当前文件的完整转码流程
+     * - 读取上传会话分片目录
+     * - 合并分片为临时 MP4
+     * - 如为 HEVC 则转码为 H.264
+     * - 切片为 TS 并生成 m3u8
+     * - 统计时长与目录大小，写入本实体并发布事件
+     *
+     * 任何步骤失败，将标记为转码失败并抛出异常给上层统计/补偿。
+     */
+    fun transcode(
+        videoPostId: Long,
+        port: edu.only4.danmuku.domain.aggregates.video_post.ports.VideoFileTranscodePort,
+    ) {
+        // 1) 解析目录
+        val tempDir = port.resolveTempDir(this.uploadId)
+        val (targetDir, relativePath) = port.resolveTargetDir(this.customerId, videoPostId, this.fileIndex)
+
+        // 2) 合并分片
+        val mergedMp4 = port.newMergedOutputFile(targetDir)
+        try {
+            port.mergeChunks(tempDir, mergedMp4)
+        } catch (e: Exception) {
+            this.markTransferFailed(e.message)
+            throw e
+        }
+
+        try {
+            // 3) 编码检查与可选转码
+            val codec = port.detectCodec(mergedMp4.absolutePath)
+            if (port.isHevc(codec)) {
+                val hevcBackup = java.io.File(mergedMp4.parentFile, mergedMp4.name + ".hevc")
+                // 将原文件改名为 .hevc 作为输入
+                if (!mergedMp4.renameTo(hevcBackup)) {
+                    val ex = IllegalStateException("无法重命名临时文件: ${mergedMp4.absolutePath}")
+                    this.markTransferFailed(ex.message)
+                    throw ex
+                }
+                // 输出写回 mergedMp4 路径
+                port.transcodeHevcToH264(mergedMp4.absolutePath, hevcBackup.absolutePath)
+                hevcBackup.delete()
+            }
+
+            // 4) 统计时长（以最终用于切片的 mp4 为准）
+            val duration = port.durationOf(mergedMp4.absolutePath)
+
+            // 5) 切片并生成 m3u8
+            port.sliceToHls(targetDir, mergedMp4)
+            // 删除合并后的临时 mp4
+            mergedMp4.delete()
+
+            // 6) 统计目录大小，标记成功
+            val size = port.folderSize(targetDir)
+            this.markTransferSuccess(duration = duration, fileSize = size, filePath = relativePath)
+
+            // 7) 清理分片源目录
+            port.cleanupTempDir(tempDir)
+        } catch (e: Exception) {
+            // 失败：标记并抛出给上层
+            this.markTransferFailed(e.message)
+            // 清理合并文件以避免脏数据
+            runCatching { mergedMp4.delete() }
+            throw e
+        }
+    }
 }

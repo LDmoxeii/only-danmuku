@@ -29,12 +29,16 @@ object GetUserVideoDraftsQry {
         val videoCover: String?,
         /** 视频名称 */
         val videoName: String?,
+        /** 持续时间 */
+        val duration: Int?,
         /** 创建时间 */
         val createTime: Long,
         /** 最后更新时间 */
         val lastUpdateTime: Long?,
         /** 状态 */
         val status: Int,
+        /** 互动配置（兼容旧版：逗号分隔） */
+        val interaction: String? = null,
         /** 播放数 */
         val playCount: Int? = 0,
         /** 点赞数 */
@@ -46,6 +50,6 @@ object GetUserVideoDraftsQry {
         /** 投币数 */
         val coinCount: Int? = 0,
         /** 收藏数 */
-        val collectCount: Int? = 0
+        val collectCount: Int? = 0,
     )
 }

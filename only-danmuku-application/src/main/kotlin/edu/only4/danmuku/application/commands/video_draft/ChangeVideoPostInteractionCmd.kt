@@ -1,31 +1,32 @@
-package edu.only4.danmuku.application.commands.video
+package edu.only4.danmuku.application.commands.video_draft
 
 import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
 import edu.only4.danmuku.domain._share.meta.video.SVideo
+import edu.only4.danmuku.domain._share.meta.video_post.SVideoPost
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
 
 /**
  * 修改视频互动设置
  */
-object ChangeVideoInteractionCmd {
+object ChangeVideoPostInteractionCmd {
 
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
-            val video = Mediator.Companion.repositories.findFirst(
-                SVideo.Companion.predicateById(request.videoId),
-                persist = false
-            ).getOrNull() ?: throw KnownException("视频不存在：${request.videoId}")
 
-            if (video.customerId != request.userId) {
+            val videoPost = Mediator.repositories.findOne(
+                SVideoPost.predicateById(request.videoId)
+            ).getOrNull() ?: throw KnownException("视频草稿不存在：${request.videoId}")
+
+            if (videoPost.customerId != request.userId) {
                 throw KnownException("无权限修改该视频互动设置")
             }
 
-            video.changeInteraction(request.interaction)
+            videoPost.changeInteraction(request.interaction)
 
             Mediator.Companion.uow.save()
             return Response()
@@ -38,7 +39,7 @@ object ChangeVideoInteractionCmd {
         /** 用户ID */
         val userId: Long,
         /** 互动设置 */
-        val interaction: String?
+        val interaction: String?,
     ) : RequestParam<Response>
 
     class Response

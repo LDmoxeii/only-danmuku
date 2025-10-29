@@ -10,7 +10,7 @@ import edu.only4.danmuku.adapter.portal.api.payload.UCenterGetVideoByVideoId
 import edu.only4.danmuku.adapter.portal.api.payload.UCenterGetVideoCountInfo
 import edu.only4.danmuku.adapter.portal.api.payload.UCenterLoadVideoList
 import edu.only4.danmuku.adapter.portal.api.payload.UCenterPostVideo
-import edu.only4.danmuku.application.commands.video.ChangeVideoInteractionCmd
+import edu.only4.danmuku.application.commands.video_draft.ChangeVideoPostInteractionCmd
 import edu.only4.danmuku.application.commands.video.DeleteVideoCmd
 import edu.only4.danmuku.application.commands.video_draft.CreateVideoDraftCmd
 import edu.only4.danmuku.application.commands.video_draft.UpdateVideoDraftCmd
@@ -106,14 +106,14 @@ class CompatibleUCenterVideoPostController {
     }
 
     @PostMapping("/loadVideoList")
-    fun getVideoPage(request: UCenterLoadVideoList.Request): PageData<UCenterLoadVideoList.VideoItem> {
+    fun getVideoPostPage(request: UCenterLoadVideoList.Request): PageData<UCenterLoadVideoList.VideoItem> {
         val currentUserId = LoginHelper.getUserId()!!
 
         val queryRequest = GetUserVideoDraftsQry.Request(
             userId = currentUserId,
-            status = request.status,
+            status = if (request.status == -1) null else request.status,
             videoNameFuzzy = request.videoNameFuzzy,
-            excludeStatusArray = if (request.status == -1) listOf(3, 4) else null // 进行中排除审核通过和不通过
+            excludeStatusArray = if (request.status == -1) listOf(4, 5) else null // 进行中排除审核通过和不通过
         ).apply {
             pageNum = request.pageNum
             pageSize = request.pageSize
@@ -129,6 +129,7 @@ class CompatibleUCenterVideoPostController {
                     videoId = video.videoId.toString(),
                     videoCover = video.videoCover,
                     videoName = video.videoName,
+                    duration = video.duration,
                     createTime = LocalDateTime.ofInstant(
                         Instant.ofEpochSecond(video.createTime),
                         ZoneId.systemDefault()
@@ -140,6 +141,7 @@ class CompatibleUCenterVideoPostController {
                         ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
                     },
                     status = video.status,
+                    interaction = video.interaction,
                     playCount = video.playCount,
                     likeCount = video.likeCount,
                     danmuCount = video.danmuCount,
@@ -153,22 +155,22 @@ class CompatibleUCenterVideoPostController {
     }
 
     @PostMapping("/getVideoCountInfo")
-    fun getVideoCountInfo(): UCenterGetVideoCountInfo.Response {
+    fun getVideoPostCountInfo(): UCenterGetVideoCountInfo.Response {
         val currentUserId = LoginHelper.getUserId()!!
 
-        // 查询审核通过的数量 (status = 3)
+        // 查询审核通过的数量 (status = 4)
         val auditPassCount = Mediator.queries.send(
             GetVideoDraftCountByStatusQry.Request(
                 userId = currentUserId,
-                status = 3
+                status = 4
             )
         ).count
 
-        // 查询审核失败的数量 (status = 4)
+        // 查询审核失败的数量 (status = 5)
         val auditFailCount = Mediator.queries.send(
             GetVideoDraftCountByStatusQry.Request(
                 userId = currentUserId,
-                status = 4
+                status = 5
             )
         ).count
 
@@ -176,7 +178,7 @@ class CompatibleUCenterVideoPostController {
         val inProgress = Mediator.queries.send(
             GetVideoDraftCountByStatusQry.Request(
                 userId = currentUserId,
-                excludeStatusArray = listOf(3, 4)
+                excludeStatusArray = listOf(4, 5)
             )
         ).count
 
@@ -189,7 +191,7 @@ class CompatibleUCenterVideoPostController {
 
     @PostMapping("/getVideoByVideoId")
     fun getVideoByVideoId(
-        videoId: Long
+        videoId: Long,
     ): UCenterGetVideoByVideoId.Response {
         val currentUserId = LoginHelper.getUserId()!!
 
@@ -228,15 +230,15 @@ class CompatibleUCenterVideoPostController {
     }
 
     @PostMapping("/saveVideoInteraction")
-    fun saveVideoInteraction(
+    fun saveVideoPostInteraction(
         videoId: Long,
-        interaction: String
+        interaction: String,
     ) {
         val userId = LoginHelper.getUserId()!!
 
         // TODO：未发出事件，并同步视频草稿互动配置
         Mediator.commands.send(
-            ChangeVideoInteractionCmd.Request(
+            ChangeVideoPostInteractionCmd.Request(
                 videoId = videoId,
                 userId = userId,
                 interaction = interaction

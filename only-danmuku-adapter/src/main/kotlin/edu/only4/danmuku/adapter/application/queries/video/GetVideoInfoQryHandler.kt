@@ -2,7 +2,6 @@ package edu.only4.danmuku.adapter.application.queries.video
 
 import com.only4.cap4k.ddd.core.application.query.Query
 import edu.only4.danmuku.application.queries._share.model.Video
-import edu.only4.danmuku.application.queries._share.model.dto.Video.VideoFullInfo
 import edu.only4.danmuku.application.queries._share.model.fetchBy
 import edu.only4.danmuku.application.queries._share.model.id
 import edu.only4.danmuku.application.queries.video.GetVideoInfoQry

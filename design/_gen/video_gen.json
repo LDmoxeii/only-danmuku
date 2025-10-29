@@ -1,0 +1,11 @@
+[
+  {
+    "tag": "qry",
+    "package": "video",
+    "name": "VideoExistByVideoPostId",
+    "desc": "通过视频稿件Id判断视频是否存在",
+    "aggregates": [
+      "Video"
+    ]
+  }
+]

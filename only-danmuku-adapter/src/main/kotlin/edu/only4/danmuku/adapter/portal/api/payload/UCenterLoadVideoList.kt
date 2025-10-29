@@ -1,6 +1,8 @@
 package edu.only4.danmuku.adapter.portal.api.payload
 
 import com.only4.cap4k.ddd.core.share.PageParam
+import com.only.engine.translation.annotation.Translation
+import edu.only4.danmuku.adapter.portal.api.payload.translation.VideoStatusTranslation.Companion.VIDEO_STATUS_CODE_TO_DESC
 
 /**
  * 加载用户发布的视频列表接口载荷
@@ -24,12 +26,19 @@ object UCenterLoadVideoList {
         var videoCover: String? = null,
         /** 视频名称 */
         var videoName: String? = null,
+        /** 持续时间 */
+        var duration: Int? = null,
         /** 创建时间 */
         var createTime: String? = null,
         /** 最后更新时间 */
         var lastUpdateTime: String? = null,
         /** 状态 */
         var status: Int? = null,
+        /** 状态名称（自动翻译自 status） */
+        @get:Translation(type = VIDEO_STATUS_CODE_TO_DESC, mapper = "status")
+        var statusName: String? = null,
+        /** 互动信息 */
+        var interaction: String? = null,
         /** 播放数 */
         var playCount: Int? = null,
         /** 点赞数 */
@@ -41,6 +50,6 @@ object UCenterLoadVideoList {
         /** 投币数 */
         var coinCount: Int? = null,
         /** 收藏数 */
-        var collectCount: Int? = null
+        var collectCount: Int? = null,
     )
 }

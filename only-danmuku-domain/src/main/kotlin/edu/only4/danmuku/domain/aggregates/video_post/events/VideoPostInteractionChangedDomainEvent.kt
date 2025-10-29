@@ -1,10 +1,8 @@
-package edu.only4.danmuku.domain.aggregates.video.events
+package edu.only4.danmuku.domain.aggregates.video_post.events
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import com.only4.cap4k.ddd.core.domain.event.annotation.DomainEvent
-
-import edu.only4.danmuku.domain.aggregates.video.Video
-
+import edu.only4.danmuku.domain.aggregates.video_post.VideoPost
 
 /**
  * 视频互动设置已变更
@@ -15,9 +13,9 @@ import edu.only4.danmuku.domain.aggregates.video.Video
  */
 @DomainEvent(persist = false)
 @Aggregate(
-    aggregate = "Video",
-    name = "VideoInteractionChangedDomainEvent",
-    type = Aggregate.TYPE_DOMAIN_EVENT,
+    aggregate = "VideoPost",
+    name = "VideoPostInteractionChangedDomainEvent",
+    type = Aggregate.Companion.TYPE_DOMAIN_EVENT,
     description = ""
 )
-class VideoInteractionChangedDomainEvent(val entity: Video)
+class VideoPostInteractionChangedDomainEvent(val entity: VideoPost)

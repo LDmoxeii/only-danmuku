@@ -11,6 +11,9 @@ import org.babyfish.jimmer.sql.Table
 @Table(name = "video_post")
 interface VideoPost : BaseEntity {
 
+    @OneToOne(mappedBy = "videoPost")
+    val video: Video?
+
     @IdView
     val parentCategoryId: Long
 
@@ -60,5 +63,5 @@ interface VideoPost : BaseEntity {
     val interaction: String?
 
     @Column(name = "duration")
-    val duration: String?
+    val duration: Int?
 }

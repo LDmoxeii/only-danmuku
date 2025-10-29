@@ -3,11 +3,13 @@ package edu.only4.danmuku.domain.aggregates.video_post
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
 import edu.only4.danmuku.domain.aggregates.video.enums.PostType
+import edu.only4.danmuku.domain.aggregates.video_post.events.VideoPostInteractionChangedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video_post.enums.TransferResult
 import edu.only4.danmuku.domain.aggregates.video_post.enums.UpdateType
 import edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus
 import edu.only4.danmuku.domain.aggregates.video_post.events.VideoAuditFailedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video_post.events.VideoAuditPassedDomainEvent
+import edu.only4.danmuku.domain.aggregates.video_post.events.VideoDraftCreatedDomainEvent
 import jakarta.persistence.*
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Table
@@ -199,6 +201,10 @@ class VideoPost(
     // 【字段映射结束】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
 
     // 【行为方法开始】
+
+    fun onCreate() {
+        events().attach(this) { VideoDraftCreatedDomainEvent(this) }
+    }
 
     /** 审核通过 */
     fun reviewPass() {
@@ -524,6 +530,13 @@ class VideoPost(
             hasNew -> this.markTranscoding()
             (basicChanged || hasMeta || hasRemoved) -> this.markPendingReview()
         }
+    }
+
+    fun changeInteraction(interaction: String?) {
+        if (this.interaction == interaction) return
+        this.interaction = interaction
+        events().attach(this) { VideoPostInteractionChangedDomainEvent(this) }
+
     }
 
     // 【语义化编辑方法结束】

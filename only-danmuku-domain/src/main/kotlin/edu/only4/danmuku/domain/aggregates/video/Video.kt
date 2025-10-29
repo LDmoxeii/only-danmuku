@@ -271,8 +271,6 @@ class Video (
     /** 修改互动设置 */
     fun changeInteraction(newInteraction: String?) {
         this.interaction = newInteraction
-
-        // TODO: 需要发出互动配置已修改的事件， 并发出命令同步视频草稿的互动配置
     }
 
     fun applyStatisticsDelta(

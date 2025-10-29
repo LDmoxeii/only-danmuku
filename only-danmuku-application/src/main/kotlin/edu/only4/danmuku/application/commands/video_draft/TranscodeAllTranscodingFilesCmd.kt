@@ -6,17 +6,20 @@ import com.only4.cap4k.ddd.core.application.command.Command
 import edu.only4.danmuku.application._share.config.properties.FileAppProperties
 import edu.only4.danmuku.application._share.constants.Constants
 import edu.only4.danmuku.domain._share.meta.video_file_upload_session.SVideoFileUploadSession
-import edu.only4.danmuku.domain.aggregates.video_post.VideoFilePost
 import edu.only4.danmuku.domain.aggregates.video_post.VideoPost
+import edu.only4.danmuku.domain.aggregates.video_post.enums.TransferResult
 import edu.only4.danmuku.domain.aggregates.video_post.ports.VideoFileTranscodePort
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import java.io.File
 import kotlin.jvm.optionals.getOrNull
 
-object TransferVideoFileCmd {
+/**
+ * 转码指定视频草稿下所有处于“转码中”的文件
+ */
+object TranscodeAllTranscodingFilesCmd {
 
-    private val logger = LoggerFactory.getLogger(TransferVideoFileCmd::class.java)
+    private val log = LoggerFactory.getLogger(TranscodeAllTranscodingFilesCmd::class.java)
 
     @Service
     class Handler(
@@ -25,51 +28,45 @@ object TransferVideoFileCmd {
 
         override fun exec(request: Request): Response {
             val draft = request.videoPost
-            val file = request.videoFilePost
+
+            var total = 0
+            var success = 0
+            var failed = 0
 
             val port = FFmpegVideoFileTranscodePort(fileProps)
 
-            var errorMessage: String? = null
+            draft.videoFilePosts
+                .filter { it.transferResult == TransferResult.TRANSCODING }
+                .sortedBy { it.fileIndex }
+                .forEach { file ->
+                    total++
+                    runCatching {
+                        file.transcode(draft.id, port)
+                        success++
+                    }.onFailure { e ->
+                        failed++
+                        log.error(
+                            "转码失败 videoId={}, uploadId={}, idx={}, msg={}",
+                            draft.id, file.uploadId, file.fileIndex, e.message, e
+                        )
+                    }
+                }
 
-            runCatching {
-                logger.info(
-                    "开始转码单个文件 videoId={}, uploadId={}, idx={}",
-                    draft.id, file.uploadId, file.fileIndex
-                )
-                file.transcode(draft.id, port)
-                logger.info(
-                    "完成转码单个文件 videoId={}, uploadId={}, idx={}, size={}, duration={}",
-                    draft.id, file.uploadId, file.fileIndex, file.fileSize, file.duration
-                )
-            }.onFailure { e ->
-                errorMessage = e.message
-                logger.error(
-                    "单文件转码失败 videoId={}, uploadId={}, idx={}, msg={}",
-                    draft.id, file.uploadId, file.fileIndex, e.message, e
-                )
-            }
-
-            // 转码结束后刷新视频草稿状态
+            // 刷新视频草稿状态（替代独立的 RefreshVideoDraftTranscodeStatusCmd）
             refreshDraftStatus(draft)
 
             Mediator.uow.save()
-
-            return Response(
-                success = errorMessage == null,
-                duration = file.duration,
-                fileSize = file.fileSize,
-                filePath = file.filePath,
-                errorMessage = errorMessage,
-            )
+            return Response(total = total, success = success, failed = failed)
         }
 
         private fun refreshDraftStatus(draft: VideoPost) {
             val hasFailedFiles = draft.videoFilePosts.any { it.isTransferFailed() }
-            val hasTranscodingFiles = draft.videoFilePosts.any { it.isTranscoding() }
 
             when {
-                hasFailedFiles -> draft.markTranscodeFailed()
-                hasTranscodingFiles -> draft.markTranscoding()
+                hasFailedFiles -> {
+                    draft.markTranscodeFailed()
+                }
+
                 else -> {
                     draft.markPendingReview()
                     val totalDuration = draft.videoFilePosts.mapNotNull { it.duration }.sum()
@@ -81,15 +78,12 @@ object TransferVideoFileCmd {
 
     data class Request(
         val videoPost: VideoPost,
-        val videoFilePost: VideoFilePost,
     ) : RequestParam<Response>
 
     data class Response(
-        val success: Boolean,
-        val duration: Int? = null,
-        val fileSize: Long? = null,
-        val filePath: String? = null,
-        val errorMessage: String? = null,
+        val total: Int,
+        val success: Int,
+        val failed: Int,
     )
 
     private class FFmpegVideoFileTranscodePort(
