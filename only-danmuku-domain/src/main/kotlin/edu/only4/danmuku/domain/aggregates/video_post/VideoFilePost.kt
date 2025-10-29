@@ -2,19 +2,13 @@ package edu.only4.danmuku.domain.aggregates.video_post
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
-
 import edu.only4.danmuku.domain.aggregates.video_post.enums.TransferResult
 import edu.only4.danmuku.domain.aggregates.video_post.enums.UpdateType
 import edu.only4.danmuku.domain.aggregates.video_post.events.VideoFileDraftCreatedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video_post.events.VideoFileDraftTranscodedDomainEvent
-
 import jakarta.persistence.*
-
-import org.hibernate.annotations.DynamicInsert
-import org.hibernate.annotations.DynamicUpdate
-import org.hibernate.annotations.GenericGenerator
-import org.hibernate.annotations.SQLDelete
-import org.hibernate.annotations.Where
+import jakarta.persistence.Table
+import org.hibernate.annotations.*
 
 /**
  * 视频文件信息;
@@ -258,49 +252,7 @@ class VideoFilePost(
         return this.transferResult == TransferResult.FAILED
     }
 
-    data class UploadSpec(
-        val uploadId: Long,
-        val fileIndex: Int,
-        val fileName: String,
-        val fileSize: Long,
-        val duration: Int,
-    )
-
-    data class BuildResult(
-        val fileDrafts: List<VideoFilePost>,
-        val totalDuration: Int,
-    )
-
-    companion object {
-        fun buildFromUploads(
-            customerId: Long,
-            uploads: List<UploadSpec>,
-        ): BuildResult {
-            if (uploads.isEmpty()) {
-                return BuildResult(emptyList(), 0)
-            }
-            val seenUploadIds = mutableSetOf<Long>()
-            var totalDuration = 0
-            val sorted = uploads.sortedBy { it.fileIndex }
-            val fileDrafts = sorted.mapIndexed { index, upload ->
-                if (!seenUploadIds.add(upload.uploadId)) {
-                    throw IllegalArgumentException("Duplicate uploadId: ${upload.uploadId}")
-                }
-                totalDuration += upload.duration
-                VideoFilePost(
-                    uploadId = upload.uploadId,
-                    customerId = customerId,
-                    fileIndex = index + 1,
-                    fileName = upload.fileName,
-                    fileSize = upload.fileSize,
-                    updateType = UpdateType.HAS_UPDATE,
-                    transferResult = TransferResult.TRANSCODING,
-                    duration = upload.duration
-                )
-            }
-            return BuildResult(fileDrafts = fileDrafts, totalDuration = totalDuration)
-        }
-    }
+    // UploadSpec / BuildResult / buildFromUploads 迁移至 VideoPost
 
     // 【行为方法结束】
 }

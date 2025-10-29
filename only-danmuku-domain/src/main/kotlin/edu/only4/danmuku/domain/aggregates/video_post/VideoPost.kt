@@ -2,23 +2,16 @@ package edu.only4.danmuku.domain.aggregates.video_post
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
-
 import edu.only4.danmuku.domain.aggregates.video.enums.PostType
 import edu.only4.danmuku.domain.aggregates.video_post.enums.TransferResult
 import edu.only4.danmuku.domain.aggregates.video_post.enums.UpdateType
 import edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus
 import edu.only4.danmuku.domain.aggregates.video_post.events.VideoAuditFailedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video_post.events.VideoAuditPassedDomainEvent
-
 import jakarta.persistence.*
-
-import org.hibernate.annotations.DynamicInsert
-import org.hibernate.annotations.DynamicUpdate
-import org.hibernate.annotations.Fetch
-import org.hibernate.annotations.FetchMode
-import org.hibernate.annotations.GenericGenerator
-import org.hibernate.annotations.SQLDelete
-import org.hibernate.annotations.Where
+import jakarta.persistence.CascadeType
+import jakarta.persistence.Table
+import org.hibernate.annotations.*
 
 /**
  * 视频信息;
@@ -293,6 +286,69 @@ class VideoPost(
         val hasFileMetaChange: Boolean,
         val totalDuration: Int,
     )
+
+    /**
+     * 初次构建所需的上传规格（来自上传中心的文件占位信息）
+     */
+    data class UploadSpec(
+        val uploadId: Long,
+        val fileIndex: Int,
+        val fileName: String,
+        val fileSize: Long = 0,
+        val duration: Int = 0,
+    )
+
+    data class BuildResult(
+        val fileDrafts: List<VideoFilePost>,
+        val totalDuration: Int,
+    )
+
+    companion object {
+        /**
+         * 根据上传记录构建草稿文件列表，并计算总时长
+         */
+        fun buildFromUploads(
+            customerId: Long,
+            uploads: List<UploadSpec>,
+        ): BuildResult {
+            if (uploads.isEmpty()) {
+                return BuildResult(emptyList(), 0)
+            }
+            val seenUploadIds = mutableSetOf<Long>()
+            var totalDuration = 0
+            val sorted = uploads.sortedBy { it.fileIndex }
+            val fileDrafts = sorted.mapIndexed { index, upload ->
+                if (!seenUploadIds.add(upload.uploadId)) {
+                    throw IllegalArgumentException("Duplicate uploadId: ${'$'}{upload.uploadId}")
+                }
+                totalDuration += upload.duration
+                VideoFilePost(
+                    uploadId = upload.uploadId,
+                    customerId = customerId,
+                    fileIndex = index + 1,
+                    fileName = upload.fileName,
+                    fileSize = upload.fileSize,
+                    updateType = UpdateType.HAS_UPDATE,
+                    transferResult = TransferResult.TRANSCODING,
+                    duration = upload.duration
+                )
+            }
+            return BuildResult(fileDrafts = fileDrafts, totalDuration = totalDuration)
+        }
+    }
+
+    /**
+     * 初始化草稿的文件列表（用于创建阶段），并同步视频总时长。
+     * - 使用上传记录生成占位文件草稿
+     * - 重建 `videoFilePosts` 列表
+     * - 汇总并设置 `duration`（>0 生效，否则为 null）
+     */
+    fun initializeFilesFromUploads(customerId: Long, uploads: List<UploadSpec>) {
+        val result = buildFromUploads(customerId, uploads)
+        this.videoFilePosts.clear()
+        this.videoFilePosts.addAll(result.fileDrafts)
+        this.duration = result.totalDuration.takeIf { it > 0 }
+    }
 
     /**
      * 应用基础信息变更（仅对非空字段生效）

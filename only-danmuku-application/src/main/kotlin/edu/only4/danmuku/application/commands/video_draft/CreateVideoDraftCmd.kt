@@ -5,7 +5,7 @@ import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
 import edu.only4.danmuku.application.validater.MaxVideoPCount
 import edu.only4.danmuku.domain.aggregates.video.enums.PostType
-import edu.only4.danmuku.domain.aggregates.video_post.VideoFilePost
+import edu.only4.danmuku.domain.aggregates.video_post.VideoPost
 import edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus
 import edu.only4.danmuku.domain.aggregates.video_post.factory.VideoPostFactory
 import org.springframework.stereotype.Service
@@ -35,23 +35,17 @@ object CreateVideoDraftCmd {
 
             if (request.uploadFileList.isNotEmpty()) {
                 val uploadSpecs = request.uploadFileList.map { file ->
-                    VideoFilePost.UploadSpec(
+                    VideoPost.UploadSpec(
                         uploadId = file.uploadId,
                         fileIndex = file.fileIndex,
                         fileName = file.fileName,
-                        fileSize = 0,
-                        duration = 0,
                     )
                 }
 
-                val buildResult = VideoFilePost.buildFromUploads(
+                draft.initializeFilesFromUploads(
                     customerId = request.customerId,
                     uploads = uploadSpecs
                 )
-
-                draft.videoFilePosts.clear()
-                draft.videoFilePosts.addAll(buildResult.fileDrafts)
-                draft.duration = buildResult.totalDuration.takeIf { it > 0 }
             }
 
             Mediator.uow.save()
