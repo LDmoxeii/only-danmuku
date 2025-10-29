@@ -16,7 +16,9 @@ object DeleteVideoCmd {
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
-            Mediator.repositories.remove(SVideo.predicateById(request.videoId))
+            Mediator.repositories.remove(
+                SVideo.predicate { it.videoPostId eq request.videoId }
+            )
 
             Mediator.uow.save()
             return Response()

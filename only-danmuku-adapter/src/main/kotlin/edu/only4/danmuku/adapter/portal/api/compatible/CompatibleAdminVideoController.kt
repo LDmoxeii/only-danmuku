@@ -7,8 +7,8 @@ import edu.only4.danmuku.adapter.portal.api.payload.AdminVideoLoadPList
 import edu.only4.danmuku.application.commands.video.DeleteVideoCmd
 import edu.only4.danmuku.application.commands.video.RecommendVideoCmd
 import edu.only4.danmuku.application.commands.video_draft.AuditVideoCmd
-import edu.only4.danmuku.application.queries.video.GetVideoPageQry
 import edu.only4.danmuku.application.queries.video.GetVideoPlayFilesQry
+import edu.only4.danmuku.application.queries.video_draft.GetVideoPostPageQry
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -27,7 +27,7 @@ class CompatibleAdminVideoController {
 
     @PostMapping("/loadVideoList")
     fun getVideoPage(request: AdminVideoLoadList.Request): PageData<AdminVideoLoadList.VideoItem> {
-        val queryRequest = GetVideoPageQry.Request(
+        val queryRequest = GetVideoPostPageQry.Request(
             videoNameFuzzy = request.videoNameFuzzy,
             categoryParentId = request.categoryParentId,
             categoryId = request.categoryId,

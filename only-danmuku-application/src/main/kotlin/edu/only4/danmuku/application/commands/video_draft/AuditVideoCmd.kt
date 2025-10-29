@@ -24,7 +24,6 @@ object AuditVideoCmd {
             // 根据视频ID找到对应草稿
             val draft = Mediator.repositories.findFirst(
                 SVideoPost.predicate { it.id eq request.videoId },
-                persist = false
             ).getOrNull() ?: throw KnownException("视频草稿不存在：${request.videoId}")
 
             val statusEnum = runCatching {

@@ -17,8 +17,8 @@ object RecommendVideoCmd {
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
-            val video = Mediator.repositories.findFirst(
-                SVideo.predicateById(request.videoId)
+            val video = Mediator.repositories.findOne(
+                SVideo.predicate { it.videoPostId eq request.videoId }
             ).getOrNull() ?: throw KnownException("视频不存在：${request.videoId}")
 
             // 切换推荐状态（推荐 <-> 未推荐）

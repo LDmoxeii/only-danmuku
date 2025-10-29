@@ -11,14 +11,17 @@ import org.babyfish.jimmer.sql.Table
 @Table(name = "video_post")
 interface VideoPost : BaseEntity {
 
-    @OneToOne(mappedBy = "videoPost")
-    val video: Video?
+    @IdView
+    val customerId: Long
 
     @IdView
     val parentCategoryId: Long
 
     @IdView
     val categoryId: Long?
+
+    @OneToOne(mappedBy = "videoPost")
+    val video: Video?
 
     @OneToOne
     @JoinColumn(name = "customer_id")
