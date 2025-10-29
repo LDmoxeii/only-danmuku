@@ -1,5 +1,3 @@
-import jdk.tools.jlink.resources.plugins
-
 // [cap4k-ddd-codegen-gradle-plugin:do-not-overwrite]
 plugins {
     id("buildsrc.convention.kotlin-jvm")

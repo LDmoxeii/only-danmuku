@@ -1,5 +1,3 @@
-import jdk.tools.jlink.resources.plugins
-
 plugins {
     id("buildsrc.convention.kotlin-jvm")
     alias(libs.plugins.ksp)
