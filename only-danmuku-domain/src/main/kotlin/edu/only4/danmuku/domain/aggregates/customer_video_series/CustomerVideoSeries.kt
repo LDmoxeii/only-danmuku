@@ -12,7 +12,7 @@ import org.hibernate.annotations.*
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2025/10/21
+ * @date 2025/10/29
  */
 @Aggregate(aggregate = "CustomerVideoSeries", name = "CustomerVideoSeries", root = true, type = Aggregate.TYPE_ENTITY, description = "用户视频序列归档，")
 @Entity
@@ -116,6 +116,8 @@ class CustomerVideoSeries (
     @JoinColumn(name = "`series_id`", nullable = false)
     var customerVideoSeriesVideos: MutableList<CustomerVideoSeriesVideo> = mutableListOf()
 
+    // 【字段映射结束】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
+
     fun updateBasicInfo(
         newName: String,
         newDescription: String?,
@@ -150,8 +152,6 @@ class CustomerVideoSeries (
         }
         return removed
     }
-
-    // 【字段映射结束】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
 
     // 【行为方法开始】
 
