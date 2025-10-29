@@ -35,13 +35,12 @@ object CreateVideoDraftCmd {
 
             if (request.uploadFileList.isNotEmpty()) {
                 val uploadSpecs = request.uploadFileList.map { file ->
-                    val uploadId = file.uploadId
                     VideoFilePost.UploadSpec(
-                        uploadId = uploadId,
+                        uploadId = file.uploadId,
                         fileIndex = file.fileIndex,
                         fileName = file.fileName,
-                        fileSize = file.fileSize,
-                        duration = file.duration,
+                        fileSize = 0,
+                        duration = 0,
                     )
                 }
 
@@ -80,8 +79,6 @@ object CreateVideoDraftCmd {
         val uploadId: Long,
         val fileIndex: Int,
         val fileName: String,
-        val fileSize: Long,
-        val duration: Int,
     )
 
     data class Response(

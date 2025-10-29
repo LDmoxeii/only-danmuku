@@ -1,6 +1,8 @@
 package edu.only4.danmuku.adapter.portal.api.compatible
 
 import com.only.engine.json.misc.JsonUtils
+import com.only.engine.json.validate.JsonPattern
+import com.only.engine.json.validate.JsonType
 import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.share.PageData
@@ -43,7 +45,7 @@ class CompatibleUCenterVideoPostController {
         @NotEmpty @Size(max = 300) tags: String,
         @Size(max = 2000) introduction: String?,
         @Size(max = 3) interaction: String?,
-        @NotEmpty uploadFileList: String,
+        @NotEmpty @JsonPattern(type = JsonType.ARRAY) uploadFileList: String,
     ): UCenterPostVideo.Response {
         val currentUserId = LoginHelper.getUserId()!!
 
@@ -56,9 +58,7 @@ class CompatibleUCenterVideoPostController {
                 CreateVideoDraftCmd.VideoFileInfo(
                     uploadId = item.uploadId,
                     fileIndex = idx + 1,
-                    fileName = item.fileName ?: "",
-                    fileSize = 0,
-                    duration = 0
+                    fileName = item.fileName,
                 )
             }
             Mediator.commands.send(
@@ -82,9 +82,7 @@ class CompatibleUCenterVideoPostController {
                     fileId = item.fileId,
                     uploadId = item.uploadId,
                     fileIndex = idx + 1,
-                    fileName = item.fileName ?: "",
-                    fileSize = null,
-                    duration = null
+                    fileName = item.fileName,
                 )
             }
             Mediator.commands.send(
