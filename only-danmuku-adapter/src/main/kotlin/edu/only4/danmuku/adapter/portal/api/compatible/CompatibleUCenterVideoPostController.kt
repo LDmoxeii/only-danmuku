@@ -11,7 +11,7 @@ import edu.only4.danmuku.adapter.portal.api.payload.UCenterGetVideoCountInfo
 import edu.only4.danmuku.adapter.portal.api.payload.UCenterLoadVideoList
 import edu.only4.danmuku.adapter.portal.api.payload.UCenterPostVideo
 import edu.only4.danmuku.application.commands.video_draft.ChangeVideoPostInteractionCmd
-import edu.only4.danmuku.application.commands.video.DeleteVideoCmd
+import edu.only4.danmuku.application.commands.video_draft.DeleteVideoPostCmd
 import edu.only4.danmuku.application.commands.video_draft.CreateVideoDraftCmd
 import edu.only4.danmuku.application.commands.video_draft.UpdateVideoDraftCmd
 import edu.only4.danmuku.application.queries.video_draft.GetUserVideoDraftsQry
@@ -252,7 +252,7 @@ class CompatibleUCenterVideoPostController {
     ) {
         val currentUserId = LoginHelper.getUserId()!!
         Mediator.commands.send(
-            DeleteVideoCmd.Request(
+            DeleteVideoPostCmd.Request(
                 videoId = videoId,
                 operatorId = currentUserId
             )

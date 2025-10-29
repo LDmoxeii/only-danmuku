@@ -2,38 +2,31 @@ package edu.only4.danmuku.application.commands.video
 
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
-import com.only4.cap4k.ddd.core.application.command.Command
-import edu.only4.danmuku.application.validater.VideoDeletePermission
-import edu.only4.danmuku.application.validater.VideoExists
+import com.only4.cap4k.ddd.core.application.command.NoneResultCommandParam
 import edu.only4.danmuku.domain._share.meta.video.SVideo
 import org.springframework.stereotype.Service
 
 /**
  * 删除视频
+ *
+ * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
+ * @author cap4k-ddd-codegen
+ * @date 2025/10/29
  */
 object DeleteVideoCmd {
 
     @Service
-    class Handler : Command<Request, Response> {
-        override fun exec(request: Request): Response {
+    class Handler : NoneResultCommandParam<Request>() {
+        override fun exec(request: Request) {
             Mediator.repositories.remove(
-                SVideo.predicate { it.videoPostId eq request.videoId }
+                SVideo.predicate { it.videoPostId eq request.videoPostId }
             )
-
             Mediator.uow.save()
-            return Response()
         }
+
     }
 
-    @VideoDeletePermission
-    data class Request(
-        /** 视频ID */
-        @field:VideoExists
-        val videoId: Long,
-        /** 操作者ID，null 表示管理员 */
-        val operatorId: Long? = null,
-    ) : RequestParam<Response>
-
-    class Response
+    class Request(
+        val videoPostId: Long,
+    ) : RequestParam<Unit>
 }
-

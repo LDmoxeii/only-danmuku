@@ -1,1 +1,8 @@
-[]
+[
+  {
+    "tag": "cmd",
+    "package": "video",
+    "name": "DeleteVideo",
+    "desc": "删除视频"
+  }
+]

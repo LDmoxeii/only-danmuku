@@ -61,7 +61,7 @@ class GetVideoPostPageQryHandler(
                 videoCover = videoPost.videoCover,
                 videoName = videoPost.videoName,
                 userId = videoPost.customerId,
-                createTime = videoPost.createTime!!,
+                createTime = videoPost.createTime ?: 0,
                 lastUpdateTime = videoPost.updateTime,
                 parentCategoryId = videoPost.parentCategoryId,
                 categoryId = videoPost.categoryId,

@@ -3,6 +3,7 @@ package edu.only4.danmuku.domain.aggregates.video_post
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
 import edu.only4.danmuku.domain.aggregates.video.enums.PostType
+import edu.only4.danmuku.domain.aggregates.video_post.events.VideoPostDeletedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video_post.events.VideoPostInteractionChangedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video_post.enums.TransferResult
 import edu.only4.danmuku.domain.aggregates.video_post.enums.UpdateType
@@ -204,6 +205,10 @@ class VideoPost(
 
     fun onCreate() {
         events().attach(this) { VideoDraftCreatedDomainEvent(this) }
+    }
+
+    fun onDelete() {
+        events().attach(this) { VideoPostDeletedDomainEvent(this) }
     }
 
     /** 审核通过 */

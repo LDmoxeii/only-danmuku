@@ -1,7 +1,7 @@
 package edu.only4.danmuku.application.validater
 
 import com.only4.cap4k.ddd.core.Mediator
-import edu.only4.danmuku.application.commands.video.DeleteVideoCmd
+import edu.only4.danmuku.application.commands.video_draft.DeleteVideoPostCmd
 import edu.only4.danmuku.application.queries.video.GetVideoInfoQry
 import jakarta.validation.Constraint
 import jakarta.validation.ConstraintValidator
@@ -25,8 +25,8 @@ annotation class VideoDeletePermission(
     val payload: Array<KClass<out Payload>> = [],
 ) {
 
-    class Validator : ConstraintValidator<VideoDeletePermission, DeleteVideoCmd.Request> {
-        override fun isValid(value: DeleteVideoCmd.Request?, context: ConstraintValidatorContext): Boolean {
+    class Validator : ConstraintValidator<VideoDeletePermission, DeleteVideoPostCmd.Request> {
+        override fun isValid(value: DeleteVideoPostCmd.Request?, context: ConstraintValidatorContext): Boolean {
             if (value == null) return true
             val operatorId = value.operatorId ?: return true
             if (value.videoId <= 0) return true

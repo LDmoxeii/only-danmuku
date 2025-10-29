@@ -4,7 +4,7 @@ import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.share.PageData
 import edu.only4.danmuku.adapter.portal.api.payload.AdminVideoLoadList
 import edu.only4.danmuku.adapter.portal.api.payload.AdminVideoLoadPList
-import edu.only4.danmuku.application.commands.video.DeleteVideoCmd
+import edu.only4.danmuku.application.commands.video_draft.DeleteVideoPostCmd
 import edu.only4.danmuku.application.commands.video.RecommendVideoCmd
 import edu.only4.danmuku.application.commands.video_draft.AuditVideoCmd
 import edu.only4.danmuku.application.queries.video.GetVideoPlayFilesQry
@@ -87,7 +87,7 @@ class CompatibleAdminVideoController {
     fun auditVideo(
         videoId: Long,
         status: Int,
-        reason: String,
+        reason: String?,
     ) {
         Mediator.commands.send(
             AuditVideoCmd.Request(
@@ -101,7 +101,7 @@ class CompatibleAdminVideoController {
     @PostMapping("/deleteVideo")
     fun deleteVideo(videoId: Long) {
         Mediator.commands.send(
-            DeleteVideoCmd.Request(
+            DeleteVideoPostCmd.Request(
                 videoId = videoId
             )
         )
