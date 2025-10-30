@@ -1,4 +1,4 @@
-package edu.only4.danmuku.application.commands.video_draft
+package edu.only4.danmuku.application.commands.video_post
 
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
@@ -7,9 +7,6 @@ import edu.only4.danmuku.application.validator.VideoDeletePermission
 import edu.only4.danmuku.domain._share.meta.video_post.SVideoPost
 import org.springframework.stereotype.Service
 
-/**
- * 删除视频
- */
 object DeleteVideoPostCmd {
 
     @Service
@@ -19,7 +16,7 @@ object DeleteVideoPostCmd {
                 SVideoPost.predicateById(request.videoId)
             )
 
-            Mediator.Companion.uow.save()
+            Mediator.uow.save()
             return Response()
         }
     }

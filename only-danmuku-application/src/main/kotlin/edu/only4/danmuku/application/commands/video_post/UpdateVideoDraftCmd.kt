@@ -1,4 +1,4 @@
-package edu.only4.danmuku.application.commands.video_draft
+package edu.only4.danmuku.application.commands.video_post
 
 import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.Mediator
@@ -13,9 +13,6 @@ import edu.only4.danmuku.domain.aggregates.video_post.VideoPost
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * 更新视频草稿
- */
 object UpdateVideoDraftCmd {
 
     @Service

@@ -1,7 +1,7 @@
 package edu.only4.danmuku.application.validator
 
 import com.only4.cap4k.ddd.core.Mediator
-import edu.only4.danmuku.application.commands.video_draft.DeleteVideoPostCmd
+import edu.only4.danmuku.application.commands.video_post.DeleteVideoPostCmd
 import edu.only4.danmuku.application.queries.video.GetVideoInfoQry
 import jakarta.validation.Constraint
 import jakarta.validation.ConstraintValidator

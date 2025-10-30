@@ -1,54 +1,36 @@
 package edu.only4.danmuku.application.subscribers.domain.video
 
 import com.only4.cap4k.ddd.core.Mediator
-import edu.only4.danmuku.application.commands.customer_profile.AdjustAuthorCoinAfterDeleteCmd
-import edu.only4.danmuku.application.commands.file.DeleteVideoFileResourcesCmd
-import edu.only4.danmuku.application.commands.video.DeleteVideoCmd
 import edu.only4.danmuku.application.commands.video.RemoveVideoSearchIndexCmd
 import edu.only4.danmuku.application.commands.video_comment.BatchDeleteCommentCmd
 import edu.only4.danmuku.application.commands.video_danmuku.BatchDeleteDanmukuCmd
-import edu.only4.danmuku.domain.aggregates.video_post.events.VideoPostDeletedDomainEvent
+import edu.only4.danmuku.domain.aggregates.video.events.VideoDeletedDomainEvent
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Service
 
 /**
- * 视频被删除领域事件订阅器
+ * 视频已删除
+ *
+ * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
+ * 警告：可以在本文件中添加自定义事件处理方法
+ * @author cap4k-ddd-codegen
+ * @date 2025/10/30
  */
 @Service
 class VideoDeletedDomainEventSubscriber {
 
-    @EventListener(VideoPostDeletedDomainEvent::class)
-    fun removeVideo(event: VideoPostDeletedDomainEvent) {
+    @EventListener(VideoDeletedDomainEvent::class)
+    fun removeSearchIndex(event: VideoDeletedDomainEvent) {
         val video = event.entity
-        Mediator.commands.send(
-            DeleteVideoCmd.Request(
-                videoPostId = video.id,
-            )
-        )
-    }
-
-    @EventListener(VideoPostDeletedDomainEvent::class)
-    fun adjustAuthorCoin(event: VideoPostDeletedDomainEvent) {
-        val video = event.entity
-        Mediator.commands.send(
-            AdjustAuthorCoinAfterDeleteCmd.Request(
-                authorId = video.customerId,
-            )
-        )
-    }
-
-    @EventListener(VideoPostDeletedDomainEvent::class)
-    fun removeSearchIndex(event: VideoPostDeletedDomainEvent) {
-        val videoPost = event.entity
         Mediator.commands.send(
             RemoveVideoSearchIndexCmd.Request(
-                videoId = videoPost.id,
+                videoId = video.id,
             )
         )
     }
 
-    @EventListener(VideoPostDeletedDomainEvent::class)
-    fun cleanupDanmaku(event: VideoPostDeletedDomainEvent) {
+    @EventListener(VideoDeletedDomainEvent::class)
+    fun cleanupDanmaku(event: VideoDeletedDomainEvent) {
         val video = event.entity
         Mediator.commands.send(
             BatchDeleteDanmukuCmd.Request(
@@ -57,8 +39,8 @@ class VideoDeletedDomainEventSubscriber {
         )
     }
 
-    @EventListener(VideoPostDeletedDomainEvent::class)
-    fun cleanupComments(event: VideoPostDeletedDomainEvent) {
+    @EventListener(VideoDeletedDomainEvent::class)
+    fun cleanupComments(event: VideoDeletedDomainEvent) {
         val video = event.entity
         Mediator.commands.send(
             BatchDeleteCommentCmd.Request(
@@ -66,16 +48,4 @@ class VideoDeletedDomainEventSubscriber {
             )
         )
     }
-
-    @EventListener(VideoPostDeletedDomainEvent::class)
-    fun deletePhysicalFiles(event: VideoPostDeletedDomainEvent) {
-        val video = event.entity
-        Mediator.commands.send(
-            DeleteVideoFileResourcesCmd.Request(
-                videoId = video.id,
-                ownerId = video.customerId,
-            )
-        )
-    }
 }
-

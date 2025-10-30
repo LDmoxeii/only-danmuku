@@ -15,7 +15,7 @@ import edu.only4.danmuku.domain.aggregates.video_post.VideoPost
 @Aggregate(
     aggregate = "VideoPost",
     name = "VideoPostDeletedDomainEvent",
-    type = Aggregate.Companion.TYPE_DOMAIN_EVENT,
+    type = Aggregate.TYPE_DOMAIN_EVENT,
     description = ""
 )
 class VideoPostDeletedDomainEvent(val entity: VideoPost)

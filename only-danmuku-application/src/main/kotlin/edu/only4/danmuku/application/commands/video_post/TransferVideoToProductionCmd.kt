@@ -1,4 +1,4 @@
-package edu.only4.danmuku.application.commands.video_draft
+package edu.only4.danmuku.application.commands.video_post
 
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
@@ -7,18 +7,15 @@ import edu.only4.danmuku.domain.aggregates.video.factory.VideoFactory
 import edu.only4.danmuku.domain.aggregates.video_post.VideoPost
 import org.springframework.stereotype.Service
 
-/**
- * 转移视频草稿及文件到正式表
- */
 object TransferVideoToProductionCmd {
 
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
-            val draft = request.videoPost
+            val post = request.videoPost
 
             val targetVideo = Mediator.factories.create(
-                VideoFactory.Payload(videoPost = draft)
+                VideoFactory.Payload(videoPost = post)
             )
 
             Mediator.uow.save()

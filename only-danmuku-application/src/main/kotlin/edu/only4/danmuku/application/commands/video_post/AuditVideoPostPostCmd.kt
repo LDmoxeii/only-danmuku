@@ -1,4 +1,4 @@
-package edu.only4.danmuku.application.commands.video_draft
+package edu.only4.danmuku.application.commands.video_post
 
 import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.Mediator
@@ -13,16 +13,12 @@ import edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * 审核视频
- */
-object AuditVideoCmd {
+object AuditVideoPostPostCmd {
 
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
-            // 根据视频ID找到对应草稿
-            val draft = Mediator.repositories.findFirst(
+            val post = Mediator.repositories.findFirst(
                 SVideoPost.predicate { it.id eq request.videoId },
             ).getOrNull() ?: throw KnownException("视频草稿不存在：${request.videoId}")
 
@@ -33,8 +29,8 @@ object AuditVideoCmd {
             }
 
             when (statusEnum) {
-                VideoStatus.REVIEW_PASSED -> draft.reviewPass()
-                VideoStatus.REVIEW_FAILED -> draft.reviewFail()
+                VideoStatus.REVIEW_PASSED -> post.reviewPass()
+                VideoStatus.REVIEW_FAILED -> post.reviewFail()
                 else -> throw KnownException("不支持的审核状态: ${statusEnum.code}")
             }
 

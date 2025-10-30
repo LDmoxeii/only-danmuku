@@ -1,17 +1,13 @@
-package edu.only4.danmuku.application.commands.video_draft
+package edu.only4.danmuku.application.commands.video_post
 
 import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
-import edu.only4.danmuku.domain._share.meta.video.SVideo
 import edu.only4.danmuku.domain._share.meta.video_post.SVideoPost
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * 修改视频互动设置
- */
 object ChangeVideoPostInteractionCmd {
 
     @Service
@@ -28,7 +24,7 @@ object ChangeVideoPostInteractionCmd {
 
             videoPost.changeInteraction(request.interaction)
 
-            Mediator.Companion.uow.save()
+            Mediator.uow.save()
             return Response()
         }
     }

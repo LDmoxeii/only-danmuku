@@ -16,7 +16,7 @@ object ChangeVideoInteractionCmd {
     @Service
     class Handler : NoneResultCommandParam<Request>() {
         override fun exec(request: Request) {
-            val video = Mediator.Companion.repositories.findOne(
+            val video = Mediator.repositories.findOne(
                 SVideo.predicate { it.videoPostId eq request.videoId },
             ).getOrNull() ?: return
 
@@ -26,7 +26,7 @@ object ChangeVideoInteractionCmd {
 
             video.changeInteraction(request.interaction)
 
-            Mediator.Companion.uow.save()
+            Mediator.uow.save()
         }
     }
 

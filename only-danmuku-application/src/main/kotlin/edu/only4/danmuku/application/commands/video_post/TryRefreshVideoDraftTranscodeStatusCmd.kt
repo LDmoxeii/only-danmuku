@@ -1,4 +1,4 @@
-package edu.only4.danmuku.application.commands.video_draft
+package edu.only4.danmuku.application.commands.video_post
 
 import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.Mediator
@@ -9,10 +9,7 @@ import edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * 根据文件转码结果刷新视频草稿状态
- */
-object RefreshVideoDraftTranscodeStatusCmd {
+object TryRefreshVideoDraftTranscodeStatusCmd {
 
     @Service
     class Handler : Command<Request, Response> {

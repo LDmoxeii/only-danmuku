@@ -1,21 +1,23 @@
-package edu.only4.danmuku.domain.aggregates.video_post.events
+package edu.only4.danmuku.domain.aggregates.video.events
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import com.only4.cap4k.ddd.core.domain.event.annotation.DomainEvent
-import edu.only4.danmuku.domain.aggregates.video_post.VideoPost
+
+import edu.only4.danmuku.domain.aggregates.video.Video
+
 
 /**
- * 视频互动设置已变更
+ * 视频已删除
  *
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * @author cap4k-ddd-codegen
- * @date 2025/10/21
+ * @date 2025/10/30
  */
 @DomainEvent(persist = false)
 @Aggregate(
-    aggregate = "VideoPost",
-    name = "VideoPostInteractionChangedDomainEvent",
+    aggregate = "Video",
+    name = "VideoDeletedDomainEvent",
     type = Aggregate.TYPE_DOMAIN_EVENT,
     description = ""
 )
-class VideoPostInteractionChangedDomainEvent(val entity: VideoPost)
+class VideoDeletedDomainEvent(val entity: Video)

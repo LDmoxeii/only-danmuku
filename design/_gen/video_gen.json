@@ -1,14 +1,11 @@
 [
   {
-    "tag": "cmd",
+    "tag": "de",
     "package": "video",
-    "name": "DeleteVideo",
-    "desc": "删除视频"
-  },
-  {
-    "tag": "validator",
-    "package": "test",
-    "name": "testValidator",
-    "desc": "测试校验器生成"
+    "name": "VideoDeleted",
+    "desc": "视频已删除",
+    "aggregates": ["Video"],
+    "entity": "Video",
+    "persist": false
   }
 ]

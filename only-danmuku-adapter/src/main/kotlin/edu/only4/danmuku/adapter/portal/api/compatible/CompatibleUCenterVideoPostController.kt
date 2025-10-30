@@ -10,10 +10,10 @@ import edu.only4.danmuku.adapter.portal.api.payload.UCenterGetVideoByVideoId
 import edu.only4.danmuku.adapter.portal.api.payload.UCenterGetVideoCountInfo
 import edu.only4.danmuku.adapter.portal.api.payload.UCenterLoadVideoList
 import edu.only4.danmuku.adapter.portal.api.payload.UCenterPostVideo
-import edu.only4.danmuku.application.commands.video_draft.ChangeVideoPostInteractionCmd
-import edu.only4.danmuku.application.commands.video_draft.DeleteVideoPostCmd
-import edu.only4.danmuku.application.commands.video_draft.CreateVideoDraftCmd
-import edu.only4.danmuku.application.commands.video_draft.UpdateVideoDraftCmd
+import edu.only4.danmuku.application.commands.video_post.ChangeVideoPostInteractionCmd
+import edu.only4.danmuku.application.commands.video_post.DeleteVideoPostCmd
+import edu.only4.danmuku.application.commands.video_post.CreateVideoPostCmd
+import edu.only4.danmuku.application.commands.video_post.UpdateVideoDraftCmd
 import edu.only4.danmuku.application.queries.video_draft.GetUserVideoDraftsQry
 import edu.only4.danmuku.application.queries.video_draft.GetVideoDraftCountByStatusQry
 import edu.only4.danmuku.application.queries.video_draft.GetVideoDraftInfoQry
@@ -55,14 +55,14 @@ class CompatibleUCenterVideoPostController {
         if (videoId == null) {
             // 新增：创建视频草稿，仅保留带 uploadId 的条目
             val createFileList = mixedList.mapIndexed { idx, item ->
-                CreateVideoDraftCmd.VideoFileInfo(
+                CreateVideoPostCmd.VideoFileInfo(
                     uploadId = item.uploadId,
                     fileIndex = idx + 1,
                     fileName = item.fileName,
                 )
             }
             Mediator.commands.send(
-                CreateVideoDraftCmd.Request(
+                CreateVideoPostCmd.Request(
                     customerId = currentUserId,
                     videoCover = videoCover,
                     videoName = videoName,
@@ -236,7 +236,6 @@ class CompatibleUCenterVideoPostController {
     ) {
         val userId = LoginHelper.getUserId()!!
 
-        // TODO：未发出事件，并同步视频草稿互动配置
         Mediator.commands.send(
             ChangeVideoPostInteractionCmd.Request(
                 videoId = videoId,
