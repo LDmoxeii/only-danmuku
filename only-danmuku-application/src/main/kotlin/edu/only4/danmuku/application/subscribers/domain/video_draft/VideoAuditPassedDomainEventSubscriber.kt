@@ -26,22 +26,21 @@ class VideoAuditPassedDomainEventSubscriber {
 
     @EventListener(VideoAuditPassedDomainEvent::class)
     fun on1(event: VideoAuditPassedDomainEvent) {
-        val videoDraft = event.entity
+        val videoPost = event.entity
         Mediator.commands.send(
             TransferVideoToProductionCmd.Request(
-                videoPost = videoDraft
+                videoPost = videoPost
             )
         )
     }
 
     @EventListener(VideoAuditPassedDomainEvent::class)
     fun on2(event: VideoAuditPassedDomainEvent) {
-        val videoDraft = event.entity
-        TODO("为实现， 等待摸清临时文件来源")
+        val videoPost = event.entity
         Mediator.commands.send(
             CleanTempFilesCmd.Request(
-                customerId = videoDraft.customerId,
-                videoId = videoDraft.id,
+                customerId = videoPost.customerId,
+                videoId = videoPost.id,
             )
         )
     }
