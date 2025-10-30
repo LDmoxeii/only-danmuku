@@ -4,7 +4,7 @@ import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
-import edu.only4.danmuku.application.validater.UniqueUserNickname
+import edu.only4.danmuku.application.validator.UniqueUserNickname
 import edu.only4.danmuku.domain._share.meta.customer_profile.SCustomerProfile
 import edu.only4.danmuku.domain.aggregates.customer_profile.enums.SexType
 import edu.only4.danmuku.domain.aggregates.customer_profile.enums.ThemeType

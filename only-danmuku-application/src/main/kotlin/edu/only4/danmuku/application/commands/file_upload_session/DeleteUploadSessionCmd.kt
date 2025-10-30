@@ -6,7 +6,7 @@ import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
 import edu.only4.danmuku.application._share.config.properties.FileAppProperties
 import edu.only4.danmuku.application._share.constants.Constants
-import edu.only4.danmuku.application.validater.ValidateDeleteUploadSession
+import edu.only4.danmuku.application.validator.ValidateDeleteUploadSession
 import edu.only4.danmuku.domain._share.meta.video_file_upload_session.SVideoFileUploadSession
 import edu.only4.danmuku.domain.aggregates.video_file_upload_session.VideoFileUploadSession
 import org.springframework.stereotype.Service

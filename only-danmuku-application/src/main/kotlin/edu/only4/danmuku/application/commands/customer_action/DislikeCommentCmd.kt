@@ -4,8 +4,8 @@ import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
-import edu.only4.danmuku.application.validater.CommentExists
-import edu.only4.danmuku.application.validater.VideoExists
+import edu.only4.danmuku.application.validator.CommentExists
+import edu.only4.danmuku.application.validator.VideoExists
 import edu.only4.danmuku.domain._share.meta.customer_action.SCustomerAction
 import edu.only4.danmuku.domain._share.meta.video_comment.SVideoComment
 import edu.only4.danmuku.domain.aggregates.customer_action.enums.ActionType

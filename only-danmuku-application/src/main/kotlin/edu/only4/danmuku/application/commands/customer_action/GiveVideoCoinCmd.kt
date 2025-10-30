@@ -4,10 +4,10 @@ import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
-import edu.only4.danmuku.application.validater.NotDuplicateCoin
-import edu.only4.danmuku.application.validater.NotSelfCoin
-import edu.only4.danmuku.application.validater.SufficientCoinBalance
-import edu.only4.danmuku.application.validater.VideoExists
+import edu.only4.danmuku.application.validator.NotDuplicateCoin
+import edu.only4.danmuku.application.validator.NotSelfCoin
+import edu.only4.danmuku.application.validator.SufficientCoinBalance
+import edu.only4.danmuku.application.validator.VideoExists
 import edu.only4.danmuku.domain._share.meta.video.SVideo
 import edu.only4.danmuku.domain.aggregates.customer_action.enums.ActionType
 import edu.only4.danmuku.domain.aggregates.customer_action.factory.CustomerActionFactory

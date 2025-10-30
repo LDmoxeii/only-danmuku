@@ -4,9 +4,9 @@ import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
-import edu.only4.danmuku.application.validater.CommentNotClosed
-import edu.only4.danmuku.application.validater.ReplyCommentExists
-import edu.only4.danmuku.application.validater.VideoExists
+import edu.only4.danmuku.application.validator.CommentNotClosed
+import edu.only4.danmuku.application.validator.ReplyCommentExists
+import edu.only4.danmuku.application.validator.VideoExists
 import edu.only4.danmuku.domain._share.meta.video.SVideo
 import edu.only4.danmuku.domain.aggregates.video_comment.factory.VideoCommentFactory
 import org.springframework.stereotype.Service

@@ -5,8 +5,8 @@ import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
 import edu.only4.danmuku.domain._share.meta.customer_focus.SCustomerFocus
 import edu.only4.danmuku.domain.aggregates.customer_focus.factory.CustomerFocusFactory
-import edu.only4.danmuku.application.validater.NotSelf
-import edu.only4.danmuku.application.validater.UserExists
+import edu.only4.danmuku.application.validator.NotSelf
+import edu.only4.danmuku.application.validator.UserExists
 import org.springframework.stereotype.Service
 
 /**

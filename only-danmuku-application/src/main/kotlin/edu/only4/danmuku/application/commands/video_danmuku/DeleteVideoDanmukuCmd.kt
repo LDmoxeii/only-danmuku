@@ -3,8 +3,8 @@ package edu.only4.danmuku.application.commands.video_danmuku
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
-import edu.only4.danmuku.application.validater.DanmukuDeletePermission
-import edu.only4.danmuku.application.validater.DanmukuExists
+import edu.only4.danmuku.application.validator.DanmukuDeletePermission
+import edu.only4.danmuku.application.validator.DanmukuExists
 import edu.only4.danmuku.domain._share.meta.video_danmuku.SVideoDanmuku
 import org.springframework.stereotype.Service
 

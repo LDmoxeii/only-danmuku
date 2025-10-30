@@ -3,8 +3,8 @@ package edu.only4.danmuku.application.commands.user
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
-import edu.only4.danmuku.application.validater.UniqueUserEmail
-import edu.only4.danmuku.application.validater.UniqueUserNickname
+import edu.only4.danmuku.application.validator.UniqueUserEmail
+import edu.only4.danmuku.application.validator.UniqueUserNickname
 import edu.only4.danmuku.domain.aggregates.user.enums.UserType
 import edu.only4.danmuku.domain.aggregates.user.factory.UserFactory
 import org.springframework.stereotype.Service

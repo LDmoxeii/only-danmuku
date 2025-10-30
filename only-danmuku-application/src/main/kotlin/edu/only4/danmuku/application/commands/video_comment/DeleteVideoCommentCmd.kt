@@ -3,8 +3,8 @@ package edu.only4.danmuku.application.commands.video_comment
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
-import edu.only4.danmuku.application.validater.CommentDeletePermission
-import edu.only4.danmuku.application.validater.CommentExists
+import edu.only4.danmuku.application.validator.CommentDeletePermission
+import edu.only4.danmuku.application.validator.CommentExists
 import edu.only4.danmuku.domain._share.meta.video_comment.SVideoComment
 
 import org.springframework.stereotype.Service

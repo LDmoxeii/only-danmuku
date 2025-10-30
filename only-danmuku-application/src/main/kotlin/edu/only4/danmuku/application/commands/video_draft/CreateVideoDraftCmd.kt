@@ -3,7 +3,7 @@ package edu.only4.danmuku.application.commands.video_draft
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
-import edu.only4.danmuku.application.validater.MaxVideoPCount
+import edu.only4.danmuku.application.validator.MaxVideoPCount
 import edu.only4.danmuku.domain.aggregates.video.enums.PostType
 import edu.only4.danmuku.domain.aggregates.video_post.VideoPost
 import edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus

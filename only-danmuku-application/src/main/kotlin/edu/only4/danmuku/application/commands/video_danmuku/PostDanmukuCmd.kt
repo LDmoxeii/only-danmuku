@@ -3,9 +3,9 @@ package edu.only4.danmuku.application.commands.video_danmuku
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
-import edu.only4.danmuku.application.validater.DanmukuInteractionAllowed
-import edu.only4.danmuku.application.validater.DanmukuTextFormat
-import edu.only4.danmuku.application.validater.VideoExists
+import edu.only4.danmuku.application.validator.DanmukuInteractionAllowed
+import edu.only4.danmuku.application.validator.DanmukuTextFormat
+import edu.only4.danmuku.application.validator.VideoExists
 import edu.only4.danmuku.domain.aggregates.video_danmuku.factory.VideoDanmukuFactory
 
 import org.springframework.stereotype.Service

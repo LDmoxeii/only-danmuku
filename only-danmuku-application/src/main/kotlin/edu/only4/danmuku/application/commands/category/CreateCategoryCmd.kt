@@ -3,8 +3,8 @@ package edu.only4.danmuku.application.commands.category
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
-import edu.only4.danmuku.application.validater.CategoryExists
-import edu.only4.danmuku.application.validater.UniqueCategoryCode
+import edu.only4.danmuku.application.validator.CategoryExists
+import edu.only4.danmuku.application.validator.UniqueCategoryCode
 import edu.only4.danmuku.domain.aggregates.category.factory.CategoryFactory
 import org.springframework.stereotype.Service
 

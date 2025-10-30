@@ -1,7 +1,7 @@
 package edu.only4.danmuku.application.queries.file
 
 import com.only4.cap4k.ddd.core.application.RequestParam
-import edu.only4.danmuku.application.validater.SafeFilePath
+import edu.only4.danmuku.application.validator.SafeFilePath
 import jakarta.validation.constraints.NotEmpty
 
 /**

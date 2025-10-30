@@ -4,7 +4,7 @@ import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
-import edu.only4.danmuku.application.validater.VideoDraftExists
+import edu.only4.danmuku.application.validator.VideoDraftExists
 import edu.only4.danmuku.domain._share.meta.video_post.SVideoPost
 import edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus
 import org.springframework.stereotype.Service

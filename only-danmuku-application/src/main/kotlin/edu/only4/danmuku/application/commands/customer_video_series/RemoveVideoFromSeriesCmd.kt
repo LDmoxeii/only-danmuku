@@ -4,8 +4,8 @@ import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
-import edu.only4.danmuku.application.validater.SeriesOwnership
-import edu.only4.danmuku.application.validater.VideoInSeries
+import edu.only4.danmuku.application.validator.SeriesOwnership
+import edu.only4.danmuku.application.validator.VideoInSeries
 import edu.only4.danmuku.domain._share.meta.customer_video_series.SCustomerVideoSeries
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
