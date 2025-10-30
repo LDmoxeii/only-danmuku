@@ -59,15 +59,6 @@
   },
   {
     "tag": "de",
-    "package": "video_comment",
-    "name": "CommentReplied",
-    "desc": "评论回复事件订阅（触发发送回复消息）",
-    "aggregates": ["VideoComment"],
-    "entity": "VideoComment",
-    "persist": false
-  },
-  {
-    "tag": "de",
     "package": "video_draft",
     "name": "VideoAuditPassed",
     "desc": "视频审核通过事件订阅（触发发送系统消息）",

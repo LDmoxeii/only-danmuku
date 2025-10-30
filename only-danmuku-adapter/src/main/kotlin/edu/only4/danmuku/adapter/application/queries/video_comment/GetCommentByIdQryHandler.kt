@@ -32,6 +32,7 @@ class GetCommentByIdQryHandler(
             videoOwnerId = item.videoOwner.id,
             userId = item.customer.id,
             parentId = item.parentId ?: 0L,
+            content = item.content,
         )
     }
 }

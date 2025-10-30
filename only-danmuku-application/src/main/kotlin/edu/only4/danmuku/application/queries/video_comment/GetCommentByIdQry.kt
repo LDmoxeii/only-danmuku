@@ -17,5 +17,6 @@ object GetCommentByIdQry {
         val videoOwnerId: Long,
         val userId: Long,
         val parentId: Long,
+        val content: String?,
     )
 }
