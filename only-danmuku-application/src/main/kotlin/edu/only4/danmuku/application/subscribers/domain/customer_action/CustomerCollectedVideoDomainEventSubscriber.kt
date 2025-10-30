@@ -2,6 +2,7 @@ package edu.only4.danmuku.application.subscribers.domain.customer_action
 
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.application.commands.video.UpdateVideoStatisticsCmd
+import edu.only4.danmuku.application.commands.customer_message.SendCollectMessageCmd
 import edu.only4.danmuku.domain.aggregates.customer_action.events.CustomerCollectedVideoDomainEvent
 
 import org.springframework.context.event.EventListener
@@ -25,6 +26,17 @@ class CustomerCollectedVideoDomainEventSubscriber {
             UpdateVideoStatisticsCmd.Request(
                 videoId = event.entity.videoId.toLong(),
                 collectCountDelta = 1
+            )
+        )
+    }
+
+    @EventListener(CustomerCollectedVideoDomainEvent::class)
+    fun onSendMessage(event: CustomerCollectedVideoDomainEvent) {
+        val action = event.entity
+        Mediator.commands.send(
+            SendCollectMessageCmd.Request(
+                videoId = action.videoId.toLong(),
+                sendUserId = action.customerId.toLong()
             )
         )
     }

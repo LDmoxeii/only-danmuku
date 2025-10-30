@@ -2,6 +2,7 @@ package edu.only4.danmuku.application.subscribers.domain.video_comment
 
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.application.commands.video.UpdateVideoStatisticsCmd
+import edu.only4.danmuku.application.commands.customer_message.SendCommentMessageCmd
 import edu.only4.danmuku.domain.aggregates.video_comment.events.CommentPostedDomainEvent
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Service
@@ -33,6 +34,17 @@ class CommentPostedDomainEventSubscriber {
     @EventListener(CommentPostedDomainEvent::class)
     fun on1(event: CommentPostedDomainEvent) {
         val comment = event.entity
-        // TODO: 发送评论通知
+        // 顶级评论，给视频作者发送评论消息
+        if (comment.parentId == 0L) {
+            Mediator.commands.send(
+                SendCommentMessageCmd.Request(
+                    videoId = comment.videoId,
+                    sendUserId = comment.customerId,
+                    content = comment.content,
+                    replyCommentId = null,
+                    replyCommentContent = null,
+                )
+            )
+        }
     }
 }
