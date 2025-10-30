@@ -3,32 +3,49 @@ package edu.only4.danmuku.application.commands.customer_message
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
-
+import edu.only4.danmuku.domain._share.meta.customer_message.SCustomerMessage
+import edu.only4.danmuku.domain.aggregates.customer_message.enums.MessageType
+import edu.only4.danmuku.domain.aggregates.customer_message.enums.ReadType
 import org.springframework.stereotype.Service
 
 /**
  * 标记所有消息为已读
- *
- * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
- * @author cap4k-ddd-codegen
- * @date 2025/10/15
  */
 object MarkAllAsReadCmd {
 
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
-            Mediator.uow.save()
+            val msgTypeEnum = MessageType.valueOfOrNull(request.messageType)
 
-            return Response(
+            val messages = Mediator.repositories.find(
+                SCustomerMessage.predicate { schema ->
+                    schema.allNotNull(
+                        schema.customerId eq request.customerId.toString(),
+                        schema.readType eq ReadType.UNREAD,
+                        schema.messageType `eq?` msgTypeEnum
+                    )!!
+                }
             )
-        }
 
+            if (messages.isEmpty()) {
+                return Response()
+            }
+
+            val now = System.currentTimeMillis() / 1000
+            messages.forEach { it.markAsRead(now) }
+
+            Mediator.uow.save()
+            return Response()
+        }
     }
 
-    class Request(
+    data class Request(
+        /** 用户ID */
+        val customerId: Long,
+        /** 指定消息类型（可选） */
+        val messageType: Int? = null,
     ) : RequestParam<Response>
 
-    class Response(
-    )
+    class Response
 }

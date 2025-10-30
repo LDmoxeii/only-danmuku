@@ -177,6 +177,11 @@ class CustomerMessage(
     // 【字段映射结束】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
 
     // 【行为方法开始】
+    fun markAsRead(now: Long? = null) {
+        if (this.readType == ReadType.READ) return
+        this.readType = ReadType.READ
+        this.updateTime = now ?: (System.currentTimeMillis() / 1000)
+    }
 
     // 【行为方法结束】
 }
