@@ -56,7 +56,6 @@
           "type": "file",
           "tag": "query_handler",
           "name": "{{ QueryHandler }}.kt",
-          "pattern": "^(?!.*(List|list|Page|page)).*$",
           "format": "url",
           "data": "template/_tpl/query_handler.kt.peb"
         }
@@ -72,7 +71,6 @@
           "type": "file",
           "tag": "query_handler",
           "name": "{{ QueryHandler }}.kt",
-          "pattern": "^.*(List|list).*$",
           "format": "url",
           "data": "template/_tpl/query_list_handler.kt.peb"
         }
@@ -88,7 +86,6 @@
           "type": "file",
           "tag": "query_handler",
           "name": "{{ QueryHandler }}.kt",
-          "pattern": "^.*(Page|page).*$",
           "format": "url",
           "data": "template/_tpl/query_page_handler.kt.peb"
         }
