@@ -1,4 +1,4 @@
-package edu.only4.danmuku.adapter.application.queries.message
+package edu.only4.danmuku.adapter.application.queries.customer_message
 
 import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.application.query.Query
