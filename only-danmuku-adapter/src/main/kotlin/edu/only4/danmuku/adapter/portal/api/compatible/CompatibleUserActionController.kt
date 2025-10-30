@@ -20,7 +20,7 @@ class CompatibleUserActionController {
     fun doAction(
         videoId: Long,
         actionType: Int,
-        @Max(2) @Min(1) actionCount: Int,
+        @Max(2) @Min(1) actionCount: Int = 1,
         commentId: Long?,
     ) {
         val userId = LoginHelper.getUserId()!!

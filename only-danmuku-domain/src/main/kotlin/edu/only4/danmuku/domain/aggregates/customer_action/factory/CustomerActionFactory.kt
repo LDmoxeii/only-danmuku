@@ -53,9 +53,9 @@ class CustomerActionFactory : AggregateFactory<CustomerActionFactory.Payload, Cu
         description = ""
     )
     data class Payload(
-         var customerId: String = "",
-         var videoId: String = "",
-         var videoOwnerId: String = "",
+         var customerId: Long = 0L,
+         var videoId: Long = 0L,
+         var videoOwnerId: Long = 0L,
          var commentId: Long = 0L,
          var actionType: ActionType = ActionType.valueOf(0),
          var actionCount: Int = 0,

@@ -1,16 +1,19 @@
 package edu.only4.danmuku.application.queries.file
 
 import com.only4.cap4k.ddd.core.application.RequestParam
+import jakarta.validation.constraints.NotEmpty
 
 /**
- * 获取视频资源查询（m3u8）
+ * 获取视频TS分片资源查询
  *
- * 用于读取视频的主播放列表文件
+ * 用于读取视频的TS片段文件
  */
-object GetVideoResourceQry {
+object GetVideoPostResourceTsQry {
 
     data class Request(
         val fileId: Long,
+        @field:NotEmpty(message = "TS文件名不能为空")
+        val ts: String,
     ) : RequestParam<Response>
 
     data class Response(
@@ -18,9 +21,5 @@ object GetVideoResourceQry {
         val filePath: String,
         /** 文件是否存在 */
         val exists: Boolean,
-        /** 视频ID（用于记录播放信息） */
-        val videoId: Long,
-        /** 文件索引（用于记录播放信息） */
-        val fileIndex: Int,
     )
 }

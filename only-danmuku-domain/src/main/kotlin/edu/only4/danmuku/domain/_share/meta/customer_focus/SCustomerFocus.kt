@@ -362,7 +362,7 @@ class SCustomerFocus(
     /**
      * 用户ID
      */
-    val customerId: Field<String> by lazy {
+    val customerId: Field<Long> by lazy {
         Field(root.get("customerId"), criteriaBuilder)
     }
 
@@ -370,7 +370,7 @@ class SCustomerFocus(
     /**
      * 用户ID
      */
-    val focusCustomerId: Field<String> by lazy {
+    val focusCustomerId: Field<Long> by lazy {
         Field(root.get("focusCustomerId"), criteriaBuilder)
     }
 

@@ -22,7 +22,7 @@ class CustomerLikedVideoDomainEventSubscriber {
     fun on(event: CustomerLikedVideoDomainEvent) {
         Mediator.commands.send(
             UpdateVideoStatisticsCmd.Request(
-                videoId = event.entity.videoId.toLong(),
+                videoId = event.entity.videoId,
                 likeCountDelta = 1
             )
         )
@@ -33,8 +33,8 @@ class CustomerLikedVideoDomainEventSubscriber {
         val action = event.entity
         Mediator.commands.send(
             SendLikeMessageCmd.Request(
-                videoId = action.videoId.toLong(),
-                sendUserId = action.customerId.toLong()
+                videoId = action.videoId,
+                sendUserId = action.customerId
             )
         )
     }

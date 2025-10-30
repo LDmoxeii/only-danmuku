@@ -1,5 +1,6 @@
 package edu.only4.danmuku.adapter.portal.api.compatible
 
+import cn.dev33.satoken.annotation.SaIgnore
 import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.adapter.portal.api.payload.DanmukuLoad
@@ -20,6 +21,7 @@ class CompatibleVideoDanmuController {
     /**
      * 加载弹幕列表
      */
+    @SaIgnore
     @PostMapping("/loadDanmu")
     fun getVideoDanmukuList(
         fileId: Long,

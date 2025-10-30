@@ -8,6 +8,7 @@ import edu.only4.danmuku.application.commands.customer_video_series.DeleteVideoS
 import edu.only4.danmuku.application.commands.customer_video_series.RemoveVideoFromSeriesCmd
 import edu.only4.danmuku.application.commands.customer_video_series.UpdateVideoSeriesSortCmd
 import edu.only4.danmuku.application.queries.customer_video_series.GetCustomerVideoSeriesListQry
+import edu.only4.danmuku.application.queries.customer_video_series.GetCustomerVideoSeriesVideoQry
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.Size
 import org.springframework.validation.annotation.Validated
@@ -41,6 +42,43 @@ class CompatibleVideoSeriesController {
                 )
             }
         )
+    }
+
+    @PostMapping("/loadVideoSeriesWithVideo")
+    fun loadVideoSeriesWithVideo(
+        userId: String?,
+    ): List<Map<String, Any?>> {
+        // 允许未传 userId 时，默认使用当前登录用户
+        val actualUserId = (userId?.takeIf { it.isNotBlank() }?.toLong())
+            ?: LoginHelper.getUserId()
+            ?: 0L
+
+        if (actualUserId == 0L) {
+            return emptyList()
+        }
+
+        val seriesWithVideos = Mediator.queries.send(
+            GetCustomerVideoSeriesVideoQry.Request(userId = actualUserId)
+        )
+
+        // 适配前端所需字段：videoInfoList
+        return seriesWithVideos.map { series ->
+            mapOf(
+                "seriesId" to series.seriesId.toString(),
+                "seriesName" to series.seriesName,
+                "seriesDescription" to series.seriesDescription,
+                "sort" to series.sort,
+                "videoInfoList" to (series.videoList?.map { v ->
+                    mapOf(
+                        "videoId" to v.videoId.toString(),
+                        "videoCover" to v.videoCover,
+                        "videoName" to v.videoName,
+                        "playCount" to v.playCount
+                        // createTime 在当前 DTO 不包含，如需请扩展 DTO 后再返回
+                    )
+                } ?: emptyList<Map<String, Any?>>())
+            )
+        }
     }
 
     @PostMapping("/saveSeriesVideo")

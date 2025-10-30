@@ -7,7 +7,7 @@ import com.only4.cap4k.ddd.core.application.RequestParam
  *
  * 用于读取视频的主播放列表文件
  */
-object GetVideoResourceQry {
+object GetVideoPostResourceQry {
 
     data class Request(
         val fileId: Long,

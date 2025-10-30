@@ -23,7 +23,7 @@ class GetVideoResourceQryHandler(
     override fun exec(request: GetVideoResourceQry.Request): GetVideoResourceQry.Response {
         // 根据文件ID查询视频文件信息
         val videoFile = sqlClient.createQuery(VideoFile::class) {
-            where(table.id eq request.fileId.toLongOrNull())
+            where(table.id eq request.fileId)
             select(table)
         }.fetchOne()
 

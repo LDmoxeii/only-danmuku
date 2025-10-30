@@ -66,5 +66,5 @@ interface VideoPost : BaseEntity {
     val interaction: String?
 
     @Column(name = "duration")
-    val duration: Int?
+    val duration: Int
 }

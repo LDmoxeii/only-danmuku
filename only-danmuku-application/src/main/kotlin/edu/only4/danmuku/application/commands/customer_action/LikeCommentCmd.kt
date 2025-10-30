@@ -64,9 +64,9 @@ object LikeCommentCmd {
 
                 Mediator.factories.create(
                     CustomerActionFactory.Payload(
-                        customerId = request.customerId.toString(),
-                        videoId = request.videoId.toString(),
-                        videoOwnerId = comment.videoOwnerId.toString(),
+                        customerId = request.customerId,
+                        videoId = request.videoId,
+                        videoOwnerId = comment.videoOwnerId,
                         commentId = request.commentId,
                         actionType = ActionType.LIKE_COMMENT,
                         actionCount = 1

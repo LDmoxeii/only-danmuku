@@ -32,8 +32,8 @@ import org.hibernate.annotations.Where
 @Where(clause = "`deleted` = 0")
 class CustomerFocus(
     id: Long = 0L,
-    customerId: String = "",
-    focusCustomerId: String = "",
+    customerId: Long = 0L,
+    focusCustomerId: Long = 0L,
     createUserId: Long? = null,
     createBy: String? = null,
     createTime: Long? = null,
@@ -57,18 +57,18 @@ class CustomerFocus(
 
     /**
      * 用户ID
-     * varchar(10)
+     * bigint
      */
     @Column(name = "`customer_id`")
-    var customerId: String = customerId
+    var customerId: Long = customerId
         internal set
 
     /**
      * 用户ID
-     * varchar(10)
+     * bigint
      */
     @Column(name = "`focus_customer_id`")
-    var focusCustomerId: String = focusCustomerId
+    var focusCustomerId: Long = focusCustomerId
         internal set
 
     /**

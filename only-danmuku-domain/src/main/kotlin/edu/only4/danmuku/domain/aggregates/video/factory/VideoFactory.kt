@@ -27,30 +27,30 @@ import org.springframework.stereotype.Service
 class VideoFactory : AggregateFactory<VideoFactory.Payload, Video> {
 
     override fun create(entityPayload: Payload): Video {
-        val draft = entityPayload.videoPost
+        val post = entityPayload.videoPost
         return Video().apply {
-            id = draft.id
-            customerId = draft.customerId
-            videoCover = draft.videoCover
-            videoName = draft.videoName
-            pCategoryId = draft.pCategoryId
-            categoryId = draft.categoryId
-            postType = draft.postType
-            originInfo = draft.originInfo
-            tags = draft.tags
-            introduction = draft.introduction
-            interaction = draft.interaction
-            duration = draft.duration
-            createUserId = draft.createUserId
-            createBy = draft.createBy
-            createTime = draft.createTime
-            updateUserId = draft.updateUserId
-            updateBy = draft.updateBy
-            updateTime = draft.updateTime
+            videoPostId = post.id
+            customerId = post.customerId
+            videoCover = post.videoCover
+            videoName = post.videoName
+            pCategoryId = post.pCategoryId
+            categoryId = post.categoryId
+            postType = post.postType
+            originInfo = post.originInfo
+            tags = post.tags
+            introduction = post.introduction
+            interaction = post.interaction
+            duration = post.duration
+            createUserId = post.createUserId
+            createBy = post.createBy
+            createTime = post.createTime
+            updateUserId = post.updateUserId
+            updateBy = post.updateBy
+            updateTime = post.updateTime
             deleted = 0L
 
             videoFiles.clear()
-            draft.videoFilePosts
+            post.videoFilePosts
                 .filter { it.isTransferSuccess() }
                 .sortedBy { it.fileIndex }
                 .forEach { fileDraft ->

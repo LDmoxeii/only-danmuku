@@ -14,9 +14,9 @@ object GetUserPlayHistoryQry {
     class Request(
         /** 用户ID */
         val customerId: Long,
-    ) : PageQueryParam<Response>()
+    ) : PageQueryParam<HistoryItem>()
 
-    class Response(
+    class HistoryItem(
         /** 播放历史ID */
         val historyId: Long,
         /** 用户ID */

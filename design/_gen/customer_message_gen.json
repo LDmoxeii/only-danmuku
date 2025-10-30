@@ -74,11 +74,5 @@
     "aggregates": ["VideoDraft"],
     "entity": "VideoPost",
     "persist": false
-  },
-
-  {
-    "tag": "qry",
-    "name": "TestGen",
-    "desc": "测试生成器"
   }
 ]

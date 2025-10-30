@@ -4,8 +4,8 @@ import cn.dev33.satoken.annotation.SaIgnore
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.application.commands.file.UploadImageCmd
 import edu.only4.danmuku.application.queries.file.GetFileResourceQry
-import edu.only4.danmuku.application.queries.file.GetVideoResourceQry
-import edu.only4.danmuku.application.queries.file.GetVideoResourceTsQry
+import edu.only4.danmuku.application.queries.file.GetVideoPostResourceQry
+import edu.only4.danmuku.application.queries.file.GetVideoPostResourceTsQry
 import jakarta.servlet.http.HttpServletResponse
 import org.jetbrains.annotations.NotNull
 import org.slf4j.LoggerFactory
@@ -70,13 +70,14 @@ class CompatibleAdminFileController {
         readFile(response, result.filePath)
     }
 
-    @GetMapping("/videoResource/{fileId}")
+    @SaIgnore
+    @GetMapping("/videoResource/{fileId}/")
     fun getVideoResource(
-        @PathVariable fileId: String,
+        @PathVariable fileId: Long,
         response: HttpServletResponse,
     ) {
         val result = Mediator.queries.send(
-            GetVideoResourceQry.Request(fileId = fileId)
+            GetVideoPostResourceQry.Request(fileId = fileId)
         )
 
         if (!result.exists) {
@@ -89,14 +90,15 @@ class CompatibleAdminFileController {
         readFile(response, result.filePath)
     }
 
+    @SaIgnore
     @GetMapping("/videoResource/{fileId}/{ts}")
     fun getVideoResourceTs(
-        @PathVariable fileId: String,
+        @PathVariable fileId: Long,
         @PathVariable ts: String,
         response: HttpServletResponse,
     ) {
         val result = Mediator.queries.send(
-            GetVideoResourceTsQry.Request(
+            GetVideoPostResourceTsQry.Request(
                 fileId = fileId,
                 ts = ts
             )

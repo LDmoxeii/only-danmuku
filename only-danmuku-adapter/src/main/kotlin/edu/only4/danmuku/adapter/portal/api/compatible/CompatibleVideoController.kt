@@ -119,6 +119,7 @@ class CompatibleVideoController {
         )
     }
 
+    @SaIgnore
     @PostMapping("/loadVideoPList")
     fun getVideoPList(
         videoId: Long,
@@ -141,6 +142,7 @@ class CompatibleVideoController {
         }
     }
 
+    @SaIgnore
     @PostMapping("/getVideoInfo")
     fun getVideoInfo(
         videoId: Long
@@ -204,6 +206,7 @@ class CompatibleVideoController {
         )
     }
 
+    @SaIgnore
     @PostMapping("/getVideoRecommend")
     fun getRecommendVideo(
         @NotEmpty keyword: String,
@@ -251,10 +254,11 @@ class CompatibleVideoController {
         }
     }
 
+    @SaIgnore
     @PostMapping("/reportVideoPlayOnline")
     fun reportVideoPlayOnline(
         fileId: Long,
-        deviceId: Long,
+        deviceId: String,
     ): Long {
         val userPlayOnlineKey = String.format(
             Constants.REDIS_KEY_VIDEO_PLAY_COUNT_USER,

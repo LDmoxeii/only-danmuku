@@ -17,14 +17,11 @@ object FocusCmd {
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
-            val userIdStr = request.userId.toString()
-            val focusIdStr = request.focusUserId.toString()
-
             val exists = Mediator.repositories.find(
                 SCustomerFocus.predicate { schema ->
                     schema.all(
-                        schema.customerId eq userIdStr,
-                        schema.focusCustomerId eq focusIdStr
+                        schema.customerId eq request.userId,
+                        schema.focusCustomerId eq request.userId
                     )
                 }
             ).isNotEmpty()
@@ -34,8 +31,8 @@ object FocusCmd {
 
             Mediator.factories.create(
                 CustomerFocusFactory.Payload(
-                    customerId = userIdStr,
-                    focusCustomerId = focusIdStr
+                    customerId = request.userId,
+                    focusCustomerId = request.focusUserId
                 )
             )
             Mediator.uow.save()

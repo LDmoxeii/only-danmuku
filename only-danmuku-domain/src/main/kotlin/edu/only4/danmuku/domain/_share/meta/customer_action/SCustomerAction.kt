@@ -371,7 +371,7 @@ class SCustomerAction(
     /**
      * 用户ID
      */
-    val customerId: Field<String> by lazy {
+    val customerId: Field<Long> by lazy {
         Field(root.get("customerId"), criteriaBuilder)
     }
 
@@ -379,7 +379,7 @@ class SCustomerAction(
     /**
      * 视频ID
      */
-    val videoId: Field<String> by lazy {
+    val videoId: Field<Long> by lazy {
         Field(root.get("videoId"), criteriaBuilder)
     }
 
@@ -387,7 +387,7 @@ class SCustomerAction(
     /**
      * 视频用户ID
      */
-    val videoOwnerId: Field<String> by lazy {
+    val videoOwnerId: Field<Long> by lazy {
         Field(root.get("videoOwnerId"), criteriaBuilder)
     }
 

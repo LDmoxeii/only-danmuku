@@ -2,7 +2,9 @@ package edu.only4.danmuku.adapter.application.queries.video
 
 import com.only4.cap4k.ddd.core.application.query.ListQuery
 import edu.only4.danmuku.application.queries._share.model.VideoFile
+import edu.only4.danmuku.application.queries._share.model.VideoFilePost
 import edu.only4.danmuku.application.queries._share.model.dto.VideoFile.VideoFileItem
+import edu.only4.danmuku.application.queries._share.model.fetchBy
 import edu.only4.danmuku.application.queries._share.model.fileIndex
 import edu.only4.danmuku.application.queries._share.model.videoId
 import edu.only4.danmuku.application.queries.video.GetVideoPlayFilesQry
@@ -25,20 +27,23 @@ class GetVideoPlayFilesQryHandler(
 
     override fun exec(request: GetVideoPlayFilesQry.Request): List<GetVideoPlayFilesQry.Response> {
         // 使用 Jimmer 查询视频文件列表
-        val fileList = sqlClient.createQuery(VideoFile::class) {
+        val fileList = sqlClient.createQuery(VideoFilePost::class) {
             // 按视频ID过滤
             where(table.videoId eq request.videoId)
             // 按文件索引排序
             orderBy(table.fileIndex.asc())
             // DTO 投影
-            select(table.fetch(VideoFileItem::class))
+            select(table.fetchBy {
+                allScalarFields()
+                video()
+            })
         }.execute()
 
         // 转换为查询响应
         return fileList.map { file ->
             GetVideoPlayFilesQry.Response(
                 fileId = file.id,
-                videoId = file.videoId,
+                videoId = file.video.id,
                 fileIndex = file.fileIndex,
                 fileName = file.fileName,
                 fileSize = file.fileSize,

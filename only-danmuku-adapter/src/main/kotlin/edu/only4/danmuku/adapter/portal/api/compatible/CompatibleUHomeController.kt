@@ -1,5 +1,6 @@
 package edu.only4.danmuku.adapter.portal.api.compatible
 
+import cn.dev33.satoken.annotation.SaIgnore
 import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.share.PageData
@@ -31,6 +32,7 @@ import java.time.format.DateTimeFormatter
 @Validated
 class CompatibleUHomeController {
 
+    @SaIgnore
     @PostMapping("/getUserInfo")
     fun getCustomerProfile(userId: Long): UHomeGetUserInfo.UserInfo {
 
@@ -207,6 +209,7 @@ class CompatibleUHomeController {
         )
     }
 
+    @SaIgnore
     @PostMapping("/loadVideoList")
     fun getVideoPage(@Validated request: UHomeLoadVideoList.Request): PageData<UHomeLoadVideoList.VideoItem> {
         val queryRequest = GetVideoPageQry.Request(

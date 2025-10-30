@@ -7,9 +7,9 @@ import edu.only4.danmuku.adapter.portal.api.payload.FileDelUploadVideo
 import edu.only4.danmuku.adapter.portal.api.payload.FileUploadVideo
 import edu.only4.danmuku.application.commands.file.UploadImageCmd
 import edu.only4.danmuku.application.commands.file_upload_session.CreateUploadSessionCmd
-import edu.only4.danmuku.application.commands.video.AddPlayCountCmd
-import edu.only4.danmuku.application.commands.file_upload_session.UploadVideoChunkCmd
 import edu.only4.danmuku.application.commands.file_upload_session.DeleteUploadSessionCmd
+import edu.only4.danmuku.application.commands.file_upload_session.UploadVideoChunkCmd
+import edu.only4.danmuku.application.commands.video.AddPlayCountCmd
 import edu.only4.danmuku.application.commands.video_play_history.AddPlayHistoryCmd
 import edu.only4.danmuku.application.queries.file.GetFileResourceQry
 import edu.only4.danmuku.application.queries.file.GetVideoResourceQry
@@ -136,9 +136,9 @@ class CompatibleFileController {
     }
 
     @SaIgnore
-    @GetMapping("/videoResource/{fileId}")
+    @GetMapping("/videoResource/{fileId}/")
     fun getVideoResource(
-        @PathVariable fileId: String,
+        @PathVariable fileId: Long,
         response: HttpServletResponse,
     ) {
         val result = Mediator.queries.send(
@@ -169,9 +169,10 @@ class CompatibleFileController {
         )
     }
 
+    @SaIgnore
     @GetMapping("/videoResource/{fileId}/{ts}")
     fun getVideoResourceTs(
-        @PathVariable fileId: String,
+        @PathVariable fileId: Long,
         @PathVariable ts: String,
         response: HttpServletResponse,
     ) {

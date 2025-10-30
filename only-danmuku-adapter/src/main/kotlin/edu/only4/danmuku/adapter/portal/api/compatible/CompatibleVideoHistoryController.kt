@@ -11,7 +11,6 @@ import edu.only4.danmuku.application.commands.video_play_history.DelHistoryCmd
 import edu.only4.danmuku.application.queries.video_play_history.GetUserPlayHistoryQry
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -51,7 +50,6 @@ class CompatibleVideoHistoryController {
                     videoName = history.videoName,
                     videoCover = history.videoCover,
                     fileIndex = history.fileIndex,
-                    // 直接返回秒级时间戳，交由翻译器序列化
                     playTime = history.playTime
                 )
             },

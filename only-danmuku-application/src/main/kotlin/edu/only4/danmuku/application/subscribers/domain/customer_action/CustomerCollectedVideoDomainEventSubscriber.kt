@@ -24,7 +24,7 @@ class CustomerCollectedVideoDomainEventSubscriber {
         // 发送更新视频统计数据命令，将收藏数加1
         Mediator.commands.send(
             UpdateVideoStatisticsCmd.Request(
-                videoId = event.entity.videoId.toLong(),
+                videoId = event.entity.videoId,
                 collectCountDelta = 1
             )
         )
@@ -35,8 +35,8 @@ class CustomerCollectedVideoDomainEventSubscriber {
         val action = event.entity
         Mediator.commands.send(
             SendCollectMessageCmd.Request(
-                videoId = action.videoId.toLong(),
-                sendUserId = action.customerId.toLong()
+                videoId = action.videoId,
+                sendUserId = action.customerId
             )
         )
     }

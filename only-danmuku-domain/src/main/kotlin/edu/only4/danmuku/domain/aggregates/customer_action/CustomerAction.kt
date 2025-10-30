@@ -41,9 +41,9 @@ import org.hibernate.annotations.Where
 @Where(clause = "`deleted` = 0")
 class CustomerAction(
     id: Long = 0L,
-    customerId: String = "",
-    videoId: String = "",
-    videoOwnerId: String = "",
+    customerId: Long = 0L,
+    videoId: Long = 0L,
+    videoOwnerId: Long = 0L,
     commentId: Long? = null,
     actionType: ActionType = ActionType.valueOf(0),
     actionCount: Int = 0,
@@ -70,26 +70,26 @@ class CustomerAction(
 
     /**
      * 用户ID
-     * varchar(10)
+     * bigint
      */
     @Column(name = "`customer_id`")
-    var customerId: String = customerId
+    var customerId: Long = customerId
         internal set
 
     /**
      * 视频ID
-     * varchar(10)
+     * bigint
      */
     @Column(name = "`video_id`")
-    var videoId: String = videoId
+    var videoId: Long = videoId
         internal set
 
     /**
      * 视频用户ID
-     * varchar(10)
+     * bigint
      */
     @Column(name = "`video_owner_id`")
-    var videoOwnerId: String = videoOwnerId
+    var videoOwnerId: Long = videoOwnerId
         internal set
 
     /**

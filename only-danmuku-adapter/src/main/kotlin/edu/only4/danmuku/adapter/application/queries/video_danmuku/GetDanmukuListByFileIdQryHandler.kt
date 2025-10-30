@@ -24,7 +24,7 @@ class GetDanmukuListByFileIdQryHandler(
         // 使用 Jimmer 查询弹幕列表
         val danmukuList = sqlClient.createQuery(VideoDanmuku::class) {
             // 按文件ID过滤
-            where(table.id eq request.fileId)
+            where(table.fileId eq request.fileId)
             // 按视频ID过滤
             where(table.videoId eq request.videoId)
             // 按弹幕时间（展示时间）排序，保证播放顺序

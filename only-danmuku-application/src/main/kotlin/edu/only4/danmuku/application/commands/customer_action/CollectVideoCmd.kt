@@ -47,9 +47,9 @@ object CollectVideoCmd {
 
                 Mediator.factories.create(
                     CustomerActionFactory.Payload(
-                        customerId = request.customerId.toString(),
-                        videoId = request.videoId.toString(),
-                        videoOwnerId = video.customerId.toString(),
+                        customerId = request.customerId,
+                        videoId = request.videoId,
+                        videoOwnerId = video.customerId,
                         commentId = 0L,
                         actionType = ActionType.FAVORITE_VIDEO,
                         actionCount = 1

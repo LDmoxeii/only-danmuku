@@ -41,8 +41,8 @@ class CustomerFocusFactory : AggregateFactory<CustomerFocusFactory.Payload, Cust
         description = ""
     )
     data class Payload(
-         val customerId: String,
-         val focusCustomerId: String,
+         val customerId: Long,
+         val focusCustomerId: Long,
      ) : AggregatePayload<CustomerFocus>
 
 }
