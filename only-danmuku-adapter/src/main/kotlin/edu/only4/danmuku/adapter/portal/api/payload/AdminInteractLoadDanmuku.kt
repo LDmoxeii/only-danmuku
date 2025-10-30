@@ -1,7 +1,8 @@
 package edu.only4.danmuku.adapter.portal.api.payload
 
 import com.only4.cap4k.ddd.core.share.PageParam
-import java.time.LocalDateTime
+import com.only.engine.translation.annotation.Translation
+import com.only.engine.translation.translation.EpochSecondToDateStringTranslation
 
 /**
  * 加载弹幕列表(分页)接口载荷
@@ -34,7 +35,8 @@ object AdminInteractLoadDanmuku {
         var color: String? = null,
         /** 展示时间(秒) */
         var time: Int? = null,
-        /** 发布时间 */
-        var postTime: LocalDateTime? = null
+        /** 发布时间（秒级时间戳），序列化为 yyyy-MM-dd HH:mm:ss */
+        @get:Translation(type = EpochSecondToDateStringTranslation.TYPE, other = "yyyy-MM-dd HH:mm:ss")
+        var postTime: Long? = null
     )
 }

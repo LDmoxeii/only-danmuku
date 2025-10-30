@@ -10,9 +10,6 @@ import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import java.time.Instant
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 
 /**
  * 管理员统计信息控制器
@@ -59,17 +56,9 @@ class CompatibleAdminIndexController {
             GetWeekStatisticsInfoQry.Request(dataType = dataType)
         )
 
-        val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-
         val resultList = weekData.map { item ->
-            // 将时间戳转换为日期字符串 YYYY-MM-DD
-            val dateStr = Instant.ofEpochSecond(item.date)
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate()
-                .format(dateFormatter)
-
             WeekStatisticsItem(
-                statisticsDate = dateStr,
+                statisticsDate = item.date,
                 statisticsCount = item.count
             )
         }

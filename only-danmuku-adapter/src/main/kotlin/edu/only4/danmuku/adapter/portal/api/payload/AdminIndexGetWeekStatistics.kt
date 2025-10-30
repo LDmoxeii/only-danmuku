@@ -1,7 +1,10 @@
 package edu.only4.danmuku.adapter.portal.api.payload
 
+import com.only.engine.translation.annotation.Translation
+import com.only.engine.translation.translation.EpochSecondToDateStringTranslation
+
 /**
- * 获取周统计信息接口载荷
+ * 获取周统计信息接口返回
  */
 object AdminIndexGetWeekStatistics {
 
@@ -14,9 +17,11 @@ object AdminIndexGetWeekStatistics {
      * 周统计数据项
      */
     data class WeekStatisticsItem(
-        /** 记录统计数据对应的日期，格式通常为YYYY-MM-DD */
-        var statisticsDate: String,
+        /** 对应日期（秒级时间戳），序列化为 yyyy-MM-dd 字符串 */
+        @get:Translation(type = EpochSecondToDateStringTranslation.TYPE, other = "yyyy-MM-dd")
+        var statisticsDate: Long,
         /** 统计数量 */
         var statisticsCount: Int,
     )
 }
+

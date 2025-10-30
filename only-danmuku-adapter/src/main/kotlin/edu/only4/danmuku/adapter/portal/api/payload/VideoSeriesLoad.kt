@@ -1,6 +1,8 @@
 package edu.only4.danmuku.adapter.portal.api.payload
 
 import jakarta.validation.constraints.NotEmpty
+import com.only.engine.translation.annotation.Translation
+import com.only.engine.translation.translation.EpochSecondToDateStringTranslation
 
 /**
  * 加载视频系列列表接口载荷
@@ -24,6 +26,8 @@ object VideoSeriesLoad {
         var seriesDescription: String? = null,
         var sort: Int? = null,
         var videoCount: Int? = null,
-        var createTime: String? = null
+        @get:Translation(type = EpochSecondToDateStringTranslation.TYPE, other = "yyyy-MM-dd HH:mm:ss")
+        var createTime: Long? = null
     )
 }
+

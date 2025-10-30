@@ -1,6 +1,8 @@
 package edu.only4.danmuku.adapter.portal.api.payload
 
 import com.only4.cap4k.ddd.core.share.PageParam
+import com.only.engine.translation.annotation.Translation
+import com.only.engine.translation.translation.EpochSecondToDateStringTranslation
 
 /**
  * 加载播放历史接口载荷
@@ -26,6 +28,9 @@ object HistoryLoad {
         /** 文件索引 */
         var fileIndex: Int? = null,
         /** 播放时间 */
-        var playTime: String? = null,
+        @get:Translation(type = EpochSecondToDateStringTranslation.TYPE, other = "yyyy-MM-dd HH:mm:ss" )
+        var playTime: Long? = null,
     )
 }
+
+

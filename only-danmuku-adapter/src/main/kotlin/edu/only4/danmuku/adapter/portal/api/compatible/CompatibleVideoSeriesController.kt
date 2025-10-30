@@ -14,10 +14,6 @@ import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 
 @RestController
 @RequestMapping("/uhome/series")
@@ -41,10 +37,7 @@ class CompatibleVideoSeriesController {
                     seriesDescription = series.seriesDescription,
                     sort = series.sort,
                     videoCount = series.videoCount,
-                    createTime = LocalDateTime.ofInstant(
-                        Instant.ofEpochSecond(series.createTime),
-                        ZoneId.systemDefault()
-                    ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+                    createTime = series.createTime
                 )
             }
         )
@@ -119,3 +112,5 @@ class CompatibleVideoSeriesController {
         return VideoSeriesChangeSort.Response()
     }
 }
+
+

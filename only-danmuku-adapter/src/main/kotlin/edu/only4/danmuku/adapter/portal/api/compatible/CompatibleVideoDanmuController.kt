@@ -11,10 +11,6 @@ import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 
 @RestController
 @RequestMapping("/danmu")
@@ -48,10 +44,8 @@ class CompatibleVideoDanmuController {
                 mode = danmuku.mode,
                 color = danmuku.color,
                 time = danmuku.time,
-                postTime = LocalDateTime.ofInstant(
-                    Instant.ofEpochSecond(danmuku.postTime),
-                    ZoneId.systemDefault()
-                ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
+                // 直接返回秒级时间戳，交给翻译器序列化
+                postTime = danmuku.postTime,
                 videoName = danmuku.videoName,
                 videoCover = danmuku.videoCover,
                 nickName = danmuku.nickName

@@ -14,10 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 
 /**
  * 播放历史控制器
@@ -55,10 +51,8 @@ class CompatibleVideoHistoryController {
                     videoName = history.videoName,
                     videoCover = history.videoCover,
                     fileIndex = history.fileIndex,
-                    playTime = LocalDateTime.ofInstant(
-                        Instant.ofEpochSecond(history.playTime),
-                        ZoneId.systemDefault()
-                    ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+                    // 直接返回秒级时间戳，交由翻译器序列化
+                    playTime = history.playTime
                 )
             },
             totalCount = queryResult.totalCount

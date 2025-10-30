@@ -12,9 +12,6 @@ import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
 
 @RestController
 @RequestMapping("/admin/interact")
@@ -50,10 +47,8 @@ class CompatibleAdminInteractController {
                     mode = danmuku.mode,
                     color = danmuku.color,
                     time = danmuku.time,
-                    postTime = LocalDateTime.ofInstant(
-                        Instant.ofEpochMilli(danmuku.postTime),
-                        ZoneId.systemDefault()
-                    )
+                    // postTime 原为毫秒，换算为秒级时间戳，交由翻译器格式化
+                    postTime = danmuku.postTime / 1000
                 )
             },
             totalCount = queryResult.totalCount
@@ -103,10 +98,8 @@ class CompatibleAdminInteractController {
                     topType = comment.topType,
                     likeCount = comment.likeCount,
                     hateCount = comment.hateCount,
-                    postTime = LocalDateTime.ofInstant(
-                        Instant.ofEpochSecond(comment.postTime),
-                        ZoneId.systemDefault()
-                    )
+                    // 直接返回秒级时间戳，交由翻译器格式化
+                    postTime = comment.postTime
                 )
             },
             totalCount = queryResult.totalCount

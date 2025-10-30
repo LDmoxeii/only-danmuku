@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.payload
 
+import com.only.engine.translation.annotation.Translation
+import com.only.engine.translation.translation.EpochSecondToDateStringTranslation
 import jakarta.validation.constraints.NotEmpty
 
 /**
@@ -36,8 +38,9 @@ object DanmukuLoad {
         var color: String? = null,
         /** 弹幕时间(秒) */
         var time: Int? = null,
-        /** 发布时间 */
-        var postTime: String? = null,
+        /** 发布时间（秒级时间戳），序列化为 yyyy-MM-dd HH:mm:ss */
+        @get:Translation(type = EpochSecondToDateStringTranslation.TYPE, other = "yyyy-MM-dd HH:mm:ss")
+        var postTime: Long? = null,
         /** 视频名称 */
         var videoName: String? = null,
         /** 视频封面 */
