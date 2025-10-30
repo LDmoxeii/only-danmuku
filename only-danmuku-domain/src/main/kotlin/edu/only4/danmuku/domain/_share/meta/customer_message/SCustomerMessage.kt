@@ -372,7 +372,7 @@ class SCustomerMessage(
     /**
      * 用户ID
      */
-    val customerId: Field<String> by lazy {
+    val customerId: Field<Long> by lazy {
         Field(root.get("customerId"), criteriaBuilder)
     }
 
@@ -380,7 +380,7 @@ class SCustomerMessage(
     /**
      * 主体ID
      */
-    val videoId: Field<String?> by lazy {
+    val videoId: Field<Long?> by lazy {
         Field(root.get("videoId"), criteriaBuilder)
     }
 
@@ -396,7 +396,7 @@ class SCustomerMessage(
     /**
      * 发送主体ID
      */
-    val sendSubjectId: Field<String?> by lazy {
+    val sendSubjectId: Field<Long?> by lazy {
         Field(root.get("sendSubjectId"), criteriaBuilder)
     }
 

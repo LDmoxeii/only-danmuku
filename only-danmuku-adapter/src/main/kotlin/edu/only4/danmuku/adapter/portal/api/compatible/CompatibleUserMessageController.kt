@@ -83,9 +83,6 @@ class CompatibleUserMessageController {
         return PageData.create(request, result.totalCount, items)
     }
 
-    /**
-     * 删除消息
-     */
     @PostMapping("/delMessage")
     fun messageDel(
         messageId: Long

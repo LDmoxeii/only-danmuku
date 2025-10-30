@@ -8,17 +8,17 @@ import org.babyfish.jimmer.sql.*
 interface CustomerMessage : BaseEntity {
 
     @Column(name = "customer_id")
-    val customerId: String
+    val customerId: Long
 
     @Column(name = "video_id")
-    val videoId: String?
+    val videoId: Long?
 
     /** 消息类型，枚举以整型存储 */
     @Column(name = "message_type")
     val messageType: Int
 
     @Column(name = "send_subject_id")
-    val sendSubjectId: String?
+    val sendSubjectId: Long?
 
     /** 阅读状态，枚举以整型存储 */
     @Column(name = "read_type")

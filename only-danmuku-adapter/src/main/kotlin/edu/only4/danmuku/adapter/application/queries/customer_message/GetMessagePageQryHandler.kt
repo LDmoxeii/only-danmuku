@@ -24,7 +24,7 @@ class GetMessagePageQryHandler(
             ?: return PageData.empty(request.pageSize, request.pageNum)
 
         val page = sqlClient.createQuery(CustomerMessage::class) {
-            where(table.customerId eq currentUserId.toString())
+            where(table.customerId eq currentUserId)
             if (request.messageType != null) {
                 where(table.messageType eq request.messageType!!)
             }

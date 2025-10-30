@@ -21,7 +21,7 @@ class GetNoReadMessageCountQryHandler(
         val currentUserId = LoginHelper.getUserId() ?: return GetNoReadMessageCountQry.Response()
 
         val unreadCount = sqlClient.createQuery(CustomerMessage::class) {
-            where(table.customerId eq currentUserId.toString())
+            where(table.customerId eq currentUserId)
             // 1 = UNREAD
             where(table.readType eq 1)
             select(count(table))

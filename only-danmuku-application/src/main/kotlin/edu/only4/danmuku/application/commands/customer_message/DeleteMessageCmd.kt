@@ -19,7 +19,7 @@ object DeleteMessageCmd {
                 SCustomerMessage.predicate { schema ->
                     schema.all(
                         schema.id eq request.messageId,
-                        schema.customerId eq request.customerId.toString(),
+                        schema.customerId eq request.customerId,
                     )
                 }
             )

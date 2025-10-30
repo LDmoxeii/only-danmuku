@@ -31,10 +31,10 @@ import org.hibernate.annotations.Where
 @Where(clause = "`deleted` = 0")
 class CustomerMessage(
     id: Long = 0L,
-    customerId: String = "",
-    videoId: String? = null,
+    customerId: Long = 0L,
+    videoId: Long? = null,
     messageType: MessageType = MessageType.valueOf(0),
-    sendSubjectId: String? = null,
+    sendSubjectId: Long? = null,
     readType: ReadType = ReadType.valueOf(0),
     extendJson: String? = null,
     createUserId: Long? = null,
@@ -60,18 +60,18 @@ class CustomerMessage(
 
     /**
      * 用户ID
-     * varchar(10)
+     * bigint
      */
     @Column(name = "`customer_id`")
-    var customerId: String = customerId
+    var customerId: Long = customerId
         internal set
 
     /**
      * 主体ID
-     * varchar(10)
+     * bigint
      */
     @Column(name = "`video_id`")
-    var videoId: String? = videoId
+    var videoId: Long? = videoId
         internal set
 
     /**
@@ -92,10 +92,10 @@ class CustomerMessage(
 
     /**
      * 发送主体ID
-     * varchar(10)
+     * bigint
      */
     @Column(name = "`send_subject_id`")
-    var sendSubjectId: String? = sendSubjectId
+    var sendSubjectId: Long? = sendSubjectId
         internal set
 
     /**
