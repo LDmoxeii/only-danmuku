@@ -114,6 +114,13 @@
     },
     {
       "type": "dir",
+      "tag": "translation",
+      "name": "translation",
+      "children": [
+      ]
+    },
+    {
+      "type": "dir",
       "tag": "schema",
       "name": "{{ path }}",
       "children": [
@@ -279,6 +286,11 @@
                                   "type": "dir",
                                   "name": "repositories",
                                   "tag": "repository"
+                                },
+                                {
+                                  "type": "dir",
+                                  "name": "translation",
+                                  "tag": "translation"
                                 }
                               ]
                             },
