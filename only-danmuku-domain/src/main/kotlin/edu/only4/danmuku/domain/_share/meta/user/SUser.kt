@@ -441,7 +441,7 @@ class SUser(
     /**
      * 关联ID; 用户、管理员 = 0
      */
-    val relatedId: Field<Int?> by lazy {
+    val relatedId: Field<Long?> by lazy {
         Field(root.get("relatedId"), criteriaBuilder)
     }
 

@@ -27,11 +27,7 @@ class UserTypeTranslation :
             is String -> key.toIntOrNull()
             else -> null
         } ?: return null
-        return try {
-            UserType.valueOf(code).desc
-        } catch (_: Exception) {
-            null
-        }
+        return UserType.valueOfOrNull(code)?.desc
     }
 
     override fun translationBatch(keys: Collection<Any>, other: String): Map<Any, String?> {
@@ -48,11 +44,7 @@ class UserTypeTranslation :
         val codes: Set<Int> = keyToCode.values.filterNotNull().toSet()
 
         val codeToDesc: Map<Int, String?> = codes.associateWith { c ->
-            try {
-                UserType.valueOf(c).desc
-            } catch (_: Exception) {
-                null
-            }
+            UserType.valueOfOrNull(c)?.desc
         }
 
         return keyToCode.mapValues { (_, c) -> c?.let { codeToDesc[it] } }

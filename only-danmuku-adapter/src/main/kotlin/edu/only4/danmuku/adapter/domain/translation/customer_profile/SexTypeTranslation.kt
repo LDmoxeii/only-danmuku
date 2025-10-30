@@ -27,11 +27,7 @@ class SexTypeTranslation :
             is String -> key.toIntOrNull()
             else -> null
         } ?: return null
-        return try {
-            SexType.valueOf(code).desc
-        } catch (_: Exception) {
-            null
-        }
+        return SexType.valueOfOrNull(code)?.desc
     }
 
     override fun translationBatch(keys: Collection<Any>, other: String): Map<Any, String?> {
@@ -48,11 +44,7 @@ class SexTypeTranslation :
         val codes: Set<Int> = keyToCode.values.filterNotNull().toSet()
 
         val codeToDesc: Map<Int, String?> = codes.associateWith { c ->
-            try {
-                SexType.valueOf(c).desc
-            } catch (_: Exception) {
-                null
-            }
+            SexType.valueOfOrNull(c)?.desc
         }
 
         return keyToCode.mapValues { (_, c) -> c?.let { codeToDesc[it] } }

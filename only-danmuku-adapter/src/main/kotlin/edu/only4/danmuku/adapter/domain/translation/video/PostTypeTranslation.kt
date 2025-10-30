@@ -27,11 +27,7 @@ class PostTypeTranslation :
             is String -> key.toIntOrNull()
             else -> null
         } ?: return null
-        return try {
-            PostType.valueOf(code).desc
-        } catch (_: Exception) {
-            null
-        }
+        return PostType.valueOfOrNull(code)?.desc
     }
 
     override fun translationBatch(keys: Collection<Any>, other: String): Map<Any, String?> {
@@ -48,11 +44,7 @@ class PostTypeTranslation :
         val codes: Set<Int> = keyToCode.values.filterNotNull().toSet()
 
         val codeToDesc: Map<Int, String?> = codes.associateWith { c ->
-            try {
-                PostType.valueOf(c).desc
-            } catch (_: Exception) {
-                null
-            }
+            PostType.valueOfOrNull(c)?.desc
         }
 
         return keyToCode.mapValues { (_, c) -> c?.let { codeToDesc[it] } }

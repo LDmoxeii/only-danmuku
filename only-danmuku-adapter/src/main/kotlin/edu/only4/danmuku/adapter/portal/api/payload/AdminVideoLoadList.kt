@@ -2,7 +2,7 @@ package edu.only4.danmuku.adapter.portal.api.payload
 
 import com.only.engine.translation.annotation.Translation
 import com.only4.cap4k.ddd.core.share.PageParam
-import edu.only4.danmuku.adapter.portal.api.payload.translation.VideoStatusTranslation.Companion.VIDEO_STATUS_CODE_TO_DESC
+import edu.only4.danmuku.adapter.domain.translation.video_post.VideoStatusTranslation.Companion.VIDEO_STATUS_CODE_TO_DESC
 import java.time.LocalDateTime
 
 /**

@@ -135,7 +135,7 @@ class User(
 
     /**
      * 关联ID; 用户、管理员 = 0
-     * int
+     * bigint
      */
     @Column(name = "`related_id`")
     var relatedId: Long? = relatedId

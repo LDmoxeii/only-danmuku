@@ -27,11 +27,7 @@ class StatisticsDataTypeTranslation :
             is String -> key.toIntOrNull()
             else -> null
         } ?: return null
-        return try {
-            StatisticsDataType.valueOf(code).desc
-        } catch (_: Exception) {
-            null
-        }
+        return StatisticsDataType.valueOfOrNull(code)?.desc
     }
 
     override fun translationBatch(keys: Collection<Any>, other: String): Map<Any, String?> {
@@ -48,11 +44,7 @@ class StatisticsDataTypeTranslation :
         val codes: Set<Int> = keyToCode.values.filterNotNull().toSet()
 
         val codeToDesc: Map<Int, String?> = codes.associateWith { c ->
-            try {
-                StatisticsDataType.valueOf(c).desc
-            } catch (_: Exception) {
-                null
-            }
+            StatisticsDataType.valueOfOrNull(c)?.desc
         }
 
         return keyToCode.mapValues { (_, c) -> c?.let { codeToDesc[it] } }

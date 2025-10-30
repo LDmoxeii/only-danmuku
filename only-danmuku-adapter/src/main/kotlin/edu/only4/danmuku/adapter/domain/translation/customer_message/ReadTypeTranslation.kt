@@ -27,11 +27,7 @@ class ReadTypeTranslation :
             is String -> key.toIntOrNull()
             else -> null
         } ?: return null
-        return try {
-            ReadType.valueOf(code).desc
-        } catch (_: Exception) {
-            null
-        }
+        return ReadType.valueOfOrNull(code)?.desc
     }
 
     override fun translationBatch(keys: Collection<Any>, other: String): Map<Any, String?> {
@@ -48,11 +44,7 @@ class ReadTypeTranslation :
         val codes: Set<Int> = keyToCode.values.filterNotNull().toSet()
 
         val codeToDesc: Map<Int, String?> = codes.associateWith { c ->
-            try {
-                ReadType.valueOf(c).desc
-            } catch (_: Exception) {
-                null
-            }
+            ReadType.valueOfOrNull(c)?.desc
         }
 
         return keyToCode.mapValues { (_, c) -> c?.let { codeToDesc[it] } }

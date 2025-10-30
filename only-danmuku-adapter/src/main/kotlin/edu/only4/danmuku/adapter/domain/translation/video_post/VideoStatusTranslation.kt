@@ -27,11 +27,7 @@ class VideoStatusTranslation :
             is String -> key.toIntOrNull()
             else -> null
         } ?: return null
-        return try {
-            VideoStatus.valueOf(code).desc
-        } catch (_: Exception) {
-            null
-        }
+        return VideoStatus.valueOfOrNull(code)?.desc
     }
 
     override fun translationBatch(keys: Collection<Any>, other: String): Map<Any, String?> {
@@ -48,11 +44,7 @@ class VideoStatusTranslation :
         val codes: Set<Int> = keyToCode.values.filterNotNull().toSet()
 
         val codeToDesc: Map<Int, String?> = codes.associateWith { c ->
-            try {
-                VideoStatus.valueOf(c).desc
-            } catch (_: Exception) {
-                null
-            }
+            VideoStatus.valueOfOrNull(c)?.desc
         }
 
         return keyToCode.mapValues { (_, c) -> c?.let { codeToDesc[it] } }

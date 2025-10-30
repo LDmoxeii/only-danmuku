@@ -115,7 +115,7 @@
     {
       "type": "dir",
       "tag": "translation",
-      "name": "translation",
+      "name": "{{ path }}",
       "children": [
       ]
     },
