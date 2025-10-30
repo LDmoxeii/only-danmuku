@@ -1,0 +1,87 @@
+[
+  {
+    "tag": "cmd",
+    "package": "customer_message",
+    "name": "sendLikeMessage",
+    "desc": "发送点赞消息"
+  },
+  {
+    "tag": "cmd",
+    "package": "customer_message",
+    "name": "sendCollectMessage",
+    "desc": "发送收藏消息"
+  },
+  {
+    "tag": "cmd",
+    "package": "customer_message",
+    "name": "sendCommentMessage",
+    "desc": "发送评论/回复消息"
+  },
+  {
+    "tag": "cmd",
+    "package": "customer_message",
+    "name": "sendVideoAuditPassedMessage",
+    "desc": "发送视频审核通过系统消息"
+  },
+  {
+    "tag": "cmd",
+    "package": "customer_message",
+    "name": "sendVideoAuditFailedMessage",
+    "desc": "发送视频审核不通过系统消息"
+  },
+
+  {
+    "tag": "de",
+    "package": "customer_action",
+    "name": "CustomerLikedVideo",
+    "desc": "用户点赞视频事件订阅（触发发送点赞消息）",
+    "aggregates": ["CustomerAction"],
+    "entity": "CustomerAction",
+    "persist": false
+  },
+  {
+    "tag": "de",
+    "package": "customer_action",
+    "name": "CustomerCollectedVideo",
+    "desc": "用户收藏视频事件订阅（触发发送收藏消息）",
+    "aggregates": ["CustomerAction"],
+    "entity": "CustomerAction",
+    "persist": false
+  },
+  {
+    "tag": "de",
+    "package": "video_comment",
+    "name": "CommentPosted",
+    "desc": "评论发布事件订阅（触发发送评论消息）",
+    "aggregates": ["VideoComment"],
+    "entity": "VideoComment",
+    "persist": false
+  },
+  {
+    "tag": "de",
+    "package": "video_comment",
+    "name": "CommentReplied",
+    "desc": "评论回复事件订阅（触发发送回复消息）",
+    "aggregates": ["VideoComment"],
+    "entity": "VideoComment",
+    "persist": false
+  },
+  {
+    "tag": "de",
+    "package": "video_draft",
+    "name": "VideoAuditPassed",
+    "desc": "视频审核通过事件订阅（触发发送系统消息）",
+    "aggregates": ["VideoDraft"],
+    "entity": "VideoPost",
+    "persist": false
+  },
+  {
+    "tag": "de",
+    "package": "video_draft",
+    "name": "VideoAuditFailed",
+    "desc": "视频审核失败事件订阅（触发发送系统消息）",
+    "aggregates": ["VideoDraft"],
+    "entity": "VideoPost",
+    "persist": false
+  }
+]
