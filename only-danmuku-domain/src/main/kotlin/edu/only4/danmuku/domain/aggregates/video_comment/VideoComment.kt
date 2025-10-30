@@ -2,13 +2,20 @@ package edu.only4.danmuku.domain.aggregates.video_comment
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
+
 import edu.only4.danmuku.domain.aggregates.video_comment.events.CommentDeletedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video_comment.events.CommentPostedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video_comment.events.CommentToppedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video_comment.events.CommentUntoppedDomainEvent
+
 import jakarta.persistence.*
 import jakarta.persistence.Table
-import org.hibernate.annotations.*
+
+import org.hibernate.annotations.DynamicInsert
+import org.hibernate.annotations.DynamicUpdate
+import org.hibernate.annotations.GenericGenerator
+import org.hibernate.annotations.SQLDelete
+import org.hibernate.annotations.Where
 
 /**
  * 评论;
@@ -16,7 +23,7 @@ import org.hibernate.annotations.*
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2025/10/21
+ * @date 2025/10/30
  */
 @Aggregate(aggregate = "VideoComment", name = "VideoComment", root = true, type = Aggregate.TYPE_ENTITY, description = "评论，")
 @Entity
@@ -25,7 +32,27 @@ import org.hibernate.annotations.*
 @DynamicUpdate
 @SQLDelete(sql = "update `video_comment` set `deleted` = `id` where `id` = ?")
 @Where(clause = "`deleted` = 0")
-class VideoComment (
+class VideoComment(
+    id: Long = 0L,
+    parentId: Long = 0L,
+    videoId: Long = 0L,
+    videoOwnerId: Long = 0L,
+    content: String? = null,
+    imgPath: String? = null,
+    customerId: Long = 0L,
+    replyCustomerId: Long? = null,
+    topType: Byte? = 0,
+    postTime: Long = 0L,
+    likeCount: Int? = 0,
+    hateCount: Int? = 0,
+    createUserId: Long? = null,
+    createBy: String? = null,
+    createTime: Long? = null,
+    updateUserId: Long? = null,
+    updateBy: String? = null,
+    updateTime: Long? = null,
+    deleted: Long = 0L
+) {
     // 【字段映射开始】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
 
     /**
@@ -36,134 +63,152 @@ class VideoComment (
     @GeneratedValue(generator = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator")
     @GenericGenerator(name = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator", strategy = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator")
     @Column(name = "`id`", insertable = false, updatable = false)
-    var id: Long = 0L,
+    var id: Long = id
+        internal set
 
     /**
      * 父级评论ID
      * bigint
      */
     @Column(name = "`parent_id`")
-    var parentId: Long = 0L,
+    var parentId: Long = parentId
+        internal set
 
     /**
      * 视频ID
      * bigint
      */
     @Column(name = "`video_id`")
-    var videoId: Long = 0L,
+    var videoId: Long = videoId
+        internal set
 
     /**
      * 视频用户ID
      * bigint
      */
     @Column(name = "`video_owner_id`")
-    var videoOwnerId: Long = 0L,
+    var videoOwnerId: Long = videoOwnerId
+        internal set
 
     /**
      * 回复内容
      * varchar(500)
      */
     @Column(name = "`content`")
-    var content: String? = null,
+    var content: String? = content
+        internal set
 
     /**
      * 图片
      * varchar(150)
      */
     @Column(name = "`img_path`")
-    var imgPath: String? = null,
+    var imgPath: String? = imgPath
+        internal set
 
     /**
      * 用户ID
      * bigint
      */
     @Column(name = "`customer_id`")
-    var customerId: Long = 0L,
+    var customerId: Long = customerId
+        internal set
 
     /**
      * 回复人ID
      * bigint
      */
     @Column(name = "`reply_customer_id`")
-    var replyCustomerId: Long? = null,
+    var replyCustomerId: Long? = replyCustomerId
+        internal set
 
     /**
      * 0:未置顶  1:置顶
      * tinyint
      */
     @Column(name = "`top_type`")
-    var topType: Byte? = 0,
+    var topType: Byte? = topType
+        internal set
 
     /**
      * 发布时间
      * bigint
      */
     @Column(name = "`post_time`")
-    var postTime: Long = 0L,
+    var postTime: Long = postTime
+        internal set
 
     /**
      * 喜欢数量
      * int
      */
     @Column(name = "`like_count`")
-    var likeCount: Int? = 0,
+    var likeCount: Int? = likeCount
+        internal set
 
     /**
      * 讨厌数量
      * int
      */
     @Column(name = "`hate_count`")
-    var hateCount: Int? = 0,
+    var hateCount: Int? = hateCount
+        internal set
 
     /**
      * 创建人ID
      * bigint
      */
     @Column(name = "`create_user_id`")
-    var createUserId: Long? = null,
+    var createUserId: Long? = createUserId
+        internal set
 
     /**
      * 创建人名称
      * varchar(32)
      */
     @Column(name = "`create_by`")
-    var createBy: String? = null,
+    var createBy: String? = createBy
+        internal set
 
     /**
      * 创建时间
      * bigint
      */
     @Column(name = "`create_time`")
-    var createTime: Long? = null,
+    var createTime: Long? = createTime
+        internal set
 
     /**
      * 更新人ID
      * bigint
      */
     @Column(name = "`update_user_id`")
-    var updateUserId: Long? = null,
+    var updateUserId: Long? = updateUserId
+        internal set
 
     /**
      * 更新人名称
      * varchar(32)
      */
     @Column(name = "`update_by`")
-    var updateBy: String? = null,
+    var updateBy: String? = updateBy
+        internal set
 
     /**
      * 更新时间
      * bigint
      */
     @Column(name = "`update_time`")
-    var updateTime: Long? = null,
+    var updateTime: Long? = updateTime
+        internal set
 
     /**
      * 删除标识 0：未删除 id：已删除
      * bigint
      */
     @Column(name = "`deleted`")
-    var deleted: Long = 0L,
-) {
+    var deleted: Long = deleted
+        internal set
 
     // 【字段映射结束】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
 

@@ -15,22 +15,16 @@ import org.springframework.stereotype.Repository
  *
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * @author cap4k-ddd-codegen
- * @date 2025/10/28
+ * @date 2025/10/30
  */
 @Repository
-interface VideoFileUploadSessionRepository : JpaRepository<VideoFileUploadSession, Long>,
-    JpaSpecificationExecutor<VideoFileUploadSession> {
+interface VideoFileUploadSessionRepository : JpaRepository<VideoFileUploadSession, Long>, JpaSpecificationExecutor<VideoFileUploadSession> {
 
     @Component
-    @Aggregate(
-        aggregate = "VideoFileUploadSession",
-        name = "VideoFileUploadSessionRepo",
-        type = Aggregate.TYPE_REPOSITORY,
-        description = ""
-    )
+    @Aggregate(aggregate = "VideoFileUploadSession", name = "VideoFileUploadSessionRepo", type = Aggregate.TYPE_REPOSITORY, description = "")
     class VideoFileUploadSessionJpaRepositoryAdapter(
         jpaSpecificationExecutor: JpaSpecificationExecutor<VideoFileUploadSession>,
-        jpaRepository: JpaRepository<VideoFileUploadSession, Long>,
+        jpaRepository: JpaRepository<VideoFileUploadSession, Long>
     ) : AbstractJpaRepository<VideoFileUploadSession, Long>(
         jpaSpecificationExecutor,
         jpaRepository

@@ -24,7 +24,7 @@ import org.springframework.data.jpa.domain.Specification
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/10/21
+ * @date 2025/10/30
  */
 class SCustomerProfile(
     private val root: Path<CustomerProfile>,
@@ -528,7 +528,7 @@ class SCustomerProfile(
     /**
      * 删除标识 0：未删除 id：已删除
      */
-    val deleted: Field<Boolean> by lazy {
+    val deleted: Field<Long> by lazy {
         Field(root.get("deleted"), criteriaBuilder)
     }
 

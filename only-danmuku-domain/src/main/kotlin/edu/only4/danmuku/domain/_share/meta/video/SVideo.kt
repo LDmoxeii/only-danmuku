@@ -24,7 +24,7 @@ import org.springframework.data.jpa.domain.Specification
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/10/26
+ * @date 2025/10/30
  */
 class SVideo(
     private val root: Path<Video>,
@@ -488,7 +488,7 @@ class SVideo(
     /**
      * 持续时间（秒）
      */
-    val duration: Field<Int?> by lazy {
+    val duration: Field<Int> by lazy {
         Field(root.get("duration"), criteriaBuilder)
     }
 
@@ -496,7 +496,7 @@ class SVideo(
     /**
      * 播放数量
      */
-    val playCount: Field<Int?> by lazy {
+    val playCount: Field<Int> by lazy {
         Field(root.get("playCount"), criteriaBuilder)
     }
 
@@ -504,7 +504,7 @@ class SVideo(
     /**
      * 点赞数量
      */
-    val likeCount: Field<Int?> by lazy {
+    val likeCount: Field<Int> by lazy {
         Field(root.get("likeCount"), criteriaBuilder)
     }
 
@@ -512,7 +512,7 @@ class SVideo(
     /**
      * 弹幕数量
      */
-    val danmukuCount: Field<Int?> by lazy {
+    val danmukuCount: Field<Int> by lazy {
         Field(root.get("danmukuCount"), criteriaBuilder)
     }
 
@@ -520,7 +520,7 @@ class SVideo(
     /**
      * 评论数量
      */
-    val commentCount: Field<Int?> by lazy {
+    val commentCount: Field<Int> by lazy {
         Field(root.get("commentCount"), criteriaBuilder)
     }
 
@@ -528,7 +528,7 @@ class SVideo(
     /**
      * 投币数量
      */
-    val coinCount: Field<Int?> by lazy {
+    val coinCount: Field<Int> by lazy {
         Field(root.get("coinCount"), criteriaBuilder)
     }
 
@@ -536,7 +536,7 @@ class SVideo(
     /**
      * 收藏数量
      */
-    val collectCount: Field<Int?> by lazy {
+    val collectCount: Field<Int> by lazy {
         Field(root.get("collectCount"), criteriaBuilder)
     }
 
@@ -552,7 +552,7 @@ class SVideo(
     /**
      * 最后播放时间
      */
-    val lastPlayTime: Field<java.time.LocalDateTime?> by lazy {
+    val lastPlayTime: Field<Long?> by lazy {
         Field(root.get("lastPlayTime"), criteriaBuilder)
     }
 
@@ -611,6 +611,7 @@ class SVideo(
     val deleted: Field<Long> by lazy {
         Field(root.get("deleted"), criteriaBuilder)
     }
+
 
 
     /**

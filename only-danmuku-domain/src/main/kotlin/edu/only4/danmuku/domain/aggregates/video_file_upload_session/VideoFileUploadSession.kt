@@ -18,15 +18,9 @@ import org.hibernate.annotations.Where
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2025/10/28
+ * @date 2025/10/30
  */
-@Aggregate(
-    aggregate = "VideoFileUploadSession",
-    name = "VideoFileUploadSession",
-    root = true,
-    type = Aggregate.TYPE_ENTITY,
-    description = "视频分片上传会话， 用于跟踪预上传与分片进度"
-)
+@Aggregate(aggregate = "VideoFileUploadSession", name = "VideoFileUploadSession", root = true, type = Aggregate.TYPE_ENTITY, description = "视频分片上传会话， 用于跟踪预上传与分片进度")
 @Entity
 @Table(name = "`video_file_upload_session`")
 @DynamicInsert
@@ -34,6 +28,20 @@ import org.hibernate.annotations.Where
 @SQLDelete(sql = "update `video_file_upload_session` set `deleted` = `id` where `id` = ?")
 @Where(clause = "`deleted` = 0")
 class VideoFileUploadSession(
+    id: Long = 0L,
+    customerId: Long = 0L,
+    fileName: String = "",
+    chunks: Int = 0,
+    chunkIndex: Int = 0,
+    fileSize: Long? = 0L,
+    tempPath: String? = null,
+    status: UploadStatus = UploadStatus.valueOf(0),
+    duration: Int? = null,
+    createTime: Long? = null,
+    updateTime: Long? = null,
+    expiresAt: Long? = null,
+    deleted: Long = 0L
+) {
     // 【字段映射开始】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
 
     /**
@@ -42,54 +50,58 @@ class VideoFileUploadSession(
      */
     @Id
     @GeneratedValue(generator = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator")
-    @GenericGenerator(
-        name = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator",
-        strategy = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator"
-    )
+    @GenericGenerator(name = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator", strategy = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator")
     @Column(name = "`id`", insertable = false, updatable = false)
-    var id: Long = 0L,
+    var id: Long = id
+        internal set
 
     /**
      * 用户ID
      * bigint
      */
     @Column(name = "`customer_id`")
-    var customerId: Long = 0L,
+    var customerId: Long = customerId
+        internal set
 
     /**
      * 文件名
      * varchar(200)
      */
     @Column(name = "`file_name`")
-    var fileName: String? = null,
+    var fileName: String = fileName
+        internal set
 
     /**
      * 分片总数
      * int
      */
     @Column(name = "`chunks`")
-    var chunks: Int = 0,
+    var chunks: Int = chunks
+        internal set
 
     /**
      * 当前已上传的最大分片索引
      * int
      */
     @Column(name = "`chunk_index`")
-    var chunkIndex: Int = 0,
+    var chunkIndex: Int = chunkIndex
+        internal set
 
     /**
      * 累计已上传大小（字节）
      * bigint
      */
     @Column(name = "`file_size`")
-    var fileSize: Long? = 0L,
+    var fileSize: Long? = fileSize
+        internal set
 
     /**
      * 临时目录（绝对或相对路径）
      * varchar(128)
      */
     @Column(name = "`temp_path`")
-    var tempPath: String? = null,
+    var tempPath: String? = tempPath
+        internal set
 
     /**
      * 状态
@@ -103,43 +115,48 @@ class VideoFileUploadSession(
      */
     @Convert(converter = UploadStatus.Converter::class)
     @Column(name = "`status`")
-    var status: UploadStatus = UploadStatus.valueOf(0),
+    var status: UploadStatus = status
+        internal set
 
     /**
      * 视频时长（秒，可选）
      * int
      */
     @Column(name = "`duration`")
-    var duration: Int? = null,
+    var duration: Int? = duration
+        internal set
 
     /**
      * 创建时间（秒时间戳）
      * bigint
      */
     @Column(name = "`create_time`")
-    var createTime: Long? = null,
+    var createTime: Long? = createTime
+        internal set
 
     /**
      * 更新时间（秒时间戳）
      * bigint
      */
     @Column(name = "`update_time`")
-    var updateTime: Long? = null,
+    var updateTime: Long? = updateTime
+        internal set
 
     /**
      * 过期时间（秒时间戳）
      * bigint
      */
     @Column(name = "`expires_at`")
-    var expiresAt: Long? = null,
+    var expiresAt: Long? = expiresAt
+        internal set
 
     /**
      * 删除标识 0：未删除 id：已删除
      * bigint
      */
     @Column(name = "`deleted`")
-    var deleted: Long = 0L,
-) {
+    var deleted: Long = deleted
+        internal set
 
     // 【字段映射结束】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
 

@@ -7,6 +7,7 @@ import com.only4.cap4k.ddd.core.application.command.Command
 import edu.only4.danmuku.domain._share.meta.video.SVideo
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
+import java.time.ZoneOffset
 import kotlin.jvm.optionals.getOrNull
 
 /**
@@ -23,7 +24,7 @@ object AddPlayCountCmd {
 
             // 增加播放数，并记录最后播放时间
             video.applyStatisticsDelta(playCountDelta = 1)
-            video.lastPlayTime = LocalDateTime.now()
+            video.attachLastPlayTime(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC))
 
             Mediator.uow.save()
 

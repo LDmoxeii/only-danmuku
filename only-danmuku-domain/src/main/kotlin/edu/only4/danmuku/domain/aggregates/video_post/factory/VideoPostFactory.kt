@@ -41,7 +41,7 @@ class VideoPostFactory : AggregateFactory<VideoPostFactory.Payload, VideoPost> {
             tags = entityPayload.tags,
             introduction = entityPayload.introduction,
             interaction = null,
-            duration = null,
+            duration = 0,
             createUserId = null,
             createBy = null,
             createTime = now,

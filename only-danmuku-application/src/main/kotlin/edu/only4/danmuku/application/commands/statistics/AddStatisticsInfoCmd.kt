@@ -35,7 +35,7 @@ object AddStatisticsInfoCmd {
                 StatisticsDataType.COLLECTION,
                 StatisticsDataType.COIN,
                 StatisticsDataType.COMMENT,
-                StatisticsDataType.DANMU
+                StatisticsDataType.DANMUKU
             )
 
             statisticsTypes.forEach { dataType ->

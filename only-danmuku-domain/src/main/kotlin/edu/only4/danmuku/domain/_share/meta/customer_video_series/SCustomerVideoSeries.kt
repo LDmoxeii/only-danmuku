@@ -1,9 +1,17 @@
 package edu.only4.danmuku.domain._share.meta.customer_video_series
 
 import com.only4.cap4k.ddd.domain.repo.JpaPredicate
-import edu.only4.danmuku.domain._share.meta.*
+
+import edu.only4.danmuku.domain._share.meta.ExpressionBuilder
+import edu.only4.danmuku.domain._share.meta.Field
+import edu.only4.danmuku.domain._share.meta.OrderBuilder
+import edu.only4.danmuku.domain._share.meta.PredicateBuilder
+import edu.only4.danmuku.domain._share.meta.SchemaSpecification
+import edu.only4.danmuku.domain._share.meta.SubqueryConfigure
 import edu.only4.danmuku.domain.aggregates.customer_video_series.CustomerVideoSeries
+
 import jakarta.persistence.criteria.*
+
 import org.springframework.data.jpa.domain.Specification
 
 /**
@@ -14,7 +22,7 @@ import org.springframework.data.jpa.domain.Specification
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/10/29
+ * @date 2025/10/30
  */
 class SCustomerVideoSeries(
     private val root: Path<CustomerVideoSeries>,

@@ -47,7 +47,7 @@ class GetPreviousDayStatisticsInfoQryHandler(
             userCount = previousDayCountsByType[StatisticsDataType.FANS] ?: 0,        // 粉丝
             playCount = previousDayCountsByType[StatisticsDataType.PLAY] ?: 0,        // 播放量
             commentCount = previousDayCountsByType[StatisticsDataType.COMMENT] ?: 0,  // 评论
-            danmukuCount = previousDayCountsByType[StatisticsDataType.DANMU] ?: 0,      // 弹幕
+            danmukuCount = previousDayCountsByType[StatisticsDataType.DANMUKU] ?: 0,      // 弹幕
             likeCount = previousDayCountsByType[StatisticsDataType.LIKE] ?: 0,        // 点赞
             collectCount = previousDayCountsByType[StatisticsDataType.COLLECTION] ?: 0, // 收藏
             coinCount = previousDayCountsByType[StatisticsDataType.COIN] ?: 0         // 投币

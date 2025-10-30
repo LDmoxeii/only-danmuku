@@ -35,11 +35,11 @@ object UpdateVideoStatisticsCmd {
 
     data class Request(
         val videoId: Long,
-        val playCountDelta: Int? = null,
-        val likeCountDelta: Int? = null,
-        val danmukuCountDelta: Int? = null,
-        val commentCountDelta: Int? = null,
-        val coinCountDelta: Int? = null,
-        val collectCountDelta: Int? = null,
+        val playCountDelta: Int = 0,
+        val likeCountDelta: Int = 0,
+        val danmukuCountDelta: Int = 0,
+        val commentCountDelta: Int = 0,
+        val coinCountDelta: Int = 0,
+        val collectCountDelta: Int = 0,
     ) : RequestParam<Unit>
 }

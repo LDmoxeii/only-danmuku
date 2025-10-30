@@ -22,7 +22,7 @@ object RelationProfileCmd {
                 SUser.predicateById(request.userId)
             ).get()
 
-            user.relatedId = request.profileId
+            user.bindingRelationship(request.profileId)
 
             Mediator.uow.save()
         }

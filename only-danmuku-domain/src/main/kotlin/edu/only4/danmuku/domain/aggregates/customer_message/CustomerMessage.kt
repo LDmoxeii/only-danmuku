@@ -8,7 +8,6 @@ import edu.only4.danmuku.domain.aggregates.customer_message.enums.ReadType
 import jakarta.persistence.*
 import jakarta.persistence.Table
 
-import org.hibernate.annotations.*
 import org.hibernate.annotations.DynamicInsert
 import org.hibernate.annotations.DynamicUpdate
 import org.hibernate.annotations.GenericGenerator
@@ -21,7 +20,7 @@ import org.hibernate.annotations.Where
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2025/10/21
+ * @date 2025/10/30
  */
 @Aggregate(aggregate = "CustomerMessage", name = "CustomerMessage", root = true, type = Aggregate.TYPE_ENTITY, description = "用户消息表，")
 @Entity
@@ -30,7 +29,22 @@ import org.hibernate.annotations.Where
 @DynamicUpdate
 @SQLDelete(sql = "update `customer_message` set `deleted` = `id` where `id` = ?")
 @Where(clause = "`deleted` = 0")
-class CustomerMessage (
+class CustomerMessage(
+    id: Long = 0L,
+    customerId: String = "",
+    videoId: String? = null,
+    messageType: MessageType = MessageType.valueOf(0),
+    sendSubjectId: String? = null,
+    readType: ReadType = ReadType.valueOf(0),
+    extendJson: String? = null,
+    createUserId: Long? = null,
+    createBy: String? = null,
+    createTime: Long? = null,
+    updateUserId: Long? = null,
+    updateBy: String? = null,
+    updateTime: Long? = null,
+    deleted: Long = 0L
+) {
     // 【字段映射开始】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
 
     /**
@@ -41,21 +55,24 @@ class CustomerMessage (
     @GeneratedValue(generator = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator")
     @GenericGenerator(name = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator", strategy = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator")
     @Column(name = "`id`", insertable = false, updatable = false)
-    var id: Long = 0L,
+    var id: Long = id
+        internal set
 
     /**
      * 用户ID
      * varchar(10)
      */
     @Column(name = "`customer_id`")
-    var customerId: String = "",
+    var customerId: String = customerId
+        internal set
 
     /**
      * 主体ID
      * varchar(10)
      */
     @Column(name = "`video_id`")
-    var videoId: String? = null,
+    var videoId: String? = videoId
+        internal set
 
     /**
      * 消息类型
@@ -70,14 +87,16 @@ class CustomerMessage (
      */
     @Convert(converter = MessageType.Converter::class)
     @Column(name = "`message_type`")
-    var messageType: MessageType = MessageType.valueOf(0),
+    var messageType: MessageType = messageType
+        internal set
 
     /**
      * 发送主体ID
      * varchar(10)
      */
     @Column(name = "`send_subject_id`")
-    var sendSubjectId: String? = null,
+    var sendSubjectId: String? = sendSubjectId
+        internal set
 
     /**
      * 读取状态
@@ -88,64 +107,72 @@ class CustomerMessage (
      */
     @Convert(converter = ReadType.Converter::class)
     @Column(name = "`read_type`")
-    var readType: ReadType = ReadType.valueOf(0),
+    var readType: ReadType = readType
+        internal set
 
     /**
      * 扩展信息
      * text
      */
     @Column(name = "`extend_json`")
-    var extendJson: String? = null,
+    var extendJson: String? = extendJson
+        internal set
 
     /**
      * 创建人ID
      * bigint
      */
     @Column(name = "`create_user_id`")
-    var createUserId: Long? = null,
+    var createUserId: Long? = createUserId
+        internal set
 
     /**
      * 创建人名称
      * varchar(32)
      */
     @Column(name = "`create_by`")
-    var createBy: String? = null,
+    var createBy: String? = createBy
+        internal set
 
     /**
      * 创建时间
      * bigint
      */
     @Column(name = "`create_time`")
-    var createTime: Long? = null,
+    var createTime: Long? = createTime
+        internal set
 
     /**
      * 更新人ID
      * bigint
      */
     @Column(name = "`update_user_id`")
-    var updateUserId: Long? = null,
+    var updateUserId: Long? = updateUserId
+        internal set
 
     /**
      * 更新人名称
      * varchar(32)
      */
     @Column(name = "`update_by`")
-    var updateBy: String? = null,
+    var updateBy: String? = updateBy
+        internal set
 
     /**
      * 更新时间
      * bigint
      */
     @Column(name = "`update_time`")
-    var updateTime: Long? = null,
+    var updateTime: Long? = updateTime
+        internal set
 
     /**
      * 删除标识 0：未删除 id：已删除
      * bigint
      */
     @Column(name = "`deleted`")
-    var deleted: Long = 0L,
-) {
+    var deleted: Long = deleted
+        internal set
 
     // 【字段映射结束】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
 

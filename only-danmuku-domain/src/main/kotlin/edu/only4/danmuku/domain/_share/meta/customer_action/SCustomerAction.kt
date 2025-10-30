@@ -23,7 +23,7 @@ import org.springframework.data.jpa.domain.Specification
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/10/21
+ * @date 2025/10/30
  */
 class SCustomerAction(
     private val root: Path<CustomerAction>,
@@ -395,7 +395,7 @@ class SCustomerAction(
     /**
      * 评论ID
      */
-    val commentId: Field<Long> by lazy {
+    val commentId: Field<Long?> by lazy {
         Field(root.get("commentId"), criteriaBuilder)
     }
 

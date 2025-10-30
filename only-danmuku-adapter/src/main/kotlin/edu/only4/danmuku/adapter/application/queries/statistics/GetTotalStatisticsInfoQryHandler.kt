@@ -36,7 +36,7 @@ class GetTotalStatisticsInfoQryHandler(
             userCount = countsByType[StatisticsDataType.FANS] ?: 0,        // 粉丝
             playCount = countsByType[StatisticsDataType.PLAY] ?: 0,        // 播放量
             commentCount = countsByType[StatisticsDataType.COMMENT] ?: 0,  // 评论
-            danmukuCount = countsByType[StatisticsDataType.DANMU] ?: 0,      // 弹幕
+            danmukuCount = countsByType[StatisticsDataType.DANMUKU] ?: 0,      // 弹幕
             likeCount = countsByType[StatisticsDataType.LIKE] ?: 0,        // 点赞
             collectCount = countsByType[StatisticsDataType.COLLECTION] ?: 0, // 收藏
             coinCount = countsByType[StatisticsDataType.COIN] ?: 0         // 投币

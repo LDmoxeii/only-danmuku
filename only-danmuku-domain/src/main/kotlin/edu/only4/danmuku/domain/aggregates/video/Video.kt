@@ -23,7 +23,7 @@ import org.hibernate.annotations.Where
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2025/10/26
+ * @date 2025/10/30
  */
 @Aggregate(aggregate = "Video", name = "Video", root = true, type = Aggregate.TYPE_ENTITY, description = "视频信息，")
 @Entity
@@ -32,8 +32,41 @@ import org.hibernate.annotations.Where
 @DynamicUpdate
 @SQLDelete(sql = "update `video` set `deleted` = `id` where `id` = ?")
 @Where(clause = "`deleted` = 0")
-class Video (
+class Video(
+    id: Long = 0L,
+    videoPostId: Long = 0L,
+    customerId: Long = 0L,
+    videoCover: String = "",
+    videoName: String = "",
+    pCategoryId: Long = 0L,
+    categoryId: Long? = null,
+    postType: PostType = PostType.valueOf(0),
+    originInfo: String? = null,
+    tags: String? = null,
+    introduction: String? = null,
+    interaction: String? = null,
+    duration: Int = 0,
+    playCount: Int = 0,
+    likeCount: Int = 0,
+    danmukuCount: Int = 0,
+    commentCount: Int = 0,
+    coinCount: Int = 0,
+    collectCount: Int = 0,
+    recommendType: RecommendType = RecommendType.valueOf(0),
+    lastPlayTime: Long? = null,
+    createUserId: Long? = null,
+    createBy: String? = null,
+    createTime: Long? = null,
+    updateUserId: Long? = null,
+    updateBy: String? = null,
+    updateTime: Long? = null,
+    deleted: Long = 0L
+) {
     // 【字段映射开始】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
+    @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.EAGER, orphanRemoval = true)
+    @Fetch(FetchMode.SUBSELECT)
+    @JoinColumn(name = "`video_id`", nullable = false)
+    var videoFiles: MutableList<VideoFile> = mutableListOf()
 
     /**
      * ID
@@ -43,49 +76,56 @@ class Video (
     @GeneratedValue(generator = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator")
     @GenericGenerator(name = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator", strategy = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator")
     @Column(name = "`id`", insertable = false, updatable = false)
-    var id: Long = 0L,
+    var id: Long = id
+        internal set
 
     /**
      * 视频草稿ID
      * bigint
      */
     @Column(name = "`video_post_id`")
-    var videoPostId: Long = 0L,
+    var videoPostId: Long = videoPostId
+        internal set
 
     /**
      * 用户ID
      * bigint
      */
     @Column(name = "`customer_id`")
-    var customerId: Long = 0L,
+    var customerId: Long = customerId
+        internal set
 
     /**
      * 视频封面
      * varchar(50)
      */
     @Column(name = "`video_cover`")
-    var videoCover: String = "",
+    var videoCover: String = videoCover
+        internal set
 
     /**
      * 视频名称
      * varchar(100)
      */
     @Column(name = "`video_name`")
-    var videoName: String = "",
+    var videoName: String = videoName
+        internal set
 
     /**
      * 父级分类ID
      * bigint
      */
     @Column(name = "`p_category_id`")
-    var pCategoryId: Long = 0L,
+    var pCategoryId: Long = pCategoryId
+        internal set
 
     /**
      * 分类ID
      * bigint
      */
     @Column(name = "`category_id`")
-    var categoryId: Long? = null,
+    var categoryId: Long? = categoryId
+        internal set
 
     /**
      * 投稿类型
@@ -96,84 +136,96 @@ class Video (
      */
     @Convert(converter = PostType.Converter::class)
     @Column(name = "`post_type`")
-    var postType: PostType = PostType.valueOf(0),
+    var postType: PostType = postType
+        internal set
 
     /**
      * 原资源说明
      * varchar(200)
      */
     @Column(name = "`origin_info`")
-    var originInfo: String? = null,
+    var originInfo: String? = originInfo
+        internal set
 
     /**
      * 标签
      * varchar(300)
      */
     @Column(name = "`tags`")
-    var tags: String? = null,
+    var tags: String? = tags
+        internal set
 
     /**
      * 简介
      * varchar(2000)
      */
     @Column(name = "`introduction`")
-    var introduction: String? = null,
+    var introduction: String? = introduction
+        internal set
 
     /**
      * 互动设置
      * varchar(5)
      */
     @Column(name = "`interaction`")
-    var interaction: String? = null,
+    var interaction: String? = interaction
+        internal set
 
     /**
      * 持续时间（秒）
      * int
      */
     @Column(name = "`duration`")
-    var duration: Int? = 0,
+    var duration: Int = duration
+        internal set
 
     /**
      * 播放数量
      * int
      */
     @Column(name = "`play_count`")
-    var playCount: Int? = 0,
+    var playCount: Int = playCount
+        internal set
 
     /**
      * 点赞数量
      * int
      */
     @Column(name = "`like_count`")
-    var likeCount: Int? = 0,
+    var likeCount: Int = likeCount
+        internal set
 
     /**
      * 弹幕数量
      * int
      */
     @Column(name = "`danmuku_count`")
-    var danmukuCount: Int? = 0,
+    var danmukuCount: Int = danmukuCount
+        internal set
 
     /**
      * 评论数量
      * int
      */
     @Column(name = "`comment_count`")
-    var commentCount: Int? = 0,
+    var commentCount: Int = commentCount
+        internal set
 
     /**
      * 投币数量
      * int
      */
     @Column(name = "`coin_count`")
-    var coinCount: Int? = 0,
+    var coinCount: Int = coinCount
+        internal set
 
     /**
      * 收藏数量
      * int
      */
     @Column(name = "`collect_count`")
-    var collectCount: Int? = 0,
+    var collectCount: Int = collectCount
+        internal set
 
     /**
      * 推荐状态
@@ -184,68 +236,72 @@ class Video (
      */
     @Convert(converter = RecommendType.Converter::class)
     @Column(name = "`recommend_type`")
-    var recommendType: RecommendType = RecommendType.valueOf(0),
+    var recommendType: RecommendType = recommendType
+        internal set
 
     /**
      * 最后播放时间
-     * datetime
+     * bigint
      */
     @Column(name = "`last_play_time`")
-    var lastPlayTime: java.time.LocalDateTime? = null,
+    var lastPlayTime: Long? = lastPlayTime
+        internal set
 
     /**
      * 创建人ID
      * bigint
      */
     @Column(name = "`create_user_id`")
-    var createUserId: Long? = null,
+    var createUserId: Long? = createUserId
+        internal set
 
     /**
      * 创建人名称
      * varchar(32)
      */
     @Column(name = "`create_by`")
-    var createBy: String? = null,
+    var createBy: String? = createBy
+        internal set
 
     /**
      * 创建时间
      * bigint
      */
     @Column(name = "`create_time`")
-    var createTime: Long? = null,
+    var createTime: Long? = createTime
+        internal set
 
     /**
      * 更新人ID
      * bigint
      */
     @Column(name = "`update_user_id`")
-    var updateUserId: Long? = null,
+    var updateUserId: Long? = updateUserId
+        internal set
 
     /**
      * 更新人名称
      * varchar(32)
      */
     @Column(name = "`update_by`")
-    var updateBy: String? = null,
+    var updateBy: String? = updateBy
+        internal set
 
     /**
      * 更新时间
      * bigint
      */
     @Column(name = "`update_time`")
-    var updateTime: Long? = null,
+    var updateTime: Long? = updateTime
+        internal set
 
     /**
      * 删除标识 0：未删除 id：已删除
      * bigint
      */
     @Column(name = "`deleted`")
-    var deleted: Long = 0L,
-) {
-    @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.EAGER, orphanRemoval = true)
-    @Fetch(FetchMode.SUBSELECT)
-    @JoinColumn(name = "`video_id`", nullable = false)
-    var videoFiles: MutableList<VideoFile> = mutableListOf()
+    var deleted: Long = deleted
+        internal set
 
     // 【字段映射结束】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
 
@@ -269,18 +325,19 @@ class Video (
     }
 
     fun applyStatisticsDelta(
-        playCountDelta: Int? = null,
-        likeCountDelta: Int? = null,
-        danmukuCountDelta: Int? = null,
-        commentCountDelta: Int? = null,
-        coinCountDelta: Int? = null,
-        collectCountDelta: Int? = null,
+        playCountDelta: Int = 0,
+        likeCountDelta: Int = 0,
+        danmukuCountDelta: Int = 0,
+        commentCountDelta: Int = 0,
+        coinCountDelta: Int = 0,
+        collectCountDelta: Int = 0,
     ) {
-        fun Int?.applyDelta(delta: Int?): Int? {
-            if (delta == null || delta == 0) return this
-            val updated = (this ?: 0) + delta
+        fun Int.applyDelta(delta: Int): Int {
+            if (delta == 0) return this
+            val updated = (this) + delta
             return maxOf(updated, 0)
         }
+
 
         playCount = playCount.applyDelta(playCountDelta)
         likeCount = likeCount.applyDelta(likeCountDelta)
@@ -288,6 +345,10 @@ class Video (
         commentCount = commentCount.applyDelta(commentCountDelta)
         coinCount = coinCount.applyDelta(coinCountDelta)
         collectCount = collectCount.applyDelta(collectCountDelta)
+    }
+
+    fun attachLastPlayTime(toEpochSecond: Long) {
+        this.lastPlayTime = toEpochSecond
     }
 
     // 【行为方法结束】

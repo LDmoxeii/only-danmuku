@@ -20,7 +20,7 @@ class CustomerUndislikedCommentDomainEventSubscriber {
         // 发送取消点踩命令，将评论点踩数减1
         Mediator.commands.send(
             ApplyCustomerUndislikedCommentCmd.Request(
-                commentId = event.entity.commentId
+                commentId = event.entity.commentId!!
             )
         )
     }

@@ -29,8 +29,7 @@ object AddPlayHistoryCmd {
             val now = System.currentTimeMillis() / 1000
 
             if (existing != null) {
-                existing.fileIndex = request.fileIndex
-                existing.updateTime = now
+                existing.updatePlayProgress(request.fileIndex, now)
             } else {
                 Mediator.factories.create(
                     VideoPlayHistoryFactory.Payload(

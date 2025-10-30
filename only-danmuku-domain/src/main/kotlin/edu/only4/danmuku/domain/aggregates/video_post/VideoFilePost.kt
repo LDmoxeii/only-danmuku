@@ -2,12 +2,19 @@ package edu.only4.danmuku.domain.aggregates.video_post
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
+
 import edu.only4.danmuku.domain.aggregates.video_post.enums.TransferResult
 import edu.only4.danmuku.domain.aggregates.video_post.enums.UpdateType
 import edu.only4.danmuku.domain.aggregates.video_post.events.VideoFileDraftTranscodedDomainEvent
+
 import jakarta.persistence.*
 import jakarta.persistence.Table
-import org.hibernate.annotations.*
+
+import org.hibernate.annotations.DynamicInsert
+import org.hibernate.annotations.DynamicUpdate
+import org.hibernate.annotations.GenericGenerator
+import org.hibernate.annotations.SQLDelete
+import org.hibernate.annotations.Where
 
 /**
  * 视频文件信息;
@@ -15,15 +22,9 @@ import org.hibernate.annotations.*
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2025/10/26
+ * @date 2025/10/30
  */
-@Aggregate(
-    aggregate = "VideoPost",
-    name = "VideoFilePost",
-    root = false,
-    type = Aggregate.TYPE_ENTITY,
-    description = "视频文件信息，"
-)
+@Aggregate(aggregate = "VideoPost", name = "VideoFilePost", root = false, type = Aggregate.TYPE_ENTITY, description = "视频文件信息，")
 @Entity
 @Table(name = "`video_file_post`")
 @DynamicInsert
@@ -31,7 +32,28 @@ import org.hibernate.annotations.*
 @SQLDelete(sql = "update `video_file_post` set `deleted` = `id` where `id` = ?")
 @Where(clause = "`deleted` = 0")
 class VideoFilePost(
+    id: Long = 0L,
+    uploadId: Long = 0L,
+    customerId: Long = 0L,
+    fileIndex: Int = 0,
+    fileName: String? = null,
+    fileSize: Long? = null,
+    filePath: String? = null,
+    updateType: UpdateType = UpdateType.valueOf(0),
+    transferResult: TransferResult = TransferResult.valueOf(0),
+    duration: Int? = null,
+    createUserId: Long? = null,
+    createBy: String? = null,
+    createTime: Long? = null,
+    updateUserId: Long? = null,
+    updateBy: String? = null,
+    updateTime: Long? = null,
+    deleted: Long = 0L
+) {
     // 【字段映射开始】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
+    @ManyToOne(cascade = [], fetch = FetchType.EAGER)
+    @JoinColumn(name = "`video_id`", nullable = false, insertable = false, updatable = false)
+    var videoPost: VideoPost? = null
 
     /**
      * ID
@@ -39,54 +61,58 @@ class VideoFilePost(
      */
     @Id
     @GeneratedValue(generator = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator")
-    @GenericGenerator(
-        name = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator",
-        strategy = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator"
-    )
+    @GenericGenerator(name = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator", strategy = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator")
     @Column(name = "`id`", insertable = false, updatable = false)
-    var id: Long = 0L,
+    var id: Long = id
+        internal set
 
     /**
      * 上传ID
      * bigint
      */
     @Column(name = "`upload_id`")
-    var uploadId: Long = 0L,
+    var uploadId: Long = uploadId
+        internal set
 
     /**
      * 用户ID
      * bigint
      */
     @Column(name = "`customer_id`")
-    var customerId: Long = 0L,
+    var customerId: Long = customerId
+        internal set
 
     /**
      * 文件索引
      * int
      */
     @Column(name = "`file_index`")
-    var fileIndex: Int = 0,
+    var fileIndex: Int = fileIndex
+        internal set
 
     /**
      * 文件名
      * varchar(200)
      */
     @Column(name = "`file_name`")
-    var fileName: String? = null,
+    var fileName: String? = fileName
+        internal set
 
     /**
      * 文件大小
      * bigint
      */
     @Column(name = "`file_size`")
-    var fileSize: Long? = null,
+    var fileSize: Long? = fileSize
+        internal set
 
     /**
      * 文件路径
      * varchar(100)
      */
     @Column(name = "`file_path`")
-    var filePath: String? = null,
+    var filePath: String? = filePath
+        internal set
 
     /**
      * 更新类型
@@ -97,7 +123,8 @@ class VideoFilePost(
      */
     @Convert(converter = UpdateType.Converter::class)
     @Column(name = "`update_type`")
-    var updateType: UpdateType = UpdateType.valueOf(0),
+    var updateType: UpdateType = updateType
+        internal set
 
     /**
      * 转码结果
@@ -109,67 +136,72 @@ class VideoFilePost(
      */
     @Convert(converter = TransferResult.Converter::class)
     @Column(name = "`transfer_result`")
-    var transferResult: TransferResult = TransferResult.valueOf(0),
+    var transferResult: TransferResult = transferResult
+        internal set
 
     /**
      * 持续时间（秒）
      * int
      */
     @Column(name = "`duration`")
-    var duration: Int? = null,
+    var duration: Int? = duration
+        internal set
 
     /**
      * 创建人ID
      * bigint
      */
     @Column(name = "`create_user_id`")
-    var createUserId: Long? = null,
+    var createUserId: Long? = createUserId
+        internal set
 
     /**
      * 创建人名称
      * varchar(32)
      */
     @Column(name = "`create_by`")
-    var createBy: String? = null,
+    var createBy: String? = createBy
+        internal set
 
     /**
      * 创建时间
      * bigint
      */
     @Column(name = "`create_time`")
-    var createTime: Long? = null,
+    var createTime: Long? = createTime
+        internal set
 
     /**
      * 更新人ID
      * bigint
      */
     @Column(name = "`update_user_id`")
-    var updateUserId: Long? = null,
+    var updateUserId: Long? = updateUserId
+        internal set
 
     /**
      * 更新人名称
      * varchar(32)
      */
     @Column(name = "`update_by`")
-    var updateBy: String? = null,
+    var updateBy: String? = updateBy
+        internal set
 
     /**
      * 更新时间
      * bigint
      */
     @Column(name = "`update_time`")
-    var updateTime: Long? = null,
+    var updateTime: Long? = updateTime
+        internal set
 
     /**
      * 删除标识 0：未删除 id：已删除
      * bigint
      */
     @Column(name = "`deleted`")
-    var deleted: Long = 0L,
-) {
-    @ManyToOne(cascade = [], fetch = FetchType.EAGER)
-    @JoinColumn(name = "`video_id`", nullable = false, insertable = false, updatable = false)
-    var videoPost: VideoPost? = null
+    var deleted: Long = deleted
+        internal set
 
     // 【字段映射结束】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
 

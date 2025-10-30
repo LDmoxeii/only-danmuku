@@ -40,7 +40,7 @@ object UpdateCategorySortOrderCmd {
             request.categoryIds.forEach { id ->
                 val category = byId[id]!!
 
-                category.sort = sortNo.toByte()
+                category.changeSort(sortNo.toByte())
                 sortNo += 1
             }
 

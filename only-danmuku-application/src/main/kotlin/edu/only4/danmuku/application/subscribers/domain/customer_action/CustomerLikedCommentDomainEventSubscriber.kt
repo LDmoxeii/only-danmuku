@@ -23,7 +23,7 @@ class CustomerLikedCommentDomainEventSubscriber {
         val action = event.entity
         Mediator.commands.send(
             ApplyCustomerLikedCommentCmd.Request(
-                commentId = action.commentId
+                commentId = action.commentId!!
             )
         )
     }

@@ -23,7 +23,7 @@ import org.springframework.data.jpa.domain.Specification
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/10/28
+ * @date 2025/10/30
  */
 class SVideoFileUploadSession(
     private val root: Path<VideoFileUploadSession>,
@@ -82,10 +82,7 @@ class SVideoFileUploadSession(
          * @return
          */
         @JvmStatic
-        fun specify(
-            builder: PredicateBuilder<SVideoFileUploadSession>,
-            distinct: Boolean,
-        ): Specification<VideoFileUploadSession> {
+        fun specify(builder: PredicateBuilder<SVideoFileUploadSession>, distinct: Boolean): Specification<VideoFileUploadSession> {
             return specify(builder, distinct, emptyList())
         }
 
@@ -120,13 +117,13 @@ class SVideoFileUploadSession(
         }
 
         /**
-         * 构建查询条件
-         *
-         * @param builder       where条件构造器
-         * @param distinct      是否去重
-         * @param orderBuilders 排序条件构造器
-         * @return
-         */
+        * 构建查询条件
+        *
+        * @param builder       where条件构造器
+        * @param distinct      是否去重
+        * @param orderBuilders 排序条件构造器
+        * @return
+        */
         @JvmStatic
         fun specify(
             builder: PredicateBuilder<SVideoFileUploadSession>,
@@ -137,13 +134,13 @@ class SVideoFileUploadSession(
         }
 
         /**
-         * 构建查询条件
-         *
-         * @param builder       where条件构造器
-         * @param distinct      是否去重
-         * @param orderBuilders 排序条件构造器
-         * @return
-         */
+        * 构建查询条件
+        *
+        * @param builder       where条件构造器
+        * @param distinct      是否去重
+        * @param orderBuilders 排序条件构造器
+        * @return
+        */
         @JvmStatic
         fun specify(
             builder: PredicateBuilder<SVideoFileUploadSession>,
@@ -175,16 +172,16 @@ class SVideoFileUploadSession(
         }
 
         /**
-         * 构建子查询
-         *
-         * @param resultClass      返回结果类型
-         * @param selectBuilder    select条件构造器
-         * @param predicateBuilder where条件构造器
-         * @param criteriaBuilder
-         * @param criteriaQuery
-         * @param <E>
-         * @return
-         */
+        * 构建子查询
+        *
+        * @param resultClass      返回结果类型
+        * @param selectBuilder    select条件构造器
+        * @param predicateBuilder where条件构造器
+        * @param criteriaBuilder
+        * @param criteriaQuery
+        * @param <E>
+        * @return
+        */
         @JvmStatic
         fun <E> subquery(
             resultClass: Class<E>,
@@ -222,7 +219,6 @@ class SVideoFileUploadSession(
             subqueryConfigure.configure(sq, schema)
             return sq
         }
-
         /**
          * 构建查询条件
          *
@@ -235,11 +231,11 @@ class SVideoFileUploadSession(
         }
 
         /**
-         * 构建查询条件
-         *
-         * @param ids 主键
-         * @return
-         */
+        * 构建查询条件
+        *
+        * @param ids 主键
+        * @return
+        */
         @JvmStatic
         fun predicateByIds(ids: Iterable<*>): JpaPredicate<VideoFileUploadSession> {
             @Suppress("UNCHECKED_CAST")
@@ -276,10 +272,7 @@ class SVideoFileUploadSession(
          * @return
          */
         @JvmStatic
-        fun predicate(
-            builder: PredicateBuilder<SVideoFileUploadSession>,
-            distinct: Boolean,
-        ): JpaPredicate<VideoFileUploadSession> {
+        fun predicate(builder: PredicateBuilder<SVideoFileUploadSession>, distinct: Boolean): JpaPredicate<VideoFileUploadSession> {
             return JpaPredicate.bySpecification(VideoFileUploadSession::class.java, specify(builder, distinct))
         }
 
@@ -295,10 +288,7 @@ class SVideoFileUploadSession(
             builder: PredicateBuilder<SVideoFileUploadSession>,
             orderBuilders: List<OrderBuilder<SVideoFileUploadSession>>,
         ): JpaPredicate<VideoFileUploadSession> {
-            return JpaPredicate.bySpecification(
-                VideoFileUploadSession::class.java,
-                specify(builder, false, orderBuilders)
-            )
+            return JpaPredicate.bySpecification(VideoFileUploadSession::class.java, specify(builder, false, orderBuilders))
         }
 
         /**
@@ -313,10 +303,7 @@ class SVideoFileUploadSession(
             builder: PredicateBuilder<SVideoFileUploadSession>,
             vararg orderBuilders: OrderBuilder<SVideoFileUploadSession>,
         ): JpaPredicate<VideoFileUploadSession> {
-            return JpaPredicate.bySpecification(
-                VideoFileUploadSession::class.java,
-                specify(builder, false, *orderBuilders)
-            )
+            return JpaPredicate.bySpecification(VideoFileUploadSession::class.java, specify(builder, false, *orderBuilders))
         }
 
         /**
@@ -333,10 +320,7 @@ class SVideoFileUploadSession(
             distinct: Boolean,
             orderBuilders: List<OrderBuilder<SVideoFileUploadSession>>,
         ): JpaPredicate<VideoFileUploadSession> {
-            return JpaPredicate.bySpecification(
-                VideoFileUploadSession::class.java,
-                specify(builder, distinct, orderBuilders)
-            )
+            return JpaPredicate.bySpecification(VideoFileUploadSession::class.java, specify(builder, distinct, orderBuilders))
         }
 
         /**
@@ -353,10 +337,7 @@ class SVideoFileUploadSession(
             distinct: Boolean,
             vararg orderBuilders: OrderBuilder<SVideoFileUploadSession>,
         ): JpaPredicate<VideoFileUploadSession> {
-            return JpaPredicate.bySpecification(
-                VideoFileUploadSession::class.java,
-                specify(builder, distinct, *orderBuilders)
-            )
+            return JpaPredicate.bySpecification(VideoFileUploadSession::class.java, specify(builder, distinct, *orderBuilders))
         }
 
         /**
@@ -396,7 +377,7 @@ class SVideoFileUploadSession(
     /**
      * 文件名
      */
-    val fileName: Field<String?> by lazy {
+    val fileName: Field<String> by lazy {
         Field(root.get("fileName"), criteriaBuilder)
     }
 
@@ -479,6 +460,7 @@ class SVideoFileUploadSession(
     val deleted: Field<Long> by lazy {
         Field(root.get("deleted"), criteriaBuilder)
     }
+
 
 
     /**

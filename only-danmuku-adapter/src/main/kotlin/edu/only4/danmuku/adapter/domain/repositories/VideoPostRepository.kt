@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository
  *
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * @author cap4k-ddd-codegen
- * @date 2025/10/26
+ * @date 2025/10/30
  */
 @Repository
 interface VideoPostRepository : JpaRepository<VideoPost, Long>, JpaSpecificationExecutor<VideoPost> {
@@ -24,7 +24,7 @@ interface VideoPostRepository : JpaRepository<VideoPost, Long>, JpaSpecification
     @Aggregate(aggregate = "VideoPost", name = "VideoPostRepo", type = Aggregate.TYPE_REPOSITORY, description = "")
     class VideoPostJpaRepositoryAdapter(
         jpaSpecificationExecutor: JpaSpecificationExecutor<VideoPost>,
-        jpaRepository: JpaRepository<VideoPost, Long>,
+        jpaRepository: JpaRepository<VideoPost, Long>
     ) : AbstractJpaRepository<VideoPost, Long>(
         jpaSpecificationExecutor,
         jpaRepository

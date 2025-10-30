@@ -8,7 +8,7 @@ import jakarta.persistence.AttributeConverter
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/10/26
+ * @date 2025/10/30
  */
 @Aggregate(aggregate = "Statistics", name = "StatisticsDataType", type = "enum", description = "")
 enum class StatisticsDataType(
@@ -17,39 +17,44 @@ enum class StatisticsDataType(
 ) {
 
     /**
+     * 未知类型
+     */
+    UNKNOW(0, "未知类型"),
+
+    /**
      * 播放量
      */
-    PLAY(0, "播放量"),
+    PLAY(1, "播放量"),
 
     /**
      * 粉丝
      */
-    FANS(1, "粉丝"),
+    FANS(2, "粉丝"),
 
     /**
      * 点赞
      */
-    LIKE(2, "点赞"),
+    LIKE(3, "点赞"),
 
     /**
      * 收藏
      */
-    COLLECTION(3, "收藏"),
+    COLLECTION(4, "收藏"),
 
     /**
      * 投币
      */
-    COIN(4, "投币"),
+    COIN(5, "投币"),
 
     /**
      * 评论
      */
-    COMMENT(5, "评论"),
+    COMMENT(6, "评论"),
 
     /**
      * 弹幕
      */
-    DANMU(6, "弹幕"),
+    DANMUKU(7, "弹幕"),
     ;
 
     companion object {

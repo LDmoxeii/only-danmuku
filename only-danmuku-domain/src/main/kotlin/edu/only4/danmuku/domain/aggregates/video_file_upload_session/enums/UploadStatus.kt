@@ -8,12 +8,12 @@ import jakarta.persistence.AttributeConverter
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/10/28
+ * @date 2025/10/30
  */
 @Aggregate(aggregate = "VideoFileUploadSession", name = "UploadStatus", type = "enum", description = "")
 enum class UploadStatus(
     val code: Int,
-    val desc: String,
+    val desc: String
 ) {
 
     /**
@@ -53,8 +53,7 @@ enum class UploadStatus(
         }
 
         fun valueOf(value: Int): UploadStatus {
-            return enumMap[value]
-                ?: throw IllegalArgumentException("枚举类型UploadStatus枚举值转换异常，不存在的值: $value")
+            return enumMap[value] ?: throw IllegalArgumentException("枚举类型UploadStatus枚举值转换异常，不存在的值: $value")
         }
 
         fun valueOfOrNull(value: Int?): UploadStatus? {

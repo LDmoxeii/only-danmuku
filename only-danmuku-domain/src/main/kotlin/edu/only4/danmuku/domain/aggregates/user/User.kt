@@ -1,15 +1,23 @@
 package edu.only4.danmuku.domain.aggregates.user
 
 import cn.hutool.crypto.digest.BCrypt
+
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
+
 import edu.only4.danmuku.domain.aggregates.user.enums.UserType
 import edu.only4.danmuku.domain.aggregates.user.events.AccountDisabledDomainEvent
 import edu.only4.danmuku.domain.aggregates.user.events.AccountEnabledDomainEvent
 import edu.only4.danmuku.domain.aggregates.user.events.UserCreatedDomainEvent
+
 import jakarta.persistence.*
 import jakarta.persistence.Table
-import org.hibernate.annotations.*
+
+import org.hibernate.annotations.DynamicInsert
+import org.hibernate.annotations.DynamicUpdate
+import org.hibernate.annotations.GenericGenerator
+import org.hibernate.annotations.SQLDelete
+import org.hibernate.annotations.Where
 
 /**
  * 帐号;
@@ -17,7 +25,7 @@ import org.hibernate.annotations.*
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2025/10/21
+ * @date 2025/10/30
  */
 @Aggregate(aggregate = "User", name = "User", root = true, type = Aggregate.TYPE_ENTITY, description = "帐号，")
 @Entity
@@ -26,7 +34,25 @@ import org.hibernate.annotations.*
 @DynamicUpdate
 @SQLDelete(sql = "update `user` set `deleted` = `id` where `id` = ?")
 @Where(clause = "`deleted` = 0")
-class User (
+class User(
+    id: Long = 0L,
+    type: UserType = UserType.valueOf(0),
+    nickName: String = "",
+    email: String = "",
+    password: String = "",
+    joinTime: Long = 0L,
+    lastLoginTime: Long? = null,
+    lastLoginIp: String? = null,
+    status: Boolean = true,
+    relatedId: Long? = null,
+    createUserId: Long? = null,
+    createBy: String? = null,
+    createTime: Long? = null,
+    updateUserId: Long? = null,
+    updateBy: String? = null,
+    updateTime: Long? = null,
+    deleted: Long = 0L
+) {
     // 【字段映射开始】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
 
     /**
@@ -37,7 +63,8 @@ class User (
     @GeneratedValue(generator = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator")
     @GenericGenerator(name = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator", strategy = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator")
     @Column(name = "`id`", insertable = false, updatable = false)
-    var id: Long = 0L,
+    var id: Long = id
+        internal set
 
     /**
      * 帐号类型
@@ -47,113 +74,128 @@ class User (
      */
     @Convert(converter = UserType.Converter::class)
     @Column(name = "`type`")
-    var type: UserType = UserType.valueOf(0),
+    var type: UserType = type
+        internal set
 
     /**
      * 昵称
      * varchar(20)
      */
     @Column(name = "`nick_name`")
-    var nickName: String = "",
+    var nickName: String = nickName
+        internal set
 
     /**
      * 邮箱
      * varchar(150)
      */
     @Column(name = "`email`")
-    var email: String = "",
+    var email: String = email
+        internal set
 
     /**
      * 密码
      * varchar(50)
      */
     @Column(name = "`password`")
-    var password: String = "",
+    var password: String = password
+        internal set
 
     /**
      * 加入时间
      * bigint
      */
     @Column(name = "`join_time`")
-    var joinTime: Long = 0L,
+    var joinTime: Long = joinTime
+        internal set
 
     /**
      * 最后登录时间
      * bigint
      */
     @Column(name = "`last_login_time`")
-    var lastLoginTime: Long? = null,
+    var lastLoginTime: Long? = lastLoginTime
+        internal set
 
     /**
      * 最后登录IP
      * varchar(15)
      */
     @Column(name = "`last_login_ip`")
-    var lastLoginIp: String? = null,
+    var lastLoginIp: String? = lastLoginIp
+        internal set
 
     /**
      * 0:禁用 1:正常
      * tinyint(1)
      */
     @Column(name = "`status`")
-    var status: Boolean = true,
+    var status: Boolean = status
+        internal set
 
     /**
      * 关联ID; 用户、管理员 = 0
-     * bigint
+     * int
      */
     @Column(name = "`related_id`")
-    var relatedId: Long? = null,
+    var relatedId: Long? = relatedId
+        internal set
 
     /**
      * 创建人ID
      * bigint
      */
     @Column(name = "`create_user_id`")
-    var createUserId: Long? = null,
+    var createUserId: Long? = createUserId
+        internal set
 
     /**
      * 创建人名称
      * varchar(32)
      */
     @Column(name = "`create_by`")
-    var createBy: String? = null,
+    var createBy: String? = createBy
+        internal set
 
     /**
      * 创建时间
      * bigint
      */
     @Column(name = "`create_time`")
-    var createTime: Long? = null,
+    var createTime: Long? = createTime
+        internal set
 
     /**
      * 更新人ID
      * bigint
      */
     @Column(name = "`update_user_id`")
-    var updateUserId: Long? = null,
+    var updateUserId: Long? = updateUserId
+        internal set
 
     /**
      * 更新人名称
      * varchar(32)
      */
     @Column(name = "`update_by`")
-    var updateBy: String? = null,
+    var updateBy: String? = updateBy
+        internal set
 
     /**
      * 更新时间
      * bigint
      */
     @Column(name = "`update_time`")
-    var updateTime: Long? = null,
+    var updateTime: Long? = updateTime
+        internal set
 
     /**
      * 删除标识 0：未删除 id：已删除
      * bigint
      */
     @Column(name = "`deleted`")
-    var deleted: Long = 0L,
-) {
+    var deleted: Long = deleted
+        internal set
 
     // 【字段映射结束】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
     companion object {
@@ -185,6 +227,10 @@ class User (
     fun updateLoginInfo(loginTime: Long, loginIp: String) {
         this.lastLoginTime = loginTime
         this.lastLoginIp = loginIp
+    }
+
+    fun bindingRelationship(relatedId: Long) {
+        this.relatedId = relatedId
     }
 
     // 【行为方法结束】

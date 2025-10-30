@@ -2,19 +2,31 @@ package edu.only4.danmuku.domain.aggregates.video_post
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
+
 import edu.only4.danmuku.domain.aggregates.video.enums.PostType
-import edu.only4.danmuku.domain.aggregates.video_post.events.VideoPostDeletedDomainEvent
-import edu.only4.danmuku.domain.aggregates.video_post.events.VideoPostInteractionChangedDomainEvent
+import edu.only4.danmuku.domain.aggregates.video_post.VideoPost.Companion.buildFromUploads
 import edu.only4.danmuku.domain.aggregates.video_post.enums.TransferResult
 import edu.only4.danmuku.domain.aggregates.video_post.enums.UpdateType
 import edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus
 import edu.only4.danmuku.domain.aggregates.video_post.events.VideoAuditFailedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video_post.events.VideoAuditPassedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video_post.events.VideoDraftCreatedDomainEvent
+import edu.only4.danmuku.domain.aggregates.video_post.events.VideoPostDeletedDomainEvent
+import edu.only4.danmuku.domain.aggregates.video_post.events.VideoPostInteractionChangedDomainEvent
+
 import jakarta.persistence.*
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Table
-import org.hibernate.annotations.*
+
+import kotlin.collections.forEachIndexed
+
+import org.hibernate.annotations.DynamicInsert
+import org.hibernate.annotations.DynamicUpdate
+import org.hibernate.annotations.Fetch
+import org.hibernate.annotations.FetchMode
+import org.hibernate.annotations.GenericGenerator
+import org.hibernate.annotations.SQLDelete
+import org.hibernate.annotations.Where
 
 /**
  * 视频信息;
@@ -22,15 +34,9 @@ import org.hibernate.annotations.*
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2025/10/26
+ * @date 2025/10/30
  */
-@Aggregate(
-    aggregate = "VideoPost",
-    name = "VideoPost",
-    root = true,
-    type = Aggregate.TYPE_ENTITY,
-    description = "视频信息，"
-)
+@Aggregate(aggregate = "VideoPost", name = "VideoPost", root = true, type = Aggregate.TYPE_ENTITY, description = "视频信息，")
 @Entity
 @Table(name = "`video_post`")
 @DynamicInsert
@@ -38,7 +44,32 @@ import org.hibernate.annotations.*
 @SQLDelete(sql = "update `video_post` set `deleted` = `id` where `id` = ?")
 @Where(clause = "`deleted` = 0")
 class VideoPost(
+    id: Long = 0L,
+    videoCover: String = "",
+    videoName: String = "",
+    customerId: Long = 0L,
+    pCategoryId: Long = 0L,
+    categoryId: Long? = null,
+    status: VideoStatus = VideoStatus.valueOf(0),
+    postType: PostType = PostType.valueOf(0),
+    originInfo: String? = null,
+    tags: String? = null,
+    introduction: String? = null,
+    interaction: String? = null,
+    duration: Int = 0,
+    createUserId: Long? = null,
+    createBy: String? = null,
+    createTime: Long? = null,
+    updateUserId: Long? = null,
+    updateBy: String? = null,
+    updateTime: Long? = null,
+    deleted: Long = 0L
+) {
     // 【字段映射开始】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
+    @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.EAGER, orphanRemoval = true)
+    @Fetch(FetchMode.SUBSELECT)
+    @JoinColumn(name = "`video_id`", nullable = false)
+    var videoFilePosts: MutableList<VideoFilePost> = mutableListOf()
 
     /**
      * ID
@@ -48,42 +79,48 @@ class VideoPost(
     @GeneratedValue(generator = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator")
     @GenericGenerator(name = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator", strategy = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator")
     @Column(name = "`id`", insertable = false, updatable = false)
-    var id: Long = 0L,
+    var id: Long = id
+        internal set
 
     /**
      * 视频封面
      * varchar(50)
      */
     @Column(name = "`video_cover`")
-    var videoCover: String = "",
+    var videoCover: String = videoCover
+        internal set
 
     /**
      * 视频名称
      * varchar(100)
      */
     @Column(name = "`video_name`")
-    var videoName: String = "",
+    var videoName: String = videoName
+        internal set
 
     /**
      * 用户ID
      * bigint
      */
     @Column(name = "`customer_id`")
-    var customerId: Long = 0L,
+    var customerId: Long = customerId
+        internal set
 
     /**
      * 父级分类ID
      * bigint
      */
     @Column(name = "`p_category_id`")
-    var pCategoryId: Long = 0L,
+    var pCategoryId: Long = pCategoryId
+        internal set
 
     /**
      * 分类ID
      * bigint
      */
     @Column(name = "`category_id`")
-    var categoryId: Long? = null,
+    var categoryId: Long? = categoryId
+        internal set
 
     /**
      * 视频状态
@@ -97,7 +134,8 @@ class VideoPost(
      */
     @Convert(converter = VideoStatus.Converter::class)
     @Column(name = "`status`")
-    var status: VideoStatus = VideoStatus.valueOf(0),
+    var status: VideoStatus = status
+        internal set
 
     /**
      * 投稿类型
@@ -108,96 +146,104 @@ class VideoPost(
      */
     @Convert(converter = PostType.Converter::class)
     @Column(name = "`post_type`")
-    var postType: PostType = PostType.valueOf(0),
+    var postType: PostType = postType
+        internal set
 
     /**
      * 原资源说明
      * varchar(200)
      */
     @Column(name = "`origin_info`")
-    var originInfo: String? = null,
+    var originInfo: String? = originInfo
+        internal set
 
     /**
      * 标签
      * varchar(300)
      */
     @Column(name = "`tags`")
-    var tags: String? = null,
+    var tags: String? = tags
+        internal set
 
     /**
      * 简介
      * varchar(2000)
      */
     @Column(name = "`introduction`")
-    var introduction: String? = null,
+    var introduction: String? = introduction
+        internal set
 
     /**
      * 互动设置
      * varchar(5)
      */
     @Column(name = "`interaction`")
-    var interaction: String? = null,
+    var interaction: String? = interaction
+        internal set
 
     /**
      * 持续时间（秒）
      * int
      */
     @Column(name = "`duration`")
-    var duration: Int? = null,
+    var duration: Int = duration
+        internal set
 
     /**
      * 创建人ID
      * bigint
      */
     @Column(name = "`create_user_id`")
-    var createUserId: Long? = null,
+    var createUserId: Long? = createUserId
+        internal set
 
     /**
      * 创建人名称
      * varchar(32)
      */
     @Column(name = "`create_by`")
-    var createBy: String? = null,
+    var createBy: String? = createBy
+        internal set
 
     /**
      * 创建时间
      * bigint
      */
     @Column(name = "`create_time`")
-    var createTime: Long? = null,
+    var createTime: Long? = createTime
+        internal set
 
     /**
      * 更新人ID
      * bigint
      */
     @Column(name = "`update_user_id`")
-    var updateUserId: Long? = null,
+    var updateUserId: Long? = updateUserId
+        internal set
 
     /**
      * 更新人名称
      * varchar(32)
      */
     @Column(name = "`update_by`")
-    var updateBy: String? = null,
+    var updateBy: String? = updateBy
+        internal set
 
     /**
      * 更新时间
      * bigint
      */
     @Column(name = "`update_time`")
-    var updateTime: Long? = null,
+    var updateTime: Long? = updateTime
+        internal set
 
     /**
      * 删除标识 0：未删除 id：已删除
      * bigint
      */
     @Column(name = "`deleted`")
-    var deleted: Long = 0L,
-) {
-    @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.EAGER, orphanRemoval = true)
-    @Fetch(FetchMode.SUBSELECT)
-    @JoinColumn(name = "`video_id`", nullable = false)
-    var videoFilePosts: MutableList<VideoFilePost> = mutableListOf()
+    var deleted: Long = deleted
+        internal set
 
     // 【字段映射结束】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
 
@@ -330,7 +376,7 @@ class VideoPost(
             val sorted = uploads.sortedBy { it.fileIndex }
             val fileDrafts = sorted.mapIndexed { index, upload ->
                 if (!seenUploadIds.add(upload.uploadId)) {
-                    throw IllegalArgumentException("Duplicate uploadId: ${'$'}{upload.uploadId}")
+                    throw IllegalArgumentException("Duplicate uploadId: ${upload.uploadId}")
                 }
                 totalDuration += upload.duration
                 VideoFilePost(
@@ -358,7 +404,7 @@ class VideoPost(
         val result = buildFromUploads(customerId, uploads)
         this.videoFilePosts.clear()
         this.videoFilePosts.addAll(result.fileDrafts)
-        this.duration = result.totalDuration.takeIf { it > 0 }
+        this.duration = result.totalDuration.coerceAtMost(0)
     }
 
     /**
@@ -510,7 +556,7 @@ class VideoPost(
         this.videoFilePosts.addAll(rebuilt)
 
         val totalDuration = edits.sumOf { it.duration ?: 0 }
-        val normalized = totalDuration.takeIf { it > 0 }
+        val normalized = totalDuration.coerceAtMost(0)
         if (this.duration != normalized) {
             this.duration = normalized
             hasFileMetaChange = true

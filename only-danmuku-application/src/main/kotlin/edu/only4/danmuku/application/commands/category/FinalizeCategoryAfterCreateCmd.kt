@@ -42,7 +42,7 @@ object FinalizeCategoryAfterCreateCmd {
                 affected.forEach { it.addSort(1) }
             }
 
-            category.sort = targetSort
+            category.changeSort(targetSort)
 
             val parentPath = parent?.nodePath ?: ""
             category.updateNodePath(parentPath)
