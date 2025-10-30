@@ -41,6 +41,13 @@
     },
     {
       "type": "dir",
+      "tag": "validator",
+      "name": "{{ path }}",
+      "children": [
+      ]
+    },
+    {
+      "type": "dir",
       "tag": "query_handler",
       "name": "",
       "pattern": "^(?!.*(List|list|Page|page)).*$",
@@ -466,6 +473,11 @@
                                   "tag": "integration_event_handler"
                                 }
                               ]
+                            },
+                            {
+                              "type": "dir",
+                              "name": "validator",
+                              "tag": "validator"
                             }
                           ]
                         }
