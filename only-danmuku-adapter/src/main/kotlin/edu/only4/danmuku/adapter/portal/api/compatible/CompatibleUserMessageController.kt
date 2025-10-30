@@ -1,9 +1,13 @@
 package edu.only4.danmuku.adapter.portal.api.compatible
 
+import com.only4.cap4k.ddd.core.Mediator
+import com.only4.cap4k.ddd.core.share.PageData
 import edu.only4.danmuku.adapter.portal.api.payload.*
+import edu.only4.danmuku.application.queries.message.GetMessagePageQry
+import edu.only4.danmuku.application.queries.message.GetNoReadMessageCountGroupQry
+import edu.only4.danmuku.application.queries.message.GetNoReadMessageCountQry
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -19,18 +23,23 @@ class CompatibleUserMessageController {
      * 获取未读消息数
      */
     @PostMapping("/getNoReadCount")
-    fun messageGetNoReadCount(): MessageGetNoReadCount.Response {
-        // TODO: 实现获取未读消息数逻辑
-        return MessageGetNoReadCount.Response()
+    fun getNoReadCount(): Long {
+        val result = Mediator.queries.send(GetNoReadMessageCountQry.Request())
+        return result.count
     }
 
     /**
      * 获取未读消息数(分组)
      */
     @PostMapping("/getNoReadCountGroup")
-    fun messageGetNoReadCountGroup(): MessageGetNoReadCountGroup.Response {
-        // TODO: 实现获取未读消息数(分组)逻辑
-        return MessageGetNoReadCountGroup.Response()
+    fun getNoReadCountGroup(): List<MessageGetNoReadCountGroup.GroupItem> {
+        val result = Mediator.queries.send(GetNoReadMessageCountGroupQry.Request())
+        return result.list.map { item ->
+            MessageGetNoReadCountGroup.GroupItem(
+                messageType = item.messageType,
+                count = item.count,
+            )
+        }
     }
 
     /**
@@ -46,9 +55,24 @@ class CompatibleUserMessageController {
      * 加载消息列表
      */
     @PostMapping("/loadMessage")
-    fun messageLoad(@Validated request: MessageLoad.Request): MessageLoad.Response {
-        // TODO: 实现加载消息列表逻辑
-        return MessageLoad.Response()
+    fun getMessagePage(@Validated request: MessageLoad.Request): PageData<MessageLoad.MessageItem> {
+        val queryReq = GetMessagePageQry.Request(
+            messageType = request.messageType,
+        ).apply {
+            pageNum = request.pageNum
+            pageSize = request.pageSize
+        }
+        val result = Mediator.queries.send(queryReq)
+        val items = result.list.map {
+            MessageLoad.MessageItem(
+                id = it.id,
+                messageType = it.messageType,
+                readType = it.readType,
+                extendJson = it.extendJson,
+                createTime = it.createTime,
+            )
+        }
+        return PageData.create(request, result.totalCount, items)
     }
 
     /**
@@ -61,3 +85,4 @@ class CompatibleUserMessageController {
     }
 
 }
+

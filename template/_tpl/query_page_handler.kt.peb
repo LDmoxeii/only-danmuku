@@ -1,0 +1,22 @@
+package {{ basePackage }}{{ templatePackage }}{{ package }}
+{%- for import in imports %}
+{{ import }}
+{%- endfor %}
+import org.babyfish.jimmer.sql.kt.KSqlClient
+
+/**
+ * {{ Comment }}
+ *
+ * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
+ * @author cap4k-ddd-codegen
+ * @date {{ date }}
+ */
+@Service
+class {{ Query }}Handler(
+    private val sqlClient: KSqlClient,
+) : PageQuery<{{ Query }}.Request, {{ Query }}.Response> {
+
+    override fun exec(request: {{ Query }}.Request): PageData<{{ Query }}.Response> {
+        TODO()
+    }
+}

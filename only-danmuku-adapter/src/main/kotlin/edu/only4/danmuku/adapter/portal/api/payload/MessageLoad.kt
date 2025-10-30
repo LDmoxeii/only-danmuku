@@ -1,6 +1,6 @@
 package edu.only4.danmuku.adapter.portal.api.payload
 
-import jakarta.validation.constraints.NotEmpty
+import com.only4.cap4k.ddd.core.share.PageParam
 
 /**
  * 加载消息列表接口载荷
@@ -8,18 +8,15 @@ import jakarta.validation.constraints.NotEmpty
 object MessageLoad {
 
     data class Request(
-        /** 消息类型 */
+        val messageType: Int?,
 
-        @field:NotEmpty(message = "消息类型不能为空")
-        val messageType: Int = 0,
-        /** 页码 */
-        val pageNo: Int? = null
-    )
+    ): PageParam()
 
-    data class Response(
-        /** 消息列表 */
-        var list: List<Any>? = null,
-        var pageNo: Int? = null,
-        var totalCount: Int? = null
+    data class MessageItem(
+        val id: Long,
+        val messageType: Int,
+        val readType: Int,
+        val extendJson: String?,
+        val createTime: Long,
     )
 }

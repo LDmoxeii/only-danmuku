@@ -9,6 +9,11 @@ object MessageGetNoReadCountGroup {
 
     data class Response(
         /** 分组未读消息数列表 */
-        var list: List<Any>? = null
+        var list: List<GroupItem>? = null
+    )
+
+    data class GroupItem(
+        val messageType: Int,
+        val count: Int,
     )
 }

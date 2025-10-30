@@ -1,0 +1,25 @@
+package edu.only4.danmuku.application.queries.message
+
+import com.only4.cap4k.ddd.core.application.query.PageQueryParam
+
+/**
+ * 获取消息分页
+ *
+ * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
+ * @author cap4k-ddd-codegen
+ * @date 2025/10/30
+ */
+object GetMessagePageQry {
+
+    data class Request(
+        val messageType: Int? = null,
+    ) : PageQueryParam<Response>()
+
+    data class Response(
+        val id: Long,
+        val messageType: Int,
+        val readType: Int,
+        val extendJson: String?,
+        val createTime: Long,
+    )
+}

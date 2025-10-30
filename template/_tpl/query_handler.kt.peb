@@ -1,0 +1,25 @@
+package {{ basePackage }}{{ templatePackage }}{{ package }}
+{%- for import in imports %}
+{{ import }}
+{%- endfor %}
+import org.babyfish.jimmer.sql.kt.KSqlClient
+
+/**
+ * {{ Comment }}
+ *
+ * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
+ * @author cap4k-ddd-codegen
+ * @date {{ date }}
+ */
+@Service
+class {{ QueryHandler }}(
+    private val sqlClient: KSqlClient,
+) : Query<{{ Query }}.Request, {{ Query }}.Response> {
+
+    override fun exec(request: {{ Query }}.Request): {{ Query }}.Response {
+
+        return {{ Query }}.Response(
+
+        )
+    }
+}
