@@ -3,32 +3,44 @@ package edu.only4.danmuku.application.commands.customer_message
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
-
+import edu.only4.danmuku.domain._share.meta.video.SVideo
+import edu.only4.danmuku.domain.aggregates.customer_message.factory.CustomerMessageFactory
+import edu.only4.danmuku.domain.aggregates.customer_message.enums.MessageType
 import org.springframework.stereotype.Service
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * 发送视频审核通过系统消息
- *
- * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
- * @author cap4k-ddd-codegen
- * @date 2025/10/30
  */
 object SendVideoAuditPassedMessageCmd {
 
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
-            Mediator.uow.save()
+            val video = Mediator.repositories.findOne(
+                SVideo.predicateById(request.videoId)
+            ).getOrNull() ?: return Response()
 
-            return Response(
+            val now = System.currentTimeMillis() / 1000
+            Mediator.factories.create(
+                CustomerMessageFactory.Payload(
+                    customerId = video.customerId,
+                    videoId = request.videoId,
+                    messageType = MessageType.SYSTEM_MESSAGE,
+                    sendSubjectId = request.operatorId,
+                    extendJson = """{"auditStatus":4}""",
+                    createTime = now,
+                )
             )
+            Mediator.uow.save()
+            return Response()
         }
-
     }
 
-    class Request(
+    data class Request(
+        val videoId: Long,
+        val operatorId: Long? = null,
     ) : RequestParam<Response>
 
-    class Response(
-    )
+    class Response
 }
