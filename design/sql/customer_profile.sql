@@ -9,7 +9,7 @@ CREATE TABLE `customer_profile`
     `nick_name`           varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL COMMENT '昵称',
     `avatar`              varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL     DEFAULT NULL COMMENT '头像',
     `email`               varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '邮箱',
-    `sex`                 tinyint(1)                                                    NOT NULL DEFAULT 0 COMMENT '性别 @E=0:UNKNOWN:未知|1:FEMALE:女|2:MALE:男|;@T=SexType',
+    `sex`                 tinyint(1)                                                    NOT NULL DEFAULT 0 COMMENT '性别 @E=0:UNKNOWN:未知|1:FEMALE:女|2:MALE:男|3:CONFIDENTIALITY|;@T=SexType',
     `birthday`            varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL     DEFAULT NULL COMMENT '出生日期',
     `school`              varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL     DEFAULT NULL COMMENT '学校',
     `person_introduction` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL     DEFAULT NULL COMMENT '个人简介',
