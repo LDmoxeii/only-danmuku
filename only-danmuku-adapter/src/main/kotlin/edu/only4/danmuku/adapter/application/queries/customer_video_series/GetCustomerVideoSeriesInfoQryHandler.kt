@@ -10,10 +10,6 @@ import org.springframework.stereotype.Service
 
 /**
  * 获取用户视频系列信息
- *
- * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
- * @author cap4k-ddd-codegen
- * @date 2025/10/15
  */
 @Service
 class GetCustomerVideoSeriesInfoQryHandler(
@@ -21,12 +17,11 @@ class GetCustomerVideoSeriesInfoQryHandler(
 ) : Query<GetCustomerVideoSeriesInfoQry.Request, GetCustomerVideoSeriesInfoQry.Response> {
 
     override fun exec(request: GetCustomerVideoSeriesInfoQry.Request): GetCustomerVideoSeriesInfoQry.Response {
-        // 查询系列详情，包含关联的视频列表
+        // 查询系列详情，携带系列视频列表
         val series = sqlClient.findOne(CustomerVideoSeriesDetail::class) {
             where(table.id eq request.seriesId)
         }
 
-        // 转换为响应格式
         return GetCustomerVideoSeriesInfoQry.Response(
             seriesId = series.id,
             userId = series.customerId,
@@ -34,15 +29,18 @@ class GetCustomerVideoSeriesInfoQryHandler(
             seriesDescription = series.seriesDescription,
             sort = series.sort,
             createTime = series.createTime ?: 0L,
+            updateTime = series.createTime, // 暂无独立updateTime字段
             videoList = series.seriesVideos.map { seriesVideo ->
                 GetCustomerVideoSeriesInfoQry.VideoItem(
                     videoId = seriesVideo.video.id,
                     videoCover = seriesVideo.video.videoCover,
                     videoName = seriesVideo.video.videoName,
                     playCount = seriesVideo.video.playCount,
-                    sort = seriesVideo.sort
+                    sort = seriesVideo.sort,
+                    createTime = seriesVideo.video.createTime
                 )
             }
         )
     }
 }
+

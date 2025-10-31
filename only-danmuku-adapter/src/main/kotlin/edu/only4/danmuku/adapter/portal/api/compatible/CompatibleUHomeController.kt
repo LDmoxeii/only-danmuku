@@ -167,12 +167,13 @@ class CompatibleUHomeController {
             pageNum = queryResult.pageNum,
             pageSize = queryResult.pageSize,
             list = queryResult.list.map { user ->
+                // 兼容前端所需字段
                 UHomeLoadFocusList.UserItem(
-                    userId = user.focusUserId.toString(),
-                    nickName = user.nickName,
-                    avatar = user.avatar,
-                    fansCount = user.fansCount,
-                    haveFocus = user.haveFocus
+                    otherUserId = user.focusUserId.toString(),
+                    otherNickName = user.nickName,
+                    otherPersonIntroduction = user.personIntroduction,
+                    otherAvatar = user.avatar,
+                    focusType = user.focusType
                 )
             },
             totalCount = queryResult.totalCount
@@ -197,11 +198,11 @@ class CompatibleUHomeController {
             pageSize = queryResult.pageSize,
             list = queryResult.list.map { user ->
                 UHomeLoadFansList.UserItem(
-                    userId = user.userId.toString(),
-                    nickName = user.nickName,
-                    avatar = user.avatar,
-                    fansCount = user.fansCount,
-                    haveFocus = user.haveFocus
+                    otherUserId = user.userId.toString(),
+                    otherNickName = user.nickName,
+                    otherPersonIntroduction = user.personIntroduction,
+                    otherAvatar = user.avatar,
+                    focusType = user.focusType
                 )
             },
             totalCount = queryResult.totalCount
@@ -251,13 +252,14 @@ class CompatibleUHomeController {
         )
     }
 
+    @SaIgnore
     @PostMapping("/loadUserCollection")
     fun getCollectionPage(@Validated request: UHomeLoadUserCollection.Request): PageData<UHomeLoadUserCollection.VideoItem> {
-        val customerId = LoginHelper.getUserId()!!
+        val actualUserId = request.userId ?: LoginHelper.getUserId()!!
 
         // 调用查询获取用户收藏的视频ID列表
         val collectionRequest = GetCollectionPageQry.Request(
-            customerId = customerId
+            customerId = actualUserId
         ).apply {
             pageNum = request.pageNum
             pageSize = request.pageSize

@@ -19,7 +19,10 @@ object GetFansListQry {
         val userId: Long,
         val nickName: String,
         val avatar: String?,
+        val personIntroduction: String? = null,
         val fansCount: Int = 0,
         val haveFocus: Boolean = false,
+        /** 互关 1，是；0，否 */
+        val focusType: Int = 0,
     )
 }

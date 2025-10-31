@@ -26,8 +26,11 @@ object VideoSeriesLoad {
         var seriesDescription: String? = null,
         var sort: Int? = null,
         var videoCount: Int? = null,
+        var cover: String? = null,
         @get:Translation(type = EpochSecondToDateStringTranslation.TYPE, other = "yyyy-MM-dd HH:mm:ss")
-        var createTime: Long? = null
+        var createTime: Long? = null,
+        @get:Translation(type = EpochSecondToDateStringTranslation.TYPE, other = "yyyy-MM-dd HH:mm:ss")
+        var updateTime: Long? = null,
     )
 }
 

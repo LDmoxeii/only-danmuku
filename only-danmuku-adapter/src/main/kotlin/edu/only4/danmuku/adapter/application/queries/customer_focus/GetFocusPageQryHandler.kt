@@ -14,10 +14,6 @@ import org.springframework.stereotype.Service
 
 /**
  * 获取关注列表
- *
- * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
- * @author cap4k-ddd-codegen
- * @date 2025/10/15
  */
 @Service
 class GetFocusPageQryHandler(
@@ -26,21 +22,26 @@ class GetFocusPageQryHandler(
 
     override fun exec(request: GetFocusPageQry.Request): PageData<GetFocusPageQry.Response> {
 
-        // 查询当前用户的关注列表
+        // 查询当前用户的关注列表（我关注了谁）
         val pageResult =
             sqlClient.createQuery(CustomerFocus::class) {
                 where(table.customerId eq request.userId)
                 select(table.fetchBy {
-                    customer {
+                    focusCustomer {
                         relation {
                             nickName()
                             avatar()
+                            personIntroduction()
                         }
                     }
                 })
             }.fetchPage(request.pageNum - 1, request.pageSize)
 
-        // 检查当前用户是否关注了这些人（在关注列表中，默认都是已关注）
+        // 预取我的粉丝集合：哪些人关注了我，用于判断是否互关
+        val myFansUserIds = sqlClient.findAll(CustomerFocusSimple::class) {
+            where(table.focusCustomerId eq request.userId)
+        }.map { it.customerId }.toSet()
+
         return PageData.create(
             pageNum = request.pageNum,
             pageSize = request.pageSize,
@@ -52,13 +53,16 @@ class GetFocusPageQryHandler(
 
                 GetFocusPageQry.Response(
                     focusUserId = focus.focusCustomerId,
-                    nickName = focus.customer.relation!!.nickName,
-                    avatar = focus.customer.relation!!.avatar,
+                    nickName = focus.focusCustomer.relation!!.nickName,
+                    avatar = focus.focusCustomer.relation!!.avatar,
+                    personIntroduction = focus.focusCustomer.relation!!.personIntroduction,
                     fansCount = fansCount,
-                    haveFocus = true
+                    haveFocus = true,
+                    focusType = if (myFansUserIds.contains(focus.focusCustomerId)) 1 else 0
                 )
             },
             totalCount = pageResult.totalRowCount
         )
     }
 }
+

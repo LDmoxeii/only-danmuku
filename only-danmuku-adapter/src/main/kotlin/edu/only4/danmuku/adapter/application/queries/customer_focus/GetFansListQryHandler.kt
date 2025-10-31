@@ -14,10 +14,6 @@ import org.springframework.stereotype.Service
 
 /**
  * 获取粉丝列表
- *
- * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
- * @author cap4k-ddd-codegen
- * @date 2025/10/15
  */
 @Service
 class GetFansListQryHandler(
@@ -35,12 +31,14 @@ class GetFansListQryHandler(
                         relation {
                             nickName()
                             avatar()
+                            personIntroduction()
                         }
                     }
                     focusCustomerId()
                 })
             }.fetchPage(request.pageNum - 1, request.pageSize)
 
+        // 我关注过的用户集合：用于判断互关
         val myFocusUserIds = sqlClient.findAll(CustomerFocusSimple::class) {
             where(table.customerId eq request.userId)
             select(table.focusCustomerId)
@@ -58,11 +56,14 @@ class GetFansListQryHandler(
                     userId = focus.customerId,
                     nickName = focus.customer.relation!!.nickName,
                     avatar = focus.customer.relation!!.avatar,
+                    personIntroduction = focus.customer.relation!!.personIntroduction,
                     fansCount = fansCount,
-                    haveFocus = myFocusUserIds.contains(focus.customerId)  // 是否反向关注
+                    haveFocus = myFocusUserIds.contains(focus.customerId),
+                    focusType = if (myFocusUserIds.contains(focus.customerId)) 1 else 0
                 )
             },
             totalCount = pageResult.totalRowCount
         )
     }
 }
+

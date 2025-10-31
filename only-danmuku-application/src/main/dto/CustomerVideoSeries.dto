@@ -15,6 +15,7 @@ CustomerVideoSeriesDetail {
             id
             videoCover
             videoName
+            createTime
             playCount
         }
     }

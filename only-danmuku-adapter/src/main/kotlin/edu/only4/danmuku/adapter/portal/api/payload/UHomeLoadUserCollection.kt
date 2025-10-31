@@ -1,7 +1,6 @@
 package edu.only4.danmuku.adapter.portal.api.payload
 
 import com.only4.cap4k.ddd.core.share.PageParam
-import jakarta.validation.constraints.NotEmpty
 
 /**
  * 加载用户收藏列表接口载荷
@@ -9,9 +8,7 @@ import jakarta.validation.constraints.NotEmpty
 object UHomeLoadUserCollection {
 
     data class Request(
-        /** 用户ID */
-        @field:NotEmpty(message = "用户ID不能为空")
-        val userId: String = ""
+        val userId: Long?
     ) : PageParam()
 
     data class VideoItem(

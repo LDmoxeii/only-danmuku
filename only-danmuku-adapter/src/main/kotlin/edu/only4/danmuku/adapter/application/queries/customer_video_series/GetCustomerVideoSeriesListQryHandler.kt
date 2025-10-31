@@ -9,11 +9,7 @@ import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.springframework.stereotype.Service
 
 /**
- * 获取用户视频系列
- *
- * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
- * @author cap4k-ddd-codegen
- * @date 2025/10/15
+ * 获取用户视频系列列表
  */
 @Service
 class GetCustomerVideoSeriesListQryHandler(
@@ -21,22 +17,31 @@ class GetCustomerVideoSeriesListQryHandler(
 ) : ListQuery<GetCustomerVideoSeriesListQry.Request, GetCustomerVideoSeriesListQry.Response> {
 
     override fun exec(request: GetCustomerVideoSeriesListQry.Request): List<GetCustomerVideoSeriesListQry.Response> {
-        // 查询用户的所有视频系列，直接使用Detail DTO来获取seriesVideos
+        // 直接使用 Detail DTO 以获取 seriesVideos
         val seriesDetailList =
             sqlClient.findAll(CustomerVideoSeriesDetail::class) {
                 where(table.customerId eq request.userId)
             }
 
-        // 转换为响应格式
-        return seriesDetailList.map { series ->
+        // 按列表 sort 升序排列
+        val ordered = seriesDetailList.sortedBy { it.sort }
+
+        return ordered.map { series ->
+            val firstVideoCover = series.seriesVideos
+                .sortedBy { sv -> sv.sort }
+                .firstOrNull()?.video?.videoCover
+
             GetCustomerVideoSeriesListQry.Response(
                 seriesId = series.id,
                 seriesName = series.seriesName,
                 seriesDescription = series.seriesDescription,
                 sort = series.sort,
                 videoCount = series.seriesVideos.size,
-                createTime = series.createTime ?: 0L
+                cover = firstVideoCover,
+                createTime = series.createTime ?: 0L,
+                updateTime = series.createTime
             )
         }
     }
 }
+

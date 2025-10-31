@@ -5,7 +5,7 @@ import com.only4.cap4k.ddd.core.application.RequestParam
 /**
  * 获取用户视频系列信息
  *
- * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
+ * 该文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * @author cap4k-ddd-codegen
  * @date 2025/10/15
  */
@@ -27,8 +27,10 @@ object GetCustomerVideoSeriesInfoQry {
         val seriesDescription: String? = null,
         /** 系列排序 */
         val sort: Int? = null,
-        /** 创建时间 */
+        /** 创建时间(秒) */
         val createTime: Long,
+        /** 更新时间(秒，仅用于前端展示) */
+        val updateTime: Long? = null,
         /** 视频列表 */
         val videoList: List<VideoItem>? = null
     )
@@ -40,9 +42,12 @@ object GetCustomerVideoSeriesInfoQry {
         val videoCover: String? = null,
         /** 视频名称 */
         val videoName: String? = null,
-        /** 播放数 */
+        /** 播放量 */
         val playCount: Int? = null,
         /** 系列内排序 */
-        val sort: Int? = null
+        val sort: Int? = null,
+        /** 视频创建时间(秒) */
+        val createTime: Long? = null,
     )
 }
+

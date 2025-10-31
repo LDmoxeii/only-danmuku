@@ -5,9 +5,8 @@ import com.only4.cap4k.ddd.core.application.RequestParam
 /**
  * 获取用户视频系列
  *
- * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
- * @author cap4k-ddd-codegen
- * @date 2025/10/15
+ * 该文件由[cap4k-ddd-codegen-gradle-plugin]生成
+ * 并按前端需要补充了 cover 与 updateTime 字段
  */
 object GetCustomerVideoSeriesListQry {
 
@@ -27,7 +26,12 @@ object GetCustomerVideoSeriesListQry {
         val sort: Int? = null,
         /** 视频数量 */
         val videoCount: Int? = 0,
-        /** 创建时间 */
-        val createTime: Long
+        /** 列表封面(取第一个视频的cover) */
+        val cover: String? = null,
+        /** 创建时间(秒) */
+        val createTime: Long,
+        /** 更新时间(秒，前端展示用；暂用与创建时间一致或由处理器计算) */
+        val updateTime: Long? = null,
     )
 }
+

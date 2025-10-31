@@ -19,6 +19,7 @@ object VideoSeriesLoadAllVideo {
         var videoId: String? = null,
         var videoCover: String? = null,
         var videoName: String? = null,
-        var playCount: Int? = null
+        var playCount: Int? = null,
+        var createTime: String? = null,
     )
 }

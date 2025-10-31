@@ -10,10 +10,11 @@ object UHomeLoadFansList {
     class Request : PageParam()
 
     data class UserItem(
-        var userId: String? = null,
-        var nickName: String? = null,
-        var avatar: String? = null,
-        var fansCount: Int? = null,
-        var haveFocus: Boolean? = null
+        // 兼容前端使用的字段命名
+        var otherUserId: String? = null,
+        var otherNickName: String? = null,
+        var otherPersonIntroduction: String? = null,
+        var otherAvatar: String? = null,
+        var focusType: Int? = null,
     )
 }
