@@ -21,7 +21,6 @@ object UpdateCustomerProfileCmd {
         override fun exec(request: Request): Response {
             val profile = Mediator.repositories.findFirst(
                 SCustomerProfile.predicate { it.userId eq request.customerId },
-                persist = false
             ).getOrNull() ?: throw KnownException("用户资料不存在：${request.customerId}")
 
             // TODO
