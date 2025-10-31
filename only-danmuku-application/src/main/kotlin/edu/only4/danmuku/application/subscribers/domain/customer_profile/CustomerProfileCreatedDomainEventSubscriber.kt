@@ -19,15 +19,6 @@ import org.springframework.stereotype.Service
 class CustomerProfileCreatedDomainEventSubscriber {
 
     @EventListener(CustomerProfileCreatedDomainEvent::class)
-    fun on(event: CustomerProfileCreatedDomainEvent) {
-        Mediator.commands.send(
-            AddStatisticsInfoCmd.Request(
-                customerId = event.entity.userId
-            )
-        )
-    }
-
-    @EventListener(CustomerProfileCreatedDomainEvent::class)
     fun on1(event: CustomerProfileCreatedDomainEvent) {
         val customerProfile = event.entity
         Mediator.commands.send(

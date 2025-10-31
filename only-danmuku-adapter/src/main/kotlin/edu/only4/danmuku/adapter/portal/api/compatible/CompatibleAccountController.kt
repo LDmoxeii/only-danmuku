@@ -15,6 +15,8 @@ import edu.only4.danmuku.application.commands.user.UpdateLoginInfoCmd
 import edu.only4.danmuku.application.distributed.clients.CaptchaGen
 import edu.only4.danmuku.application.queries.customer_profile.GetCustomerProfileQry
 import edu.only4.danmuku.application.queries.user.GetUserCountInfoQry
+import edu.only4.danmuku.domain._share.meta.customer_profile.SCustomerProfile
+import edu.only4.danmuku.domain._share.meta.user.SUser
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.Pattern
@@ -91,7 +93,8 @@ class CompatibleAccountController {
             UserInfo(
                 userAccount.userId, userAccount.userType.code, userAccount.username,
                 extra = mapOf(
-                    "avatar" to (customerProfile.avatar ?: ""),
+                    SCustomerProfile.props.avatar to (customerProfile.avatar ?: ""),
+                    SUser.props.relatedId to (customerProfile.customerId)
                 )
             )
         )

@@ -18,13 +18,13 @@ import org.springframework.stereotype.Service
 @Service
 class UserUnfocusedDomainEventSubscriber {
 
-    @EventListener(UserUnfocusedDomainEvent::class)
+//    @EventListener(UserUnfocusedDomainEvent::class)
     fun on(event: UserUnfocusedDomainEvent) {
         val entity = event.entity
 
         Mediator.commands.send(
             UpdateStatisticsInfoCmd.Request(
-                customerId = entity.customerId.toLong(),
+                customerId = entity.customerId,
                 dataType = StatisticsDataType.FANS,
                 countDelta = -1
             )
