@@ -126,7 +126,7 @@ class CompatibleUCenterVideoPostController {
             pageSize = queryResult.pageSize,
             list = queryResult.list.map { video ->
                 UCenterLoadVideoList.VideoItem(
-                    videoId = video.videoId.toString(),
+                    videoId = video.videoId,
                     videoCover = video.videoCover,
                     videoName = video.videoName,
                     duration = video.duration,
