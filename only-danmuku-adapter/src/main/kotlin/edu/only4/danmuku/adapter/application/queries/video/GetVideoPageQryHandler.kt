@@ -2,10 +2,11 @@ package edu.only4.danmuku.adapter.application.queries.video
 
 import com.only4.cap4k.ddd.core.application.query.PageQuery
 import com.only4.cap4k.ddd.core.share.PageData
+import com.only4.cap4k.ddd.domain.repo.toSpringData
 import edu.only4.danmuku.application.queries._share.model.*
 import edu.only4.danmuku.application.queries.video.GetVideoPageQry
+import org.babyfish.jimmer.spring.repository.orderBy
 import org.babyfish.jimmer.sql.kt.KSqlClient
-import org.babyfish.jimmer.sql.kt.ast.expression.desc
 import org.babyfish.jimmer.sql.kt.ast.expression.`eq?`
 import org.babyfish.jimmer.sql.kt.ast.expression.`ilike?`
 import org.babyfish.jimmer.sql.kt.ast.expression.`valueNotIn?`
@@ -32,7 +33,7 @@ class GetVideoPageQryHandler(
             where(table.recommendType `eq?` request.recommendType)
             where(table.id `valueNotIn?` request.excludeVideoIds)
             // 按创建时间倒序
-            orderBy(table.createTime.desc())
+            orderBy(toSpringData(request.sort))
             // DTO投影
             select(table.fetchBy {
                 allScalarFields()

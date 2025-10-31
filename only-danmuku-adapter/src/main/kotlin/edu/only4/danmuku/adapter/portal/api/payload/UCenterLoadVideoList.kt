@@ -21,7 +21,7 @@ object UCenterLoadVideoList {
      */
     data class VideoItem(
         /** 视频ID */
-        var videoId: String? = null,
+        var videoId: Long,
         /** 视频封面 */
         var videoCover: String? = null,
         /** 视频名称 */

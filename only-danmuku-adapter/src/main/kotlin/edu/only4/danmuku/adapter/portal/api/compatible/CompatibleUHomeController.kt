@@ -213,11 +213,19 @@ class CompatibleUHomeController {
     @PostMapping("/loadVideoList")
     fun getVideoPage(@Validated request: UHomeLoadVideoList.Request): PageData<UHomeLoadVideoList.VideoItem> {
         val queryRequest = GetVideoPageQry.Request(
-            userId = request.userId.toLong(),
+            userId = request.userId,
             videoNameFuzzy = request.videoName,
         ).apply {
             pageNum = request.pageNum
             pageSize = if (request.type != null) 10 else request.pageSize
+            sort.add(
+                when (request.type) {
+                    0 -> UHomeLoadVideoList.Request.CREATE_TIME_DESC
+                    1 -> UHomeLoadVideoList.Request.PLAY_COUNT_DESC
+                    2 -> UHomeLoadVideoList.Request.COLLECT_COUNT_DESC
+                    else -> UHomeLoadVideoList.Request.CREATE_TIME_DESC
+                }
+            )
         }
 
         val queryResult = Mediator.queries.send(queryRequest)

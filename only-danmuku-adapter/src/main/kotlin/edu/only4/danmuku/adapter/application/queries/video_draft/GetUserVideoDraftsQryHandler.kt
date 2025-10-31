@@ -50,7 +50,7 @@ class GetUserVideoDraftsQryHandler(
             pageSize = request.pageSize,
             list = pageResult.rows.map { draft ->
                 GetUserVideoDraftsQry.Response(
-                    videoId = draft.id,
+                    videoId = draft.video?.id ?: draft.id,
                     videoCover = draft.videoCover,
                     videoName = draft.videoName,
                     duration = draft.duration,

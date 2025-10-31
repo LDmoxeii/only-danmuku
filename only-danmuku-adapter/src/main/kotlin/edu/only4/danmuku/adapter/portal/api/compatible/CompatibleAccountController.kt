@@ -87,7 +87,14 @@ class CompatibleAccountController {
             )
         )
 
-        LoginHelper.login(UserInfo(userAccount.userId, userAccount.userType.code, userAccount.username))
+        LoginHelper.login(
+            UserInfo(
+                userAccount.userId, userAccount.userType.code, userAccount.username,
+                extra = mapOf(
+                    "avatar" to (customerProfile.avatar ?: ""),
+                )
+            )
+        )
 
         return AccountLogin.Response(
             userId = userAccount.userId,
@@ -98,8 +105,18 @@ class CompatibleAccountController {
         )
     }
 
+    @SaIgnore
     @PostMapping("/autoLogin")
-    fun autoLogin() = Unit
+    fun autoLogin() : AccountLogin.Response? {
+        if (!LoginHelper.isLogin()) return null
+        return AccountLogin.Response(
+            userId = LoginHelper.getUserId()!!,
+            nickName = LoginHelper.getUserInfo()!!.username,
+            avatar = LoginHelper.getUserInfo()!!.extra["avatar"] as String,
+            expireAt = StpUtil.getTokenTimeout(),
+            token = StpUtil.getTokenValue()
+        )
+    }
 
     @PostMapping("/logout")
     fun logout() = StpUtil.logout()

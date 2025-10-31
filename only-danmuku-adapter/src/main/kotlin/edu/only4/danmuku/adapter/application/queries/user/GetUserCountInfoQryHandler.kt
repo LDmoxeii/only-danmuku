@@ -7,6 +7,7 @@ import edu.only4.danmuku.application.queries._share.model.currentCoinCount
 import edu.only4.danmuku.application.queries._share.model.customerId
 import edu.only4.danmuku.application.queries._share.model.focusCustomerId
 import edu.only4.danmuku.application.queries._share.model.id
+import edu.only4.danmuku.application.queries._share.model.userId
 import edu.only4.danmuku.application.queries.user.GetUserCountInfoQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.count
@@ -47,7 +48,7 @@ class GetUserCountInfoQryHandler(
         // 3. 查询当前硬币数
         val currentCoinCount = sqlClient
             .createQuery(CustomerProfile::class) {
-                where(table.id eq request.customerId)
+                where(table.userId eq request.customerId)
                 select(table.currentCoinCount)
             }
             .fetchOneOrNull() ?: throw IllegalArgumentException("用户信息不存在: ${request.customerId}")

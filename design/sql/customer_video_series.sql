@@ -47,29 +47,3 @@ CREATE TABLE `customer_video_series_video`
     CHARACTER SET = utf8mb4
     COLLATE = utf8mb4_general_ci COMMENT = '用户视频序列视频关联;@P=customer_video_series;'
     ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Test data for customer_video_series
--- ----------------------------
-INSERT INTO customer_video_series (id, customer_id, series_name, series_description, sort, create_user_id, create_by,
-                                   create_time, update_user_id, update_by, update_time, deleted)
-VALUES (5001, 2001, 'Kotlin学习系列', 'Kotlin编程从入门到精通', 1, 2001, 'user_zhang', 1729267200, 2001, 'user_zhang',
-        1729267200, 0),
-       (5002, 2001, 'Spring Boot实战', 'Spring Boot微服务开发教程', 2, 2001, 'user_zhang', 1729270800, 2001,
-        'user_zhang', 1729270800, 0),
-       (5003, 2002, '数据库优化系列', 'MySQL性能优化技巧', 1, 2002, 'user_li', 1729274400, 2002, 'user_li', 1729274400,
-        0);
-
--- ----------------------------
--- Test data for customer_video_series_video
--- ----------------------------
-INSERT INTO customer_video_series_video (id, customer_id, series_id, video_id, sort, create_user_id, create_by,
-                                         create_time, update_user_id, update_by, update_time, deleted)
-VALUES
--- user_zhang 的 Kotlin学习系列
-(6001, 2001, 5001, 1001, 1, 2001, 'user_zhang', 1729267200, 2001, 'user_zhang', 1729267200, 0),
-(6002, 2001, 5001, 1005, 2, 2001, 'user_zhang', 1729267200, 2001, 'user_zhang', 1729267200, 0),
--- user_zhang 的 Spring Boot实战
-(6003, 2001, 5002, 1002, 1, 2001, 'user_zhang', 1729270800, 2001, 'user_zhang', 1729270800, 0),
--- user_li 的 数据库优化系列
-(6004, 2002, 5003, 1003, 1, 2002, 'user_li', 1729274400, 2002, 'user_li', 1729274400, 0);
