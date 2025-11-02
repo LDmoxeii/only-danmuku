@@ -12,26 +12,12 @@ import com.only4.cap4k.ddd.core.application.RequestParam
 object GetUserCountInfoQry {
 
     class Request(
-        /**
-         * 用户ID
-         */
         val customerId: Long
     ) : RequestParam<Response>
 
     class Response(
-        /**
-         * 粉丝数
-         */
-        val fansCount: Int,
-
-        /**
-         * 当前硬币数
-         */
-        val currentCoinCount: Int,
-
-        /**
-         * 关注数
-         */
-        val focusCount: Int
+        val fansCount: Long,
+        val currentCoinCount: Long,
+        val focusCount: Long
     )
 }

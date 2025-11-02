@@ -2,7 +2,7 @@ package edu.only4.danmuku.application.commands.category
 
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
-import com.only4.cap4k.ddd.core.application.command.Command
+import com.only4.cap4k.ddd.core.application.command.NoneResultCommandParam
 import edu.only4.danmuku.application.validator.CategoryDeletionAllowed
 import edu.only4.danmuku.application.validator.CategoryMustExist
 import edu.only4.danmuku.domain._share.meta.category.SCategory
@@ -18,8 +18,8 @@ import org.springframework.stereotype.Service
 object DeleteCategoryCmd {
 
     @Service
-    class Handler : Command<Request, Response> {
-        override fun exec(request: Request): Response {
+    class Handler : NoneResultCommandParam<Request>() {
+        override fun exec(request: Request) {
             val token = "/${request.categoryId}/"
             Mediator.repositories.remove(
                 SCategory.predicate { schema ->
@@ -28,18 +28,13 @@ object DeleteCategoryCmd {
             )
 
             Mediator.uow.save()
-
-            return Response()
         }
 
     }
 
     data class Request(
-        /** 要删除的分类ID */
         @field:CategoryMustExist
         @field:CategoryDeletionAllowed
         val categoryId: Long,
-    ) : RequestParam<Response>
-
-    class Response
+    ) : RequestParam<Unit>
 }

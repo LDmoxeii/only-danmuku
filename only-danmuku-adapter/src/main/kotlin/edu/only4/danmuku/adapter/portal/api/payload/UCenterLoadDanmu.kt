@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.payload
 
+import com.only.engine.translation.annotation.Translation
+import com.only.engine.translation.translation.EpochSecondToDateStringTranslation
 import com.only4.cap4k.ddd.core.share.PageParam
 
 /**
@@ -8,7 +10,6 @@ import com.only4.cap4k.ddd.core.share.PageParam
 object UCenterLoadDanmu {
 
     data class Request(
-        /** 视频ID */
         val videoId: String? = null
     ) : PageParam()
 
@@ -16,23 +17,15 @@ object UCenterLoadDanmu {
      * 弹幕项
      */
     data class DanmukuItem(
-        /** 弹幕ID */
         var danmukuId: String? = null,
-        /** 视频ID */
         var videoId: String? = null,
-        /** 视频名称 */
         var videoName: String? = null,
-        /** 弹幕内容 */
         var text: String? = null,
-        /** 用户ID */
         var userId: String? = null,
-        /** 弹幕模式 */
         var mode: Int? = null,
-        /** 弹幕颜色 */
         var color: String? = null,
-        /** 弹幕时间 */
         var time: Int? = null,
-        /** 发布时间 */
-        var postTime: String? = null
+        @get:Translation(type = EpochSecondToDateStringTranslation.TYPE, other = "yyyy-MM-dd HH:mm:ss")
+        var postTime: Long,
     )
 }

@@ -14,13 +14,9 @@ object GetVideoPostResourceQry {
     ) : RequestParam<Response>
 
     data class Response(
-        /** 文件的完整路径 */
         val filePath: String,
-        /** 文件是否存在 */
         val exists: Boolean,
-        /** 视频ID（用于记录播放信息） */
         val videoId: Long,
-        /** 文件索引（用于记录播放信息） */
         val fileIndex: Int,
     )
 }

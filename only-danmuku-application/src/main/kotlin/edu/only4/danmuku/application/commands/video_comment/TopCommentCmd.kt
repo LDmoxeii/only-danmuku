@@ -4,6 +4,7 @@ import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
+import com.only4.cap4k.ddd.core.application.command.NoneResultCommandParam
 import edu.only4.danmuku.application.validator.CommentExists
 import edu.only4.danmuku.application.validator.VideoCommentOwner
 import edu.only4.danmuku.domain._share.meta.video_comment.SVideoComment
@@ -18,8 +19,8 @@ import kotlin.jvm.optionals.getOrNull
 object TopCommentCmd {
 
     @Service
-    class Handler : Command<Request, Response> {
-        override fun exec(request: Request): Response {
+    class Handler : NoneResultCommandParam<Request>() {
+        override fun exec(request: Request) {
             val comment = Mediator.repositories.findOne(
                 SVideoComment.predicateById(request.commentId)
             ).getOrNull() ?: throw KnownException("评论不存在：${request.commentId}")
@@ -38,7 +39,6 @@ object TopCommentCmd {
             comment.top()
 
             Mediator.uow.save()
-            return Response()
         }
     }
 
@@ -49,7 +49,5 @@ object TopCommentCmd {
         val commentId: Long,
         /** 操作用户ID，null 表示后台管理员 */
         val operatorId: Long? = null,
-    ) : RequestParam<Response>
-
-    class Response
+    ) : RequestParam<Unit>
 }

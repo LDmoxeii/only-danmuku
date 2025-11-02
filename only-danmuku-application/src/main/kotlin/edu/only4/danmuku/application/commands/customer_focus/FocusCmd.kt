@@ -3,6 +3,7 @@ package edu.only4.danmuku.application.commands.customer_focus
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
+import com.only4.cap4k.ddd.core.application.command.NoneResultCommandParam
 import edu.only4.danmuku.domain._share.meta.customer_focus.SCustomerFocus
 import edu.only4.danmuku.domain.aggregates.customer_focus.factory.CustomerFocusFactory
 import edu.only4.danmuku.application.validator.NotSelf
@@ -15,8 +16,8 @@ import org.springframework.stereotype.Service
 object FocusCmd {
 
     @Service
-    class Handler : Command<Request, Response> {
-        override fun exec(request: Request): Response {
+    class Handler : NoneResultCommandParam<Request>() {
+        override fun exec(request: Request) {
             val exists = Mediator.repositories.find(
                 SCustomerFocus.predicate { schema ->
                     schema.all(
@@ -26,7 +27,7 @@ object FocusCmd {
                 }
             ).isNotEmpty()
 
-            if (exists) return Response()
+            if (exists) return
 
 
             Mediator.factories.create(
@@ -36,8 +37,6 @@ object FocusCmd {
                 )
             )
             Mediator.uow.save()
-
-            return Response()
         }
     }
 
@@ -46,7 +45,6 @@ object FocusCmd {
     data class Request(
         val userId: Long,
         val focusUserId: Long,
-    ) : RequestParam<Response>
+    ) : RequestParam<Unit>
 
-    class Response
 }

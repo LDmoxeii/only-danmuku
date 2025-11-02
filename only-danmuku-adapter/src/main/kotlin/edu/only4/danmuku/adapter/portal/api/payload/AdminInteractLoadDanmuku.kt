@@ -10,32 +10,20 @@ import com.only.engine.translation.translation.EpochSecondToDateStringTranslatio
 object AdminInteractLoadDanmuku {
 
     class Request(
-        /** 视频名称模糊查询 */
         val videoNameFuzzy: String? = null
     ) : PageParam()
 
     class Response(
-        /** 弹幕ID */
         var danmukuId: Long? = null,
-        /** 视频ID */
         var videoId: String? = null,
-        /** 视频名称 */
         var videoName: String? = null,
-        /** 视频封面 */
         var videoCover: String? = null,
-        /** 用户ID */
         var userId: String? = null,
-        /** 用户昵称 */
         var nickName: String? = null,
-        /** 弹幕内容 */
         var text: String? = null,
-        /** 展示位置 */
         var mode: Int? = null,
-        /** 颜色 */
         var color: String? = null,
-        /** 展示时间(秒) */
         var time: Int? = null,
-        /** 发布时间（秒级时间戳），序列化为 yyyy-MM-dd HH:mm:ss */
         @get:Translation(type = EpochSecondToDateStringTranslation.TYPE, other = "yyyy-MM-dd HH:mm:ss")
         var postTime: Long? = null
     )

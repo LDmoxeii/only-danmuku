@@ -8,14 +8,14 @@ import com.only.engine.enums.CaptchaCategory
 import com.only.engine.enums.CaptchaChannel
 import com.only.engine.enums.CaptchaType
 import com.only4.cap4k.ddd.core.application.RequestHandler
-import edu.only4.danmuku.application.distributed.clients.CaptchaGen
+import edu.only4.danmuku.application.distributed.clients.CaptchaGenCli
 import org.springframework.stereotype.Service
 
 @Service
-class CaptchaGenClientHandler(
+class CaptchaGenCliHandler(
     private val captchaManager: CaptchaManager,
-) : RequestHandler<CaptchaGen.Request, CaptchaGen.Response> {
-    override fun exec(request: CaptchaGen.Request): CaptchaGen.Response {
+) : RequestHandler<CaptchaGenCli.Request, CaptchaGenCli.Response> {
+    override fun exec(request: CaptchaGenCli.Request): CaptchaGenCli.Response {
         val command = GenerateCommand(
             bizType = request.bizType,
             type = CaptchaType.IMAGE,
@@ -29,7 +29,7 @@ class CaptchaGenClientHandler(
         val result = captchaManager.generate(command)
 
         @Suppress("CAST_NEVER_SUCCEEDS")
-        return CaptchaGen.Response(
+        return CaptchaGenCli.Response(
             result.captchaId,
             (result.inlineContent as CaptchaContent.Image).bytes,
             (result.inlineContent as CaptchaContent.Image).text,

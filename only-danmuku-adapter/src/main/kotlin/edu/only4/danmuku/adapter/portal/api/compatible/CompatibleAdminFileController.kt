@@ -2,7 +2,7 @@ package edu.only4.danmuku.adapter.portal.api.compatible
 
 import cn.dev33.satoken.annotation.SaIgnore
 import com.only4.cap4k.ddd.core.Mediator
-import edu.only4.danmuku.application.commands.file.UploadImageCmd
+import edu.only4.danmuku.application.distributed.clients.UploadImageCli
 import edu.only4.danmuku.application.queries.file.GetFileResourceQry
 import edu.only4.danmuku.application.queries.file.GetVideoPostResourceQry
 import edu.only4.danmuku.application.queries.file.GetVideoPostResourceTsQry
@@ -30,13 +30,13 @@ class CompatibleAdminFileController {
         @NotNull file: MultipartFile,
         @NotNull createThumbnail: Boolean,
     ): String {
-        val result = Mediator.commands.send(
-            UploadImageCmd.Request(
+        val filePath = Mediator.requests.send(
+            UploadImageCli.Request(
                 file = file,
                 createThumbnail = createThumbnail
             )
         )
-        return result.filePath
+        return filePath
     }
 
     @SaIgnore

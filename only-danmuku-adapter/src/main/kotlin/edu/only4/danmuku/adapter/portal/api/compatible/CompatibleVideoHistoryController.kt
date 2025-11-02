@@ -3,8 +3,6 @@ package edu.only4.danmuku.adapter.portal.api.compatible
 import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.share.PageData
-import edu.only4.danmuku.adapter.portal.api.payload.HistoryClean
-import edu.only4.danmuku.adapter.portal.api.payload.HistoryDel
 import edu.only4.danmuku.adapter.portal.api.payload.HistoryLoad
 import edu.only4.danmuku.application.commands.video_play_history.ClearHistoryCmd
 import edu.only4.danmuku.application.commands.video_play_history.DelHistoryCmd
@@ -61,18 +59,17 @@ class CompatibleVideoHistoryController {
      * 清空播放历史
      */
     @PostMapping("/cleanHistory")
-    fun historyClean(): HistoryClean.Response {
+    fun historyClean() {
         val currentUserId = LoginHelper.getUserId()!!
         // 调用命令清空当前用户的播放历史
         Mediator.commands.send(ClearHistoryCmd.Request(customerId = currentUserId))
-        return HistoryClean.Response()
     }
 
     /**
      * 删除指定播放历史
      */
     @PostMapping("/delHistory")
-    fun historyDel(videoId: Long): HistoryDel.Response {
+    fun historyDel(videoId: Long) {
         val currentUserId = LoginHelper.getUserId()!!
         // 调用命令删除当前用户该视频的播放历史
         Mediator.commands.send(
@@ -81,7 +78,6 @@ class CompatibleVideoHistoryController {
                 videoId = videoId
             )
         )
-        return HistoryDel.Response()
     }
 
 }

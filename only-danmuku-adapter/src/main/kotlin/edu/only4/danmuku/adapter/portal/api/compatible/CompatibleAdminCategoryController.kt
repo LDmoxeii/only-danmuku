@@ -2,7 +2,6 @@ package edu.only4.danmuku.adapter.portal.api.compatible
 
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.adapter.portal.api.payload.AdminCategoryLoad
-import edu.only4.danmuku.adapter.portal.api.payload.AdminCategorySave
 import edu.only4.danmuku.application.commands.category.CreateCategoryCmd
 import edu.only4.danmuku.application.commands.category.DeleteCategoryCmd
 import edu.only4.danmuku.application.commands.category.UpdateCategoryInfoCmd
@@ -23,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController
 class CompatibleAdminCategoryController {
 
     @PostMapping("/loadCategory")
-    fun getCategoryTree(): List<AdminCategoryLoad.Response> {
+    fun getCategoryTree(): List<AdminCategoryLoad.Item> {
         val treeResult = Mediator.qry.send(GetCategoryTreeQry.Request())
         return treeResult.map { coverToResponse(it) }
     }
@@ -37,7 +36,7 @@ class CompatibleAdminCategoryController {
         @NotEmpty categoryName: String,
         icon: String?,
         background: String?,
-    ): AdminCategorySave.Response {
+    ) {
         when (categoryId) {
             null -> {
                 Mediator.commands.send(
@@ -64,7 +63,6 @@ class CompatibleAdminCategoryController {
                 )
             }
         }
-        return AdminCategorySave.Response()
     }
 
     @PostMapping("/delCategory")
@@ -92,8 +90,8 @@ class CompatibleAdminCategoryController {
         )
     }
 
-    private fun coverToResponse(node: GetCategoryTreeQry.Response): AdminCategoryLoad.Response {
-        return AdminCategoryLoad.Response(
+    private fun coverToResponse(node: GetCategoryTreeQry.Response): AdminCategoryLoad.Item {
+        return AdminCategoryLoad.Item(
             categoryId = node.categoryId,
             categoryCode = node.code,
             categoryName = node.name,

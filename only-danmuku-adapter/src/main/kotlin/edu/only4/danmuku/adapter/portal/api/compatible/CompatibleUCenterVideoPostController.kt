@@ -134,16 +134,8 @@ class CompatibleUCenterVideoPostController {
                     videoCover = video.videoCover,
                     videoName = video.videoName,
                     duration = video.duration,
-                    createTime = LocalDateTime.ofInstant(
-                        Instant.ofEpochSecond(video.createTime),
-                        ZoneId.systemDefault()
-                    ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
-                    lastUpdateTime = video.lastUpdateTime?.let {
-                        LocalDateTime.ofInstant(
-                            Instant.ofEpochSecond(it),
-                            ZoneId.systemDefault()
-                        ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
-                    },
+                    createTime = video.createTime,
+                    lastUpdateTime = video.lastUpdateTime,
                     status = video.status,
                     interaction = video.interaction,
                     playCount = video.playCount,

@@ -9,9 +9,6 @@ import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
 
 @RestController
 @RequestMapping("/admin/user")
@@ -40,16 +37,8 @@ class CompatibleAdminUserController {
                     nickName = user.nickName,
                     avatar = user.avatar,
                     birthday = user.birthday,
-                    joinTime = LocalDateTime.ofInstant(
-                        Instant.ofEpochSecond(user.joinTime),
-                        ZoneId.systemDefault()
-                    ),
-                    lastLoginTime = user.lastLoginTime?.let {
-                        LocalDateTime.ofInstant(
-                            Instant.ofEpochSecond(it),
-                            ZoneId.systemDefault()
-                        )
-                    },
+                    joinTime = user.joinTime,
+                    lastLoginTime = user.lastLoginTime,
                     sex = user.sex,
                     lastLoginIp = user.lastLoginIp,
                     personIntroduction = user.personIntroduction,

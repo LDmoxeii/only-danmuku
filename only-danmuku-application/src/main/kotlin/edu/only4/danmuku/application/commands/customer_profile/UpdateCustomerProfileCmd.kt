@@ -3,7 +3,7 @@ package edu.only4.danmuku.application.commands.customer_profile
 import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
-import com.only4.cap4k.ddd.core.application.command.Command
+import com.only4.cap4k.ddd.core.application.command.NoneResultCommandParam
 import edu.only4.danmuku.application.validator.UniqueUserNickname
 import edu.only4.danmuku.domain._share.meta.customer_profile.SCustomerProfile
 import edu.only4.danmuku.domain.aggregates.customer_profile.enums.SexType
@@ -17,8 +17,8 @@ import kotlin.jvm.optionals.getOrNull
 object UpdateCustomerProfileCmd {
 
     @Service
-    class Handler : Command<Request, Response> {
-        override fun exec(request: Request): Response {
+    class Handler : NoneResultCommandParam<Request>() {
+        override fun exec(request: Request) {
             val profile = Mediator.repositories.findFirst(
                 SCustomerProfile.predicate { it.userId eq request.customerId },
             ).getOrNull() ?: throw KnownException("用户资料不存在：${request.customerId}")
@@ -40,7 +40,6 @@ object UpdateCustomerProfileCmd {
             )
 
             Mediator.uow.save()
-            return Response()
         }
     }
 
@@ -64,7 +63,5 @@ object UpdateCustomerProfileCmd {
         val noticeInfo: String? = null,
         /** 主题值，对应 ThemeType.code */
         val theme: Int? = null,
-    ) : RequestParam<Response>
-
-    class Response
+    ) : RequestParam<Unit>
 }

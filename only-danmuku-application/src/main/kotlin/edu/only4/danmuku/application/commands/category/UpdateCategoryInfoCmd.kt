@@ -3,13 +3,12 @@ package edu.only4.danmuku.application.commands.category
 import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
-import com.only4.cap4k.ddd.core.application.command.Command
+import com.only4.cap4k.ddd.core.application.command.NoneResultCommandParam
 import edu.only4.danmuku.application.validator.CategoryMustExist
 import edu.only4.danmuku.application.validator.UniqueCategoryCode
 import edu.only4.danmuku.domain._share.meta.category.SCategory
 import edu.only4.danmuku.domain.aggregates.category.Category
 import org.springframework.stereotype.Service
-import kotlin.jvm.optionals.getOrNull
 
 /**
  * 更新分类信息
@@ -21,8 +20,8 @@ import kotlin.jvm.optionals.getOrNull
 object UpdateCategoryInfoCmd {
 
     @Service
-    class Handler : Command<Request, Response> {
-        override fun exec(request: Request): Response {
+    class Handler : NoneResultCommandParam<Request>() {
+        override fun exec(request: Request) {
             val category = Mediator.repositories.findFirst(
                 SCategory.predicateById(request.categoryId)
             ).get()
@@ -42,7 +41,7 @@ object UpdateCategoryInfoCmd {
                     Mediator.repositories.findFirst(
                         SCategory.predicateById(request.parentId),
                         persist = false
-                    ).getOrNull() ?: throw KnownException("父分类不存在：${request.parentId}")
+                    ).get()
                 } else null
 
                 if (parentCategory != null && category.isMovingToDescendant(parentCategory)) {
@@ -66,29 +65,19 @@ object UpdateCategoryInfoCmd {
             }
 
             Mediator.uow.save()
-
-            return Response()
         }
 
     }
 
     @UniqueCategoryCode
     data class Request(
-        /** 分类ID */
         @field:CategoryMustExist
         val categoryId: Long,
-        /** 父分类ID */
         @field:CategoryMustExist
         val parentId: Long = 0L,
-        /** 分类编码 */
         val code: String,
-        /** 分类名称 */
         val name: String,
-        /** 图标路径或URL */
         val icon: String? = null,
-        /** 背景图路径或URL */
         val background: String? = null,
-    ) : RequestParam<Response>
-
-    class Response
+    ) : RequestParam<Unit>
 }

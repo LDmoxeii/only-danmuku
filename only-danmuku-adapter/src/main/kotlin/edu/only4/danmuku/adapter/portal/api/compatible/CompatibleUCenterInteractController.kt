@@ -13,13 +13,8 @@ import edu.only4.danmuku.application.queries.video_comment.VideoCommentPageQry
 import edu.only4.danmuku.application.queries.video_danmuku.GetVideoDanmukuPageQry
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 
 @RestController
 @RequestMapping("/ucenter")
@@ -43,10 +38,7 @@ class CompatibleUCenterInteractController {
                 videoId = video.videoId.toString(),
                 videoCover = video.videoCover,
                 videoName = video.videoName,
-                createTime = LocalDateTime.ofInstant(
-                    Instant.ofEpochSecond(video.createTime),
-                    ZoneId.systemDefault()
-                ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+                createTime = video.createTime
             )
         }
     }
@@ -75,10 +67,7 @@ class CompatibleUCenterInteractController {
                     content = comment.content,
                     userId = comment.customerId.toString(),
                     nickName = comment.customerNickname,
-                    postTime = LocalDateTime.ofInstant(
-                        Instant.ofEpochSecond(comment.postTime),
-                        ZoneId.systemDefault()
-                    ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+                    postTime = comment.postTime
                 )
             },
             totalCount = queryResult.totalCount
@@ -121,10 +110,7 @@ class CompatibleUCenterInteractController {
                     mode = danmuku.mode,
                     color = danmuku.color,
                     time = danmuku.time,
-                    postTime = LocalDateTime.ofInstant(
-                        Instant.ofEpochSecond(danmuku.postTime),
-                        ZoneId.systemDefault()
-                    ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+                    postTime = danmuku.postTime,
                 )
             },
             totalCount = queryResult.totalCount

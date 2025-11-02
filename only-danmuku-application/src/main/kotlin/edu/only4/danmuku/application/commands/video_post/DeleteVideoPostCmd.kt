@@ -2,7 +2,7 @@ package edu.only4.danmuku.application.commands.video_post
 
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
-import com.only4.cap4k.ddd.core.application.command.Command
+import com.only4.cap4k.ddd.core.application.command.NoneResultCommandParam
 import edu.only4.danmuku.application.validator.VideoDeletePermission
 import edu.only4.danmuku.domain._share.meta.video_post.SVideoPost
 import org.springframework.stereotype.Service
@@ -10,14 +10,13 @@ import org.springframework.stereotype.Service
 object DeleteVideoPostCmd {
 
     @Service
-    class Handler : Command<Request, Response> {
-        override fun exec(request: Request): Response {
+    class Handler : NoneResultCommandParam<Request>() {
+        override fun exec(request: Request) {
             Mediator.repositories.remove(
                 SVideoPost.predicateById(request.videoId)
             )
 
             Mediator.uow.save()
-            return Response()
         }
     }
 
@@ -25,7 +24,5 @@ object DeleteVideoPostCmd {
     data class Request(
         val videoId: Long,
         val operatorId: Long? = null,
-    ) : RequestParam<Response>
-
-    class Response
+    ) : RequestParam<Unit>
 }

@@ -1,5 +1,8 @@
 package edu.only4.danmuku.adapter.portal.api.payload
 
+import com.only.engine.translation.annotation.Translation
+import com.only.engine.translation.translation.EpochSecondToDateStringTranslation
+
 /**
  * 加载所有视频(用于添加到系列)接口载荷
  */
@@ -20,6 +23,7 @@ object VideoSeriesLoadAllVideo {
         var videoCover: String? = null,
         var videoName: String? = null,
         var playCount: Int? = null,
-        var createTime: String? = null,
+        @get:Translation(type = EpochSecondToDateStringTranslation.TYPE, other = "yyyy-MM-dd HH:mm:ss")
+        var createTime: Long,
     )
 }

@@ -47,8 +47,7 @@ class CompatibleAdminInteractController {
                     mode = danmuku.mode,
                     color = danmuku.color,
                     time = danmuku.time,
-                    // postTime 原为毫秒，换算为秒级时间戳，交由翻译器格式化
-                    postTime = danmuku.postTime / 1000
+                    postTime = danmuku.postTime
                 )
             },
             totalCount = queryResult.totalCount
@@ -98,7 +97,6 @@ class CompatibleAdminInteractController {
                     topType = comment.topType,
                     likeCount = comment.likeCount,
                     hateCount = comment.hateCount,
-                    // 直接返回秒级时间戳，交由翻译器格式化
                     postTime = comment.postTime
                 )
             },

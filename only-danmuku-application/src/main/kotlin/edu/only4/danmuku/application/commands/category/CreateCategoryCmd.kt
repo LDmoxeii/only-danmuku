@@ -2,7 +2,7 @@ package edu.only4.danmuku.application.commands.category
 
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
-import com.only4.cap4k.ddd.core.application.command.Command
+import com.only4.cap4k.ddd.core.application.command.NoneResultCommandParam
 import edu.only4.danmuku.application.validator.CategoryExists
 import edu.only4.danmuku.application.validator.UniqueCategoryCode
 import edu.only4.danmuku.domain.aggregates.category.factory.CategoryFactory
@@ -18,11 +18,11 @@ import org.springframework.stereotype.Service
 object CreateCategoryCmd {
 
     @Service
-    class Handler : Command<Request, Response> {
-        override fun exec(request: Request): Response {
+    class Handler : NoneResultCommandParam<Request>() {
+        override fun exec(request: Request) {
             val initialSort: Byte = request.sort ?: 0
 
-            val category = Mediator.factories.create(
+            Mediator.factories.create(
                 CategoryFactory.Payload(
                     parentId = request.parentId,
                     code = request.code,
@@ -34,33 +34,18 @@ object CreateCategoryCmd {
             )
 
             Mediator.uow.save()
-
-            return Response(
-                categoryId = category.id
-            )
         }
 
     }
 
     @UniqueCategoryCode
     data class Request(
-        /** 父分类ID，顶级分类传0 */
         @field:CategoryExists
         val parentId: Long = 0L,
-        /** 分类编码，唯一标识 */
         val code: String,
-        /** 分类名称 */
         val name: String,
-        /** 图标路径或URL */
         val icon: String? = null,
-        /** 背景图路径或URL */
         val background: String? = null,
-        /** 排序号，同级分类中的显示顺序 */
         val sort: Byte? = null,
-    ) : RequestParam<Response>
-
-    data class Response(
-        /** 新创建的分类ID */
-        val categoryId: Long
-    )
+    ) : RequestParam<Unit>
 }

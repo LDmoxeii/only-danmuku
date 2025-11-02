@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.payload
 
+import com.only.engine.translation.annotation.Translation
+import com.only.engine.translation.translation.EpochSecondToDateStringTranslation
 import com.only4.cap4k.ddd.core.share.PageParam
 
 /**
@@ -19,7 +21,8 @@ object UHomeLoadUserCollection {
         var actionType: Int,
         var actionCount: Int,
         var userId: String,
-        var actionTime: String,
+        @get:Translation(type = EpochSecondToDateStringTranslation.TYPE, other = "yyyy-MM-dd HH:mm:ss")
+        var actionTime: Long,
         var videoName: String,
         var videoCover: String,
     )

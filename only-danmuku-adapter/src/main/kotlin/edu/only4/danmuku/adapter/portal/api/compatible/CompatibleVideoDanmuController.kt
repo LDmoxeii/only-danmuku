@@ -46,7 +46,6 @@ class CompatibleVideoDanmuController {
                 mode = danmuku.mode,
                 color = danmuku.color,
                 time = danmuku.time,
-                // 直接返回秒级时间戳，交给翻译器序列化
                 postTime = danmuku.postTime,
                 videoName = danmuku.videoName,
                 videoCover = danmuku.videoCover,

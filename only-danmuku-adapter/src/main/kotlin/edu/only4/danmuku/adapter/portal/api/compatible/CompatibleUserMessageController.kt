@@ -94,7 +94,7 @@ class CompatibleUserMessageController {
     @PostMapping("/delMessage")
     fun messageDel(
         messageId: Long
-    ): MessageDel.Response {
+    ) {
         val userId = LoginHelper.getUserId()!!
         Mediator.commands.send(
             DeleteMessageCmd.Request(
@@ -102,7 +102,6 @@ class CompatibleUserMessageController {
                 messageId = messageId
             )
         )
-        return MessageDel.Response()
     }
 
 }

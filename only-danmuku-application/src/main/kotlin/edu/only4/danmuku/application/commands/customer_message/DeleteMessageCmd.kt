@@ -2,7 +2,7 @@ package edu.only4.danmuku.application.commands.customer_message
 
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
-import com.only4.cap4k.ddd.core.application.command.Command
+import com.only4.cap4k.ddd.core.application.command.NoneResultCommandParam
 import edu.only4.danmuku.domain._share.meta.customer_message.SCustomerMessage
 import org.springframework.stereotype.Service
 
@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service
 object DeleteMessageCmd {
 
     @Service
-    class Handler : Command<Request, Response> {
-        override fun exec(request: Request): Response {
+    class Handler : NoneResultCommandParam<Request>() {
+        override fun exec(request: Request) {
             // 仅删除当前用户自己的指定消息（软删）
             Mediator.repositories.remove(
                 SCustomerMessage.predicate { schema ->
@@ -25,7 +25,6 @@ object DeleteMessageCmd {
             )
 
             Mediator.uow.save()
-            return Response()
         }
     }
 
@@ -34,7 +33,5 @@ object DeleteMessageCmd {
         val customerId: Long,
         /** 消息ID */
         val messageId: Long,
-    ) : RequestParam<Response>
-
-    class Response
+    ) : RequestParam<Unit>
 }

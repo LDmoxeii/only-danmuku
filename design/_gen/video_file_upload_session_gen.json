@@ -13,5 +13,11 @@
     "package": "video_file_upload_session",
     "name": "InitTempAndStartUploading",
     "desc": "初始化临时文件并标记开始上传"
+  },
+  {
+    "tag": "qry",
+    "package": "video_file_upload_session",
+    "name": "GetUploadedTempPaths",
+    "desc": "获取上传完毕的临时路径"
   }
 ]

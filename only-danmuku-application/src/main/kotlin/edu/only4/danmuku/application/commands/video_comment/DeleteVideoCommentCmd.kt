@@ -3,6 +3,7 @@ package edu.only4.danmuku.application.commands.video_comment
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
+import com.only4.cap4k.ddd.core.application.command.NoneResultCommandParam
 import edu.only4.danmuku.application.validator.CommentDeletePermission
 import edu.only4.danmuku.application.validator.CommentExists
 import edu.only4.danmuku.domain._share.meta.video_comment.SVideoComment
@@ -20,12 +21,12 @@ import kotlin.jvm.optionals.getOrNull
 object DeleteVideoCommentCmd {
 
     @Service
-    class Handler : Command<Request, Response> {
-        override fun exec(request: Request): Response {
+    class Handler : NoneResultCommandParam<Request>() {
+        override fun exec(request: Request) {
             val comment = Mediator.repositories.findOne(
                 SVideoComment.predicateById(request.commentId),
                 persist = false
-            ).getOrNull() ?: return Response()
+            ).getOrNull() ?: return
 
             Mediator.uow.remove(comment)
 
@@ -38,19 +39,13 @@ object DeleteVideoCommentCmd {
             }
 
             Mediator.uow.save()
-
-            return Response()
         }
     }
 
     @CommentDeletePermission
     data class Request(
-        /** 评论ID */
         @field:CommentExists
         val commentId: Long,
-        /** 操作者ID；null 表示管理员 */
         val operatorId: Long? = null,
-    ) : RequestParam<Response>
-
-    class Response
+    ) : RequestParam<Unit>
 }

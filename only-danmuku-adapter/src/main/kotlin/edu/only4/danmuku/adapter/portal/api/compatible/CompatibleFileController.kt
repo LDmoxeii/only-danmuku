@@ -1,17 +1,16 @@
 package edu.only4.danmuku.adapter.portal.api.compatible
 
 import cn.dev33.satoken.annotation.SaIgnore
-import com.only.engine.satoken.utils.LoginHelper
 import cn.dev33.satoken.stp.StpUtil
+import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
-import edu.only4.danmuku.adapter.portal.api.payload.FileDelUploadVideo
 import edu.only4.danmuku.adapter.portal.api.payload.FileUploadVideo
-import edu.only4.danmuku.application.commands.file.UploadImageCmd
 import edu.only4.danmuku.application.commands.file_upload_session.CreateUploadSessionCmd
 import edu.only4.danmuku.application.commands.file_upload_session.DeleteUploadSessionCmd
 import edu.only4.danmuku.application.commands.file_upload_session.UploadVideoChunkCmd
 import edu.only4.danmuku.application.commands.video.AddPlayCountCmd
 import edu.only4.danmuku.application.commands.video_play_history.AddPlayHistoryCmd
+import edu.only4.danmuku.application.distributed.clients.UploadImageCli
 import edu.only4.danmuku.application.queries.file.GetFileResourceQry
 import edu.only4.danmuku.application.queries.file.GetVideoResourceQry
 import edu.only4.danmuku.application.queries.file.GetVideoResourceTsQry
@@ -112,7 +111,7 @@ class CompatibleFileController {
     @PostMapping("/delUploadVideo")
     fun fileDelUploadVideo(
         uploadId: Long,
-    ): FileDelUploadVideo.Response {
+    ) {
         val currentUserId = LoginHelper.getUserId()!!
         Mediator.commands.send(
             DeleteUploadSessionCmd.Request(
@@ -120,7 +119,6 @@ class CompatibleFileController {
                 uploadId = uploadId
             )
         )
-        return FileDelUploadVideo.Response()
     }
 
     @PostMapping("/uploadImage")
@@ -128,13 +126,13 @@ class CompatibleFileController {
         file: MultipartFile,
         createThumbnail: Boolean,
     ): String {
-        val result = Mediator.commands.send(
-            UploadImageCmd.Request(
+        val filePath = Mediator.requests.send(
+            UploadImageCli.Request(
                 file = file,
                 createThumbnail = createThumbnail
             )
         )
-        return result.filePath
+        return filePath
     }
 
     @SaIgnore

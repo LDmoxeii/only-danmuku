@@ -108,7 +108,7 @@ class CompatibleUHomeController {
     @PostMapping("/saveTheme")
     fun uHomeSaveTheme(
         theme: Int
-    ): UHomeSaveTheme.Response {
+    ) {
         val userId = LoginHelper.getUserId()!!
 
         Mediator.commands.send(
@@ -117,8 +117,6 @@ class CompatibleUHomeController {
                 theme = theme
             )
         )
-
-        return UHomeSaveTheme.Response()
     }
 
     @PostMapping("/focus")
@@ -238,10 +236,7 @@ class CompatibleUHomeController {
                     videoId = video.videoId.toString(),
                     videoCover = video.videoCover,
                     videoName = video.videoName,
-                    createTime = LocalDateTime.ofInstant(
-                        Instant.ofEpochSecond(video.createTime),
-                        ZoneId.systemDefault()
-                    ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
+                    createTime = video.createTime,
                     playCount = video.playCount,
                     likeCount = video.likeCount,
                     danmuCount = video.danmuCount,
@@ -285,10 +280,7 @@ class CompatibleUHomeController {
                     actionType = action.actionType,
                     actionCount = action.actionCount,
                     userId = action.userId.toString(),
-                    actionTime = LocalDateTime.ofInstant(
-                        Instant.ofEpochSecond(action.actionTime),
-                        ZoneId.systemDefault()
-                    ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
+                    actionTime = action.actionTime,
                     videoName = action.videoName ?: "",
                     videoCover = action.videoCover ?: ""
                 )

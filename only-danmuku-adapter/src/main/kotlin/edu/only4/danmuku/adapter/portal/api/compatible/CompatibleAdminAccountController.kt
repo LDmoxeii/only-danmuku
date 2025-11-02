@@ -7,7 +7,8 @@ import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.adapter.portal.api.payload.AdminAccountCheckCode
 import edu.only4.danmuku.adapter.portal.api.payload.AdminAccountLogin
-import edu.only4.danmuku.application.distributed.clients.CaptchaGen
+import edu.only4.danmuku.application.distributed.clients.CaptchaGenCli
+import edu.only4.danmuku.application.distributed.clients.CaptchaValidCli
 import edu.only4.danmuku.application.queries.user.GetAccountInfoByEmailQry
 import edu.only4.danmuku.domain.aggregates.user.User
 import jakarta.validation.constraints.NotEmpty
@@ -22,7 +23,7 @@ class CompatibleAdminAccountController {
     @SaIgnore
     @PostMapping("/checkCode")
     fun adminAccountCheckCode(): AdminAccountCheckCode.Response {
-        val result = Mediator.requests.send(CaptchaGen.Request("web-auth"))
+        val result = Mediator.requests.send(CaptchaGenCli.Request("web-auth"))
         return AdminAccountCheckCode.Response(
             "data:image/png;base64,${result.byte}",
             result.captchaId
@@ -37,8 +38,8 @@ class CompatibleAdminAccountController {
         @NotEmpty checkCode: String,
         @NotEmpty checkCodeKey: String,
     ): AdminAccountLogin.Response {
-//        val captchaValidationResult = Mediator.requests.send(CaptchaValid.Request(checkCodeKey, checkCode))
-//        require(captchaValidationResult.result) { "验证码错误" }
+        val captchaValidationResult = Mediator.requests.send(CaptchaValidCli.Request(checkCodeKey, checkCode))
+        require(captchaValidationResult.result) { "验证码错误" }
         val userAccount = Mediator.queries.send(
             GetAccountInfoByEmailQry.Request(
                 email = account

@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.payload
 
+import com.only.engine.translation.annotation.Translation
+import com.only.engine.translation.translation.EpochSecondToDateStringTranslation
 import com.only4.cap4k.ddd.core.share.PageData
 import com.only4.cap4k.ddd.core.share.PageParam
 
@@ -53,7 +55,8 @@ object CommentLoad {
         /** 回复用户头像 */
         var replyAvatar: String? = null,
         /** 发布时间 */
-        var postTime: String? = null,
+        @get:Translation(type = EpochSecondToDateStringTranslation.TYPE, other = "yyyy-MM-dd HH:mm:ss")
+        var postTime: Long,
         /** 子评论数量 */
         var childrenCount: Int? = null,
         /** 子评论列表 */
@@ -81,6 +84,7 @@ object CommentLoad {
         var commentId: Long?,
         var actionType: Int?,
         var actionCount: Int?,
-        var cationTime: String,
+        @get:Translation(type = EpochSecondToDateStringTranslation.TYPE, other = "yyyy-MM-dd HH:mm:ss")
+        var cationTime: Long,
     )
 }

@@ -76,10 +76,7 @@ class CompatibleVideoCommentController {
                 commentId = act.commentId,
                 actionType = act.actionType,
                 actionCount = act.actionCount,
-                cationTime = LocalDateTime.ofInstant(
-                    Instant.ofEpochSecond(act.actionTime),
-                    ZoneId.systemDefault()
-                ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+                cationTime = act.actionTime,
             )
         }
 
@@ -112,10 +109,7 @@ class CompatibleVideoCommentController {
             replyUserId = comment.replyCustomerId?.toString(),
             replyNickName = comment.replyCustomerNickname,
             replyAvatar = null,
-            postTime = LocalDateTime.ofInstant(
-                Instant.ofEpochSecond(comment.postTime),
-                ZoneId.systemDefault()
-            ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
+            postTime = comment.postTime,
             childrenCount = comment.childrenCount,
             children = comment.children?.map { child -> coverToCommentItem(child, likedCommentIds) }
         )

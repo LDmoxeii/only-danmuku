@@ -8,11 +8,11 @@ import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.adapter.portal.api.payload.AccountCheckCode
 import edu.only4.danmuku.adapter.portal.api.payload.AccountLogin
-import edu.only4.danmuku.adapter.portal.api.payload.AccountRegister
 import edu.only4.danmuku.adapter.portal.api.payload.AccountUserCountInfo
 import edu.only4.danmuku.application.commands.user.RegisterAccountCmd
 import edu.only4.danmuku.application.commands.user.UpdateLoginInfoCmd
-import edu.only4.danmuku.application.distributed.clients.CaptchaGen
+import edu.only4.danmuku.application.distributed.clients.CaptchaGenCli
+import edu.only4.danmuku.application.distributed.clients.CaptchaValidCli
 import edu.only4.danmuku.application.queries.customer_profile.GetCustomerProfileQry
 import edu.only4.danmuku.application.queries.user.GetUserCountInfoQry
 import edu.only4.danmuku.domain._share.meta.customer_profile.SCustomerProfile
@@ -34,7 +34,7 @@ class CompatibleAccountController {
     @SaIgnore
     @PostMapping("/checkCode")
     fun checkCode(): AccountCheckCode.Response {
-        val result = Mediator.requests.send(CaptchaGen.Request("web-auth"))
+        val result = Mediator.requests.send(CaptchaGenCli.Request("web-auth"))
         return AccountCheckCode.Response(
             result.captchaId,
             "data:image/png;base64,${result.byte}",
@@ -49,9 +49,9 @@ class CompatibleAccountController {
         @NotEmpty(message = "密码不能为空") @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d)[a-zA-Z\\d]{8,18}$", message = "密码必须为8-18位字母和数字组合") registerPassword: String,
         @NotEmpty(message = "验证码不能为空") checkCodeKey: String,
         @NotEmpty(message = "验证码不能为空") checkCode: String,
-    ): AccountRegister.Response {
-//        val captchaValidationResult = Mediator.requests.send(CaptchaValid.Request(request.checkCodeKey, request.checkCode))
-//        require(captchaValidationResult.result) { "验证码错误" }
+    ) {
+        val captchaValidationResult = Mediator.requests.send(CaptchaValidCli.Request(checkCodeKey, checkCode))
+        require(captchaValidationResult.result) { "验证码错误" }
 
         Mediator.cmd.send(
             RegisterAccountCmd.Request(
@@ -60,7 +60,6 @@ class CompatibleAccountController {
                 registerPassword = registerPassword
             )
         )
-        return AccountRegister.Response()
     }
 
     @SaIgnore
@@ -71,8 +70,8 @@ class CompatibleAccountController {
         @NotEmpty(message = "验证码不能为空") checkCodeKey: String,
         @NotEmpty(message = "验证码不能为空") checkCode: String,
     ): AccountLogin.Response {
-//        val captchaValidationResult = Mediator.requests.send(CaptchaValid.Request(request.checkCodeKey, request.checkCode))
-//        require(captchaValidationResult.result) { "验证码错误" }
+        val captchaValidationResult = Mediator.requests.send(CaptchaValidCli.Request(checkCodeKey, checkCode))
+        require(captchaValidationResult.result) { "验证码错误" }
 
 
         val userAccount = Mediator.commands.send(
@@ -115,7 +114,7 @@ class CompatibleAccountController {
         return AccountLogin.Response(
             userId = LoginHelper.getUserId()!!,
             nickName = LoginHelper.getUserInfo()!!.username,
-            avatar = LoginHelper.getUserInfo()!!.extra["avatar"] as String,
+            avatar = LoginHelper.getUserInfo()!!.extra[SCustomerProfile.props.avatar] as String,
             expireAt = StpUtil.getTokenTimeout(),
             token = StpUtil.getTokenValue()
         )

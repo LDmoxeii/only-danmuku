@@ -13,9 +13,6 @@ object GetCategoryTreeQry {
 
     class Request : ListQueryParam<Response>
 
-    /**
-     * 分类树节点
-     */
     data class Response(
         val categoryId: Long,
         val code: String,

@@ -3,7 +3,7 @@ package edu.only4.danmuku.application.commands.file_upload_session
 import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
-import com.only4.cap4k.ddd.core.application.command.Command
+import com.only4.cap4k.ddd.core.application.command.NoneResultCommandParam
 import edu.only4.danmuku.application._share.config.properties.FileAppProperties
 import edu.only4.danmuku.application._share.constants.Constants
 import edu.only4.danmuku.application.validator.ValidateUploadChunk
@@ -23,8 +23,8 @@ object UploadVideoChunkCmd {
     @Service
     class Handler(
         private val fileProps: FileAppProperties,
-    ) : Command<Request, Response> {
-        override fun exec(request: Request): Response {
+    ) : NoneResultCommandParam<Request>() {
+        override fun exec(request: Request){
             val uploadId = request.uploadId
 
             // 加载会话
@@ -58,7 +58,6 @@ object UploadVideoChunkCmd {
             session.tryMarkDoneIfComplete()
 
             Mediator.uow.save()
-            return Response()
         }
     }
 
@@ -68,8 +67,6 @@ object UploadVideoChunkCmd {
         val uploadId: Long,
         val chunkIndex: Int,
         val chunkFile: MultipartFile,
-    ) : RequestParam<Response>
-
-    class Response
+    ) : RequestParam<Unit>
 }
 

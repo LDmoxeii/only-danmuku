@@ -2,7 +2,7 @@ package edu.only4.danmuku.application.commands.customer_message
 
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
-import com.only4.cap4k.ddd.core.application.command.Command
+import com.only4.cap4k.ddd.core.application.command.NoneResultCommandParam
 import edu.only4.danmuku.domain._share.meta.customer_message.SCustomerMessage
 import edu.only4.danmuku.domain.aggregates.customer_message.enums.MessageType
 import edu.only4.danmuku.domain.aggregates.customer_message.enums.ReadType
@@ -14,8 +14,8 @@ import org.springframework.stereotype.Service
 object MarkAllAsReadCmd {
 
     @Service
-    class Handler : Command<Request, Response> {
-        override fun exec(request: Request): Response {
+    class Handler : NoneResultCommandParam<Request>() {
+        override fun exec(request: Request) {
             val msgTypeEnum = MessageType.valueOfOrNull(request.messageType)
 
             val messages = Mediator.repositories.find(
@@ -29,23 +29,18 @@ object MarkAllAsReadCmd {
             )
 
             if (messages.isEmpty()) {
-                return Response()
+                return
             }
 
             val now = System.currentTimeMillis() / 1000
             messages.forEach { it.markAsRead(now) }
 
             Mediator.uow.save()
-            return Response()
         }
     }
 
     data class Request(
-        /** 用户ID */
         val customerId: Long,
-        /** 指定消息类型（可选） */
         val messageType: Int? = null,
-    ) : RequestParam<Response>
-
-    class Response
+    ) : RequestParam<Unit>
 }

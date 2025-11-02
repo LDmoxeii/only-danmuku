@@ -3,7 +3,7 @@ package edu.only4.danmuku.application.commands.file_upload_session
 import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
-import com.only4.cap4k.ddd.core.application.command.Command
+import com.only4.cap4k.ddd.core.application.command.NoneResultCommandParam
 import edu.only4.danmuku.application._share.config.properties.FileAppProperties
 import edu.only4.danmuku.application._share.constants.Constants
 import edu.only4.danmuku.application.validator.ValidateDeleteUploadSession
@@ -22,8 +22,8 @@ object DeleteUploadSessionCmd {
     @Service
     class Handler(
         private val fileProps: FileAppProperties,
-    ) : Command<Request, Response> {
-        override fun exec(request: Request): Response {
+    ) : NoneResultCommandParam<Request>() {
+        override fun exec(request: Request){
             val uploadId = request.uploadId
 
             val session: VideoFileUploadSession = Mediator.repositories.findOne(
@@ -53,7 +53,6 @@ object DeleteUploadSessionCmd {
             session.abort(now)
 
             Mediator.uow.remove(session)
-            return Response()
         }
     }
 
@@ -61,8 +60,6 @@ object DeleteUploadSessionCmd {
     data class Request(
         val customerId: Long,
         val uploadId: Long,
-    ) : RequestParam<Response>
-
-    class Response
+    ) : RequestParam<Unit>
 }
 

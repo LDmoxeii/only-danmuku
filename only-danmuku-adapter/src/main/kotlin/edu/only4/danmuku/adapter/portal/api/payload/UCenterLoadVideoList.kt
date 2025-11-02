@@ -2,6 +2,7 @@ package edu.only4.danmuku.adapter.portal.api.payload
 
 import com.only4.cap4k.ddd.core.share.PageParam
 import com.only.engine.translation.annotation.Translation
+import com.only.engine.translation.translation.EpochSecondToDateStringTranslation
 import edu.only4.danmuku.adapter.domain.translation.video_post.VideoStatusTranslation.Companion.VIDEO_STATUS_CODE_TO_DESC
 
 object UCenterLoadVideoList {
@@ -17,8 +18,10 @@ object UCenterLoadVideoList {
         var videoCover: String? = null,
         var videoName: String? = null,
         var duration: Int? = null,
-        var createTime: String? = null,
-        var lastUpdateTime: String? = null,
+        @get:Translation(type = EpochSecondToDateStringTranslation.TYPE, other = "yyyy-MM-dd HH:mm:ss")
+        var createTime: Long,
+        @get:Translation(type = EpochSecondToDateStringTranslation.TYPE, other = "yyyy-MM-dd HH:mm:ss")
+        var lastUpdateTime: Long? = null,
         var status: Int? = null,
         @get:Translation(type = VIDEO_STATUS_CODE_TO_DESC, mapper = "status")
         var statusName: String? = null,

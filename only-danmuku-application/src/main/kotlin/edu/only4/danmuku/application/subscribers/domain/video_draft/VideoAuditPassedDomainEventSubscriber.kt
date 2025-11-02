@@ -1,10 +1,11 @@
 package edu.only4.danmuku.application.subscribers.domain.video_draft
 
 import com.only4.cap4k.ddd.core.Mediator
-import edu.only4.danmuku.application.commands.customer_profile.RewardUserForVideoCmd
-import edu.only4.danmuku.application.commands.file.CleanTempFilesCmd
-import edu.only4.danmuku.application.commands.video.TransferVideoToProductionCmd
 import edu.only4.danmuku.application.commands.customer_message.SendVideoAuditPassedMessageCmd
+import edu.only4.danmuku.application.commands.customer_profile.RewardUserForVideoCmd
+import edu.only4.danmuku.application.commands.video.TransferVideoToProductionCmd
+import edu.only4.danmuku.application.distributed.clients.CleanTempFilesCli
+import edu.only4.danmuku.application.queries.video_file_upload_session.GetUploadedTempPathsQry
 import edu.only4.danmuku.domain.aggregates.video_post.events.VideoAuditPassedDomainEvent
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Service
@@ -63,10 +64,16 @@ class VideoAuditPassedDomainEventSubscriber {
     @EventListener(VideoAuditPassedDomainEvent::class)
     fun on2(event: VideoAuditPassedDomainEvent) {
         val videoPost = event.entity
-        Mediator.commands.send(
-            CleanTempFilesCmd.Request(
+        val tempPaths = Mediator.queries.send(
+            GetUploadedTempPathsQry.Request(
                 customerId = videoPost.customerId,
                 videoId = videoPost.id,
+            )
+        )
+
+        Mediator.requests.send(
+            CleanTempFilesCli.Request(
+                tempPaths = tempPaths
             )
         )
     }

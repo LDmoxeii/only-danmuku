@@ -2,7 +2,7 @@ package edu.only4.danmuku.application.commands.video_danmuku
 
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
-import com.only4.cap4k.ddd.core.application.command.Command
+import com.only4.cap4k.ddd.core.application.command.NoneResultCommandParam
 import edu.only4.danmuku.application.validator.DanmukuDeletePermission
 import edu.only4.danmuku.application.validator.DanmukuExists
 import edu.only4.danmuku.domain._share.meta.video_danmuku.SVideoDanmuku
@@ -18,26 +18,20 @@ import org.springframework.stereotype.Service
 object DeleteVideoDanmukuCmd {
 
     @Service
-    class Handler : Command<Request, Response> {
-        override fun exec(request: Request): Response {
+    class Handler : NoneResultCommandParam<Request>() {
+        override fun exec(request: Request) {
             Mediator.repositories.remove(
                 SVideoDanmuku.predicateById(request.danmukuId)
             )
 
             Mediator.uow.save()
-
-            return Response()
         }
     }
 
     @DanmukuDeletePermission
     data class Request(
-        /** 弹幕ID */
         @field:DanmukuExists
         val danmukuId: Long,
-        /** 操作用户ID；null 表示管理员 */
         val operatorId: Long? = null,
-    ) : RequestParam<Response>
-
-    class Response
+    ) : RequestParam<Unit>
 }

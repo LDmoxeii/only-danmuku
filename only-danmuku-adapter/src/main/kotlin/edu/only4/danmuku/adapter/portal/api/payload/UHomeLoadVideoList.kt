@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.payload
 
+import com.only.engine.translation.annotation.Translation
+import com.only.engine.translation.translation.EpochSecondToDateStringTranslation
 import com.only4.cap4k.ddd.core.share.OrderInfo
 import com.only4.cap4k.ddd.core.share.PageParam
 import edu.only4.danmuku.domain._share.meta.video.SVideo
@@ -26,7 +28,8 @@ object UHomeLoadVideoList {
         var videoId: String? = null,
         var videoCover: String? = null,
         var videoName: String? = null,
-        var createTime: String? = null,
+        @get:Translation(type = EpochSecondToDateStringTranslation.TYPE, other = "yyyy-MM-dd HH:mm:ss")
+        var createTime: Long,
         var playCount: Int? = null,
         var likeCount: Int? = null,
         var danmuCount: Int? = null,

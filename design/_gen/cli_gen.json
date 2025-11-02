@@ -1,0 +1,20 @@
+[
+  {
+    "tag": "cli",
+    "package": "",
+    "name": "UploadImage",
+    "desc": "上传图片"
+  },
+  {
+    "tag": "cli",
+    "package": "",
+    "name": "CleanTempFiles",
+    "desc": "清理视频草稿相关的临时文件"
+  },
+  {
+    "tag": "cli",
+    "package": "",
+    "name": "DeleteVideoFileResources",
+    "desc": "从硬盘物理删除视频文件资源"
+  }
+]

@@ -4,6 +4,7 @@ import org.babyfish.jimmer.sql.Column
 import org.babyfish.jimmer.sql.Entity
 import org.babyfish.jimmer.sql.IdView
 import org.babyfish.jimmer.sql.JoinColumn
+import org.babyfish.jimmer.sql.OneToMany
 import org.babyfish.jimmer.sql.OneToOne
 import org.babyfish.jimmer.sql.Table
 
@@ -34,6 +35,9 @@ interface VideoPost : BaseEntity {
     @OneToOne
     @JoinColumn(name = "category_id")
     val category: Category?
+
+    @OneToMany(mappedBy = "video")
+    val videoFiles : List<VideoFilePost>
 
     @Column(name = "video_cover")
     val videoCover: String

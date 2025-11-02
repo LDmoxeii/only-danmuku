@@ -4,18 +4,12 @@ import cn.dev33.satoken.annotation.SaIgnore
 import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.adapter.portal.api.payload.VideoSeriesChangeSort
-import edu.only4.danmuku.adapter.portal.api.payload.VideoSeriesLoad
-import edu.only4.danmuku.adapter.portal.api.payload.VideoSeriesLoadAllVideo
 import edu.only4.danmuku.adapter.portal.api.payload.VideoSeriesLoad.SeriesItem
-import edu.only4.danmuku.application.commands.customer_video_series.DeleteVideoSeriesCmd
-import edu.only4.danmuku.application.commands.customer_video_series.RemoveVideoFromSeriesCmd
-import edu.only4.danmuku.application.commands.customer_video_series.UpdateVideoSeriesSortCmd
-import edu.only4.danmuku.application.commands.customer_video_series.CreateCustomerVideoSeriesCmd
-import edu.only4.danmuku.application.commands.customer_video_series.UpdateCustomerVideoSeriesVideosCmd
-import edu.only4.danmuku.application.commands.customer_video_series.UpdateCustomerVideoSeriesInfoCmd
+import edu.only4.danmuku.adapter.portal.api.payload.VideoSeriesLoadAllVideo
+import edu.only4.danmuku.application.commands.customer_video_series.*
+import edu.only4.danmuku.application.queries.customer_video_series.GetCustomerVideoSeriesInfoQry
 import edu.only4.danmuku.application.queries.customer_video_series.GetCustomerVideoSeriesListQry
 import edu.only4.danmuku.application.queries.customer_video_series.GetCustomerVideoSeriesVideoQry
-import edu.only4.danmuku.application.queries.customer_video_series.GetCustomerVideoSeriesInfoQry
 import edu.only4.danmuku.application.queries.video.GetVideoAllList
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.Size
@@ -131,10 +125,7 @@ class CompatibleVideoSeriesController {
                 videoCover = v.videoCover,
                 videoName = v.videoName,
                 playCount = v.playCount,
-                createTime = java.time.LocalDateTime.ofInstant(
-                    java.time.Instant.ofEpochSecond(v.createTime),
-                    java.time.ZoneId.systemDefault()
-                ).format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+                createTime = v.createTime
             )
         }
     }
