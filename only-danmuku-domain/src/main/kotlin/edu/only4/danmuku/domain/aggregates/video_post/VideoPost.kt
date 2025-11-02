@@ -401,7 +401,7 @@ class VideoPost(
         val result = buildFromUploads(customerId, uploads)
         this.videoFilePosts.clear()
         this.videoFilePosts.addAll(result.fileDrafts)
-        this.duration = result.totalDuration.coerceAtMost(0)
+        this.duration = result.totalDuration.coerceAtLeast(0)
     }
 
     /**
@@ -513,19 +513,6 @@ class VideoPost(
                     existing.fileName = spec.fileName
                     hasFileMetaChange = true
                 }
-                spec.fileSize?.let { sz ->
-                    if (existing.fileSize != sz) {
-                        existing.fileSize = sz
-                        hasFileMetaChange = true
-                    }
-                }
-                spec.duration?.let { du ->
-                    val current = existing.duration ?: 0
-                    if (du != current) {
-                        existing.duration = du
-                        hasFileMetaChange = true
-                    }
-                }
                 rebuilt.add(existing)
             } else {
                 // 新增：必须通过 uploadId 创建占位草稿文件
@@ -552,8 +539,8 @@ class VideoPost(
         this.videoFilePosts.clear()
         this.videoFilePosts.addAll(rebuilt)
 
-        val totalDuration = edits.sumOf { it.duration ?: 0 }
-        val normalized = totalDuration.coerceAtMost(0)
+        val totalDuration = rebuilt.sumOf { it.duration ?: 0 }
+        val normalized = totalDuration.coerceAtLeast(0)
         if (this.duration != normalized) {
             this.duration = normalized
             hasFileMetaChange = true
@@ -575,7 +562,11 @@ class VideoPost(
         val hasMeta = outcome?.hasFileMetaChange == true
         val hasRemoved = outcome?.hasRemovedFiles == true
         when {
-            hasNew -> this.markTranscoding()
+            hasNew -> {
+                this.markTranscoding()
+                // 新增分P需要转码，触发领域事件，交由应用层统一调度转码
+                events().attach(this) { VideoPostTranscodingRequiredDomainEvent(this) }
+            }
             (basicChanged || hasMeta || hasRemoved) -> this.markPendingReview()
         }
     }

@@ -2,19 +2,12 @@ package edu.only4.danmuku.domain.aggregates.video_post
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
-
 import edu.only4.danmuku.domain.aggregates.video_post.enums.TransferResult
 import edu.only4.danmuku.domain.aggregates.video_post.enums.UpdateType
 import edu.only4.danmuku.domain.aggregates.video_post.events.VideoFileDraftTranscodedDomainEvent
-
 import jakarta.persistence.*
 import jakarta.persistence.Table
-
-import org.hibernate.annotations.DynamicInsert
-import org.hibernate.annotations.DynamicUpdate
-import org.hibernate.annotations.GenericGenerator
-import org.hibernate.annotations.SQLDelete
-import org.hibernate.annotations.Where
+import org.hibernate.annotations.*
 
 /**
  * 视频文件信息;

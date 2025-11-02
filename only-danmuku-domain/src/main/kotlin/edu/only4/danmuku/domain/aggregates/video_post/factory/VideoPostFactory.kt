@@ -40,7 +40,7 @@ class VideoPostFactory : AggregateFactory<VideoPostFactory.Payload, VideoPost> {
             originInfo = entityPayload.originInfo,
             tags = entityPayload.tags,
             introduction = entityPayload.introduction,
-            interaction = null,
+            interaction = entityPayload.interaction,
             duration = 0,
             createUserId = null,
             createBy = null,
@@ -68,6 +68,7 @@ class VideoPostFactory : AggregateFactory<VideoPostFactory.Payload, VideoPost> {
          val originInfo: String? = null,
          val tags: String? = null,
          val introduction: String? = null,
+         val interaction: String? = null,
          val status: VideoStatus? = null,
      ) : AggregatePayload<VideoPost>
 

@@ -35,19 +35,8 @@ object CreateUploadSessionCmd {
                     expiresAt = expiresAt,
                 )
             )
-
-            // 规范化临时目录： temp/yyyyMMdd/{userId}/{uploadId}
-            val day = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"))
-            val relativeTempPath = "$day/${request.customerId}/${session.id}"
-            val fullPath = fileProps.projectFolder +
-                    Constants.FILE_FOLDER +
-                    Constants.FILE_FOLDER_TEMP +
-                    relativeTempPath
-
-            File(fullPath).mkdirs()
-
-            // 语义化方法：初始化临时目录并进入上传中状态
-            session.initTempAndStartUploading(relativeTempPath, now)
+            // 发布创建事件（持久化后触发订阅者初始化临时目录）
+            session.onCreate()
 
             Mediator.uow.save()
 

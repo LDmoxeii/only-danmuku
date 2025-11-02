@@ -255,7 +255,7 @@ class CustomerProfile(
     fun reclaimRewardCoins(amount: Int) {
         require(amount >= 0) { "扣款数量不得小于0" }
         if (amount == 0) return
-        val deduction = amount.coerceAtMost(this.currentCoinCount)
+        val deduction = amount.coerceAtLeast(this.currentCoinCount)
         this.currentCoinCount -= deduction
         this.totalCoinCount = (this.totalCoinCount - deduction).coerceAtLeast(0)
     }

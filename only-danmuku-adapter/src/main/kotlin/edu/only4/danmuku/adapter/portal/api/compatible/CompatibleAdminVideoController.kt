@@ -4,18 +4,15 @@ import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.share.PageData
 import edu.only4.danmuku.adapter.portal.api.payload.AdminVideoLoadList
 import edu.only4.danmuku.adapter.portal.api.payload.AdminVideoLoadPList
-import edu.only4.danmuku.application.commands.video_post.DeleteVideoPostCmd
 import edu.only4.danmuku.application.commands.video.RecommendVideoCmd
-import edu.only4.danmuku.application.commands.video_post.AuditVideoPostPostCmd
+import edu.only4.danmuku.application.commands.video_post.AuditVideoPostCmd
+import edu.only4.danmuku.application.commands.video_post.DeleteVideoPostCmd
 import edu.only4.danmuku.application.queries.video.GetVideoPlayFilesQry
 import edu.only4.danmuku.application.queries.video_draft.GetVideoPostPageQry
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
 
 /**
  * 管理员视频管理控制器
@@ -50,17 +47,13 @@ class CompatibleAdminVideoController {
                     userId = video.userId.toString(),
                     nickName = video.nickName,
                     duration = video.duration,
+                    postType = video.postType,
+                    originInfo = video.originInfo,
+                    tags = video.tags,
+                    introduction = video.introduction,
                     status = video.status,
-                    createTime = LocalDateTime.ofInstant(
-                        Instant.ofEpochSecond(video.createTime),
-                        ZoneId.systemDefault()
-                    ),
-                    lastUpdateTime = video.lastUpdateTime?.let {
-                        LocalDateTime.ofInstant(
-                            Instant.ofEpochSecond(it),
-                            ZoneId.systemDefault()
-                        )
-                    },
+                    createTime = video.createTime,
+                    lastUpdateTime = video.lastUpdateTime,
                     playCount = video.playCount,
                     likeCount = video.likeCount,
                     danmuCount = video.danmuCount,
@@ -90,8 +83,8 @@ class CompatibleAdminVideoController {
         reason: String?,
     ) {
         Mediator.commands.send(
-            AuditVideoPostPostCmd.Request(
-                videoId = videoId,
+            AuditVideoPostCmd.Request(
+                videoPostId = videoId,
                 status = status,
                 reason = reason
             )

@@ -6,7 +6,7 @@ import edu.only4.danmuku.application.queries._share.model.dto.VideoFilePost.Vide
 import edu.only4.danmuku.application.queries._share.model.dto.VideoPost.VideoPostDetail
 import edu.only4.danmuku.application.queries._share.model.id
 import edu.only4.danmuku.application.queries._share.model.videoId
-import edu.only4.danmuku.application.queries.video_draft.GetVideoDraftInfoQry
+import edu.only4.danmuku.application.queries.video_draft.GetVideoPostInfoQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.springframework.stereotype.Service
@@ -19,51 +19,48 @@ import org.springframework.stereotype.Service
  * @date 2025/10/15
  */
 @Service
-class GetVideoDraftInfoQryHandler(
+class GetVideoPostInfoQryHandler(
     private val sqlClient: KSqlClient,
-) : Query<GetVideoDraftInfoQry.Request, GetVideoDraftInfoQry.Response> {
+) : Query<GetVideoPostInfoQry.Request, GetVideoPostInfoQry.Response> {
 
-    override fun exec(request: GetVideoDraftInfoQry.Request): GetVideoDraftInfoQry.Response {
+    override fun exec(request: GetVideoPostInfoQry.Request): GetVideoPostInfoQry.Response {
 
         // 查询视频草稿信息
-        val draftList = sqlClient.findAll(VideoPostDetail::class) {
-            where(table.id eq request.videoId)
+        val videoPost = sqlClient.findOne(VideoPostDetail::class) {
+            where(table.id eq request.videoPostId)
             where(table.customerId eq request.userId)
         }
 
-        if (draftList.isEmpty()) {
-            throw IllegalArgumentException("视频草稿不存在或无权访问: videoId=${request.videoId}, userId=${request.userId}")
-        }
-
-        val draft = draftList.first()
-
         // 查询视频文件列表
         val videoFiles = sqlClient.findAll(VideoFilePostItem::class) {
-            where(table.videoId eq request.videoId)
+            where(table.videoId eq request.videoPostId)
         }
 
-        return GetVideoDraftInfoQry.Response(
-            videoInfo = GetVideoDraftInfoQry.VideoInfo(
-                videoId = draft.id,
-                videoCover = draft.videoCover,
-                videoName = draft.videoName,
-                pCategoryId = draft.parentCategoryId,
-                categoryId = draft.categoryId,
-                postType = draft.postType,
-                tags = draft.tags,
-                introduction = draft.introduction,
-                interaction = draft.interaction,
-                status = draft.status
+        return GetVideoPostInfoQry.Response(
+            videoInfo = GetVideoPostInfoQry.VideoInfo(
+                videoId = videoPost.id,
+                videoCover = videoPost.videoCover,
+                videoName = videoPost.videoName,
+                parentCategoryId = videoPost.parentCategoryId,
+                categoryId = videoPost.categoryId,
+                postType = videoPost.postType,
+                originInfo = videoPost.originInfo,
+                tags = videoPost.tags,
+                introduction = videoPost.introduction,
+                interaction = videoPost.interaction,
+                status = videoPost.status
             ),
             videoFileList = videoFiles.map { file ->
-                GetVideoDraftInfoQry.VideoFileItem(
+                GetVideoPostInfoQry.VideoFileItem(
                     fileId = file.id,
                     uploadId = file.id.toString(),
                     fileIndex = file.fileIndex,
                     fileName = file.fileName ?: "",
                     fileSize = file.fileSize ?: 0L,
                     filePath = file.filePath,
-                    duration = file.duration ?: 0
+                    duration = file.duration ?: 0,
+                    updateType = file.updateType,
+                    transferResult = file.transferResult,
                 )
             }
         )

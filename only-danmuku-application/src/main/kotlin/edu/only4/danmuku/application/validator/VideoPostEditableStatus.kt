@@ -1,7 +1,7 @@
 package edu.only4.danmuku.application.validator
 
 import com.only4.cap4k.ddd.core.Mediator
-import edu.only4.danmuku.application.queries.video_draft.GetVideoDraftInfoQry
+import edu.only4.danmuku.application.queries.video_draft.GetVideoPostInfoQry
 import edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus
 import jakarta.validation.Constraint
 import jakarta.validation.ConstraintValidator
@@ -10,16 +10,11 @@ import jakarta.validation.Payload
 import kotlin.reflect.KClass
 import kotlin.reflect.full.memberProperties
 
-/**
- * 校验视频草稿是否处于可编辑状态（基于查询层，不直接依赖仓储）
- *
- * 可编辑：status != REVIEW_PASSED
- */
 @Target(AnnotationTarget.CLASS, AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
-@Constraint(validatedBy = [VideoEditableStatus.Validator::class])
+@Constraint(validatedBy = [VideoPostEditableStatus.Validator::class])
 @MustBeDocumented
-annotation class VideoEditableStatus(
+annotation class VideoPostEditableStatus(
     val message: String = "视频草稿状态不可编辑",
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [],
@@ -27,11 +22,11 @@ annotation class VideoEditableStatus(
     val userIdField: String = "customerId",
 ) {
 
-    class Validator : ConstraintValidator<VideoEditableStatus, Any> {
+    class Validator : ConstraintValidator<VideoPostEditableStatus, Any> {
         private lateinit var videoIdProperty: String
         private lateinit var userIdProperty: String
 
-        override fun initialize(constraintAnnotation: VideoEditableStatus) {
+        override fun initialize(constraintAnnotation: VideoPostEditableStatus) {
             videoIdProperty = constraintAnnotation.videoIdField
             userIdProperty = constraintAnnotation.userIdField
         }
@@ -41,8 +36,8 @@ annotation class VideoEditableStatus(
 
             val resp = runCatching {
                 Mediator.queries.send(
-                    GetVideoDraftInfoQry.Request(
-                        videoId = videoId,
+                    GetVideoPostInfoQry.Request(
+                        videoPostId = videoId,
                         userId = userId
                     )
                 )

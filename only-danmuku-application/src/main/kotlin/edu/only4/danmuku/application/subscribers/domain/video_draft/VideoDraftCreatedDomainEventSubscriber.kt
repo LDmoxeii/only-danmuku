@@ -2,6 +2,8 @@ package edu.only4.danmuku.application.subscribers.domain.video_draft
 
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.application.commands.video_post.TranscodeAllTranscodingFilesCmd
+import edu.only4.danmuku.application.commands.video_post.TransferVideoFileCmd
+import edu.only4.danmuku.domain.aggregates.video_post.enums.TransferResult
 import edu.only4.danmuku.domain.aggregates.video_post.events.VideoDraftCreatedDomainEvent
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Service
@@ -20,12 +22,16 @@ class VideoDraftCreatedDomainEventSubscriber {
     @EventListener(VideoDraftCreatedDomainEvent::class)
     fun on(event: VideoDraftCreatedDomainEvent) {
         val videoPost = event.entity
-
-        Mediator.commands.send(
-            TranscodeAllTranscodingFilesCmd.Request(
-                videoPost = videoPost
+        videoPost.videoFilePosts
+            .filter { it.transferResult == TransferResult.TRANSCODING }
+            .sortedBy { it.fileIndex }
+            .forEach {
+            Mediator.commands.send(
+                TransferVideoFileCmd.Request(
+                    videoPost = videoPost,
+                    videoFilePost = it
+                )
             )
-        )
-
+        }
     }
 }

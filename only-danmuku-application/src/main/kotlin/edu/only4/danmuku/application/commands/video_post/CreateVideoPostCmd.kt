@@ -15,7 +15,7 @@ object CreateVideoPostCmd {
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
-            val draft = Mediator.factories.create(
+            val post = Mediator.factories.create(
                 VideoPostFactory.Payload(
                     customerId = request.customerId,
                     videoName = request.videoName,
@@ -26,6 +26,7 @@ object CreateVideoPostCmd {
                     originInfo = request.originInfo,
                     tags = request.tags,
                     introduction = request.introduction,
+                    interaction = request.interaction,
                     status = VideoStatus.TRANSCODING,
                 )
             )
@@ -39,7 +40,7 @@ object CreateVideoPostCmd {
                     )
                 }
 
-                draft.initializeFilesFromUploads(
+                post.initializeFilesFromUploads(
                     customerId = request.customerId,
                     uploads = uploadSpecs
                 )
@@ -47,7 +48,7 @@ object CreateVideoPostCmd {
 
             Mediator.uow.save()
 
-            return Response(videoId = draft.id)
+            return Response(videoId = post.id)
         }
     }
 

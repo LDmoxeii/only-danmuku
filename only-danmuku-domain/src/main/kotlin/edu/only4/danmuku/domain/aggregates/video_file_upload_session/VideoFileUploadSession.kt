@@ -1,8 +1,10 @@
 package edu.only4.danmuku.domain.aggregates.video_file_upload_session
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
+import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
 
 import edu.only4.danmuku.domain.aggregates.video_file_upload_session.enums.UploadStatus
+import edu.only4.danmuku.domain.aggregates.video_file_upload_session.events.UploadSessionCreatedDomainEvent
 
 import jakarta.persistence.*
 
@@ -227,4 +229,11 @@ class VideoFileUploadSession(
     }
 
     // 【行为方法结束】
+
+    /**
+     * 聚合创建时触发的事件
+     */
+    fun onCreate() {
+        events().attach(this) { UploadSessionCreatedDomainEvent(this) }
+    }
 }

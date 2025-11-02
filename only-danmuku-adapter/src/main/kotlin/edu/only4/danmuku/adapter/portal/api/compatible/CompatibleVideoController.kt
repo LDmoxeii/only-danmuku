@@ -16,7 +16,6 @@ import edu.only4.danmuku.application.queries.video_file.GetVideoFilesByVideoIdQr
 import jakarta.validation.constraints.NotEmpty
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.time.Duration
@@ -56,10 +55,10 @@ class CompatibleVideoController {
     @SaIgnore
     @PostMapping("/loadVideo")
     fun getVideoPage(request: VideoLoad.Request): PageData<VideoLoad.VideoItem> {
-        val recommendType = if (request.categoryId == null && request.categoryParentId == null) 0 else null
+        val recommendType = if (request.categoryId == null && request.parentCategoryId == null) 1 else null
 
         val queryRequest = GetVideoPageQry.Request(
-            categoryParentId = request.categoryParentId,
+            categoryParentId = request.parentCategoryId,
             categoryId = request.categoryId,
             recommendType = recommendType
         ).apply {

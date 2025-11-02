@@ -1,9 +1,9 @@
 package edu.only4.danmuku.adapter.portal.api.payload
 
 import com.only.engine.translation.annotation.Translation
+import com.only.engine.translation.translation.EpochSecondToDateStringTranslation
 import com.only4.cap4k.ddd.core.share.PageParam
 import edu.only4.danmuku.adapter.domain.translation.video_post.VideoStatusTranslation.Companion.VIDEO_STATUS_CODE_TO_DESC
-import java.time.LocalDateTime
 
 /**
  * 加载视频列表(分页)接口载荷
@@ -31,11 +31,17 @@ object AdminVideoLoadList {
         var userId: String?,
         var nickName: String?,
         var duration: Int?,
+        var postType: Int?,
+        var originInfo: String?,
+        var tags: String?,
+        var introduction: String?,
         var status: Int,
         @get:Translation(type = VIDEO_STATUS_CODE_TO_DESC, mapper = "status")
         var statusName: String? = null,
-        var createTime: LocalDateTime?,
-        var lastUpdateTime: LocalDateTime?,
+        @get:Translation(EpochSecondToDateStringTranslation.TYPE, other = "yyyy-MM-dd HH:mm:ss")
+        var createTime: Long,
+        @get:Translation(EpochSecondToDateStringTranslation.TYPE, other = "yyyy-MM-dd HH:mm:ss")
+        var lastUpdateTime: Long?,
         var playCount: Int?,
         var likeCount: Int?,
         var danmuCount: Int?,

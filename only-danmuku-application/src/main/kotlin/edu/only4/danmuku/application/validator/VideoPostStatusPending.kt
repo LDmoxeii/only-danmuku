@@ -1,7 +1,7 @@
 package edu.only4.danmuku.application.validator
 
 import com.only4.cap4k.ddd.core.Mediator
-import edu.only4.danmuku.application.queries.video_draft.GetVideoDraftInfoQry
+import edu.only4.danmuku.application.queries.video_draft.GetVideoPostInfoQry
 import edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus
 import jakarta.validation.Constraint
 import jakarta.validation.ConstraintValidator
@@ -10,14 +10,11 @@ import jakarta.validation.Payload
 import kotlin.reflect.KClass
 import kotlin.reflect.full.memberProperties
 
-/**
- * 校验视频草稿状态必须为待审核（基于查询层，不直接依赖仓储）
- */
 @Target(AnnotationTarget.CLASS, AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
-@Constraint(validatedBy = [VideoDraftStatusPending.Validator::class])
+@Constraint(validatedBy = [VideoPostStatusPending.Validator::class])
 @MustBeDocumented
-annotation class VideoDraftStatusPending(
+annotation class VideoPostStatusPending(
     val message: String = "视频草稿状态必须为待审核",
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [],
@@ -25,11 +22,11 @@ annotation class VideoDraftStatusPending(
     val userIdField: String = "customerId",
 ) {
 
-    class Validator : ConstraintValidator<VideoDraftStatusPending, Any> {
+    class Validator : ConstraintValidator<VideoPostStatusPending, Any> {
         private lateinit var videoIdProperty: String
         private lateinit var userIdProperty: String
 
-        override fun initialize(constraintAnnotation: VideoDraftStatusPending) {
+        override fun initialize(constraintAnnotation: VideoPostStatusPending) {
             videoIdProperty = constraintAnnotation.videoIdField
             userIdProperty = constraintAnnotation.userIdField
         }
@@ -39,8 +36,8 @@ annotation class VideoDraftStatusPending(
 
             val resp = runCatching {
                 Mediator.queries.send(
-                    GetVideoDraftInfoQry.Request(
-                        videoId = videoId,
+                    GetVideoPostInfoQry.Request(
+                        videoPostId = videoId,
                         userId = userId
                     )
                 )

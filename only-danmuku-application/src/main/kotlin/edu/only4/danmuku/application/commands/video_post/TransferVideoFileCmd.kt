@@ -24,7 +24,7 @@ object TransferVideoFileCmd {
     ) : Command<Request, Response> {
 
         override fun exec(request: Request): Response {
-            val draft = request.videoPost
+            val videoPost = request.videoPost
             val file = request.videoFilePost
 
             val port = FFmpegVideoFileTranscodePort(fileProps)
@@ -34,24 +34,25 @@ object TransferVideoFileCmd {
             runCatching {
                 logger.info(
                     "开始转码单个文件 videoId={}, uploadId={}, idx={}",
-                    draft.id, file.uploadId, file.fileIndex
+                    videoPost.id, file.uploadId, file.fileIndex
                 )
-                file.transcode(draft.id, port)
+                file.transcode(videoPost.id, port)
                 logger.info(
                     "完成转码单个文件 videoId={}, uploadId={}, idx={}, size={}, duration={}",
-                    draft.id, file.uploadId, file.fileIndex, file.fileSize, file.duration
+                    videoPost.id, file.uploadId, file.fileIndex, file.fileSize, file.duration
                 )
             }.onFailure { e ->
                 errorMessage = e.message
                 logger.error(
                     "单文件转码失败 videoId={}, uploadId={}, idx={}, msg={}",
-                    draft.id, file.uploadId, file.fileIndex, e.message, e
+                    videoPost.id, file.uploadId, file.fileIndex, e.message, e
                 )
             }
 
             // 转码结束后刷新视频草稿状态
-            refreshDraftStatus(draft)
+            refreshDraftStatus(videoPost)
 
+            Mediator.uow.persist(videoPost)
             Mediator.uow.save()
 
             return Response(

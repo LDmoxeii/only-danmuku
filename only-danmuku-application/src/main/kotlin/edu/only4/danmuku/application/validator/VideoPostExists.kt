@@ -1,7 +1,7 @@
 package edu.only4.danmuku.application.validator
 
 import com.only4.cap4k.ddd.core.Mediator
-import edu.only4.danmuku.application.queries.video_draft.GetVideoDraftInfoQry
+import edu.only4.danmuku.application.queries.video_draft.GetVideoPostInfoQry
 import jakarta.validation.Constraint
 import jakarta.validation.ConstraintValidator
 import jakarta.validation.ConstraintValidatorContext
@@ -9,12 +9,11 @@ import jakarta.validation.Payload
 import kotlin.reflect.KClass
 import kotlin.reflect.full.memberProperties
 
-/** 校验视频草稿是否存在（通过查询层） */
 @Target(AnnotationTarget.CLASS, AnnotationTarget.FIELD, AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
-@Constraint(validatedBy = [VideoDraftExists.Validator::class])
+@Constraint(validatedBy = [VideoPostExists.Validator::class])
 @MustBeDocumented
-annotation class VideoDraftExists(
+annotation class VideoPostExists(
     val message: String = "视频草稿不存在",
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [],
@@ -22,11 +21,11 @@ annotation class VideoDraftExists(
     val userIdField: String = "customerId",
 ) {
 
-    class Validator : ConstraintValidator<VideoDraftExists, Any> {
+    class Validator : ConstraintValidator<VideoPostExists, Any> {
         private lateinit var videoIdProperty: String
         private lateinit var userIdProperty: String
 
-        override fun initialize(constraintAnnotation: VideoDraftExists) {
+        override fun initialize(constraintAnnotation: VideoPostExists) {
             videoIdProperty = constraintAnnotation.videoIdField
             userIdProperty = constraintAnnotation.userIdField
         }
@@ -36,8 +35,8 @@ annotation class VideoDraftExists(
 
             val resp = runCatching {
                 Mediator.queries.send(
-                    GetVideoDraftInfoQry.Request(
-                        videoId = videoId,
+                    GetVideoPostInfoQry.Request(
+                        videoPostId = videoId,
                         userId = userId
                     )
                 )

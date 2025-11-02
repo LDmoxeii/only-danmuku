@@ -1,11 +1,13 @@
 package edu.only4.danmuku.application.commands.video_post
 
+import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
 import edu.only4.danmuku.application._share.config.properties.FileAppProperties
 import edu.only4.danmuku.application._share.constants.Constants
 import edu.only4.danmuku.domain._share.meta.video_file_upload_session.SVideoFileUploadSession
+import edu.only4.danmuku.domain._share.meta.video_post.SVideoPost
 import edu.only4.danmuku.domain.aggregates.video_post.VideoPost
 import edu.only4.danmuku.domain.aggregates.video_post.enums.TransferResult
 import edu.only4.danmuku.domain.aggregates.video_post.ports.VideoFileTranscodePort
@@ -24,7 +26,9 @@ object TranscodeAllTranscodingFilesCmd {
     ) : Command<Request, Response> {
 
         override fun exec(request: Request): Response {
-            val draft = request.videoPost
+            val videoPost = Mediator.repositories.findOne(
+                SVideoPost.predicateById(request.videoPostId)
+            ).getOrNull() ?: throw KnownException("视频不存在")
 
             var total = 0
             var success = 0
@@ -32,25 +36,26 @@ object TranscodeAllTranscodingFilesCmd {
 
             val port = FFmpegVideoFileTranscodePort(fileProps)
 
-            draft.videoFilePosts
+            videoPost.videoFilePosts
                 .filter { it.transferResult == TransferResult.TRANSCODING }
                 .sortedBy { it.fileIndex }
                 .forEach { file ->
                     total++
                     runCatching {
-                        file.transcode(draft.id, port)
+                        file.transcode(videoPost.id, port)
                         success++
                     }.onFailure { e ->
                         failed++
                         log.error(
                             "转码失败 videoId={}, uploadId={}, idx={}, msg={}",
-                            draft.id, file.uploadId, file.fileIndex, e.message, e
+                            videoPost.id, file.uploadId, file.fileIndex, e.message, e
                         )
                     }
                 }
 
-            refreshDraftStatus(draft)
+            refreshDraftStatus(videoPost)
 
+            Mediator.uow.persist(videoPost)
             Mediator.uow.save()
             return Response(total = total, success = success, failed = failed)
         }
@@ -73,7 +78,7 @@ object TranscodeAllTranscodingFilesCmd {
     }
 
     data class Request(
-        val videoPost: VideoPost,
+        val videoPostId: Long,
     ) : RequestParam<Response>
 
     data class Response(

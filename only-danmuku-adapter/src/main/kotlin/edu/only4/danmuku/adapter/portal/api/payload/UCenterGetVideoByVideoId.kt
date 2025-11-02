@@ -16,8 +16,8 @@ object UCenterGetVideoByVideoId {
     data class Response(
         /** 视频信息 */
         var videoInfo: VideoInfo? = null,
-        /** 视频文件列表 */
-        var videoFileList: List<VideoFileItem>? = null
+        /** 视频文件列表（与旧版对齐：videoInfoFileList） */
+        var videoInfoFileList: List<VideoFileItem>? = null
     )
 
     /**
@@ -31,11 +31,13 @@ object UCenterGetVideoByVideoId {
         /** 视频名称 */
         var videoName: String? = null,
         /** 父分类ID */
-        var pCategoryId: Long? = null,
+        var parentCategoryId: Long? = null,
         /** 分类ID */
         var categoryId: Long? = null,
         /** 上传类型(0自制/1转载) */
         var postType: Int? = null,
+        /** 原资源说明 */
+        var originInfo: String? = null,
         /** 标签 */
         var tags: String? = null,
         /** 简介 */
@@ -63,6 +65,10 @@ object UCenterGetVideoByVideoId {
         /** 文件路径 */
         var filePath: String? = null,
         /** 时长(秒) */
-        var duration: Int? = null
+        var duration: Int? = null,
+        /** 更新类型 */
+        var updateType: Int? = null,
+        /** 转码结果 */
+        var transferResult: Int? = null,
     )
 }

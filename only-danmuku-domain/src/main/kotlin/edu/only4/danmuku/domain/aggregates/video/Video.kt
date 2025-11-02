@@ -8,6 +8,7 @@ import edu.only4.danmuku.domain.aggregates.video.enums.RecommendType
 import edu.only4.danmuku.domain.aggregates.video.events.VideoCreatedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video.events.VideoDeletedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video.events.VideoRecommendedDomainEvent
+import edu.only4.danmuku.domain.aggregates.video_post.VideoPost
 
 import jakarta.persistence.*
 
@@ -360,4 +361,116 @@ class Video(
     }
 
     // 【行为方法结束】
+
+    /**
+     * 将成品视频与最新的稿件信息保持一致。
+     * 仅在聚合内更新状态，外部通过该方法完成“从稿件同步到成品”的需求。
+     */
+    fun syncFromPost(post: VideoPost) {
+        // 基础信息
+        this.videoPostId = post.id
+        this.customerId = post.customerId
+        this.videoCover = post.videoCover
+        this.videoName = post.videoName
+        this.pCategoryId = post.pCategoryId
+        this.categoryId = post.categoryId
+        this.postType = post.postType
+        this.originInfo = post.originInfo
+        this.tags = post.tags
+        this.introduction = post.introduction
+        this.interaction = post.interaction
+        this.duration = post.duration
+
+        // 分P同步：仅保留已转码成功的文件
+        this.videoFiles.clear()
+        post.videoFilePosts
+            .filter { it.isTransferSuccess() }
+            .sortedBy { it.fileIndex }
+            .forEach { fileDraft ->
+                this.videoFiles.add(
+                    VideoFile(
+                        customerId = fileDraft.customerId,
+                        videoFilePostId = fileDraft.id,
+                        fileName = fileDraft.fileName,
+                        fileIndex = fileDraft.fileIndex,
+                        fileSize = fileDraft.fileSize,
+                        filePath = fileDraft.filePath,
+                        duration = fileDraft.duration,
+                        createUserId = fileDraft.createUserId,
+                        createBy = fileDraft.createBy,
+                        createTime = fileDraft.createTime,
+                        updateUserId = fileDraft.updateUserId,
+                        updateBy = fileDraft.updateBy,
+                        updateTime = fileDraft.updateTime,
+                        deleted = 0L,
+                    )
+                )
+            }
+    }
+
+    /**
+     * 使用基础数据同步到成品视频（无须暴露 VideoPost 聚合给外部）。
+     */
+    fun syncFromBasics(
+        videoPostId: Long,
+        customerId: Long,
+        videoCover: String,
+        videoName: String,
+        parentCategoryId: Long,
+        categoryId: Long?,
+        postType: Int,
+        originInfo: String?,
+        tags: String?,
+        introduction: String?,
+        interaction: String?,
+        duration: Int,
+        files: List<SyncFileArgs>,
+    ) {
+        // 基础信息
+        this.videoPostId = videoPostId
+        this.customerId = customerId
+        this.videoCover = videoCover
+        this.videoName = videoName
+        this.pCategoryId = parentCategoryId
+        this.categoryId = categoryId
+        this.postType = PostType.valueOf(postType)
+        this.originInfo = originInfo
+        this.tags = tags
+        this.introduction = introduction
+        this.interaction = interaction
+        this.duration = duration
+
+        // 分P重建
+        this.videoFiles.clear()
+        files.sortedBy { it.fileIndex }.forEach { f ->
+            this.videoFiles.add(
+                VideoFile(
+                    customerId = f.customerId,
+                    videoFilePostId = f.videoFilePostId,
+                    fileName = f.fileName,
+                    fileIndex = f.fileIndex,
+                    fileSize = f.fileSize,
+                    filePath = f.filePath,
+                    duration = f.duration,
+                    createUserId = null,
+                    createBy = null,
+                    createTime = null,
+                    updateUserId = null,
+                    updateBy = null,
+                    updateTime = null,
+                    deleted = 0L,
+                )
+            )
+        }
+    }
+
+    data class SyncFileArgs(
+        val videoFilePostId: Long,
+        val customerId: Long,
+        val fileName: String?,
+        val fileIndex: Int,
+        val fileSize: Long?,
+        val filePath: String?,
+        val duration: Int?,
+    )
 }

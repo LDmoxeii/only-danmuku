@@ -19,8 +19,8 @@ VideoPostDetail {
     videoName
     status
     postType
+    originInfo
     tags
     introduction
     interaction
 }
-

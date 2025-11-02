@@ -11,12 +11,12 @@ import edu.only4.danmuku.adapter.portal.api.payload.UCenterGetVideoCountInfo
 import edu.only4.danmuku.adapter.portal.api.payload.UCenterLoadVideoList
 import edu.only4.danmuku.adapter.portal.api.payload.UCenterPostVideo
 import edu.only4.danmuku.application.commands.video_post.ChangeVideoPostInteractionCmd
-import edu.only4.danmuku.application.commands.video_post.DeleteVideoPostCmd
 import edu.only4.danmuku.application.commands.video_post.CreateVideoPostCmd
-import edu.only4.danmuku.application.commands.video_post.UpdateVideoDraftCmd
-import edu.only4.danmuku.application.queries.video_draft.GetUserVideoDraftsQry
+import edu.only4.danmuku.application.commands.video_post.DeleteVideoPostCmd
+import edu.only4.danmuku.application.commands.video_post.UpdateVideoPostCmd
+import edu.only4.danmuku.application.queries.video_draft.GetUserVideoPostQry
 import edu.only4.danmuku.application.queries.video_draft.GetVideoDraftCountByStatusQry
-import edu.only4.danmuku.application.queries.video_draft.GetVideoDraftInfoQry
+import edu.only4.danmuku.application.queries.video_draft.GetVideoPostInfoQry
 import edu.only4.danmuku.domain.aggregates.video.enums.PostType
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.Size
@@ -42,6 +42,7 @@ class CompatibleUCenterVideoPostController {
         parentCategoryId: Long,
         categoryId: Long?,
         postType: Int,
+        originInfo: String?,
         @NotEmpty @Size(max = 300) tags: String,
         @Size(max = 2000) introduction: String?,
         @Size(max = 3) interaction: String?,
@@ -69,6 +70,7 @@ class CompatibleUCenterVideoPostController {
                     parentCategoryId = parentCategoryId,
                     categoryId = categoryId,
                     postType = PostType.valueOf(postType),
+                    originInfo = originInfo,
                     tags = tags,
                     introduction = introduction,
                     interaction = interaction,
@@ -78,7 +80,7 @@ class CompatibleUCenterVideoPostController {
         } else {
             // 更新：更新视频草稿（含互动配置），支持 fileId 与 uploadId 混合
             val updateFileList = mixedList.mapIndexed { idx, item ->
-                UpdateVideoDraftCmd.VideoFileInfo(
+                UpdateVideoPostCmd.VideoFileInfo(
                     fileId = item.fileId,
                     uploadId = item.uploadId,
                     fileIndex = idx + 1,
@@ -86,14 +88,15 @@ class CompatibleUCenterVideoPostController {
                 )
             }
             Mediator.commands.send(
-                UpdateVideoDraftCmd.Request(
-                    videoId = videoId,
+                UpdateVideoPostCmd.Request(
+                    videoPostId = videoId,
                     customerId = currentUserId,
                     videoName = videoName,
                     videoCover = videoCover,
                     pCategoryId = parentCategoryId,
                     categoryId = categoryId,
                     postType = PostType.valueOf(postType),
+                    originInfo = originInfo,
                     tags = tags,
                     introduction = introduction,
                     interaction = interaction,
@@ -109,14 +112,14 @@ class CompatibleUCenterVideoPostController {
     fun getVideoPostPage(request: UCenterLoadVideoList.Request): PageData<UCenterLoadVideoList.VideoItem> {
         val currentUserId = LoginHelper.getUserId()!!
 
-        val queryRequest = GetUserVideoDraftsQry.Request(
+        val queryRequest = GetUserVideoPostQry.Request(
             userId = currentUserId,
             status = if (request.status == -1) null else request.status,
             videoNameFuzzy = request.videoNameFuzzy,
             excludeStatusArray = if (request.status == -1) listOf(4, 5) else null // 进行中排除审核通过和不通过
         ).apply {
             pageNum = request.pageNum
-            pageSize = request.pageSize
+            pageSize = 999
         }
 
         val queryResult = Mediator.queries.send(queryRequest)
@@ -126,6 +129,7 @@ class CompatibleUCenterVideoPostController {
             pageSize = queryResult.pageSize,
             list = queryResult.list.map { video ->
                 UCenterLoadVideoList.VideoItem(
+                    videoPostId = video.videoPostId,
                     videoId = video.videoId,
                     videoCover = video.videoCover,
                     videoName = video.videoName,
@@ -190,14 +194,14 @@ class CompatibleUCenterVideoPostController {
     }
 
     @PostMapping("/getVideoByVideoId")
-    fun getVideoByVideoId(
-        videoId: Long,
+    fun getVideoPostByVideoPostId(
+        videoPostId: Long,
     ): UCenterGetVideoByVideoId.Response {
         val currentUserId = LoginHelper.getUserId()!!
 
         val queryResult = Mediator.queries.send(
-            GetVideoDraftInfoQry.Request(
-                videoId = videoId,
+            GetVideoPostInfoQry.Request(
+                videoPostId = videoPostId,
                 userId = currentUserId
             )
         )
@@ -207,15 +211,16 @@ class CompatibleUCenterVideoPostController {
                 videoId = queryResult.videoInfo.videoId.toString(),
                 videoCover = queryResult.videoInfo.videoCover,
                 videoName = queryResult.videoInfo.videoName,
-                pCategoryId = queryResult.videoInfo.pCategoryId,
+                parentCategoryId = queryResult.videoInfo.parentCategoryId,
                 categoryId = queryResult.videoInfo.categoryId,
                 postType = queryResult.videoInfo.postType,
+                originInfo = queryResult.videoInfo.originInfo,
                 tags = queryResult.videoInfo.tags,
                 introduction = queryResult.videoInfo.introduction,
                 interaction = queryResult.videoInfo.interaction,
                 status = queryResult.videoInfo.status
             ),
-            videoFileList = queryResult.videoFileList.map { file ->
+            videoInfoFileList = queryResult.videoFileList.map { file ->
                 UCenterGetVideoByVideoId.VideoFileItem(
                     fileId = file.fileId.toString(),
                     uploadId = file.uploadId,
@@ -223,7 +228,9 @@ class CompatibleUCenterVideoPostController {
                     fileName = file.fileName,
                     fileSize = file.fileSize,
                     filePath = file.filePath,
-                    duration = file.duration
+                    duration = file.duration,
+                    updateType = file.updateType,
+                    transferResult = file.transferResult
                 )
             }
         )
@@ -231,14 +238,14 @@ class CompatibleUCenterVideoPostController {
 
     @PostMapping("/saveVideoInteraction")
     fun saveVideoPostInteraction(
-        videoId: Long,
+        videoPostId: Long,
         interaction: String,
     ) {
         val userId = LoginHelper.getUserId()!!
 
         Mediator.commands.send(
             ChangeVideoPostInteractionCmd.Request(
-                videoId = videoId,
+                videoId = videoPostId,
                 userId = userId,
                 interaction = interaction
             )
@@ -247,12 +254,12 @@ class CompatibleUCenterVideoPostController {
 
     @PostMapping("/deleteVideo")
     fun deleteVideo(
-        videoId: Long,
+        videoPostId: Long,
     ) {
         val currentUserId = LoginHelper.getUserId()!!
         Mediator.commands.send(
             DeleteVideoPostCmd.Request(
-                videoId = videoId,
+                videoId = videoPostId,
                 operatorId = currentUserId
             )
         )
