@@ -40,7 +40,7 @@ class CompatibleUserMessageController {
         return result.list.map { item ->
             MessageGetNoReadCountGroup.GroupItem(
                 messageType = item.messageType,
-                count = item.count,
+                messageCount = item.count,
             )
         }
     }
@@ -76,8 +76,16 @@ class CompatibleUserMessageController {
                 id = it.id,
                 messageType = it.messageType,
                 readType = it.readType,
-                extendJson = it.extendJson,
+                extendDto = try {
+                    if (it.extendJson.isNullOrBlank()) emptyMap() else com.only.engine.json.misc.JsonUtils.parseObject(it.extendJson, MutableMap::class.java)
+                } catch (e: Exception) { emptyMap<String, Any>() },
                 createTime = it.createTime,
+                videoId = it.videoId,
+                videoName = it.videoName,
+                videoCover = it.videoCover,
+                sendUserId = it.sendUserId,
+                sendUserName = it.sendUserName,
+                sendUserAvatar = it.sendUserAvatar,
             )
         }
         return PageData.create(request, result.totalCount, items)

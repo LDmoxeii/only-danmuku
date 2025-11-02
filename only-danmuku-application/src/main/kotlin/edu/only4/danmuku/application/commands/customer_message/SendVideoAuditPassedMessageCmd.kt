@@ -4,6 +4,7 @@ import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
 import edu.only4.danmuku.domain._share.meta.video.SVideo
+import edu.only4.danmuku.domain._share.meta.video_post.SVideoPost
 import edu.only4.danmuku.domain.aggregates.customer_message.factory.CustomerMessageFactory
 import edu.only4.danmuku.domain.aggregates.customer_message.enums.MessageType
 import org.springframework.stereotype.Service
@@ -18,17 +19,18 @@ object SendVideoAuditPassedMessageCmd {
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
             val video = Mediator.repositories.findOne(
-                SVideo.predicateById(request.videoId)
+                SVideoPost.predicateById(request.videoId)
             ).getOrNull() ?: return Response()
 
             val now = System.currentTimeMillis() / 1000
+            val extend = UserMessageExtend(auditStatus = 4).toJson()
             Mediator.factories.create(
                 CustomerMessageFactory.Payload(
                     customerId = video.customerId,
                     videoId = request.videoId,
                     messageType = MessageType.SYSTEM_MESSAGE,
                     sendSubjectId = request.operatorId,
-                    extendJson = """{"auditStatus":4}""",
+                    extendJson = extend,
                     createTime = now,
                 )
             )

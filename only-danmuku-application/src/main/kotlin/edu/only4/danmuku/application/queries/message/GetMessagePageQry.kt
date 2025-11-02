@@ -21,5 +21,12 @@ object GetMessagePageQry {
         val readType: Int,
         val extendJson: String?,
         val createTime: Long,
+        // 扩展显示字段
+        val videoId: Long? = null,
+        val videoName: String? = null,
+        val videoCover: String? = null,
+        val sendUserId: Long? = null,
+        val sendUserName: String? = null,
+        val sendUserAvatar: String? = null,
     )
 }

@@ -27,7 +27,10 @@ object SendReplyMessageCmd {
             }
 
             val now = System.currentTimeMillis() / 1000
-            val extend = buildExtendJson(request.content, request.replyCommentContent)
+            val extend = UserMessageExtend(
+                messageContent = request.content,
+                messageContentReply = request.replyCommentContent
+            ).toJson()
 
             Mediator.factories.create(
                 CustomerMessageFactory.Payload(
@@ -43,16 +46,7 @@ object SendReplyMessageCmd {
             return Response()
         }
 
-        private fun buildExtendJson(content: String?, replyContent: String?): String {
-            fun esc(src: String?): String {
-                val raw = src ?: ""
-                val esc = raw.replace("\\", "\\\\").replace("\"", "\\\"")
-                return "\"$esc\""
-            }
-            val msg = esc(content)
-            val reply = esc(replyContent)
-            return """{"messageContent":$msg,"messageContentReply":$reply}"""
-        }
+        // no-op
     }
 
     data class Request(

@@ -14,6 +14,6 @@ object MessageGetNoReadCountGroup {
 
     data class GroupItem(
         val messageType: Int,
-        val count: Int,
+        val messageCount: Int,
     )
 }

@@ -40,13 +40,14 @@ object SendCollectMessageCmd {
 
             if (!exists) {
                 val now = System.currentTimeMillis() / 1000
+                val extend = UserMessageExtend(messageContent = null).toJson()
                 Mediator.factories.create(
                     CustomerMessageFactory.Payload(
                         customerId = receiverId,
                         videoId = request.videoId,
                         messageType = MessageType.COLLECTION_MESSAGE,
                         sendSubjectId = request.sendUserId,
-                        extendJson = """{"action":"COLLECT"}""",
+                        extendJson = extend,
                         createTime = now,
                     )
                 )

@@ -27,8 +27,7 @@ object SendCommentMessageCmd {
             }
 
             val now = System.currentTimeMillis() / 1000
-            val msgContent = escapeJson(request.content)
-            val extend = """{"messageContent":$msgContent}"""
+            val extend = UserMessageExtend(messageContent = request.content).toJson()
 
             Mediator.factories.create(
                 CustomerMessageFactory.Payload(
@@ -44,11 +43,7 @@ object SendCommentMessageCmd {
             return Response()
         }
 
-        private fun escapeJson(content: String?): String {
-            val raw = content ?: ""
-            val esc = raw.replace("\\", "\\\\").replace("\"", "\\\"")
-            return "\"$esc\""
-        }
+        // no-op
     }
 
     data class Request(
