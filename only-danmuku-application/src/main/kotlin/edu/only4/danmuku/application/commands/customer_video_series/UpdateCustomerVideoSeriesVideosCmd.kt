@@ -5,7 +5,8 @@ import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
 import edu.only4.danmuku.domain._share.meta.customer_video_series.SCustomerVideoSeries
-import edu.only4.danmuku.domain._share.meta.video.SVideo
+import edu.only4.danmuku.application.validator.VideoIdsBelongToUser
+import edu.only4.danmuku.application.validator.SeriesVideoCountLimit
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
 import java.util.LinkedHashSet
@@ -22,7 +23,6 @@ object UpdateCustomerVideoSeriesVideosCmd {
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
-            // TODO：移动校验逻辑到自定义校验器， 更新只能更新基础信息
             val series = Mediator.repositories.findFirst(
                 SCustomerVideoSeries.predicateById(request.seriesId)
             ).getOrNull() ?: throw KnownException("系列不存在: ${request.seriesId}")
@@ -33,7 +33,7 @@ object UpdateCustomerVideoSeriesVideosCmd {
 
             val incomingVideoIds = parseVideoIds(request.videoIds)
             if (incomingVideoIds.isEmpty()) {
-                throw KnownException("视频ID列表不能为空")
+                return Response()
             }
 
             val currentVideoIds = series.customerVideoSeriesVideos
@@ -52,18 +52,13 @@ object UpdateCustomerVideoSeriesVideosCmd {
                 val incomingSet = incomingVideoIds.toSet()
 
                 if (incomingSet == currentSet && incomingVideoIds.size == currentVideoIds.size) {
-                    ensureVideoListSize(incomingVideoIds.size)
                     incomingVideoIds
                 } else {
                     val additions = incomingVideoIds.filterNot(currentSet::contains)
-                    ensureVideosBelongToUser(request.userId, additions)
-                    val finalSize = currentVideoIds.size + additions.size
-                    ensureVideoListSize(finalSize)
                     currentVideoIds + additions
                 }
             }
 
-            ensureVideoListSize(updatedVideoIds.size)
             series.replaceVideos(request.userId, updatedVideoIds)
             Mediator.uow.save()
 
@@ -98,33 +93,10 @@ object UpdateCustomerVideoSeriesVideosCmd {
             }
             return result
         }
-
-        private fun ensureVideosBelongToUser(userId: Long, videoIds: List<Long>) {
-            if (videoIds.isEmpty()) {
-                return
-            }
-            val videos = Mediator.repositories.find(
-                SVideo.predicate { schema ->
-                    schema.all(
-                        schema.customerId eq userId,
-                        schema.id.`in`(videoIds)
-                    )
-                }
-            )
-            if (videos.size != videoIds.size) {
-                val foundIds = videos.map { it.id }.toSet()
-                val missing = videoIds.filterNot(foundIds::contains)
-                throw KnownException("以下视频不存在: ${missing.joinToString(",")}")
-            }
-        }
-
-        private fun ensureVideoListSize(size: Int) {
-            if (size > Byte.MAX_VALUE) {
-                throw KnownException("视频系列最多支持 ${Byte.MAX_VALUE} 个视频")
-            }
-        }
     }
 
+    @VideoIdsBelongToUser(userIdField = "userId", videoIdsField = "videoIds")
+    @SeriesVideoCountLimit(videoIdsField = "videoIds")
     data class Request(
         /** 用户ID */
         val userId: Long,
