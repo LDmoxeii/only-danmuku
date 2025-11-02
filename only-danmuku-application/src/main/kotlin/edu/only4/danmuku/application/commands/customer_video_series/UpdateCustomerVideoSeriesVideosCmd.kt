@@ -48,15 +48,19 @@ object UpdateCustomerVideoSeriesVideosCmd {
                 }
                 filtered
             } else {
-                ensureVideosBelongToUser(request.userId, incomingVideoIds)
-                val dedupe = currentVideoIds.toMutableList()
-                incomingVideoIds.forEach { id ->
-                    if (!dedupe.contains(id)) {
-                        dedupe.add(id)
-                    }
+                val currentSet = currentVideoIds.toSet()
+                val incomingSet = incomingVideoIds.toSet()
+
+                if (incomingSet == currentSet && incomingVideoIds.size == currentVideoIds.size) {
+                    ensureVideoListSize(incomingVideoIds.size)
+                    incomingVideoIds
+                } else {
+                    val additions = incomingVideoIds.filterNot(currentSet::contains)
+                    ensureVideosBelongToUser(request.userId, additions)
+                    val finalSize = currentVideoIds.size + additions.size
+                    ensureVideoListSize(finalSize)
+                    currentVideoIds + additions
                 }
-                ensureVideoListSize(dedupe.size)
-                dedupe
             }
 
             ensureVideoListSize(updatedVideoIds.size)
