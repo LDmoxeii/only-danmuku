@@ -4,6 +4,7 @@ import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.NoneResultCommandParam
+import edu.only4.danmuku.application.validator.NicknameChangeAllowed
 import edu.only4.danmuku.application.validator.UniqueUserNickname
 import edu.only4.danmuku.domain._share.meta.customer_profile.SCustomerProfile
 import edu.only4.danmuku.domain.aggregates.customer_profile.enums.SexType
@@ -23,11 +24,6 @@ object UpdateCustomerProfileCmd {
                 SCustomerProfile.predicate { it.userId eq request.customerId },
             ).getOrNull() ?: throw KnownException("用户资料不存在：${request.customerId}")
 
-            // TODO
-            // 需要判断是否有足够的硬币修改昵称，
-            // 如果修改了昵称，需要发出事件，并触发扣减硬币命令
-            // 如果修改了昵称，还需要触发修改token的命令
-            // 如果修改头像信息，也需要出发修改token的命令
             profile.updateProfileInfo(
                 nickName = request.nickName,
                 avatar = request.avatar,
@@ -44,6 +40,7 @@ object UpdateCustomerProfileCmd {
     }
 
     @UniqueUserNickname(userIdField = "customerId", nicknameField = "nickName")
+    @NicknameChangeAllowed(userIdField = "customerId", nicknameField = "nickName")
     data class Request(
         /** 用户ID */
         val customerId: Long,

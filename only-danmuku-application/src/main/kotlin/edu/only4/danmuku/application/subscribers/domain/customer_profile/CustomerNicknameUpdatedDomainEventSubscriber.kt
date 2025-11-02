@@ -1,5 +1,8 @@
 package edu.only4.danmuku.application.subscribers.domain.customer_profile
 
+import com.only4.cap4k.ddd.core.Mediator
+import edu.only4.danmuku.application.commands.customer_profile.SpendCoinsForNicknameChangeCmd
+import edu.only4.danmuku.application.distributed.clients.RefreshLoginSessionCli
 import edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerNicknameUpdatedDomainEvent
 
 import org.springframework.context.event.EventListener
@@ -16,8 +19,18 @@ import org.springframework.stereotype.Service
 @Service
 class CustomerNicknameUpdatedDomainEventSubscriber {
 
-    @EventListener(CustomerNicknameUpdatedDomainEvent::class)
+//    @EventListener(CustomerNicknameUpdatedDomainEvent::class)
     fun on(event: CustomerNicknameUpdatedDomainEvent) {
-
+        val profile = event.entity
+        Mediator.commands.send(
+            SpendCoinsForNicknameChangeCmd.Request(customerId = profile.userId)
+        )
+        Mediator.requests.send(
+            RefreshLoginSessionCli.Request(
+                userId = profile.userId,
+                nickName = profile.nickName,
+                avatar = null
+            )
+        )
     }
 }

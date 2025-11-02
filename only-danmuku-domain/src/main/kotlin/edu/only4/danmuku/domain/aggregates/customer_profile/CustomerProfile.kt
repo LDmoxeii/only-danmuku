@@ -261,6 +261,15 @@ class CustomerProfile(
     }
 
 
+    /** 支出硬币（如修改昵称消耗） */
+    fun spendCoins(amount: Int) {
+        require(amount > 0) { "扣款数量必须大于0" }
+        require(this.currentCoinCount >= amount) { "硬币余额不足" }
+        this.currentCoinCount -= amount
+        // totalCoinCount 保持累计不变
+    }
+
+
     fun updateProfileInfo(
         nickName: String? = null,
         avatar: String? = null,
@@ -271,14 +280,34 @@ class CustomerProfile(
         noticeInfo: String? = null,
         theme: ThemeType? = null,
     ) {
-        nickName?.let { this.nickName = it }
-        avatar?.let { this.avatar = it }
+        val oldNick = this.nickName
+        val oldAvatar = this.avatar
+        var changed = false
+
+        nickName?.let {
+            if (it != this.nickName) {
+                this.nickName = it
+                changed = true
+                events().attach(this) { edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerNicknameUpdatedDomainEvent(this) }
+            }
+        }
+        avatar?.let {
+            if (it != this.avatar) {
+                this.avatar = it
+                changed = true
+                events().attach(this) { edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerAvatarUpdatedDomainEvent(this) }
+            }
+        }
         sex?.let { this.sex = it }
         birthday?.let { this.birthday = it }
         school?.let { this.school = it }
         personIntroduction?.let { this.personIntroduction = it }
         noticeInfo?.let { this.noticeInfo = it }
         theme?.let { this.theme = it }
+
+        if (changed || oldNick != this.nickName || oldAvatar != this.avatar) {
+            events().attach(this) { edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerProfileUpdatedDomainEvent(this) }
+        }
     }
 
     // 【行为方法结束】

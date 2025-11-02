@@ -86,11 +86,6 @@ class CompatibleUHomeController {
         @Size(max = 300) noticeInfo: String?,
     ) {
         val userId = LoginHelper.getUserId()!!
-        // TODO
-        // 需要判断是否有足够的硬币修改昵称，
-        // 如果修改了昵称，需要发出事件，并触发扣减硬币命令
-        // 如果修改了昵称，还需要触发修改token的命令
-        // 如果修改头像信息，也需要出发修改token的命令
         Mediator.commands.send(
             UpdateCustomerProfileCmd.Request(
                 customerId = userId,
