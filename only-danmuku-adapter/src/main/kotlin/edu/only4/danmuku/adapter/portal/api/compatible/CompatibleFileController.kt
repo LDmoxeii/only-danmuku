@@ -2,6 +2,7 @@ package edu.only4.danmuku.adapter.portal.api.compatible
 
 import cn.dev33.satoken.annotation.SaIgnore
 import com.only.engine.satoken.utils.LoginHelper
+import cn.dev33.satoken.stp.StpUtil
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.adapter.portal.api.payload.FileDelUploadVideo
 import edu.only4.danmuku.adapter.portal.api.payload.FileUploadVideo
@@ -14,6 +15,7 @@ import edu.only4.danmuku.application.commands.video_play_history.AddPlayHistoryC
 import edu.only4.danmuku.application.queries.file.GetFileResourceQry
 import edu.only4.danmuku.application.queries.file.GetVideoResourceQry
 import edu.only4.danmuku.application.queries.file.GetVideoResourceTsQry
+import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import jakarta.validation.constraints.NotEmpty
 import org.slf4j.LoggerFactory
@@ -139,6 +141,7 @@ class CompatibleFileController {
     @GetMapping("/videoResource/{fileId}/")
     fun getVideoResource(
         @PathVariable fileId: Long,
+        request: HttpServletRequest,
         response: HttpServletResponse,
     ) {
         val result = Mediator.queries.send(
@@ -158,7 +161,20 @@ class CompatibleFileController {
             AddPlayCountCmd.Request(videoId = result.videoId)
         )
 
-        val currentUserId = LoginHelper.getUserId() ?: return
+        // 优先用通用助手获取（走 Sa-Token 默认解析流程）
+        var currentUserId = LoginHelper.getUserId()
+        if (currentUserId == null) {
+            // 兜底：手动从 Cookie 读取 token（不要求 Bearer 前缀），再解析登录ID
+            val tokenName = StpUtil.getTokenName()
+            val cookieToken = request.cookies?.firstOrNull { it.name == tokenName }?.value
+            if (!cookieToken.isNullOrBlank()) {
+                runCatching {
+                    val loginId = StpUtil.getLoginIdByToken(cookieToken)
+                    currentUserId = if (loginId is Number) loginId.toLong() else loginId.toString().toLongOrNull()
+                }
+            }
+            if (currentUserId == null) return
+        }
 
         Mediator.commands.send(
             AddPlayHistoryCmd.Request(

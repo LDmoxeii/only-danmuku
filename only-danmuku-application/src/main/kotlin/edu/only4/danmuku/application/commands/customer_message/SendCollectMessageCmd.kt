@@ -33,7 +33,7 @@ object SendCollectMessageCmd {
                         s.customerId eq receiverId,
                         s.sendSubjectId eq request.sendUserId,
                         s.videoId eq request.videoId,
-                        s.messageType eq MessageType.ACTIVITY_NOTICE,
+                        s.messageType eq MessageType.COLLECTION_MESSAGE,
                     )
                 }
             ).isPresent
@@ -44,7 +44,7 @@ object SendCollectMessageCmd {
                     CustomerMessageFactory.Payload(
                         customerId = receiverId,
                         videoId = request.videoId,
-                        messageType = MessageType.ACTIVITY_NOTICE,
+                        messageType = MessageType.COLLECTION_MESSAGE,
                         sendSubjectId = request.sendUserId,
                         extendJson = """{"action":"COLLECT"}""",
                         createTime = now,

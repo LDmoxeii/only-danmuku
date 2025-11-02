@@ -232,16 +232,6 @@ class CompatibleVideoSeriesController {
                 isDelete = false
             )
         )
-
-        // TODO 需要根据传入ID获取系列信息
-//        Mediator.commands.send(
-//            UpdateCustomerVideoSeriesVideosCmd.Request(
-//                userId = userId,
-//                seriesId = request.seriesId.toLong(),
-//                videoIds = request.videoIds,
-//                isDelete = false
-//            )
-//        )
     }
 
     @PostMapping("/delSeriesVideo")

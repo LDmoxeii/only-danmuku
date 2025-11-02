@@ -34,7 +34,7 @@ object SendCommentMessageCmd {
                 CustomerMessageFactory.Payload(
                     customerId = receiverId,
                     videoId = request.videoId,
-                    messageType = MessageType.COMMENT_REPLY,
+                    messageType = MessageType.COMMENT_MENTION,
                     sendSubjectId = request.sendUserId,
                     extendJson = extend,
                     createTime = now,

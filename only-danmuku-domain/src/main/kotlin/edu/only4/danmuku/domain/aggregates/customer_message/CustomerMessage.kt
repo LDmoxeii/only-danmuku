@@ -20,7 +20,7 @@ import org.hibernate.annotations.Where
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2025/10/30
+ * @date 2025/11/02
  */
 @Aggregate(aggregate = "CustomerMessage", name = "CustomerMessage", root = true, type = Aggregate.TYPE_ENTITY, description = "用户消息表，")
 @Entity
@@ -78,11 +78,14 @@ class CustomerMessage(
      * 消息类型
      * 0:UNKNOW:未知消息
      * 1:SYSTEM_MESSAGE:系统消息
-     * 2:COMMENT_REPLY:评论回复
-     * 3:VIDEO_DYNAMIC:视频动态
-     * 4:PRIVATE_MESSAGE:私信消息
-     * 5:ACTIVITY_NOTICE:活动通知
-     * 6:OTHER_MESSAGE:其他消息
+     * 2:LIKE_MESSAGE:收到的赞
+     * 3:COLLECTION_MESSAGE:收到收藏
+     * 4:COMMENT_MENTION:评论和@
+     * 5:COMMENT_REPLY:评论回复
+     * 6:VIDEO_DYNAMIC:视频动态
+     * 7:PRIVATE_MESSAGE:私信消息
+     * 8:ACTIVITY_NOTICE:活动通知
+     * 9:OTHER_MESSAGE:其他消息
      * tinyint(1)
      */
     @Convert(converter = MessageType.Converter::class)

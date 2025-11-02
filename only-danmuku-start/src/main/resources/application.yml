@@ -160,6 +160,7 @@ sa-token:
   is-share: false
   # jwt秘钥
   jwt-secret-key: abcdefghijklmnopqrstuvwxyz
+  is-read-cookie: true
 
 management:
   endpoint:

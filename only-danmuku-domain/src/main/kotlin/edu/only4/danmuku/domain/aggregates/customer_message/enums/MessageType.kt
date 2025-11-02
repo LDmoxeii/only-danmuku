@@ -8,7 +8,7 @@ import jakarta.persistence.AttributeConverter
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/10/30
+ * @date 2025/11/02
  */
 @Aggregate(aggregate = "CustomerMessage", name = "MessageType", type = "enum", description = "")
 enum class MessageType(
@@ -27,29 +27,44 @@ enum class MessageType(
     SYSTEM_MESSAGE(1, "系统消息"),
 
     /**
+     * 收到的赞
+     */
+    LIKE_MESSAGE(2, "收到的赞"),
+
+    /**
+     * 收到收藏
+     */
+    COLLECTION_MESSAGE(3, "收到收藏"),
+
+    /**
+     * 评论和@
+     */
+    COMMENT_MENTION(4, "评论和@"),
+
+    /**
      * 评论回复
      */
-    COMMENT_REPLY(2, "评论回复"),
+    COMMENT_REPLY(5, "评论回复"),
 
     /**
      * 视频动态
      */
-    VIDEO_DYNAMIC(3, "视频动态"),
+    VIDEO_DYNAMIC(6, "视频动态"),
 
     /**
      * 私信消息
      */
-    PRIVATE_MESSAGE(4, "私信消息"),
+    PRIVATE_MESSAGE(7, "私信消息"),
 
     /**
      * 活动通知
      */
-    ACTIVITY_NOTICE(5, "活动通知"),
+    ACTIVITY_NOTICE(8, "活动通知"),
 
     /**
      * 其他消息
      */
-    OTHER_MESSAGE(6, "其他消息"),
+    OTHER_MESSAGE(9, "其他消息"),
     ;
 
     companion object {

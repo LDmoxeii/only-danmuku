@@ -219,7 +219,7 @@ class CompatibleUHomeController {
             pageNum = request.pageNum
             pageSize = if (request.type != null) 10 else request.pageSize
             sort.add(
-                when (request.type) {
+                when (request.orderType) {
                     0 -> UHomeLoadVideoList.Request.CREATE_TIME_DESC
                     1 -> UHomeLoadVideoList.Request.PLAY_COUNT_DESC
                     2 -> UHomeLoadVideoList.Request.COLLECT_COUNT_DESC

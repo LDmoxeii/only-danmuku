@@ -37,6 +37,7 @@ class GetUserPlayHistoryQryHandler(
                     video {
                         allScalarFields()
                     }
+                    customerId()
                 }
             )
         }.fetchPage(request.pageNum - 1, request.pageSize)

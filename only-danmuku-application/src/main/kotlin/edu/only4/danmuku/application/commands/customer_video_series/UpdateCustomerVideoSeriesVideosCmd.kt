@@ -50,15 +50,10 @@ object UpdateCustomerVideoSeriesVideosCmd {
             } else {
                 ensureVideosBelongToUser(request.userId, incomingVideoIds)
                 val dedupe = currentVideoIds.toMutableList()
-                var changed = false
                 incomingVideoIds.forEach { id ->
                     if (!dedupe.contains(id)) {
                         dedupe.add(id)
-                        changed = true
                     }
-                }
-                if (!changed) {
-                    return Response()
                 }
                 ensureVideoListSize(dedupe.size)
                 dedupe

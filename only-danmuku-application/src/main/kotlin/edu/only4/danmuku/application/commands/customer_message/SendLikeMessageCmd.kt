@@ -33,7 +33,7 @@ object SendLikeMessageCmd {
                         s.customerId eq receiverId,
                         s.sendSubjectId eq request.sendUserId,
                         s.videoId eq request.videoId,
-                        s.messageType eq MessageType.OTHER_MESSAGE,
+                        s.messageType eq MessageType.LIKE_MESSAGE,
                     )
                 }
             ).isPresent
@@ -44,7 +44,7 @@ object SendLikeMessageCmd {
                     CustomerMessageFactory.Payload(
                         customerId = receiverId,
                         videoId = request.videoId,
-                        messageType = MessageType.OTHER_MESSAGE,
+                        messageType = MessageType.LIKE_MESSAGE,
                         sendSubjectId = request.sendUserId,
                         extendJson = """{"action":"LIKE"}""",
                         createTime = now,
