@@ -35,13 +35,6 @@ class CustomerMessageFactory : AggregateFactory<CustomerMessageFactory.Payload, 
             sendSubjectId = payload.sendSubjectId,
             readType = payload.readType,
             extendJson = payload.extendJson,
-            createUserId = null,
-            createBy = null,
-            createTime = payload.createTime,
-            updateUserId = null,
-            updateBy = null,
-            updateTime = payload.updateTime ?: payload.createTime,
-            deleted = 0L,
         )
     }
 
@@ -58,8 +51,6 @@ class CustomerMessageFactory : AggregateFactory<CustomerMessageFactory.Payload, 
         val sendSubjectId: Long? = null,
         val readType: ReadType = ReadType.UNREAD,
         val extendJson: UserMessageExtend? = null,
-        val createTime: Long,
-        val updateTime: Long? = null,
     ) : AggregatePayload<CustomerMessage>
 
 }

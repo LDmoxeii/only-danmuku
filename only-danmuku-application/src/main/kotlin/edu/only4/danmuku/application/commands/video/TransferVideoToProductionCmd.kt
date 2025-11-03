@@ -5,7 +5,7 @@ import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
 import edu.only4.danmuku.domain._share.meta.video.SVideo
 import edu.only4.danmuku.domain.aggregates.video.Video
-import edu.only4.danmuku.domain.aggregates.video.factory.VideoBasicsFactory
+import edu.only4.danmuku.domain.aggregates.video.factory.VideoFactory
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
 
@@ -44,7 +44,7 @@ object TransferVideoToProductionCmd {
                     }
                 )
             } ?: Mediator.factories.create(
-                VideoBasicsFactory.Payload(
+                VideoFactory.Payload(
                     videoPostId = request.videoPostId,
                     customerId = request.customerId,
                     videoCover = request.videoCover,

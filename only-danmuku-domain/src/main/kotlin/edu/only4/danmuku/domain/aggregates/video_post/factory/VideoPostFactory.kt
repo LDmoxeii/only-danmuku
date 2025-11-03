@@ -28,7 +28,6 @@ import java.time.Instant
 class VideoPostFactory : AggregateFactory<VideoPostFactory.Payload, VideoPost> {
 
     override fun create(entityPayload: Payload): VideoPost {
-        val now = Instant.now().epochSecond
         return VideoPost(
             videoCover = entityPayload.videoCover ?: "",
             videoName = entityPayload.videoName,
@@ -42,13 +41,6 @@ class VideoPostFactory : AggregateFactory<VideoPostFactory.Payload, VideoPost> {
             introduction = entityPayload.introduction,
             interaction = entityPayload.interaction,
             duration = 0,
-            createUserId = null,
-            createBy = null,
-            createTime = now,
-            updateUserId = null,
-            updateBy = null,
-            updateTime = now,
-            deleted = 0L,
         )
     }
 

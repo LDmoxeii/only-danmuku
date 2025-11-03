@@ -36,8 +36,6 @@ object AddPlayHistoryCmd {
                         customerId = request.customerId,
                         videoId = request.videoId,
                         fileIndex = request.fileIndex,
-                        createTime = now,
-                        updateTime = now
                     )
                 )
             }

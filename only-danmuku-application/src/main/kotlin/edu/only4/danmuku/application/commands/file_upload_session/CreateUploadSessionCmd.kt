@@ -24,7 +24,6 @@ object CreateUploadSessionCmd {
                     customerId = request.customerId,
                     fileName = request.fileName,
                     chunks = request.chunks,
-                    createTime = now,
                     expiresAt = expiresAt,
                 )
             )

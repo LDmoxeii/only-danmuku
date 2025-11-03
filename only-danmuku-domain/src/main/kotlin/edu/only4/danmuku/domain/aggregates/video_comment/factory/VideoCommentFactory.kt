@@ -34,13 +34,6 @@ class VideoCommentFactory : AggregateFactory<VideoCommentFactory.Payload, VideoC
             postTime = payload.postTime,
             likeCount = 0,
             hateCount = 0,
-            createUserId = null,
-            createBy = null,
-            createTime = null,
-            updateUserId = null,
-            updateBy = null,
-            updateTime = null,
-            deleted = 0L,
         )
     }
 

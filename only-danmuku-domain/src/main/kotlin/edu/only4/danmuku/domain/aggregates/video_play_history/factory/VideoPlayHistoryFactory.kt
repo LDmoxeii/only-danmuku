@@ -30,13 +30,6 @@ class VideoPlayHistoryFactory : AggregateFactory<VideoPlayHistoryFactory.Payload
             customerId = entityPayload.customerId,
             videoId = entityPayload.videoId,
             fileIndex = entityPayload.fileIndex,
-            createUserId = null,
-            createBy = null,
-            createTime = entityPayload.createTime,
-            updateUserId = null,
-            updateBy = null,
-            updateTime = entityPayload.updateTime ?: entityPayload.createTime,
-            deleted = 0L,
         )
     }
 
@@ -50,8 +43,6 @@ class VideoPlayHistoryFactory : AggregateFactory<VideoPlayHistoryFactory.Payload
         val customerId: Long,
         val videoId: Long,
         val fileIndex: Int,
-        val createTime: Long,
-        val updateTime: Long? = null,
     ) : AggregatePayload<VideoPlayHistory>
 
 }

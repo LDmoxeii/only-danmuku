@@ -23,7 +23,6 @@ object SendVideoAuditPassedMessageCmd {
                 SVideoPost.predicateById(request.videoId)
             ).getOrNull() ?: return Response()
 
-            val now = System.currentTimeMillis() / 1000
             val extend = UserMessageExtend(auditStatus = 4)
             Mediator.factories.create(
                 CustomerMessageFactory.Payload(
@@ -32,7 +31,6 @@ object SendVideoAuditPassedMessageCmd {
                     messageType = MessageType.SYSTEM_MESSAGE,
                     sendSubjectId = request.operatorId,
                     extendJson = extend,
-                    createTime = now,
                 )
             )
             Mediator.uow.save()

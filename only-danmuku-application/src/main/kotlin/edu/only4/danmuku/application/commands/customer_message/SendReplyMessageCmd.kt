@@ -27,7 +27,6 @@ object SendReplyMessageCmd {
                 return Response()
             }
 
-            val now = System.currentTimeMillis() / 1000
             val extend = UserMessageExtend(
                 messageContent = request.content,
                 messageContentReply = request.replyCommentContent
@@ -40,7 +39,6 @@ object SendReplyMessageCmd {
                     messageType = MessageType.COMMENT_REPLY,
                     sendSubjectId = request.sendUserId,
                     extendJson = extend,
-                    createTime = now,
                 )
             )
             Mediator.uow.save()

@@ -27,7 +27,6 @@ object SendCommentMessageCmd {
                 return Response()
             }
 
-            val now = System.currentTimeMillis() / 1000
             val extend = UserMessageExtend(messageContent = request.content)
 
             Mediator.factories.create(
@@ -37,7 +36,6 @@ object SendCommentMessageCmd {
                     messageType = MessageType.COMMENT_MENTION,
                     sendSubjectId = request.sendUserId,
                     extendJson = extend,
-                    createTime = now,
                 )
             )
             Mediator.uow.save()

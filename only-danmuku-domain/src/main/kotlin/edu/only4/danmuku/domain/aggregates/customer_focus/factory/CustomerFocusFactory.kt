@@ -20,16 +20,8 @@ class CustomerFocusFactory : AggregateFactory<CustomerFocusFactory.Payload, Cust
 
     override fun create(payload: Payload): CustomerFocus {
         val entity = CustomerFocus(
-            id = 0L,
             customerId = payload.customerId,
             focusCustomerId = payload.focusCustomerId,
-            createUserId = null,
-            createBy = null,
-            createTime = null,
-            updateUserId = null,
-            updateBy = null,
-            updateTime = null,
-            deleted = 0L,
         )
         return entity
     }

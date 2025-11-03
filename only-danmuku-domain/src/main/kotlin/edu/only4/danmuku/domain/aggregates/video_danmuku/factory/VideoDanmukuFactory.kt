@@ -31,13 +31,6 @@ class VideoDanmukuFactory : AggregateFactory<VideoDanmukuFactory.Payload, VideoD
             mode = entityPayload.mode,
             color = entityPayload.color,
             time = entityPayload.time,
-            createUserId = null,
-            createBy = null,
-            createTime = null,
-            updateUserId = null,
-            updateBy = null,
-            updateTime = null,
-            deleted = 0L,
         )
     }
 

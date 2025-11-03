@@ -35,10 +35,7 @@ class VideoFileUploadSessionFactory : AggregateFactory<VideoFileUploadSessionFac
             tempPath = null,
             status = UploadStatus.CREATED,
             duration = null,
-            createTime = payload.createTime,
-            updateTime = payload.createTime,
             expiresAt = payload.expiresAt,
-            deleted = 0L,
         )
     }
 
@@ -52,7 +49,6 @@ class VideoFileUploadSessionFactory : AggregateFactory<VideoFileUploadSessionFac
         val customerId: Long,
         val fileName: String,
         val chunks: Int,
-        val createTime: Long,
         val expiresAt: Long,
     ) : AggregatePayload<VideoFileUploadSession>
 

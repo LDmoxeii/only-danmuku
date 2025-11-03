@@ -40,7 +40,6 @@ object SendCollectMessageCmd {
             ).isPresent
 
             if (!exists) {
-                val now = System.currentTimeMillis() / 1000
                 val extend = UserMessageExtend(messageContent = null)
                 Mediator.factories.create(
                     CustomerMessageFactory.Payload(
@@ -49,7 +48,6 @@ object SendCollectMessageCmd {
                         messageType = MessageType.COLLECTION_MESSAGE,
                         sendSubjectId = request.sendUserId,
                         extendJson = extend,
-                        createTime = now,
                     )
                 )
                 Mediator.uow.save()
