@@ -2,6 +2,8 @@ package edu.only4.danmuku.domain.aggregates.video
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 
+import edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity
+
 import jakarta.persistence.*
 
 import org.hibernate.annotations.DynamicInsert
@@ -16,7 +18,7 @@ import org.hibernate.annotations.Where
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2025/10/30
+ * @date 2025/11/03
  */
 @Aggregate(aggregate = "Video", name = "VideoFile", root = false, type = Aggregate.TYPE_ENTITY, description = "视频文件信息，")
 @Entity
@@ -34,14 +36,8 @@ class VideoFile(
     fileSize: Long? = null,
     filePath: String? = null,
     duration: Int? = null,
-    createUserId: Long? = null,
-    createBy: String? = null,
-    createTime: Long? = null,
-    updateUserId: Long? = null,
-    updateBy: String? = null,
-    updateTime: Long? = null,
     deleted: Long = 0L
-) {
+) : AuditedFieldsEntity() {
     // 【字段映射开始】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
     @ManyToOne(cascade = [], fetch = FetchType.EAGER)
     @JoinColumn(name = "`video_id`", nullable = false, insertable = false, updatable = false)
@@ -112,54 +108,6 @@ class VideoFile(
      */
     @Column(name = "`duration`")
     var duration: Int? = duration
-        internal set
-
-    /**
-     * 创建人ID
-     * bigint
-     */
-    @Column(name = "`create_user_id`")
-    var createUserId: Long? = createUserId
-        internal set
-
-    /**
-     * 创建人名称
-     * varchar(32)
-     */
-    @Column(name = "`create_by`")
-    var createBy: String? = createBy
-        internal set
-
-    /**
-     * 创建时间
-     * bigint
-     */
-    @Column(name = "`create_time`")
-    var createTime: Long? = createTime
-        internal set
-
-    /**
-     * 更新人ID
-     * bigint
-     */
-    @Column(name = "`update_user_id`")
-    var updateUserId: Long? = updateUserId
-        internal set
-
-    /**
-     * 更新人名称
-     * varchar(32)
-     */
-    @Column(name = "`update_by`")
-    var updateBy: String? = updateBy
-        internal set
-
-    /**
-     * 更新时间
-     * bigint
-     */
-    @Column(name = "`update_time`")
-    var updateTime: Long? = updateTime
         internal set
 
     /**

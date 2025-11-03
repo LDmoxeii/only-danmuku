@@ -30,7 +30,7 @@ codegen {
         username.set("root")
         password.set("123456")
         schema.set("only_danmuku")
-        tables.set("customer_message")
+        tables.set("")
         ignoreTables.set("")
     }
 
@@ -40,8 +40,12 @@ codegen {
         readonlyFields.set("id")
         generateAggregate.set(false)
         repositorySupportQuerydsl.set(false)
+        ignoreFields.set("create_user_id,create_by,create_time,update_user_id,update_by,update_time")
+        rootEntityBaseClass.set("AuditedFieldsEntity")
+        entityBaseClass.set("AuditedFieldsEntity")
         typeMapping.set(mapOf(
-            "UserMessageExtend" to "edu.only4.danmuku.domain.aggregates.customer_message.extend.UserMessageExtend"
+            "UserMessageExtend" to "edu.only4.danmuku.domain.aggregates.customer_message.extend.UserMessageExtend",
+            "AuditedFieldsEntity" to "edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity"
         ))
     }
 }

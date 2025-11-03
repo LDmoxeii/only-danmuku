@@ -2,6 +2,7 @@ package edu.only4.danmuku.domain.aggregates.customer_message
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 
+import edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity
 import edu.only4.danmuku.domain.aggregates.customer_message.enums.MessageType
 import edu.only4.danmuku.domain.aggregates.customer_message.enums.ReadType
 import edu.only4.danmuku.domain.aggregates.customer_message.extend.UserMessageExtend
@@ -34,14 +35,8 @@ class CustomerMessage(
     sendSubjectId: Long? = null,
     readType: ReadType = ReadType.valueOf(0),
     extendJson: UserMessageExtend? = null,
-    createUserId: Long? = null,
-    createBy: String? = null,
-    createTime: Long? = null,
-    updateUserId: Long? = null,
-    updateBy: String? = null,
-    updateTime: Long? = null,
     deleted: Long = 0L
-) {
+) : AuditedFieldsEntity() {
     // 【字段映射开始】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
 
     /**
@@ -117,54 +112,6 @@ class CustomerMessage(
     @Convert(converter = UserMessageExtend.Converter::class)
     @Column(name = "`extend_json`")
     var extendJson: UserMessageExtend? = extendJson
-        internal set
-
-    /**
-     * 创建人ID
-     * bigint
-     */
-    @Column(name = "`create_user_id`")
-    var createUserId: Long? = createUserId
-        internal set
-
-    /**
-     * 创建人名称
-     * varchar(32)
-     */
-    @Column(name = "`create_by`")
-    var createBy: String? = createBy
-        internal set
-
-    /**
-     * 创建时间
-     * bigint
-     */
-    @Column(name = "`create_time`")
-    var createTime: Long? = createTime
-        internal set
-
-    /**
-     * 更新人ID
-     * bigint
-     */
-    @Column(name = "`update_user_id`")
-    var updateUserId: Long? = updateUserId
-        internal set
-
-    /**
-     * 更新人名称
-     * varchar(32)
-     */
-    @Column(name = "`update_by`")
-    var updateBy: String? = updateBy
-        internal set
-
-    /**
-     * 更新时间
-     * bigint
-     */
-    @Column(name = "`update_time`")
-    var updateTime: Long? = updateTime
         internal set
 
     /**

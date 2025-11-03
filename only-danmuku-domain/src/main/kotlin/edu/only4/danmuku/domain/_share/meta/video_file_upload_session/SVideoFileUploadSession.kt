@@ -23,7 +23,7 @@ import org.springframework.data.jpa.domain.Specification
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/10/30
+ * @date 2025/11/03
  */
 class SVideoFileUploadSession(
     private val root: Path<VideoFileUploadSession>,
@@ -49,7 +49,15 @@ class SVideoFileUploadSession(
 
         val duration = "duration"
 
+        val createUserId = "createUserId"
+
+        val createBy = "createBy"
+
         val createTime = "createTime"
+
+        val updateUserId = "updateUserId"
+
+        val updateBy = "updateBy"
 
         val updateTime = "updateTime"
 
@@ -431,7 +439,23 @@ class SVideoFileUploadSession(
 
 
     /**
-     * 创建时间（秒时间戳）
+     * 创建人ID
+     */
+    val createUserId: Field<Long?> by lazy {
+        Field(root.get("createUserId"), criteriaBuilder)
+    }
+
+
+    /**
+     * 创建人名称
+     */
+    val createBy: Field<String?> by lazy {
+        Field(root.get("createBy"), criteriaBuilder)
+    }
+
+
+    /**
+     * 创建时间
      */
     val createTime: Field<Long?> by lazy {
         Field(root.get("createTime"), criteriaBuilder)
@@ -439,7 +463,23 @@ class SVideoFileUploadSession(
 
 
     /**
-     * 更新时间（秒时间戳）
+     * 更新人ID
+     */
+    val updateUserId: Field<Long?> by lazy {
+        Field(root.get("updateUserId"), criteriaBuilder)
+    }
+
+
+    /**
+     * 更新人名称
+     */
+    val updateBy: Field<String?> by lazy {
+        Field(root.get("updateBy"), criteriaBuilder)
+    }
+
+
+    /**
+     * 更新时间
      */
     val updateTime: Field<Long?> by lazy {
         Field(root.get("updateTime"), criteriaBuilder)

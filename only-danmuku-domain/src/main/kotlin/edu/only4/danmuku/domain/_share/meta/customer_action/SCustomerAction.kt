@@ -23,7 +23,7 @@ import org.springframework.data.jpa.domain.Specification
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/10/30
+ * @date 2025/11/03
  */
 class SCustomerAction(
     private val root: Path<CustomerAction>,
@@ -46,6 +46,8 @@ class SCustomerAction(
         val actionCount = "actionCount"
 
         val actionTime = "actionTime"
+
+        val createUserId = "createUserId"
 
         val createBy = "createBy"
 
@@ -421,6 +423,14 @@ class SCustomerAction(
      */
     val actionTime: Field<Long> by lazy {
         Field(root.get("actionTime"), criteriaBuilder)
+    }
+
+
+    /**
+     * 创建人ID
+     */
+    val createUserId: Field<Long?> by lazy {
+        Field(root.get("createUserId"), criteriaBuilder)
     }
 
 

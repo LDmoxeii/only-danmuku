@@ -3,6 +3,7 @@ package edu.only4.danmuku.domain.aggregates.video_file_upload_session
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
 
+import edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity
 import edu.only4.danmuku.domain.aggregates.video_file_upload_session.enums.UploadStatus
 import edu.only4.danmuku.domain.aggregates.video_file_upload_session.events.UploadSessionCreatedDomainEvent
 
@@ -20,7 +21,7 @@ import org.hibernate.annotations.Where
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2025/10/30
+ * @date 2025/11/03
  */
 @Aggregate(aggregate = "VideoFileUploadSession", name = "VideoFileUploadSession", root = true, type = Aggregate.TYPE_ENTITY, description = "视频分片上传会话， 用于跟踪预上传与分片进度")
 @Entity
@@ -39,11 +40,9 @@ class VideoFileUploadSession(
     tempPath: String? = null,
     status: UploadStatus = UploadStatus.valueOf(0),
     duration: Int? = null,
-    createTime: Long? = null,
-    updateTime: Long? = null,
     expiresAt: Long? = null,
     deleted: Long = 0L
-) {
+) : AuditedFieldsEntity() {
     // 【字段映射开始】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
 
     /**
@@ -126,22 +125,6 @@ class VideoFileUploadSession(
      */
     @Column(name = "`duration`")
     var duration: Int? = duration
-        internal set
-
-    /**
-     * 创建时间（秒时间戳）
-     * bigint
-     */
-    @Column(name = "`create_time`")
-    var createTime: Long? = createTime
-        internal set
-
-    /**
-     * 更新时间（秒时间戳）
-     * bigint
-     */
-    @Column(name = "`update_time`")
-    var updateTime: Long? = updateTime
         internal set
 
     /**

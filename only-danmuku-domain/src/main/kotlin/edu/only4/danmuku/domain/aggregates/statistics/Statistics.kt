@@ -2,17 +2,13 @@ package edu.only4.danmuku.domain.aggregates.statistics
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 
+import edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity
 import edu.only4.danmuku.domain.aggregates.statistics.enums.StatisticsDataType
 
 import jakarta.persistence.*
 import jakarta.persistence.Table
 
 import org.hibernate.annotations.*
-import org.hibernate.annotations.DynamicInsert
-import org.hibernate.annotations.DynamicUpdate
-import org.hibernate.annotations.GenericGenerator
-import org.hibernate.annotations.SQLDelete
-import org.hibernate.annotations.Where
 
 /**
  * 统计信息;
@@ -20,7 +16,7 @@ import org.hibernate.annotations.Where
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2025/10/30
+ * @date 2025/11/03
  */
 @Aggregate(aggregate = "Statistics", name = "Statistics", root = true, type = Aggregate.TYPE_ENTITY, description = "统计信息，")
 @Entity
@@ -35,14 +31,8 @@ class Statistics(
     dataType: StatisticsDataType = StatisticsDataType.valueOf(0),
     statisticsCount: Int? = null,
     statisticsDate: Long = 0L,
-    createUserId: Long? = null,
-    createBy: String? = null,
-    createTime: Long? = null,
-    updateUserId: Long? = null,
-    updateBy: String? = null,
-    updateTime: Long? = null,
     deleted: Long = 0L
-) {
+) : AuditedFieldsEntity() {
     // 【字段映射开始】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
 
     /**
@@ -95,54 +85,6 @@ class Statistics(
      */
     @Column(name = "`statistics_date`")
     var statisticsDate: Long = statisticsDate
-        internal set
-
-    /**
-     * 创建人ID
-     * bigint
-     */
-    @Column(name = "`create_user_id`")
-    var createUserId: Long? = createUserId
-        internal set
-
-    /**
-     * 创建人名称
-     * varchar(32)
-     */
-    @Column(name = "`create_by`")
-    var createBy: String? = createBy
-        internal set
-
-    /**
-     * 创建时间（秒级时间戳）
-     * bigint
-     */
-    @Column(name = "`create_time`")
-    var createTime: Long? = createTime
-        internal set
-
-    /**
-     * 更新人ID
-     * bigint
-     */
-    @Column(name = "`update_user_id`")
-    var updateUserId: Long? = updateUserId
-        internal set
-
-    /**
-     * 更新人名称
-     * varchar(32)
-     */
-    @Column(name = "`update_by`")
-    var updateBy: String? = updateBy
-        internal set
-
-    /**
-     * 更新时间（秒级时间戳）
-     * bigint
-     */
-    @Column(name = "`update_time`")
-    var updateTime: Long? = updateTime
         internal set
 
     /**
