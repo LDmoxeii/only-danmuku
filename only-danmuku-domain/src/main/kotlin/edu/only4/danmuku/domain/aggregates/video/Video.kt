@@ -334,13 +334,6 @@ class Video(
                         fileSize = fileDraft.fileSize,
                         filePath = fileDraft.filePath,
                         duration = fileDraft.duration,
-                        createUserId = fileDraft.createUserId,
-                        createBy = fileDraft.createBy,
-                        createTime = fileDraft.createTime,
-                        updateUserId = fileDraft.updateUserId,
-                        updateBy = fileDraft.updateBy,
-                        updateTime = fileDraft.updateTime,
-                        deleted = 0L,
                     )
                 )
             }
@@ -390,13 +383,6 @@ class Video(
                     fileSize = f.fileSize,
                     filePath = f.filePath,
                     duration = f.duration,
-                    createUserId = null,
-                    createBy = null,
-                    createTime = null,
-                    updateUserId = null,
-                    updateBy = null,
-                    updateTime = null,
-                    deleted = 0L,
                 )
             )
         }

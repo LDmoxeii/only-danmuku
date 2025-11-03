@@ -9,6 +9,8 @@ interface BaseEntity {
     @Id
     val id: Long
 
+    val createUserId: Long?
+
     val createBy: String?
 
     val createTime: Long?

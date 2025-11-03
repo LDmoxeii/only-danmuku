@@ -1,4 +1,4 @@
-package edu.only4.danmuku.adapter.config
+package edu.only4.danmuku.adapter.domain._share.configure
 
 import com.only.engine.satoken.utils.LoginHelper
 import edu.only4.danmuku.domain._share.audit.AuditSupport

@@ -1,4 +1,4 @@
-package edu.only4.danmuku.adapter.config
+package edu.only4.danmuku.adapter.domain._share.configure
 
 import org.springframework.core.convert.converter.Converter
 import org.springframework.core.convert.support.ConfigurableConversionService

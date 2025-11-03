@@ -326,14 +326,7 @@
                                 {
                                   "type": "dir",
                                   "name": "jpa",
-                                  "children": [
-                                    {
-                                      "type": "file",
-                                      "name": "QueryDslConfig.kt",
-                                      "format": "url",
-                                      "data": "template/src/main/kotlin/adapter/infra/jpa/QueryDslConfig.kt.peb"
-                                    }
-                                  ]
+                                  "children": []
                                 }
                               ]
                             },

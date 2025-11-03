@@ -10,7 +10,6 @@ dependencies {
     api(libs.mysql)
 
     api(libs.jimmer.starter)
-    api(libs.blazebit.persistence.hibernate)
 
     api(libs.engine.captcha)
     api(libs.engine.security)
@@ -18,8 +17,6 @@ dependencies {
     api(libs.engine.web)
     api(libs.engine.doc)
     api(libs.engine.translation)
-
-    implementation(libs.blazebit.persistence.querydsl)
 
     api(project(":only-danmuku-application"))
 }
