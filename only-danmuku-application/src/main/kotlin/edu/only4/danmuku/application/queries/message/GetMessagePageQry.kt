@@ -1,6 +1,7 @@
 package edu.only4.danmuku.application.queries.message
 
 import com.only4.cap4k.ddd.core.application.query.PageQueryParam
+import edu.only4.danmuku.domain.aggregates.customer_message.extend.UserMessageExtend
 
 /**
  * 获取消息分页
@@ -19,7 +20,7 @@ object GetMessagePageQry {
         val id: Long,
         val messageType: Int,
         val readType: Int,
-        val extendJson: String?,
+        val extendJson: UserMessageExtend?,
         val createTime: Long,
         // 扩展显示字段
         val videoId: Long? = null,

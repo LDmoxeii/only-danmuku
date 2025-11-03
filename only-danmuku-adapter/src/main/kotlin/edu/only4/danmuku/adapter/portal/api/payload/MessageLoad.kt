@@ -1,6 +1,10 @@
 package edu.only4.danmuku.adapter.portal.api.payload
 
+import com.only.engine.translation.annotation.Translation
+import com.only.engine.translation.translation.AnyToJsonStringTranslation
+import com.only.engine.translation.translation.EpochSecondToDateStringTranslation
 import com.only4.cap4k.ddd.core.share.PageParam
+import edu.only4.danmuku.domain.aggregates.customer_message.extend.UserMessageExtend
 
 /**
  * 加载消息列表接口载荷
@@ -16,8 +20,8 @@ object MessageLoad {
         val id: Long,
         val messageType: Int,
         val readType: Int,
-        /** 扩展信息（已解析） */
-        val extendDto: Any?,
+        @get:Translation(type = AnyToJsonStringTranslation.TYPE)
+        val extendDto: UserMessageExtend?,
         val createTime: Long,
         // 扩展显示字段
         val videoId: Long?,

@@ -1,5 +1,6 @@
 package edu.only4.danmuku.application.queries._share.model
 
+import edu.only4.danmuku.domain.aggregates.customer_message.extend.UserMessageExtend
 import org.babyfish.jimmer.sql.*
 
 /** 用户消息表 */
@@ -25,6 +26,6 @@ interface CustomerMessage : BaseEntity {
     val readType: Int
 
     @Column(name = "extend_json")
-    val extendJson: String?
+    val extendJson: UserMessageExtend?
 }
 

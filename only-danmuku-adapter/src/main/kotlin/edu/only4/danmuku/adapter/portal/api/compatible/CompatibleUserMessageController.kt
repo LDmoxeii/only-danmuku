@@ -76,9 +76,7 @@ class CompatibleUserMessageController {
                 id = it.id,
                 messageType = it.messageType,
                 readType = it.readType,
-                extendDto = try {
-                    if (it.extendJson.isNullOrBlank()) emptyMap() else com.only.engine.json.misc.JsonUtils.parseObject(it.extendJson, MutableMap::class.java)
-                } catch (e: Exception) { emptyMap<String, Any>() },
+                extendDto = it.extendJson,
                 createTime = it.createTime,
                 videoId = it.videoId,
                 videoName = it.videoName,
