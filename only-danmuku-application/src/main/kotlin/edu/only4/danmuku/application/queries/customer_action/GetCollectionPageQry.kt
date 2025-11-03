@@ -17,7 +17,7 @@ object GetCollectionPageQry {
 
     data class Response(
         val actionId: Long,
-        val videoId: Long,
+        val videoId: Long?,
         val videoUserId: Long,
         val commentId: Long?,
         val actionType: Int,

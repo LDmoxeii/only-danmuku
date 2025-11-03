@@ -46,9 +46,9 @@ class GetUserPlayHistoryQryHandler(
             GetUserPlayHistoryQry.HistoryItem(
                 historyId = item.id,
                 customerId = item.customerId,
-                videoId = item.video.id,
-                videoName = item.video.videoName,
-                videoCover = item.video.videoCover,
+                videoId = item.video?.id,
+                videoName = item.video?.videoName,
+                videoCover = item.video?.videoCover,
                 fileIndex = item.fileIndex,
                 // 若无更新时间则回退到创建时间
                 playTime = item.updateTime ?: item.createTime ?: 0L

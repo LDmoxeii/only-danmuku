@@ -10,7 +10,7 @@ interface VideoPlayHistory : BaseEntity {
     val customerId: Long
 
     @IdView
-    val videoId: Long
+    val videoId: Long?
 
     @OneToOne
     @JoinColumn(name = "customer_id")
@@ -18,7 +18,7 @@ interface VideoPlayHistory : BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "video_id")
-    val video: Video
+    val video: Video?
 
     val fileIndex: Int
 }

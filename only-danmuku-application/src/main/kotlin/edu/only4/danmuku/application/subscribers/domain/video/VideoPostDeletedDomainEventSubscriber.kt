@@ -2,7 +2,6 @@ package edu.only4.danmuku.application.subscribers.domain.video
 
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.application.commands.customer_profile.AdjustAuthorCoinAfterDeleteCmd
-import edu.only4.danmuku.application.commands.file.DeleteVideoFileResourcesCmd
 import edu.only4.danmuku.application.commands.video.DeleteVideoCmd
 import edu.only4.danmuku.application.distributed.clients.DeleteVideoFileResourcesCli
 import edu.only4.danmuku.domain.aggregates.video_post.events.VideoPostDeletedDomainEvent

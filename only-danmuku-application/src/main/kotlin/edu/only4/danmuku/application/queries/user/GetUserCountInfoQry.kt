@@ -17,7 +17,7 @@ object GetUserCountInfoQry {
 
     class Response(
         val fansCount: Long,
-        val currentCoinCount: Long,
+        val currentCoinCount: Int,
         val focusCount: Long
     )
 }

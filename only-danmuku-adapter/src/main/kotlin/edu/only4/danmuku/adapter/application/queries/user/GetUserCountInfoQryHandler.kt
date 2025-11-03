@@ -34,7 +34,6 @@ class GetUserCountInfoQryHandler(
                 select(count(table))
             }
             .fetchOne()
-            .toInt()
 
         // 2. 查询关注数 (我关注了多少人)
         val focusCount = sqlClient
@@ -43,7 +42,6 @@ class GetUserCountInfoQryHandler(
                 select(count(table))
             }
             .fetchOne()
-            .toInt()
 
         // 3. 查询当前硬币数
         val currentCoinCount = sqlClient

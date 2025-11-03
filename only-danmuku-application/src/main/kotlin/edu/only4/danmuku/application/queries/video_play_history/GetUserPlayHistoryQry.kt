@@ -17,19 +17,12 @@ object GetUserPlayHistoryQry {
     ) : PageQueryParam<HistoryItem>()
 
     class HistoryItem(
-        /** 播放历史ID */
         val historyId: Long,
-        /** 用户ID */
         val customerId: Long,
-        /** 视频ID */
-        val videoId: Long,
-        /** 视频名称 */
-        val videoName: String,
-        /** 视频封面 */
+        val videoId: Long?,
+        val videoName: String?,
         val videoCover: String?,
-        /** 文件索引 */
         val fileIndex: Int,
-        /** 播放时间 */
-        val playTime: Long,
+         val playTime: Long,
     )
 }

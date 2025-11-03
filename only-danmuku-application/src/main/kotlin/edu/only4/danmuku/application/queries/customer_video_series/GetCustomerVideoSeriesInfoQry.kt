@@ -36,18 +36,12 @@ object GetCustomerVideoSeriesInfoQry {
     )
 
     data class VideoItem(
-        /** 视频ID */
         val videoId: Long,
-        /** 视频封面 */
-        val videoCover: String? = null,
-        /** 视频名称 */
-        val videoName: String? = null,
-        /** 播放量 */
-        val playCount: Int? = null,
-        /** 系列内排序 */
-        val sort: Int? = null,
-        /** 视频创建时间(秒) */
-        val createTime: Long? = null,
+        val videoCover: String,
+        val videoName: String,
+        val playCount: Int,
+        val sort: Int,
+        val createTime: Long,
     )
 }
 

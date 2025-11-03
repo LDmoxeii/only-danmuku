@@ -15,8 +15,11 @@ interface CustomerAction : BaseEntity {
     val videoOwner: User
 
     @OneToOne
-    @JoinColumn(name = "video_id")
-    val video: Video
+    @JoinColumn(
+        name = "video_id",
+        foreignKeyType = ForeignKeyType.FAKE,
+    )
+    val video: Video?
 
     @OneToOne
     @JoinColumn(name = "comment_id")

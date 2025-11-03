@@ -4,6 +4,7 @@ import com.only4.cap4k.ddd.core.application.query.ListQuery
 import edu.only4.danmuku.application.queries._share.model.customerId
 import edu.only4.danmuku.application.queries._share.model.dto.CustomerVideoSeries.CustomerVideoSeriesDetail
 import edu.only4.danmuku.application.queries.customer_video_series.GetCustomerVideoSeriesVideoQry
+import edu.only4.danmuku.domain.aggregates.video.Video_.playCount
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.springframework.stereotype.Service

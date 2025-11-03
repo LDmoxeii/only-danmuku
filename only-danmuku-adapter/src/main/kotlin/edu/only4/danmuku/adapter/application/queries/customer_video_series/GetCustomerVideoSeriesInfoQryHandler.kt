@@ -37,7 +37,7 @@ class GetCustomerVideoSeriesInfoQryHandler(
                     videoName = seriesVideo.video.videoName,
                     playCount = seriesVideo.video.playCount,
                     sort = seriesVideo.sort,
-                    createTime = seriesVideo.video.createTime
+                    createTime = seriesVideo.video.createTime!!
                 )
             }
         )

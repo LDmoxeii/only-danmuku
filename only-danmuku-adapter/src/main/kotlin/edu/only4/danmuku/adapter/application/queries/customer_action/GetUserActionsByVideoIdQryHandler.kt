@@ -37,9 +37,9 @@ class GetUserActionsByVideoIdQryHandler(
             GetUserActionsByVideoIdQry.Response(
                 actionId = it.id,
                 userId = it.customer.id,
-                videoId = it.video.id,
-                videoName = it.video.videoName,
-                videoCover = it.video.videoCover,
+                videoId = it.video!!.id,
+                videoName = it.video!!.videoName,
+                videoCover = it.video!!.videoCover,
                 videoUserId = it.videoOwner.id,
                 commentId = it.comment?.id,
                 actionType = it.actionType,
