@@ -11,6 +11,7 @@ import edu.only4.danmuku.domain._share.meta.SubqueryConfigure
 import edu.only4.danmuku.domain.aggregates.customer_message.CustomerMessage
 import edu.only4.danmuku.domain.aggregates.customer_message.enums.MessageType
 import edu.only4.danmuku.domain.aggregates.customer_message.enums.ReadType
+import edu.only4.danmuku.domain.aggregates.customer_message.extend.UserMessageExtend
 
 import jakarta.persistence.criteria.*
 
@@ -412,7 +413,7 @@ class SCustomerMessage(
     /**
      * 扩展信息
      */
-    val extendJson: Field<String?> by lazy {
+    val extendJson: Field<UserMessageExtend?> by lazy {
         Field(root.get("extendJson"), criteriaBuilder)
     }
 

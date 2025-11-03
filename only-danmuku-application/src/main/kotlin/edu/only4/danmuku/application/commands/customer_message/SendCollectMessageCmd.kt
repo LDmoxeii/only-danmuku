@@ -7,6 +7,7 @@ import edu.only4.danmuku.domain._share.meta.customer_message.SCustomerMessage
 import edu.only4.danmuku.domain._share.meta.video.SVideo
 import edu.only4.danmuku.domain.aggregates.customer_message.factory.CustomerMessageFactory
 import edu.only4.danmuku.domain.aggregates.customer_message.enums.MessageType
+import edu.only4.danmuku.domain.aggregates.customer_message.extend.UserMessageExtend
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
 
@@ -40,7 +41,7 @@ object SendCollectMessageCmd {
 
             if (!exists) {
                 val now = System.currentTimeMillis() / 1000
-                val extend = UserMessageExtend(messageContent = null).toJson()
+                val extend = UserMessageExtend(messageContent = null)
                 Mediator.factories.create(
                     CustomerMessageFactory.Payload(
                         customerId = receiverId,

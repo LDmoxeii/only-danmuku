@@ -7,6 +7,7 @@ import edu.only4.danmuku.domain._share.meta.video.SVideo
 import edu.only4.danmuku.domain._share.meta.video_post.SVideoPost
 import edu.only4.danmuku.domain.aggregates.customer_message.factory.CustomerMessageFactory
 import edu.only4.danmuku.domain.aggregates.customer_message.enums.MessageType
+import edu.only4.danmuku.domain.aggregates.customer_message.extend.UserMessageExtend
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
 
@@ -23,7 +24,7 @@ object SendVideoAuditPassedMessageCmd {
             ).getOrNull() ?: return Response()
 
             val now = System.currentTimeMillis() / 1000
-            val extend = UserMessageExtend(auditStatus = 4).toJson()
+            val extend = UserMessageExtend(auditStatus = 4)
             Mediator.factories.create(
                 CustomerMessageFactory.Payload(
                     customerId = video.customerId,

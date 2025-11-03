@@ -1,18 +1,12 @@
 package edu.only4.danmuku.domain.aggregates.customer_message
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
-
 import edu.only4.danmuku.domain.aggregates.customer_message.enums.MessageType
 import edu.only4.danmuku.domain.aggregates.customer_message.enums.ReadType
-
+import edu.only4.danmuku.domain.aggregates.customer_message.extend.UserMessageExtend
 import jakarta.persistence.*
 import jakarta.persistence.Table
-
-import org.hibernate.annotations.DynamicInsert
-import org.hibernate.annotations.DynamicUpdate
-import org.hibernate.annotations.GenericGenerator
-import org.hibernate.annotations.SQLDelete
-import org.hibernate.annotations.Where
+import org.hibernate.annotations.*
 
 /**
  * 用户消息表;
@@ -36,7 +30,7 @@ class CustomerMessage(
     messageType: MessageType = MessageType.valueOf(0),
     sendSubjectId: Long? = null,
     readType: ReadType = ReadType.valueOf(0),
-    extendJson: String? = null,
+    extendJson: UserMessageExtend? = null,
     createUserId: Long? = null,
     createBy: String? = null,
     createTime: Long? = null,
@@ -117,8 +111,9 @@ class CustomerMessage(
      * 扩展信息
      * text
      */
+    @Convert(converter = UserMessageExtend.Converter::class)
     @Column(name = "`extend_json`")
-    var extendJson: String? = extendJson
+    var extendJson: UserMessageExtend? = extendJson
         internal set
 
     /**

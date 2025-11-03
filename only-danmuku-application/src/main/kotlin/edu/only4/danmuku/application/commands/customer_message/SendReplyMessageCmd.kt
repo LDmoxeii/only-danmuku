@@ -6,6 +6,7 @@ import com.only4.cap4k.ddd.core.application.command.Command
 import edu.only4.danmuku.domain._share.meta.video_comment.SVideoComment
 import edu.only4.danmuku.domain.aggregates.customer_message.factory.CustomerMessageFactory
 import edu.only4.danmuku.domain.aggregates.customer_message.enums.MessageType
+import edu.only4.danmuku.domain.aggregates.customer_message.extend.UserMessageExtend
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
 
@@ -30,7 +31,7 @@ object SendReplyMessageCmd {
             val extend = UserMessageExtend(
                 messageContent = request.content,
                 messageContentReply = request.replyCommentContent
-            ).toJson()
+            )
 
             Mediator.factories.create(
                 CustomerMessageFactory.Payload(

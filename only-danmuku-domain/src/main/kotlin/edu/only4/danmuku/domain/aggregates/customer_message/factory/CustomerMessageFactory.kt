@@ -7,6 +7,7 @@ import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import edu.only4.danmuku.domain.aggregates.customer_message.CustomerMessage
 import edu.only4.danmuku.domain.aggregates.customer_message.enums.MessageType
 import edu.only4.danmuku.domain.aggregates.customer_message.enums.ReadType
+import edu.only4.danmuku.domain.aggregates.customer_message.extend.UserMessageExtend
 
 import org.springframework.stereotype.Service
 
@@ -56,7 +57,7 @@ class CustomerMessageFactory : AggregateFactory<CustomerMessageFactory.Payload, 
         val messageType: MessageType,
         val sendSubjectId: Long? = null,
         val readType: ReadType = ReadType.UNREAD,
-        val extendJson: String? = null,
+        val extendJson: UserMessageExtend? = null,
         val createTime: Long,
         val updateTime: Long? = null,
     ) : AggregatePayload<CustomerMessage>

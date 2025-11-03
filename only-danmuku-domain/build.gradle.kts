@@ -18,6 +18,9 @@ dependencies {
 
     api(libs.ddd.starter)
 
+    // JSON utils for JPA converters
+    implementation(libs.engine.json)
+
     ksp("com.only4:ksp-processor:0.2.0-SNAPSHOT")
 }
 
