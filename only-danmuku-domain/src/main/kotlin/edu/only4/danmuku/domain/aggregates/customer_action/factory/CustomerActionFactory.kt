@@ -3,18 +3,8 @@ package edu.only4.danmuku.domain.aggregates.customer_action.factory
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregateFactory
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePayload
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
-
 import edu.only4.danmuku.domain.aggregates.customer_action.CustomerAction
 import edu.only4.danmuku.domain.aggregates.customer_action.enums.ActionType
-import edu.only4.danmuku.domain.aggregates.video.QVideo.video
-import edu.only4.danmuku.domain.aggregates.customer_action.events.CustomerLikedVideoDomainEvent
-import edu.only4.danmuku.domain.aggregates.customer_action.events.CustomerCollectedVideoDomainEvent
-import edu.only4.danmuku.domain.aggregates.customer_action.events.CustomerCoinGivenDomainEvent
-import edu.only4.danmuku.domain.aggregates.customer_action.events.CustomerLikedCommentDomainEvent
-import edu.only4.danmuku.domain.aggregates.customer_action.events.CustomerDislikedCommentDomainEvent
-import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
-import jakarta.persistence.Column
-
 import org.springframework.stereotype.Service
 
 /**

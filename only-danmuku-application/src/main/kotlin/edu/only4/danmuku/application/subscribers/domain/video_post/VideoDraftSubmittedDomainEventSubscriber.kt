@@ -1,4 +1,4 @@
-package edu.only4.danmuku.application.subscribers.domain.video_draft
+package edu.only4.danmuku.application.subscribers.domain.video_post
 
 import edu.only4.danmuku.domain.aggregates.video_post.events.VideoDraftSubmittedDomainEvent
 

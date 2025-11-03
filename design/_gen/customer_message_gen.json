@@ -59,19 +59,19 @@
   },
   {
     "tag": "de",
-    "package": "video_draft",
+    "package": "video_post",
     "name": "VideoAuditPassed",
     "desc": "视频审核通过事件订阅（触发发送系统消息）",
-    "aggregates": ["VideoDraft"],
+    "aggregates": ["VideoPost"],
     "entity": "VideoPost",
     "persist": false
   },
   {
     "tag": "de",
-    "package": "video_draft",
+    "package": "video_post",
     "name": "VideoAuditFailed",
     "desc": "视频审核失败事件订阅（触发发送系统消息）",
-    "aggregates": ["VideoDraft"],
+    "aggregates": ["VideoPost"],
     "entity": "VideoPost",
     "persist": false
   }

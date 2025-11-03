@@ -3,12 +3,8 @@ package edu.only4.danmuku.domain.aggregates.user.factory
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregateFactory
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePayload
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
-
 import edu.only4.danmuku.domain.aggregates.user.User
-import edu.only4.danmuku.domain.aggregates.user.User_.joinTime
-import edu.only4.danmuku.domain.aggregates.user.User_.password
 import edu.only4.danmuku.domain.aggregates.user.enums.UserType
-
 import org.springframework.stereotype.Service
 
 /**
