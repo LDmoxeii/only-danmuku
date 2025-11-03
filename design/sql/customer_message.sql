@@ -10,7 +10,7 @@ CREATE TABLE `customer_message`
     `message_type`    tinyint(1)                                            NOT NULL DEFAULT 0 COMMENT '消息类型 @E=0:UNKNOW:未知消息|1:SYSTEM_MESSAGE:系统消息|2:LIKE_MESSAGE:收到的赞|3:COLLECTION_MESSAGE:收到收藏|4:COMMENT_MENTION:评论和@|5:COMMENT_REPLY:评论回复|6:VIDEO_DYNAMIC:视频动态|7:PRIVATE_MESSAGE:私信消息|8:ACTIVITY_NOTICE:活动通知|9:OTHER_MESSAGE:其他消息;@T=MessageType',
     `send_subject_id` bigint                                                NULL     DEFAULT NULL COMMENT '发送主体ID',
     `read_type`       tinyint(1)                                            NOT NULL DEFAULT 0 COMMENT '读取状态 @E=0:UNKNOW:未知状态|1:UNREAD:未读|2:READ:已读;@T=ReadType',
-    `extend_json`     text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '扩展信息',
+    `extend_json`     text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '扩展信息@T=UserMessageExtend?',
     `create_user_id`  bigint                                                NULL     DEFAULT NULL COMMENT '创建人ID',
     `create_by`       varchar(32)                                           NULL     DEFAULT NULL COMMENT '创建人名称',
     `create_time`     bigint                                                NULL     DEFAULT NULL COMMENT '创建时间',

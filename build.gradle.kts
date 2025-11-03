@@ -38,8 +38,10 @@ codegen {
         versionField.set("version")
         deletedField.set("deleted")
         readonlyFields.set("id")
-        ignoreFields.set("create_user_id,create_by,create_time,update_user_id,update_by,update_time")
         generateAggregate.set(false)
         repositorySupportQuerydsl.set(false)
+        typeMapping.set(mapOf(
+            "UserMessageExtend" to "edu.only4.danmuku.domain.aggregates.customer_message.extend.UserMessageExtend"
+        ))
     }
 }

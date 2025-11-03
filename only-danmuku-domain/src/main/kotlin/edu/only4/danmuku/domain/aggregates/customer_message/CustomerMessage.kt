@@ -1,11 +1,14 @@
 package edu.only4.danmuku.domain.aggregates.customer_message
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
+
 import edu.only4.danmuku.domain.aggregates.customer_message.enums.MessageType
 import edu.only4.danmuku.domain.aggregates.customer_message.enums.ReadType
 import edu.only4.danmuku.domain.aggregates.customer_message.extend.UserMessageExtend
+
 import jakarta.persistence.*
 import jakarta.persistence.Table
+
 import org.hibernate.annotations.*
 
 /**
@@ -14,7 +17,7 @@ import org.hibernate.annotations.*
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2025/11/02
+ * @date 2025/11/03
  */
 @Aggregate(aggregate = "CustomerMessage", name = "CustomerMessage", root = true, type = Aggregate.TYPE_ENTITY, description = "用户消息表，")
 @Entity
