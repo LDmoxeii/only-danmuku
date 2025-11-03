@@ -41,7 +41,6 @@ class VideoDanmuku(
     mode: Boolean? = null,
     color: String? = null,
     time: Int? = null,
-    deleted: Long = 0L
 ) : AuditedFieldsEntity() {
     // 【字段映射开始】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
 
@@ -118,14 +117,6 @@ class VideoDanmuku(
      */
     @Column(name = "`time`")
     var time: Int? = time
-        internal set
-
-    /**
-     * 删除标识 0：未删除 id：已删除
-     * bigint
-     */
-    @Column(name = "`deleted`")
-    var deleted: Long = deleted
         internal set
 
     // 【字段映射结束】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动

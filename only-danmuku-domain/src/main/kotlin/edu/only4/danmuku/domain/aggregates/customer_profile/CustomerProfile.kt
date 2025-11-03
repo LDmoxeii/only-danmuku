@@ -46,7 +46,6 @@ class CustomerProfile(
     totalCoinCount: Int = 0,
     currentCoinCount: Int = 0,
     theme: ThemeType = ThemeType.valueOf(0),
-    deleted: Long = 0L
 ) : AuditedFieldsEntity() {
     // 【字段映射开始】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
 
@@ -164,14 +163,6 @@ class CustomerProfile(
     @Convert(converter = ThemeType.Converter::class)
     @Column(name = "`theme`")
     var theme: ThemeType = theme
-        internal set
-
-    /**
-     * 删除标识 0：未删除 id：已删除
-     * bigint
-     */
-    @Column(name = "`deleted`")
-    var deleted: Long = deleted
         internal set
 
     // 【字段映射结束】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动

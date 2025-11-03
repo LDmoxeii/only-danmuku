@@ -35,7 +35,6 @@ class CustomerFocus(
     id: Long = 0L,
     customerId: Long = 0L,
     focusCustomerId: Long = 0L,
-    deleted: Long = 0L
 ) : AuditedFieldsEntity() {
     // 【字段映射开始】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
 
@@ -64,14 +63,6 @@ class CustomerFocus(
      */
     @Column(name = "`focus_customer_id`")
     var focusCustomerId: Long = focusCustomerId
-        internal set
-
-    /**
-     * 删除标识 0：未删除 id：已删除
-     * bigint
-     */
-    @Column(name = "`deleted`")
-    var deleted: Long = deleted
         internal set
 
     // 【字段映射结束】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动

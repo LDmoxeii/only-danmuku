@@ -40,7 +40,7 @@ codegen {
         readonlyFields.set("id")
         generateAggregate.set(false)
         repositorySupportQuerydsl.set(false)
-        ignoreFields.set("create_user_id,create_by,create_time,update_user_id,update_by,update_time")
+        ignoreFields.set("create_user_id,create_by,create_time,update_user_id,update_by,update_time,deleted")
         rootEntityBaseClass.set("AuditedFieldsEntity")
         entityBaseClass.set("AuditedFieldsEntity")
         typeMapping.set(mapOf(
