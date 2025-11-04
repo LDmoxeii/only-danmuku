@@ -40,7 +40,7 @@ class GetPreviousDayStatisticsInfoQryHandler(
 
         // 按数据类型分组统计 - 前一天数据
         val previousDayCountsByType = previousDayStatisticsList
-            .groupingBy { StatisticsDataType.valueOf(it.dataType) }
+            .groupingBy { it.dataType }
             .fold(0) { acc, item -> acc + (item.statisticsCount ?: 0) }
 
         return GetPreviousDayStatisticsInfoQry.Response(

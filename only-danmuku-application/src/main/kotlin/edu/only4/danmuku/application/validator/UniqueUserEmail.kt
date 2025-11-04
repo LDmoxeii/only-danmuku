@@ -1,36 +1,35 @@
 package edu.only4.danmuku.application.validator
 
 import com.only4.cap4k.ddd.core.Mediator
-import edu.only4.danmuku.application.queries.user.CheckEmailExistsQry
+
+import edu.only4.danmuku.application.queries.user.UniqueUserEmailQry
+
 import jakarta.validation.Constraint
 import jakarta.validation.ConstraintValidator
 import jakarta.validation.ConstraintValidatorContext
 import jakarta.validation.Payload
+
 import kotlin.reflect.KClass
 import kotlin.reflect.full.memberProperties
 
 /**
- * 验证邮箱唯一性的注解
+ * 帐号;
  *
- * 默认读取 `email`、`userId` 字段，可在注解参数中自定义以实现更新场景的自我排除
+ * 该文件由 [cap4k-ddd-codegen-gradle-plugin] 生成
+ * @author cap4k-ddd-codegen
+ * @date 2025/11/04
  */
-@Target(AnnotationTarget.CLASS, AnnotationTarget.FIELD, AnnotationTarget.VALUE_PARAMETER)
+@Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)
 @Constraint(validatedBy = [UniqueUserEmail.Validator::class])
 @MustBeDocumented
 annotation class UniqueUserEmail(
-    val message: String = "邮箱已被注册",
+    val message: String = "唯一性校验未通过",
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [],
     val emailField: String = "email",
     val userIdField: String = "userId",
 ) {
-
-    /**
-     * 邮箱唯一性验证器
-     *
-     * 验证用户注册时提供的邮箱是否已被其他用户使用
-     */
     class Validator : ConstraintValidator<UniqueUserEmail, Any> {
         private lateinit var emailProperty: String
         private lateinit var userIdProperty: String
@@ -41,37 +40,32 @@ annotation class UniqueUserEmail(
         }
 
         override fun isValid(value: Any?, context: ConstraintValidatorContext): Boolean {
-            if (value == null) {
-                return true
-            }
+            if (value == null) return true
 
             val props = value::class.memberProperties.associateBy { it.name }
+
+            // 读取唯一字段值
             val email = props[emailProperty]?.getter?.call(value) as? String?
-            val excludeUserId = userIdProperty
-                .takeIf { it.isNotBlank() }
-                ?.let { props[it]?.getter?.call(value) as? Long? }
-                ?.takeIf { it != 0L }
+            val emailTrimmed = email?.trim()
 
-            return isEmailUnique(email, excludeUserId)
+            // 读取排除 ID
+            val excludeId = props[userIdProperty]?.getter?.call(value) as? Long
 
-        }
+            // 所有参数均有值（字符串非空）才进行校验
+            val allPresent =
+                (emailTrimmed != null && emailTrimmed.isNotBlank())
+            if (!allPresent) return true
 
-        private fun isEmailUnique(email: String?, excludeUserId: Long?): Boolean {
-            val normalizedEmail = email?.trim().orEmpty()
-            if (normalizedEmail.isBlank()) {
-                return true
-            }
-
-            val queryResult = runCatching {
+            val result = runCatching {
                 Mediator.queries.send(
-                    CheckEmailExistsQry.Request(
-                        email = normalizedEmail,
-                        excludeUserId = excludeUserId
+                    UniqueUserEmailQry.Request(
+                        email = emailTrimmed!!,
+                        excludeUserId = excludeId,
                     )
                 )
             }.getOrNull() ?: return false
 
-            return !queryResult.exists
+            return !result.exists
         }
     }
 }

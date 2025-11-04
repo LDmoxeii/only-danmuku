@@ -1,6 +1,9 @@
 package edu.only4.danmuku.application.queries.video
 
 import com.only4.cap4k.ddd.core.application.query.ListQueryParam
+import edu.only4.danmuku.domain.aggregates.video.enums.PostType
+import edu.only4.danmuku.domain.aggregates.video.enums.RecommendType
+import edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus
 
 /**
  * 获取所有视频
@@ -24,19 +27,19 @@ object GetVideoAllList {
         var lastUpdateTime: Long?,
         var parentCategoryId: Long,
         var categoryId: Long?,
-        var postType: Int,
+        var postType: PostType,
         var originInfo: String?,
         var tags: String?,
         var introduction: String?,
         var duration: Int,
-        val status: Int,
+        val status: VideoStatus,
         var playCount: Int,
         var likeCount: Int,
         var danmuCount: Int,
         var commentCount: Int,
         var coinCount: Int,
         var collectCount: Int,
-        var recommendType: Int,
+        var recommendType: RecommendType,
         var lastPlayTime: Long?,
         var nickName: String? = null,
         var avatar: String? = null,

@@ -236,6 +236,13 @@
       "tag": "enum",
       "name": "{{ path }}",
       "children": [
+        {
+          "type": "file",
+          "name": "{{ Enum }}.kt",
+          "format": "url",
+          "conflict": "overwrite",
+          "data": "template/_tpl/enum.kt.peb"
+        }
       ]
     },
     {

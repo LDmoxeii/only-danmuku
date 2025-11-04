@@ -7,6 +7,7 @@ import edu.only4.danmuku.adapter.portal.api.payload.AdminIndexGetWeekStatistics.
 import edu.only4.danmuku.application.queries.statistics.GetPreviousDayStatisticsInfoQry
 import edu.only4.danmuku.application.queries.statistics.GetTotalStatisticsInfoQry
 import edu.only4.danmuku.application.queries.statistics.GetWeekStatisticsInfoQry
+import edu.only4.danmuku.domain.aggregates.statistics.enums.StatisticsDataType
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -52,7 +53,7 @@ class CompatibleAdminIndexController {
     }
 
     @PostMapping("/getWeekStatisticsInfo")
-    fun adminIndexGetWeekStatistics(dataType: Int): List<WeekStatisticsItem> {
+    fun adminIndexGetWeekStatistics(dataType: StatisticsDataType): List<WeekStatisticsItem> {
         val weekData = Mediator.queries.send(
             GetWeekStatisticsInfoQry.Request(dataType = dataType)
         )

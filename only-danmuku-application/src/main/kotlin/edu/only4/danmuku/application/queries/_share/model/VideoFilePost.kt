@@ -15,11 +15,18 @@ import org.babyfish.jimmer.sql.Table
 interface VideoFilePost : BaseEntity {
 
     @IdView
+    val customerId: Long
+
+    @IdView
     val uploadId: Long
 
     @OneToOne
     @JoinColumn(name = "uploadId")
     val upload: VideoFileUploadSession
+
+    @OneToOne
+    @JoinColumn(name = "customer_id")
+    val customer: CustomerProfile
 
     @ManyToOne
     @JoinColumn(name = "video_id")

@@ -1,6 +1,7 @@
 package edu.only4.danmuku.application.queries.statistics
 
 import com.only4.cap4k.ddd.core.application.query.ListQueryParam
+import edu.only4.danmuku.domain.aggregates.statistics.enums.StatisticsDataType
 
 /**
  * 获取最近七天的统计数据
@@ -13,7 +14,7 @@ object GetWeekStatisticsInfoQry {
 
     data class Request(
         val userId: Long? = null,
-        val dataType: Int = 0,
+        val dataType: StatisticsDataType = StatisticsDataType.UNKNOW,
     ) : ListQueryParam<Response>
 
     data class Response(

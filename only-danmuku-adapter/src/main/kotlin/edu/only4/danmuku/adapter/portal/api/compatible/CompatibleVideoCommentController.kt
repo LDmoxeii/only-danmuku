@@ -48,7 +48,7 @@ class CompatibleVideoCommentController {
         } else emptyList()
 
         val likedCommentIds: Set<Long> = actionList
-            .filter { it.actionType == ActionType.LIKE_COMMENT.code && it.commentId != null }
+            .filter { it.actionType == ActionType.LIKE_COMMENT && it.commentId != null }
             .mapNotNull { it.commentId }
             .toSet()
 

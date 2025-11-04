@@ -1,6 +1,7 @@
 package edu.only4.danmuku.application.queries.video
 
 import com.only4.cap4k.ddd.core.application.RequestParam
+import edu.only4.danmuku.domain.aggregates.video.enums.PostType
 
 /**
  * 获取视频信息
@@ -22,7 +23,7 @@ object GetVideoInfoQry {
         var videoName: String,
         var userId: Long,
         var createTime: Long,
-        var postType: Int,
+        var postType: PostType,
         var originInfo: String?,
         var tags: String?,
         var introduction: String? = null,

@@ -1,5 +1,6 @@
 package edu.only4.danmuku.adapter.portal.api.payload
 
+import edu.only4.danmuku.domain.aggregates.customer_profile.enums.ThemeType
 import jakarta.validation.constraints.NotEmpty
 
 /**
@@ -28,7 +29,7 @@ object UHomeGetUserInfo {
         var personIntroduction: String? = null,
         var noticeInfo: String? = null,
         var grade: Int? = null,
-        var theme: Int? = null,
+        var theme: ThemeType? = null,
         var currentCoinCount: Int? = null,
         var fansCount: Long? = null,
         var focusCount: Long? = null,

@@ -29,7 +29,7 @@ class GetCollectionPageQryHandler(
         val pageResult =
             sqlClient.createQuery(CustomerAction::class) {
                 where(table.customerId eq request.customerId)
-                where(table.actionType eq ActionType.FAVORITE_VIDEO.code)
+                where(table.actionType eq ActionType.FAVORITE_VIDEO)
                 select(table.fetch(CustomerActionSimple::class))
             }.fetchPage(request.pageNum - 1, request.pageSize)
 

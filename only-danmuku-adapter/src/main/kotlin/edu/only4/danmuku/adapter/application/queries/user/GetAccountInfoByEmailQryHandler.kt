@@ -33,7 +33,7 @@ class GetAccountInfoByEmailQryHandler(
             nickName = userAccountInfo.nickName,
             email = userAccountInfo.email,
             password = userAccountInfo.password,
-            type = UserType.valueOf(userAccountInfo.type)
+            type = userAccountInfo.type
         )
     }
 }

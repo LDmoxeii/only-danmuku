@@ -18,6 +18,7 @@ import edu.only4.danmuku.application.queries.video_draft.GetUserVideoPostQry
 import edu.only4.danmuku.application.queries.video_draft.GetVideoDraftCountByStatusQry
 import edu.only4.danmuku.application.queries.video_draft.GetVideoPostInfoQry
 import edu.only4.danmuku.domain.aggregates.video.enums.PostType
+import edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.Size
 import org.springframework.validation.annotation.Validated
@@ -110,9 +111,9 @@ class CompatibleUCenterVideoPostController {
 
         val queryRequest = GetUserVideoPostQry.Request(
             userId = currentUserId,
-            status = if (request.status == -1) null else request.status,
+            status = if (request.status == VideoStatus.UNKNOW) null else request.status,
             videoNameFuzzy = request.videoNameFuzzy,
-            excludeStatusArray = if (request.status == -1) listOf(4, 5) else null // 进行中排除审核通过和不通过
+            excludeStatusArray = if (request.status == VideoStatus.UNKNOW) listOf(VideoStatus.REVIEW_PASSED, VideoStatus.REVIEW_FAILED) else null // 进行中排除审核通过和不通过
         ).apply {
             pageNum = request.pageNum
             pageSize = 999
@@ -136,7 +137,7 @@ class CompatibleUCenterVideoPostController {
         val auditPassCount = Mediator.queries.send(
             GetVideoDraftCountByStatusQry.Request(
                 userId = currentUserId,
-                status = 4
+                status = VideoStatus.REVIEW_PASSED
             )
         ).count
 
@@ -144,7 +145,7 @@ class CompatibleUCenterVideoPostController {
         val auditFailCount = Mediator.queries.send(
             GetVideoDraftCountByStatusQry.Request(
                 userId = currentUserId,
-                status = 5
+                status = VideoStatus.REVIEW_FAILED
             )
         ).count
 
@@ -152,7 +153,7 @@ class CompatibleUCenterVideoPostController {
         val inProgress = Mediator.queries.send(
             GetVideoDraftCountByStatusQry.Request(
                 userId = currentUserId,
-                excludeStatusArray = listOf(4, 5)
+                excludeStatusArray = listOf(VideoStatus.REVIEW_PASSED, VideoStatus.REVIEW_FAILED)
             )
         ).count
 

@@ -1,6 +1,7 @@
 package edu.only4.danmuku.application.queries.customer_action
 
 import com.only4.cap4k.ddd.core.application.query.PageQueryParam
+import edu.only4.danmuku.domain.aggregates.customer_action.enums.ActionType
 
 /**
  * 用户收藏的视频ID列表
@@ -20,7 +21,7 @@ object GetCollectionPageQry {
         val videoId: Long?,
         val videoUserId: Long,
         val commentId: Long?,
-        val actionType: Int,
+        val actionType: ActionType,
         val actionCount: Int,
         val userId: Long,
         val actionTime: Long,

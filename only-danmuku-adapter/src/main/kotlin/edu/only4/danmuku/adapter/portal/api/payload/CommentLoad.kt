@@ -4,6 +4,7 @@ import com.only.engine.translation.annotation.Translation
 import com.only.engine.translation.translation.EpochSecondToDateStringTranslation
 import com.only4.cap4k.ddd.core.share.PageData
 import com.only4.cap4k.ddd.core.share.PageParam
+import edu.only4.danmuku.domain.aggregates.customer_action.enums.ActionType
 
 /**
  * 加载评论列表接口载荷
@@ -82,7 +83,7 @@ object CommentLoad {
         var videoCover: String,
         var videoUserId: Long,
         var commentId: Long?,
-        var actionType: Int?,
+        var actionType: ActionType?,
         var actionCount: Int?,
         @get:Translation(type = EpochSecondToDateStringTranslation.TYPE, other = "yyyy-MM-dd HH:mm:ss")
         var cationTime: Long,

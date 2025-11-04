@@ -5,7 +5,7 @@ import edu.only4.danmuku.application.queries._share.model.dto.Video.VideoListIte
 import edu.only4.danmuku.application.queries._share.model.playCount
 import edu.only4.danmuku.application.queries._share.model.recommendType
 import edu.only4.danmuku.application.queries.video.GetRecommendVideosQry
-import org.babyfish.jimmer.sql.ast.impl.table.AssociationTableProxyImpl.table
+import edu.only4.danmuku.domain.aggregates.video.enums.RecommendType
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.desc
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
@@ -26,7 +26,7 @@ class GetRecommendVideosQryHandler(
     override fun exec(request: GetRecommendVideosQry.Request): List<GetRecommendVideosQry.Response> {
         // 查询推荐视频列表 (recommendType = 2 表示已推荐)
         val videoList = sqlClient.findAll(VideoListItem::class) {
-            where(table.recommendType eq 2)
+            where(table.recommendType eq RecommendType.RECOMMEND)
             orderBy(table.playCount.desc())  // 按播放数降序
         }
 

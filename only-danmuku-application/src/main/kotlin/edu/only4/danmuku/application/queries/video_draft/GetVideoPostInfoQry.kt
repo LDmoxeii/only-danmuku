@@ -1,6 +1,10 @@
 package edu.only4.danmuku.application.queries.video_draft
 
 import com.only4.cap4k.ddd.core.application.RequestParam
+import edu.only4.danmuku.domain.aggregates.video.enums.PostType
+import edu.only4.danmuku.domain.aggregates.video_post.enums.TransferResult
+import edu.only4.danmuku.domain.aggregates.video_post.enums.UpdateType
+import edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus
 
 /**
  * 获取视频稿件信息
@@ -31,12 +35,12 @@ object GetVideoPostInfoQry {
         val videoName: String?,
         val parentCategoryId: Long?,
         val categoryId: Long?,
-        val postType: Int?,
+        val postType: PostType?,
         var originInfo: String?,
         val tags: String?,
         val introduction: String?,
         val interaction: String?,
-        val status: Int,
+        val status: VideoStatus,
     )
 
     data class VideoFileItem(
@@ -47,7 +51,7 @@ object GetVideoPostInfoQry {
         val fileSize: Long,
         val filePath: String?,
         val duration: Int,
-        val updateType: Int,
-        val transferResult: Int,
+        val updateType: UpdateType,
+        val transferResult: TransferResult,
     )
 }

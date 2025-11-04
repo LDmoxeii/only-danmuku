@@ -8,6 +8,7 @@ import edu.only4.danmuku.adapter.portal.api.payload.UCenterGetWeekStatistics.Con
 import edu.only4.danmuku.application.queries.statistics.GetPreviousDayStatisticsInfoQry
 import edu.only4.danmuku.application.queries.statistics.GetTotalStatisticsInfoQry
 import edu.only4.danmuku.application.queries.statistics.GetWeekStatisticsInfoQry
+import edu.only4.danmuku.domain.aggregates.statistics.enums.StatisticsDataType
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -51,7 +52,7 @@ class CompatibleUCenterStatisticsController {
     }
 
     @PostMapping("/getWeekStatisticsInfo")
-    fun getWeekStatistics(dataType: Int): List<UCenterGetWeekStatistics.WeekStatisticsItem> {
+    fun getWeekStatistics(dataType: StatisticsDataType): List<UCenterGetWeekStatistics.WeekStatisticsItem> {
         val currentUserId = LoginHelper.getUserId()!!
 
         val weekData = Mediator.queries.send(

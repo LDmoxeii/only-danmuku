@@ -1,6 +1,7 @@
 package edu.only4.danmuku.application.queries.video_draft
 
 import com.only4.cap4k.ddd.core.application.query.PageQueryParam
+import edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus
 
 /**
  * 获取用户视频稿件列表
@@ -15,11 +16,11 @@ object GetUserVideoPostQry {
         /** 用户ID */
         val userId: Long,
         /** 状态(-1进行中) */
-        val status: Int? = null,
+        val status: VideoStatus? = null,
         /** 视频名称模糊查询 */
         val videoNameFuzzy: String? = null,
         /** 排除状态数组 */
-        val excludeStatusArray: List<Int>? = null
+        val excludeStatusArray: List<VideoStatus>? = null
     ) : PageQueryParam<Response>()
 
     data class Response(
@@ -30,7 +31,7 @@ object GetUserVideoPostQry {
         val duration: Int?,
         val createTime: Long,
         val lastUpdateTime: Long?,
-        val status: Int,
+        val status: VideoStatus,
         val interaction: String? = null,
         val playCount: Int? = 0,
         val likeCount: Int? = 0,

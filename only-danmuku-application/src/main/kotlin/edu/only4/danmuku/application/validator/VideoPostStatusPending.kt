@@ -43,7 +43,7 @@ annotation class VideoPostStatusPending(
                 )
             }.getOrNull() ?: return false
 
-            val statusEnum = VideoStatus.valueOf(resp.videoInfo.status)
+            val statusEnum = resp.videoInfo.status
             return statusEnum == VideoStatus.PENDING_REVIEW
         }
 

@@ -4,8 +4,8 @@ import com.only4.cap4k.ddd.core.application.query.PageQuery
 import com.only4.cap4k.ddd.core.share.PageData
 import edu.only4.danmuku.application.queries._share.model.*
 import edu.only4.danmuku.application.queries.video_draft.GetVideoPostPageQry
+import edu.only4.danmuku.domain.aggregates.video.enums.RecommendType
 import org.babyfish.jimmer.sql.kt.KSqlClient
-import org.babyfish.jimmer.sql.kt.ast.expression.all
 import org.babyfish.jimmer.sql.kt.ast.expression.desc
 import org.babyfish.jimmer.sql.kt.ast.expression.`eq?`
 import org.babyfish.jimmer.sql.kt.ast.expression.`ilike?`
@@ -77,7 +77,7 @@ class GetVideoPostPageQryHandler(
                 commentCount = videoPost.video?.commentCount ?: 0,
                 coinCount = videoPost.video?.coinCount ?: 0,
                 collectCount = videoPost.video?.collectCount ?: 0,
-                recommendType = videoPost.video?.recommendType ?: 0,
+                recommendType = videoPost.video?.recommendType ?: RecommendType.UNKNOW,
                 lastPlayTime = videoPost.video?.lastPlayTime ?: 0,
                 nickName = videoPost.customer.nickName,
                 avatar = videoPost.customer.relation!!.avatar,

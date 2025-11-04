@@ -1,6 +1,9 @@
 package edu.only4.danmuku.application.queries.video
 
 import com.only4.cap4k.ddd.core.application.query.PageQueryParam
+import edu.only4.danmuku.domain.aggregates.video.enums.PostType
+import edu.only4.danmuku.domain.aggregates.video.enums.RecommendType
+import edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus
 
 /**
  * 获取视频分页列表
@@ -16,7 +19,7 @@ object GetVideoPageQry {
         val categoryParentId: Long? = null,
         val categoryId: Long? = null,
         val videoNameFuzzy: String? = null,
-        val recommendType: Int? = null,
+        val recommendType: RecommendType? = null,
         val excludeVideoIds: List<Long>? = null,
     ) : PageQueryParam<Response>()
 
@@ -29,19 +32,19 @@ object GetVideoPageQry {
         var lastUpdateTime: Long?,
         var parentCategoryId: Long,
         var categoryId: Long?,
-        var postType: Int,
+        var postType: PostType,
         var originInfo: String?,
         var tags: String?,
         var introduction: String?,
         var duration: Int,
-        val status: Int,
+        val status: VideoStatus,
         var playCount: Int,
         var likeCount: Int,
         var danmuCount: Int,
         var commentCount: Int,
         var coinCount: Int,
         var collectCount: Int,
-        var recommendType: Int,
+        var recommendType: RecommendType,
         var lastPlayTime: Long?,
         var nickName: String? = null,
         var avatar: String? = null,

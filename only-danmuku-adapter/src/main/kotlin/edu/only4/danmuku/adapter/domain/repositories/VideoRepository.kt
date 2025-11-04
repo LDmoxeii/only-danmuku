@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository
  *
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * @author cap4k-ddd-codegen
- * @date 2025/11/03
+ * @date 2025/11/04
  */
 @Repository
 interface VideoRepository : JpaRepository<Video, Long>, JpaSpecificationExecutor<Video> {

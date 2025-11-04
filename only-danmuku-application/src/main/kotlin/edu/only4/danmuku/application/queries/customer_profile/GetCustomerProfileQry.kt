@@ -1,6 +1,7 @@
 package edu.only4.danmuku.application.queries.customer_profile
 
 import com.only4.cap4k.ddd.core.application.RequestParam
+import edu.only4.danmuku.domain.aggregates.customer_profile.enums.ThemeType
 
 /**
  * 获取用户信息
@@ -24,7 +25,7 @@ object GetCustomerProfileQry {
         val school: String?,
         val personIntroduction: String?,
         val noticeInfo: String?,
-        val theme: Int,
+        val theme: ThemeType,
         val currentCoinCount: Int,
         val fansCount: Long = 0,
         val focusCount: Long = 0,

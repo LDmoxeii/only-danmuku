@@ -29,7 +29,7 @@ class GetTotalStatisticsInfoQryHandler(
 
         // 按数据类型分组统计（合并）
         val countsByType = statisticsList
-            .groupingBy { StatisticsDataType.valueOf(it.dataType) }
+            .groupingBy { it.dataType }
             .fold(0) { acc, item -> acc + (item.statisticsCount ?: 0) }
 
         return GetTotalStatisticsInfoQry.Response(

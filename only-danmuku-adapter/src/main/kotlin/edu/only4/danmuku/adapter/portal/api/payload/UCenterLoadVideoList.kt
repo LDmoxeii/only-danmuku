@@ -5,13 +5,14 @@ import com.only.engine.translation.translation.EpochSecondToDateStringTranslatio
 import com.only4.cap4k.ddd.core.share.PageParam
 import edu.only4.danmuku.adapter.domain.translation.video_post.VideoStatusTranslation.Companion.VIDEO_STATUS_CODE_TO_DESC
 import edu.only4.danmuku.application.queries.video_draft.GetUserVideoPostQry
+import edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus
 import org.mapstruct.Mapper
 import org.mapstruct.factory.Mappers
 
 object UCenterLoadVideoList {
 
     data class Request(
-        val status: Int? = null,
+        val status: VideoStatus? = null,
         val videoNameFuzzy: String? = null
     ) : PageParam()
 

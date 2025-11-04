@@ -1,34 +1,35 @@
 package edu.only4.danmuku.application.validator
 
 import com.only4.cap4k.ddd.core.Mediator
-import edu.only4.danmuku.application.queries.category.CategoryExistsByCodeQry
+
+import edu.only4.danmuku.application.queries.category.UniqueCategoryCodeQry
+
 import jakarta.validation.Constraint
 import jakarta.validation.ConstraintValidator
 import jakarta.validation.ConstraintValidatorContext
 import jakarta.validation.Payload
+
 import kotlin.reflect.KClass
 import kotlin.reflect.full.memberProperties
 
 /**
- * 验证分类编码唯一性，适配创建/更新等多种场景
+ * 分类信息;
  *
- * 默认读取 `code` 和 `categoryId` 字段，可通过注解参数自定义
+ * 该文件由 [cap4k-ddd-codegen-gradle-plugin] 生成
+ * @author cap4k-ddd-codegen
+ * @date 2025/11/04
  */
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)
 @Constraint(validatedBy = [UniqueCategoryCode.Validator::class])
 @MustBeDocumented
 annotation class UniqueCategoryCode(
-    val message: String = "分类编码已被其他分类使用",
+    val message: String = "唯一性校验未通过",
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [],
     val codeField: String = "code",
     val categoryIdField: String = "categoryId",
 ) {
-
-    /**
-     * 通过读取请求中的栏目编码与当前实体 ID 进行唯一性校验
-     */
     class Validator : ConstraintValidator<UniqueCategoryCode, Any> {
         private lateinit var codeProperty: String
         private lateinit var categoryIdProperty: String
@@ -42,24 +43,29 @@ annotation class UniqueCategoryCode(
             if (value == null) return true
 
             val props = value::class.memberProperties.associateBy { it.name }
-            val code = (props[codeProperty]?.getter?.call(value) as? String)?.trim().orEmpty()
-            if (code.isBlank()) return true
 
-            val excludeId = categoryIdProperty
-                .takeIf { it.isNotBlank() }
-                ?.let { props[it]?.getter?.call(value) as? Long? }
-                ?.takeIf { it != 0L }
+            // 读取唯一字段值
+            val code = props[codeProperty]?.getter?.call(value) as? String?
+            val codeTrimmed = code?.trim()
 
-            val queryResult = runCatching {
+            // 读取排除 ID
+            val excludeId = props[categoryIdProperty]?.getter?.call(value) as? Long
+
+            // 所有参数均有值（字符串非空）才进行校验
+            val allPresent =
+                (codeTrimmed != null && codeTrimmed.isNotBlank())
+            if (!allPresent) return true
+
+            val result = runCatching {
                 Mediator.queries.send(
-                    CategoryExistsByCodeQry.Request(
-                        code = code,
-                        excludeCategoryId = excludeId
+                    UniqueCategoryCodeQry.Request(
+                        code = codeTrimmed!!,
+                        excludeCategoryId = excludeId,
                     )
                 )
             }.getOrNull() ?: return false
 
-            return !queryResult.exists
+            return !result.exists
         }
     }
 }

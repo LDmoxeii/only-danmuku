@@ -43,7 +43,7 @@ annotation class VideoPostEditableStatus(
                 )
             }.getOrNull() ?: return false
 
-            val statusEnum = VideoStatus.valueOf(resp.videoInfo.status)
+            val statusEnum = resp.videoInfo.status
             return statusEnum != VideoStatus.REVIEW_PASSED
         }
 

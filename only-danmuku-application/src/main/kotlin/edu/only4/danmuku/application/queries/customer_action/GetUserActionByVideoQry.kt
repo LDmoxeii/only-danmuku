@@ -1,6 +1,7 @@
 package edu.only4.danmuku.application.queries.customer_action
 
 import com.only4.cap4k.ddd.core.application.RequestParam
+import edu.only4.danmuku.domain.aggregates.customer_action.enums.ActionType
 
 /**
  * 查询用户对视频/评论的已有行为
@@ -16,7 +17,7 @@ object GetUserActionByVideoQry {
         /** 评论ID（可选，针对评论的行为） */
         val commentId: Long? = null,
         /** 行为类型（可选，不指定则查询所有类型） */
-        val actionType: Int? = null
+        val actionType: ActionType? = null
     ) : RequestParam<Response>
 
     data class Response(
@@ -30,7 +31,7 @@ object GetUserActionByVideoQry {
         /** 行为ID */
         val id: Long,
         /** 行为类型 */
-        val actionType: Int,
+        val actionType: ActionType,
         /** 行为数量 */
         val actionCount: Int,
         /** 行为时间 */

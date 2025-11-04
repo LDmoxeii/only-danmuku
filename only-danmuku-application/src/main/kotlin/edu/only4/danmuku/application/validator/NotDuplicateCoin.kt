@@ -45,7 +45,7 @@ annotation class NotDuplicateCoin(
                 GetUserActionByVideoQry.Request(
                     customerId = userId,
                     videoId = videoId,
-                    actionType = ActionType.COIN_VIDEO.code
+                    actionType = ActionType.COIN_VIDEO
                 )
             )
 

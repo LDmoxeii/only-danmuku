@@ -1,6 +1,8 @@
 package edu.only4.danmuku.application.queries.video
 
 import com.only4.cap4k.ddd.core.application.query.PageQueryParam
+import edu.only4.danmuku.domain.aggregates.video.enums.PostType
+import edu.only4.danmuku.domain.aggregates.video.enums.RecommendType
 
 /**
  * 获取热门视频列表
@@ -24,7 +26,7 @@ object GetHotVideoPageQry {
         var lastUpdateTime: Long?,
         var parentCategoryId: Long,
         var categoryId: Long?,
-        var postType: Int,
+        var postType: PostType,
         var originInfo: String?,
         var tags: String?,
         var introduction: String?,
@@ -35,7 +37,7 @@ object GetHotVideoPageQry {
         var commentCount: Int,
         var coinCount: Int,
         var collectCount: Int,
-        var recommendType: Int,
+        var recommendType: RecommendType,
         var lastPlayTime: Long?,
         var nickName: String? = null,
         var avatar: String? = null,

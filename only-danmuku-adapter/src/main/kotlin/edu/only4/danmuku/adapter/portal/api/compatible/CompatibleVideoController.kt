@@ -13,6 +13,7 @@ import edu.only4.danmuku.application.queries.video.GetRecommendVideosQry
 import edu.only4.danmuku.application.queries.video.GetVideoInfoQry
 import edu.only4.danmuku.application.queries.video.GetVideoPageQry
 import edu.only4.danmuku.application.queries.video_file.GetVideoFilesByVideoIdQry
+import edu.only4.danmuku.domain.aggregates.video.enums.RecommendType
 import jakarta.validation.constraints.NotEmpty
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
@@ -35,7 +36,7 @@ class CompatibleVideoController {
     @SaIgnore
     @PostMapping("/loadVideo")
     fun getVideoPage(request: VideoLoad.Request): PageData<VideoLoad.VideoItem> {
-        val recommendType = if (request.categoryId == null && request.parentCategoryId == null) 1 else null
+        val recommendType = if (request.categoryId == null && request.parentCategoryId == null) RecommendType.NOT_RECOMMEND else null
 
         val queryRequest = GetVideoPageQry.Request(
             categoryParentId = request.parentCategoryId,
