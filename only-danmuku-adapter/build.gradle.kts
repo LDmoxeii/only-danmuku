@@ -1,5 +1,6 @@
 plugins {
     id("buildsrc.convention.kotlin-jvm")
+    id("org.jetbrains.kotlin.kapt")
 }
 
 dependencies {
@@ -19,4 +20,16 @@ dependencies {
     api(libs.engine.translation)
 
     api(project(":only-danmuku-application"))
+
+    // MapStruct for DTO <-> Command/Query mapping
+    implementation(libs.mapstruct)
+    kapt(libs.mapstruct.processor)
+}
+
+kapt {
+    correctErrorTypes = true
+    arguments {
+        arg("mapstruct.defaultComponentModel", "spring")
+        arg("mapstruct.unmappedTargetPolicy", "IGNORE")
+    }
 }

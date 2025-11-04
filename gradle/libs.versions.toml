@@ -6,6 +6,7 @@
 # Kotlin ecosystem
 kotlin = "2.2.20"
 ksp = "2.2.20-2.0.2"
+mapstruct = "1.6.2"
 
 # Spring framework
 spring-boot = "3.5.6"
@@ -74,6 +75,10 @@ jimmer-sql = { module = "org.babyfish.jimmer:jimmer-sql-kotlin", version.ref = "
 jimmer-ksp = { module = "org.babyfish.jimmer:jimmer-ksp", version.ref = "jimmer" }
 
 hibernate-processor = { module = "org.hibernate.orm:hibernate-processor", version.ref = "hibernate-core" }
+
+# MapStruct
+mapstruct = { module = "org.mapstruct:mapstruct", version.ref = "mapstruct" }
+mapstruct-processor = { module = "org.mapstruct:mapstruct-processor", version.ref = "mapstruct" }
 
 druid = { module = "com.alibaba:druid-spring-boot-starter", version = "1.2.8" }
 mysql = { module = "com.mysql:mysql-connector-j", version = "8.1.0" }

@@ -4,6 +4,9 @@ import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.Pattern
 import jakarta.validation.constraints.Size
+import org.mapstruct.Mapper
+import org.mapstruct.factory.Mappers
+import edu.only4.danmuku.application.commands.user.RegisterAccountCmd
 
 /**
  * 用户注册接口载荷
@@ -58,4 +61,13 @@ object AccountRegister {
      * 用户注册响应结果
      */
     class Response
+
+    @Mapper(componentModel = "default")
+    interface Converter {
+        fun toCmd(request: Request): RegisterAccountCmd.Request
+
+        companion object {
+            val INSTANCE: Converter = Mappers.getMapper(Converter::class.java)
+        }
+    }
 }

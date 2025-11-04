@@ -8,8 +8,8 @@ import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.adapter.portal.api.payload.AccountCheckCode
 import edu.only4.danmuku.adapter.portal.api.payload.AccountLogin
+import edu.only4.danmuku.adapter.portal.api.payload.AccountRegister
 import edu.only4.danmuku.adapter.portal.api.payload.AccountUserCountInfo
-import edu.only4.danmuku.application.commands.user.RegisterAccountCmd
 import edu.only4.danmuku.application.commands.user.UpdateLoginInfoCmd
 import edu.only4.danmuku.application.distributed.clients.CaptchaGenCli
 import edu.only4.danmuku.application.distributed.clients.CaptchaValidCli
@@ -53,13 +53,14 @@ class CompatibleAccountController {
         val captchaValidationResult = Mediator.requests.send(CaptchaValidCli.Request(checkCodeKey, checkCode))
         require(captchaValidationResult.result) { "验证码错误" }
 
-        Mediator.cmd.send(
-            RegisterAccountCmd.Request(
-                email = email,
-                nickName = nickName,
-                registerPassword = registerPassword
-            )
+        val registerPayload = AccountRegister.Request(
+            email = email,
+            nickName = nickName,
+            registerPassword = registerPassword,
+            checkCodeKey = checkCodeKey,
+            checkCode = checkCode
         )
+        Mediator.cmd.send(AccountRegister.Converter.INSTANCE.toCmd(registerPayload))
     }
 
     @SaIgnore
@@ -133,11 +134,7 @@ class CompatibleAccountController {
             )
         )
 
-        return AccountUserCountInfo.Response(
-            fansCount = userCountInfo.fansCount,
-            currentCoinCount = userCountInfo.currentCoinCount,
-            focusCount = userCountInfo.focusCount
-        )
+        return AccountUserCountInfo.Converter.INSTANCE.fromApp(userCountInfo)
     }
 
 }
