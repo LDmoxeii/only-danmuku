@@ -33,14 +33,7 @@ class CompatibleUCenterInteractController {
         )
 
         // 转换为前端需要的格式
-        return queryResult.map { video ->
-            UCenterLoadAllVideo.VideoItem(
-                videoId = video.videoId.toString(),
-                videoCover = video.videoCover,
-                videoName = video.videoName,
-                createTime = video.createTime
-            )
-        }
+        return queryResult.map { UCenterLoadAllVideo.Converter.INSTANCE.fromApp(it) }
     }
 
     @PostMapping("/loadComment")
@@ -59,17 +52,7 @@ class CompatibleUCenterInteractController {
         return PageData.create(
             pageNum = queryResult.pageNum,
             pageSize = queryResult.pageSize,
-            list = queryResult.list.map { comment ->
-                UCenterLoadComment.CommentItem(
-                    commentId = comment.commentId.toString(),
-                    videoId = comment.videoId.toString(),
-                    videoName = comment.videoName,
-                    content = comment.content,
-                    userId = comment.customerId.toString(),
-                    nickName = comment.customerNickname,
-                    postTime = comment.postTime
-                )
-            },
+            list = queryResult.list.map { UCenterLoadComment.Converter.INSTANCE.fromApp(it) },
             totalCount = queryResult.totalCount
         )
     }
@@ -100,19 +83,7 @@ class CompatibleUCenterInteractController {
         return PageData.create(
             pageNum = queryResult.pageNum,
             pageSize = queryResult.pageSize,
-            list = queryResult.list.map { danmuku ->
-                UCenterLoadDanmu.DanmukuItem(
-                    danmukuId = danmuku.danmukuId.toString(),
-                    videoId = danmuku.videoId.toString(),
-                    videoName = danmuku.videoName,
-                    text = danmuku.text,
-                    userId = danmuku.customerId.toString(),
-                    mode = danmuku.mode,
-                    color = danmuku.color,
-                    time = danmuku.time,
-                    postTime = danmuku.postTime,
-                )
-            },
+            list = queryResult.list.map { UCenterLoadDanmu.Converter.INSTANCE.fromApp(it) },
             totalCount = queryResult.totalCount
         )
     }

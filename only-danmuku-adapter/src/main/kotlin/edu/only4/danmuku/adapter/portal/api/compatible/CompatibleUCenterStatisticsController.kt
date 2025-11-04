@@ -4,6 +4,7 @@ import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.adapter.portal.api.payload.UCenterGetActualTimeStatistics
 import edu.only4.danmuku.adapter.portal.api.payload.UCenterGetWeekStatistics
+import edu.only4.danmuku.adapter.portal.api.payload.UCenterGetWeekStatistics.Converter
 import edu.only4.danmuku.application.queries.statistics.GetPreviousDayStatisticsInfoQry
 import edu.only4.danmuku.application.queries.statistics.GetTotalStatisticsInfoQry
 import edu.only4.danmuku.application.queries.statistics.GetWeekStatisticsInfoQry
@@ -11,9 +12,6 @@ import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import java.time.Instant
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 
 @RestController
 @RequestMapping("/ucenter")
@@ -63,21 +61,7 @@ class CompatibleUCenterStatisticsController {
             )
         )
 
-        val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-
-        val resultList = weekData.map { item ->
-            val dateStr = Instant.ofEpochSecond(item.date)
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate()
-                .format(dateFormatter)
-
-            UCenterGetWeekStatistics.WeekStatisticsItem(
-                statisticsDate = dateStr,
-                statisticsCount = item.count
-            )
-        }
-
-        return resultList
+        return weekData.map { Converter.INSTANCE.fromApp(it) }
     }
 
 }

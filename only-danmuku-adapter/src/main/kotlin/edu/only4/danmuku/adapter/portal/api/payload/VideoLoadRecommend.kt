@@ -1,5 +1,11 @@
 package edu.only4.danmuku.adapter.portal.api.payload
 
+import com.only.engine.translation.annotation.Translation
+import com.only.engine.translation.translation.EpochSecondToDateStringTranslation
+import edu.only4.danmuku.application.queries.video.GetRecommendVideosQry
+import org.mapstruct.Mapper
+import org.mapstruct.factory.Mappers
+
 /**
  * 加载推荐视频接口载荷
  *
@@ -24,6 +30,14 @@ object VideoLoadRecommend {
         var avatar: String? = null,
         var playCount: Int? = null,
         var likeCount: Int? = null,
-        var createTime: String? = null
+        @get:Translation(type = EpochSecondToDateStringTranslation.TYPE, other = "yyyy-MM-dd")
+        var createTime: Long
     )
+
+    @Mapper(componentModel = "default")
+    interface Converter {
+        fun fromApp(resp: GetRecommendVideosQry.Response): VideoItem
+
+        companion object { val INSTANCE: Converter = Mappers.getMapper(Converter::class.java) }
+    }
 }

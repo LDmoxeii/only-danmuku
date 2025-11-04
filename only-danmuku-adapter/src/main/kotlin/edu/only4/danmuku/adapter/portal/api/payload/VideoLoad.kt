@@ -1,6 +1,11 @@
 package edu.only4.danmuku.adapter.portal.api.payload
 
+import com.only.engine.translation.annotation.Translation
+import com.only.engine.translation.translation.EpochSecondToDateStringTranslation
 import com.only4.cap4k.ddd.core.share.PageParam
+import edu.only4.danmuku.application.queries.video.GetVideoPageQry
+import org.mapstruct.Mapper
+import org.mapstruct.factory.Mappers
 
 object VideoLoad {
 
@@ -14,8 +19,10 @@ object VideoLoad {
         var videoCover: String?,
         var videoName: String?,
         var userId: Long?,
-        var createTime: String?,
-        var lastUpdateTime: String?,
+        @get:Translation(type = EpochSecondToDateStringTranslation.TYPE, other = "yyyy-MM-dd HH:mm:ss")
+        var createTime: Long,
+        @get:Translation(type = EpochSecondToDateStringTranslation.TYPE, other = "yyyy-MM-dd HH:mm:ss")
+        var lastUpdateTime: Long?,
         var parentCategoryId: Long,
         var categoryId: Long?,
         var postType: Int,
@@ -30,9 +37,17 @@ object VideoLoad {
         var coinCount: Int,
         var collectCount: Int,
         var recommendType: Int,
-        var lastPlayTime: String?,
+        @get:Translation(type = EpochSecondToDateStringTranslation.TYPE, other = "yyyy-MM-dd HH:mm:ss")
+        var lastPlayTime: Long?,
         var nickName: String? = null,
         var avatar: String? = null,
         var categoryFullName: String?,
     )
+
+    @Mapper(componentModel = "default")
+    interface Converter {
+        fun fromApp(resp: GetVideoPageQry.Response): VideoItem
+
+        companion object { val INSTANCE: Converter = Mappers.getMapper(Converter::class.java) }
+    }
 }

@@ -8,7 +8,6 @@ import edu.only4.danmuku.application.commands.video.RecommendVideoCmd
 import edu.only4.danmuku.application.commands.video_post.AuditVideoPostCmd
 import edu.only4.danmuku.application.commands.video_post.DeleteVideoPostCmd
 import edu.only4.danmuku.application.queries.video.GetVideoPlayFilesQry
-import edu.only4.danmuku.application.queries.video_draft.GetVideoPostPageQry
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -24,45 +23,14 @@ class CompatibleAdminVideoController {
 
     @PostMapping("/loadVideoList")
     fun getVideoPage(request: AdminVideoLoadList.Request): PageData<AdminVideoLoadList.VideoItem> {
-        val queryRequest = GetVideoPostPageQry.Request(
-            videoNameFuzzy = request.videoNameFuzzy,
-            categoryParentId = request.categoryParentId,
-            categoryId = request.categoryId,
-            recommendType = request.recommendType
-        ).apply {
-            pageNum = request.pageNum
-            pageSize = request.pageSize
-        }
+        val queryRequest = AdminVideoLoadList.Converter.INSTANCE.toQry(request)
 
         val queryResult = Mediator.queries.send(queryRequest)
 
         return PageData.create(
             pageNum = queryResult.pageNum,
             pageSize = queryResult.pageSize,
-            list = queryResult.list.map { video ->
-                AdminVideoLoadList.VideoItem(
-                    videoId = video.videoId.toString(),
-                    videoCover = video.videoCover,
-                    videoName = video.videoName,
-                    userId = video.userId.toString(),
-                    nickName = video.nickName,
-                    duration = video.duration,
-                    postType = video.postType,
-                    originInfo = video.originInfo,
-                    tags = video.tags,
-                    introduction = video.introduction,
-                    status = video.status,
-                    createTime = video.createTime,
-                    lastUpdateTime = video.lastUpdateTime,
-                    playCount = video.playCount,
-                    likeCount = video.likeCount,
-                    danmuCount = video.danmuCount,
-                    commentCount = video.commentCount,
-                    coinCount = video.coinCount,
-                    collectCount = video.collectCount,
-                    recommendType = video.recommendType
-                )
-            },
+            list = queryResult.list.map { AdminVideoLoadList.Converter.INSTANCE.fromApp(it) },
             totalCount = queryResult.totalCount
         )
     }
@@ -108,17 +76,7 @@ class CompatibleAdminVideoController {
             )
         )
 
-        return queryResultList.map { file ->
-            AdminVideoLoadPList.Response(
-                fileId = file.fileId.toString(),
-                videoId = file.videoId.toString(),
-                fileIndex = file.fileIndex,
-                fileName = file.fileName,
-                fileSize = file.fileSize,
-                filePath = file.filePath,
-                duration = file.duration
-            )
-        }
+        return queryResultList.map { AdminVideoLoadPList.Converter.INSTANCE.fromApp(it) }
     }
 
 }

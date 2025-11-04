@@ -1,8 +1,12 @@
 package edu.only4.danmuku.adapter.portal.api.payload
 
-import jakarta.validation.constraints.NotEmpty
 import com.only.engine.translation.annotation.Translation
 import com.only.engine.translation.translation.EpochSecondToDateStringTranslation
+import edu.only4.danmuku.application.queries.customer_video_series.GetCustomerVideoSeriesListQry
+import jakarta.validation.constraints.NotEmpty
+import org.mapstruct.Mapper
+import org.mapstruct.Mapping
+import org.mapstruct.factory.Mappers
 
 /**
  * 加载视频系列列表接口载荷
@@ -32,5 +36,13 @@ object VideoSeriesLoad {
         @get:Translation(type = EpochSecondToDateStringTranslation.TYPE, other = "yyyy-MM-dd HH:mm:ss")
         var updateTime: Long? = null,
     )
+
+    @Mapper(componentModel = "default")
+    interface Converter {
+        @Mapping(source = "seriesId", target = "seriesId")
+        fun fromApp(resp: GetCustomerVideoSeriesListQry.Response): SeriesItem
+
+        companion object { val INSTANCE: Converter = Mappers.getMapper(Converter::class.java) }
+    }
 }
 

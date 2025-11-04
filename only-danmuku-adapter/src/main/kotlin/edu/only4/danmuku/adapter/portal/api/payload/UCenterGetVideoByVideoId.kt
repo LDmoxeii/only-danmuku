@@ -1,6 +1,10 @@
 package edu.only4.danmuku.adapter.portal.api.payload
 
+import edu.only4.danmuku.application.queries.video_draft.GetVideoPostInfoQry
 import jakarta.validation.constraints.NotEmpty
+import org.mapstruct.Mapper
+import org.mapstruct.Mapping
+import org.mapstruct.factory.Mappers
 
 /**
  * 获取视频编辑信息接口载荷
@@ -71,4 +75,19 @@ object UCenterGetVideoByVideoId {
         /** 转码结果 */
         var transferResult: Int? = null,
     )
+
+    @Mapper(componentModel = "default")
+    interface Converter {
+        @Mapping(source = "videoInfo", target = "videoInfo")
+        @Mapping(source = "videoFileList", target = "videoInfoFileList")
+        fun fromApp(resp: GetVideoPostInfoQry.Response): Response
+
+        fun fromApp(info: GetVideoPostInfoQry.VideoInfo): VideoInfo
+
+        fun fromApp(item: GetVideoPostInfoQry.VideoFileItem): VideoFileItem
+
+        companion object {
+            val INSTANCE: Converter = Mappers.getMapper(Converter::class.java)
+        }
+    }
 }

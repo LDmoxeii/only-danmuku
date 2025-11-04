@@ -1,6 +1,9 @@
 package edu.only4.danmuku.adapter.portal.api.payload
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import edu.only4.danmuku.application._share.config.properties.SysSettingProperties
+import org.mapstruct.Mapper
+import org.mapstruct.factory.Mappers
 
 /**
  * 获取系统设置接口载荷
@@ -52,4 +55,13 @@ object AdminSettingGet {
          */
         var danmuCount: Int = 20,
     )
+
+    @Mapper(componentModel = "default")
+    interface Converter {
+        fun fromApp(props: SysSettingProperties): Response
+
+        companion object {
+            val INSTANCE: Converter = Mappers.getMapper(Converter::class.java)
+        }
+    }
 }

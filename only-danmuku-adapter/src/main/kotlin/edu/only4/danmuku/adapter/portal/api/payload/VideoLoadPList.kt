@@ -12,4 +12,13 @@ object VideoLoadPList {
         var filePath: String,
         var duration: Int
     )
+
+    @org.mapstruct.Mapper(componentModel = "default")
+    interface Converter {
+        fun fromApp(resp: edu.only4.danmuku.application.queries.video_file.GetVideoFilesByVideoIdQry.Response): FileItem
+
+        companion object {
+            val INSTANCE: Converter = org.mapstruct.factory.Mappers.getMapper(Converter::class.java)
+        }
+    }
 }

@@ -4,6 +4,7 @@ import cn.dev33.satoken.annotation.SaIgnore
 import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.adapter.portal.api.payload.VideoSeriesChangeSort
+import edu.only4.danmuku.adapter.portal.api.payload.VideoSeriesLoad
 import edu.only4.danmuku.adapter.portal.api.payload.VideoSeriesLoad.SeriesItem
 import edu.only4.danmuku.adapter.portal.api.payload.VideoSeriesLoadAllVideo
 import edu.only4.danmuku.application.commands.customer_video_series.*
@@ -35,18 +36,7 @@ class CompatibleVideoSeriesController {
             GetCustomerVideoSeriesListQry.Request(userId = actualUserId)
         )
 
-        return seriesList.map { series ->
-            SeriesItem(
-                seriesId = series.seriesId.toString(),
-                seriesName = series.seriesName,
-                seriesDescription = series.seriesDescription,
-                sort = series.sort,
-                videoCount = series.videoCount,
-                cover = series.cover,
-                createTime = series.createTime,
-                updateTime = series.updateTime
-            )
-        }
+        return seriesList.map { VideoSeriesLoad.Converter.INSTANCE.fromApp(it) }
     }
 
     @SaIgnore
@@ -119,15 +109,7 @@ class CompatibleVideoSeriesController {
 
         val filtered = if (excludeVideoIds.isEmpty()) allVideos else allVideos.filter { it.videoId !in excludeVideoIds }
 
-        return filtered.map { v ->
-            VideoSeriesLoadAllVideo.VideoItem(
-                videoId = v.videoId.toString(),
-                videoCover = v.videoCover,
-                videoName = v.videoName,
-                playCount = v.playCount,
-                createTime = v.createTime
-            )
-        }
+        return filtered.map { v -> VideoSeriesLoadAllVideo.Converter.INSTANCE.fromApp(v) }
     }
 
     @PostMapping("/saveVideoSeries")

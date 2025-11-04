@@ -1,7 +1,12 @@
 package edu.only4.danmuku.adapter.portal.api.payload
 
+import edu.only4.danmuku.application.commands.category.CreateCategoryCmd
+import edu.only4.danmuku.application.commands.category.UpdateCategoryInfoCmd
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.PositiveOrZero
+import org.mapstruct.Mapper
+import org.mapstruct.Mapping
+import org.mapstruct.factory.Mappers
 
 /**
  * 保存/更新分类接口载荷
@@ -32,4 +37,17 @@ object AdminCategorySave {
     )
 
     class Response
+
+    @Mapper(componentModel = "default")
+    interface Converter {
+        @Mapping(source = "PCategoryId", target = "parentId")
+        fun toCreateCmd(request: Request): CreateCategoryCmd.Request
+
+        @Mapping(source = "PCategoryId", target = "parentId")
+        fun toUpdateCmd(request: Request): UpdateCategoryInfoCmd.Request
+
+        companion object {
+            val INSTANCE: Converter = Mappers.getMapper(Converter::class.java)
+        }
+    }
 }

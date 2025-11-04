@@ -2,6 +2,7 @@ package edu.only4.danmuku.adapter.portal.api.compatible
 
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.adapter.portal.api.payload.AdminIndexGetActualTimeStatistics
+import edu.only4.danmuku.adapter.portal.api.payload.AdminIndexGetWeekStatistics
 import edu.only4.danmuku.adapter.portal.api.payload.AdminIndexGetWeekStatistics.WeekStatisticsItem
 import edu.only4.danmuku.application.queries.statistics.GetPreviousDayStatisticsInfoQry
 import edu.only4.danmuku.application.queries.statistics.GetTotalStatisticsInfoQry
@@ -56,14 +57,7 @@ class CompatibleAdminIndexController {
             GetWeekStatisticsInfoQry.Request(dataType = dataType)
         )
 
-        val resultList = weekData.map { item ->
-            WeekStatisticsItem(
-                statisticsDate = item.date,
-                statisticsCount = item.count
-            )
-        }
-
-        return resultList
+        return weekData.map { AdminIndexGetWeekStatistics.Converter.INSTANCE.fromApp(it) }
     }
 
 }

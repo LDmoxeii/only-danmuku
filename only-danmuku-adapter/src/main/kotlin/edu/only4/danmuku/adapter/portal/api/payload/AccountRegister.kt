@@ -1,12 +1,12 @@
 package edu.only4.danmuku.adapter.portal.api.payload
 
+import edu.only4.danmuku.application.commands.user.RegisterAccountCmd
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.Pattern
 import jakarta.validation.constraints.Size
 import org.mapstruct.Mapper
 import org.mapstruct.factory.Mappers
-import edu.only4.danmuku.application.commands.user.RegisterAccountCmd
 
 /**
  * 用户注册接口载荷

@@ -25,14 +25,6 @@ class CompatibleSettingController(
                 RedisUtils.setCacheObject(Constants.REDIS_KEY_SYS_SETTING, it)
             }
 
-        return AdminSettingGet.Response(
-            registerCoinCount = properties.registerCoinCount,
-            postVideoCoinCount = properties.postVideoCoinCount,
-            videoSize = properties.videoSize,
-            videoPCount = properties.videoPCount,
-            videoCount = properties.videoCount,
-            commentCount = properties.commentCount,
-            danmuCount = properties.danmuCount
-        )
+        return AdminSettingGet.Converter.INSTANCE.fromApp(properties)
     }
 }

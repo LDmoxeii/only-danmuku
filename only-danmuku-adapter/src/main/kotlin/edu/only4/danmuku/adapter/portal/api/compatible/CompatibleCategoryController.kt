@@ -18,21 +18,7 @@ class CompatibleCategoryController {
     @PostMapping("/loadAllCategory")
     fun getCategoryTree(): List<CategoryLoadAll.Response> {
         val treeResult = Mediator.qry.send(GetCategoryTreeQry.Request())
-        return treeResult.map { qryResponseToApiResponse(it) }
+        return treeResult.map { CategoryLoadAll.Converter.INSTANCE.fromApp(it) }
 
     }
-
-    private fun qryResponseToApiResponse(node: GetCategoryTreeQry.Response): CategoryLoadAll.Response {
-        return CategoryLoadAll.Response(
-            categoryId = node.categoryId,
-            categoryCode = node.code,
-            categoryName = node.name,
-            parentCategoryId = node.parentId,
-            icon = node.icon,
-            background = node.background,
-            sort = node.sort,
-            children = node.children.map { qryResponseToApiResponse(it) }
-        )
-    }
-
 }

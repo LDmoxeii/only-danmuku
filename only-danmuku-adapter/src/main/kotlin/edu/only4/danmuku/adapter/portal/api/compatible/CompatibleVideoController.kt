@@ -19,10 +19,6 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.time.Duration
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 
 @RestController
 @RequestMapping("/video")
@@ -33,23 +29,7 @@ class CompatibleVideoController {
     @PostMapping("/loadRecommendVideo")
     fun getRecommendVideos(): Collection<VideoLoadRecommend.VideoItem> {
         val videoList = Mediator.queries.send(GetRecommendVideosQry.Request())
-
-        return videoList.map { video ->
-            VideoLoadRecommend.VideoItem(
-                videoId = video.videoId.toString(),
-                videoCover = video.videoCover,
-                videoName = video.videoName,
-                userId = video.userId.toString(),
-                nickName = video.nickName,
-                avatar = video.avatar,
-                playCount = video.playCount,
-                likeCount = video.likeCount,
-                createTime = LocalDateTime.ofInstant(
-                    Instant.ofEpochSecond(video.createTime),
-                    ZoneId.systemDefault()
-                ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
-            )
-        }
+        return videoList.map { VideoLoadRecommend.Converter.INSTANCE.fromApp(it) }
     }
 
     @SaIgnore
@@ -71,49 +51,7 @@ class CompatibleVideoController {
         return PageData.create(
             pageNum = queryRequest.pageNum,
             pageSize = queryRequest.pageSize,
-
-            list = queryResult.list.map { video ->
-                VideoLoad.VideoItem(
-                    videoId = video.videoId,
-                    videoCover = video.videoCover,
-                    videoName = video.videoName,
-                    userId = video.userId,
-                    createTime = LocalDateTime.ofInstant(
-                        Instant.ofEpochSecond(video.createTime),
-                        ZoneId.systemDefault()
-                    ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
-                    lastUpdateTime = video.lastUpdateTime?.let {
-                        LocalDateTime.ofInstant(
-                            Instant.ofEpochSecond(it),
-                            ZoneId.systemDefault()
-                        ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
-                    },
-                    parentCategoryId = video.parentCategoryId,
-                    categoryId = video.categoryId,
-                    postType = video.postType,
-                    originInfo = video.originInfo,
-                    tags = video.tags,
-                    introduction = video.introduction,
-                    duration = video.duration,
-                    playCount = video.playCount,
-                    likeCount = video.likeCount,
-                    danmuCount = video.danmuCount,
-                    commentCount = video.commentCount,
-                    coinCount = video.coinCount,
-                    collectCount = video.collectCount,
-                    recommendType = video.recommendType,
-                    lastPlayTime = video.lastPlayTime?.let {
-                        LocalDateTime.ofInstant(
-                            Instant.ofEpochSecond(it),
-                            ZoneId.systemDefault()
-                        ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
-                    },
-                    nickName = video.nickName,
-                    avatar = video.avatar,
-                    categoryFullName = video.categoryFullName,
-                )
-            },
-
+            list = queryResult.list.map { VideoLoad.Converter.INSTANCE.fromApp(it) },
             totalCount = queryResult.totalCount,
         )
     }
@@ -127,18 +65,7 @@ class CompatibleVideoController {
             GetVideoFilesByVideoIdQry.Request(videoId)
         )
 
-        return fileList.map { file ->
-            VideoLoadPList.FileItem(
-                fileId = file.fileId,
-                videoId = file.videoId,
-                userId = file.userId,
-                fileIndex = file.fileIndex,
-                fileName = file.fileName,
-                fileSize = file.fileSize,
-                filePath = file.filePath,
-                duration = file.duration
-            )
-        }
+        return fileList.map { VideoLoadPList.Converter.INSTANCE.fromApp(it) }
     }
 
     @SaIgnore
@@ -160,47 +87,11 @@ class CompatibleVideoController {
                     videoId = videoId
                 )
             )
-            actionList.map { act ->
-                VideoGetInfo.UserAction(
-                    actionId = act.actionId,
-                    userId = act.userId,
-                    videoId = act.videoId,
-                    videoName = act.videoName,
-                    videoCover = act.videoCover,
-                    videoUserId = act.videoUserId,
-                    commentId = act.commentId,
-                    actionType = act.actionType,
-                    actionCount = act.actionCount,
-                    cationTime = LocalDateTime.ofInstant(
-                        Instant.ofEpochSecond(act.actionTime),
-                        ZoneId.systemDefault()
-                    ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
-                )
-            }
+            actionList.map { VideoGetInfo.Converter.INSTANCE.fromApp(it) }
         } ?: emptyList()
 
         return VideoGetInfo.Response(
-            videoInfo = VideoGetInfo.VideoInfo(
-                videoId = videoInfo.videoId,
-                videoCover = videoInfo.videoCover,
-                videoName = videoInfo.videoName,
-                userId = videoInfo.userId,
-                createTime = LocalDateTime.ofInstant(
-                    Instant.ofEpochSecond(videoInfo.createTime),
-                    ZoneId.systemDefault()
-                ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
-                postType = 0,
-                originInfo = videoInfo.originInfo,
-                tags = videoInfo.tags,
-                introduction = videoInfo.introduction,
-                interaction = videoInfo.interaction,
-                playCount = videoInfo.playCount,
-                likeCount = videoInfo.likeCount,
-                danmuCount = videoInfo.danmuCount,
-                commentCount = videoInfo.commentCount,
-                coinCount = videoInfo.coinCount,
-                collectCount = videoInfo.collectCount
-            ),
+            videoInfo = VideoGetInfo.Converter.INSTANCE.fromApp(videoInfo),
             userActionList = userActionList
         )
     }
@@ -222,35 +113,7 @@ class CompatibleVideoController {
 
         val queryResult = Mediator.queries.send(queryRequest)
 
-        return queryResult.list.map { video ->
-            VideoGetRecommend.VideoItem(
-                videoId = video.videoId,
-                videoCover = video.videoCover,
-                videoName = video.videoName,
-                userId = video.userId!!,
-                nickName = video.nickName,
-                avatar = video.avatar,
-                playCount = video.playCount,
-                likeCount = video.likeCount,
-                createTime = video.createTime,
-                lastUpdateTime = video.lastUpdateTime,
-                parentCategoryId = video.parentCategoryId,
-                categoryId = video.categoryId,
-                postType = video.postType,
-                originInfo = video.originInfo,
-                tags = video.tags,
-                introduction = video.introduction,
-                duration = video.duration,
-                status = video.status,
-                danmuCount = video.danmuCount,
-                commentCount = video.commentCount,
-                coinCount = video.coinCount,
-                collectCount = video.collectCount,
-                recommendType = video.recommendType,
-                lastPlayTime = video.lastPlayTime,
-                categoryFullName = video.categoryFullName
-            )
-        }
+        return queryResult.list.map { VideoGetRecommend.Converter.INSTANCE.fromApp(it) }
     }
 
     @SaIgnore
@@ -312,47 +175,7 @@ class CompatibleVideoController {
             pageNum = queryRequest.pageNum,
             pageSize = queryRequest.pageSize,
 
-            list = queryResult.list.map { video ->
-                VideoSearch.VideoItem(
-                    videoId = video.videoId,
-                    videoCover = video.videoCover,
-                    videoName = video.videoName,
-                    userId = video.userId,
-                    createTime = LocalDateTime.ofInstant(
-                        Instant.ofEpochSecond(video.createTime),
-                        ZoneId.systemDefault()
-                    ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
-                    lastUpdateTime = video.lastUpdateTime?.let {
-                        LocalDateTime.ofInstant(
-                            Instant.ofEpochSecond(it),
-                            ZoneId.systemDefault()
-                        ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
-                    },
-                    parentCategoryId = video.parentCategoryId,
-                    categoryId = video.categoryId,
-                    postType = video.postType,
-                    originInfo = video.originInfo,
-                    tags = video.tags,
-                    introduction = video.introduction,
-                    duration = video.duration,
-                    playCount = video.playCount,
-                    likeCount = video.likeCount,
-                    danmuCount = video.danmuCount,
-                    commentCount = video.commentCount,
-                    coinCount = video.coinCount,
-                    collectCount = video.collectCount,
-                    recommendType = video.recommendType,
-                    lastPlayTime = video.lastPlayTime?.let {
-                        LocalDateTime.ofInstant(
-                            Instant.ofEpochSecond(it),
-                            ZoneId.systemDefault()
-                        ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
-                    },
-                    nickName = video.nickName,
-                    avatar = video.avatar,
-                    categoryFullName = video.categoryFullName,
-                )
-            },
+            list = queryResult.list.map { VideoSearch.Converter.INSTANCE.fromApp(it) },
 
             totalCount = queryResult.totalCount,
         )
@@ -376,47 +199,7 @@ class CompatibleVideoController {
             pageNum = queryRequest.pageNum,
             pageSize = queryRequest.pageSize,
 
-            list = queryResult.list.map { video ->
-                VideoLoadHot.VideoItem(
-                    videoId = video.videoId,
-                    videoCover = video.videoCover,
-                    videoName = video.videoName,
-                    userId = video.userId,
-                    createTime = LocalDateTime.ofInstant(
-                        Instant.ofEpochSecond(video.createTime),
-                        ZoneId.systemDefault()
-                    ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
-                    lastUpdateTime = video.lastUpdateTime?.let {
-                        LocalDateTime.ofInstant(
-                            Instant.ofEpochSecond(it),
-                            ZoneId.systemDefault()
-                        ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
-                    },
-                    parentCategoryId = video.parentCategoryId,
-                    categoryId = video.categoryId,
-                    postType = video.postType,
-                    originInfo = video.originInfo,
-                    tags = video.tags,
-                    introduction = video.introduction,
-                    duration = video.duration,
-                    playCount = video.playCount,
-                    likeCount = video.likeCount,
-                    danmuCount = video.danmuCount,
-                    commentCount = video.commentCount,
-                    coinCount = video.coinCount,
-                    collectCount = video.collectCount,
-                    recommendType = video.recommendType,
-                    lastPlayTime = video.lastPlayTime?.let {
-                        LocalDateTime.ofInstant(
-                            Instant.ofEpochSecond(it),
-                            ZoneId.systemDefault()
-                        ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
-                    },
-                    nickName = video.nickName,
-                    avatar = video.avatar,
-                    categoryFullName = video.categoryFullName,
-                )
-            },
+            list = queryResult.list.map { VideoLoadHot.Converter.INSTANCE.fromApp(it) },
 
             totalCount = queryResult.totalCount,
         )

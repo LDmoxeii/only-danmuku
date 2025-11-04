@@ -1,6 +1,9 @@
 package edu.only4.danmuku.adapter.portal.api.payload
 
+import edu.only4.danmuku.application.queries.video.GetVideoPageQry
 import jakarta.validation.constraints.NotEmpty
+import org.mapstruct.Mapper
+import org.mapstruct.factory.Mappers
 
 /**
  * 获取推荐视频(基于关键词)接口载荷
@@ -56,4 +59,11 @@ object VideoGetRecommend {
         var avatar: String? = null,
         var categoryFullName: String?,
     )
+
+    @Mapper(componentModel = "default")
+    interface Converter {
+        fun fromApp(resp: GetVideoPageQry.Response): VideoItem
+
+        companion object { val INSTANCE: Converter = Mappers.getMapper(Converter::class.java) }
+    }
 }

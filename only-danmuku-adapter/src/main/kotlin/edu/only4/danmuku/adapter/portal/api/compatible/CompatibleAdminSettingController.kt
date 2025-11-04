@@ -24,28 +24,12 @@ class CompatibleAdminSettingController(
                 RedisUtils.setCacheObject(Constants.REDIS_KEY_SYS_SETTING, it)
             }
 
-        return AdminSettingGet.Response(
-            registerCoinCount = properties.registerCoinCount,
-            postVideoCoinCount = properties.postVideoCoinCount,
-            videoSize = properties.videoSize,
-            videoPCount = properties.videoPCount,
-            videoCount = properties.videoCount,
-            commentCount = properties.commentCount,
-            danmuCount = properties.danmuCount
-        )
+        return AdminSettingGet.Converter.INSTANCE.fromApp(properties)
     }
 
     @PostMapping("/saveSetting")
     fun adminSettingSave(request: AdminSettingSave.Request) {
-        val properties = SysSettingProperties().apply {
-            registerCoinCount = request.registerCoinCount
-            postVideoCoinCount = request.postVideoCoinCount
-            videoSize = request.videoSize
-            videoPCount = request.videoPCount
-            videoCount = request.videoCount
-            commentCount = request.commentCount
-            danmuCount = request.danmuCount
-        }
+        val properties = AdminSettingSave.Converter.INSTANCE.toApp(request)
 
         RedisUtils.setCacheObject(Constants.REDIS_KEY_SYS_SETTING, properties)
     }

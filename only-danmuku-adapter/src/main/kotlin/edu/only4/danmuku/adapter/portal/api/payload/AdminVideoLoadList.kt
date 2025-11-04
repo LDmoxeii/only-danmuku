@@ -4,6 +4,10 @@ import com.only.engine.translation.annotation.Translation
 import com.only.engine.translation.translation.EpochSecondToDateStringTranslation
 import com.only4.cap4k.ddd.core.share.PageParam
 import edu.only4.danmuku.adapter.domain.translation.video_post.VideoStatusTranslation.Companion.VIDEO_STATUS_CODE_TO_DESC
+import edu.only4.danmuku.application.queries.video_draft.GetVideoPostPageQry
+import org.mapstruct.Mapper
+import org.mapstruct.Mapping
+import org.mapstruct.factory.Mappers
 
 /**
  * 加载视频列表(分页)接口载荷
@@ -50,4 +54,17 @@ object AdminVideoLoadList {
         var collectCount: Int?,
         var recommendType: Int?,
     )
+
+    @Mapper(componentModel = "default")
+    interface Converter {
+        fun toQry(request: Request): GetVideoPostPageQry.Request
+
+        @Mapping(source = "videoId", target = "videoId")
+        @Mapping(source = "userId", target = "userId")
+        fun fromApp(resp: GetVideoPostPageQry.Response): VideoItem
+
+        companion object {
+            val INSTANCE: Converter = Mappers.getMapper(Converter::class.java)
+        }
+    }
 }

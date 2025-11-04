@@ -1,9 +1,12 @@
 package edu.only4.danmuku.adapter.portal.api.payload
 
-import com.only4.cap4k.ddd.core.share.PageParam
 import com.only.engine.translation.annotation.Translation
 import com.only.engine.translation.translation.EpochSecondToDateStringTranslation
+import com.only4.cap4k.ddd.core.share.PageParam
 import edu.only4.danmuku.adapter.domain.translation.video_post.VideoStatusTranslation.Companion.VIDEO_STATUS_CODE_TO_DESC
+import edu.only4.danmuku.application.queries.video_draft.GetUserVideoPostQry
+import org.mapstruct.Mapper
+import org.mapstruct.factory.Mappers
 
 object UCenterLoadVideoList {
 
@@ -33,4 +36,13 @@ object UCenterLoadVideoList {
         var coinCount: Int? = null,
         var collectCount: Int? = null,
     )
+
+    @Mapper(componentModel = "default")
+    interface Converter {
+        fun fromApp(resp: GetUserVideoPostQry.Response): VideoItem
+
+        companion object {
+            val INSTANCE: Converter = Mappers.getMapper(Converter::class.java)
+        }
+    }
 }

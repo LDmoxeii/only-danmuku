@@ -3,7 +3,9 @@ package edu.only4.danmuku.adapter.portal.api.compatible
 import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.share.PageData
-import edu.only4.danmuku.adapter.portal.api.payload.*
+import edu.only4.danmuku.adapter.portal.api.payload.MessageGetNoReadCountGroup
+import edu.only4.danmuku.adapter.portal.api.payload.MessageLoad
+import edu.only4.danmuku.adapter.portal.api.payload.MessageReadAll
 import edu.only4.danmuku.application.commands.customer_message.DeleteMessageCmd
 import edu.only4.danmuku.application.commands.customer_message.MarkAllAsReadCmd
 import edu.only4.danmuku.application.queries.message.GetMessagePageQry
@@ -37,12 +39,7 @@ class CompatibleUserMessageController {
     @PostMapping("/getNoReadCountGroup")
     fun getNoReadCountGroup(): List<MessageGetNoReadCountGroup.GroupItem> {
         val result = Mediator.queries.send(GetNoReadMessageCountGroupQry.Request())
-        return result.list.map { item ->
-            MessageGetNoReadCountGroup.GroupItem(
-                messageType = item.messageType,
-                messageCount = item.count,
-            )
-        }
+        return result.list.map { MessageGetNoReadCountGroup.Converter.INSTANCE.fromApp(it) }
     }
 
     /**
@@ -71,21 +68,7 @@ class CompatibleUserMessageController {
             pageSize = request.pageSize
         }
         val result = Mediator.queries.send(queryReq)
-        val items = result.list.map {
-            MessageLoad.MessageItem(
-                id = it.id,
-                messageType = it.messageType,
-                readType = it.readType,
-                extendDto = it.extendJson,
-                createTime = it.createTime,
-                videoId = it.videoId,
-                videoName = it.videoName,
-                videoCover = it.videoCover,
-                sendUserId = it.sendUserId,
-                sendUserName = it.sendUserName,
-                sendUserAvatar = it.sendUserAvatar,
-            )
-        }
+        val items = result.list.map { MessageLoad.Converter.INSTANCE.fromApp(it) }
         return PageData.create(request, result.totalCount, items)
     }
 

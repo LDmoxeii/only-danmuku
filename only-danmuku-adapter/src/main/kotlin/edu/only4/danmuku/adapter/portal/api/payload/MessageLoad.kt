@@ -3,7 +3,11 @@ package edu.only4.danmuku.adapter.portal.api.payload
 import com.only.engine.translation.annotation.Translation
 import com.only.engine.translation.translation.AnyToJsonStringTranslation
 import com.only4.cap4k.ddd.core.share.PageParam
+import edu.only4.danmuku.application.queries.message.GetMessagePageQry
 import edu.only4.danmuku.domain.aggregates.customer_message.extend.UserMessageExtend
+import org.mapstruct.Mapper
+import org.mapstruct.Mapping
+import org.mapstruct.factory.Mappers
 
 /**
  * 加载消息列表接口载荷
@@ -30,4 +34,12 @@ object MessageLoad {
         val sendUserName: String?,
         val sendUserAvatar: String?,
     )
+
+    @Mapper(componentModel = "default")
+    interface Converter {
+        @Mapping(source = "extendJson", target = "extendDto")
+        fun fromApp(resp: GetMessagePageQry.Response): MessageItem
+
+        companion object { val INSTANCE: Converter = Mappers.getMapper(Converter::class.java) }
+    }
 }

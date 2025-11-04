@@ -21,10 +21,6 @@ import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 
 @RestController
 @RequestMapping("/uhome")
@@ -159,16 +155,7 @@ class CompatibleUHomeController {
         return PageData.create(
             pageNum = queryResult.pageNum,
             pageSize = queryResult.pageSize,
-            list = queryResult.list.map { user ->
-                // 兼容前端所需字段
-                UHomeLoadFocusList.UserItem(
-                    otherUserId = user.focusUserId.toString(),
-                    otherNickName = user.nickName,
-                    otherPersonIntroduction = user.personIntroduction,
-                    otherAvatar = user.avatar,
-                    focusType = user.focusType
-                )
-            },
+            list = queryResult.list.map { UHomeLoadFocusList.Converter.INSTANCE.fromApp(it) },
             totalCount = queryResult.totalCount
         )
     }
@@ -189,15 +176,7 @@ class CompatibleUHomeController {
         return PageData.create(
             pageNum = queryResult.pageNum,
             pageSize = queryResult.pageSize,
-            list = queryResult.list.map { user ->
-                UHomeLoadFansList.UserItem(
-                    otherUserId = user.userId.toString(),
-                    otherNickName = user.nickName,
-                    otherPersonIntroduction = user.personIntroduction,
-                    otherAvatar = user.avatar,
-                    focusType = user.focusType
-                )
-            },
+            list = queryResult.list.map { UHomeLoadFansList.Converter.INSTANCE.fromApp(it) },
             totalCount = queryResult.totalCount
         )
     }
@@ -226,18 +205,7 @@ class CompatibleUHomeController {
         return PageData.create(
             pageNum = queryResult.pageNum,
             pageSize = queryResult.pageSize,
-            list = queryResult.list.map { video ->
-                UHomeLoadVideoList.VideoItem(
-                    videoId = video.videoId.toString(),
-                    videoCover = video.videoCover,
-                    videoName = video.videoName,
-                    createTime = video.createTime,
-                    playCount = video.playCount,
-                    likeCount = video.likeCount,
-                    danmuCount = video.danmuCount,
-                    commentCount = video.commentCount
-                )
-            },
+            list = queryResult.list.map { UHomeLoadVideoList.Converter.INSTANCE.fromApp(it) },
             totalCount = queryResult.totalCount
         )
     }
@@ -266,20 +234,7 @@ class CompatibleUHomeController {
         return PageData.create(
             pageNum = collectionRequest.pageNum,
             pageSize = collectionRequest.pageSize,
-            list = collectedActions.list.map { action ->
-                UHomeLoadUserCollection.VideoItem(
-                    actionId = action.actionId,
-                    videoId = action.videoId.toString(),
-                    videoUserId = action.videoUserId.toString(),
-                    commentId = action.commentId ?: 0L,
-                    actionType = action.actionType,
-                    actionCount = action.actionCount,
-                    userId = action.userId.toString(),
-                    actionTime = action.actionTime,
-                    videoName = action.videoName ?: "",
-                    videoCover = action.videoCover ?: ""
-                )
-            },
+            list = collectedActions.list.map { UHomeLoadUserCollection.Converter.INSTANCE.fromApp(it) },
             totalCount = collectedActions.totalCount
         )
     }

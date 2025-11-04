@@ -41,16 +41,7 @@ class CompatibleVideoHistoryController {
         return PageData.create(
             pageNum = queryResult.pageNum,
             pageSize = queryResult.pageSize,
-            list = queryResult.list.map { history ->
-                HistoryLoad.Response(
-                    historyId = history.historyId.toString(),
-                    videoId = history.videoId.toString(),
-                    videoName = history.videoName,
-                    videoCover = history.videoCover,
-                    fileIndex = history.fileIndex,
-                    playTime = history.playTime
-                )
-            },
+            list = queryResult.list.map { HistoryLoad.Converter.INSTANCE.fromApp(it) },
             totalCount = queryResult.totalCount
         )
     }

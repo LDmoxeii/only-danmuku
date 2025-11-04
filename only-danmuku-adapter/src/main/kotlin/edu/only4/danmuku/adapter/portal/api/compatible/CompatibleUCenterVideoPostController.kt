@@ -24,10 +24,6 @@ import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 
 @RestController
 @RequestMapping("/ucenter")
@@ -127,25 +123,7 @@ class CompatibleUCenterVideoPostController {
         return PageData.create(
             pageNum = queryResult.pageNum,
             pageSize = queryResult.pageSize,
-            list = queryResult.list.map { video ->
-                UCenterLoadVideoList.VideoItem(
-                    videoPostId = video.videoPostId,
-                    videoId = video.videoId,
-                    videoCover = video.videoCover,
-                    videoName = video.videoName,
-                    duration = video.duration,
-                    createTime = video.createTime,
-                    lastUpdateTime = video.lastUpdateTime,
-                    status = video.status,
-                    interaction = video.interaction,
-                    playCount = video.playCount,
-                    likeCount = video.likeCount,
-                    danmuCount = video.danmuCount,
-                    commentCount = video.commentCount,
-                    coinCount = video.coinCount,
-                    collectCount = video.collectCount
-                )
-            },
+            list = queryResult.list.map { UCenterLoadVideoList.Converter.INSTANCE.fromApp(it) },
             totalCount = queryResult.totalCount
         )
     }
@@ -198,34 +176,7 @@ class CompatibleUCenterVideoPostController {
             )
         )
 
-        return UCenterGetVideoByVideoId.Response(
-            videoInfo = UCenterGetVideoByVideoId.VideoInfo(
-                videoId = queryResult.videoInfo.videoId.toString(),
-                videoCover = queryResult.videoInfo.videoCover,
-                videoName = queryResult.videoInfo.videoName,
-                parentCategoryId = queryResult.videoInfo.parentCategoryId,
-                categoryId = queryResult.videoInfo.categoryId,
-                postType = queryResult.videoInfo.postType,
-                originInfo = queryResult.videoInfo.originInfo,
-                tags = queryResult.videoInfo.tags,
-                introduction = queryResult.videoInfo.introduction,
-                interaction = queryResult.videoInfo.interaction,
-                status = queryResult.videoInfo.status
-            ),
-            videoInfoFileList = queryResult.videoFileList.map { file ->
-                UCenterGetVideoByVideoId.VideoFileItem(
-                    fileId = file.fileId.toString(),
-                    uploadId = file.uploadId,
-                    fileIndex = file.fileIndex,
-                    fileName = file.fileName,
-                    fileSize = file.fileSize,
-                    filePath = file.filePath,
-                    duration = file.duration,
-                    updateType = file.updateType,
-                    transferResult = file.transferResult
-                )
-            }
-        )
+        return UCenterGetVideoByVideoId.Converter.INSTANCE.fromApp(queryResult)
     }
 
     @PostMapping("/saveVideoInteraction")

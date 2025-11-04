@@ -1,7 +1,9 @@
 package edu.only4.danmuku.adapter.portal.api.payload
 
+import edu.only4.danmuku.application._share.config.properties.SysSettingProperties
 import jakarta.validation.constraints.Min
-import jakarta.validation.constraints.NotNull
+import org.mapstruct.Mapper
+import org.mapstruct.factory.Mappers
 
 /**
  * 保存系统设置接口载荷
@@ -55,4 +57,13 @@ object AdminSettingSave {
     )
 
     class Response
+
+    @Mapper(componentModel = "default")
+    interface Converter {
+        fun toApp(request: Request): SysSettingProperties
+
+        companion object {
+            val INSTANCE: Converter = Mappers.getMapper(Converter::class.java)
+        }
+    }
 }

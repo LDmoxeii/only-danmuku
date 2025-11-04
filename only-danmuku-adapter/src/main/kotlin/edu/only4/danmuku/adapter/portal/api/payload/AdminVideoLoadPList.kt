@@ -1,6 +1,9 @@
 package edu.only4.danmuku.adapter.portal.api.payload
 
+import edu.only4.danmuku.application.queries.video.GetVideoPlayFilesQry
 import jakarta.validation.constraints.NotEmpty
+import org.mapstruct.Mapper
+import org.mapstruct.factory.Mappers
 
 /**
  * 加载视频分片列表接口载荷
@@ -32,4 +35,13 @@ object AdminVideoLoadPList {
         /** 时长(秒) */
         var duration: Int? = null,
     )
+
+    @Mapper(componentModel = "default")
+    interface Converter {
+        fun fromApp(resp: GetVideoPlayFilesQry.Response): Response
+
+        companion object {
+            val INSTANCE: Converter = Mappers.getMapper(Converter::class.java)
+        }
+    }
 }

@@ -6,8 +6,6 @@ import edu.only4.danmuku.adapter.portal.api.payload.AdminInteractLoadComment
 import edu.only4.danmuku.adapter.portal.api.payload.AdminInteractLoadDanmuku
 import edu.only4.danmuku.application.commands.video_comment.DeleteVideoCommentCmd
 import edu.only4.danmuku.application.commands.video_danmuku.DeleteVideoDanmukuCmd
-import edu.only4.danmuku.application.queries.video_comment.VideoCommentPageQry
-import edu.only4.danmuku.application.queries.video_danmuku.GetVideoDanmukuPageQry
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -22,34 +20,14 @@ class CompatibleAdminInteractController {
     fun getDanmukuPage(
         request: AdminInteractLoadDanmuku.Request,
     ): PageData<AdminInteractLoadDanmuku.Response> {
-        val queryRequest = GetVideoDanmukuPageQry.Request(
-            videoNameFuzzy = request.videoNameFuzzy
-        ).apply {
-            pageNum = request.pageNum
-            pageSize = request.pageSize
-            sort.addAll(request.sort)
-        }
+        val queryRequest = AdminInteractLoadDanmuku.Converter.INSTANCE.toQry(request)
 
         val queryResult = Mediator.queries.send(queryRequest)
 
         return PageData.create(
             pageNum = queryResult.pageNum,
             pageSize = queryResult.pageSize,
-            list = queryResult.list.map { danmuku ->
-                AdminInteractLoadDanmuku.Response(
-                    danmukuId = danmuku.danmukuId,
-                    videoId = danmuku.videoId.toString(),
-                    videoName = danmuku.videoName,
-                    videoCover = danmuku.videoCover,
-                    userId = danmuku.customerId.toString(),
-                    nickName = danmuku.customerNickname,
-                    text = danmuku.text,
-                    mode = danmuku.mode,
-                    color = danmuku.color,
-                    time = danmuku.time,
-                    postTime = danmuku.postTime
-                )
-            },
+            list = queryResult.list.map { AdminInteractLoadDanmuku.Converter.INSTANCE.fromApp(it) },
             totalCount = queryResult.totalCount
         )
     }
@@ -67,39 +45,14 @@ class CompatibleAdminInteractController {
     fun getVideoCommentPage(
         request: AdminInteractLoadComment.Request,
     ): PageData<AdminInteractLoadComment.Response> {
-        val queryRequest = VideoCommentPageQry.Request(
-            videoNameFuzzy = request.videoNameFuzzy
-        ).apply {
-            pageNum = request.pageNum
-            pageSize = request.pageSize
-            sort.addAll(request.sort)
-        }
+        val queryRequest = AdminInteractLoadComment.Converter.INSTANCE.toQry(request)
 
         val queryResult = Mediator.queries.send(queryRequest)
 
         return PageData.create(
             pageNum = queryResult.pageNum,
             pageSize = queryResult.pageSize,
-            list = queryResult.list.map { comment ->
-                AdminInteractLoadComment.Response(
-                    commentId = comment.commentId,
-                    pCommentId = comment.parentCommentId,
-                    videoId = comment.videoId.toString(),
-                    videoName = comment.videoName,
-                    videoCover = comment.videoCover,
-                    userId = comment.customerId.toString(),
-                    nickName = comment.customerNickname,
-                    avatar = comment.customerAvatar,
-                    replyUserId = comment.replyCustomerId?.toString(),
-                    replyNickName = comment.replyCustomerNickname,
-                    content = comment.content,
-                    imgPath = comment.imgPath,
-                    topType = comment.topType,
-                    likeCount = comment.likeCount,
-                    hateCount = comment.hateCount,
-                    postTime = comment.postTime
-                )
-            },
+            list = queryResult.list.map { AdminInteractLoadComment.Converter.INSTANCE.fromApp(it) },
             totalCount = queryResult.totalCount
         )
     }
