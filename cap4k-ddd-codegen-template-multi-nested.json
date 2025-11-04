@@ -10,6 +10,48 @@
     },
     {
       "type": "dir",
+      "tag": "api_payload",
+      "name": "{{ path }}",
+      "children": [
+        {
+          "type": "file",
+          "name": "{{ Payload }}.kt",
+          "pattern": "^(?!.*(List|list|Page|page)).*$",
+          "format": "url",
+          "data": "template/_tpl/api_payload_single.kt.peb"
+        }
+      ]
+    },
+    {
+      "type": "dir",
+      "tag": "api_payload",
+      "name": "{{ path }}",
+      "children": [
+        {
+          "type": "file",
+          "name": "{{ Payload }}.kt",
+          "pattern": "^.*(List|list).*$",
+          "format": "url",
+          "data": "template/_tpl/api_payload_list.kt.peb"
+        }
+      ]
+    },
+    {
+      "type": "dir",
+      "tag": "api_payload",
+      "name": "{{ path }}",
+      "children": [
+        {
+          "type": "file",
+          "name": "{{ Payload }}.kt",
+          "pattern": "^.*(Page|page).*$",
+          "format": "url",
+          "data": "template/_tpl/api_payload_page.kt.peb"
+        }
+      ]
+    },
+    {
+      "type": "dir",
       "tag": "saga",
       "name": "{{ path }}",
       "children": [
@@ -355,6 +397,11 @@
                                           ]
                                         }
                                       ]
+                                    },
+                                    {
+                                      "type": "dir",
+                                      "name": "payload",
+                                      "tag": "api_payload"
                                     }
                                   ]
                                 },
