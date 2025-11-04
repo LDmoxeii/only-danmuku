@@ -16,5 +16,10 @@
     "package": "",
     "name": "DeleteVideoFileResources",
     "desc": "从硬盘物理删除视频文件资源"
+  },
+  {
+    "tag": "api_payload",
+    "name": "DeleteVideoFileResources",
+    "desc": "从硬盘物理删除视频文件资源"
   }
 ]
