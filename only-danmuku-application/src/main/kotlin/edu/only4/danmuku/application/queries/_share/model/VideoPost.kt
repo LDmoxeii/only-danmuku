@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.queries._share.model
 
+import edu.only4.danmuku.domain.aggregates.video.enums.PostType
+import edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus
 import org.babyfish.jimmer.sql.Column
 import org.babyfish.jimmer.sql.Entity
 import org.babyfish.jimmer.sql.IdView
@@ -49,13 +51,13 @@ interface VideoPost : BaseEntity {
      * 视频状态 @E=0:UNKNOW:未知状态|1:TRANSCODING:转码中|2:TRANSCODE_FAILED:转码失败|3:PENDING_REVIEW:待审核|4:REVIEW_PASSED:审核成功|5:REVIEW_FAILED:审核失败;@T=VideoStatus
      */
     @Column(name = "status")
-    val status: Int
+    val status: VideoStatus
 
     /**
      * 投稿类型 @E=0:UNKNOW:未知类型|1:ORIGINAL:自制作|2:REPOST:转载;@T=PostType
      */
     @Column(name = "post_type")
-    val postType: Int
+    val postType: PostType
 
     @Column(name = "origin_info")
     val originInfo: String?

@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.queries._share.model
 
+import edu.only4.danmuku.domain.aggregates.video.enums.PostType
+import edu.only4.danmuku.domain.aggregates.video.enums.RecommendType
 import org.babyfish.jimmer.sql.*
 import java.time.LocalDateTime
 
@@ -45,7 +47,7 @@ interface Video : BaseEntity {
      * 投稿类型 @E=0:UNKNOW:未知类型|1:ORIGINAL:自制作|2:REPOST:转载;@T=PostType
      */
     @Column(name = "post_type")
-    val postType: Int
+    val postType: PostType
 
     @Column(name = "origin_info")
     val originInfo: String?
@@ -84,7 +86,7 @@ interface Video : BaseEntity {
      * 推荐状态 @E=0:UNKNOW:未知状态|1:NOT_RECOMMEND:未推荐|2:RECOMMEND:已推荐;@T=RecommendType
      */
     @Column(name = "recommend_type")
-    val recommendType: Int
+    val recommendType: RecommendType
 
     @Column(name = "last_play_time")
     val lastPlayTime: Long?

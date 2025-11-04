@@ -1,5 +1,6 @@
 package edu.only4.danmuku.application.queries._share.model
 
+import edu.only4.danmuku.domain.aggregates.customer_action.enums.ActionType
 import org.babyfish.jimmer.sql.*
 
 @Entity
@@ -35,7 +36,7 @@ interface CustomerAction : BaseEntity {
      * 5:COIN_VIDEO:视频投币
      */
     @Column(name = "action_type")
-    val actionType: Int
+    val actionType: ActionType
 
     @Column(name = "action_count")
     val actionCount: Int

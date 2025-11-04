@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.queries._share.model
 
+import edu.only4.danmuku.domain.aggregates.video_post.enums.TransferResult
+import edu.only4.danmuku.domain.aggregates.video_post.enums.UpdateType
 import org.babyfish.jimmer.sql.Column
 import org.babyfish.jimmer.sql.Entity
 import org.babyfish.jimmer.sql.IdView
@@ -39,13 +41,13 @@ interface VideoFilePost : BaseEntity {
      * 更新类型 @E=0:UNKNOW:未知类型|1:NO_UPDATE:无更新|2:HAS_UPDATE:有更新;@T=UpdateType
      */
     @Column(name = "update_type")
-    val updateType: Int
+    val updateType: UpdateType
 
     /**
      * 转码结果 @E=0:UNKNOW:未知结果|1:TRANSCODING:转码中|2:SUCCESS:转码成功|3:FAILED:转码失败;@T=TransferResult
      */
     @Column(name = "transfer_result")
-    val transferResult: Int
+    val transferResult: TransferResult
 
     @Column(name = "duration")
     val duration: Int?

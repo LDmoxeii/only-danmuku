@@ -1,5 +1,6 @@
 package edu.only4.danmuku.application.queries._share.model
 
+import edu.only4.danmuku.domain.aggregates.user.enums.UserType
 import org.babyfish.jimmer.sql.*
 
 @Entity
@@ -17,7 +18,7 @@ interface User : BaseEntity {
      * 帐号类型 @E=0:UNKNOW:未知类型|1:SYS_USER:系统管理员;@T=UserType
      */
     @Column(name = "type")
-    val type: Int
+    val type: UserType
 
     @Column(name = "nick_name")
     val nickName: String

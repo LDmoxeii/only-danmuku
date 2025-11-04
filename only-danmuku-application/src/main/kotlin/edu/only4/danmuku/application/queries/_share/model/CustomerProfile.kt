@@ -1,5 +1,6 @@
 package edu.only4.danmuku.application.queries._share.model
 
+import edu.only4.danmuku.domain.aggregates.customer_profile.enums.ThemeType
 import org.babyfish.jimmer.sql.Column
 import org.babyfish.jimmer.sql.Entity
 import org.babyfish.jimmer.sql.IdView
@@ -56,5 +57,5 @@ interface CustomerProfile : BaseEntity {
      * 主题 @E=0:UNKNOW:未知主题|1:LIGHT:浅色主题|2:DARK:深色主题|3:SYSTEM:跟随系统;@T=ThemeType
      */
     @Column(name = "theme")
-    val theme: Int
+    val theme: ThemeType
 }

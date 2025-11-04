@@ -184,7 +184,7 @@ jimmer:
   # `jimmer-spring-starter` will create `KSqlClient` for kotlin;
   # otherwise, it will create `JSqlClient` for java.
   language: kotlin
-
+  default-enum-strategy: ORDINAL
   database-validation-mode: ERROR
   show-sql: true
   pretty-sql: true
