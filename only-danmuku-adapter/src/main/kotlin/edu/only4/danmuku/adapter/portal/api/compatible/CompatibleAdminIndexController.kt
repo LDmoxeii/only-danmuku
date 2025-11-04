@@ -53,9 +53,9 @@ class CompatibleAdminIndexController {
     }
 
     @PostMapping("/getWeekStatisticsInfo")
-    fun adminIndexGetWeekStatistics(dataType: StatisticsDataType): List<WeekStatisticsItem> {
+    fun adminIndexGetWeekStatistics(dataType: Int): List<WeekStatisticsItem> {
         val weekData = Mediator.queries.send(
-            GetWeekStatisticsInfoQry.Request(dataType = dataType)
+            GetWeekStatisticsInfoQry.Request(dataType = StatisticsDataType.valueOf(dataType))
         )
 
         return weekData.map { AdminIndexGetWeekStatistics.Converter.INSTANCE.fromApp(it) }

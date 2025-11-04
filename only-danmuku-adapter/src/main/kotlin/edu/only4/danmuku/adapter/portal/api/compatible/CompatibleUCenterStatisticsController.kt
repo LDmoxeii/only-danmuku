@@ -52,12 +52,12 @@ class CompatibleUCenterStatisticsController {
     }
 
     @PostMapping("/getWeekStatisticsInfo")
-    fun getWeekStatistics(dataType: StatisticsDataType): List<UCenterGetWeekStatistics.WeekStatisticsItem> {
+    fun getWeekStatistics(dataType: Int): List<UCenterGetWeekStatistics.WeekStatisticsItem> {
         val currentUserId = LoginHelper.getUserId()!!
 
         val weekData = Mediator.queries.send(
             GetWeekStatisticsInfoQry.Request(
-                dataType = dataType,
+                dataType = StatisticsDataType.valueOf(dataType),
                 userId = currentUserId
             )
         )
