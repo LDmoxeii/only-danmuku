@@ -1,4 +1,5 @@
 package edu.only4.danmuku.domain.aggregates.video_file_upload_session.enums
+import com.fasterxml.jackson.annotation.JsonValue
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 
@@ -12,6 +13,7 @@ import jakarta.persistence.AttributeConverter
  */
 @Aggregate(aggregate = "VideoFileUploadSession", name = "UploadStatus", type = "enum", description = "")
 enum class UploadStatus(
+    @get:JsonValue
     val code: Int,
     val desc: String
 ) {

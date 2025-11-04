@@ -1,4 +1,5 @@
 package edu.only4.danmuku.domain.aggregates.video_post.enums
+import com.fasterxml.jackson.annotation.JsonValue
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 
@@ -12,6 +13,7 @@ import jakarta.persistence.AttributeConverter
  */
 @Aggregate(aggregate = "VideoPost", name = "VideoStatus", type = "enum", description = "")
 enum class VideoStatus(
+    @get:JsonValue
     val code: Int,
     val desc: String
 ) {

@@ -1,4 +1,5 @@
 package {{ basePackage }}{{ templatePackage }}{{ package }}
+import com.fasterxml.jackson.annotation.JsonValue
 {%- for import in imports %}
 {{ import }}
 {%- endfor %}
@@ -11,7 +12,7 @@ package {{ basePackage }}{{ templatePackage }}{{ package }}
  */
 @Aggregate(aggregate = "{{ Aggregate }}", name = "{{ Enum }}", type = "enum", description = "{{ CommentEscaped }}")
 enum class {{ Enum }}(
-    @JsonValue
+    @get:JsonValue
     val {{ EnumValueField }}: Int,
     val {{ EnumNameField }}: String
 ) {
