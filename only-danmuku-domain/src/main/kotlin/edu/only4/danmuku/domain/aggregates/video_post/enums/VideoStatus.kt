@@ -13,7 +13,7 @@ import jakarta.persistence.AttributeConverter
  */
 @Aggregate(aggregate = "VideoPost", name = "VideoStatus", type = "enum", description = "")
 enum class VideoStatus(
-    @get:JsonValue
+    @field:JsonValue
     val code: Int,
     val desc: String
 ) {

@@ -13,7 +13,7 @@ import jakarta.persistence.AttributeConverter
  */
 @Aggregate(aggregate = "CustomerProfile", name = "SexType", type = "enum", description = "")
 enum class SexType(
-    @get:JsonValue
+    @field:JsonValue
     val code: Int,
     val desc: String
 ) {

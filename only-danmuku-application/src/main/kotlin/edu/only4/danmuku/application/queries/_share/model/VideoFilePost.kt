@@ -21,7 +21,7 @@ interface VideoFilePost : BaseEntity {
     val uploadId: Long
 
     @OneToOne
-    @JoinColumn(name = "uploadId")
+    @JoinColumn(name = "upload_id")
     val upload: VideoFileUploadSession
 
     @OneToOne

@@ -1,5 +1,5 @@
 ### 获取验证码
-POST {{host}}/account/v2/checkCode
+POST {{host}}/account/checkCode
 
 > {%
     // 自动保存验证码 key
@@ -26,12 +26,12 @@ Content-Type: application/json
 POST {{host}}/account/login
 Content-Type: application/json
 
-{
-  "email": "lisi@example.com",
-  "password": "password456",
-  "checkCodeKey": "{{checkCodeKey}}",
-  "checkCode": "1512"
-}
+
+"email": "lisi@example.com"
+"password": "password456",
+"checkCodeKey": "{{checkCodeKey}}",
+"checkCode": "1512"
+
 
 > {%
     if (response.body && response.body.data && response.body.data.token) {

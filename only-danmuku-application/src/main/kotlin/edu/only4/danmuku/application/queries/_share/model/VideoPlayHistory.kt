@@ -17,7 +17,10 @@ interface VideoPlayHistory : BaseEntity {
     val customer: User
 
     @ManyToOne
-    @JoinColumn(name = "video_id")
+    @JoinColumn(
+        name = "video_id",
+        foreignKeyType = ForeignKeyType.FAKE
+    )
     val video: Video?
 
     val fileIndex: Int
