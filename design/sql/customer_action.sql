@@ -20,7 +20,7 @@ CREATE TABLE `customer_action`
     `update_time`    bigint      NULL     DEFAULT NULL COMMENT '更新时间',
     `deleted`        bigint               DEFAULT 0 NOT NULL COMMENT '删除标识 0：未删除 id：已删除',
     PRIMARY KEY (`id`) USING BTREE,
-    UNIQUE INDEX `idx_key_video_comment_type_user` (`video_id`, `comment_id`, `action_type`, `customer_id`, `deleted`) USING BTREE
+    UNIQUE INDEX `uk_v_action` (`video_id`, `comment_id`, `action_type`, `customer_id`, `deleted`) USING BTREE
     )
     ENGINE = InnoDB
     CHARACTER SET = utf8mb4

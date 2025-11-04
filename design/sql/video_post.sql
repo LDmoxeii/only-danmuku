@@ -55,7 +55,7 @@ CREATE TABLE video_file_post
     `update_time`     bigint NULL     DEFAULT NULL COMMENT '更新时间',
     `deleted`         bigint DEFAULT 0 NOT NULL COMMENT '删除标识 0：未删除 id：已删除',
     PRIMARY KEY (`id`) USING BTREE,
-    UNIQUE INDEX `idx_key_upload_id` (`upload_id`, `customer_id`, `deleted`) USING BTREE
+    UNIQUE INDEX `uk_v_upload_id` (`upload_id`, `customer_id`, `deleted`) USING BTREE
     ) ENGINE = InnoDB
     CHARACTER SET = utf8mb4
     COLLATE = utf8mb4_general_ci COMMENT = '视频文件信息;@P=video_post'

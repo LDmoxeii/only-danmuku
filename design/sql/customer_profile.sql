@@ -25,8 +25,8 @@ CREATE TABLE `customer_profile`
     `update_time`         bigint NULL     DEFAULT NULL COMMENT '更新时间',
     `deleted`             bigint DEFAULT 0                                              NOT NULL COMMENT '删除标识 0：未删除 id：已删除',
     PRIMARY KEY (`id`) USING BTREE,
-    UNIQUE INDEX `idx_key_email` (`email`, `deleted`) USING BTREE,
-    UNIQUE INDEX `idx_nick_name` (`nick_name`, `deleted`) USING BTREE,
+    UNIQUE INDEX `uk_v_email` (`email`, `deleted`) USING BTREE,
+    UNIQUE INDEX `uk_v_nick_name` (`nick_name`, `deleted`) USING BTREE,
     INDEX                 `idx_user_id` (`user_id`) USING BTREE
     ) ENGINE = InnoDB
     CHARACTER SET = utf8mb4
