@@ -1,0 +1,781 @@
+flowchart TD
+
+    N1["CategoryJpaRepositoryAdapter"]
+    class N1 aggregate;
+    N2["CustomerActionJpaRepositoryAdapter"]
+    class N2 aggregate;
+    N3["CustomerFocusJpaRepositoryAdapter"]
+    class N3 aggregate;
+    N4["CustomerMessageJpaRepositoryAdapter"]
+    class N4 aggregate;
+    N5["CustomerProfileJpaRepositoryAdapter"]
+    class N5 aggregate;
+    N6["CustomerVideoSeriesJpaRepositoryAdapter"]
+    class N6 aggregate;
+    N7["StatisticsJpaRepositoryAdapter"]
+    class N7 aggregate;
+    N8["UserJpaRepositoryAdapter"]
+    class N8 aggregate;
+    N9["VideoCommentJpaRepositoryAdapter"]
+    class N9 aggregate;
+    N10["VideoDanmukuJpaRepositoryAdapter"]
+    class N10 aggregate;
+    N11["VideoFileUploadSessionJpaRepositoryAdapter"]
+    class N11 aggregate;
+    N12["VideoPlayHistoryJpaRepositoryAdapter"]
+    class N12 aggregate;
+    N13["VideoPostJpaRepositoryAdapter"]
+    class N13 aggregate;
+    N14["VideoJpaRepositoryAdapter"]
+    class N14 aggregate;
+    N15["CompatibleAccountController"]
+    class N15 controller;
+    N16["checkCode"]
+    class N16 controllermethod;
+    N17["Request"]
+    class N17 command;
+    N18["register"]
+    class N18 controllermethod;
+    N19["Request"]
+    class N19 command;
+    N20["login"]
+    class N20 controllermethod;
+    N21["Request"]
+    class N21 command;
+    N22["Request"]
+    class N22 command;
+    N23["autoLogin"]
+    class N23 controllermethod;
+    N24["logout"]
+    class N24 controllermethod;
+    N25["getUserCountInfo"]
+    class N25 controllermethod;
+    N26["Request"]
+    class N26 command;
+    N27["CompatibleAdminAccountController"]
+    class N27 controller;
+    N28["adminAccountCheckCode"]
+    class N28 controllermethod;
+    N29["adminAccountLogin"]
+    class N29 controllermethod;
+    N30["Request"]
+    class N30 command;
+    N31["CompatibleAdminCategoryController"]
+    class N31 controller;
+    N32["getCategoryTree"]
+    class N32 controllermethod;
+    N33["Request"]
+    class N33 command;
+    N34["addCategory"]
+    class N34 controllermethod;
+    N35["deleteCategory"]
+    class N35 controllermethod;
+    N36["Request"]
+    class N36 command;
+    N37["changeCategorySort"]
+    class N37 controllermethod;
+    N38["Request"]
+    class N38 command;
+    N39["CompatibleAdminFileController"]
+    class N39 controller;
+    N40["uploadImage"]
+    class N40 controllermethod;
+    N41["Request"]
+    class N41 command;
+    N42["getResource"]
+    class N42 controllermethod;
+    N43["Request"]
+    class N43 command;
+    N44["getVideoResource"]
+    class N44 controllermethod;
+    N45["Request"]
+    class N45 command;
+    N46["getVideoResourceTs"]
+    class N46 controllermethod;
+    N47["Request"]
+    class N47 command;
+    N48["CompatibleAdminIndexController"]
+    class N48 controller;
+    N49["getActualTimeStatistics"]
+    class N49 controllermethod;
+    N50["Request"]
+    class N50 command;
+    N51["Request"]
+    class N51 command;
+    N52["adminIndexGetWeekStatistics"]
+    class N52 controllermethod;
+    N53["Request"]
+    class N53 command;
+    N54["CompatibleAdminInteractController"]
+    class N54 controller;
+    N55["getDanmukuPage"]
+    class N55 controllermethod;
+    N56["deleteDanmuku"]
+    class N56 controllermethod;
+    N57["Request"]
+    class N57 command;
+    N58["getVideoCommentPage"]
+    class N58 controllermethod;
+    N59["deleteVideoComment"]
+    class N59 controllermethod;
+    N60["Request"]
+    class N60 command;
+    N61["CompatibleAdminSettingController"]
+    class N61 controller;
+    N62["adminSettingGet"]
+    class N62 controllermethod;
+    N63["adminSettingSave"]
+    class N63 controllermethod;
+    N64["CompatibleAdminUserController"]
+    class N64 controller;
+    N65["getUserPage"]
+    class N65 controllermethod;
+    N66["changeUserStatus"]
+    class N66 controllermethod;
+    N67["Request"]
+    class N67 command;
+    N68["CompatibleAdminVideoController"]
+    class N68 controller;
+    N69["getVideoPage"]
+    class N69 controllermethod;
+    N70["recommendVideo"]
+    class N70 controllermethod;
+    N71["Request"]
+    class N71 command;
+    N72["auditVideo"]
+    class N72 controllermethod;
+    N73["Request"]
+    class N73 command;
+    N74["deleteVideo"]
+    class N74 controllermethod;
+    N75["Request"]
+    class N75 command;
+    N76["getVideoPList"]
+    class N76 controllermethod;
+    N77["Request"]
+    class N77 command;
+    N78["CompatibleCategoryController"]
+    class N78 controller;
+    N79["getCategoryTree"]
+    class N79 controllermethod;
+    N80["CompatibleFileController"]
+    class N80 controller;
+    N81["getResource"]
+    class N81 controllermethod;
+    N82["filePreUploadVideo"]
+    class N82 controllermethod;
+    N83["Request"]
+    class N83 command;
+    N84["fileUploadVideo"]
+    class N84 controllermethod;
+    N85["Request"]
+    class N85 command;
+    N86["fileDelUploadVideo"]
+    class N86 controllermethod;
+    N87["Request"]
+    class N87 command;
+    N88["uploadImage"]
+    class N88 controllermethod;
+    N89["getVideoResource"]
+    class N89 controllermethod;
+    N90["Request"]
+    class N90 command;
+    N91["Request"]
+    class N91 command;
+    N92["Request"]
+    class N92 command;
+    N93["getVideoResourceTs"]
+    class N93 controllermethod;
+    N94["Request"]
+    class N94 command;
+    N95["CompatibleSettingController"]
+    class N95 controller;
+    N96["getSetting"]
+    class N96 controllermethod;
+    N97["CompatibleUCenterInteractController"]
+    class N97 controller;
+    N98["getVideoAllList"]
+    class N98 controllermethod;
+    N99["Request"]
+    class N99 command;
+    N100["getUserCommentPage"]
+    class N100 controllermethod;
+    N101["deleteVideoComment"]
+    class N101 controllermethod;
+    N102["getVideoDanmukuPage"]
+    class N102 controllermethod;
+    N103["deleteVideoDanmuku"]
+    class N103 controllermethod;
+    N104["CompatibleUCenterStatisticsController"]
+    class N104 controller;
+    N105["getActualTimeStatistics"]
+    class N105 controllermethod;
+    N106["getWeekStatistics"]
+    class N106 controllermethod;
+    N107["CompatibleUCenterVideoPostController"]
+    class N107 controller;
+    N108["postVideo"]
+    class N108 controllermethod;
+    N109["Request"]
+    class N109 command;
+    N110["Request"]
+    class N110 command;
+    N111["getVideoPostPage"]
+    class N111 controllermethod;
+    N112["getVideoPostCountInfo"]
+    class N112 controllermethod;
+    N113["Request"]
+    class N113 command;
+    N114["getVideoPostByVideoPostId"]
+    class N114 controllermethod;
+    N115["Request"]
+    class N115 command;
+    N116["saveVideoPostInteraction"]
+    class N116 controllermethod;
+    N117["Request"]
+    class N117 command;
+    N118["deleteVideo"]
+    class N118 controllermethod;
+    N119["CompatibleUHomeController"]
+    class N119 controller;
+    N120["getCustomerProfile"]
+    class N120 controllermethod;
+    N121["Request"]
+    class N121 command;
+    N122["updateCustomerProfile"]
+    class N122 controllermethod;
+    N123["Request"]
+    class N123 command;
+    N124["uHomeSaveTheme"]
+    class N124 controllermethod;
+    N125["uHomeFocus"]
+    class N125 controllermethod;
+    N126["Request"]
+    class N126 command;
+    N127["uHomeCancelFocus"]
+    class N127 controllermethod;
+    N128["Request"]
+    class N128 command;
+    N129["getFocusPage"]
+    class N129 controllermethod;
+    N130["getFansPage"]
+    class N130 controllermethod;
+    N131["getVideoPage"]
+    class N131 controllermethod;
+    N132["getCollectionPage"]
+    class N132 controllermethod;
+    N133["CompatibleUserActionController"]
+    class N133 controller;
+    N134["doAction"]
+    class N134 controllermethod;
+    N135["Request"]
+    class N135 command;
+    N136["Request"]
+    class N136 command;
+    N137["Request"]
+    class N137 command;
+    N138["Request"]
+    class N138 command;
+    N139["Request"]
+    class N139 command;
+    N140["CompatibleUserMessageController"]
+    class N140 controller;
+    N141["getNoReadCount"]
+    class N141 controllermethod;
+    N142["Request"]
+    class N142 command;
+    N143["getNoReadCountGroup"]
+    class N143 controllermethod;
+    N144["Request"]
+    class N144 command;
+    N145["messageReadAll"]
+    class N145 controllermethod;
+    N146["Request"]
+    class N146 command;
+    N147["getMessagePage"]
+    class N147 controllermethod;
+    N148["messageDel"]
+    class N148 controllermethod;
+    N149["Request"]
+    class N149 command;
+    N150["CompatibleVideoCommentController"]
+    class N150 controller;
+    N151["getVideoCommentPage"]
+    class N151 controllermethod;
+    N152["Request"]
+    class N152 command;
+    N153["postComment"]
+    class N153 controllermethod;
+    N154["Request"]
+    class N154 command;
+    N155["deleteVideoComment"]
+    class N155 controllermethod;
+    N156["topVideoComment"]
+    class N156 controllermethod;
+    N157["Request"]
+    class N157 command;
+    N158["cancelTopVideoComment"]
+    class N158 controllermethod;
+    N159["Request"]
+    class N159 command;
+    N160["CompatibleVideoController"]
+    class N160 controller;
+    N161["getRecommendVideos"]
+    class N161 controllermethod;
+    N162["Request"]
+    class N162 command;
+    N163["getVideoPage"]
+    class N163 controllermethod;
+    N164["getVideoPList"]
+    class N164 controllermethod;
+    N165["Request"]
+    class N165 command;
+    N166["getVideoInfo"]
+    class N166 controllermethod;
+    N167["Request"]
+    class N167 command;
+    N168["getRecommendVideo"]
+    class N168 controllermethod;
+    N169["reportVideoPlayOnline"]
+    class N169 controllermethod;
+    N170["searchVideo"]
+    class N170 controllermethod;
+    N171["getSearchKeywordTop"]
+    class N171 controllermethod;
+    N172["getHotVidePage"]
+    class N172 controllermethod;
+    N173["CompatibleVideoDanmuController"]
+    class N173 controller;
+    N174["getVideoDanmukuList"]
+    class N174 controllermethod;
+    N175["Request"]
+    class N175 command;
+    N176["postDanmuku"]
+    class N176 controllermethod;
+    N177["Request"]
+    class N177 command;
+    N178["CompatibleVideoHistoryController"]
+    class N178 controller;
+    N179["historyLoad"]
+    class N179 controllermethod;
+    N180["historyClean"]
+    class N180 controllermethod;
+    N181["Request"]
+    class N181 command;
+    N182["historyDel"]
+    class N182 controllermethod;
+    N183["Request"]
+    class N183 command;
+    N184["CompatibleVideoSeriesController"]
+    class N184 controller;
+    N185["getVideoSeries"]
+    class N185 controllermethod;
+    N186["Request"]
+    class N186 command;
+    N187["getVideoSeriesDetail"]
+    class N187 controllermethod;
+    N188["Request"]
+    class N188 command;
+    N189["loadAllVideo"]
+    class N189 controllermethod;
+    N190["Request"]
+    class N190 command;
+    N191["saveVideoSeries"]
+    class N191 controllermethod;
+    N192["Request"]
+    class N192 command;
+    N193["Request"]
+    class N193 command;
+    N194["Request"]
+    class N194 command;
+    N195["loadVideoSeriesWithVideo"]
+    class N195 controllermethod;
+    N196["saveSeriesVideo"]
+    class N196 controllermethod;
+    N197["deleteSeriesVideo"]
+    class N197 controllermethod;
+    N198["Request"]
+    class N198 command;
+    N199["deleteVideoSeries"]
+    class N199 controllermethod;
+    N200["Request"]
+    class N200 command;
+    N201["videoSeriesChangeSort"]
+    class N201 controllermethod;
+    N202["Request"]
+    class N202 command;
+    N203["Category"]
+    class N203 aggregate;
+    N204["CategoryCreatedDomainEvent"]
+    class N204 domainevent;
+    N205["CategoryDeletedDomainEvent"]
+    class N205 domainevent;
+    N206["CategoryInfoUpdatedDomainEvent"]
+    class N206 domainevent;
+    N207["CategorySortOrderUpdatedDomainEvent"]
+    class N207 domainevent;
+    N208["CategoryFactory"]
+    class N208 aggregate;
+    N209["Payload"]
+    class N209 aggregate;
+    N210["CategorySpecification"]
+    class N210 aggregate;
+    N211["CustomerAction"]
+    class N211 aggregate;
+    N212["CustomerLikedVideoDomainEvent"]
+    class N212 domainevent;
+    N213["CustomerLikedCommentDomainEvent"]
+    class N213 domainevent;
+    N214["CustomerDislikedCommentDomainEvent"]
+    class N214 domainevent;
+    N215["CustomerCollectedVideoDomainEvent"]
+    class N215 domainevent;
+    N216["CustomerCoinGivenDomainEvent"]
+    class N216 domainevent;
+    N217["CustomerUnlikedCommentDomainEvent"]
+    class N217 domainevent;
+    N218["CustomerUndislikedCommentDomainEvent"]
+    class N218 domainevent;
+    N219["CustomerUnlikedVideoDomainEvent"]
+    class N219 domainevent;
+    N220["CustomerUncollectedVideoDomainEvent"]
+    class N220 domainevent;
+    N221["ActionType"]
+    class N221 aggregate;
+    N222["CustomerActionFactory"]
+    class N222 aggregate;
+    N223["Payload"]
+    class N223 aggregate;
+    N224["CustomerActionSpecification"]
+    class N224 aggregate;
+    N225["CustomerFocus"]
+    class N225 aggregate;
+    N226["UserFocusedDomainEvent"]
+    class N226 domainevent;
+    N227["UserUnfocusedDomainEvent"]
+    class N227 domainevent;
+    N228["CustomerFocusFactory"]
+    class N228 aggregate;
+    N229["Payload"]
+    class N229 aggregate;
+    N230["CustomerFocusSpecification"]
+    class N230 aggregate;
+    N231["CustomerMessage"]
+    class N231 aggregate;
+    N232["MessageType"]
+    class N232 aggregate;
+    N233["ReadType"]
+    class N233 aggregate;
+    N234["CustomerMessageFactory"]
+    class N234 aggregate;
+    N235["Payload"]
+    class N235 aggregate;
+    N236["CustomerMessageSpecification"]
+    class N236 aggregate;
+    N237["CustomerProfile"]
+    class N237 aggregate;
+    N238["CustomerProfileCreatedDomainEvent"]
+    class N238 domainevent;
+    N239["CustomerNicknameUpdatedDomainEvent"]
+    class N239 domainevent;
+    N240["CustomerAvatarUpdatedDomainEvent"]
+    class N240 domainevent;
+    N241["CustomerProfileUpdatedDomainEvent"]
+    class N241 domainevent;
+    N242["SexType"]
+    class N242 aggregate;
+    N243["ThemeType"]
+    class N243 aggregate;
+    N244["CustomerStatisticUpdatedDomainEvent"]
+    class N244 domainevent;
+    N245["CustomerProfileFactory"]
+    class N245 aggregate;
+    N246["Payload"]
+    class N246 aggregate;
+    N247["CustomerProfileSpecification"]
+    class N247 aggregate;
+    N248["CustomerVideoSeries"]
+    class N248 aggregate;
+    N249["CustomerVideoSeriesVideo"]
+    class N249 aggregate;
+    N250["CustomerVideoSeriesFactory"]
+    class N250 aggregate;
+    N251["Payload"]
+    class N251 aggregate;
+    N252["CustomerVideoSeriesSpecification"]
+    class N252 aggregate;
+    N253["Statistics"]
+    class N253 aggregate;
+    N254["StatisticsDataType"]
+    class N254 aggregate;
+    N255["StatisticsBatchCalculatedDomainEvent"]
+    class N255 domainevent;
+    N256["StatisticsInfoAddedDomainEvent"]
+    class N256 domainevent;
+    N257["StatisticsInfoDeletedDomainEvent"]
+    class N257 domainevent;
+    N258["StatisticsInfoUpdatedDomainEvent"]
+    class N258 domainevent;
+    N259["StatisticsFactory"]
+    class N259 aggregate;
+    N260["Payload"]
+    class N260 aggregate;
+    N261["StatisticsSpecification"]
+    class N261 aggregate;
+    N262["User"]
+    class N262 aggregate;
+    N263["UserCreatedDomainEvent"]
+    class N263 domainevent;
+    N264["AccountEnabledDomainEvent"]
+    class N264 domainevent;
+    N265["AccountDisabledDomainEvent"]
+    class N265 domainevent;
+    N266["UserType"]
+    class N266 aggregate;
+    N267["AccountDeletedDomainEvent"]
+    class N267 domainevent;
+    N268["PasswordChangedDomainEvent"]
+    class N268 domainevent;
+    N269["PasswordResetDomainEvent"]
+    class N269 domainevent;
+    N270["UserLoginFailedDomainEvent"]
+    class N270 domainevent;
+    N271["UserLoginSuccessfulDomainEvent"]
+    class N271 domainevent;
+    N272["UserFactory"]
+    class N272 aggregate;
+    N273["Payload"]
+    class N273 aggregate;
+    N274["UserSpecification"]
+    class N274 aggregate;
+    N275["Video"]
+    class N275 aggregate;
+    N276["VideoCreatedDomainEvent"]
+    class N276 domainevent;
+    N277["VideoDeletedDomainEvent"]
+    class N277 domainevent;
+    N278["VideoRecommendedDomainEvent"]
+    class N278 domainevent;
+    N279["VideoFile"]
+    class N279 aggregate;
+    N280["PostType"]
+    class N280 aggregate;
+    N281["RecommendType"]
+    class N281 aggregate;
+    N282["VideoPlayCountIncreasedDomainEvent"]
+    class N282 domainevent;
+    N283["VideoFactory"]
+    class N283 aggregate;
+    N284["Payload"]
+    class N284 aggregate;
+    N285["VideoSpecification"]
+    class N285 aggregate;
+    N286["VideoComment"]
+    class N286 aggregate;
+    N287["CommentToppedDomainEvent"]
+    class N287 domainevent;
+    N288["CommentUntoppedDomainEvent"]
+    class N288 domainevent;
+    N289["CommentPostedDomainEvent"]
+    class N289 domainevent;
+    N290["CommentDeletedDomainEvent"]
+    class N290 domainevent;
+    N291["CommentHateCountUpdatedDomainEvent"]
+    class N291 domainevent;
+    N292["CommentLikeCountUpdatedDomainEvent"]
+    class N292 domainevent;
+    N293["CommentRepliedDomainEvent"]
+    class N293 domainevent;
+    N294["VideoCommentFactory"]
+    class N294 aggregate;
+    N295["Payload"]
+    class N295 aggregate;
+    N296["VideoCommentSpecification"]
+    class N296 aggregate;
+    N297["VideoDanmuku"]
+    class N297 aggregate;
+    N298["DanmukuPostedDomainEvent"]
+    class N298 domainevent;
+    N299["DanmukuDeletedDomainEvent"]
+    class N299 domainevent;
+    N300["DanmukuBatchDeletedDomainEvent"]
+    class N300 domainevent;
+    N301["VideoDanmukuFactory"]
+    class N301 aggregate;
+    N302["Payload"]
+    class N302 aggregate;
+    N303["VideoDanmukuSpecification"]
+    class N303 aggregate;
+    N304["VideoFileUploadSession"]
+    class N304 aggregate;
+    N305["UploadSessionCreatedDomainEvent"]
+    class N305 domainevent;
+    N306["UploadStatus"]
+    class N306 aggregate;
+    N307["VideoFileUploadSessionFactory"]
+    class N307 aggregate;
+    N308["Payload"]
+    class N308 aggregate;
+    N309["VideoFileUploadSessionSpecification"]
+    class N309 aggregate;
+    N310["VideoPlayHistory"]
+    class N310 aggregate;
+    N311["PlayHistoryAddedDomainEvent"]
+    class N311 domainevent;
+    N312["PlayHistoryBatchAddedDomainEvent"]
+    class N312 domainevent;
+    N313["PlayHistoryClearedDomainEvent"]
+    class N313 domainevent;
+    N314["PlayHistoryDeletedDomainEvent"]
+    class N314 domainevent;
+    N315["PlayProgressUpdatedDomainEvent"]
+    class N315 domainevent;
+    N316["VideoPlayHistoryFactory"]
+    class N316 aggregate;
+    N317["Payload"]
+    class N317 aggregate;
+    N318["VideoPlayHistorySpecification"]
+    class N318 aggregate;
+    N319["VideoFilePost"]
+    class N319 aggregate;
+    N320["VideoFileDraftTranscodedDomainEvent"]
+    class N320 domainevent;
+    N321["VideoPost"]
+    class N321 aggregate;
+    N322["VideoDraftCreatedDomainEvent"]
+    class N322 domainevent;
+    N323["VideoPostDeletedDomainEvent"]
+    class N323 domainevent;
+    N324["VideoAuditPassedDomainEvent"]
+    class N324 domainevent;
+    N325["VideoAuditFailedDomainEvent"]
+    class N325 domainevent;
+    N326["VideoPostTranscodingRequiredDomainEvent"]
+    class N326 domainevent;
+    N327["VideoPostInteractionChangedDomainEvent"]
+    class N327 domainevent;
+    N328["TransferResult"]
+    class N328 aggregate;
+    N329["UpdateType"]
+    class N329 aggregate;
+    N330["VideoStatus"]
+    class N330 aggregate;
+    N331["VideoDraftSubmittedDomainEvent"]
+    class N331 domainevent;
+    N332["VideoTransferredToProductionDomainEvent"]
+    class N332 domainevent;
+    N333["VideoPostFactory"]
+    class N333 aggregate;
+    N334["Payload"]
+    class N334 aggregate;
+    N335["VideoPostSpecification"]
+    class N335 aggregate;
+
+    %% Relationships
+    N16 -->|Send| N17
+    N18 -->|Send| N19
+    N20 -->|Send| N19
+    N20 -->|Send| N21
+    N20 -->|Send| N22
+    N25 -->|Send| N26
+    N28 -->|Send| N17
+    N29 -->|Send| N19
+    N29 -->|Send| N30
+    N32 -->|Send| N33
+    N35 -->|Send| N36
+    N37 -->|Send| N38
+    N40 -->|Send| N41
+    N42 -->|Send| N43
+    N44 -->|Send| N45
+    N46 -->|Send| N47
+    N49 -->|Send| N50
+    N49 -->|Send| N51
+    N52 -->|Send| N53
+    N56 -->|Send| N57
+    N59 -->|Send| N60
+    N66 -->|Send| N67
+    N70 -->|Send| N71
+    N72 -->|Send| N73
+    N74 -->|Send| N75
+    N76 -->|Send| N77
+    N79 -->|Send| N33
+    N81 -->|Send| N43
+    N82 -->|Send| N83
+    N84 -->|Send| N85
+    N86 -->|Send| N87
+    N88 -->|Send| N41
+    N89 -->|Send| N90
+    N89 -->|Send| N91
+    N89 -->|Send| N92
+    N93 -->|Send| N94
+    N98 -->|Send| N99
+    N101 -->|Send| N60
+    N103 -->|Send| N57
+    N105 -->|Send| N50
+    N105 -->|Send| N51
+    N106 -->|Send| N53
+    N108 -->|Send| N109
+    N108 -->|Send| N110
+    N112 -->|Send| N113
+    N114 -->|Send| N115
+    N116 -->|Send| N117
+    N118 -->|Send| N75
+    N120 -->|Send| N22
+    N120 -->|Send| N51
+    N120 -->|Send| N121
+    N122 -->|Send| N123
+    N124 -->|Send| N123
+    N125 -->|Send| N126
+    N127 -->|Send| N128
+    N134 -->|Send| N135
+    N134 -->|Send| N136
+    N134 -->|Send| N137
+    N134 -->|Send| N138
+    N134 -->|Send| N139
+    N141 -->|Send| N142
+    N143 -->|Send| N144
+    N145 -->|Send| N146
+    N148 -->|Send| N149
+    N151 -->|Send| N152
+    N153 -->|Send| N154
+    N155 -->|Send| N60
+    N156 -->|Send| N157
+    N158 -->|Send| N159
+    N161 -->|Send| N162
+    N164 -->|Send| N165
+    N166 -->|Send| N167
+    N166 -->|Send| N152
+    N174 -->|Send| N175
+    N176 -->|Send| N177
+    N180 -->|Send| N181
+    N182 -->|Send| N183
+    N185 -->|Send| N186
+    N187 -->|Send| N188
+    N189 -->|Send| N99
+    N189 -->|Send| N190
+    N191 -->|Send| N192
+    N191 -->|Send| N193
+    N191 -->|Send| N194
+    N195 -->|Send| N190
+    N196 -->|Send| N194
+    N197 -->|Send| N198
+    N199 -->|Send| N200
+    N201 -->|Send| N202
+
+    %% Styles
+    classDef controller fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,font-weight:bold;
+    classDef controllermethod fill:#e3f2fd,stroke:#1976d2,stroke-width:2px;
+    classDef endpoint fill:#e3f2fd,stroke:#42a5f5,stroke-width:2px;
+    classDef commandsender fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,font-style:italic;
+    classDef commandsendermethod fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,font-style:italic;
+    classDef command fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px,font-weight:bold;
+    classDef commandhandler fill:#e8f5e8,stroke:#388e3c,stroke-width:2px,font-weight:bold;
+    classDef aggregate fill:#fff8e1,stroke:#ff8f00,stroke-width:3px,font-weight:bold;
+    classDef entitymethod fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px;
+    classDef domainevent fill:#fff3e0,stroke:#e65100,stroke-width:2px,font-style:italic;
+    classDef domaineventhandler fill:#fff3e0,stroke:#ef6c00,stroke-width:2px,font-weight:bold;
+    classDef integrationevent fill:#fce4ec,stroke:#880e4f,stroke-width:2px;
+    classDef integrationeventhandler fill:#fce4ec,stroke:#ad1457,stroke-width:2px,font-weight:bold;
+    classDef integrationeventconverter fill:#e3f2fd,stroke:#0277bd,stroke-width:2px;
+    classDef repo fill:#d6dbdf,stroke:#85929e,stroke-width:2px;
+    classDef uow fill:#f2f4f4,stroke:#7f8c8d,stroke-width:2px;

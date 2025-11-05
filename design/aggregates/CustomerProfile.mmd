@@ -1,0 +1,24 @@
+flowchart TB
+
+    N1["CustomerProfile.onCreate"]
+    class N1 entitymethod;
+    N2["CustomerProfileCreatedDomainEvent"]
+    class N2 domainevent;
+    N3["CustomerProfile.updateProfileInfo"]
+    class N3 entitymethod;
+    N4["CustomerNicknameUpdatedDomainEvent"]
+    class N4 domainevent;
+    N5["CustomerAvatarUpdatedDomainEvent"]
+    class N5 domainevent;
+    N6["CustomerProfileUpdatedDomainEvent"]
+    class N6 domainevent;
+
+    %% Relationships
+    N1 -->|publishes| N2
+    N3 -->|publishes| N4
+    N3 -->|publishes| N5
+    N3 -->|publishes| N6
+
+    %% Styles
+    classDef entitymethod fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px;
+    classDef domainevent fill:#fff3e0,stroke:#e65100,stroke-width:2px;font-style:italic;

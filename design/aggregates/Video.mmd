@@ -1,0 +1,23 @@
+flowchart TB
+
+    N1["Video.onCreate"]
+    class N1 entitymethod;
+    N2["VideoCreatedDomainEvent"]
+    class N2 domainevent;
+    N3["Video.onDelete"]
+    class N3 entitymethod;
+    N4["VideoDeletedDomainEvent"]
+    class N4 domainevent;
+    N5["Video.toggleRecommend"]
+    class N5 entitymethod;
+    N6["VideoRecommendedDomainEvent"]
+    class N6 domainevent;
+
+    %% Relationships
+    N1 -->|publishes| N2
+    N3 -->|publishes| N4
+    N5 -->|publishes| N6
+
+    %% Styles
+    classDef entitymethod fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px;
+    classDef domainevent fill:#fff3e0,stroke:#e65100,stroke-width:2px;font-style:italic;

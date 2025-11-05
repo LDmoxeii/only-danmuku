@@ -1,0 +1,46 @@
+flowchart TB
+
+    N1["postVideo"]
+    class N1 controllermethod;
+    N2["CompatibleUCenterVideoPostController"]
+    class N2 controller;
+    N3["CreateVideoPostCmd"]
+    class N3 command;
+    N4["UpdateVideoPostCmd"]
+    class N4 command;
+    N5["VideoPost.onCreate"]
+    class N5 entitymethod;
+    N6["VideoDraftCreatedDomainEvent"]
+    class N6 domainevent;
+    N7["VideoPost.adjustStatusAfterEdit"]
+    class N7 entitymethod;
+    N8["VideoPostTranscodingRequiredDomainEvent"]
+    class N8 domainevent;
+    N9["VideoDraftCreatedDomainEventSubscriber.on"]
+    class N9 domaineventhandler;
+    N10["TransferVideoFileCmd"]
+    class N10 command;
+    N11["VideoPostTranscodingRequiredDomainEventSubscriber.on"]
+    class N11 domaineventhandler;
+    N12["TranscodeAllTranscodingFilesCmd"]
+    class N12 command;
+
+    %% Relationships
+    N1 -->|sends| N3
+    N1 -->|sends| N4
+    N3 -->|execute| N5
+    N5 -->|publishes| N6
+    N4 -->|execute| N7
+    N7 -->|publishes| N8
+    N6 -->|handles| N9
+    N9 -->|sends| N10
+    N8 -->|handles| N11
+    N11 -->|sends| N12
+
+    %% Styles
+    classDef controller fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,font-weight:bold;
+    classDef controllermethod fill:#e3f2fd,stroke:#1976d2,stroke-width:2px;
+    classDef command fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px,font-weight:bold;
+    classDef entitymethod fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px;
+    classDef domainevent fill:#fff3e0,stroke:#e65100,stroke-width:2px,font-style:italic;
+    classDef domaineventhandler fill:#fff3e0,stroke:#ef6c00,stroke-width:2px,font-weight:bold;

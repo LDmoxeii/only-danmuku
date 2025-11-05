@@ -1,0 +1,39 @@
+flowchart TB
+
+    N1["CustomerAction.onCreate"]
+    class N1 entitymethod;
+    N2["CustomerLikedVideoDomainEvent"]
+    class N2 domainevent;
+    N3["CustomerLikedCommentDomainEvent"]
+    class N3 domainevent;
+    N4["CustomerDislikedCommentDomainEvent"]
+    class N4 domainevent;
+    N5["CustomerCollectedVideoDomainEvent"]
+    class N5 domainevent;
+    N6["CustomerCoinGivenDomainEvent"]
+    class N6 domainevent;
+    N7["CustomerAction.onDelete"]
+    class N7 entitymethod;
+    N8["CustomerUnlikedCommentDomainEvent"]
+    class N8 domainevent;
+    N9["CustomerUndislikedCommentDomainEvent"]
+    class N9 domainevent;
+    N10["CustomerUnlikedVideoDomainEvent"]
+    class N10 domainevent;
+    N11["CustomerUncollectedVideoDomainEvent"]
+    class N11 domainevent;
+
+    %% Relationships
+    N1 -->|publishes| N2
+    N1 -->|publishes| N3
+    N1 -->|publishes| N4
+    N1 -->|publishes| N5
+    N1 -->|publishes| N6
+    N7 -->|publishes| N8
+    N7 -->|publishes| N9
+    N7 -->|publishes| N10
+    N7 -->|publishes| N11
+
+    %% Styles
+    classDef entitymethod fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px;
+    classDef domainevent fill:#fff3e0,stroke:#e65100,stroke-width:2px;font-style:italic;

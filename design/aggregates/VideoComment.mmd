@@ -1,0 +1,28 @@
+flowchart TB
+
+    N1["VideoComment.top"]
+    class N1 entitymethod;
+    N2["CommentToppedDomainEvent"]
+    class N2 domainevent;
+    N3["VideoComment.untop"]
+    class N3 entitymethod;
+    N4["CommentUntoppedDomainEvent"]
+    class N4 domainevent;
+    N5["VideoComment.onCreate"]
+    class N5 entitymethod;
+    N6["CommentPostedDomainEvent"]
+    class N6 domainevent;
+    N7["VideoComment.onDelete"]
+    class N7 entitymethod;
+    N8["CommentDeletedDomainEvent"]
+    class N8 domainevent;
+
+    %% Relationships
+    N1 -->|publishes| N2
+    N3 -->|publishes| N4
+    N5 -->|publishes| N6
+    N7 -->|publishes| N8
+
+    %% Styles
+    classDef entitymethod fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px;
+    classDef domainevent fill:#fff3e0,stroke:#e65100,stroke-width:2px;font-style:italic;

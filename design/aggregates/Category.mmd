@@ -1,0 +1,18 @@
+flowchart TB
+
+    N1["Category.onCreate"]
+    class N1 entitymethod;
+    N2["CategoryCreatedDomainEvent"]
+    class N2 domainevent;
+    N3["Category.onDeleted"]
+    class N3 entitymethod;
+    N4["CategoryDeletedDomainEvent"]
+    class N4 domainevent;
+
+    %% Relationships
+    N1 -->|publishes| N2
+    N3 -->|publishes| N4
+
+    %% Styles
+    classDef entitymethod fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px;
+    classDef domainevent fill:#fff3e0,stroke:#e65100,stroke-width:2px;font-style:italic;

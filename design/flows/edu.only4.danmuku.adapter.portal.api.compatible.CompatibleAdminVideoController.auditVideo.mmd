@@ -1,0 +1,49 @@
+flowchart TB
+
+    N1["auditVideo"]
+    class N1 controllermethod;
+    N2["CompatibleAdminVideoController"]
+    class N2 controller;
+    N3["AuditVideoPostCmd"]
+    class N3 command;
+    N4["VideoPost.reviewPass"]
+    class N4 entitymethod;
+    N5["VideoAuditPassedDomainEvent"]
+    class N5 domainevent;
+    N6["VideoPost.reviewFail"]
+    class N6 entitymethod;
+    N7["VideoAuditFailedDomainEvent"]
+    class N7 domainevent;
+    N8["VideoAuditPassedDomainEventSubscriber.on"]
+    class N8 domaineventhandler;
+    N9["RewardUserForVideoCmd"]
+    class N9 command;
+    N10["TransferVideoToProductionCmd"]
+    class N10 command;
+    N11["SendVideoAuditPassedMessageCmd"]
+    class N11 command;
+    N12["VideoAuditFailedDomainEventSubscriber.on"]
+    class N12 domaineventhandler;
+    N13["SendVideoAuditFailedMessageCmd"]
+    class N13 command;
+
+    %% Relationships
+    N1 -->|sends| N3
+    N3 -->|execute| N4
+    N4 -->|publishes| N5
+    N3 -->|execute| N6
+    N6 -->|publishes| N7
+    N5 -->|handles| N8
+    N8 -->|sends| N9
+    N8 -->|sends| N10
+    N8 -->|sends| N11
+    N7 -->|handles| N12
+    N12 -->|sends| N13
+
+    %% Styles
+    classDef controller fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,font-weight:bold;
+    classDef controllermethod fill:#e3f2fd,stroke:#1976d2,stroke-width:2px;
+    classDef command fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px,font-weight:bold;
+    classDef entitymethod fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px;
+    classDef domainevent fill:#fff3e0,stroke:#e65100,stroke-width:2px,font-style:italic;
+    classDef domaineventhandler fill:#fff3e0,stroke:#ef6c00,stroke-width:2px,font-weight:bold;

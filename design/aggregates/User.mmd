@@ -1,0 +1,21 @@
+flowchart TB
+
+    N1["User.onCreate"]
+    class N1 entitymethod;
+    N2["UserCreatedDomainEvent"]
+    class N2 domainevent;
+    N3["User.changeStatus"]
+    class N3 entitymethod;
+    N4["AccountEnabledDomainEvent"]
+    class N4 domainevent;
+    N5["AccountDisabledDomainEvent"]
+    class N5 domainevent;
+
+    %% Relationships
+    N1 -->|publishes| N2
+    N3 -->|publishes| N4
+    N3 -->|publishes| N5
+
+    %% Styles
+    classDef entitymethod fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px;
+    classDef domainevent fill:#fff3e0,stroke:#e65100,stroke-width:2px;font-style:italic;

@@ -1,0 +1,88 @@
+flowchart TB
+
+    N1["doAction"]
+    class N1 controllermethod;
+    N2["CompatibleUserActionController"]
+    class N2 controller;
+    N3["LikeVideoCmd"]
+    class N3 command;
+    N4["CollectVideoCmd"]
+    class N4 command;
+    N5["GiveVideoCoinCmd"]
+    class N5 command;
+    N6["LikeCommentCmd"]
+    class N6 command;
+    N7["DislikeCommentCmd"]
+    class N7 command;
+    N8["CustomerAction.onCreate"]
+    class N8 entitymethod;
+    N9["CustomerLikedVideoDomainEvent"]
+    class N9 domainevent;
+    N10["CustomerLikedCommentDomainEvent"]
+    class N10 domainevent;
+    N11["CustomerDislikedCommentDomainEvent"]
+    class N11 domainevent;
+    N12["CustomerCollectedVideoDomainEvent"]
+    class N12 domainevent;
+    N13["CustomerCoinGivenDomainEvent"]
+    class N13 domainevent;
+    N14["CustomerLikedVideoDomainEventSubscriber.on"]
+    class N14 domaineventhandler;
+    N15["UpdateVideoStatisticsCmd"]
+    class N15 command;
+    N16["SendLikeMessageCmd"]
+    class N16 command;
+    N17["CustomerLikedCommentDomainEventSubscriber.on"]
+    class N17 domaineventhandler;
+    N18["ApplyCustomerLikedCommentCmd"]
+    class N18 command;
+    N19["CustomerDislikedCommentDomainEventSubscriber.on"]
+    class N19 domaineventhandler;
+    N20["ApplyCustomerDislikedCommentCmd"]
+    class N20 command;
+    N21["CustomerCollectedVideoDomainEventSubscriber.on"]
+    class N21 domaineventhandler;
+    N22["SendCollectMessageCmd"]
+    class N22 command;
+    N23["CustomerCoinGivenDomainEventSubscriber.on"]
+    class N23 domaineventhandler;
+    N24["TransferCoinCmd"]
+    class N24 command;
+
+    %% Relationships
+    N1 -->|sends| N3
+    N1 -->|sends| N4
+    N1 -->|sends| N5
+    N1 -->|sends| N6
+    N1 -->|sends| N7
+    N3 -->|execute| N8
+    N8 -->|publishes| N9
+    N8 -->|publishes| N10
+    N8 -->|publishes| N11
+    N8 -->|publishes| N12
+    N8 -->|publishes| N13
+    N4 -->|execute| N8
+    N5 -->|execute| N8
+    N6 -->|execute| N8
+    N7 -->|execute| N8
+    N9 -->|handles| N14
+    N14 -->|sends| N15
+    N14 -->|sends| N16
+    N10 -->|handles| N17
+    N17 -->|sends| N18
+    N11 -->|handles| N19
+    N19 -->|sends| N20
+    N12 -->|handles| N21
+    N21 -->|sends| N15
+    N21 -->|sends| N22
+    N13 -->|handles| N23
+    N23 -->|sends| N24
+    N23 -->|sends| N15
+
+    %% Styles
+    classDef controller fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,font-weight:bold;
+    classDef controllermethod fill:#e3f2fd,stroke:#1976d2,stroke-width:2px;
+    classDef command fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px,font-weight:bold;
+    classDef entitymethod fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px;
+    classDef domainevent fill:#fff3e0,stroke:#e65100,stroke-width:2px,font-style:italic;
+    classDef domaineventhandler fill:#fff3e0,stroke:#ef6c00,stroke-width:2px,font-weight:bold;

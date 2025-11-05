@@ -1,0 +1,37 @@
+flowchart TB
+
+    N1["postComment"]
+    class N1 controllermethod;
+    N2["CompatibleVideoCommentController"]
+    class N2 controller;
+    N3["PostCommentCmd"]
+    class N3 command;
+    N4["VideoComment.onCreate"]
+    class N4 entitymethod;
+    N5["CommentPostedDomainEvent"]
+    class N5 domainevent;
+    N6["CommentPostedDomainEventSubscriber.on"]
+    class N6 domaineventhandler;
+    N7["UpdateVideoStatisticsCmd"]
+    class N7 command;
+    N8["SendCommentMessageCmd"]
+    class N8 command;
+    N9["SendReplyMessageCmd"]
+    class N9 command;
+
+    %% Relationships
+    N1 -->|sends| N3
+    N3 -->|execute| N4
+    N4 -->|publishes| N5
+    N5 -->|handles| N6
+    N6 -->|sends| N7
+    N6 -->|sends| N8
+    N6 -->|sends| N9
+
+    %% Styles
+    classDef controller fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,font-weight:bold;
+    classDef controllermethod fill:#e3f2fd,stroke:#1976d2,stroke-width:2px;
+    classDef command fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px,font-weight:bold;
+    classDef entitymethod fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px;
+    classDef domainevent fill:#fff3e0,stroke:#e65100,stroke-width:2px,font-style:italic;
+    classDef domaineventhandler fill:#fff3e0,stroke:#ef6c00,stroke-width:2px,font-weight:bold;

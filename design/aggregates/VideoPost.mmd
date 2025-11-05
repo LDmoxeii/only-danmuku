@@ -1,0 +1,38 @@
+flowchart TB
+
+    N1["VideoPost.onCreate"]
+    class N1 entitymethod;
+    N2["VideoDraftCreatedDomainEvent"]
+    class N2 domainevent;
+    N3["VideoPost.onDelete"]
+    class N3 entitymethod;
+    N4["VideoPostDeletedDomainEvent"]
+    class N4 domainevent;
+    N5["VideoPost.reviewPass"]
+    class N5 entitymethod;
+    N6["VideoAuditPassedDomainEvent"]
+    class N6 domainevent;
+    N7["VideoPost.reviewFail"]
+    class N7 entitymethod;
+    N8["VideoAuditFailedDomainEvent"]
+    class N8 domainevent;
+    N9["VideoPost.adjustStatusAfterEdit"]
+    class N9 entitymethod;
+    N10["VideoPostTranscodingRequiredDomainEvent"]
+    class N10 domainevent;
+    N11["VideoPost.changeInteraction"]
+    class N11 entitymethod;
+    N12["VideoPostInteractionChangedDomainEvent"]
+    class N12 domainevent;
+
+    %% Relationships
+    N1 -->|publishes| N2
+    N3 -->|publishes| N4
+    N5 -->|publishes| N6
+    N7 -->|publishes| N8
+    N9 -->|publishes| N10
+    N11 -->|publishes| N12
+
+    %% Styles
+    classDef entitymethod fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px;
+    classDef domainevent fill:#fff3e0,stroke:#e65100,stroke-width:2px;font-style:italic;
