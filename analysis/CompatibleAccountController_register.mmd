@@ -1,0 +1,55 @@
+flowchart TB
+
+    N1["CompatibleAccountController.register"]
+    class N1 controllermethod;
+
+    C0["AccountRegister.Converter.toCmd"]
+    class C0 commandsender;
+    C1["RegisterAccountCmd"]
+    class C1 command;
+    A1["User.onCreate"]
+    class A1 entitymethod;
+    E1["UserCreatedDomainEvent"]
+    class E1 domainevent;
+
+    %% Event-driven follow-ups
+    CC2["CreateCustomerProfileCmd"]
+    class CC2 command;
+    AP2["CustomerProfileFactory.create → CustomerProfile.onCreate"]
+    class AP2 entitymethod;
+    EE2["CustomerProfileCreatedDomainEvent"]
+    class EE2 domainevent;
+
+    CC3["AddStatisticsInfoCmd"]
+    class CC3 command;
+    AP3["StatisticsFactory.create (init multiple types)"]
+    class AP3 entitymethod;
+
+    %% Relationships
+    N1 -->|maps| C0
+    C0 -->|sends| C1
+    C1 -->|executes| A1
+    A1 -->|publishes| E1
+    E1 -->|sends| CC2
+    CC2 -->|executes| AP2
+    AP2 -->|publishes| EE2
+    E1 -->|sends| CC3
+    CC3 -->|executes| AP3
+
+    %% Styles
+    classDef controller fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,font-weight:bold;
+    classDef controllermethod fill:#e3f2fd,stroke:#1976d2,stroke-width:2px;
+    classDef endpoint fill:#e3f2fd,stroke:#42a5f5,stroke-width:2px;
+    classDef commandsender fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,font-style:italic;
+    classDef commandsendermethod fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,font-style:italic;
+    classDef command fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px,font-weight:bold;
+    classDef commandhandler fill:#e8f5e8,stroke:#388e3c,stroke-width:2px,font-weight:bold;
+    classDef aggregate fill:#fff8e1,stroke:#ff8f00,stroke-width:3px,font-weight:bold;
+    classDef entitymethod fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px;
+    classDef domainevent fill:#fff3e0,stroke:#e65100,stroke-width:2px,font-style:italic;
+    classDef domaineventhandler fill:#fff3e0,stroke:#ef6c00,stroke-width:2px,font-weight:bold;
+    classDef integrationevent fill:#fce4ec,stroke:#880e4f,stroke-width:2px;
+    classDef integrationeventhandler fill:#fce4ec,stroke:#ad1457,stroke-width:2px,font-weight:bold;
+    classDef integrationeventconverter fill:#e3f2fd,stroke:#0277bd,stroke-width:2px;
+    classDef repo fill:#d6dbdf,stroke:#85929e,stroke-width:2px;
+    classDef uow fill:#f2f4f4,stroke:#7f8c8d,stroke-width:2px;
