@@ -10,10 +10,20 @@ flowchart TB
     E1["DanmukuPostedDomainEvent"]
     class E1 domainevent;
 
+    CC1["UpdateVideoStatisticsCmd"]
+    class CC1 command;
+    A2["Video.applyStatisticsDelta"]
+    class A2 entitymethod;
+    E2["VideoStatisticsDeltaAppliedDomainEvent"]
+    class E2 domainevent;
+
     %% Relationships
     N1 -->|sends| C1
     C1 -->|executes| A1
     A1 -->|publishes| E1
+    E1 -->|sends| CC1
+    CC1 -->|executes| A2
+    A2 -->|publishes| E2
 
     %% Styles
     classDef controller fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,font-weight:bold;
