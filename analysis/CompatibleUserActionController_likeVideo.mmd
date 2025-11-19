@@ -15,10 +15,14 @@ flowchart TB
     class CC1 command;
     AV1["Video.applyStatisticsDelta"]
     class AV1 entitymethod;
+    EV1["VideoStatisticsDeltaAppliedDomainEvent"]
+    class EV1 domainevent;
     CC2["SendLikeMessageCmd"]
     class CC2 command;
     AM1["CustomerMessageFactory.create"]
     class AM1 entitymethod;
+    EM1["CustomerMessageLikeCreatedDomainEvent"]
+    class EM1 domainevent;
 
     %% Cancel branch (remove existing like)
     A2["CustomerAction.onDelete (type=LIKE_VIDEO)"]
@@ -42,6 +46,10 @@ flowchart TB
     A2 -->|publishes| E2
     E2 -->|sends| CC3
     CC3 -->|executes| AV2
+
+    AV1 -->|publishes| EV1
+    AV2 -->|publishes| EV1
+    AM1 -->|publishes| EM1
     %% Styles
     classDef controller fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,font-weight:bold;
     classDef controllermethod fill:#e3f2fd,stroke:#1976d2,stroke-width:2px;
