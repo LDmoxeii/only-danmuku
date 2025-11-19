@@ -14,18 +14,35 @@ flowchart TB
     %% Update flow
     C2["UpdateVideoPostCmd"]
     class C2 command;
-    A2["VideoPost.applyBasicInfo + applyFileEdits + adjustStatusAfterEdit"]
-    class A2 entitymethod;
+    A2a["VideoPost.applyBasicInfo"]
+    class A2a entitymethod;
+    A2b["VideoPost.applyFileEdits"]
+    class A2b entitymethod;
+    A2c["VideoPost.adjustStatusAfterEdit"]
+    class A2c entitymethod;
     E2["VideoPostTranscodingRequiredDomainEvent"]
     class E2 domainevent;
+
+    %% Transcode command & file event (triggered by both E1 and E2)
+    C3["TranscodeAllTranscodingFilesCmd"]
+    class C3 command;
+    E3["VideoFileDraftTranscodedDomainEvent"]
+    class E3 domainevent;
 
     %% Relationships
     N1 -->|sends| C1
     N1 -->|sends| C2
     C1 -->|executes| A1
     A1 -->|publishes| E1
-    C2 -->|executes| A2
-    A2 -->|publishes| E2
+    C2 -->|executes| A2a
+    C2 -->|executes| A2b
+    C2 -->|executes| A2c
+    A2c -->|publishes| E2
+
+    %% Event -> Command -> Event for transcoding
+    E1 -->|sends| C3
+    E2 -->|sends| C3
+    C3 -->|publishes| E3
 
     %% Styles
     classDef controller fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,font-weight:bold;

@@ -7,6 +7,7 @@ import edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity
 import edu.only4.danmuku.domain.aggregates.video_post.enums.TransferResult
 import edu.only4.danmuku.domain.aggregates.video_post.enums.UpdateType
 import edu.only4.danmuku.domain.aggregates.video_post.events.VideoFileDraftTranscodedDomainEvent
+import edu.only4.danmuku.domain.aggregates.video_post.ports.VideoFileTranscodePort
 
 import jakarta.persistence.*
 import jakarta.persistence.Table
@@ -229,7 +230,7 @@ class VideoFilePost(
      */
     fun transcode(
         videoPostId: Long,
-        port: edu.only4.danmuku.domain.aggregates.video_post.ports.VideoFileTranscodePort,
+        port: VideoFileTranscodePort,
     ) {
         // 1) 解析目录
         val tempDir = port.resolveTempDir(this.uploadId)
