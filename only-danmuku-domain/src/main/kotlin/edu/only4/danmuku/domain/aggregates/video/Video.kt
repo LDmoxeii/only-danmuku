@@ -9,6 +9,7 @@ import edu.only4.danmuku.domain.aggregates.video.enums.RecommendType
 import edu.only4.danmuku.domain.aggregates.video.events.VideoBasicsSyncedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video.events.VideoCreatedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video.events.VideoDeletedDomainEvent
+import edu.only4.danmuku.domain.aggregates.video.events.VideoLastPlayTimeAttachedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video.events.VideoRecommendedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video.events.VideoStatisticsDeltaAppliedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video.events.VideoUnrecommendedDomainEvent
@@ -302,6 +303,8 @@ class Video(
 
     fun attachLastPlayTime(toEpochSecond: Long) {
         this.lastPlayTime = toEpochSecond
+
+        events().attach(this) { VideoLastPlayTimeAttachedDomainEvent(entity = this) }
     }
 
     /**

@@ -1,8 +1,11 @@
 package edu.only4.danmuku.domain.aggregates.video_play_history
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
+import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
 
 import edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity
+import edu.only4.danmuku.domain.aggregates.videoplayhistory.events.VideoPlayHistoryCreatedDomainEvent
+import edu.only4.danmuku.domain.aggregates.videoplayhistory.events.VideoPlayHistoryProgressUpdatedDomainEvent
 
 import jakarta.persistence.*
 import jakarta.persistence.Table
@@ -71,9 +74,15 @@ class VideoPlayHistory(
 
     // 【行为方法开始】
 
+    fun onCreate() {
+        events().attach(this) { VideoPlayHistoryCreatedDomainEvent(this) }
+    }
+
     fun updatePlayProgress(newFileIndex: Int, at: Long) {
         this.fileIndex = newFileIndex
         this.updateTime = at
+
+        events().attach(this) { VideoPlayHistoryProgressUpdatedDomainEvent(this) }
     }
 
     // 【行为方法结束】
