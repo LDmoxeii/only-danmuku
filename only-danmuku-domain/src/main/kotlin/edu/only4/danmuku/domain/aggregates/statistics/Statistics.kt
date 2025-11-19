@@ -1,9 +1,11 @@
 package edu.only4.danmuku.domain.aggregates.statistics
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
+import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
 
 import edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity
 import edu.only4.danmuku.domain.aggregates.statistics.enums.StatisticsDataType
+import edu.only4.danmuku.domain.aggregates.statistics.events.StatisticsCountUpdatedDomainEvent
 
 import jakarta.persistence.*
 import jakarta.persistence.Table
@@ -96,6 +98,9 @@ class Statistics(
      */
     fun updateCount(delta: Int) {
         this.statisticsCount = (this.statisticsCount ?: 0) + delta
+
+        events().attach(this) { StatisticsCountUpdatedDomainEvent(this) }
+
     }
 
     // 【行为方法结束】
