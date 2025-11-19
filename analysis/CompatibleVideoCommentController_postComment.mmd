@@ -10,10 +10,41 @@ flowchart TB
     E1["CommentPostedDomainEvent"]
     class E1 domainevent;
 
+    CC1["UpdateVideoStatisticsCmd"]
+    class CC1 command;
+    AV1["Video.applyStatisticsDelta"]
+    class AV1 entitymethod;
+    EV1["VideoStatisticsDeltaAppliedDomainEvent"]
+    class EV1 domainevent;
+
+    CC2["SendCommentMessageCmd"]
+    class CC2 command;
+    CC3["SendReplyMessageCmd"]
+    class CC3 command;
+    AM1["CustomerMessageFactory.create"]
+    class AM1 entitymethod;
+    EM1["CustomerMessageCommentMentionCreatedDomainEvent"]
+    class EM1 domainevent;
+    EM2["CustomerMessageCommentReplyCreatedDomainEvent"]
+    class EM2 domainevent;
+
     %% Relationships
     N1 -->|sends| C1
     C1 -->|executes| A1
     A1 -->|publishes| E1
+
+    E1 -->|sends| CC1
+    E1 -->|sends| CC2
+    E1 -->|sends| CC3
+
+    CC1 -->|executes| AV1
+    AV1 -->|publishes| EV1
+
+    CC2 -->|executes| AM1
+    CC3 -->|executes| AM1
+
+    AM1 -->|publishes| EM1
+    AM1 -->|publishes| EM2
 
     %% Styles
     classDef controller fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,font-weight:bold;
