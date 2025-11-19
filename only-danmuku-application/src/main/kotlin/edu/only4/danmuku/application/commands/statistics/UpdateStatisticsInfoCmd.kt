@@ -1,11 +1,11 @@
 package edu.only4.danmuku.application.commands.statistics
 
-import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
-import com.only4.cap4k.ddd.core.application.command.Command
+import com.only4.cap4k.ddd.core.application.command.NoneResultCommandParam
 import edu.only4.danmuku.domain._share.meta.statistics.SStatistics
 import edu.only4.danmuku.domain.aggregates.statistics.enums.StatisticsDataType
+import edu.only4.danmuku.domain.aggregates.statistics.factory.StatisticsFactory
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 import java.time.ZoneId
@@ -21,8 +21,8 @@ import kotlin.jvm.optionals.getOrNull
 object UpdateStatisticsInfoCmd {
 
     @Service
-    class Handler : Command<Request, Response> {
-        override fun exec(request: Request): Response {
+    class Handler : NoneResultCommandParam<Request>() {
+        override fun exec(request: Request) {
             val today = LocalDate.now()
                 .atStartOfDay(ZoneId.systemDefault())
                 .toEpochSecond()
@@ -36,13 +36,18 @@ object UpdateStatisticsInfoCmd {
             }
 
             val statistics = Mediator.repositories.findOne(predicate)
-                .getOrNull() ?: throw KnownException("统计不存在")
+                .getOrNull() ?: Mediator.factories.create(
+                StatisticsFactory.Payload(
+                    customerId = request.customerId,
+                    dataType = request.dataType,
+                    statisticsCount = 0,
+                    statisticsDate = today
+                )
+            )
 
             statistics.updateCount(request.countDelta)
 
             Mediator.uow.save()
-
-            return Response()
         }
 
     }
@@ -51,8 +56,6 @@ object UpdateStatisticsInfoCmd {
         val customerId: Long,
         val dataType: StatisticsDataType,
         val countDelta: Int = 1
-    ) : RequestParam<Response>
+    ) : RequestParam<Unit>
 
-    class Response(
-    )
 }

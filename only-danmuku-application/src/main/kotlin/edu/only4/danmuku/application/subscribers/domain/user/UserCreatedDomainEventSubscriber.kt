@@ -3,9 +3,7 @@ package edu.only4.danmuku.application.subscribers.domain.user
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.application._share.config.properties.SysSettingProperties
 import edu.only4.danmuku.application.commands.customer_profile.CreateCustomerProfileCmd
-import edu.only4.danmuku.application.commands.statistics.AddStatisticsInfoCmd
 import edu.only4.danmuku.domain.aggregates.user.events.UserCreatedDomainEvent
-
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Service
 
@@ -31,16 +29,6 @@ class UserCreatedDomainEventSubscriber(
                 nickName = user.nickName,
                 email = user.email,
                 registerCoinCount = sysSettingProperties.registerCoinCount
-            )
-        )
-    }
-
-    @EventListener(UserCreatedDomainEvent::class)
-    fun on1(event: UserCreatedDomainEvent) {
-        val user = event.entity
-        Mediator.commands.send(
-            AddStatisticsInfoCmd.Request(
-                customerId = user.id
             )
         )
     }
