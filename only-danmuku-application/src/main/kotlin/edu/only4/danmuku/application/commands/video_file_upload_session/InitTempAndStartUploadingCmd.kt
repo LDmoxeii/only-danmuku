@@ -15,6 +15,7 @@ import java.time.format.DateTimeFormatter
 import kotlin.jvm.optionals.getOrNull
 
 /**
+ * TODO： 这个应该属于防腐端而不是命令，后续调整
  * 初始化临时文件并标记开始上传
  *
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
