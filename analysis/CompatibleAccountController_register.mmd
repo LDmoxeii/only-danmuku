@@ -15,15 +15,16 @@ flowchart TB
     %% Event-driven follow-ups
     CC2["CreateCustomerProfileCmd"]
     class CC2 command;
-    AP2["CustomerProfileFactory.create → CustomerProfile.onCreate"]
+    AP2["CustomerProfile.onCreate"]
     class AP2 entitymethod;
     EE2["CustomerProfileCreatedDomainEvent"]
     class EE2 domainevent;
-
-    CC3["AddStatisticsInfoCmd"]
+    CC3["RelationProfileCmd"]
     class CC3 command;
-    AP3["StatisticsFactory.create (init multiple types)"]
-    class AP3 entitymethod;
+    A3["User.bindingRelationship"]
+    class A3 entitymethod;
+    E3["RelationshipBoundDomainEvent"]
+    class E3 domainevent;
 
     %% Relationships
     N1 -->|maps| C0
@@ -33,8 +34,9 @@ flowchart TB
     E1 -->|sends| CC2
     CC2 -->|executes| AP2
     AP2 -->|publishes| EE2
-    E1 -->|sends| CC3
-    CC3 -->|executes| AP3
+    EE2 -->|sends| CC3
+    CC3 -->|executes| A3
+    A3 -->|publishes| E3
 
     %% Styles
     classDef controller fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,font-weight:bold;

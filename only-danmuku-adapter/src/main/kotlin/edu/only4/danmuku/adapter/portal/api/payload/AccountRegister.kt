@@ -8,11 +8,6 @@ import jakarta.validation.constraints.Size
 import org.mapstruct.Mapper
 import org.mapstruct.factory.Mappers
 
-/**
- * 用户注册接口载荷
- *
- * @see edu.only4.danmuku.adapter.portal.api.AccountController.register
- */
 object AccountRegister {
 
     /**

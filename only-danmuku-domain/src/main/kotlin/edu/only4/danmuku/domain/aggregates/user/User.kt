@@ -9,10 +9,12 @@ import edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity
 import edu.only4.danmuku.domain.aggregates.user.enums.UserType
 import edu.only4.danmuku.domain.aggregates.user.events.AccountDisabledDomainEvent
 import edu.only4.danmuku.domain.aggregates.user.events.AccountEnabledDomainEvent
+import edu.only4.danmuku.domain.aggregates.user.events.RelationshipBoundDomainEvent
 import edu.only4.danmuku.domain.aggregates.user.events.UserCreatedDomainEvent
 
 import jakarta.persistence.*
 import jakarta.persistence.Table
+import org.aspectj.asm.internal.Relationship
 
 import org.hibernate.annotations.DynamicInsert
 import org.hibernate.annotations.DynamicUpdate
@@ -55,7 +57,10 @@ class User(
      */
     @Id
     @GeneratedValue(generator = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator")
-    @GenericGenerator(name = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator", strategy = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator")
+    @GenericGenerator(
+        name = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator",
+        strategy = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator"
+    )
     @Column(name = "`id`", insertable = false, updatable = false)
     var id: Long = id
         internal set
@@ -169,6 +174,7 @@ class User(
 
     fun bindingRelationship(relatedId: Long) {
         this.relatedId = relatedId
+        events().attach(this) { RelationshipBoundDomainEvent(entity = this) }
     }
 
     // 【行为方法结束】
