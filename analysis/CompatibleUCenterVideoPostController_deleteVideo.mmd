@@ -10,10 +10,74 @@ flowchart TB
     E1["VideoPostDeletedDomainEvent"]
     class E1 domainevent;
 
+    %% Event-driven follow-ups
+    C2["DeleteVideoCmd"]
+    class C2 command;
+    C3["AdjustAuthorCoinAfterDeleteCmd"]
+    class C3 command;
+
+    A2["Video.onDelete (for each)"]
+    class A2 entitymethod;
+    E2["VideoDeletedDomainEvent"]
+    class E2 domainevent;
+
+    AP1["CustomerProfile.reclaimRewardCoins"]
+    class AP1 entitymethod;
+    EP1["CustomerProfileRewardCoinsReclaimedDomainEvent"]
+    class EP1 domainevent;
+
+    C5["BatchDeleteDanmukuCmd"]
+    class C5 command;
+    C6["BatchDeleteCommentCmd"]
+    class C6 command;
+
+    AD1["VideoDanmuku.onDelete (for each)"]
+    class AD1 entitymethod;
+    ED1["DanmukuDeletedDomainEvent"]
+    class ED1 domainevent;
+
+    AC1["VideoComment.onDelete (for each)"]
+    class AC1 entitymethod;
+    EC1["CommentDeletedDomainEvent"]
+    class EC1 domainevent;
+
+    C7["UpdateVideoStatisticsCmd"]
+    class C7 command;
+    AV1["Video.applyStatisticsDelta"]
+    class AV1 entitymethod;
+    EV1["VideoStatisticsDeltaAppliedDomainEvent"]
+    class EV1 domainevent;
+
     %% Relationships
     N1 -->|sends| C1
     C1 -->|executes| A1
     A1 -->|publishes| E1
+
+    %% From VideoPostDeletedDomainEvent
+    E1 -->|sends| C2
+    E1 -->|sends| C3
+
+    C2 -->|executes| A2
+    A2 -->|publishes| E2
+
+    C3 -->|executes| AP1
+    AP1 -->|publishes| EP1
+
+    %% From VideoDeletedDomainEvent
+    E2 -->|sends| C5
+    E2 -->|sends| C6
+
+    C5 -->|executes| AD1
+    AD1 -->|publishes| ED1
+
+    C6 -->|executes| AC1
+    AC1 -->|publishes| EC1
+
+    %% Update statistics after comment/danmuku deletion
+    ED1 -->|sends| C7
+    EC1 -->|sends| C7
+    C7 -->|executes| AV1
+    AV1 -->|publishes| EV1
 
     %% Styles
     classDef controller fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,font-weight:bold;
