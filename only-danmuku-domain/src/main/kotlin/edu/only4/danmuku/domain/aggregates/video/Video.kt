@@ -11,6 +11,7 @@ import edu.only4.danmuku.domain.aggregates.video.events.VideoCreatedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video.events.VideoDeletedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video.events.VideoRecommendedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video.events.VideoStatisticsDeltaAppliedDomainEvent
+import edu.only4.danmuku.domain.aggregates.video.events.VideoUnrecommendedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video_post.VideoPost
 
 import jakarta.persistence.*
@@ -261,6 +262,7 @@ class Video(
         if (this.recommendType == RecommendType.RECOMMEND) {
             // 当前是推荐状态，切换为未推荐
             this.recommendType = RecommendType.NOT_RECOMMEND
+            events().attach(this) { VideoUnrecommendedDomainEvent(entity = this) }
         } else {
             // 当前是未推荐状态，切换为推荐
             this.recommendType = RecommendType.RECOMMEND
