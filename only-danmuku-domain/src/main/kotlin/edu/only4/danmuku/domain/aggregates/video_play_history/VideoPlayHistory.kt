@@ -4,8 +4,8 @@ import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
 
 import edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity
-import edu.only4.danmuku.domain.aggregates.videoplayhistory.events.VideoPlayHistoryCreatedDomainEvent
-import edu.only4.danmuku.domain.aggregates.videoplayhistory.events.VideoPlayHistoryProgressUpdatedDomainEvent
+import edu.only4.danmuku.domain.aggregates.video_play_history.events.VideoPlayHistoryCreatedDomainEvent
+import edu.only4.danmuku.domain.aggregates.video_play_history.events.VideoPlayHistoryProgressUpdatedDomainEvent
 
 import jakarta.persistence.*
 import jakarta.persistence.Table
