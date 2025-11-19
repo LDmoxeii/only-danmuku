@@ -9,6 +9,7 @@ import edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity
 import edu.only4.danmuku.domain.aggregates.user.enums.UserType
 import edu.only4.danmuku.domain.aggregates.user.events.AccountDisabledDomainEvent
 import edu.only4.danmuku.domain.aggregates.user.events.AccountEnabledDomainEvent
+import edu.only4.danmuku.domain.aggregates.user.events.LoginInfoUpdatedDomainEvent
 import edu.only4.danmuku.domain.aggregates.user.events.RelationshipBoundDomainEvent
 import edu.only4.danmuku.domain.aggregates.user.events.UserCreatedDomainEvent
 
@@ -170,6 +171,8 @@ class User(
     fun updateLoginInfo(loginTime: Long, loginIp: String) {
         this.lastLoginTime = loginTime
         this.lastLoginIp = loginIp
+
+        events().attach(this) { LoginInfoUpdatedDomainEvent(this) }
     }
 
     fun bindingRelationship(relatedId: Long) {
