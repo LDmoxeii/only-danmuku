@@ -6,6 +6,7 @@ import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
 import edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity
 import edu.only4.danmuku.domain.aggregates.video_file_upload_session.enums.UploadStatus
 import edu.only4.danmuku.domain.aggregates.video_file_upload_session.events.UploadSessionCreatedDomainEvent
+import edu.only4.danmuku.domain.aggregates.video_file_upload_session.events.UploadSessionAbortedDomainEvent
 
 import jakarta.persistence.*
 
@@ -189,6 +190,8 @@ class VideoFileUploadSession(
     fun abort(now: Long) {
         this.status = UploadStatus.ABORTED
         this.updateTime = now
+
+        events().attach(this) { UploadSessionAbortedDomainEvent(this)}
     }
 
     /**
