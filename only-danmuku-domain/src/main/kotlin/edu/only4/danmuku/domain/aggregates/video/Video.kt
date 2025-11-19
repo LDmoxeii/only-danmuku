@@ -9,6 +9,7 @@ import edu.only4.danmuku.domain.aggregates.video.enums.RecommendType
 import edu.only4.danmuku.domain.aggregates.video.events.VideoBasicsSyncedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video.events.VideoCreatedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video.events.VideoDeletedDomainEvent
+import edu.only4.danmuku.domain.aggregates.video.events.VideoInteractionChangedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video.events.VideoLastPlayTimeAttachedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video.events.VideoRecommendedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video.events.VideoStatisticsDeltaAppliedDomainEvent
@@ -274,6 +275,8 @@ class Video(
     /** 修改互动设置 */
     fun changeInteraction(newInteraction: String?) {
         this.interaction = newInteraction
+
+        events().attach(this) { VideoInteractionChangedDomainEvent(this) }
     }
 
     fun applyStatisticsDelta(

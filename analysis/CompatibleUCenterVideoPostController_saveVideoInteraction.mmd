@@ -10,10 +10,21 @@ flowchart TB
     E1["VideoPostInteractionChangedDomainEvent"]
     class E1 domainevent;
 
+    C2["ChangeVideoInteractionCmd"]
+    class C2 command;
+    A2["Video.changeInteraction"]
+    class A2 entitymethod;
+    E2["VideoInteractionChangedDomainEvent"]
+    class E2 domainevent;
+
     %% Relationships
     N1 -->|sends| C1
     C1 -->|executes| A1
     A1 -->|publishes| E1
+
+    E1 -->|sends| C2
+    C2 -->|executes| A2
+    A2 -->|publishes| E2
 
     %% Styles
     classDef controller fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,font-weight:bold;
