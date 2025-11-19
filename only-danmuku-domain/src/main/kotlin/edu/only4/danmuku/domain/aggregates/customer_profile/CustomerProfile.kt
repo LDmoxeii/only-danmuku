@@ -8,6 +8,7 @@ import edu.only4.danmuku.domain.aggregates.customer_profile.enums.SexType
 import edu.only4.danmuku.domain.aggregates.customer_profile.enums.ThemeType
 import edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerProfileCoinsRewardedDomainEvent
 import edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerProfileCreatedDomainEvent
+import edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerProfileRewardCoinsReclaimedDomainEvent
 
 import jakarta.persistence.*
 import jakarta.persistence.Table
@@ -198,6 +199,8 @@ class CustomerProfile(
         val deduction = amount.coerceAtLeast(this.currentCoinCount)
         this.currentCoinCount -= deduction
         this.totalCoinCount = (this.totalCoinCount - deduction).coerceAtLeast(0)
+
+        events().attach(this) { CustomerProfileRewardCoinsReclaimedDomainEvent(this, deduction) }
     }
 
 

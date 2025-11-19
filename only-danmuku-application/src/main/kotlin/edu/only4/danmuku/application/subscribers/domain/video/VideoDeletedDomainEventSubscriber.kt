@@ -1,9 +1,9 @@
 package edu.only4.danmuku.application.subscribers.domain.video
 
 import com.only4.cap4k.ddd.core.Mediator
-import edu.only4.danmuku.application.commands.video.RemoveVideoSearchIndexCmd
 import edu.only4.danmuku.application.commands.video_comment.BatchDeleteCommentCmd
 import edu.only4.danmuku.application.commands.video_danmuku.BatchDeleteDanmukuCmd
+import edu.only4.danmuku.application.distributed.clients.RemoveVideoSearchIndexCli
 import edu.only4.danmuku.domain.aggregates.video.events.VideoDeletedDomainEvent
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Service
@@ -22,8 +22,8 @@ class VideoDeletedDomainEventSubscriber {
     @EventListener(VideoDeletedDomainEvent::class)
     fun removeSearchIndex(event: VideoDeletedDomainEvent) {
         val video = event.entity
-        Mediator.commands.send(
-            RemoveVideoSearchIndexCmd.Request(
+        Mediator.requests.send(
+            RemoveVideoSearchIndexCli.Request(
                 videoId = video.id,
             )
         )
