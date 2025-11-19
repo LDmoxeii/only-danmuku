@@ -17,6 +17,8 @@ flowchart TB
     class CC2 command;
     AV1["Video.applyStatisticsDelta"]
     class AV1 entitymethod;
+    EV1["VideoStatisticsDeltaAppliedDomainEvent"]
+    class EV1 domainevent;
 
     %% Relationships
     N1 -->|sends| C1
@@ -26,6 +28,7 @@ flowchart TB
     CC1 -->|executes| AP1
     E1 -->|sends| CC2
     CC2 -->|executes| AV1
+    AV1 -->|publishes| EV1
     %% Styles
     classDef controller fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,font-weight:bold;
     classDef controllermethod fill:#e3f2fd,stroke:#1976d2,stroke-width:2px;
