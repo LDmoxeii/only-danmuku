@@ -9,6 +9,7 @@ import edu.only4.danmuku.domain.aggregates.video.enums.RecommendType
 import edu.only4.danmuku.domain.aggregates.video.events.VideoCreatedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video.events.VideoDeletedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video.events.VideoRecommendedDomainEvent
+import edu.only4.danmuku.domain.aggregates.video.events.VideoStatisticsDeltaAppliedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video_post.VideoPost
 
 import jakarta.persistence.*
@@ -292,6 +293,8 @@ class Video(
         commentCount = commentCount.applyDelta(commentCountDelta)
         coinCount = coinCount.applyDelta(coinCountDelta)
         collectCount = collectCount.applyDelta(collectCountDelta)
+
+        events().attach(this) { VideoStatisticsDeltaAppliedDomainEvent(entity = this) }
     }
 
     fun attachLastPlayTime(toEpochSecond: Long) {
