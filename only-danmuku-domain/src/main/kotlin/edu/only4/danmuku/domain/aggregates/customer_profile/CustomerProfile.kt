@@ -6,9 +6,12 @@ import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
 import edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity
 import edu.only4.danmuku.domain.aggregates.customer_profile.enums.SexType
 import edu.only4.danmuku.domain.aggregates.customer_profile.enums.ThemeType
+import edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerAvatarUpdatedDomainEvent
+import edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerNicknameUpdatedDomainEvent
 import edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerProfileCoinsRewardedDomainEvent
 import edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerProfileCreatedDomainEvent
 import edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerProfileRewardCoinsReclaimedDomainEvent
+import edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerProfileUpdatedDomainEvent
 
 import jakarta.persistence.*
 import jakarta.persistence.Table
@@ -223,22 +226,16 @@ class CustomerProfile(
         noticeInfo: String? = null,
         theme: ThemeType? = null,
     ) {
-        val oldNick = this.nickName
-        val oldAvatar = this.avatar
-        var changed = false
-
         nickName?.let {
             if (it != this.nickName) {
                 this.nickName = it
-                changed = true
-                events().attach(this) { edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerNicknameUpdatedDomainEvent(this) }
+                events().attach(this) { CustomerNicknameUpdatedDomainEvent(this) }
             }
         }
         avatar?.let {
             if (it != this.avatar) {
                 this.avatar = it
-                changed = true
-                events().attach(this) { edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerAvatarUpdatedDomainEvent(this) }
+                events().attach(this) { CustomerAvatarUpdatedDomainEvent(this) }
             }
         }
         sex?.let { this.sex = it }
@@ -248,9 +245,7 @@ class CustomerProfile(
         noticeInfo?.let { this.noticeInfo = it }
         theme?.let { this.theme = it }
 
-        if (changed || oldNick != this.nickName || oldAvatar != this.avatar) {
-            events().attach(this) { edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerProfileUpdatedDomainEvent(this) }
-        }
+        events().attach(this) { CustomerProfileUpdatedDomainEvent(this) }
     }
 
     // 【行为方法结束】
