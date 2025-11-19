@@ -4,8 +4,12 @@ import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
 
 import edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity
+import edu.only4.danmuku.domain.aggregates.category.events.CategoryBasicInfoUpdatedDomainEvent
+import edu.only4.danmuku.domain.aggregates.category.events.CategoryCodeChangedDomainEvent
 import edu.only4.danmuku.domain.aggregates.category.events.CategoryCreatedDomainEvent
 import edu.only4.danmuku.domain.aggregates.category.events.CategoryDeletedDomainEvent
+import edu.only4.danmuku.domain.aggregates.category.events.CategoryNodePathUpdatedDomainEvent
+import edu.only4.danmuku.domain.aggregates.category.events.CategoryParentChangedDomainEvent
 import edu.only4.danmuku.domain.aggregates.category.events.CategorySortChangedDomainEvent
 
 import jakarta.persistence.*
@@ -134,6 +138,8 @@ class Category(
         this.name = newName
         this.icon = newIcon
         this.background = newBackground
+
+        events().attach(this) { CategoryBasicInfoUpdatedDomainEvent(this) }
     }
 
     fun changeParent(newParentId: Long, parentCategory: Category?): Pair<String, String> {
@@ -143,12 +149,14 @@ class Category(
         val newParentPath = parentCategory?.nodePath ?: ""
         updateNodePath(newParentPath)
 
+        events().attach(this) { CategoryParentChangedDomainEvent(this) }
         return Pair(oldPath, this.nodePath)
     }
 
     fun changeCode(newCode: String) {
         // 修改编码不再影响路径（路径改为基于ID）
         this.code = newCode
+        events().attach(this) { CategoryCodeChangedDomainEvent(this) }
     }
 
     fun isParentChanged(newParentId: Long): Boolean {
@@ -177,6 +185,8 @@ class Category(
         } else {
             "$parentPath$id/"  // 子节点：/1/101/
         }
+
+        events().attach(this) { CategoryNodePathUpdatedDomainEvent(this) }
     }
 
     /**
