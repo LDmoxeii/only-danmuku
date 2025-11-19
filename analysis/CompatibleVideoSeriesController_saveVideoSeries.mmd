@@ -6,9 +6,7 @@ flowchart TB
     %% Create branch
     C1["CreateCustomerVideoSeriesCmd"]
     class C1 command;
-    A1["CustomerVideoSeriesFactory.create -> CustomerVideoSeries"]
-    class A1 entitymethod;
-    A1b["CustomerVideoSeries.replaceVideos (optional)"]
+    A1["CustomerVideoSeriesFactory.create"]
     class A1 entitymethod;
 
     %% Update branch (info)
@@ -26,7 +24,6 @@ flowchart TB
     %% Relationships
     N1 -->|create| C1
     C1 -->|executes| A1
-    A1 --> A1b
 
     N1 -->|update info| C2
     C2 -->|executes| A2
