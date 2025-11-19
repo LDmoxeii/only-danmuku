@@ -4,9 +4,9 @@ import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
-import edu.only4.danmuku.application.validator.NotDuplicateCoin
 import edu.only4.danmuku.application.validator.NotSelfCoin
 import edu.only4.danmuku.application.validator.SufficientCoinBalance
+import edu.only4.danmuku.application.validator.UniqueCustomerActionType
 import edu.only4.danmuku.application.validator.VideoExists
 import edu.only4.danmuku.domain._share.meta.video.SVideo
 import edu.only4.danmuku.domain.aggregates.customer_action.enums.ActionType
@@ -52,7 +52,7 @@ object GiveVideoCoinCmd {
     }
 
     @NotSelfCoin(userIdField = "customerId", videoIdField = "videoId")
-    @NotDuplicateCoin(userIdField = "customerId", videoIdField = "videoId")
+    @UniqueCustomerActionType(message = "该视频已投过币")
     @SufficientCoinBalance(userIdField = "customerId", coinCountField = "coinCount")
     data class Request(
         @field:VideoExists
@@ -60,7 +60,8 @@ object GiveVideoCoinCmd {
         val customerId: Long,
         @field:Min(1, message = "投币数量至少为1")
         @field:Max(2, message = "投币数量最多为2")
-        val coinCount: Int
+        val coinCount: Int,
+        val actionType: ActionType = ActionType.COIN_VIDEO
     ) : RequestParam<Response>
 
     data class Response(

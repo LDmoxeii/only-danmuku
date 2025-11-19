@@ -3,7 +3,7 @@ package edu.only4.danmuku.application.commands.category
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.NoneResultCommandParam
-import edu.only4.danmuku.application.validator.CategoryExists
+import edu.only4.danmuku.application.validator.CategoryMustExist
 import edu.only4.danmuku.application.validator.UniqueCategoryCode
 import edu.only4.danmuku.domain.aggregates.category.factory.CategoryFactory
 import org.springframework.stereotype.Service
@@ -40,7 +40,7 @@ object CreateCategoryCmd {
 
     @UniqueCategoryCode
     data class Request(
-        @field:CategoryExists
+        @field:CategoryMustExist
         val parentId: Long = 0L,
         val code: String,
         val name: String,

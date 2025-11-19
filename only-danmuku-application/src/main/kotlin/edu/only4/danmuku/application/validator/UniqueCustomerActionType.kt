@@ -56,7 +56,7 @@ annotation class UniqueCustomerActionType(
 
             // 读取唯一字段值
             val videoId = props[videoIdProperty]?.getter?.call(value) as? Long?
-            val commentId = props[commentIdProperty]?.getter?.call(value) as? Long??
+            val commentId = props[commentIdProperty]?.getter?.call(value) as? Long?
             val actionType = props[actionTypeProperty]?.getter?.call(value) as? ActionType?
             val customerId = props[customerIdProperty]?.getter?.call(value) as? Long?
 

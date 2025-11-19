@@ -19,7 +19,7 @@ class CustomerUnlikedVideoDomainEventSubscriber {
     fun on(event: CustomerUnlikedVideoDomainEvent) {
         Mediator.commands.send(
             UpdateVideoStatisticsCmd.Request(
-                videoId = event.entity.videoId.toLong(),
+                videoId = event.entity.videoId,
                 likeCountDelta = -1
             )
         )

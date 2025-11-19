@@ -19,8 +19,8 @@ class CustomerCoinGivenDomainEventSubscriber {
         val action = event.entity
         Mediator.commands.send(
             TransferCoinCmd.Request(
-                senderUserId = action.customerId.toLong(),
-                receiverUserId = action.videoOwnerId.toLong(),
+                senderUserId = action.customerId,
+                receiverUserId = action.videoOwnerId,
                 amount = action.actionCount
             )
         )
@@ -33,7 +33,7 @@ class CustomerCoinGivenDomainEventSubscriber {
 
         Mediator.commands.send(
             UpdateVideoStatisticsCmd.Request(
-                videoId = action.videoId.toLong(),
+                videoId = action.videoId,
                 coinCountDelta = action.actionCount
             )
         )

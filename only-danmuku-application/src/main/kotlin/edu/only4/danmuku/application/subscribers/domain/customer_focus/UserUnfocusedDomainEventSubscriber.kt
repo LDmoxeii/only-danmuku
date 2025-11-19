@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service
 @Service
 class UserUnfocusedDomainEventSubscriber {
 
-//    @EventListener(UserUnfocusedDomainEvent::class)
+    @EventListener(UserUnfocusedDomainEvent::class)
     fun on(event: UserUnfocusedDomainEvent) {
         val entity = event.entity
 

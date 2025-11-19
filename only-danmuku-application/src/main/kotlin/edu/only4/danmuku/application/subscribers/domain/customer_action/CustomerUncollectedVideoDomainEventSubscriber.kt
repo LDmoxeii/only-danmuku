@@ -20,7 +20,7 @@ class CustomerUncollectedVideoDomainEventSubscriber {
         // 发送更新视频统计数据命令，将收藏数减1
         Mediator.commands.send(
             UpdateVideoStatisticsCmd.Request(
-                videoId = event.entity.videoId.toLong(),
+                videoId = event.entity.videoId,
                 collectCountDelta = -1
             )
         )
