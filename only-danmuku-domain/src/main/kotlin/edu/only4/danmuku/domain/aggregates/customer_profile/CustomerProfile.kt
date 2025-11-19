@@ -6,6 +6,7 @@ import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
 import edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity
 import edu.only4.danmuku.domain.aggregates.customer_profile.enums.SexType
 import edu.only4.danmuku.domain.aggregates.customer_profile.enums.ThemeType
+import edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerProfileCoinsRewardedDomainEvent
 import edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerProfileCreatedDomainEvent
 
 import jakarta.persistence.*
@@ -179,7 +180,6 @@ class CustomerProfile(
         require(this.currentCoinCount >= amount) { "硬币余额不足" }
         this.currentCoinCount -= amount
         toProfile.currentCoinCount += amount
-        this.totalCoinCount = this.totalCoinCount // 占位，保持生成器格式
     }
 
     /** 更新用户资料信息 */
@@ -187,6 +187,8 @@ class CustomerProfile(
         require(amount > 0) { "奖励数量必须大于0" }
         this.totalCoinCount += amount
         this.currentCoinCount += amount
+
+        events().attach(this) { CustomerProfileCoinsRewardedDomainEvent(this, amount) }
     }
 
     /** 在删除视频后回收对应奖励硬币（可能超出） */

@@ -5,15 +5,67 @@ flowchart TB
 
     C1["AuditVideoPostCmd"]
     class C1 command;
-    A1["VideoPost.reviewPass / reviewFail"]
+    A1["VideoPost.reviewPass"]
     class A1 entitymethod;
-    E1["VideoAuditPassedDomainEvent / VideoAuditFailedDomainEvent"]
+    A2["VideoPost.reviewFail"]
+    class A2 entitymethod;
+    E1["VideoAuditPassedDomainEvent"]
     class E1 domainevent;
+    E2["VideoAuditFailedDomainEvent"]
+    class E2 domainevent;
+
+    %% Passed branch follow-ups
+    CC1["RewardUserForVideoCmd"]
+    class CC1 command;
+    AP1["CustomerProfile.rewardCoins"]
+    class AP1 entitymethod;
+    EP1["CustomerProfileCoinsRewardedDomainEvent"]
+    class EP1 domainevent;
+
+    CC2["TransferVideoToProductionCmd"]
+    class CC2 command;
+    AV1["Video.syncFromBasics"]
+    class AV1 entitymethod;
+    EV1["VideoBasicsSyncedDomainEvent"]
+    class EV1 domainevent;
+
+    CC3["SendVideoAuditPassedMessageCmd"]
+    class CC3 command;
+
+    %% Failed branch follow-ups
+    CC4["SendVideoAuditFailedMessageCmd"]
+    class CC4 command;
+
+    AM1["CustomerMessage.onCreate"]
+    class AM1 entitymethod;
+    EM1["CustomerMessageSystemCreatedDomainEvent"]
+    class EM1 domainevent;
 
     %% Relationships
     N1 -->|sends| C1
     C1 -->|executes| A1
+    C1 -->|executes| A2
     A1 -->|publishes| E1
+    A2 -->|publishes| E2
+
+    %% Passed branch relationships
+    E1 -->|sends| CC1
+    E1 -->|sends| CC2
+    E1 -->|sends| CC3
+
+    CC1 -->|executes| AP1
+    AP1 -->|publishes| EP1
+
+    CC2 -->|executes| AV1
+    AV1 -->|publishes| EV1
+
+    CC3 -->|executes| AM1
+
+    %% Failed branch relationships
+    E2 -->|sends| CC4
+    CC4 -->|executes| AM1
+
+    AM1 -->|publishes| EM1
 
     %% Styles
     classDef controller fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,font-weight:bold;
