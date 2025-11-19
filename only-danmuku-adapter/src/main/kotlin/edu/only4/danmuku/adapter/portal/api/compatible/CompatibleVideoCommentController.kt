@@ -10,6 +10,8 @@ import edu.only4.danmuku.application.commands.video_comment.PostCommentCmd
 import edu.only4.danmuku.application.commands.video_comment.TopCommentCmd
 import edu.only4.danmuku.application.commands.video_comment.UntopCommentCmd
 import edu.only4.danmuku.application.queries.customer_action.GetUserActionsByVideoIdQry
+import edu.only4.danmuku.application.queries.video_comment.CommentExistsByIdQry
+import edu.only4.danmuku.application.queries.video_comment.GetCommentByIdQry
 import edu.only4.danmuku.application.queries.video_comment.VideoCommentPageQry
 import edu.only4.danmuku.domain.aggregates.customer_action.enums.ActionType
 import jakarta.validation.constraints.NotEmpty
@@ -120,13 +122,21 @@ class CompatibleVideoCommentController {
     ) {
         // 调用命令发表评论
         val currentUserId = LoginHelper.getUserId()!!
-        // TODO： 是否回复顶级评论
+        var replyCustomerId = 0L
+        replyCommentId?.let {
+            replyCustomerId = Mediator.queries.send(
+                GetCommentByIdQry.Request(
+                    commentId = replyCommentId
+                )
+            ).userId
+        }
 
         Mediator.commands.send(
             PostCommentCmd.Request(
                 videoId = videoId,
                 replyCommentId = replyCommentId,
                 customerId = currentUserId,
+                replyCustomerId = replyCustomerId,
                 content = content,
                 imgPath = imgPath
             )

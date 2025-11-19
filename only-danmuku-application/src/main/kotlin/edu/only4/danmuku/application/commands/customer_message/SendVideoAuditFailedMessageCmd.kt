@@ -3,11 +3,10 @@ package edu.only4.danmuku.application.commands.customer_message
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
-import edu.only4.danmuku.domain._share.meta.video.SVideo
 import edu.only4.danmuku.domain._share.meta.video_post.SVideoPost
-import edu.only4.danmuku.domain.aggregates.customer_message.factory.CustomerMessageFactory
 import edu.only4.danmuku.domain.aggregates.customer_message.enums.MessageType
 import edu.only4.danmuku.domain.aggregates.customer_message.extend.UserMessageExtend
+import edu.only4.danmuku.domain.aggregates.customer_message.factory.CustomerMessageFactory
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
 

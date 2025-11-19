@@ -20,18 +20,17 @@ import org.springframework.stereotype.Service
 )
 class VideoCommentFactory : AggregateFactory<VideoCommentFactory.Payload, VideoComment> {
 
-    override fun create(payload: Payload): VideoComment {
+    override fun create(entityPayload: Payload): VideoComment {
         return VideoComment(
-            id = 0L,
-            parentId = payload.parentId,
-            videoId = payload.videoId,
-            videoOwnerId = payload.videoOwnerId,
-            content = payload.content,
-            imgPath = payload.imgPath,
-            customerId = payload.customerId,
-            replyCustomerId = payload.replyCustomerId,
+            parentId = entityPayload.parentId,
+            videoId = entityPayload.videoId,
+            videoOwnerId = entityPayload.videoOwnerId,
+            content = entityPayload.content,
+            imgPath = entityPayload.imgPath,
+            customerId = entityPayload.customerId,
+            replyCustomerId = entityPayload.replyCustomerId,
             topType = 0,
-            postTime = payload.postTime,
+            postTime = entityPayload.postTime,
             likeCount = 0,
             hateCount = 0,
         )

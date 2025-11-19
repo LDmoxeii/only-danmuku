@@ -26,11 +26,6 @@ object PostCommentCmd {
                 persist = false
             ).getOrNull() ?: throw KnownException("视频不存在：${request.videoId}")
 
-            // TODO： 是否回复顶级评论
-            // 判断是否是回复其他评论的情况
-            // 如果被回复的是顶级评论，则将当前评论设为该顶级评论的子评论
-            // 如果被回复的是子评论，则继承其父评论ID，并设置被回复用户信息
-            // 如果不是回复其他评论，则设置为顶级评论（pCommentId=0）
             val parentId = request.replyCommentId ?: 0L
             val now = System.currentTimeMillis() / 1000
 
@@ -42,7 +37,7 @@ object PostCommentCmd {
                     content = request.content,
                     imgPath = request.imgPath,
                     customerId = request.customerId,
-                    replyCustomerId = null,
+                    replyCustomerId = request.replyCustomerId,
                     postTime = now
                 )
             )
@@ -55,22 +50,17 @@ object PostCommentCmd {
 
     @ReplyCommentExists(videoIdField = "videoId", replyCommentIdField = "replyCommentId")
     data class Request(
-        /** 视频ID */
         @field:VideoExists
         @field:CommentNotClosed
         val videoId: Long,
-        /** 回复评论ID */
         val replyCommentId: Long? = null,
-        /** 发评论的用户ID */
         val customerId: Long,
-        /** 评论内容 */
+        val replyCustomerId: Long,
         val content: String,
-        /** 图片路径 */
         val imgPath: String? = null,
     ) : RequestParam<Response>
 
     data class Response(
-        /** 评论ID */
         val commentId: Long
     )
 }

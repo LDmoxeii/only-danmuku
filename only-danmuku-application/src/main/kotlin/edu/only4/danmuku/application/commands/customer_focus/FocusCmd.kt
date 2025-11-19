@@ -2,12 +2,11 @@ package edu.only4.danmuku.application.commands.customer_focus
 
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
-import com.only4.cap4k.ddd.core.application.command.Command
 import com.only4.cap4k.ddd.core.application.command.NoneResultCommandParam
-import edu.only4.danmuku.domain._share.meta.customer_focus.SCustomerFocus
-import edu.only4.danmuku.domain.aggregates.customer_focus.factory.CustomerFocusFactory
 import edu.only4.danmuku.application.validator.NotSelf
 import edu.only4.danmuku.application.validator.UserExists
+import edu.only4.danmuku.domain._share.meta.customer_focus.SCustomerFocus
+import edu.only4.danmuku.domain.aggregates.customer_focus.factory.CustomerFocusFactory
 import org.springframework.stereotype.Service
 
 /**
