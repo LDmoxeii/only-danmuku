@@ -5,12 +5,21 @@ flowchart TB
 
     C1["UploadVideoChunkCmd"]
     class C1 command;
-    A1["VideoFileUploadSession.ensureOwnedBy + ensureActive + ensureChunkAllowed + onChunkUploaded + tryMarkDoneIfComplete"]
+    A1["VideoFileUploadSession.onChunkUploaded"]
     class A1 entitymethod;
+    E1["VideoFileUploadSessionChunkUploadedDomainEvent"]
+    class E1 domainevent;
+    A2["VideoFileUploadSession.tryMarkDoneIfComplete"]
+    class A2 entitymethod;
+    E2["VideoFileUploadSessionMarkedDoneDomainEvent"]
+    class E2 domainevent;
 
     %% Relationships
     N1 -->|sends| C1
     C1 -->|executes| A1
+    A1 -->|publishes| E1
+    C1 -->|executes| A2
+    A2 -->|publishes| E2
 
     %% Styles
     classDef controller fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,font-weight:bold;

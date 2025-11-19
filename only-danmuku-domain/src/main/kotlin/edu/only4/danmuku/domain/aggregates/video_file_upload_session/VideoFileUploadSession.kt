@@ -7,6 +7,8 @@ import edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity
 import edu.only4.danmuku.domain.aggregates.video_file_upload_session.enums.UploadStatus
 import edu.only4.danmuku.domain.aggregates.video_file_upload_session.events.UploadSessionCreatedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video_file_upload_session.events.UploadSessionAbortedDomainEvent
+import edu.only4.danmuku.domain.aggregates.video_file_upload_session.events.VideoFileUploadSessionChunkUploadedDomainEvent
+import edu.only4.danmuku.domain.aggregates.video_file_upload_session.events.VideoFileUploadSessionMarkedDoneDomainEvent
 
 import jakarta.persistence.*
 
@@ -177,12 +179,15 @@ class VideoFileUploadSession(
         }
         this.fileSize = (this.fileSize ?: 0L) + addedBytes
         this.updateTime = now
+
+        events().attach(this) { VideoFileUploadSessionChunkUploadedDomainEvent(this) }
     }
 
     /** 若已到最后一个分片，则标记完成 */
     fun tryMarkDoneIfComplete() {
         if (this.chunkIndex >= this.chunks - 1) {
             this.status = UploadStatus.DONE
+            events().attach(this) { VideoFileUploadSessionMarkedDoneDomainEvent(this) }
         }
     }
 
