@@ -7,10 +7,13 @@ flowchart TB
     class C1 command;
     A1["Category.changeSort (for each)"]
     class A1 entitymethod;
+    E1["CategorySortChangedDomainEvent"]
+    class E1 domainevent;
 
     %% Relationships
     N1 -->|sends| C1
     C1 -->|executes| A1
+    A1 -->|publishes| E1
 
     %% Styles
     classDef controller fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,font-weight:bold;

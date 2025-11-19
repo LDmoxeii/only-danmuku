@@ -6,6 +6,7 @@ import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
 import edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity
 import edu.only4.danmuku.domain.aggregates.category.events.CategoryCreatedDomainEvent
 import edu.only4.danmuku.domain.aggregates.category.events.CategoryDeletedDomainEvent
+import edu.only4.danmuku.domain.aggregates.category.events.CategorySortChangedDomainEvent
 
 import jakarta.persistence.*
 import jakarta.persistence.Table
@@ -230,5 +231,7 @@ class Category(
 
     fun changeSort(targetSort: Byte) {
         this.sort = targetSort
+
+        events().attach(this) { CategorySortChangedDomainEvent(this) }
     }
 }
