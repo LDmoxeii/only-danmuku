@@ -167,8 +167,7 @@ Issue #3 希望增强账号安全能力，并引入手机号维度，具体包�
    - 路径：`POST /account/sendSmsCode`
    - 入参：
      - `scene`：验证码场景（如 `BIND_PHONE`, `LOGIN`）；
-     - `phone`：目标手机号；
-     - `captchaKey` / `captchaCode`：图形验证码（防刷）。
+     - `phone`：目标手机号。
    - 出参：`{ success: true }`。
 
 2. 使用短信验证码登录

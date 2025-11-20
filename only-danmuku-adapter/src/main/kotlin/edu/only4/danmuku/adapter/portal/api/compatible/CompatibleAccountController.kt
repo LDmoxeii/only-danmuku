@@ -3,15 +3,11 @@ package edu.only4.danmuku.adapter.portal.api.compatible
 import cn.dev33.satoken.annotation.SaIgnore
 import cn.dev33.satoken.stp.StpUtil
 import com.only.engine.entity.UserInfo
+import com.only.engine.enums.CaptchaChannel
 import com.only.engine.misc.ServletUtils.getClientIP
 import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
-import edu.only4.danmuku.adapter.portal.api.payload.AccountCheckCode
-import edu.only4.danmuku.adapter.portal.api.payload.AccountLogin
-import edu.only4.danmuku.adapter.portal.api.payload.AccountRegister
-import edu.only4.danmuku.adapter.portal.api.payload.AccountUserCountInfo
-import edu.only4.danmuku.adapter.portal.api.payload.ChangePassword
-import edu.only4.danmuku.application.commands.user.ChangePasswordCmd
+import edu.only4.danmuku.adapter.portal.api.payload.*
 import edu.only4.danmuku.application.commands.user.UpdateLoginInfoCmd
 import edu.only4.danmuku.application.distributed.clients.CaptchaGenCli
 import edu.only4.danmuku.application.distributed.clients.CaptchaValidCli
@@ -23,6 +19,7 @@ import edu.only4.danmuku.domain._share.meta.user.SUser
 import edu.only4.danmuku.domain.aggregates.user.User
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotEmpty
+import jakarta.validation.constraints.Pattern
 import jakarta.validation.constraints.Size
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
@@ -115,6 +112,19 @@ class CompatibleAccountController {
             avatar = customerProfile.avatar,
             expireAt = StpUtil.getTokenTimeout(),
             token = StpUtil.getTokenValue()
+        )
+    }
+
+    @SaIgnore
+    @PostMapping("/sendSmsCode")
+    fun sendSmsCode(request: SendSmsCode.Request) {
+        Mediator.requests.send(
+            CaptchaGenCli.Request(
+                bizType = request.scene,
+                channel = CaptchaChannel.SMS,
+                targets = listOf(request.phone),
+                templateCode = null,
+            )
         )
     }
 
