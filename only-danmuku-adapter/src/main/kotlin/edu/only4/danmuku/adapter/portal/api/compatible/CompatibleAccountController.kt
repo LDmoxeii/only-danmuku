@@ -14,9 +14,11 @@ import edu.only4.danmuku.application.commands.user.UpdateLoginInfoCmd
 import edu.only4.danmuku.application.distributed.clients.CaptchaGenCli
 import edu.only4.danmuku.application.distributed.clients.CaptchaValidCli
 import edu.only4.danmuku.application.queries.customer_profile.GetCustomerProfileQry
+import edu.only4.danmuku.application.queries.user.GetAccountInfoByEmailQry
 import edu.only4.danmuku.application.queries.user.GetUserCountInfoQry
 import edu.only4.danmuku.domain._share.meta.customer_profile.SCustomerProfile
 import edu.only4.danmuku.domain._share.meta.user.SUser
+import edu.only4.danmuku.domain.aggregates.user.User
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.Pattern
@@ -74,24 +76,30 @@ class CompatibleAccountController {
         val captchaValidationResult = Mediator.requests.send(CaptchaValidCli.Request(checkCodeKey, checkCode))
         require(captchaValidationResult.result) { "验证码错误" }
 
+        val accountInfo = Mediator.queries.send(
+            GetAccountInfoByEmailQry.Request(
+                email = email
+            )
+        )
 
-        val userAccount = Mediator.commands.send(
+        if (!(User.isPasswordCorrect(accountInfo.password, password))) throw Exception("密码错误")
+
+        Mediator.commands.send(
             UpdateLoginInfoCmd.Request(
-                email = email,
-                password = password,
+                userId = accountInfo.userId,
                 loginIp = getClientIP()!!,
             )
         )
 
         val customerProfile = Mediator.queries.send(
             GetCustomerProfileQry.Request(
-                customerId = userAccount.userId
+                customerId = accountInfo.userId
             )
         )
 
         LoginHelper.login(
             UserInfo(
-                userAccount.userId, userAccount.userType.code, userAccount.username,
+                accountInfo.userId, accountInfo.type.code, accountInfo.nickName,
                 extra = mapOf(
                     SCustomerProfile.props.avatar to (customerProfile.avatar ?: ""),
                     SUser.props.relatedId to (customerProfile.customerId)
@@ -100,8 +108,8 @@ class CompatibleAccountController {
         )
 
         return AccountLogin.Response(
-            userId = userAccount.userId,
-            nickName = userAccount.username,
+            userId = accountInfo.userId,
+            nickName = accountInfo.nickName,
             avatar = customerProfile.avatar,
             expireAt = StpUtil.getTokenTimeout(),
             token = StpUtil.getTokenValue()

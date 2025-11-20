@@ -17,7 +17,7 @@ object GetAccountInfoByEmailQry {
     ) : RequestParam<Response>
 
     class Response(
-        val id: Long,
+        val userId: Long,
         val nickName: String,
         val email: String,
         val password: String,

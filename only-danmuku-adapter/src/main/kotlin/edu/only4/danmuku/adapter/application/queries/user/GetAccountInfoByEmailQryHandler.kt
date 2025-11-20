@@ -27,7 +27,7 @@ class GetAccountInfoByEmailQryHandler(
 
         // 转换为查询响应
         return GetAccountInfoByEmailQry.Response(
-            id = userAccountInfo.id,
+            userId = userAccountInfo.id,
             nickName = userAccountInfo.nickName,
             email = userAccountInfo.email,
             password = userAccountInfo.password,

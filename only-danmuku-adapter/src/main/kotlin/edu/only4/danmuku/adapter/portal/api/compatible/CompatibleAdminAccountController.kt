@@ -49,11 +49,11 @@ class CompatibleAdminAccountController {
         val isPasswordCorrect = User.isPasswordCorrect(userAccount.password, password)
         require(isPasswordCorrect) { "密码错误" }
 
-        LoginHelper.login(UserInfo(userAccount.id, userAccount.type.code, userAccount.email))
+        LoginHelper.login(UserInfo(userAccount.userId, userAccount.type.code, userAccount.email))
         val token = StpUtil.getTokenValue()
 
         return AdminAccountLogin.Response(
-            userId = userAccount.id.toString(),
+            userId = userAccount.userId,
             account = userAccount.email,
             nickName = userAccount.nickName,
             token = token

@@ -30,7 +30,7 @@ object AdminAccountLogin {
         /**
          * 用户ID
          */
-        var userId: String,
+        var userId: Long,
 
         /** 管理员账号 */
         var account: String? = null,
