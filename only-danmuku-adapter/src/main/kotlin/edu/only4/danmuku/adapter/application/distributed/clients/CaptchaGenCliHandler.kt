@@ -5,7 +5,6 @@ import com.only.engine.entity.CaptchaContent
 import com.only.engine.entity.GenerateCommand
 import com.only.engine.entity.GenerateCommand.CharsetPolicy
 import com.only.engine.enums.CaptchaCategory
-import com.only.engine.enums.CaptchaChannel
 import com.only.engine.enums.CaptchaType
 import com.only4.cap4k.ddd.core.application.RequestHandler
 import edu.only4.danmuku.application.distributed.clients.CaptchaGenCli
@@ -21,18 +20,26 @@ class CaptchaGenCliHandler(
             type = CaptchaType.IMAGE,
             category = CaptchaCategory.LINE,
             charsetPolicy = CharsetPolicy.MATH,
-            channel = CaptchaChannel.INLINE,
+            channel = request.channel,
             length = 1,
             width = 100,
-            height = 42
+            height = 42,
+            targets = request.targets,
+            templateCode = request.templateCode,
         )
         val result = captchaManager.generate(command)
 
-        @Suppress("CAST_NEVER_SUCCEEDS")
+        val inlineContent = result.inlineContent
+        val (bytes, text) = when (inlineContent) {
+            is CaptchaContent.Image -> inlineContent.bytes to inlineContent.text
+            is CaptchaContent.Text -> "" to inlineContent.value
+            null -> "" to ""
+        }
+
         return CaptchaGenCli.Response(
-            result.captchaId,
-            (result.inlineContent as CaptchaContent.Image).bytes,
-            (result.inlineContent as CaptchaContent.Image).text,
+            captchaId = result.captchaId,
+            byte = bytes,
+            text = text,
         )
 
     }
