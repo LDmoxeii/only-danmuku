@@ -22,16 +22,16 @@
   },
 
   {
-    "tag": "cli",
+    "tag": "payload",
     "package": "",
     "name": "GenerateSmsCode",
-    "desc": "生成并下发短信验证码（带场景）"
+    "desc": "生成并下发短信验证码"
   },
   {
     "tag": "cli",
     "package": "",
-    "name": "ValidateSmsCode",
-    "desc": "校验短信验证码（包含防刷逻辑）"
+    "name": "GenerateSmsCode",
+    "desc": "生成并下发短信验证码（带场景）"
   },
 
   {
