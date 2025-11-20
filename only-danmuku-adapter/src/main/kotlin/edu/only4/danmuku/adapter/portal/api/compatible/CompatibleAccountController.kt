@@ -4,11 +4,14 @@ import cn.dev33.satoken.annotation.SaIgnore
 import cn.dev33.satoken.stp.StpUtil
 import com.only.engine.entity.UserInfo
 import com.only.engine.enums.CaptchaChannel
+import com.only.engine.exception.KnownException
+import com.only.engine.misc.ServletUtils
 import com.only.engine.misc.ServletUtils.getClientIP
 import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.adapter.portal.api.payload.*
 import edu.only4.danmuku.application.commands.user.UpdateLoginInfoCmd
+import edu.only4.danmuku.application.commands.user_behavior.RecordLoginLogCmd
 import edu.only4.danmuku.application.distributed.clients.CaptchaGenCli
 import edu.only4.danmuku.application.distributed.clients.CaptchaValidCli
 import edu.only4.danmuku.application.queries.customer_profile.GetCustomerProfileQry
@@ -17,7 +20,9 @@ import edu.only4.danmuku.application.queries.user.GetUserCountInfoQry
 import edu.only4.danmuku.application.queries.user.GetUserByPhoneQry
 import edu.only4.danmuku.domain._share.meta.customer_profile.SCustomerProfile
 import edu.only4.danmuku.domain._share.meta.user.SUser
-import edu.only4.danmuku.domain.aggregates.user.User
+import edu.only4.danmuku.domain.aggregates.user.enums.UserType
+import edu.only4.danmuku.domain.aggregates.user_login_log.enums.LoginResult
+import edu.only4.danmuku.domain.aggregates.user_login_log.enums.LoginType
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.Pattern
@@ -81,8 +86,24 @@ class CompatibleAccountController {
             )
         )
 
-        val isPasswordCorrect = User.isPasswordCorrect(userAccount.password, password)
-        require(isPasswordCorrect) { "密码错误" }
+        val user = Mediator.repositories
+            .findOne(SUser.predicateById(userAccount.userId))
+            .orElseThrow { KnownException("用户不存在") }
+
+        val isPasswordCorrect = user.verifyPassword(password)
+        if (!isPasswordCorrect) {
+            val occurTime = System.currentTimeMillis() / 1000L
+            val userAgent = ServletUtils.getRequest()?.getHeader("User-Agent")
+            user.reportPasswordInputFailed(
+                loginName = email,
+                ip = getClientIP(),
+                userAgent = userAgent,
+                occurTime = occurTime,
+                reason = "密码错误"
+            )
+            Mediator.uow.save()
+            throw KnownException("密码错误")
+        }
 
         Mediator.commands.send(
             UpdateLoginInfoCmd.Request(
@@ -104,6 +125,19 @@ class CompatibleAccountController {
                     SCustomerProfile.props.avatar to (customerProfile.avatar ?: ""),
                     SUser.props.relatedId to (customerProfile.customerId)
                 )
+            )
+        )
+
+        Mediator.commands.send(
+            RecordLoginLogCmd.Request(
+                userId = userAccount.userId,
+                userType = userAccount.type,
+                loginName = email,
+                loginType = LoginType.PASSWORD,
+                result = LoginResult.SUCCESS,
+                ip = getClientIP()!!,
+                userAgent = ServletUtils.getRequest()?.getHeader("User-Agent"),
+                occurTime = System.currentTimeMillis() / 1000L
             )
         )
 
@@ -170,6 +204,19 @@ class CompatibleAccountController {
             )
         )
 
+        Mediator.commands.send(
+            RecordLoginLogCmd.Request(
+                userId = userAccount.userId,
+                userType = userAccount.type,
+                loginName = request.phone,
+                loginType = LoginType.SMS_CODE,
+                result = LoginResult.SUCCESS,
+                ip = getClientIP()!!,
+                userAgent = ServletUtils.getRequest()?.getHeader("User-Agent"),
+                occurTime = System.currentTimeMillis() / 1000L
+            )
+        )
+
         return LoginBySms.Response(
             userId = userAccount.userId,
             nickName = userAccount.nickName,
@@ -202,7 +249,24 @@ class CompatibleAccountController {
     }
 
     @PostMapping("/logout")
-    fun logout() = StpUtil.logout()
+    fun logout() {
+        val userInfo = LoginHelper.getUserInfo()
+        val userId = LoginHelper.getUserId()
+        val ip = getClientIP().orEmpty()
+        Mediator.commands.send(
+            RecordLoginLogCmd.Request(
+                userId = userId,
+                userType = userInfo?.userType?.let { UserType.valueOf(it) } ?: UserType.valueOf(0),
+                loginName = userInfo?.username ?: "",
+                loginType = LoginType.LOGOUT,
+                result = LoginResult.SUCCESS,
+                ip = ip,
+                userAgent = ServletUtils.getRequest()?.getHeader("User-Agent"),
+                occurTime = System.currentTimeMillis() / 1000L
+            )
+        )
+        StpUtil.logout()
+    }
 
     @PostMapping("/getUserCountInfo")
     fun getUserCountInfo(): AccountUserCountInfo.Response {

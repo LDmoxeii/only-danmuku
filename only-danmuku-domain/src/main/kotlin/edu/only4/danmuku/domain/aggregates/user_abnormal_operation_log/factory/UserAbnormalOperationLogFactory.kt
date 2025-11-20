@@ -5,6 +5,8 @@ import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePayload
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 
 import edu.only4.danmuku.domain.aggregates.user_abnormal_operation_log.UserAbnormalOperationLog
+import edu.only4.danmuku.domain.aggregates.user.enums.UserType
+import edu.only4.danmuku.domain.aggregates.user_abnormal_operation_log.enums.AbnormalOpType
 
 import org.springframework.stereotype.Service
 
@@ -25,9 +27,15 @@ import org.springframework.stereotype.Service
 class UserAbnormalOperationLogFactory : AggregateFactory<UserAbnormalOperationLogFactory.Payload, UserAbnormalOperationLog> {
 
     override fun create(payload: Payload): UserAbnormalOperationLog {
-        return UserAbnormalOperationLog().apply {
-
-        }
+        return UserAbnormalOperationLog(
+            userId = payload.userId,
+            userType = payload.userType,
+            opType = payload.opType,
+            ip = payload.ip,
+            occurTime = payload.occurTime,
+            description = payload.description,
+            extra = payload.extra
+        )
     }
 
      @Aggregate(
@@ -37,7 +45,13 @@ class UserAbnormalOperationLogFactory : AggregateFactory<UserAbnormalOperationLo
         description = ""
     )
     data class Payload(
-        val name: String
+        val userId: Long,
+        val userType: UserType,
+        val opType: AbnormalOpType,
+        val ip: String,
+        val occurTime: Long,
+        val description: String?,
+        val extra: String?,
     ) : AggregatePayload<UserAbnormalOperationLog>
 
 }

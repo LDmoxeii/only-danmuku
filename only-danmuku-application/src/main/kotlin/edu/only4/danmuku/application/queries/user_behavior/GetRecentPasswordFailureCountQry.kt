@@ -11,10 +11,20 @@ import com.only4.cap4k.ddd.core.application.RequestParam
  */
 object GetRecentPasswordFailureCountQry {
 
-    class Request(
-
+    data class Request(
+        val userId: Long?,
+        val loginName: String,
+        /**
+         * 统计窗口（秒），默认 30 分钟
+         */
+        val windowSeconds: Long = 30 * 60,
+        /**
+         * 统计基准时间戳（秒），默认当前时间
+         */
+        val now: Long? = null,
     ) : RequestParam<Response>
 
-    class Response(
+    data class Response(
+        val failureCount: Long
     )
 }

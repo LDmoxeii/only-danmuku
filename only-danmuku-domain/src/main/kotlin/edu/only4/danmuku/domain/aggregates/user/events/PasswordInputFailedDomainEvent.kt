@@ -20,4 +20,11 @@ import edu.only4.danmuku.domain.aggregates.user.User
     type = Aggregate.TYPE_DOMAIN_EVENT,
     description = ""
 )
-class PasswordInputFailedDomainEvent(val entity: User)
+class PasswordInputFailedDomainEvent(
+    val entity: User,
+    val loginName: String,
+    val ip: String?,
+    val userAgent: String?,
+    val occurTime: Long,
+    val reason: String?,
+)

@@ -4,6 +4,11 @@ import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
 
+import edu.only4.danmuku.domain.aggregates.user.enums.UserType
+import edu.only4.danmuku.domain.aggregates.user_login_log.enums.LoginResult
+import edu.only4.danmuku.domain.aggregates.user_login_log.enums.LoginType
+import edu.only4.danmuku.domain.aggregates.user_login_log.factory.UserLoginLogFactory
+
 import org.springframework.stereotype.Service
 
 /**
@@ -18,17 +23,43 @@ object RecordLoginLogCmd {
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
+            val occurTime = request.occurTime ?: System.currentTimeMillis() / 1000L
+            val log = Mediator.factories.create(
+                UserLoginLogFactory.Payload(
+                    userId = request.userId,
+                    userType = request.userType,
+                    loginName = request.loginName,
+                    loginType = request.loginType,
+                    result = request.result,
+                    ip = request.ip,
+                    userAgent = request.userAgent,
+                    reason = request.reason,
+                    occurTime = occurTime
+                )
+            )
+
             Mediator.uow.save()
 
             return Response(
+                logId = log.id
             )
         }
 
     }
 
-    class Request(
+    data class Request(
+        val userId: Long?,
+        val userType: UserType,
+        val loginName: String,
+        val loginType: LoginType,
+        val result: LoginResult,
+        val ip: String,
+        val userAgent: String? = null,
+        val reason: String? = null,
+        val occurTime: Long? = null,
     ) : RequestParam<Response>
 
-    class Response(
+    data class Response(
+        val logId: Long
     )
 }
