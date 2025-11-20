@@ -24,7 +24,7 @@
   {
     "tag": "payload",
     "package": "",
-    "name": "GenerateSmsCode",
+    "name": "SendSmsCode",
     "desc": "生成并下发短信验证码"
   },
   {

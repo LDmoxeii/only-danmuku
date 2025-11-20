@@ -10,7 +10,7 @@ import org.mapstruct.factory.Mappers
  * @author cap4k-ddd-codegen
  * @date 2025/11/20
  */
-object GenerateSmsCode {
+object SendSmsCode {
 
     class Request
 
