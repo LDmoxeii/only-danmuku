@@ -17,12 +17,10 @@ import java.io.File
 @Service
 class CleanTempFilesCliHandler(
     private val fileProps: FileAppProperties,
-) : RequestHandler<CleanTempFilesCli.Request, CleanTempFilesCli.Response> {
-    override fun exec(request: CleanTempFilesCli.Request): CleanTempFilesCli.Response {
+) : RequestHandler<CleanTempFilesCli.Request, Unit> {
+    override fun exec(request: CleanTempFilesCli.Request) {
         val baseRoot = File(fileProps.projectFolder + Constants.FILE_FOLDER + Constants.FILE_FOLDER_TEMP)
         val baseCanonical = baseRoot.canonicalPath + File.separator
-
-        var anyDeleted = false
 
         request.tempPaths.forEach { tempRel ->
             val targetDir = File(baseRoot, tempRel)
@@ -33,12 +31,7 @@ class CleanTempFilesCliHandler(
 
             if (targetDir.exists()) {
                 runCatching { targetDir.deleteRecursively() }
-                    .onSuccess {
-                        anyDeleted = true
-                    }
             }
         }
-
-        return CleanTempFilesCli.Response(cleaned = anyDeleted)
     }
 }

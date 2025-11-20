@@ -9,10 +9,9 @@ import edu.only4.danmuku.domain._share.meta.user.SUser
 import org.springframework.stereotype.Service
 
 @Service
-class RefreshLoginSessionCliHandler :
-    RequestHandler<RefreshLoginSessionCli.Request, RefreshLoginSessionCli.Response> {
+class RefreshLoginSessionCliHandler : RequestHandler<RefreshLoginSessionCli.Request, Unit> {
 
-    override fun exec(request: RefreshLoginSessionCli.Request): RefreshLoginSessionCli.Response {
+    override fun exec(request: RefreshLoginSessionCli.Request) {
         val currentUserId = LoginHelper.getUserId()
         if (currentUserId != null && currentUserId == request.userId) {
             val old = LoginHelper.getUserInfo()
@@ -20,7 +19,7 @@ class RefreshLoginSessionCliHandler :
                 val newUsername = request.nickName ?: old.username
                 val newAvatar = request.avatar ?: (old.extra[SCustomerProfile.props.avatar] as? String ?: "")
                 val relatedId = (old.extra[SUser.props.relatedId] as? Long) ?: request.userId
-                LoginHelper.login(
+                LoginHelper.refreshUserInfo(
                     UserInfo(
                         request.userId,
                         old.userType,
@@ -33,7 +32,6 @@ class RefreshLoginSessionCliHandler :
                 )
             }
         }
-        return RefreshLoginSessionCli.Response()
     }
 }
 

@@ -13,9 +13,5 @@ object CleanTempFilesCli {
 
     class Request(
         val tempPaths: List<String>,
-    ) : RequestParam<Response>
-
-    class Response(
-        val cleaned: Boolean,
-    )
+    ) : RequestParam<Unit>
 }

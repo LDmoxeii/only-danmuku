@@ -8,8 +8,6 @@ object RefreshLoginSessionCli {
         val userId: Long,
         val nickName: String? = null,
         val avatar: String? = null,
-    ) : RequestParam<Response>
-
-    class Response
+    ) : RequestParam<Unit>
 }
 
