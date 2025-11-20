@@ -12,6 +12,7 @@ import edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerProfi
 import edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerProfileCreatedDomainEvent
 import edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerProfileRewardCoinsReclaimedDomainEvent
 import edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerProfileUpdatedDomainEvent
+import edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerProfilePhoneChangedDomainEvent
 
 import jakarta.persistence.*
 import jakarta.persistence.Table
@@ -255,6 +256,15 @@ class CustomerProfile(
         theme?.let { this.theme = it }
 
         events().attach(this) { CustomerProfileUpdatedDomainEvent(this) }
+    }
+
+    /**
+     * 绑定/变更手机号
+     */
+    fun bindPhone(phone: String) {
+        if (this.phone == phone) return
+        this.phone = phone
+        events().attach(this) { CustomerProfilePhoneChangedDomainEvent(this) }
     }
 
     // 【行为方法结束】

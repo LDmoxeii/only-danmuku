@@ -8,6 +8,7 @@ import edu.only4.danmuku.adapter.portal.api.payload.*
 import edu.only4.danmuku.application.commands.customer_focus.FocusCmd
 import edu.only4.danmuku.application.commands.customer_focus.UnFocusCmd
 import edu.only4.danmuku.application.commands.customer_profile.UpdateCustomerProfileCmd
+import edu.only4.danmuku.application.commands.customer_profile.BindPhoneCmd
 import edu.only4.danmuku.application.queries.customer_action.GetCollectionPageQry
 import edu.only4.danmuku.application.queries.customer_focus.CheckFocusStatusQry
 import edu.only4.danmuku.application.queries.customer_focus.GetFansListQry
@@ -15,6 +16,7 @@ import edu.only4.danmuku.application.queries.customer_focus.GetFocusPageQry
 import edu.only4.danmuku.application.queries.customer_profile.GetCustomerProfileQry
 import edu.only4.danmuku.application.queries.statistics.GetTotalStatisticsInfoQry
 import edu.only4.danmuku.application.queries.video.GetVideoPageQry
+import edu.only4.danmuku.domain._share.meta.user.SUser
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.Size
 import org.springframework.validation.annotation.Validated
@@ -236,6 +238,24 @@ class CompatibleUHomeController {
             pageSize = collectionRequest.pageSize,
             list = collectedActions.list.map { UHomeLoadUserCollection.Converter.INSTANCE.fromApp(it) },
             totalCount = collectedActions.totalCount
+        )
+    }
+
+    @PostMapping("/bindPhone")
+    fun bindPhone(@Validated request: BindPhone.Request) {
+        // TODO：由于政策原因，暂时屏蔽短信验证码校验
+//        val smsCheck = Mediator.requests.send(
+//            CaptchaValidCli.Request(request.captchaId, request.smsCode)
+//        )
+//        require(smsCheck.result) { "短信验证码错误" }
+
+        val customerProfileId = LoginHelper.getUserInfo()!!.extra.getValue(SUser.props.relatedId) as Long
+
+        Mediator.commands.send(
+            BindPhoneCmd.Request(
+                customerProfileId = customerProfileId,
+                phone = request.phone,
+            )
         )
     }
 

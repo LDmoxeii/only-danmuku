@@ -7,7 +7,7 @@ import edu.only4.danmuku.domain.aggregates.user.User
 
 
 /**
- * 用户手机号已同步
+ * 用户手机号已变更
  *
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * @author cap4k-ddd-codegen
@@ -20,4 +20,4 @@ import edu.only4.danmuku.domain.aggregates.user.User
     type = Aggregate.TYPE_DOMAIN_EVENT,
     description = ""
 )
-class UserPhoneSyncedDomainEvent(val entity: User)
+class UserPhoneChangedDomainEvent(val entity: User)

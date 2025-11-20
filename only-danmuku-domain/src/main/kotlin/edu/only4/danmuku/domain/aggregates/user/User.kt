@@ -12,6 +12,7 @@ import edu.only4.danmuku.domain.aggregates.user.events.AccountEnabledDomainEvent
 import edu.only4.danmuku.domain.aggregates.user.events.LoginInfoUpdatedDomainEvent
 import edu.only4.danmuku.domain.aggregates.user.events.RelationshipBoundDomainEvent
 import edu.only4.danmuku.domain.aggregates.user.events.UserCreatedDomainEvent
+import edu.only4.danmuku.domain.aggregates.user.events.UserPhoneChangedDomainEvent
 import edu.only4.danmuku.domain.aggregates.user.events.PasswordChangedDomainEvent
 
 import jakarta.persistence.*
@@ -199,6 +200,15 @@ class User(
     fun changePassword(newRawPassword: String) {
         this.password = newRawPassword
         events().attach(this) { PasswordChangedDomainEvent(entity = this) }
+    }
+
+    /**
+     * 从档案同步手机号
+     */
+    fun bindPhone(phone: String) {
+        if (this.phone == phone) return
+        this.phone = phone
+        events().attach(this) { UserPhoneChangedDomainEvent(this) }
     }
 
     // 【行为方法结束】

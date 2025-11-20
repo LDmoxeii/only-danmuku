@@ -59,14 +59,14 @@
   {
     "tag": "cmd",
     "package": "user",
-    "name": "SyncUserPhoneFromCustomerProfile",
-    "desc": "根据档案的手机号变更同步用户手机号"
+    "name": "ChangeUserPhone",
+    "desc": "变更用户手机号"
   },
   {
     "tag": "de",
     "package": "user",
-    "name": "UserPhoneSynced",
-    "desc": "用户手机号已同步",
+    "name": "UserPhoneChanged",
+    "desc": "用户手机号已变更",
     "aggregates": ["User"],
     "entity": "User",
     "persist": false
