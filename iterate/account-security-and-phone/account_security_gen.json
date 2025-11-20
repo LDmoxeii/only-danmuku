@@ -1,0 +1,69 @@
+[
+  {
+    "tag": "cmd",
+    "package": "user",
+    "name": "ChangePassword",
+    "desc": "用户修改登录密码"
+  },
+  {
+    "tag": "de",
+    "package": "user",
+    "name": "PasswordChanged",
+    "desc": "用户密码已变更领域事件",
+    "aggregates": ["User"],
+    "entity": "User",
+    "persist": false
+  },
+
+  {
+    "tag": "cli",
+    "package": "",
+    "name": "GenerateSmsCode",
+    "desc": "生成并下发短信验证码（带场景）"
+  },
+  {
+    "tag": "cli",
+    "package": "",
+    "name": "ValidateSmsCode",
+    "desc": "校验短信验证码（包含防刷逻辑）"
+  },
+
+  {
+    "tag": "cmd",
+    "package": "customer_profile",
+    "name": "BindPhone",
+    "desc": "绑定/变更用户手机号"
+  },
+  {
+    "tag": "de",
+    "package": "customer_profile",
+    "name": "CustomerProfilePhoneChanged",
+    "desc": "用户手机号在档案中已变更",
+    "aggregates": ["CustomerProfile"],
+    "entity": "CustomerProfile",
+    "persist": false
+  },
+
+  {
+    "tag": "cmd",
+    "package": "user",
+    "name": "SyncUserPhoneFromCustomerProfile",
+    "desc": "根据档案的手机号变更同步用户手机号"
+  },
+  {
+    "tag": "de",
+    "package": "user",
+    "name": "UserPhoneSynced",
+    "desc": "用户手机号已同步",
+    "aggregates": ["User"],
+    "entity": "User",
+    "persist": false
+  },
+
+  {
+    "tag": "qry",
+    "package": "user",
+    "name": "GetUserByPhone",
+    "desc": "通过手机号获取对应的用户账号信息"
+  }
+]
