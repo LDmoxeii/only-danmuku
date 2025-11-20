@@ -76,30 +76,31 @@ class CompatibleAccountController {
         val captchaValidationResult = Mediator.requests.send(CaptchaValidCli.Request(checkCodeKey, checkCode))
         require(captchaValidationResult.result) { "验证码错误" }
 
-        val accountInfo = Mediator.queries.send(
+        val userAccount = Mediator.queries.send(
             GetAccountInfoByEmailQry.Request(
                 email = email
             )
         )
 
-        if (!(User.isPasswordCorrect(accountInfo.password, password))) throw Exception("密码错误")
+        val isPasswordCorrect = User.isPasswordCorrect(userAccount.password, password)
+        require(isPasswordCorrect) { "密码错误" }
 
         Mediator.commands.send(
             UpdateLoginInfoCmd.Request(
-                userId = accountInfo.userId,
+                userId = userAccount.userId,
                 loginIp = getClientIP()!!,
             )
         )
 
         val customerProfile = Mediator.queries.send(
             GetCustomerProfileQry.Request(
-                customerId = accountInfo.userId
+                customerId = userAccount.userId
             )
         )
 
         LoginHelper.login(
             UserInfo(
-                accountInfo.userId, accountInfo.type.code, accountInfo.nickName,
+                userAccount.userId, userAccount.type.code, userAccount.nickName,
                 extra = mapOf(
                     SCustomerProfile.props.avatar to (customerProfile.avatar ?: ""),
                     SUser.props.relatedId to (customerProfile.customerId)
@@ -108,8 +109,8 @@ class CompatibleAccountController {
         )
 
         return AccountLogin.Response(
-            userId = accountInfo.userId,
-            nickName = accountInfo.nickName,
+            userId = userAccount.userId,
+            nickName = userAccount.nickName,
             avatar = customerProfile.avatar,
             expireAt = StpUtil.getTokenTimeout(),
             token = StpUtil.getTokenValue()

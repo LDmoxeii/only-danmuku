@@ -12,6 +12,7 @@ import edu.only4.danmuku.application.distributed.clients.CaptchaValidCli
 import edu.only4.danmuku.application.queries.user.GetAccountInfoByEmailQry
 import edu.only4.danmuku.domain.aggregates.user.User
 import jakarta.validation.constraints.NotEmpty
+import jakarta.validation.constraints.Pattern
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -34,12 +35,13 @@ class CompatibleAdminAccountController {
     @PostMapping("/login")
     fun adminAccountLogin(
         @NotEmpty account: String,
-        @NotEmpty password: String,
-        @NotEmpty checkCode: String,
-        @NotEmpty checkCodeKey: String,
+        @NotEmpty(message = "密码不能为空") @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d)[a-zA-Z\\d]{8,18}$", message = "密码必须为8-18位字母和数字组合") password: String,
+        @NotEmpty(message = "验证码不能为空") checkCodeKey: String,
+        @NotEmpty(message = "验证码不能为空") checkCode: String,
     ): AdminAccountLogin.Response {
         val captchaValidationResult = Mediator.requests.send(CaptchaValidCli.Request(checkCodeKey, checkCode))
         require(captchaValidationResult.result) { "验证码错误" }
+
         val userAccount = Mediator.queries.send(
             GetAccountInfoByEmailQry.Request(
                 email = account
