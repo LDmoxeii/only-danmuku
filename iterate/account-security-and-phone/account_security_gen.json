@@ -28,10 +28,10 @@
     "desc": "生成并下发短信验证码"
   },
   {
-    "tag": "cli",
+    "tag": "payload",
     "package": "",
-    "name": "GenerateSmsCode",
-    "desc": "生成并下发短信验证码（带场景）"
+    "name": "LoginBySms",
+    "desc": "使用短信验证码登录"
   },
 
   {
