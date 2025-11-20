@@ -3,9 +3,9 @@ package edu.only4.danmuku.adapter.application.queries.customer_profile
 import com.only4.cap4k.ddd.core.application.query.Query
 
 import edu.only4.danmuku.application.queries._share.model.CustomerProfile
-import edu.only4.danmuku.application.queries._share.model.email
 import edu.only4.danmuku.application.queries._share.model.id
-import edu.only4.danmuku.application.queries.customer_profile.UniqueCustomerProfileEmailQry
+import edu.only4.danmuku.application.queries._share.model.phone
+import edu.only4.danmuku.application.queries.customer_profile.UniqueCustomerProfilePhoneQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.`ne?`
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
@@ -18,17 +18,17 @@ import org.springframework.stereotype.Service
  * @author cap4k-ddd-codegen
  */
 @Service
-class UniqueCustomerProfileEmailQryHandler(
+class UniqueCustomerProfilePhoneQryHandler(
     private val sqlClient: KSqlClient,
-) : Query<UniqueCustomerProfileEmailQry.Request, UniqueCustomerProfileEmailQry.Response> {
+) : Query<UniqueCustomerProfilePhoneQry.Request, UniqueCustomerProfilePhoneQry.Response> {
 
-    override fun exec(request: UniqueCustomerProfileEmailQry.Request): UniqueCustomerProfileEmailQry.Response {
+    override fun exec(request: UniqueCustomerProfilePhoneQry.Request): UniqueCustomerProfilePhoneQry.Response {
         val exists = sqlClient.exists(CustomerProfile::class) {
-            where(table.email eq request.email)
+            where(table.phone eq request.phone)
             where(table.id `ne?` request.excludeCustomerProfileId)
         }
 
-        return UniqueCustomerProfileEmailQry.Response(
+        return UniqueCustomerProfilePhoneQry.Response(
             exists = exists
         )
     }

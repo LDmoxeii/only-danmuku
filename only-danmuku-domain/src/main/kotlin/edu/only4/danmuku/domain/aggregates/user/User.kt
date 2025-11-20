@@ -15,7 +15,6 @@ import edu.only4.danmuku.domain.aggregates.user.events.UserCreatedDomainEvent
 
 import jakarta.persistence.*
 import jakarta.persistence.Table
-import org.aspectj.asm.internal.Relationship
 
 import org.hibernate.annotations.DynamicInsert
 import org.hibernate.annotations.DynamicUpdate
@@ -29,7 +28,7 @@ import org.hibernate.annotations.Where
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2025/11/04
+ * @date 2025/11/20
  */
 @Aggregate(aggregate = "User", name = "User", root = true, type = Aggregate.TYPE_ENTITY, description = "帐号，")
 @Entity
@@ -43,6 +42,7 @@ class User(
     type: UserType = UserType.valueOf(0),
     nickName: String = "",
     email: String = "",
+    phone: String? = null,
     password: String = "",
     joinTime: Long = 0L,
     lastLoginTime: Long? = null,
@@ -58,10 +58,7 @@ class User(
      */
     @Id
     @GeneratedValue(generator = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator")
-    @GenericGenerator(
-        name = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator",
-        strategy = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator"
-    )
+    @GenericGenerator(name = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator", strategy = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator")
     @Column(name = "`id`", insertable = false, updatable = false)
     var id: Long = id
         internal set
@@ -91,6 +88,14 @@ class User(
      */
     @Column(name = "`email`")
     var email: String = email
+        internal set
+
+    /**
+     * 手机号
+     * varchar(20)
+     */
+    @Column(name = "`phone`")
+    var phone: String? = phone
         internal set
 
     /**

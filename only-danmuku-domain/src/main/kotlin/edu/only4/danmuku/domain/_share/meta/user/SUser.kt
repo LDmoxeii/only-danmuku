@@ -16,14 +16,11 @@ import jakarta.persistence.criteria.*
 import org.springframework.data.jpa.domain.Specification
 
 /**
- * 帐号;
- *
  * Schema 类用于类型安全的 JPA Criteria 查询
  *
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/11/04
  */
 class SUser(
     private val root: Path<User>,
@@ -38,6 +35,8 @@ class SUser(
         val nickName = "nickName"
 
         val email = "email"
+
+        val phone = "phone"
 
         val password = "password"
 
@@ -395,6 +394,14 @@ class SUser(
      */
     val email: Field<String> by lazy {
         Field(root.get("email"), criteriaBuilder)
+    }
+
+
+    /**
+     * 手机号
+     */
+    val phone: Field<String?> by lazy {
+        Field(root.get("phone"), criteriaBuilder)
     }
 
 

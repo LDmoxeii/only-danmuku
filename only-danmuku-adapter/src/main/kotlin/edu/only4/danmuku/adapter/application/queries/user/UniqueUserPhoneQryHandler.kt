@@ -3,9 +3,9 @@ package edu.only4.danmuku.adapter.application.queries.user
 import com.only4.cap4k.ddd.core.application.query.Query
 
 import edu.only4.danmuku.application.queries._share.model.User
-import edu.only4.danmuku.application.queries._share.model.email
 import edu.only4.danmuku.application.queries._share.model.id
-import edu.only4.danmuku.application.queries.user.UniqueUserEmailQry
+import edu.only4.danmuku.application.queries._share.model.phone
+import edu.only4.danmuku.application.queries.user.UniqueUserPhoneQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.`ne?`
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
@@ -18,17 +18,17 @@ import org.springframework.stereotype.Service
  * @author cap4k-ddd-codegen
  */
 @Service
-class UniqueUserEmailQryHandler(
+class UniqueUserPhoneQryHandler(
     private val sqlClient: KSqlClient,
-) : Query<UniqueUserEmailQry.Request, UniqueUserEmailQry.Response> {
+) : Query<UniqueUserPhoneQry.Request, UniqueUserPhoneQry.Response> {
 
-    override fun exec(request: UniqueUserEmailQry.Request): UniqueUserEmailQry.Response {
+    override fun exec(request: UniqueUserPhoneQry.Request): UniqueUserPhoneQry.Response {
         val exists = sqlClient.exists(User::class) {
-            where(table.email eq request.email)
+            where(table.phone eq request.phone)
             where(table.id `ne?` request.excludeUserId)
         }
 
-        return UniqueUserEmailQry.Response(
+        return UniqueUserPhoneQry.Response(
             exists = exists
         )
     }

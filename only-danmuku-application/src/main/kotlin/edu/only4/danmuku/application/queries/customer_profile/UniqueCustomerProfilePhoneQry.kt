@@ -6,10 +6,10 @@ import com.only4.cap4k.ddd.core.application.RequestParam
  * 该文件由 [cap4k-ddd-codegen-gradle-plugin] 生成
  * @author cap4k-ddd-codegen
  */
-object UniqueCustomerProfileNickNameQry {
+object UniqueCustomerProfilePhoneQry {
 
     class Request(
-        val nickName: String,
+        val phone: String?,
         val excludeCustomerProfileId: Long?
     ) : RequestParam<Response>
 

@@ -21,16 +21,18 @@ kotlin {
 codegen {
     basePackage.set("edu.only4.danmuku")
     archTemplate.set("cap4k-ddd-codegen-template-multi-nested.json")
-    designFiles.from(fileTree("design") {
+    designFiles.from(
+        fileTree("iterate") {
             include("**/*_gen.json")
-        })
+        }
+    )
 
     database {
         url.set("jdbc:mysql://localhost:3306/only_danmuku?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai")
         username.set("root")
         password.set("123456")
         schema.set("only_danmuku")
-        tables.set("")
+        tables.set("user,customer_profile")
         ignoreTables.set("")
     }
 

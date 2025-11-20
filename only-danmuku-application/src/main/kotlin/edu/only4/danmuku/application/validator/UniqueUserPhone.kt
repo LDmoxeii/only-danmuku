@@ -2,7 +2,7 @@ package edu.only4.danmuku.application.validator
 
 import com.only4.cap4k.ddd.core.Mediator
 
-import edu.only4.danmuku.application.queries.customer_profile.UniqueCustomerProfileEmailQry
+import edu.only4.danmuku.application.queries.user.UniqueUserPhoneQry
 
 import jakarta.validation.Constraint
 import jakarta.validation.ConstraintValidator
@@ -18,22 +18,22 @@ import kotlin.reflect.full.memberProperties
  */
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)
-@Constraint(validatedBy = [UniqueCustomerProfileEmail.Validator::class])
+@Constraint(validatedBy = [UniqueUserPhone.Validator::class])
 @MustBeDocumented
-annotation class UniqueCustomerProfileEmail(
+annotation class UniqueUserPhone(
     val message: String = "唯一性校验未通过",
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [],
-    val emailField: String = "email",
-    val customerProfileIdField: String = "customerProfileId",
+    val phoneField: String = "phone",
+    val userIdField: String = "userId",
 ) {
-    class Validator : ConstraintValidator<UniqueCustomerProfileEmail, Any> {
-        private lateinit var emailProperty: String
-        private lateinit var customerProfileIdProperty: String
+    class Validator : ConstraintValidator<UniqueUserPhone, Any> {
+        private lateinit var phoneProperty: String
+        private lateinit var userIdProperty: String
 
-        override fun initialize(constraintAnnotation: UniqueCustomerProfileEmail) {
-            emailProperty = constraintAnnotation.emailField
-            customerProfileIdProperty = constraintAnnotation.customerProfileIdField
+        override fun initialize(constraintAnnotation: UniqueUserPhone) {
+            phoneProperty = constraintAnnotation.phoneField
+            userIdProperty = constraintAnnotation.userIdField
         }
 
         override fun isValid(value: Any?, context: ConstraintValidatorContext): Boolean {
@@ -42,22 +42,22 @@ annotation class UniqueCustomerProfileEmail(
             val props = value::class.memberProperties.associateBy { it.name }
 
             // 读取唯一字段值
-            val email = props[emailProperty]?.getter?.call(value) as? String?
-            val emailTrimmed = email?.trim()
+            val phone = props[phoneProperty]?.getter?.call(value) as? String?
+            val phoneTrimmed = phone?.trim()
 
             // 读取排除 ID
-            val excludeId = props[customerProfileIdProperty]?.getter?.call(value) as? Long
+            val excludeId = props[userIdProperty]?.getter?.call(value) as? Long
 
             // 所有参数均有值（字符串非空）才进行校验
             val allPresent =
-                (emailTrimmed != null && emailTrimmed.isNotBlank())
+                (phoneTrimmed != null && phoneTrimmed.isNotBlank())
             if (!allPresent) return true
 
             val result = runCatching {
                 Mediator.queries.send(
-                    UniqueCustomerProfileEmailQry.Request(
-                        email = emailTrimmed!!,
-                        excludeCustomerProfileId = excludeId,
+                    UniqueUserPhoneQry.Request(
+                        phone = phoneTrimmed!!,
+                        excludeUserId = excludeId,
                     )
                 )
             }.getOrNull() ?: return false

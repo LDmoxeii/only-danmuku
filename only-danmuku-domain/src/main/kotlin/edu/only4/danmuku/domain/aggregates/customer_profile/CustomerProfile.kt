@@ -28,7 +28,7 @@ import org.hibernate.annotations.Where
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2025/11/04
+ * @date 2025/11/20
  */
 @Aggregate(aggregate = "CustomerProfile", name = "CustomerProfile", root = true, type = Aggregate.TYPE_ENTITY, description = "用户信息，")
 @Entity
@@ -43,6 +43,7 @@ class CustomerProfile(
     nickName: String = "",
     avatar: String? = null,
     email: String = "",
+    phone: String? = null,
     sex: SexType = SexType.valueOf(0),
     birthday: String? = null,
     school: String? = null,
@@ -95,6 +96,14 @@ class CustomerProfile(
      */
     @Column(name = "`email`")
     var email: String = email
+        internal set
+
+    /**
+     * 手机号
+     * varchar(20)
+     */
+    @Column(name = "`phone`")
+    var phone: String? = phone
         internal set
 
     /**
