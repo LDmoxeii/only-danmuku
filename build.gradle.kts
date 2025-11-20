@@ -48,7 +48,8 @@ codegen {
         typeMapping.set(mapOf(
             "UserMessageExtend" to "edu.only4.danmuku.domain.aggregates.customer_message.extend.UserMessageExtend",
             "AuditedFieldsEntity" to "edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity",
-            "UserType" to "edu.only4.danmuku.domain.aggregates.user.enums.UserType"
+            "UserType" to "edu.only4.danmuku.domain.aggregates.user.enums.UserType",
+            "UserTypeTranslation" to "edu.only4.danmuku.adapter.domain.translation.user.UserTypeTranslation",
         ))
     }
 }
