@@ -12,6 +12,7 @@ import edu.only4.danmuku.domain.aggregates.user.events.AccountEnabledDomainEvent
 import edu.only4.danmuku.domain.aggregates.user.events.LoginInfoUpdatedDomainEvent
 import edu.only4.danmuku.domain.aggregates.user.events.RelationshipBoundDomainEvent
 import edu.only4.danmuku.domain.aggregates.user.events.UserCreatedDomainEvent
+import edu.only4.danmuku.domain.aggregates.user.events.PasswordChangedDomainEvent
 
 import jakarta.persistence.*
 import jakarta.persistence.Table
@@ -183,6 +184,21 @@ class User(
     fun bindingRelationship(relatedId: Long) {
         this.relatedId = relatedId
         events().attach(this) { RelationshipBoundDomainEvent(entity = this) }
+    }
+
+    /**
+     * 校验密码是否正确
+     */
+    fun verifyPassword(rawPassword: String): Boolean {
+        return isPasswordCorrect(this.password, rawPassword)
+    }
+
+    /**
+     * 修改登录密码
+     */
+    fun changePassword(newRawPassword: String) {
+        this.password = newRawPassword
+        events().attach(this) { PasswordChangedDomainEvent(entity = this) }
     }
 
     // 【行为方法结束】

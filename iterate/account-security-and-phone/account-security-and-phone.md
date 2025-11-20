@@ -28,7 +28,7 @@ Issue #3 希望增强账号安全能力，并引入手机号维度，具体包�
 2. 支持手机号信息记录
    - 在 `user` 与 `customer_profile` 两张表中均新增手机号相关字段（详见第 4 章）；
    - 历史数据初始化方案：
-     - 现有数据手机号字段统一置空，标记为“未验证”；
+     - 现有数据手机号字段统一置空；
      - 后续由用户手工绑定或通过运维脚本批量导入。
 
 3. 登录体系优化（引入手机号维度 + 新接口）
@@ -60,8 +60,6 @@ Issue #3 希望增强账号安全能力，并引入手机号维度，具体包�
 - 入参：
   - `oldPassword`：原密码；
   - `newPassword`：新密码；
-  - `checkCodeKey`：图形验证码 key；
-  - `checkCode`：图形验证码值；
 - 出参：空或简单结果对象（`{ success: true }`）。
 
 ### 3.2 应用命令与领域行为
@@ -71,7 +69,6 @@ Issue #3 希望增强账号安全能力，并引入手机号维度，具体包�
     - `userId`（从当前登录上下文获取）；
     - `oldPassword`；
     - `newPassword`；
-    - `changeReason`（可选，默认 `USER_INITIATED`）；
   - Handler 核心逻辑：
     1. 根据 `userId` 从 `User` 聚合仓储加载实体；
     2. 调用 `User.verifyPassword(oldPassword)` 校验原密码；
@@ -204,9 +201,9 @@ Issue #3 希望增强账号安全能力，并引入手机号维度，具体包�
    - 由 adapter 层 Handler 调用第三方短信网关/服务端配置。
 
 2. 验证码生成与校验
-   - 设计命令：
-     - `GenerateSmsCodeCmd`：生成并持久化验证码，负责限流与过期时间控制；
-     - `ValidateSmsCodeCmd`：校验验证码并按需作废，记录错误次数。
+   - 设计分布式 Client：
+     - `GenerateSmsCodeCli`：生成并持久化验证码并触发发送逻辑，负责限流与过期时间控制；
+     - `ValidateSmsCodeCli`：校验验证码并按需作废，记录错误次数。
    - 存储可基于 Redis 或数据库，根据现有基础设施选型。
 
 3. 手机号同步事件流
@@ -239,9 +236,9 @@ Issue #3 希望增强账号安全能力，并引入手机号维度，具体包�
 
 2. DDD 设计元素
    - 在 `Iterate/account_security_gen.json` 中新增：
-     - 命令：`ChangePasswordCmd`、`GenerateSmsCodeCmd`、`ValidateSmsCodeCmd`、`BindPhoneCmd`、`SyncUserPhoneFromCustomerProfileCmd`；
+     - 命令：`ChangePasswordCmd`、`BindPhoneCmd`、`SyncUserPhoneFromCustomerProfileCmd`；
      - 查询：`GetUserByPhoneQry`；
-     - 分布式 Client：`SmsSendCli`；
+     - 分布式 Client：`GenerateSmsCodeCli`、`ValidateSmsCodeCli`、`SmsSendCli`；
      - 领域事件：`PasswordChangedDomainEvent`、`CustomerProfilePhoneChangedDomainEvent`、`UserPhoneSyncedDomainEvent`。
    - 作为代码生成的输入，后续由 `./gradlew genDesign` 产出命令/查询/Client 骨架。
 
@@ -249,6 +246,6 @@ Issue #3 希望增强账号安全能力，并引入手机号维度，具体包�
    - 本次迭代在子目录 `Iterate/account-security-and-phone` 下拆分为 4 份独立流程图：
      - `CompatibleAccountController_changePassword.mmd`：修改密码流程（入口 → ChangePasswordCmd → User.changePassword → PasswordChangedDomainEvent）；
      - `CompatibleUHomeController_bindPhone.mmd`：绑定手机号并通过事件同步 User 流程；
-     - `CompatibleAccountController_loginBySms.mmd`：手机号 + 短信验证码登录流程（入口 → ValidateSmsCodeCmd → GetUserByPhoneQry → UpdateLoginInfoCmd → LoginInfoUpdatedDomainEvent）；
-     - `CompatibleAccountController_sendSmsCode.mmd`：发送短信验证码流程（入口 → GenerateSmsCodeCmd → SmsSendCli）。
+     - `CompatibleAccountController_loginBySms.mmd`：手机号 + 短信验证码登录流程（入口 → ValidateSmsCodeCli → GetUserByPhoneQry → UpdateLoginInfoCmd → LoginInfoUpdatedDomainEvent）；
+     - `CompatibleAccountController_sendSmsCode.mmd`：发送短信验证码流程（入口 → SmsSendCli）。
    - 各流程均采用“命令入口 →（命令 → 聚合领域方法 → 事件）→ …”的串联形式，对齐 `analysis` 目录既有风格。

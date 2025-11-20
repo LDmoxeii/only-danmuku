@@ -10,6 +10,8 @@ import edu.only4.danmuku.adapter.portal.api.payload.AccountCheckCode
 import edu.only4.danmuku.adapter.portal.api.payload.AccountLogin
 import edu.only4.danmuku.adapter.portal.api.payload.AccountRegister
 import edu.only4.danmuku.adapter.portal.api.payload.AccountUserCountInfo
+import edu.only4.danmuku.adapter.portal.api.payload.ChangePassword
+import edu.only4.danmuku.application.commands.user.ChangePasswordCmd
 import edu.only4.danmuku.application.commands.user.UpdateLoginInfoCmd
 import edu.only4.danmuku.application.distributed.clients.CaptchaGenCli
 import edu.only4.danmuku.application.distributed.clients.CaptchaValidCli
@@ -21,7 +23,6 @@ import edu.only4.danmuku.domain._share.meta.user.SUser
 import edu.only4.danmuku.domain.aggregates.user.User
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotEmpty
-import jakarta.validation.constraints.Pattern
 import jakarta.validation.constraints.Size
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
@@ -114,6 +115,15 @@ class CompatibleAccountController {
             avatar = customerProfile.avatar,
             expireAt = StpUtil.getTokenTimeout(),
             token = StpUtil.getTokenValue()
+        )
+    }
+
+    @PostMapping("/changePassword")
+    fun changePassword(payload: ChangePassword.Request) {
+        val currentUserId = LoginHelper.getUserId()!!
+
+        Mediator.commands.send(
+            ChangePassword.Converter.INSTANCE.toCmd(payload, currentUserId)
         )
     }
 
