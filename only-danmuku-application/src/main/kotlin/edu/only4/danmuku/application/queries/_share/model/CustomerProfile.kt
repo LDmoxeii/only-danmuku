@@ -29,6 +29,9 @@ interface CustomerProfile : BaseEntity {
     @Column(name = "email")
     val email: String
 
+    @Column(name = "phone")
+    val phone: String?
+
     /**
      * 性别 @E=0:UNKNOWN:未知|1:FEMALE:女|2:MALE:男|;@T=SexType
      */

@@ -26,6 +26,9 @@ interface User : BaseEntity {
     @Column(name = "email")
     val email: String
 
+    @Column(name = "phone")
+    val phone: String?
+
     @Column(name = "password")
     val password: String
 

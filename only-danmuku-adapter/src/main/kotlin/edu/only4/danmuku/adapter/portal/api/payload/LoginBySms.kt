@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.payload
 
+import jakarta.validation.constraints.NotEmpty
+import jakarta.validation.constraints.Pattern
 import org.mapstruct.Mapper
 import org.mapstruct.factory.Mappers
 
@@ -12,9 +14,25 @@ import org.mapstruct.factory.Mappers
  */
 object LoginBySms {
 
-    class Request
+    data class Request(
+        @field:NotEmpty(message = "手机号不能为空")
+        @field:Pattern(regexp = "^\\d{11}$", message = "手机号格式不正确")
+        val phone: String,
 
-    class Response
+        @field:NotEmpty(message = "短信验证码不能为空")
+        val smsCode: String,
+
+        @field:NotEmpty(message = "验证码ID不能为空")
+        val captchaId: String,
+    )
+
+    data class Response(
+        val userId: Long,
+        val nickName: String,
+        val avatar: String?,
+        val token: String,
+        val expireAt: Long,
+    )
 
     @Mapper(componentModel = "default")
     interface Converter {
@@ -23,4 +41,3 @@ object LoginBySms {
         }
     }
 }
-

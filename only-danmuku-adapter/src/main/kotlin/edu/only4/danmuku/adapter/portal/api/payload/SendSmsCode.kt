@@ -35,7 +35,9 @@ object SendSmsCode {
     /**
      * 发送短信验证码响应
      */
-    class Response
+    data class Response(
+        val captchaId: String,
+    )
 
     @Mapper(componentModel = "default")
     interface Converter {
