@@ -1,0 +1,32 @@
+[
+  {
+    "tag": "cmd",
+    "package": "user_behavior",
+    "name": "RecordLoginLog",
+    "desc": "记录用户登录日志"
+  },
+  {
+    "tag": "cmd",
+    "package": "user_behavior",
+    "name": "RecordAbnormalOperation",
+    "desc": "记录用户异常操作日志"
+  },
+
+  {
+    "tag": "de",
+    "package": "user",
+    "name": "PasswordInputFailed",
+    "desc": "密码输入失败领域事件（用于触发异常操作统计）",
+    "aggregates": ["User"],
+    "entity": "User",
+    "persist": false
+  },
+
+  {
+    "tag": "qry",
+    "package": "user_behavior",
+    "name": "GetRecentPasswordFailureCount",
+    "desc": "统计用户在指定时间窗口内的密码失败次数"
+  }
+]
+

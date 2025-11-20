@@ -32,7 +32,7 @@ codegen {
         username.set("root")
         password.set("123456")
         schema.set("only_danmuku")
-        tables.set("user,customer_profile")
+        tables.set("user_login_log,user_abnormal_operation_log")
         ignoreTables.set("")
     }
 
@@ -47,7 +47,8 @@ codegen {
         entityBaseClass.set("AuditedFieldsEntity")
         typeMapping.set(mapOf(
             "UserMessageExtend" to "edu.only4.danmuku.domain.aggregates.customer_message.extend.UserMessageExtend",
-            "AuditedFieldsEntity" to "edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity"
+            "AuditedFieldsEntity" to "edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity",
+            "UserType" to "edu.only4.danmuku.domain.aggregates.user.enums.UserType"
         ))
     }
 }
