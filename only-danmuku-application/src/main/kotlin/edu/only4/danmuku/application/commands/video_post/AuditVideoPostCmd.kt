@@ -8,7 +8,6 @@ import edu.only4.danmuku.application.validator.ValidAuditStatus
 import edu.only4.danmuku.application.validator.VideoPostExists
 import edu.only4.danmuku.application.validator.VideoPostStatusPending
 import edu.only4.danmuku.domain._share.meta.video_post.SVideoPost
-import edu.only4.danmuku.domain.aggregates.user.enums.UserType
 import edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
@@ -23,8 +22,8 @@ object AuditVideoPostCmd {
             ).getOrNull() ?: throw KnownException("视频草稿不存在：${request.videoPostId}")
 
             when (request.status) {
-                VideoStatus.REVIEW_PASSED -> post.reviewPass(request.reviewerId, request.reviewerType)
-                VideoStatus.REVIEW_FAILED -> post.reviewFail(request.reason, request.reviewerId, request.reviewerType)
+                VideoStatus.REVIEW_PASSED -> post.reviewPass()
+                VideoStatus.REVIEW_FAILED -> post.reviewFail()
                 else -> throw KnownException("不支持的审核状态：${request.status}")
             }
 
@@ -39,7 +38,5 @@ object AuditVideoPostCmd {
         @field:ValidAuditStatus
         val status: VideoStatus,
         val reason: String = "",
-        val reviewerId: Long,
-        val reviewerType: UserType
     ) : RequestParam<Unit>
 }

@@ -26,23 +26,18 @@ import org.springframework.stereotype.Service
 )
 class VideoAuditTraceFactory : AggregateFactory<VideoAuditTraceFactory.Payload, VideoAuditTrace> {
 
-    override fun create(payload: Payload): VideoAuditTrace {
+    override fun create(entityPayload: Payload): VideoAuditTrace {
         return VideoAuditTrace(
-            videoPostId = payload.videoPostId,
-            auditStatus = payload.auditStatus,
-            reviewerId = payload.reviewerId,
-            reviewerType = payload.reviewerType,
-            reason = payload.reason,
-            occurTime = payload.occurTime
+            videoPostId = entityPayload.videoPostId,
+            auditStatus = entityPayload.auditStatus,
+            reviewerId = entityPayload.reviewerId,
+            reviewerType = entityPayload.reviewerType,
+            reason = entityPayload.reason,
+            occurTime = entityPayload.occurTime
         )
     }
 
-     @Aggregate(
-        aggregate = "VideoAuditTrace",
-        name = "VideoAuditTracePayload",
-        type = Aggregate.TYPE_FACTORY_PAYLOAD,
-        description = ""
-    )
+    @Aggregate(aggregate = "VideoAuditTrace", name = "VideoAuditTracePayload", type = Aggregate.TYPE_FACTORY_PAYLOAD, description = "")
     data class Payload(
          val videoPostId: Long,
          val auditStatus: AuditStatus,

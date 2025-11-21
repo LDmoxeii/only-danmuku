@@ -187,18 +187,18 @@ class VideoPost(
     }
 
     /** 审核通过 */
-    fun reviewPass(reviewerId: Long, reviewerType: UserType) {
+    fun reviewPass() {
         if (this.status == VideoStatus.REVIEW_PASSED) return
         this.status = VideoStatus.REVIEW_PASSED
         this.videoFilePosts.forEach{ it.updateType(UpdateType.NO_UPDATE)}
-        events().attach(this) { VideoAuditPassedDomainEvent(entity = this, reviewerId, reviewerType) }
+        events().attach(this) { VideoAuditPassedDomainEvent(entity = this) }
     }
 
     /** 审核失败 */
-    fun reviewFail(reason: String, reviewerId: Long, reviewerType: UserType) {
+    fun reviewFail() {
         if (this.status == VideoStatus.REVIEW_FAILED) return
         this.status = VideoStatus.REVIEW_FAILED
-        events().attach(this) { VideoAuditFailedDomainEvent(entity = this, reason, reviewerId, reviewerType = reviewerType) }
+        events().attach(this) { VideoAuditFailedDomainEvent(entity = this) }
     }
 
     /** 标记为待审核 */

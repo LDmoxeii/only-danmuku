@@ -1,29 +1,31 @@
 flowchart TB
 
-    %% 命令入口
+    %% 命令入口：先落审核记录
     C0["CompatibleAdminVideoController.audit"]
     class C0 controllermethod;
 
-    %% 审核命令
-    CMD["AuditVideoPostCmd"]
-    class CMD command;
-    A1["VideoPost.audit"]
-    class A1 entitymethod;
-    E1["VideoAuditPassedDomainEvent"]
+    CMD1["RecordVideoAuditTraceCmd (PASSED)"]
+    class CMD1 command;
+    E1["VideoAuditTraceRecordedDomainEvent"]
     class E1 domainevent;
 
-    %% 审核追溯记录
-    S1["VideoAuditPassedDomainEventSubscriber"]
+    %% 订阅事件后驱动稿件状态变更
+    S1["VideoAuditTraceRecordedDomainEventSubscriber"]
     class S1 domaineventhandler;
-    CMD2["RecordVideoAuditTraceCmd (PASSED)"]
+    CMD2["AuditVideoPostCmd (status=REVIEW_PASSED)"]
     class CMD2 command;
+    A1["VideoPost.audit / reviewPass"]
+    class A1 entitymethod;
+    E2["VideoAuditPassedDomainEvent"]
+    class E2 domainevent;
 
     %% Relationships
-    C0 --> CMD
-    CMD --> A1
-    A1 --> E1
+    C0 --> CMD1
+    CMD1 --> E1
     E1 -->|on| S1
     S1 --> CMD2
+    CMD2 --> A1
+    A1 --> E2
 
     %% Styles
     classDef controller fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,font-weight:bold;

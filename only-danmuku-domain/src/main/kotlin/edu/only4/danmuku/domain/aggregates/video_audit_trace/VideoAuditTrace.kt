@@ -1,10 +1,12 @@
 package edu.only4.danmuku.domain.aggregates.video_audit_trace
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
+import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
 
 import edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity
 import edu.only4.danmuku.domain.aggregates.user.enums.UserType
 import edu.only4.danmuku.domain.aggregates.video_audit_trace.enums.AuditStatus
+import edu.only4.danmuku.domain.aggregates.video_audit_trace.events.VideoAuditTraceRecordedDomainEvent
 
 import jakarta.persistence.*
 
@@ -31,7 +33,7 @@ import org.hibernate.annotations.Where
 @Where(clause = "`deleted` = 0")
 class VideoAuditTrace(
     id: Long = 0L,
-    videoId: Long = 0L,
+    videoPostId: Long = 0L,
     auditStatus: AuditStatus = AuditStatus.valueOf(0),
     reviewerId: Long? = null,
     reviewerType: UserType = UserType.valueOf(0),
@@ -55,8 +57,8 @@ class VideoAuditTrace(
      * 视频稿件ID
      * bigint
      */
-    @Column(name = "`video_id`")
-    var videoId: Long = videoId
+    @Column(name = "`video_post_id`")
+    var videoPostId: Long = videoPostId
         internal set
 
     /**
@@ -107,4 +109,8 @@ class VideoAuditTrace(
         internal set
 
     // 【字段映射结束】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
+
+    fun onCreate() {
+        events().attach(this) { VideoAuditTraceRecordedDomainEvent(this) }
+    }
 }

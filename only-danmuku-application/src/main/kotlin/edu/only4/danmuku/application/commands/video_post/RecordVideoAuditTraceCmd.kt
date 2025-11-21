@@ -22,7 +22,7 @@ object RecordVideoAuditTraceCmd {
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
-            val occurTime = request.occurTime ?: System.currentTimeMillis() / 1000L
+            val occurTime = request.occurTime ?: (System.currentTimeMillis() / 1000L)
             val trace = Mediator.factories.create(
                 VideoAuditTraceFactory.Payload(
                     videoPostId = request.videoPostId,

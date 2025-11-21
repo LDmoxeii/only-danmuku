@@ -7,6 +7,15 @@
   },
   {
     "tag": "de",
+    "package": "video_audit_trace",
+    "name": "VideoAuditTraceRecorded",
+    "desc": "审核追溯记录已创建事件",
+    "aggregates": ["VideoAuditTrace"],
+    "entity": "VideoAuditTrace",
+    "persist": false
+  },
+  {
+    "tag": "de",
     "package": "video_post",
     "name": "VideoAuditPassed",
     "desc": "视频审核通过领域事件（复用）",

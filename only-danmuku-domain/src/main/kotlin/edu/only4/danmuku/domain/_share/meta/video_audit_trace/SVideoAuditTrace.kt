@@ -31,7 +31,7 @@ class SVideoAuditTrace(
 
         val id = "id"
 
-        val videoId = "videoId"
+        val videoPostId = "videoPostId"
 
         val auditStatus = "auditStatus"
 
@@ -369,8 +369,8 @@ class SVideoAuditTrace(
     /**
      * 视频稿件ID
      */
-    val videoId: Field<Long> by lazy {
-        Field(root.get("videoId"), criteriaBuilder)
+    val videoPostId: Field<Long> by lazy {
+        Field(root.get("videoPostId"), criteriaBuilder)
     }
 
 
