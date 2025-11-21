@@ -1,7 +1,7 @@
 package edu.only4.danmuku.application.queries._share.model
 
-import edu.only4.danmuku.domain.aggregates.video_post.enums.TransferResult
-import edu.only4.danmuku.domain.aggregates.video_post.enums.UpdateType
+import edu.only4.danmuku.domain.aggregates.video_file_post.enums.TransferResult
+import edu.only4.danmuku.domain.aggregates.video_file_post.enums.UpdateType
 import org.babyfish.jimmer.sql.Column
 import org.babyfish.jimmer.sql.Entity
 import org.babyfish.jimmer.sql.IdView

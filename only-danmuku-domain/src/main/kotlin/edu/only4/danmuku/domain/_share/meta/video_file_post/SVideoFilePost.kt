@@ -1,4 +1,6 @@
-package edu.only4.danmuku.domain._share.meta.video_post
+package edu.only4.danmuku.domain._share.meta.video_file_post
+
+import com.only4.cap4k.ddd.domain.repo.JpaPredicate
 
 import edu.only4.danmuku.domain._share.meta.ExpressionBuilder
 import edu.only4.danmuku.domain._share.meta.Field
@@ -6,23 +8,20 @@ import edu.only4.danmuku.domain._share.meta.OrderBuilder
 import edu.only4.danmuku.domain._share.meta.PredicateBuilder
 import edu.only4.danmuku.domain._share.meta.SchemaSpecification
 import edu.only4.danmuku.domain._share.meta.SubqueryConfigure
-import edu.only4.danmuku.domain.aggregates.video_post.VideoFilePost
-import edu.only4.danmuku.domain.aggregates.video_post.enums.TransferResult
-import edu.only4.danmuku.domain.aggregates.video_post.enums.UpdateType
+import edu.only4.danmuku.domain.aggregates.video_file_post.VideoFilePost
+import edu.only4.danmuku.domain.aggregates.video_file_post.enums.TransferResult
+import edu.only4.danmuku.domain.aggregates.video_file_post.enums.UpdateType
 
 import jakarta.persistence.criteria.*
 
 import org.springframework.data.jpa.domain.Specification
 
 /**
- * 视频文件信息;
- *
  * Schema 类用于类型安全的 JPA Criteria 查询
  *
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/11/04
  */
 class SVideoFilePost(
     private val root: Path<VideoFilePost>,
@@ -228,6 +227,138 @@ class SVideoFilePost(
             subqueryConfigure.configure(sq, schema)
             return sq
         }
+        /**
+         * 构建查询条件
+         *
+         * @param id 主键
+         * @return
+         */
+        @JvmStatic
+        fun predicateById(id: Any): JpaPredicate<VideoFilePost> {
+            return JpaPredicate.byId(VideoFilePost::class.java, id)
+        }
+
+        /**
+        * 构建查询条件
+        *
+        * @param ids 主键
+        * @return
+        */
+        @JvmStatic
+        fun predicateByIds(ids: Iterable<*>): JpaPredicate<VideoFilePost> {
+            @Suppress("UNCHECKED_CAST")
+            return JpaPredicate.byIds(VideoFilePost::class.java, ids as Iterable<Any>)
+        }
+
+        /**
+         * 构建查询条件
+         *
+         * @param ids 主键
+         * @return
+         */
+        @JvmStatic
+        fun predicateByIds(vararg ids: Any): JpaPredicate<VideoFilePost> {
+            return JpaPredicate.byIds(VideoFilePost::class.java, ids.toList())
+        }
+
+        /**
+         * 构建查询条件
+         *
+         * @param builder 查询条件构造器
+         * @return
+         */
+        @JvmStatic
+        fun predicate(builder: PredicateBuilder<SVideoFilePost>): JpaPredicate<VideoFilePost> {
+            return JpaPredicate.bySpecification(VideoFilePost::class.java, specify(builder))
+        }
+
+        /**
+         * 构建查询条件
+         *
+         * @param builder  查询条件构造器
+         * @param distinct 是否去重
+         * @return
+         */
+        @JvmStatic
+        fun predicate(builder: PredicateBuilder<SVideoFilePost>, distinct: Boolean): JpaPredicate<VideoFilePost> {
+            return JpaPredicate.bySpecification(VideoFilePost::class.java, specify(builder, distinct))
+        }
+
+        /**
+         * 构建查询条件
+         *
+         * @param builder       查询条件构造器
+         * @param orderBuilders 排序构造器
+         * @return
+         */
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SVideoFilePost>,
+            orderBuilders: List<OrderBuilder<SVideoFilePost>>,
+        ): JpaPredicate<VideoFilePost> {
+            return JpaPredicate.bySpecification(VideoFilePost::class.java, specify(builder, false, orderBuilders))
+        }
+
+        /**
+         * 构建查询条件
+         *
+         * @param builder       查询条件构造器
+         * @param orderBuilders 排序构造器
+         * @return
+         */
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SVideoFilePost>,
+            vararg orderBuilders: OrderBuilder<SVideoFilePost>,
+        ): JpaPredicate<VideoFilePost> {
+            return JpaPredicate.bySpecification(VideoFilePost::class.java, specify(builder, false, *orderBuilders))
+        }
+
+        /**
+         * 构建查询条件
+         *
+         * @param builder       查询条件构造器
+         * @param distinct      是否去重
+         * @param orderBuilders 排序构造器
+         * @return
+         */
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SVideoFilePost>,
+            distinct: Boolean,
+            orderBuilders: List<OrderBuilder<SVideoFilePost>>,
+        ): JpaPredicate<VideoFilePost> {
+            return JpaPredicate.bySpecification(VideoFilePost::class.java, specify(builder, distinct, orderBuilders))
+        }
+
+        /**
+         * 构建查询条件
+         *
+         * @param builder       查询条件构造器
+         * @param distinct      是否去重
+         * @param orderBuilders 排序构造器
+         * @return
+         */
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SVideoFilePost>,
+            distinct: Boolean,
+            vararg orderBuilders: OrderBuilder<SVideoFilePost>,
+        ): JpaPredicate<VideoFilePost> {
+            return JpaPredicate.bySpecification(VideoFilePost::class.java, specify(builder, distinct, *orderBuilders))
+        }
+
+        /**
+         * 构建查询条件
+         *
+         * @param specifier 查询条件构造器
+         * @return
+         */
+        @JvmStatic
+        fun predicate(specifier: SchemaSpecification<VideoFilePost, SVideoFilePost>): JpaPredicate<VideoFilePost> {
+            return JpaPredicate.bySpecification(VideoFilePost::class.java, specify(specifier))
+        }
+
     }
 
     fun _criteriaBuilder(): CriteriaBuilder = criteriaBuilder
@@ -260,7 +391,7 @@ class SVideoFilePost(
 
 
     /**
-     * 视频ID@
+     * 视频ID
      */
     val videoId: Field<Long> by lazy {
         Field(root.get("videoId"), criteriaBuilder)
@@ -378,14 +509,6 @@ class SVideoFilePost(
         Field(root.get("deleted"), criteriaBuilder)
     }
 
-
-
-    /**
-     * 关联: ManyToOne - VideoPost
-     */
-    val videoPost: Field<Any> by lazy {
-        Field(root.get("videoPost"), criteriaBuilder)
-    }
 
 
     /**

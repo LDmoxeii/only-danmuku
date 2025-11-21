@@ -1,9 +1,9 @@
-package edu.only4.danmuku.adapter.domain.translation.video
+package edu.only4.danmuku.adapter.domain.translation.video_post
 
 import com.only.engine.translation.annotation.TranslationType
 import com.only.engine.translation.core.BatchTranslationInterface
 import com.only.engine.translation.core.TranslationInterface
-import edu.only4.danmuku.adapter.domain.translation.video.PostTypeTranslation.Companion.POST_TYPE_CODE_TO_DESC
+import edu.only4.danmuku.adapter.domain.translation.video_post.PostTypeTranslation.Companion.POST_TYPE_CODE_TO_DESC
 import edu.only4.danmuku.domain.aggregates.video_post.enums.PostType
 
 import org.springframework.stereotype.Component

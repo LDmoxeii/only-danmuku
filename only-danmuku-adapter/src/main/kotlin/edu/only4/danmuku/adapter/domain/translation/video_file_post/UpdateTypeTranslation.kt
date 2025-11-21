@@ -1,10 +1,10 @@
-package edu.only4.danmuku.adapter.domain.translation.video
+package edu.only4.danmuku.adapter.domain.translation.video_file_post
 
 import com.only.engine.translation.annotation.TranslationType
 import com.only.engine.translation.core.BatchTranslationInterface
 import com.only.engine.translation.core.TranslationInterface
-import edu.only4.danmuku.adapter.domain.translation.video.PostTypeTranslation.Companion.POST_TYPE_CODE_TO_DESC
-import edu.only4.danmuku.domain.aggregates.video_post.enums.PostType
+import edu.only4.danmuku.adapter.domain.translation.video_file_post.UpdateTypeTranslation.Companion.UPDATE_TYPE_CODE_TO_DESC
+import edu.only4.danmuku.domain.aggregates.video_file_post.enums.UpdateType
 
 import org.springframework.stereotype.Component
 
@@ -12,13 +12,13 @@ import org.springframework.stereotype.Component
  * 由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手动修改本文件，后续生成会覆盖当前文件
  */
-@TranslationType(type = POST_TYPE_CODE_TO_DESC)
+@TranslationType(type = UPDATE_TYPE_CODE_TO_DESC)
 @Component
-class PostTypeTranslation :
+class UpdateTypeTranslation :
     TranslationInterface<String>, BatchTranslationInterface<String> {
 
     companion object {
-        const val POST_TYPE_CODE_TO_DESC = "post_type_code_to_desc"
+        const val UPDATE_TYPE_CODE_TO_DESC = "update_type_code_to_desc"
     }
 
     override fun translation(key: Any, other: String): String? {
@@ -27,7 +27,7 @@ class PostTypeTranslation :
             is String -> key.toIntOrNull()
             else -> null
         } ?: return null
-        return PostType.valueOfOrNull(code)?.desc
+        return UpdateType.valueOfOrNull(code)?.desc
     }
 
     override fun translationBatch(keys: Collection<Any>, other: String): Map<Any, String?> {
@@ -44,7 +44,7 @@ class PostTypeTranslation :
         val codes: Set<Int> = keyToCode.values.filterNotNull().toSet()
 
         val codeToDesc: Map<Int, String?> = codes.associateWith { c ->
-            PostType.valueOfOrNull(c)?.desc
+            UpdateType.valueOfOrNull(c)?.desc
         }
 
         return keyToCode.mapValues { (_, c) -> c?.let { codeToDesc[it] } }

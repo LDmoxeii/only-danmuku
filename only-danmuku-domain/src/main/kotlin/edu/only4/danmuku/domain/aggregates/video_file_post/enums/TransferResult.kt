@@ -1,4 +1,4 @@
-package edu.only4.danmuku.domain.aggregates.video_post.enums
+package edu.only4.danmuku.domain.aggregates.video_file_post.enums
 import com.fasterxml.jackson.annotation.JsonValue
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
@@ -9,9 +9,9 @@ import jakarta.persistence.AttributeConverter
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/11/04
+ * @date 2025/11/21
  */
-@Aggregate(aggregate = "VideoPost", name = "TransferResult", type = "enum", description = "")
+@Aggregate(aggregate = "VideoFilePost", name = "TransferResult", type = "enum", description = "")
 enum class TransferResult(
     @field:JsonValue
     val code: Int,

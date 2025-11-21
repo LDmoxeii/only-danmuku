@@ -4,7 +4,7 @@ import com.only.engine.translation.annotation.TranslationType
 import com.only.engine.translation.core.BatchTranslationInterface
 import com.only.engine.translation.core.TranslationInterface
 import edu.only4.danmuku.adapter.domain.translation.video_post.TransferResultTranslation.Companion.TRANSFER_RESULT_CODE_TO_DESC
-import edu.only4.danmuku.domain.aggregates.video_post.enums.TransferResult
+import edu.only4.danmuku.domain.aggregates.video_file_post.enums.TransferResult
 
 import org.springframework.stereotype.Component
 

@@ -8,8 +8,8 @@ import edu.only4.danmuku.domain._share.meta.OrderBuilder
 import edu.only4.danmuku.domain._share.meta.PredicateBuilder
 import edu.only4.danmuku.domain._share.meta.SchemaSpecification
 import edu.only4.danmuku.domain._share.meta.SubqueryConfigure
-import edu.only4.danmuku.domain.aggregates.video.enums.PostType
 import edu.only4.danmuku.domain.aggregates.video_post.VideoPost
+import edu.only4.danmuku.domain.aggregates.video_post.enums.PostType
 import edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus
 
 import jakarta.persistence.criteria.*
@@ -17,14 +17,11 @@ import jakarta.persistence.criteria.*
 import org.springframework.data.jpa.domain.Specification
 
 /**
- * 视频信息;
- *
  * Schema 类用于类型安全的 JPA Criteria 查询
  *
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/11/04
  */
 class SVideoPost(
     private val root: Path<VideoPost>,
@@ -532,14 +529,6 @@ class SVideoPost(
         Field(root.get("deleted"), criteriaBuilder)
     }
 
-
-
-    /**
-     * 关联: OneToMany - VideoFilePost
-     */
-    val videoFilePosts: Field<Any> by lazy {
-        Field(root.get("videoFilePosts"), criteriaBuilder)
-    }
 
 
     /**

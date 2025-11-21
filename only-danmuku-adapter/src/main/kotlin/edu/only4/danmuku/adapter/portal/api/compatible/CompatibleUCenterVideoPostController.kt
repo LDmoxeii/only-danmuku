@@ -17,7 +17,7 @@ import edu.only4.danmuku.application.commands.video_post.UpdateVideoPostCmd
 import edu.only4.danmuku.application.queries.video_draft.GetUserVideoPostQry
 import edu.only4.danmuku.application.queries.video_draft.GetVideoDraftCountByStatusQry
 import edu.only4.danmuku.application.queries.video_draft.GetVideoPostInfoQry
-import edu.only4.danmuku.domain.aggregates.video.enums.PostType
+import edu.only4.danmuku.domain.aggregates.video_post.enums.PostType
 import edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.Size
@@ -76,30 +76,30 @@ class CompatibleUCenterVideoPostController {
             )
         } else {
             // 更新：更新视频草稿（含互动配置），支持 fileId 与 uploadId 混合
-            val updateFileList = mixedList.mapIndexed { idx, item ->
-                UpdateVideoPostCmd.VideoFileInfo(
-                    fileId = item.fileId,
-                    uploadId = item.uploadId,
-                    fileIndex = idx + 1,
-                    fileName = item.fileName,
-                )
-            }
-            Mediator.commands.send(
-                UpdateVideoPostCmd.Request(
-                    videoPostId = videoId,
-                    customerId = currentUserId,
-                    videoName = videoName,
-                    videoCover = videoCover,
-                    pCategoryId = parentCategoryId,
-                    categoryId = categoryId,
-                    postType = PostType.valueOf(postType),
-                    originInfo = originInfo,
-                    tags = tags,
-                    introduction = introduction,
-                    interaction = interaction,
-                    uploadFileList = updateFileList
-                )
-            )
+//            val updateFileList = mixedList.mapIndexed { idx, item ->
+//                UpdateVideoPostCmd.VideoFileInfo(
+//                    fileId = item.fileId,
+//                    uploadId = item.uploadId,
+//                    fileIndex = idx + 1,
+//                    fileName = item.fileName,
+//                )
+//            }
+//            Mediator.commands.send(
+//                UpdateVideoPostCmd.Request(
+//                    videoPostId = videoId,
+//                    customerId = currentUserId,
+//                    videoName = videoName,
+//                    videoCover = videoCover,
+//                    pCategoryId = parentCategoryId,
+//                    categoryId = categoryId,
+//                    postType = PostType.valueOf(postType),
+//                    originInfo = originInfo,
+//                    tags = tags,
+//                    introduction = introduction,
+//                    interaction = interaction,
+//                    uploadFileList = updateFileList
+//                )
+//            )
         }
 
         return UCenterPostVideo.Response()

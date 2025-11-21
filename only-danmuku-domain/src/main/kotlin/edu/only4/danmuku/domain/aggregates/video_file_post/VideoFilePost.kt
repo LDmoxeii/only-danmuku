@@ -1,18 +1,22 @@
-package edu.only4.danmuku.domain.aggregates.video_post
+package edu.only4.danmuku.domain.aggregates.video_file_post
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
 
 import edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity
-import edu.only4.danmuku.domain.aggregates.video_post.enums.TransferResult
-import edu.only4.danmuku.domain.aggregates.video_post.enums.UpdateType
+import edu.only4.danmuku.domain.aggregates.video_file_post.enums.TransferResult
+import edu.only4.danmuku.domain.aggregates.video_file_post.enums.UpdateType
 import edu.only4.danmuku.domain.aggregates.video_post.events.VideoFileDraftTranscodedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video_post.ports.VideoFileTranscodePort
 
 import jakarta.persistence.*
-import jakarta.persistence.Table
 
-import org.hibernate.annotations.*
+import org.hibernate.annotations.DynamicInsert
+import org.hibernate.annotations.DynamicUpdate
+import org.hibernate.annotations.GenericGenerator
+import org.hibernate.annotations.SQLDelete
+import org.hibernate.annotations.Where
+import java.io.File
 
 /**
  * 视频文件信息;
@@ -20,9 +24,9 @@ import org.hibernate.annotations.*
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2025/11/04
+ * @date 2025/11/21
  */
-@Aggregate(aggregate = "VideoPost", name = "VideoFilePost", root = false, type = Aggregate.TYPE_ENTITY, description = "视频文件信息，")
+@Aggregate(aggregate = "VideoFilePost", name = "VideoFilePost", root = true, type = Aggregate.TYPE_ENTITY, description = "视频文件信息，")
 @Entity
 @Table(name = "`video_file_post`")
 @DynamicInsert
@@ -33,6 +37,7 @@ class VideoFilePost(
     id: Long = 0L,
     uploadId: Long = 0L,
     customerId: Long = 0L,
+    videoId: Long = 0L,
     fileIndex: Int = 0,
     fileName: String? = null,
     fileSize: Long? = null,
@@ -42,9 +47,6 @@ class VideoFilePost(
     duration: Int? = null,
 ) : AuditedFieldsEntity() {
     // 【字段映射开始】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
-    @ManyToOne(cascade = [], fetch = FetchType.EAGER)
-    @JoinColumn(name = "`video_id`", nullable = false, insertable = false, updatable = false)
-    var videoPost: VideoPost? = null
 
     /**
      * ID
@@ -71,6 +73,14 @@ class VideoFilePost(
      */
     @Column(name = "`customer_id`")
     var customerId: Long = customerId
+        internal set
+
+    /**
+     * 视频ID
+     * bigint
+     */
+    @Column(name = "`video_id`")
+    var videoId: Long = videoId
         internal set
 
     /**
@@ -249,13 +259,9 @@ class VideoFilePost(
             // 3) 编码检查与可选转码
             val codec = port.detectCodec(mergedMp4.absolutePath)
             if (port.isHevc(codec)) {
-                val hevcBackup = java.io.File(mergedMp4.parentFile, mergedMp4.name + ".hevc")
+                val hevcBackup = File(mergedMp4.parentFile, mergedMp4.name + ".hevc")
                 // 将原文件改名为 .hevc 作为输入
-                if (!mergedMp4.renameTo(hevcBackup)) {
-                    val ex = IllegalStateException("无法重命名临时文件: ${mergedMp4.absolutePath}")
-                    this.markTransferFailed(ex.message)
-                    throw ex
-                }
+                mergedMp4.renameTo(hevcBackup)
                 // 输出写回 mergedMp4 路径
                 port.transcodeHevcToH264(mergedMp4.absolutePath, hevcBackup.absolutePath)
                 hevcBackup.delete()

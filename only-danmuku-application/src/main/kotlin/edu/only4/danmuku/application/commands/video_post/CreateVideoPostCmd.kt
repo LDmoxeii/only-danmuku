@@ -4,8 +4,7 @@ import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
 import edu.only4.danmuku.application.validator.MaxVideoPCount
-import edu.only4.danmuku.domain.aggregates.video.enums.PostType
-import edu.only4.danmuku.domain.aggregates.video_post.VideoPost
+import edu.only4.danmuku.domain.aggregates.video_post.enums.PostType
 import edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus
 import edu.only4.danmuku.domain.aggregates.video_post.factory.VideoPostFactory
 import org.springframework.stereotype.Service
@@ -30,21 +29,6 @@ object CreateVideoPostCmd {
                     status = VideoStatus.TRANSCODING,
                 )
             )
-
-            if (request.uploadFileList.isNotEmpty()) {
-                val uploadSpecs = request.uploadFileList.map { file ->
-                    VideoPost.UploadSpec(
-                        uploadId = file.uploadId,
-                        fileIndex = file.fileIndex,
-                        fileName = file.fileName,
-                    )
-                }
-
-                post.initializeFilesFromUploads(
-                    customerId = request.customerId,
-                    uploads = uploadSpecs
-                )
-            }
 
             Mediator.uow.save()
 

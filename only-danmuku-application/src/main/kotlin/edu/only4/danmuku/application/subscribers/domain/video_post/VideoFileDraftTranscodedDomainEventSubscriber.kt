@@ -15,11 +15,11 @@ class VideoFileDraftTranscodedDomainEventSubscriber {
 
     @EventListener(VideoFileDraftTranscodedDomainEvent::class)
     fun on(event: VideoFileDraftTranscodedDomainEvent) {
-        val videoDraft = event.entity.videoPost
-        if (videoDraft == null) {
-            logger.warn("忽略视频文件转码事件，缺少 videoDraft: uploadId={}", event.entity.uploadId)
-            return
-        }
-        // 状态刷新已在批量转码命令内完成，这里不再触发独立命令，避免重复
+//        val videoDraft = event.entity.videoPost
+//        if (videoDraft == null) {
+//            logger.warn("忽略视频文件转码事件，缺少 videoDraft: uploadId={}", event.entity.uploadId)
+//            return
+//        }
+//        // 状态刷新已在批量转码命令内完成，这里不再触发独立命令，避免重复
     }
 }

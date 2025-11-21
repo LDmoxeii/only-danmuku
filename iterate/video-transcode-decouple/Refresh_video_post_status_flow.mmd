@@ -1,0 +1,37 @@
+flowchart TB
+
+    C1["UpdateVideoFilePostTranscodeResultCmd"]
+    class C1 command;
+    A1["VideoFilePost.applyTranscodeResult"]
+    class A1 entitymethod;
+    E1["VideoFilePostTranscodeResultUpdatedDomainEvent"]
+    class E1 domainevent;
+
+    CDel["DeleteVideoFilePostCmd"]
+    class CDel command;
+    ADel["VideoFilePost.onDelete"]
+    class ADel entitymethod;
+    EDel["VideoFilePostDeletedDomainEvent"]
+    class EDel domainevent;
+
+    Q1["GetVideoFilePostsByPostIdQry"]
+    class Q1 query;
+
+    C2["RefreshVideoPostTranscodeStatusCmd"]
+    class C2 command;
+    A2["VideoPost.refreshTranscodeStatus"]
+    class A2 entitymethod;
+
+    %% Relationships
+    C1 --> A1 --> E1
+    CDel --> ADel --> EDel
+    E1 --> Q1
+    EDel --> Q1
+    Q1 --> C2
+    C2 --> A2
+
+    %% Styles
+    classDef command fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px,font-weight:bold;
+    classDef entitymethod fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px;
+    classDef domainevent fill:#fff3e0,stroke:#e65100,stroke-width:2px,font-style:italic;
+    classDef query fill:#fffde7,stroke:#f9a825,stroke-width:2px,font-weight:bold;

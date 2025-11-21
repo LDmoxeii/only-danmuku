@@ -2,7 +2,7 @@ package edu.only4.danmuku.application.validator
 
 import com.only4.cap4k.ddd.core.Mediator
 
-import edu.only4.danmuku.application.queries.video_post.UniqueVideoFilePostUploadIdQry
+import edu.only4.danmuku.application.queries.video_file_post.UniqueVideoFilePostUploadIdQry
 
 import jakarta.validation.Constraint
 import jakarta.validation.ConstraintValidator
@@ -13,11 +13,8 @@ import kotlin.reflect.KClass
 import kotlin.reflect.full.memberProperties
 
 /**
- * 视频文件信息;
- *
  * 该文件由 [cap4k-ddd-codegen-gradle-plugin] 生成
  * @author cap4k-ddd-codegen
- * @date 2025/11/04
  */
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)

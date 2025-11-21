@@ -2,29 +2,14 @@ package edu.only4.danmuku.domain.aggregates.video
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
-
 import edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity
-import edu.only4.danmuku.domain.aggregates.video.enums.PostType
 import edu.only4.danmuku.domain.aggregates.video.enums.RecommendType
-import edu.only4.danmuku.domain.aggregates.video.events.VideoBasicsSyncedDomainEvent
-import edu.only4.danmuku.domain.aggregates.video.events.VideoCreatedDomainEvent
-import edu.only4.danmuku.domain.aggregates.video.events.VideoDeletedDomainEvent
-import edu.only4.danmuku.domain.aggregates.video.events.VideoInteractionChangedDomainEvent
-import edu.only4.danmuku.domain.aggregates.video.events.VideoLastPlayTimeAttachedDomainEvent
-import edu.only4.danmuku.domain.aggregates.video.events.VideoRecommendedDomainEvent
-import edu.only4.danmuku.domain.aggregates.video.events.VideoStatisticsDeltaAppliedDomainEvent
-import edu.only4.danmuku.domain.aggregates.video.events.VideoUnrecommendedDomainEvent
-import edu.only4.danmuku.domain.aggregates.video_post.VideoPost
-
+import edu.only4.danmuku.domain.aggregates.video.events.*
+import edu.only4.danmuku.domain.aggregates.video_post.enums.PostType
 import jakarta.persistence.*
-
-import org.hibernate.annotations.DynamicInsert
-import org.hibernate.annotations.DynamicUpdate
-import org.hibernate.annotations.Fetch
-import org.hibernate.annotations.FetchMode
-import org.hibernate.annotations.GenericGenerator
-import org.hibernate.annotations.SQLDelete
-import org.hibernate.annotations.Where
+import jakarta.persistence.CascadeType
+import jakarta.persistence.Table
+import org.hibernate.annotations.*
 
 /**
  * 视频信息;

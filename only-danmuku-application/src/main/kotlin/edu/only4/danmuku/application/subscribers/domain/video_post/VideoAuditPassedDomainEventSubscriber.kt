@@ -43,20 +43,7 @@ class VideoAuditPassedDomainEventSubscriber {
                 introduction = videoPost.introduction,
                 interaction = videoPost.interaction,
                 duration = videoPost.duration,
-                files = videoPost.videoFilePosts
-                    .filter { it.isTransferSuccess() }
-                    .sortedBy { it.fileIndex }
-                    .map {
-                        TransferVideoToProductionCmd.FileItem(
-                            videoFilePostId = it.id,
-                            customerId = it.customerId,
-                            fileName = it.fileName,
-                            fileIndex = it.fileIndex,
-                            fileSize = it.fileSize,
-                            filePath = it.filePath,
-                            duration = it.duration,
-                        )
-                    }
+                files = emptyList()
             )
         )
     }
