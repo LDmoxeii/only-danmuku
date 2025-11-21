@@ -32,9 +32,6 @@ interface User : BaseEntity {
     @Column(name = "password")
     val password: String
 
-    @Column(name = "phone")
-    val phone: String?
-
     @Column(name = "join_time")
     val joinTime: Long
 

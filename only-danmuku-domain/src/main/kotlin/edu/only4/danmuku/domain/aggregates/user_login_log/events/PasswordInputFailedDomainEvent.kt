@@ -1,9 +1,9 @@
-package edu.only4.danmuku.domain.aggregates.user.events
+package edu.only4.danmuku.domain.aggregates.user_login_log.events
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import com.only4.cap4k.ddd.core.domain.event.annotation.DomainEvent
 
-import edu.only4.danmuku.domain.aggregates.user.User
+import edu.only4.danmuku.domain.aggregates.user_login_log.UserLoginLog
 
 
 /**
@@ -11,20 +11,13 @@ import edu.only4.danmuku.domain.aggregates.user.User
  *
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * @author cap4k-ddd-codegen
- * @date 2025/11/20
+ * @date 2025/11/21
  */
 @DomainEvent(persist = false)
 @Aggregate(
-    aggregate = "User",
+    aggregate = "UserLoginLog",
     name = "PasswordInputFailedDomainEvent",
     type = Aggregate.TYPE_DOMAIN_EVENT,
     description = ""
 )
-class PasswordInputFailedDomainEvent(
-    val entity: User,
-    val loginName: String,
-    val ip: String?,
-    val userAgent: String?,
-    val occurTime: Long,
-    val reason: String?,
-)
+class PasswordInputFailedDomainEvent(val entity: UserLoginLog)

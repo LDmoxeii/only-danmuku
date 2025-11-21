@@ -23,7 +23,7 @@ object RecordLoginLogCmd {
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
-            val occurTime = request.occurTime ?: System.currentTimeMillis() / 1000L
+            val occurTime = request.occurTime ?: (System.currentTimeMillis() / 1000L)
             val log = Mediator.factories.create(
                 UserLoginLogFactory.Payload(
                     userId = request.userId,

@@ -86,31 +86,23 @@ class CompatibleAccountController {
             )
         )
 
-        val user = Mediator.repositories
-            .findOne(SUser.predicateById(userAccount.userId))
-            .orElseThrow { KnownException("用户不存在") }
-
-        val isPasswordCorrect = user.verifyPassword(password)
+        val isPasswordCorrect = userAccount.password == password
         if (!isPasswordCorrect) {
-            val occurTime = System.currentTimeMillis() / 1000L
-            val userAgent = ServletUtils.getRequest()?.getHeader("User-Agent")
-            user.reportPasswordInputFailed(
-                loginName = email,
-                ip = getClientIP(),
-                userAgent = userAgent,
-                occurTime = occurTime,
-                reason = "密码错误"
+            Mediator.commands.send(
+                RecordLoginLogCmd.Request(
+                    userId = userAccount.userId,
+                    userType = userAccount.type,
+                    loginName = email,
+                    loginType = LoginType.PASSWORD,
+                    result = LoginResult.FAILURE,
+                    ip = getClientIP()!!,
+                    userAgent = ServletUtils.getRequest()?.getHeader("User-Agent"),
+                    reason = "密码错误",
+                    occurTime = System.currentTimeMillis() / 1000L
+                )
             )
-            Mediator.uow.save()
             throw KnownException("密码错误")
         }
-
-        Mediator.commands.send(
-            UpdateLoginInfoCmd.Request(
-                userId = userAccount.userId,
-                loginIp = getClientIP()!!,
-            )
-        )
 
         val customerProfile = Mediator.queries.send(
             GetCustomerProfileQry.Request(
@@ -138,6 +130,13 @@ class CompatibleAccountController {
                 ip = getClientIP()!!,
                 userAgent = ServletUtils.getRequest()?.getHeader("User-Agent"),
                 occurTime = System.currentTimeMillis() / 1000L
+            )
+        )
+
+        Mediator.commands.send(
+            UpdateLoginInfoCmd.Request(
+                userId = userAccount.userId,
+                loginIp = getClientIP()!!,
             )
         )
 
@@ -175,11 +174,28 @@ class CompatibleAccountController {
 //        )
 //        require(captchaValidationResult.result) { "短信验证码错误" }
 
-        val userAccount = Mediator.queries.send(
-            GetUserByPhoneQry.Request(
-                phone = request.phone
+        val userAccount = try {
+            Mediator.queries.send(
+                GetUserByPhoneQry.Request(
+                    phone = request.phone
+                )
             )
-        )
+        } catch (ex: Exception) {
+            Mediator.commands.send(
+                RecordLoginLogCmd.Request(
+                    userId = null,
+                    userType = UserType.valueOf(0),
+                    loginName = request.phone,
+                    loginType = LoginType.SMS_CODE,
+                    result = LoginResult.FAILURE,
+                    ip = getClientIP()!!,
+                    userAgent = ServletUtils.getRequest()?.getHeader("User-Agent"),
+                    reason = ex.message,
+                    occurTime = System.currentTimeMillis() / 1000L
+                )
+            )
+            throw ex
+        }
 
         Mediator.commands.send(
             UpdateLoginInfoCmd.Request(

@@ -1,11 +1,13 @@
 package edu.only4.danmuku.domain.aggregates.user_login_log
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
+import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
 
 import edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity
 import edu.only4.danmuku.domain.aggregates.user.enums.UserType
 import edu.only4.danmuku.domain.aggregates.user_login_log.enums.LoginResult
 import edu.only4.danmuku.domain.aggregates.user_login_log.enums.LoginType
+import edu.only4.danmuku.domain.aggregates.user_login_log.events.PasswordInputFailedDomainEvent
 
 import jakarta.persistence.*
 
@@ -140,4 +142,13 @@ class UserLoginLog(
         internal set
 
     // 【字段映射结束】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
+
+    /**
+     * 密码失败后触发领域事件
+     */
+    fun onCreate() {
+        if (this.loginType == LoginType.PASSWORD && this.result == LoginResult.FAILURE) {
+            events().attach(this) { PasswordInputFailedDomainEvent(this) }
+        }
+    }
 }

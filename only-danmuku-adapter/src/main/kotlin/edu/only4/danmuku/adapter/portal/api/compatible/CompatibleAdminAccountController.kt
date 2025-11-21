@@ -14,7 +14,7 @@ import edu.only4.danmuku.application.commands.user_behavior.RecordLoginLogCmd
 import edu.only4.danmuku.application.distributed.clients.CaptchaGenCli
 import edu.only4.danmuku.application.distributed.clients.CaptchaValidCli
 import edu.only4.danmuku.application.queries.user.GetAccountInfoByEmailQry
-import edu.only4.danmuku.domain._share.meta.user.SUser
+import edu.only4.danmuku.domain.aggregates.user.User
 import edu.only4.danmuku.domain.aggregates.user.enums.UserType
 import edu.only4.danmuku.domain.aggregates.user_login_log.enums.LoginResult
 import edu.only4.danmuku.domain.aggregates.user_login_log.enums.LoginType
@@ -55,22 +55,23 @@ class CompatibleAdminAccountController {
             )
         )
 
-        val user = Mediator.repositories
-            .findOne(SUser.predicateById(userAccount.userId))
-            .orElseThrow { KnownException("用户不存在") }
-
-        val isPasswordCorrect = user.verifyPassword(password)
+        val isPasswordCorrect = User.isPasswordCorrect(userAccount.password, password)
         if (!isPasswordCorrect) {
             val occurTime = System.currentTimeMillis() / 1000L
             val userAgent = ServletUtils.getRequest()?.getHeader("User-Agent")
-            user.reportPasswordInputFailed(
-                loginName = account,
-                ip = getClientIP(),
-                userAgent = userAgent,
-                occurTime = occurTime,
-                reason = "密码错误"
+            Mediator.commands.send(
+                RecordLoginLogCmd.Request(
+                    userId = userAccount.userId,
+                    userType = userAccount.type,
+                    loginName = account,
+                    loginType = LoginType.PASSWORD,
+                    result = LoginResult.FAILURE,
+                    ip = getClientIP()!!,
+                    userAgent = userAgent,
+                    reason = "密码错误",
+                    occurTime = occurTime
+                )
             )
-            Mediator.uow.save()
             throw KnownException("密码错误")
         }
 

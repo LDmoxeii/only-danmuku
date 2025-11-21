@@ -14,11 +14,11 @@
 
   {
     "tag": "de",
-    "package": "user",
+    "package": "user_login_log",
     "name": "PasswordInputFailed",
     "desc": "密码输入失败领域事件（用于触发异常操作统计）",
-    "aggregates": ["User"],
-    "entity": "User",
+    "aggregates": ["UserLoginLog"],
+    "entity": "UserLoginLog",
     "persist": false
   },
 

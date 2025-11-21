@@ -14,7 +14,6 @@ import edu.only4.danmuku.domain.aggregates.user.events.RelationshipBoundDomainEv
 import edu.only4.danmuku.domain.aggregates.user.events.UserCreatedDomainEvent
 import edu.only4.danmuku.domain.aggregates.user.events.UserPhoneChangedDomainEvent
 import edu.only4.danmuku.domain.aggregates.user.events.PasswordChangedDomainEvent
-import edu.only4.danmuku.domain.aggregates.user.events.PasswordInputFailedDomainEvent
 
 import jakarta.persistence.*
 import jakarta.persistence.Table
@@ -210,22 +209,6 @@ class User(
         if (this.phone == phone) return
         this.phone = phone
         events().attach(this) { UserPhoneChangedDomainEvent(this) }
-    }
-
-    /**
-     * 密码输入失败（仅记录事件，不修改状态）
-     */
-    fun reportPasswordInputFailed(loginName: String, ip: String?, userAgent: String?, occurTime: Long, reason: String?) {
-        events().attach(this) {
-            PasswordInputFailedDomainEvent(
-                entity = this,
-                loginName = loginName,
-                ip = ip,
-                userAgent = userAgent,
-                occurTime = occurTime,
-                reason = reason
-            )
-        }
     }
 
     // 【行为方法结束】
