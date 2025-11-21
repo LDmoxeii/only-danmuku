@@ -1,5 +1,6 @@
 package edu.only4.danmuku.adapter.portal.api.compatible
 
+import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.share.PageData
 import edu.only4.danmuku.adapter.portal.api.payload.AdminVideoLoadList
@@ -8,6 +9,8 @@ import edu.only4.danmuku.application.commands.video.RecommendVideoCmd
 import edu.only4.danmuku.application.commands.video_post.AuditVideoPostCmd
 import edu.only4.danmuku.application.commands.video_post.DeleteVideoPostCmd
 import edu.only4.danmuku.application.queries.video.GetVideoPlayFilesQry
+import edu.only4.danmuku.domain.aggregates.user.enums.UserType
+import edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -50,11 +53,15 @@ class CompatibleAdminVideoController {
         status: Int,
         reason: String?,
     ) {
+        val currentUserId = LoginHelper.getUserId()!!
+        val currentUserType = UserType.valueOf(LoginHelper.getUserInfo()!!.userType)
         Mediator.commands.send(
             AuditVideoPostCmd.Request(
                 videoPostId = videoId,
-                status = status,
-                reason = reason
+                status = VideoStatus.valueOf(status),
+                reason = (reason ?: ""),
+                reviewerId = currentUserId,
+                reviewerType = currentUserType
             )
         )
     }

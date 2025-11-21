@@ -4,8 +4,10 @@ import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.application.commands.customer_message.SendVideoAuditPassedMessageCmd
 import edu.only4.danmuku.application.commands.customer_profile.RewardUserForVideoCmd
 import edu.only4.danmuku.application.commands.video.TransferVideoToProductionCmd
+import edu.only4.danmuku.application.commands.video_post.RecordVideoAuditTraceCmd
 import edu.only4.danmuku.application.distributed.clients.CleanTempFilesCli
 import edu.only4.danmuku.application.queries.video_file_upload_session.GetUploadedTempPathsQry
+import edu.only4.danmuku.domain.aggregates.video_audit_trace.enums.AuditStatus
 import edu.only4.danmuku.domain.aggregates.video_post.events.VideoAuditPassedDomainEvent
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Service
@@ -86,6 +88,23 @@ class VideoAuditPassedDomainEventSubscriber {
             SendVideoAuditPassedMessageCmd.Request(
                 videoId = videoPost.id,
                 operatorId = null
+            )
+        )
+    }
+
+    @EventListener(VideoAuditPassedDomainEvent::class)
+    fun onAuditTrace(event: VideoAuditPassedDomainEvent) {
+        val videoPost = event.entity
+        val reviewerId = event.reviewerId
+        val reviewerType = event.reviewerType
+        Mediator.commands.send(
+            RecordVideoAuditTraceCmd.Request(
+                videoPostId = videoPost.id,
+                auditStatus = AuditStatus.PASSED,
+                reviewerId = reviewerId,
+                reviewerType = reviewerType,
+                reason = null,
+                occurTime = System.currentTimeMillis() / 1000L
             )
         )
     }

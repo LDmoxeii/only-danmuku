@@ -4,6 +4,7 @@ import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
 
 import edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity
+import edu.only4.danmuku.domain.aggregates.user.enums.UserType
 import edu.only4.danmuku.domain.aggregates.video.enums.PostType
 import edu.only4.danmuku.domain.aggregates.video_post.enums.TransferResult
 import edu.only4.danmuku.domain.aggregates.video_post.enums.UpdateType
@@ -186,18 +187,18 @@ class VideoPost(
     }
 
     /** 审核通过 */
-    fun reviewPass() {
+    fun reviewPass(reviewerId: Long, reviewerType: UserType) {
         if (this.status == VideoStatus.REVIEW_PASSED) return
         this.status = VideoStatus.REVIEW_PASSED
         this.videoFilePosts.forEach{ it.updateType(UpdateType.NO_UPDATE)}
-        events().attach(this) { VideoAuditPassedDomainEvent(entity = this) }
+        events().attach(this) { VideoAuditPassedDomainEvent(entity = this, reviewerId, reviewerType) }
     }
 
     /** 审核失败 */
-    fun reviewFail() {
+    fun reviewFail(reason: String, reviewerId: Long, reviewerType: UserType) {
         if (this.status == VideoStatus.REVIEW_FAILED) return
         this.status = VideoStatus.REVIEW_FAILED
-        events().attach(this) { VideoAuditFailedDomainEvent(entity = this) }
+        events().attach(this) { VideoAuditFailedDomainEvent(entity = this, reason, reviewerId, reviewerType = reviewerType) }
     }
 
     /** 标记为待审核 */

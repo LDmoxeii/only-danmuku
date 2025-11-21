@@ -5,6 +5,8 @@ import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePayload
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 
 import edu.only4.danmuku.domain.aggregates.video_audit_trace.VideoAuditTrace
+import edu.only4.danmuku.domain.aggregates.user.enums.UserType
+import edu.only4.danmuku.domain.aggregates.video_audit_trace.enums.AuditStatus
 
 import org.springframework.stereotype.Service
 
@@ -25,9 +27,14 @@ import org.springframework.stereotype.Service
 class VideoAuditTraceFactory : AggregateFactory<VideoAuditTraceFactory.Payload, VideoAuditTrace> {
 
     override fun create(payload: Payload): VideoAuditTrace {
-        return VideoAuditTrace().apply {
-
-        }
+        return VideoAuditTrace(
+            videoPostId = payload.videoPostId,
+            auditStatus = payload.auditStatus,
+            reviewerId = payload.reviewerId,
+            reviewerType = payload.reviewerType,
+            reason = payload.reason,
+            occurTime = payload.occurTime
+        )
     }
 
      @Aggregate(
@@ -37,7 +44,12 @@ class VideoAuditTraceFactory : AggregateFactory<VideoAuditTraceFactory.Payload, 
         description = ""
     )
     data class Payload(
-        val name: String
+         val videoPostId: Long,
+         val auditStatus: AuditStatus,
+         val reviewerId: Long?,
+         val reviewerType: UserType,
+         val reason: String?,
+         val occurTime: Long,
     ) : AggregatePayload<VideoAuditTrace>
 
 }

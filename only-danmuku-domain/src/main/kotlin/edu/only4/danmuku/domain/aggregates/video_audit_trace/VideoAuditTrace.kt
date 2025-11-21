@@ -52,7 +52,7 @@ class VideoAuditTrace(
         internal set
 
     /**
-     * 视频ID
+     * 视频稿件ID
      * bigint
      */
     @Column(name = "`video_id`")

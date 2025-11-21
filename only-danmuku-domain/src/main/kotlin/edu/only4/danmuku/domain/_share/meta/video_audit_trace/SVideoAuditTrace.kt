@@ -367,7 +367,7 @@ class SVideoAuditTrace(
 
 
     /**
-     * 视频ID
+     * 视频稿件ID
      */
     val videoId: Field<Long> by lazy {
         Field(root.get("videoId"), criteriaBuilder)
