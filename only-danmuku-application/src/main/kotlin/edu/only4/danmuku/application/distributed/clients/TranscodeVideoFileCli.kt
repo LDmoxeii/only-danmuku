@@ -11,9 +11,21 @@ import com.only4.cap4k.ddd.core.application.RequestParam
  */
 object TranscodeVideoFileCli {
 
-    class Request(
+    data class Request(
+        val videoFilePostId: Long,
+        val uploadId: Long,
+        val customerId: Long,
+        val videoId: Long,
+        val fileIndex: Int,
+        val fileName: String?,
+        val tempPath: String? = null,
     ) : RequestParam<Response>
 
-    class Response(
+    data class Response(
+        val success: Boolean,
+        val outputPath: String? = null,
+        val duration: Int? = null,
+        val fileSize: Long? = null,
+        val failReason: String? = null,
     )
 }

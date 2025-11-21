@@ -11,10 +11,19 @@ import com.only4.cap4k.ddd.core.application.RequestParam
  */
 object GetVideoFilePostsByPostIdQry {
 
-    class Request(
-
+    data class Request(
+        val videoPostId: Long,
     ) : RequestParam<Response>
 
-    class Response(
+    data class FileItem(
+        val videoFilePostId: Long,
+        val uploadId: Long,
+        val fileIndex: Int,
+        val transferResult: Int,
+        val duration: Int?,
+    )
+
+    data class Response(
+        val files: List<FileItem>
     )
 }

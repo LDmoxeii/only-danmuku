@@ -3,7 +3,7 @@ package edu.only4.danmuku.application.commands.video_file_post
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
-
+import edu.only4.danmuku.domain._share.meta.video_file_post.SVideoFilePost
 import org.springframework.stereotype.Service
 
 /**
@@ -18,6 +18,9 @@ object DeleteVideoFilePostCmd {
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
+            Mediator.repositories.remove(
+                SVideoFilePost.predicateById(request.videoFilePostId)
+            )
             Mediator.uow.save()
 
             return Response(
@@ -26,7 +29,8 @@ object DeleteVideoFilePostCmd {
 
     }
 
-    class Request(
+    data class Request(
+        val videoFilePostId: Long,
     ) : RequestParam<Response>
 
     class Response(
