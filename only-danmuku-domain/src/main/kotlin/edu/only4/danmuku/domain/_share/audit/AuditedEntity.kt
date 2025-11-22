@@ -4,6 +4,7 @@ import jakarta.persistence.MappedSuperclass
 import jakarta.persistence.PrePersist
 import jakarta.persistence.PreUpdate
 import jakarta.persistence.EntityListeners
+import jakarta.persistence.Transient
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
@@ -16,12 +17,23 @@ import java.lang.reflect.Field
 open class AuditedEntity {
 
     // Field name hooks for customization in rare cases
-    protected open val fieldCreateUserId = "createUserId"
-    protected open val fieldCreateBy = "createBy"
-    protected open val fieldCreateTime = "createTime"
-    protected open val fieldUpdateUserId = "updateUserId"
-    protected open val fieldUpdateBy = "updateBy"
-    protected open val fieldUpdateTime = "updateTime"
+    @Transient
+    protected open val fieldCreateUserId: String = "createUserId"
+
+    @Transient
+    protected open val fieldCreateBy: String = "createBy"
+
+    @Transient
+    protected open val fieldCreateTime: String = "createTime"
+
+    @Transient
+    protected open val fieldUpdateUserId: String = "updateUserId"
+
+    @Transient
+    protected open val fieldUpdateBy: String = "updateBy"
+
+    @Transient
+    protected open val fieldUpdateTime: String = "updateTime"
 
     @PrePersist
     fun __auditPrePersist() {
