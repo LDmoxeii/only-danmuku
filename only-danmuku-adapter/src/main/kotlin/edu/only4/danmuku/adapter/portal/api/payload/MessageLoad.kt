@@ -16,7 +16,6 @@ object MessageLoad {
 
     data class Request(
         val messageType: Int?,
-
     ): PageParam()
 
     data class MessageItem(

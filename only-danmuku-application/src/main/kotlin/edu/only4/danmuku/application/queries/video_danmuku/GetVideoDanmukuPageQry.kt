@@ -19,14 +19,14 @@ object GetVideoDanmukuPageQry {
     data class Response(
         val danmukuId: Long,
         val videoId: Long,
-        val videoName: String? = null,
-        val videoCover: String? = null,
+        val videoName: String,
+        val videoCover: String,
         val customerId: Long,
-        val customerNickname: String? = null,
-        val text: String? = null,
-        val mode: Int? = null,
-        val color: String? = null,
-        val time: Int? = null,
+        val customerNickname: String,
+        val text: String,
+        val mode: Int,
+        val color: String,
+        val time: Int,
         val postTime: Long,
     )
 }
