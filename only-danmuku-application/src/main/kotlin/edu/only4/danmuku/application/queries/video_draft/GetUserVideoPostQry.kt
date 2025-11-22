@@ -13,14 +13,10 @@ import edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus
 object GetUserVideoPostQry {
 
     data class Request(
-        /** 用户ID */
-        val userId: Long,
-        /** 状态(-1进行中) */
-        val status: VideoStatus? = null,
-        /** 视频名称模糊查询 */
-        val videoNameFuzzy: String? = null,
-        /** 排除状态数组 */
-        val excludeStatusArray: List<VideoStatus>? = null
+        var userId: Long,
+        var status: VideoStatus? = null,
+        var videoNameFuzzy: String? = null,
+        var excludeStatusArray: List<VideoStatus>? = null
     ) : PageQueryParam<Response>()
 
     data class Response(
