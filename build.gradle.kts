@@ -52,6 +52,7 @@ codegen {
             "UserType" to "edu.only4.danmuku.domain.aggregates.user.enums.UserType",
             "UserTypeTranslation" to "edu.only4.danmuku.adapter.domain.translation.user.UserTypeTranslation",
             "PostType" to "edu.only4.danmuku.domain.aggregates.video_post.enums.PostType",
+            "PostTypeTranslation" to "edu.only4.danmuku.adapter.domain.translation.video_post.PostTypeTranslation",
         ))
     }
 }

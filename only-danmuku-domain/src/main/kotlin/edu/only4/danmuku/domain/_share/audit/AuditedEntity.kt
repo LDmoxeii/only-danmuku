@@ -3,17 +3,11 @@ package edu.only4.danmuku.domain._share.audit
 import jakarta.persistence.MappedSuperclass
 import jakarta.persistence.PrePersist
 import jakarta.persistence.PreUpdate
-import jakarta.persistence.EntityListeners
 import jakarta.persistence.Transient
-import org.springframework.data.jpa.domain.support.AuditingEntityListener
-import org.springframework.data.annotation.CreatedDate
-import org.springframework.data.annotation.LastModifiedDate
-import org.springframework.data.annotation.CreatedBy
-import org.springframework.data.annotation.LastModifiedBy
+import java.time.Instant
 import java.lang.reflect.Field
 
 @MappedSuperclass
-@EntityListeners(AuditingEntityListener::class)
 open class AuditedEntity {
 
     // Field name hooks for customization in rare cases
@@ -37,39 +31,23 @@ open class AuditedEntity {
 
     @PrePersist
     fun __auditPrePersist() {
-        val nowSec = System.currentTimeMillis() / 1000
-        val hasCreatedDate = hasAnnotation(fieldCreateTime, CreatedDate::class.java)
-        val hasLastModifiedDate = hasAnnotation(fieldUpdateTime, LastModifiedDate::class.java)
-
-        if (!hasCreatedDate) {
-            setIfNull(fieldCreateTime, nowSec)
-        }
-        if (!hasLastModifiedDate) {
-            setIfNull(fieldUpdateTime, (getFieldValue(fieldCreateTime) as Long?) ?: nowSec)
-        }
-
+        val nowSec = Instant.now().epochSecond
         val uid = AuditSupport.currentUserId()
         val uname = AuditSupport.currentUserName()
-        val hasCreatedBy = hasAnnotation(fieldCreateUserId, CreatedBy::class.java)
-        val hasLastModifiedBy = hasAnnotation(fieldUpdateUserId, LastModifiedBy::class.java)
-
-        if (!hasCreatedBy) setIfNull(fieldCreateUserId, uid)
+        setIfNull(fieldCreateUserId, uid)
         setIfNull(fieldCreateBy, uname)
-
-        if (!hasLastModifiedBy) setAlways(fieldUpdateUserId, uid)
-        setAlways(fieldUpdateBy, uname)
+        setIfNull(fieldCreateTime, nowSec)
+        setIfNull(fieldUpdateUserId, uid)
+        setIfNull(fieldUpdateBy, uname)
+        setIfNull(fieldUpdateTime, nowSec)
     }
 
     @PreUpdate
     fun __auditPreUpdate() {
-        val nowSec = System.currentTimeMillis() / 1000
-        val hasLastModifiedDate = hasAnnotation(fieldUpdateTime, LastModifiedDate::class.java)
-        if (!hasLastModifiedDate) {
-            setAlways(fieldUpdateTime, nowSec)
-        }
-        val hasLastModifiedBy = hasAnnotation(fieldUpdateUserId, LastModifiedBy::class.java)
-        if (!hasLastModifiedBy) setAlways(fieldUpdateUserId, AuditSupport.currentUserId())
+        val nowSec = Instant.now().epochSecond
+        setAlways(fieldUpdateUserId, AuditSupport.currentUserId())
         setAlways(fieldUpdateBy, AuditSupport.currentUserName())
+        setAlways(fieldUpdateTime, nowSec)
     }
 
     private fun setIfNull(name: String, value: Any?) {
@@ -82,8 +60,6 @@ open class AuditedEntity {
         val field = findField(name) ?: return
         field.set(this, value)
     }
-
-    private fun getFieldValue(name: String): Any? = findField(name)?.get(this)
 
     private fun findField(name: String): Field? {
         var cls: Class<*>? = this.javaClass
@@ -99,8 +75,4 @@ open class AuditedEntity {
         return null
     }
 
-    private fun hasAnnotation(name: String, ann: Class<out Annotation>): Boolean {
-        val field = findField(name) ?: return false
-        return field.isAnnotationPresent(ann)
-    }
 }

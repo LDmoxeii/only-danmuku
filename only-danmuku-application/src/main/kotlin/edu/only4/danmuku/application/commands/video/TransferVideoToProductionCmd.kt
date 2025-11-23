@@ -4,6 +4,7 @@ import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
 import edu.only4.danmuku.domain._share.meta.video.SVideo
+import edu.only4.danmuku.domain._share.meta.video_file_post.SVideoFilePost
 import edu.only4.danmuku.domain.aggregates.video.Video
 import edu.only4.danmuku.domain.aggregates.video.factory.VideoFactory
 import org.springframework.stereotype.Service
@@ -15,6 +16,10 @@ object TransferVideoToProductionCmd {
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
             // 若已存在成品视频，则走更新；否则新建后同步
+            val filePosts = Mediator.repositories.find(
+                SVideoFilePost.predicate { schema -> schema.videoId eq request.videoPostId },
+                persist = false
+            )
             val targetVideo = Mediator.repositories.findOne(
                 SVideo.predicate { schema -> schema.videoPostId eq request.videoPostId }
             ).getOrNull()?.apply {
@@ -31,9 +36,9 @@ object TransferVideoToProductionCmd {
                     introduction = request.introduction,
                     interaction = request.interaction,
                     duration = request.duration,
-                    files = request.files.map {
+                    files = filePosts.map {
                         Video.SyncFileArgs(
-                            videoFilePostId = it.videoFilePostId,
+                            videoFilePostId = it.id,
                             customerId = it.customerId,
                             fileName = it.fileName,
                             fileIndex = it.fileIndex,
@@ -57,9 +62,9 @@ object TransferVideoToProductionCmd {
                     introduction = request.introduction,
                     interaction = request.interaction,
                     duration = request.duration,
-                    files = request.files.map {
+                    files = filePosts.map {
                         Video.SyncFileArgs(
-                            videoFilePostId = it.videoFilePostId,
+                            videoFilePostId = it.id,
                             customerId = it.customerId,
                             fileName = it.fileName,
                             fileIndex = it.fileIndex,
@@ -90,18 +95,7 @@ object TransferVideoToProductionCmd {
         val introduction: String?,
         val interaction: String?,
         val duration: Int,
-        val files: List<FileItem>,
     ) : RequestParam<Response>
-
-    data class FileItem(
-        val videoFilePostId: Long,
-        val customerId: Long,
-        val fileName: String?,
-        val fileIndex: Int,
-        val fileSize: Long?,
-        val filePath: String?,
-        val duration: Int?,
-    )
 
     data class Response(
         val videoId: Long,

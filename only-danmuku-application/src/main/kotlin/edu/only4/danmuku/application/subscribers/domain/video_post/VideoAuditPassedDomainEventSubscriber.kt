@@ -1,7 +1,6 @@
 package edu.only4.danmuku.application.subscribers.domain.video_post
 
 import com.only4.cap4k.ddd.core.Mediator
-import edu.only4.danmuku.application.commands.customer_message.SendVideoAuditPassedMessageCmd
 import edu.only4.danmuku.application.commands.customer_profile.RewardUserForVideoCmd
 import edu.only4.danmuku.application.commands.video.TransferVideoToProductionCmd
 import edu.only4.danmuku.application.distributed.clients.CleanTempFilesCli
@@ -43,7 +42,6 @@ class VideoAuditPassedDomainEventSubscriber {
                 introduction = videoPost.introduction,
                 interaction = videoPost.interaction,
                 duration = videoPost.duration,
-                files = emptyList()
             )
         )
     }

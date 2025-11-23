@@ -51,7 +51,8 @@ class VideoAuditTraceRecordedDomainEventSubscriber {
             AuditStatus.FAILED -> Mediator.commands.send(
                 SendVideoAuditFailedMessageCmd.Request(
                     videoId = trace.videoPostId,
-                    operatorId = trace.reviewerId
+                    operatorId = trace.reviewerId,
+                    messageContent = trace.reason
                 )
             )
             else -> Unit

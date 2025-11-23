@@ -13,7 +13,7 @@ import edu.only4.danmuku.domain.aggregates.video_file_post.VideoFilePost
  * @author cap4k-ddd-codegen
  * @date 2025/11/21
  */
-@DomainEvent(persist = false)
+@DomainEvent(persist = true)
 @Aggregate(
     aggregate = "VideoFilePost",
     name = "VideoFilePostCreatedDomainEvent",

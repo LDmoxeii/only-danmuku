@@ -27,6 +27,7 @@ import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.Size
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -138,7 +139,7 @@ class CompatibleUCenterVideoPostController {
     }
 
     @PostMapping("/loadVideoList")
-    fun getVideoPostPage(request: UCenterLoadVideoList.Request): PageData<UCenterLoadVideoList.VideoItem> {
+    fun getVideoPostPage(@RequestBody @Validated request: UCenterLoadVideoList.Request): PageData<UCenterLoadVideoList.VideoItem> {
         val currentUserId = LoginHelper.getUserId()!!
 
         val queryRequest = GetUserVideoPostQry.Request(

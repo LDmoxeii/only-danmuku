@@ -6,7 +6,9 @@ import com.only4.cap4k.ddd.core.share.PageData
 import edu.only4.danmuku.application.queries._share.model.CustomerMessage
 import edu.only4.danmuku.application.queries._share.model.CustomerProfile
 import edu.only4.danmuku.application.queries._share.model.Video
+import edu.only4.danmuku.application.queries._share.model.VideoPost
 import edu.only4.danmuku.application.queries._share.model.customerId
+import edu.only4.danmuku.application.queries._share.model.fetchBy
 import edu.only4.danmuku.application.queries._share.model.id
 import edu.only4.danmuku.application.queries._share.model.messageType
 import edu.only4.danmuku.application.queries._share.model.userId
@@ -47,10 +49,16 @@ class GetMessagePageQryHandler(
             }.execute().associateBy { it.userId }
         } else emptyMap()
 
-        val videoMap: Map<Long, Video> = if (videoIds.isNotEmpty()) {
-            sqlClient.createQuery(Video::class) {
+        val videoMap: Map<Long, VideoPost> = if (videoIds.isNotEmpty()) {
+            sqlClient.createQuery(VideoPost::class) {
                 where(table.id valueIn videoIds)
-                select(table)
+                select(table.fetchBy {
+                    allScalarFields()
+                    video {
+                        videoName()
+                        videoCover()
+                    }
+                })
             }.execute().associateBy { it.id }
         } else emptyMap()
 
@@ -62,9 +70,10 @@ class GetMessagePageQryHandler(
                 extendJson = row.extendJson,
                 createTime = row.createTime ?: 0L,
                 // 扩展显示字段
-                videoId = row.videoId,
-                videoName = row.videoId?.let { vid -> videoMap[vid]?.videoName },
-                videoCover = row.videoId?.let { vid -> videoMap[vid]?.videoCover },
+                videoPostId = row.videoId,
+                videoId = row.videoId?.let { vid -> videoMap[vid]?.video?.id },
+                videoName = row.videoId?.let { vid -> videoMap[vid]?.video?.videoName },
+                videoCover = row.videoId?.let { vid -> videoMap[vid]?.video?.videoCover },
                 sendUserId = row.sendSubjectId,
                 sendUserName = row.sendSubjectId?.let { sid -> profileMap[sid]?.nickName },
                 sendUserAvatar = row.sendSubjectId?.let { sid -> profileMap[sid]?.avatar },

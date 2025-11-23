@@ -40,6 +40,7 @@ object SendVideoAuditFailedMessageCmd {
     data class Request(
         val videoId: Long,
         val operatorId: Long? = null,
+        val messageContent: String? = null,
     ) : RequestParam<Response>
 
     class Response

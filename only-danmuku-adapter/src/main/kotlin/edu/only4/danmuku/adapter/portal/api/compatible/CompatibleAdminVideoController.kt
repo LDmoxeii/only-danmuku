@@ -11,6 +11,7 @@ import edu.only4.danmuku.application.commands.video_post.RecordVideoAuditTraceCm
 import edu.only4.danmuku.application.queries.video.GetVideoPlayFilesQry
 import edu.only4.danmuku.domain.aggregates.user.enums.UserType
 import edu.only4.danmuku.domain.aggregates.video_audit_trace.enums.AuditStatus
+import edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -56,8 +57,8 @@ class CompatibleAdminVideoController {
         val currentUserId = LoginHelper.getUserId()!!
         val currentUserType = UserType.valueOf(LoginHelper.getUserInfo()!!.userType)
         val auditStatus = when (status) {
-            AuditStatus.PASSED.code -> AuditStatus.PASSED
-            AuditStatus.FAILED.code -> AuditStatus.FAILED
+            VideoStatus.REVIEW_PASSED.code -> AuditStatus.PASSED
+            VideoStatus.REVIEW_FAILED.code -> AuditStatus.FAILED
             else -> throw IllegalArgumentException("不支持的审核状态: $status")
         }
         Mediator.commands.send(
