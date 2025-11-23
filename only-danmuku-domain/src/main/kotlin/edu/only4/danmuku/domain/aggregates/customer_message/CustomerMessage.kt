@@ -2,24 +2,13 @@ package edu.only4.danmuku.domain.aggregates.customer_message
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
-
 import edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity
 import edu.only4.danmuku.domain.aggregates.customer_message.enums.MessageType
 import edu.only4.danmuku.domain.aggregates.customer_message.enums.ReadType
-import edu.only4.danmuku.domain.aggregates.customer_message.events.CustomerMessageActivityNoticeCreatedDomainEvent
-import edu.only4.danmuku.domain.aggregates.customer_message.events.CustomerMessageCollectionCreatedDomainEvent
-import edu.only4.danmuku.domain.aggregates.customer_message.events.CustomerMessageCommentMentionCreatedDomainEvent
-import edu.only4.danmuku.domain.aggregates.customer_message.events.CustomerMessageCommentReplyCreatedDomainEvent
-import edu.only4.danmuku.domain.aggregates.customer_message.events.CustomerMessageLikeCreatedDomainEvent
-import edu.only4.danmuku.domain.aggregates.customer_message.events.CustomerMessageOtherCreatedDomainEvent
-import edu.only4.danmuku.domain.aggregates.customer_message.events.CustomerMessagePrivateCreatedDomainEvent
-import edu.only4.danmuku.domain.aggregates.customer_message.events.CustomerMessageSystemCreatedDomainEvent
-import edu.only4.danmuku.domain.aggregates.customer_message.events.CustomerMessageVideoDynamicCreatedDomainEvent
+import edu.only4.danmuku.domain.aggregates.customer_message.events.*
 import edu.only4.danmuku.domain.aggregates.customer_message.extend.UserMessageExtend
-
 import jakarta.persistence.*
 import jakarta.persistence.Table
-
 import org.hibernate.annotations.*
 
 /**
@@ -130,11 +119,7 @@ class CustomerMessage(
             MessageType.LIKE_MESSAGE -> events().attach(this) { CustomerMessageLikeCreatedDomainEvent(this) }
             MessageType.COLLECTION_MESSAGE -> events().attach(this) { CustomerMessageCollectionCreatedDomainEvent(this) }
             MessageType.COMMENT_MENTION -> events().attach(this) { CustomerMessageCommentMentionCreatedDomainEvent(this) }
-            MessageType.COMMENT_REPLY -> events().attach(this) { CustomerMessageCommentReplyCreatedDomainEvent(this) }
-            MessageType.VIDEO_DYNAMIC -> events().attach(this) { CustomerMessageVideoDynamicCreatedDomainEvent(this) }
             MessageType.PRIVATE_MESSAGE -> events().attach(this) { CustomerMessagePrivateCreatedDomainEvent(this) }
-            MessageType.ACTIVITY_NOTICE -> events().attach(this) { CustomerMessageActivityNoticeCreatedDomainEvent(this) }
-            MessageType.OTHER_MESSAGE -> events().attach(this) { CustomerMessageOtherCreatedDomainEvent(this) }
         }
     }
 
