@@ -1,0 +1,9 @@
+### 重置密码
+POST {{host}}/account/changePassword
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJsb2dpblR5cGUiOiJsb2dpbiIsImxvZ2luSWQiOjIzMTE4OTk0MDU3ODAxMzE4NCwicm5TdHIiOiJDMncxT0IxbXNpN2RKQXNNdHhvZ2QwT2FQMEtObjc3bSIsInVzZXJJZCI6MjMxMTg5OTQwNTc4MDEzMTg0LCJ1c2VyUm9sZXMiOltdLCJ1c2VyUGVybWlzc2lvbnMiOltdfQ.oWA1ZSj38PjVo8lst8LKDloDqrKAnGa-bahxQ6KOwEU
+
+{
+  "oldPassword": "admin321",
+  "newPassword": "admin123"
+}
