@@ -20,10 +20,16 @@ object MarkAllAsReadCmd {
 
             val messages = Mediator.repositories.find(
                 SCustomerMessage.predicate { schema ->
+
                     schema.allNotNull(
                         schema.customerId eq request.customerId,
                         schema.readType eq ReadType.UNREAD,
-                        schema.messageType `eq?` msgTypeEnum
+                        if (msgTypeEnum != null) {
+                            when(msgTypeEnum) {
+                                MessageType.COMMENT_MENTION -> schema.messageType `in?` listOf(MessageType.COMMENT_MENTION, MessageType.COMMENT_REPLY)
+                                else -> schema.messageType `eq?` msgTypeEnum
+                            }
+                        } else null
                     )!!
                 }
             )
