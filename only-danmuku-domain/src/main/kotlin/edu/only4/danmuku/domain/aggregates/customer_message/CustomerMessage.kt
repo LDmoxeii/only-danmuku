@@ -2,24 +2,13 @@ package edu.only4.danmuku.domain.aggregates.customer_message
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
-
 import edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity
 import edu.only4.danmuku.domain.aggregates.customer_message.enums.MessageType
 import edu.only4.danmuku.domain.aggregates.customer_message.enums.ReadType
-import edu.only4.danmuku.domain.aggregates.customer_message.events.CustomerMessageActivityNoticeCreatedDomainEvent
-import edu.only4.danmuku.domain.aggregates.customer_message.events.CustomerMessageCollectionCreatedDomainEvent
-import edu.only4.danmuku.domain.aggregates.customer_message.events.CustomerMessageCommentMentionCreatedDomainEvent
-import edu.only4.danmuku.domain.aggregates.customer_message.events.CustomerMessageCommentReplyCreatedDomainEvent
-import edu.only4.danmuku.domain.aggregates.customer_message.events.CustomerMessageLikeCreatedDomainEvent
-import edu.only4.danmuku.domain.aggregates.customer_message.events.CustomerMessageOtherCreatedDomainEvent
-import edu.only4.danmuku.domain.aggregates.customer_message.events.CustomerMessagePrivateCreatedDomainEvent
-import edu.only4.danmuku.domain.aggregates.customer_message.events.CustomerMessageSystemCreatedDomainEvent
-import edu.only4.danmuku.domain.aggregates.customer_message.events.CustomerMessageVideoDynamicCreatedDomainEvent
+import edu.only4.danmuku.domain.aggregates.customer_message.events.*
 import edu.only4.danmuku.domain.aggregates.customer_message.extend.UserMessageExtend
-
 import jakarta.persistence.*
 import jakarta.persistence.Table
-
 import org.hibernate.annotations.*
 
 /**
@@ -28,7 +17,7 @@ import org.hibernate.annotations.*
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2025/11/04
+ * @date 2025/11/23
  */
 @Aggregate(aggregate = "CustomerMessage", name = "CustomerMessage", root = true, type = Aggregate.TYPE_ENTITY, description = "用户消息表，")
 @Entity
@@ -82,11 +71,7 @@ class CustomerMessage(
      * 2:LIKE_MESSAGE:收到的赞
      * 3:COLLECTION_MESSAGE:收到收藏
      * 4:COMMENT_MENTION:评论和@
-     * 5:COMMENT_REPLY:评论回复
-     * 6:VIDEO_DYNAMIC:视频动态
-     * 7:PRIVATE_MESSAGE:私信消息
-     * 8:ACTIVITY_NOTICE:活动通知
-     * 9:OTHER_MESSAGE:其他消息
+     * 5:PRIVATE_MESSAGE:私信消息
      * tinyint(1)
      */
     @Convert(converter = MessageType.Converter::class)
@@ -134,11 +119,7 @@ class CustomerMessage(
             MessageType.LIKE_MESSAGE -> events().attach(this) { CustomerMessageLikeCreatedDomainEvent(this) }
             MessageType.COLLECTION_MESSAGE -> events().attach(this) { CustomerMessageCollectionCreatedDomainEvent(this) }
             MessageType.COMMENT_MENTION -> events().attach(this) { CustomerMessageCommentMentionCreatedDomainEvent(this) }
-            MessageType.COMMENT_REPLY -> events().attach(this) { CustomerMessageCommentReplyCreatedDomainEvent(this) }
-            MessageType.VIDEO_DYNAMIC -> events().attach(this) { CustomerMessageVideoDynamicCreatedDomainEvent(this) }
             MessageType.PRIVATE_MESSAGE -> events().attach(this) { CustomerMessagePrivateCreatedDomainEvent(this) }
-            MessageType.ACTIVITY_NOTICE -> events().attach(this) { CustomerMessageActivityNoticeCreatedDomainEvent(this) }
-            MessageType.OTHER_MESSAGE -> events().attach(this) { CustomerMessageOtherCreatedDomainEvent(this) }
         }
     }
 

@@ -12,21 +12,21 @@ import com.only4.cap4k.ddd.core.application.query.PageQueryParam
 object GetVideoDanmukuPageQry {
 
     data class Request(
-        val videoUserId: Long? = null,
-        val videoNameFuzzy: String? = null,
-        ) : PageQueryParam<Response>()
+        var videoUserId: Long? = null,
+        var videoNameFuzzy: String? = null,
+    ) : PageQueryParam<Response>()
 
     data class Response(
         val danmukuId: Long,
         val videoId: Long,
-        val videoName: String? = null,
-        val videoCover: String? = null,
+        val videoName: String,
+        val videoCover: String,
         val customerId: Long,
-        val customerNickname: String? = null,
-        val text: String? = null,
-        val mode: Int? = null,
-        val color: String? = null,
-        val time: Int? = null,
-        val postTime: Long
+        val customerNickname: String,
+        val text: String,
+        val mode: Int,
+        val color: String,
+        val time: Int,
+        val postTime: Long,
     )
 }
