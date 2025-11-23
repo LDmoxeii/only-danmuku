@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service
  * @date 2025/10/21
  */
 @Service
-class VideoInteractionChangedDomainEventSubscriber {
+class VideoPostInteractionChangedDomainEventSubscriber {
 
     @EventListener(VideoPostInteractionChangedDomainEvent::class)
     fun on(event: VideoPostInteractionChangedDomainEvent) {

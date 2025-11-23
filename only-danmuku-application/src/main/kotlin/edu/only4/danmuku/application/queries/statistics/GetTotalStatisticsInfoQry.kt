@@ -12,7 +12,7 @@ import com.only4.cap4k.ddd.core.application.RequestParam
 object GetTotalStatisticsInfoQry {
 
     class Request(
-        val userId: Long? = null,
+        var userId: Long? = null,
     ) : RequestParam<Response>
 
     data class Response(
