@@ -23,6 +23,7 @@ object GetMessagePageQry {
         val extendJson: UserMessageExtend?,
         val createTime: Long,
         // 扩展显示字段
+        val videoPostId: Long? = null,
         val videoId: Long? = null,
         val videoName: String? = null,
         val videoCover: String? = null,

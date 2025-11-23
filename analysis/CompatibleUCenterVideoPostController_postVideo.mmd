@@ -3,7 +3,7 @@ flowchart TB
     N1["CompatibleUCenterVideoPostController.postVideo"]
     class N1 controllermethod;
 
-    %% Create flow
+    %% 创建稿件（新增路径）
     C1["CreateVideoPostCmd"]
     class C1 command;
     A1["VideoPost.onCreate"]
@@ -11,53 +11,69 @@ flowchart TB
     E1["VideoDraftCreatedDomainEvent"]
     class E1 domainevent;
 
-    %% Update flow
-    C2["UpdateVideoPostCmd"]
+    %% 更新基础信息（更新路径）
+    C2["UpdateVideoPostCmd (basic info)"]
     class C2 command;
-    A2a["VideoPost.applyBasicInfo"]
+    A2a["VideoPost.applyBasicInfo/markPendingReview"]
     class A2a entitymethod;
-    A2b["VideoPost.applyFileEdits"]
-    class A2b entitymethod;
-    A2c["VideoPost.adjustStatusAfterEdit"]
-    class A2c entitymethod;
-    E2["VideoPostTranscodingRequiredDomainEvent"]
+    E2["VideoPostUpdatedDomainEvent"]
     class E2 domainevent;
 
-    %% Transcode command & file event (triggered by both E1 and E2)
-    C3["TranscodeAllTranscodingFilesCmd"]
+    %% 分P创建
+    C3["CreateVideoFilePostCmd"]
     class C3 command;
-    E3["VideoFileDraftTranscodedDomainEvent"]
+    A3["VideoFilePost.onCreate"]
+    class A3 entitymethod;
+    E3["VideoFilePostCreatedDomainEvent"]
     class E3 domainevent;
 
-    %% Relationships
-    N1 -->|sends| C1
-    N1 -->|sends| C2
-    C1 -->|executes| A1
-    A1 -->|publishes| E1
-    C2 -->|executes| A2a
-    C2 -->|executes| A2b
-    C2 -->|executes| A2c
-    A2c -->|publishes| E2
+    %% 分P删除
+    C4["DeleteVideoFilePostCmd"]
+    class C4 command;
+    A4["VideoFilePost.onDelete"]
+    class A4 entitymethod;
+    E4["VideoFilePostDeletedDomainEvent"]
+    class E4 domainevent;
 
-    %% Event -> Command -> Event for transcoding
-    E1 -->|sends| C3
-    E2 -->|sends| C3
-    C3 -->|publishes| E3
+    %% 分P转码
+    CLI["TranscodeVideoFileCli"]
+    class CLI command;
+    C5["UpdateVideoFilePostTranscodeResultCmd"]
+    class C5 command;
+    A5["VideoFilePost.applyTranscodeResult"]
+    class A5 entitymethod;
+    E5["VideoFilePostTranscodeResultUpdatedDomainEvent"]
+    class E5 domainevent;
+
+    %% 汇总稿件状态
+    C6["RefreshVideoPostTranscodeStatusCmd"]
+    class C6 command;
+    A6["VideoPost.refreshTranscodeStatus"]
+    class A6 entitymethod;
+    E6["VideoPostTranscodeStatusRefreshedDomainEvent"]
+    class E6 domainevent;
+
+    %% Relationships
+    N1 -->|新增| C1 --> A1 --> E1
+    N1 -->|更新| C2 --> A2a --> E2
+
+    %% 分P新增（直接由请求触发）
+    N1 -->|loop 新增分P| C3
+    C3 --> A3 --> E3
+    E3 --> CLI --> C5 --> A5 --> E5
+
+    %% 分P删除（更新场景）
+    N1 -->|loop 删除分P| C4 --> A4 --> E4
+
+    %% 汇总刷新：结果更新或删除事件后触发
+    E5 --> C6
+    E4 --> C6
+    N1 -->|更新后显式刷新| C6
+    C6 --> A6 --> E6
 
     %% Styles
     classDef controller fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,font-weight:bold;
     classDef controllermethod fill:#e3f2fd,stroke:#1976d2,stroke-width:2px;
-    classDef endpoint fill:#e3f2fd,stroke:#42a5f5,stroke-width:2px;
-    classDef commandsender fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,font-style:italic;
-    classDef commandsendermethod fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,font-style:italic;
     classDef command fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px,font-weight:bold;
-    classDef commandhandler fill:#e8f5e8,stroke:#388e3c,stroke-width:2px,font-weight:bold;
-    classDef aggregate fill:#fff8e1,stroke:#ff8f00,stroke-width:3px,font-weight:bold;
     classDef entitymethod fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px;
     classDef domainevent fill:#fff3e0,stroke:#e65100,stroke-width:2px,font-style:italic;
-    classDef domaineventhandler fill:#fff3e0,stroke:#ef6c00,stroke-width:2px,font-weight:bold;
-    classDef integrationevent fill:#fce4ec,stroke:#880e4f,stroke-width:2px;
-    classDef integrationeventhandler fill:#fce4ec,stroke:#ad1457,stroke-width:2px,font-weight:bold;
-    classDef integrationeventconverter fill:#e3f2fd,stroke:#0277bd,stroke-width:2px;
-    classDef repo fill:#d6dbdf,stroke:#85929e,stroke-width:2px;
-    classDef uow fill:#f2f4f4,stroke:#7f8c8d,stroke-width:2px;

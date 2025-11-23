@@ -1,7 +1,7 @@
 package edu.only4.danmuku.application.queries.video
 
 import com.only4.cap4k.ddd.core.application.query.PageQueryParam
-import edu.only4.danmuku.domain.aggregates.video.enums.PostType
+import edu.only4.danmuku.domain.aggregates.video_post.enums.PostType
 import edu.only4.danmuku.domain.aggregates.video.enums.RecommendType
 
 /**

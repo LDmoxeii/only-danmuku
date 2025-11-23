@@ -1,0 +1,35 @@
+[
+  {
+    "tag": "cmd",
+    "package": "video_post",
+    "name": "RecordVideoAuditTrace",
+    "desc": "记录视频审核追溯日志"
+  },
+  {
+    "tag": "de",
+    "package": "video_audit_trace",
+    "name": "VideoAuditTraceRecorded",
+    "desc": "审核追溯记录已创建事件",
+    "aggregates": ["VideoAuditTrace"],
+    "entity": "VideoAuditTrace",
+    "persist": false
+  },
+  {
+    "tag": "de",
+    "package": "video_post",
+    "name": "VideoAuditPassed",
+    "desc": "视频审核通过领域事件（复用）",
+    "aggregates": ["VideoPost"],
+    "entity": "VideoPost",
+    "persist": false
+  },
+  {
+    "tag": "de",
+    "package": "video_post",
+    "name": "VideoAuditFailed",
+    "desc": "视频审核失败领域事件（复用）",
+    "aggregates": ["VideoPost"],
+    "entity": "VideoPost",
+    "persist": false
+  }
+]

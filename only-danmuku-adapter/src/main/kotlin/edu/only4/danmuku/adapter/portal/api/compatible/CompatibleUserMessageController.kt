@@ -3,6 +3,7 @@ package edu.only4.danmuku.adapter.portal.api.compatible
 import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.share.PageData
+import edu.only4.danmuku.adapter.portal.api.payload.MessageDel
 import edu.only4.danmuku.adapter.portal.api.payload.MessageGetNoReadCountGroup
 import edu.only4.danmuku.adapter.portal.api.payload.MessageLoad
 import edu.only4.danmuku.adapter.portal.api.payload.MessageReadAll
@@ -75,13 +76,13 @@ class CompatibleUserMessageController {
 
     @PostMapping("/delMessage")
     fun messageDel(
-        messageId: Long
+        @RequestBody @Validated request: MessageDel.Request
     ) {
         val userId = LoginHelper.getUserId()!!
         Mediator.commands.send(
             DeleteMessageCmd.Request(
                 customerId = userId,
-                messageId = messageId
+                messageId = request.messageId
             )
         )
     }

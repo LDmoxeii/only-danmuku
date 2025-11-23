@@ -19,4 +19,6 @@ import edu.only4.danmuku.domain.aggregates.video_post.VideoPost
     type = Aggregate.TYPE_DOMAIN_EVENT,
     description = ""
 )
-class VideoAuditFailedDomainEvent(val entity: VideoPost)
+class VideoAuditFailedDomainEvent(
+    val entity: VideoPost,
+)

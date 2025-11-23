@@ -1,7 +1,7 @@
 package edu.only4.danmuku.application.queries._share.model
 
-import edu.only4.danmuku.domain.aggregates.video.enums.PostType
 import edu.only4.danmuku.domain.aggregates.video.enums.RecommendType
+import edu.only4.danmuku.domain.aggregates.video_post.enums.PostType
 import org.babyfish.jimmer.sql.*
 
 /**

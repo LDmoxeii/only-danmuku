@@ -19,13 +19,14 @@ object MessageLoad {
     ): PageParam()
 
     data class MessageItem(
-        val id: Long,
+        val messageId: Long,
         val messageType: Int,
         val readType: Int,
         @get:Translation(type = AnyToJsonStringTranslation.TYPE)
         val extendDto: UserMessageExtend?,
         val createTime: Long,
         // 扩展显示字段
+        val videoPostId: Long?,
         val videoId: Long?,
         val videoName: String?,
         val videoCover: String?,
@@ -37,6 +38,7 @@ object MessageLoad {
     @Mapper(componentModel = "default")
     interface Converter {
         @Mapping(source = "extendJson", target = "extendDto")
+        @Mapping(source = "id", target = "messageId")
         fun fromApp(resp: GetMessagePageQry.Response): MessageItem
 
         companion object { val INSTANCE: Converter = Mappers.getMapper(Converter::class.java) }

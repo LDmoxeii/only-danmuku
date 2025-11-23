@@ -4,12 +4,10 @@ import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
-import edu.only4.danmuku.application.validator.MaxVideoPCount
 import edu.only4.danmuku.application.validator.VideoPostExists
 import edu.only4.danmuku.application.validator.VideoPostEditableStatus
 import edu.only4.danmuku.domain._share.meta.video_post.SVideoPost
-import edu.only4.danmuku.domain.aggregates.video.enums.PostType
-import edu.only4.danmuku.domain.aggregates.video_post.VideoPost
+import edu.only4.danmuku.domain.aggregates.video_post.enums.PostType
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
 
@@ -41,24 +39,9 @@ object UpdateVideoPostCmd {
                 interaction = request.interaction,
             )
 
-            var outcome: VideoPost.FileEditOutcome? = null
-            request.uploadFileList?.let { uploadFileList ->
-                if (uploadFileList.isEmpty()) {
-                    outcome = draft.applyFileEdits(request.customerId, emptyList())
-                } else {
-                    val specs = uploadFileList.sortedBy { it.fileIndex }.map {
-                        VideoPost.FileEditSpec(
-                            fileId = it.fileId,
-                            uploadId = it.uploadId,
-                            fileIndex = it.fileIndex,
-                            fileName = it.fileName,
-                        )
-                    }
-                    outcome = draft.applyFileEdits(request.customerId, specs)
-                }
+            if (basicChanged) {
+                draft.markPendingReview()
             }
-
-            draft.adjustStatusAfterEdit(basicChanged, outcome)
 
             Mediator.uow.save()
             return Response(videoId = draft.id)
@@ -67,7 +50,6 @@ object UpdateVideoPostCmd {
 
     @VideoPostExists
     @VideoPostEditableStatus
-    @MaxVideoPCount(countField = "uploadFileList", videoIdField = "videoId")
     data class Request(
         val videoPostId: Long,
         val customerId: Long,
@@ -80,15 +62,7 @@ object UpdateVideoPostCmd {
         val tags: String? = null,
         val introduction: String? = null,
         val interaction: String? = null,
-        val uploadFileList: List<VideoFileInfo>? = null,
     ) : RequestParam<Response>
-
-    data class VideoFileInfo(
-        val fileId: Long? = null,
-        val uploadId: Long? = null,
-        val fileIndex: Int,
-        val fileName: String,
-    )
 
     data class Response(
         val videoId: Long,

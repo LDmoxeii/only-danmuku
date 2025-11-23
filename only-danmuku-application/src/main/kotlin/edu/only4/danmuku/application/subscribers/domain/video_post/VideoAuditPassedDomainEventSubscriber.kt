@@ -1,7 +1,6 @@
 package edu.only4.danmuku.application.subscribers.domain.video_post
 
 import com.only4.cap4k.ddd.core.Mediator
-import edu.only4.danmuku.application.commands.customer_message.SendVideoAuditPassedMessageCmd
 import edu.only4.danmuku.application.commands.customer_profile.RewardUserForVideoCmd
 import edu.only4.danmuku.application.commands.video.TransferVideoToProductionCmd
 import edu.only4.danmuku.application.distributed.clients.CleanTempFilesCli
@@ -43,20 +42,6 @@ class VideoAuditPassedDomainEventSubscriber {
                 introduction = videoPost.introduction,
                 interaction = videoPost.interaction,
                 duration = videoPost.duration,
-                files = videoPost.videoFilePosts
-                    .filter { it.isTransferSuccess() }
-                    .sortedBy { it.fileIndex }
-                    .map {
-                        TransferVideoToProductionCmd.FileItem(
-                            videoFilePostId = it.id,
-                            customerId = it.customerId,
-                            fileName = it.fileName,
-                            fileIndex = it.fileIndex,
-                            fileSize = it.fileSize,
-                            filePath = it.filePath,
-                            duration = it.duration,
-                        )
-                    }
             )
         )
     }
@@ -74,18 +59,6 @@ class VideoAuditPassedDomainEventSubscriber {
         Mediator.requests.send(
             CleanTempFilesCli.Request(
                 tempPaths = tempPaths
-            )
-        )
-    }
-
-    @EventListener(VideoAuditPassedDomainEvent::class)
-    fun on3(event: VideoAuditPassedDomainEvent) {
-        // 发送系统消息给视频作者：审核通过
-        val videoPost = event.entity
-        Mediator.commands.send(
-            SendVideoAuditPassedMessageCmd.Request(
-                videoId = videoPost.id,
-                operatorId = null
             )
         )
     }

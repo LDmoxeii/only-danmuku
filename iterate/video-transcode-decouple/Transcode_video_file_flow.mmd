@@ -1,0 +1,78 @@
+flowchart TB
+
+    %% 入口（创建/更新并行触发）
+    N1["CompatibleUCenterVideoPostController.postVideo"]
+    class N1 controllermethod;
+
+    CCreatePost["CreateVideoPostCmd"]
+    class CCreatePost command;
+    ACreatePost["VideoPost.onCreate"]
+    class ACreatePost entitymethod;
+    ECreatePost["VideoDraftCreatedDomainEvent"]
+    class ECreatePost domainevent;
+
+    CUpdatePost["UpdateVideoPostCmd (基础信息)"]
+    class CUpdatePost command;
+    AUpdatePost["VideoPost.applyBasicInfo / markPendingReview"]
+    class AUpdatePost entitymethod;
+    EUpdatePost["VideoPostUpdatedDomainEvent"]
+    class EUpdatePost domainevent;
+
+    %% 每个文件（新增/重传）
+    CCreateFile["CreateVideoFilePostCmd"]
+    class CCreateFile command;
+    ACreateFile["VideoFilePost.onCreate"]
+    class ACreateFile entitymethod;
+    ECreateFile["VideoFilePostCreatedDomainEvent"]
+    class ECreateFile domainevent;
+
+    CDeleteFile["DeleteVideoFilePostCmd"]
+    class CDeleteFile command;
+    ADeleteFile["VideoFilePost.onDelete"]
+    class ADeleteFile entitymethod;
+    EDeleteFile["VideoFilePostDeletedDomainEvent"]
+    class EDeleteFile domainevent;
+
+    CTranscode["TranscodeVideoFileCli"]
+    class CTranscode command;
+
+    CUpdateResult["UpdateVideoFilePostTranscodeResultCmd"]
+    class CUpdateResult command;
+    AUpdateResult["VideoFilePost.applyTranscodeResult"]
+    class AUpdateResult entitymethod;
+    EUpdateResult["VideoFilePostTranscodeResultUpdatedDomainEvent"]
+    class EUpdateResult domainevent;
+
+    CRefreshPost["RefreshVideoPostTranscodeStatusCmd"]
+    class CRefreshPost command;
+    ARefreshPost["VideoPost.refreshTranscodeStatus"]
+    class ARefreshPost entitymethod;
+    ERefreshPost["VideoPostTranscodeStatusRefreshedDomainEvent"]
+    class ERefreshPost domainevent;
+
+    %% Relationships
+    N1 -->|并行| CCreatePost
+    N1 -->|并行| CUpdatePost
+    N1 -->|loop 新增文件| CCreateFile
+    N1 -->|loop 删除文件| CDeleteFile
+
+    CCreatePost --> ACreatePost --> ECreatePost
+    CUpdatePost --> AUpdatePost --> EUpdatePost
+
+    CCreateFile --> ACreateFile --> ECreateFile
+    ECreateFile --> CTranscode
+    CTranscode --> CUpdateResult
+    CUpdateResult --> AUpdateResult --> EUpdateResult
+
+    CDeleteFile --> ADeleteFile --> EDeleteFile
+
+    EUpdateResult --> CRefreshPost
+    EDeleteFile --> CRefreshPost
+    CRefreshPost --> ARefreshPost --> ERefreshPost
+
+    %% Styles
+    classDef controller fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,font-weight:bold;
+    classDef controllermethod fill:#e3f2fd,stroke:#1976d2,stroke-width:2px;
+    classDef command fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px,font-weight:bold;
+    classDef entitymethod fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px;
+    classDef domainevent fill:#fff3e0,stroke:#e65100,stroke-width:2px,font-style:italic;

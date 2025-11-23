@@ -1,10 +1,10 @@
-package edu.only4.danmuku.adapter.domain.translation.video_post
+package edu.only4.danmuku.adapter.domain.translation.video_audit_trace
 
 import com.only.engine.translation.annotation.TranslationType
 import com.only.engine.translation.core.BatchTranslationInterface
 import com.only.engine.translation.core.TranslationInterface
-import edu.only4.danmuku.adapter.domain.translation.video_post.TransferResultTranslation.Companion.TRANSFER_RESULT_CODE_TO_DESC
-import edu.only4.danmuku.domain.aggregates.video_post.enums.TransferResult
+import edu.only4.danmuku.adapter.domain.translation.video_audit_trace.AuditStatusTranslation.Companion.AUDIT_STATUS_CODE_TO_DESC
+import edu.only4.danmuku.domain.aggregates.video_audit_trace.enums.AuditStatus
 
 import org.springframework.stereotype.Component
 
@@ -12,13 +12,13 @@ import org.springframework.stereotype.Component
  * 由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手动修改本文件，后续生成会覆盖当前文件
  */
-@TranslationType(type = TRANSFER_RESULT_CODE_TO_DESC)
+@TranslationType(type = AUDIT_STATUS_CODE_TO_DESC)
 @Component
-class TransferResultTranslation :
+class AuditStatusTranslation :
     TranslationInterface<String>, BatchTranslationInterface<String> {
 
     companion object {
-        const val TRANSFER_RESULT_CODE_TO_DESC = "transfer_result_code_to_desc"
+        const val AUDIT_STATUS_CODE_TO_DESC = "audit_status_code_to_desc"
     }
 
     override fun translation(key: Any, other: String): String? {
@@ -27,7 +27,7 @@ class TransferResultTranslation :
             is String -> key.toIntOrNull()
             else -> null
         } ?: return null
-        return TransferResult.valueOfOrNull(code)?.desc
+        return AuditStatus.valueOfOrNull(code)?.desc
     }
 
     override fun translationBatch(keys: Collection<Any>, other: String): Map<Any, String?> {
@@ -44,7 +44,7 @@ class TransferResultTranslation :
         val codes: Set<Int> = keyToCode.values.filterNotNull().toSet()
 
         val codeToDesc: Map<Int, String?> = codes.associateWith { c ->
-            TransferResult.valueOfOrNull(c)?.desc
+            AuditStatus.valueOfOrNull(c)?.desc
         }
 
         return keyToCode.mapValues { (_, c) -> c?.let { codeToDesc[it] } }

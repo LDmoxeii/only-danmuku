@@ -1,13 +1,17 @@
 package edu.only4.danmuku.adapter.portal.api.compatible
 
+import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.share.PageData
 import edu.only4.danmuku.adapter.portal.api.payload.AdminVideoLoadList
 import edu.only4.danmuku.adapter.portal.api.payload.AdminVideoLoadPList
 import edu.only4.danmuku.application.commands.video.RecommendVideoCmd
-import edu.only4.danmuku.application.commands.video_post.AuditVideoPostCmd
 import edu.only4.danmuku.application.commands.video_post.DeleteVideoPostCmd
+import edu.only4.danmuku.application.commands.video_post.RecordVideoAuditTraceCmd
 import edu.only4.danmuku.application.queries.video.GetVideoPlayFilesQry
+import edu.only4.danmuku.domain.aggregates.user.enums.UserType
+import edu.only4.danmuku.domain.aggregates.video_audit_trace.enums.AuditStatus
+import edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -50,10 +54,19 @@ class CompatibleAdminVideoController {
         status: Int,
         reason: String?,
     ) {
+        val currentUserId = LoginHelper.getUserId()!!
+        val currentUserType = UserType.valueOf(LoginHelper.getUserInfo()!!.userType)
+        val auditStatus = when (status) {
+            VideoStatus.REVIEW_PASSED.code -> AuditStatus.PASSED
+            VideoStatus.REVIEW_FAILED.code -> AuditStatus.FAILED
+            else -> throw IllegalArgumentException("不支持的审核状态: $status")
+        }
         Mediator.commands.send(
-            AuditVideoPostCmd.Request(
+            RecordVideoAuditTraceCmd.Request(
                 videoPostId = videoId,
-                status = status,
+                auditStatus = auditStatus,
+                reviewerId = currentUserId,
+                reviewerType = currentUserType,
                 reason = reason
             )
         )

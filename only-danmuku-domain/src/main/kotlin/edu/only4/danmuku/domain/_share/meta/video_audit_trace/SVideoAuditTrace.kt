@@ -1,4 +1,6 @@
-package edu.only4.danmuku.domain._share.meta.video_post
+package edu.only4.danmuku.domain._share.meta.video_audit_trace
+
+import com.only4.cap4k.ddd.domain.repo.JpaPredicate
 
 import edu.only4.danmuku.domain._share.meta.ExpressionBuilder
 import edu.only4.danmuku.domain._share.meta.Field
@@ -6,51 +8,40 @@ import edu.only4.danmuku.domain._share.meta.OrderBuilder
 import edu.only4.danmuku.domain._share.meta.PredicateBuilder
 import edu.only4.danmuku.domain._share.meta.SchemaSpecification
 import edu.only4.danmuku.domain._share.meta.SubqueryConfigure
-import edu.only4.danmuku.domain.aggregates.video_post.VideoFilePost
-import edu.only4.danmuku.domain.aggregates.video_post.enums.TransferResult
-import edu.only4.danmuku.domain.aggregates.video_post.enums.UpdateType
+import edu.only4.danmuku.domain.aggregates.user.enums.UserType
+import edu.only4.danmuku.domain.aggregates.video_audit_trace.VideoAuditTrace
+import edu.only4.danmuku.domain.aggregates.video_audit_trace.enums.AuditStatus
 
 import jakarta.persistence.criteria.*
 
 import org.springframework.data.jpa.domain.Specification
 
 /**
- * 视频文件信息;
- *
  * Schema 类用于类型安全的 JPA Criteria 查询
  *
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/11/04
  */
-class SVideoFilePost(
-    private val root: Path<VideoFilePost>,
+class SVideoAuditTrace(
+    private val root: Path<VideoAuditTrace>,
     private val criteriaBuilder: CriteriaBuilder,
 ) {
     class PROPERTY_NAMES {
 
         val id = "id"
 
-        val uploadId = "uploadId"
+        val videoPostId = "videoPostId"
 
-        val customerId = "customerId"
+        val auditStatus = "auditStatus"
 
-        val videoId = "videoId"
+        val reviewerId = "reviewerId"
 
-        val fileIndex = "fileIndex"
+        val reviewerType = "reviewerType"
 
-        val fileName = "fileName"
+        val reason = "reason"
 
-        val fileSize = "fileSize"
-
-        val filePath = "filePath"
-
-        val updateType = "updateType"
-
-        val transferResult = "transferResult"
-
-        val duration = "duration"
+        val occurTime = "occurTime"
 
         val createUserId = "createUserId"
 
@@ -79,7 +70,7 @@ class SVideoFilePost(
          * @return
          */
         @JvmStatic
-        fun specify(builder: PredicateBuilder<SVideoFilePost>): Specification<VideoFilePost> {
+        fun specify(builder: PredicateBuilder<SVideoAuditTrace>): Specification<VideoAuditTrace> {
             return specify(builder, false, emptyList())
         }
 
@@ -91,7 +82,7 @@ class SVideoFilePost(
          * @return
          */
         @JvmStatic
-        fun specify(builder: PredicateBuilder<SVideoFilePost>, distinct: Boolean): Specification<VideoFilePost> {
+        fun specify(builder: PredicateBuilder<SVideoAuditTrace>, distinct: Boolean): Specification<VideoAuditTrace> {
             return specify(builder, distinct, emptyList())
         }
 
@@ -104,9 +95,9 @@ class SVideoFilePost(
          */
         @JvmStatic
         fun specify(
-            builder: PredicateBuilder<SVideoFilePost>,
-            vararg orderBuilders: OrderBuilder<SVideoFilePost>,
-        ): Specification<VideoFilePost> {
+            builder: PredicateBuilder<SVideoAuditTrace>,
+            vararg orderBuilders: OrderBuilder<SVideoAuditTrace>,
+        ): Specification<VideoAuditTrace> {
             return specify(builder, orderBuilders.toList())
         }
 
@@ -119,9 +110,9 @@ class SVideoFilePost(
          */
         @JvmStatic
         fun specify(
-            builder: PredicateBuilder<SVideoFilePost>,
-            orderBuilders: List<OrderBuilder<SVideoFilePost>>,
-        ): Specification<VideoFilePost> {
+            builder: PredicateBuilder<SVideoAuditTrace>,
+            orderBuilders: List<OrderBuilder<SVideoAuditTrace>>,
+        ): Specification<VideoAuditTrace> {
             return specify(builder, false, orderBuilders)
         }
 
@@ -135,10 +126,10 @@ class SVideoFilePost(
         */
         @JvmStatic
         fun specify(
-            builder: PredicateBuilder<SVideoFilePost>,
+            builder: PredicateBuilder<SVideoAuditTrace>,
             distinct: Boolean,
-            vararg orderBuilders: OrderBuilder<SVideoFilePost>,
-        ): Specification<VideoFilePost> {
+            vararg orderBuilders: OrderBuilder<SVideoAuditTrace>,
+        ): Specification<VideoAuditTrace> {
             return specify(builder, distinct, orderBuilders.toList())
         }
 
@@ -152,10 +143,10 @@ class SVideoFilePost(
         */
         @JvmStatic
         fun specify(
-            builder: PredicateBuilder<SVideoFilePost>,
+            builder: PredicateBuilder<SVideoAuditTrace>,
             distinct: Boolean,
-            orderBuilders: List<OrderBuilder<SVideoFilePost>>,
-        ): Specification<VideoFilePost> {
+            orderBuilders: List<OrderBuilder<SVideoAuditTrace>>,
+        ): Specification<VideoAuditTrace> {
             return specify { schema, criteriaQuery, criteriaBuilder ->
                 criteriaQuery.where(builder.build(schema))
                 criteriaQuery.distinct(distinct)
@@ -173,9 +164,9 @@ class SVideoFilePost(
          * @return
          */
         @JvmStatic
-        fun specify(specifier: SchemaSpecification<VideoFilePost, SVideoFilePost>): Specification<VideoFilePost> {
+        fun specify(specifier: SchemaSpecification<VideoAuditTrace, SVideoAuditTrace>): Specification<VideoAuditTrace> {
             return Specification { root, criteriaQuery, criteriaBuilder ->
-                val schema = SVideoFilePost(root, criteriaBuilder)
+                val schema = SVideoAuditTrace(root, criteriaBuilder)
                 specifier.toPredicate(schema, criteriaQuery, criteriaBuilder)
             }
         }
@@ -194,8 +185,8 @@ class SVideoFilePost(
         @JvmStatic
         fun <E> subquery(
             resultClass: Class<E>,
-            selectBuilder: ExpressionBuilder<SVideoFilePost, E>,
-            predicateBuilder: PredicateBuilder<SVideoFilePost>,
+            selectBuilder: ExpressionBuilder<SVideoAuditTrace, E>,
+            predicateBuilder: PredicateBuilder<SVideoAuditTrace>,
             criteriaBuilder: CriteriaBuilder,
             criteriaQuery: CriteriaQuery<*>,
         ): Subquery<E> {
@@ -218,21 +209,153 @@ class SVideoFilePost(
         @JvmStatic
         fun <E> subquery(
             resultClass: Class<E>,
-            subqueryConfigure: SubqueryConfigure<E, SVideoFilePost>,
+            subqueryConfigure: SubqueryConfigure<E, SVideoAuditTrace>,
             criteriaBuilder: CriteriaBuilder,
             criteriaQuery: CriteriaQuery<*>,
         ): Subquery<E> {
             val sq = criteriaQuery.subquery(resultClass)
-            val root = sq.from(VideoFilePost::class.java)
-            val schema = SVideoFilePost(root, criteriaBuilder)
+            val root = sq.from(VideoAuditTrace::class.java)
+            val schema = SVideoAuditTrace(root, criteriaBuilder)
             subqueryConfigure.configure(sq, schema)
             return sq
         }
+        /**
+         * 构建查询条件
+         *
+         * @param id 主键
+         * @return
+         */
+        @JvmStatic
+        fun predicateById(id: Any): JpaPredicate<VideoAuditTrace> {
+            return JpaPredicate.byId(VideoAuditTrace::class.java, id)
+        }
+
+        /**
+        * 构建查询条件
+        *
+        * @param ids 主键
+        * @return
+        */
+        @JvmStatic
+        fun predicateByIds(ids: Iterable<*>): JpaPredicate<VideoAuditTrace> {
+            @Suppress("UNCHECKED_CAST")
+            return JpaPredicate.byIds(VideoAuditTrace::class.java, ids as Iterable<Any>)
+        }
+
+        /**
+         * 构建查询条件
+         *
+         * @param ids 主键
+         * @return
+         */
+        @JvmStatic
+        fun predicateByIds(vararg ids: Any): JpaPredicate<VideoAuditTrace> {
+            return JpaPredicate.byIds(VideoAuditTrace::class.java, ids.toList())
+        }
+
+        /**
+         * 构建查询条件
+         *
+         * @param builder 查询条件构造器
+         * @return
+         */
+        @JvmStatic
+        fun predicate(builder: PredicateBuilder<SVideoAuditTrace>): JpaPredicate<VideoAuditTrace> {
+            return JpaPredicate.bySpecification(VideoAuditTrace::class.java, specify(builder))
+        }
+
+        /**
+         * 构建查询条件
+         *
+         * @param builder  查询条件构造器
+         * @param distinct 是否去重
+         * @return
+         */
+        @JvmStatic
+        fun predicate(builder: PredicateBuilder<SVideoAuditTrace>, distinct: Boolean): JpaPredicate<VideoAuditTrace> {
+            return JpaPredicate.bySpecification(VideoAuditTrace::class.java, specify(builder, distinct))
+        }
+
+        /**
+         * 构建查询条件
+         *
+         * @param builder       查询条件构造器
+         * @param orderBuilders 排序构造器
+         * @return
+         */
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SVideoAuditTrace>,
+            orderBuilders: List<OrderBuilder<SVideoAuditTrace>>,
+        ): JpaPredicate<VideoAuditTrace> {
+            return JpaPredicate.bySpecification(VideoAuditTrace::class.java, specify(builder, false, orderBuilders))
+        }
+
+        /**
+         * 构建查询条件
+         *
+         * @param builder       查询条件构造器
+         * @param orderBuilders 排序构造器
+         * @return
+         */
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SVideoAuditTrace>,
+            vararg orderBuilders: OrderBuilder<SVideoAuditTrace>,
+        ): JpaPredicate<VideoAuditTrace> {
+            return JpaPredicate.bySpecification(VideoAuditTrace::class.java, specify(builder, false, *orderBuilders))
+        }
+
+        /**
+         * 构建查询条件
+         *
+         * @param builder       查询条件构造器
+         * @param distinct      是否去重
+         * @param orderBuilders 排序构造器
+         * @return
+         */
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SVideoAuditTrace>,
+            distinct: Boolean,
+            orderBuilders: List<OrderBuilder<SVideoAuditTrace>>,
+        ): JpaPredicate<VideoAuditTrace> {
+            return JpaPredicate.bySpecification(VideoAuditTrace::class.java, specify(builder, distinct, orderBuilders))
+        }
+
+        /**
+         * 构建查询条件
+         *
+         * @param builder       查询条件构造器
+         * @param distinct      是否去重
+         * @param orderBuilders 排序构造器
+         * @return
+         */
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SVideoAuditTrace>,
+            distinct: Boolean,
+            vararg orderBuilders: OrderBuilder<SVideoAuditTrace>,
+        ): JpaPredicate<VideoAuditTrace> {
+            return JpaPredicate.bySpecification(VideoAuditTrace::class.java, specify(builder, distinct, *orderBuilders))
+        }
+
+        /**
+         * 构建查询条件
+         *
+         * @param specifier 查询条件构造器
+         * @return
+         */
+        @JvmStatic
+        fun predicate(specifier: SchemaSpecification<VideoAuditTrace, SVideoAuditTrace>): JpaPredicate<VideoAuditTrace> {
+            return JpaPredicate.bySpecification(VideoAuditTrace::class.java, specify(specifier))
+        }
+
     }
 
     fun _criteriaBuilder(): CriteriaBuilder = criteriaBuilder
 
-    fun _root(): Path<VideoFilePost> = root
+    fun _root(): Path<VideoAuditTrace> = root
 
 
     /**
@@ -244,82 +367,50 @@ class SVideoFilePost(
 
 
     /**
-     * 上传ID
+     * 视频稿件ID
      */
-    val uploadId: Field<Long> by lazy {
-        Field(root.get("uploadId"), criteriaBuilder)
+    val videoPostId: Field<Long> by lazy {
+        Field(root.get("videoPostId"), criteriaBuilder)
     }
 
 
     /**
-     * 用户ID
+     * 审核状态
      */
-    val customerId: Field<Long> by lazy {
-        Field(root.get("customerId"), criteriaBuilder)
+    val auditStatus: Field<AuditStatus> by lazy {
+        Field(root.get("auditStatus"), criteriaBuilder)
     }
 
 
     /**
-     * 视频ID@
+     * 审核人ID，可为空
      */
-    val videoId: Field<Long> by lazy {
-        Field(root.get("videoId"), criteriaBuilder)
+    val reviewerId: Field<Long?> by lazy {
+        Field(root.get("reviewerId"), criteriaBuilder)
     }
 
 
     /**
-     * 文件索引
+     * 审核人类型
      */
-    val fileIndex: Field<Int> by lazy {
-        Field(root.get("fileIndex"), criteriaBuilder)
+    val reviewerType: Field<UserType> by lazy {
+        Field(root.get("reviewerType"), criteriaBuilder)
     }
 
 
     /**
-     * 文件名
+     * 审核备注/失败原因
      */
-    val fileName: Field<String?> by lazy {
-        Field(root.get("fileName"), criteriaBuilder)
+    val reason: Field<String?> by lazy {
+        Field(root.get("reason"), criteriaBuilder)
     }
 
 
     /**
-     * 文件大小
+     * 审核发生时间
      */
-    val fileSize: Field<Long?> by lazy {
-        Field(root.get("fileSize"), criteriaBuilder)
-    }
-
-
-    /**
-     * 文件路径
-     */
-    val filePath: Field<String?> by lazy {
-        Field(root.get("filePath"), criteriaBuilder)
-    }
-
-
-    /**
-     * 更新类型
-     */
-    val updateType: Field<UpdateType> by lazy {
-        Field(root.get("updateType"), criteriaBuilder)
-    }
-
-
-    /**
-     * 转码结果
-     */
-    val transferResult: Field<TransferResult> by lazy {
-        Field(root.get("transferResult"), criteriaBuilder)
-    }
-
-
-    /**
-     * 持续时间（秒）
-     */
-    val duration: Field<Int?> by lazy {
-        Field(root.get("duration"), criteriaBuilder)
+    val occurTime: Field<Long> by lazy {
+        Field(root.get("occurTime"), criteriaBuilder)
     }
 
 
@@ -381,14 +472,6 @@ class SVideoFilePost(
 
 
     /**
-     * 关联: ManyToOne - VideoPost
-     */
-    val videoPost: Field<Any> by lazy {
-        Field(root.get("videoPost"), criteriaBuilder)
-    }
-
-
-    /**
      * 满足所有条件
      * @param restrictions
      * @return
@@ -441,7 +524,7 @@ class SVideoFilePost(
      * @param builder
      * @return
      */
-    fun spec(builder: PredicateBuilder<SVideoFilePost>): Predicate {
+    fun spec(builder: PredicateBuilder<SVideoAuditTrace>): Predicate {
         return builder.build(this)
     }
 }

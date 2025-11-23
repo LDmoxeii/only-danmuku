@@ -70,7 +70,7 @@ annotation class MaxVideoPCount(
                     val existing = Mediator.repositories.findOne(
                         SVideoPost.predicate { it.id eq videoId }
                     )
-                    actual = existing.getOrNull()?.videoFilePosts?.size ?: 0
+                    actual = existing.getOrNull()?.let { 0 } ?: 0
                 }
             }
             return actual <= maxCount

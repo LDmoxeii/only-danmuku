@@ -1,0 +1,24 @@
+flowchart TB
+
+    %% 入口：播放器/CDN 取密钥
+    C0["CompatibleHlsController.getKey(videoPostId)"]
+    class C0 controllermethod;
+
+    Q1["GetHlsKeyByVideoPostQry"]
+    class Q1 query;
+
+    %% key 来源
+    D1["video_hls_key.secret_key / iv"]
+    class D1 query;
+    F1["读取 key_path 文件（本地存储）"]
+    class F1 command;
+
+    %% Relationships
+    C0 --> Q1
+    Q1 --> D1
+    Q1 --> F1
+
+    %% Styles
+    classDef controllermethod fill:#e3f2fd,stroke:#1976d2,stroke-width:2px;
+    classDef query fill:#fffde7,stroke:#f9a825,stroke-width:2px,font-weight:bold;
+    classDef command fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px,font-weight:bold;

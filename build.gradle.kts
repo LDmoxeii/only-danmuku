@@ -24,6 +24,7 @@ codegen {
     designFiles.from(
         fileTree("iterate") {
             include("**/*_gen.json")
+            exclude("**/video_hls_encryption_gen.json")
         }
     )
 
@@ -32,7 +33,7 @@ codegen {
         username.set("root")
         password.set("123456")
         schema.set("only_danmuku")
-        tables.set("user_login_log,user_abnormal_operation_log")
+        tables.set("video_file_post,video_post")
         ignoreTables.set("")
     }
 
@@ -50,6 +51,8 @@ codegen {
             "AuditedFieldsEntity" to "edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity",
             "UserType" to "edu.only4.danmuku.domain.aggregates.user.enums.UserType",
             "UserTypeTranslation" to "edu.only4.danmuku.adapter.domain.translation.user.UserTypeTranslation",
+            "PostType" to "edu.only4.danmuku.domain.aggregates.video_post.enums.PostType",
+            "PostTypeTranslation" to "edu.only4.danmuku.adapter.domain.translation.video_post.PostTypeTranslation",
         ))
     }
 }

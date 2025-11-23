@@ -8,10 +8,7 @@ import jakarta.validation.constraints.NotEmpty
 object MessageDel {
 
     data class Request(
-        /** 消息ID */
-
-        @field:NotEmpty(message = "消息ID不能为空")
-        val messageId: Int = 0
+        val messageId: Long
     )
 
     class Response

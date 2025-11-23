@@ -1,0 +1,65 @@
+[
+  {
+    "tag": "cli",
+    "package": "",
+    "name": "TranscodeVideoFile",
+    "desc": "防腐层：对单个上传文件执行转码，返回成功/失败、输出路径、时长"
+  },
+  {
+    "tag": "cmd",
+    "package": "video_file_post",
+    "name": "CreateVideoFilePost",
+    "desc": "基于上传会话为稿件创建/绑定 VideoFilePost 记录（初始转码中）"
+  },
+  {
+    "tag": "de",
+    "package": "video_file_post",
+    "name": "VideoFilePostCreated",
+    "desc": "文件分P创建完成事件，驱动转码 CLI",
+    "aggregates": ["VideoFilePost"],
+    "entity": "VideoFilePost",
+    "persist": false
+  },
+  {
+    "tag": "cmd",
+    "package": "video_file_post",
+    "name": "UpdateVideoFilePostTranscodeResult",
+    "desc": "根据转码结果更新单个 VideoFilePost 的转码状态/输出路径/时长"
+  },
+  {
+    "tag": "cmd",
+    "package": "video_file_post",
+    "name": "DeleteVideoFilePost",
+    "desc": "删除已移除的分P记录，触发稿件状态刷新"
+  },
+  {
+    "tag": "de",
+    "package": "video_file_post",
+    "name": "VideoFilePostTranscodeResultUpdated",
+    "desc": "单个分P转码结果已回写事件，驱动稿件状态刷新",
+    "aggregates": ["VideoFilePost"],
+    "entity": "VideoFilePost",
+    "persist": false
+  },
+  {
+    "tag": "cmd",
+    "package": "video_post",
+    "name": "RefreshVideoPostTranscodeStatus",
+    "desc": "汇总稿件下文件转码结果，刷新 VideoPost 状态与总时长"
+  },
+  {
+    "tag": "de",
+    "package": "video_file_post",
+    "name": "VideoFilePostDeleted",
+    "desc": "分P被删除事件，驱动稿件状态刷新",
+    "aggregates": ["VideoFilePost"],
+    "entity": "VideoFilePost",
+    "persist": false
+  },
+  {
+    "tag": "qry",
+    "package": "video_file_post",
+    "name": "GetVideoFilePostsByPostId",
+    "desc": "查询稿件下的所有 VideoFilePost（含转码状态）"
+  }
+]
