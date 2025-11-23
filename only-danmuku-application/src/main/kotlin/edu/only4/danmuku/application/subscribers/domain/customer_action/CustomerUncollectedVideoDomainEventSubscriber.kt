@@ -1,7 +1,7 @@
 package edu.only4.danmuku.application.subscribers.domain.customer_action
 
 import com.only4.cap4k.ddd.core.Mediator
-import edu.only4.danmuku.application.commands.video.UpdateVideoStatisticsCmd
+import edu.only4.danmuku.application.commands.video.ApplyVideoCollectCountDeltaCmd
 import edu.only4.danmuku.domain.aggregates.customer_action.events.CustomerUncollectedVideoDomainEvent
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Service
@@ -19,9 +19,9 @@ class CustomerUncollectedVideoDomainEventSubscriber {
     fun on(event: CustomerUncollectedVideoDomainEvent) {
         // 发送更新视频统计数据命令，将收藏数减1
         Mediator.commands.send(
-            UpdateVideoStatisticsCmd.Request(
+            ApplyVideoCollectCountDeltaCmd.Request(
                 videoId = event.entity.videoId,
-                collectCountDelta = -1
+                delta = -1
             )
         )
     }

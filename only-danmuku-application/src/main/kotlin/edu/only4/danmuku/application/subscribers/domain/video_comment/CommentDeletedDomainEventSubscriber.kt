@@ -1,7 +1,7 @@
 package edu.only4.danmuku.application.subscribers.domain.video_comment
 
 import com.only4.cap4k.ddd.core.Mediator
-import edu.only4.danmuku.application.commands.video.UpdateVideoStatisticsCmd
+import edu.only4.danmuku.application.commands.video.ApplyVideoCommentCountDeltaCmd
 import edu.only4.danmuku.domain.aggregates.video_comment.events.CommentDeletedDomainEvent
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Service
@@ -22,9 +22,9 @@ class CommentDeletedDomainEventSubscriber {
         val comment = event.entity
         if (!(comment.isRootComment())) return
         Mediator.commands.send(
-            UpdateVideoStatisticsCmd.Request(
+            ApplyVideoCommentCountDeltaCmd.Request(
                 videoId = comment.videoId,
-                commentCountDelta = -1
+                delta = -1
             )
         )
     }

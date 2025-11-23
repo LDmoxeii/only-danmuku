@@ -14,7 +14,7 @@ object GetWeekStatisticsInfoQry {
 
     data class Request(
         val userId: Long? = null,
-        val dataType: StatisticsDataType = StatisticsDataType.UNKNOW,
+        val dataType: StatisticsDataType,
     ) : ListQueryParam<Response>
 
     data class Response(

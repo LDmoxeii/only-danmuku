@@ -3,7 +3,6 @@ package edu.only4.danmuku.application.queries._share.model
 import edu.only4.danmuku.domain.aggregates.video.enums.PostType
 import edu.only4.danmuku.domain.aggregates.video.enums.RecommendType
 import org.babyfish.jimmer.sql.*
-import java.time.LocalDateTime
 
 /**
  * 视频信息;@Spe;@Fac;

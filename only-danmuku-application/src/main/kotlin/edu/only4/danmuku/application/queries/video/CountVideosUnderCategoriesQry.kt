@@ -17,7 +17,7 @@ object CountVideosUnderCategoriesQry {
      * @param categoryIds 待检查的分类ID列表，通常只传一个根分类 ID
      */
     data class Request(
-        val categoryIds: Collection<Long> = emptyList()
+        var categoryIds: Collection<Long> = emptyList()
     ) : RequestParam<Response>
 
     /**

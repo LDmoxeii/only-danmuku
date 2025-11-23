@@ -1,7 +1,7 @@
 package edu.only4.danmuku.application.subscribers.domain.video_comment
 
 import com.only4.cap4k.ddd.core.Mediator
-import edu.only4.danmuku.application.commands.video.UpdateVideoStatisticsCmd
+import edu.only4.danmuku.application.commands.video.ApplyVideoCommentCountDeltaCmd
 import edu.only4.danmuku.application.commands.customer_message.SendCommentMessageCmd
 import edu.only4.danmuku.application.commands.customer_message.SendReplyMessageCmd
 import edu.only4.danmuku.application.queries.video_comment.GetCommentByIdQry
@@ -26,9 +26,9 @@ class CommentPostedDomainEventSubscriber {
         val comment = event.entity
         if (comment.parentId == 0L) {
             Mediator.commands.send(
-                UpdateVideoStatisticsCmd.Request(
+                ApplyVideoCommentCountDeltaCmd.Request(
                     videoId = comment.videoId,
-                    commentCountDelta = 1
+                    delta = 1
                 )
             )
         }

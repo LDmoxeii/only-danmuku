@@ -1,7 +1,7 @@
 package edu.only4.danmuku.application.subscribers.domain.customer_action
 
 import com.only4.cap4k.ddd.core.Mediator
-import edu.only4.danmuku.application.commands.video.UpdateVideoStatisticsCmd
+import edu.only4.danmuku.application.commands.video.ApplyVideoLikeCountDeltaCmd
 import edu.only4.danmuku.application.commands.customer_message.SendLikeMessageCmd
 import edu.only4.danmuku.domain.aggregates.customer_action.events.CustomerLikedVideoDomainEvent
 import org.springframework.context.event.EventListener
@@ -21,9 +21,9 @@ class CustomerLikedVideoDomainEventSubscriber {
     @EventListener(CustomerLikedVideoDomainEvent::class)
     fun on(event: CustomerLikedVideoDomainEvent) {
         Mediator.commands.send(
-            UpdateVideoStatisticsCmd.Request(
+            ApplyVideoLikeCountDeltaCmd.Request(
                 videoId = event.entity.videoId,
-                likeCountDelta = 1
+                delta = 1
             )
         )
     }
