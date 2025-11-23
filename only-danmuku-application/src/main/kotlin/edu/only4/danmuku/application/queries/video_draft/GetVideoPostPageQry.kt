@@ -15,12 +15,12 @@ import edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus
 object GetVideoPostPageQry {
 
     data class Request(
-        val userId: Long? = null,
-        val categoryParentId: Long? = null,
-        val categoryId: Long? = null,
-        val videoNameFuzzy: String? = null,
-        val recommendType: RecommendType? = null,
-        val excludeVideoIds: List<Long>? = null,
+        var userId: Long? = null,
+        var categoryParentId: Long? = null,
+        var categoryId: Long? = null,
+        var videoNameFuzzy: String? = null,
+        var recommendType: RecommendType? = null,
+        var excludeVideoIds: List<Long>? = null,
     ) : PageQueryParam<Response>()
 
     data class Response(
