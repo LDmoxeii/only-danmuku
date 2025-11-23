@@ -11,6 +11,7 @@ import kotlin.jvm.optionals.getOrNull
 /**
  * 更新视频统计信息
  */
+@Deprecated("Use ApplyVideo*CountDeltaCmd instead for per-stat updates.")
 object UpdateVideoStatisticsCmd {
 
     @Service

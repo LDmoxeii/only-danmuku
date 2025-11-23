@@ -2,35 +2,14 @@ package edu.only4.danmuku.domain.aggregates.video
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
-
 import edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity
 import edu.only4.danmuku.domain.aggregates.video.enums.PostType
 import edu.only4.danmuku.domain.aggregates.video.enums.RecommendType
-import edu.only4.danmuku.domain.aggregates.video.events.VideoBasicsSyncedDomainEvent
-import edu.only4.danmuku.domain.aggregates.video.events.VideoCoinCountDeltaAppliedDomainEvent
-import edu.only4.danmuku.domain.aggregates.video.events.VideoCollectCountDeltaAppliedDomainEvent
-import edu.only4.danmuku.domain.aggregates.video.events.VideoCommentCountDeltaAppliedDomainEvent
-import edu.only4.danmuku.domain.aggregates.video.events.VideoCreatedDomainEvent
-import edu.only4.danmuku.domain.aggregates.video.events.VideoDanmukuCountDeltaAppliedDomainEvent
-import edu.only4.danmuku.domain.aggregates.video.events.VideoDeletedDomainEvent
-import edu.only4.danmuku.domain.aggregates.video.events.VideoInteractionChangedDomainEvent
-import edu.only4.danmuku.domain.aggregates.video.events.VideoLastPlayTimeAttachedDomainEvent
-import edu.only4.danmuku.domain.aggregates.video.events.VideoLikeCountDeltaAppliedDomainEvent
-import edu.only4.danmuku.domain.aggregates.video.events.VideoPlayCountDeltaAppliedDomainEvent
-import edu.only4.danmuku.domain.aggregates.video.events.VideoRecommendedDomainEvent
-import edu.only4.danmuku.domain.aggregates.video.events.VideoStatisticsDeltaAppliedDomainEvent
-import edu.only4.danmuku.domain.aggregates.video.events.VideoUnrecommendedDomainEvent
-import edu.only4.danmuku.domain.aggregates.video_post.VideoPost
-
+import edu.only4.danmuku.domain.aggregates.video.events.*
 import jakarta.persistence.*
-
-import org.hibernate.annotations.DynamicInsert
-import org.hibernate.annotations.DynamicUpdate
-import org.hibernate.annotations.Fetch
-import org.hibernate.annotations.FetchMode
-import org.hibernate.annotations.GenericGenerator
-import org.hibernate.annotations.SQLDelete
-import org.hibernate.annotations.Where
+import jakarta.persistence.CascadeType
+import jakarta.persistence.Table
+import org.hibernate.annotations.*
 
 /**
  * 视频信息;
@@ -337,31 +316,6 @@ class Video(
         collectCount = updated
         events().attach(this) { VideoCollectCountDeltaAppliedDomainEvent(this, appliedDelta) }
         return appliedDelta
-    }
-
-    fun applyPlayStatisticsDelta(delta: Int): Int {
-        return applyPlayCountDelta(delta)
-    }
-
-    fun applyStatisticsDelta(
-        playCountDelta: Int = 0,
-        likeCountDelta: Int = 0,
-        danmukuCountDelta: Int = 0,
-        commentCountDelta: Int = 0,
-        coinCountDelta: Int = 0,
-        collectCountDelta: Int = 0,
-    ) {
-        var changed = false
-        changed = applyPlayCountDelta(playCountDelta) != 0 || changed
-        changed = applyLikeCountDelta(likeCountDelta) != 0 || changed
-        changed = applyDanmukuCountDelta(danmukuCountDelta) != 0 || changed
-        changed = applyCommentCountDelta(commentCountDelta) != 0 || changed
-        changed = applyCoinCountDelta(coinCountDelta) != 0 || changed
-        changed = applyCollectCountDelta(collectCountDelta) != 0 || changed
-
-        if (changed) {
-            events().attach(this) { VideoStatisticsDeltaAppliedDomainEvent(entity = this) }
-        }
     }
 
     fun attachLastPlayTime(toEpochSecond: Long) {
