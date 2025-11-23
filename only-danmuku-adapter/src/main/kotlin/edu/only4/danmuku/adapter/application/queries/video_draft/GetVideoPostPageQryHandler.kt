@@ -6,10 +6,7 @@ import edu.only4.danmuku.application.queries._share.model.*
 import edu.only4.danmuku.application.queries.video_draft.GetVideoPostPageQry
 import edu.only4.danmuku.domain.aggregates.video.enums.RecommendType
 import org.babyfish.jimmer.sql.kt.KSqlClient
-import org.babyfish.jimmer.sql.kt.ast.expression.desc
-import org.babyfish.jimmer.sql.kt.ast.expression.`eq?`
-import org.babyfish.jimmer.sql.kt.ast.expression.`ilike?`
-import org.babyfish.jimmer.sql.kt.ast.expression.`valueNotIn?`
+import org.babyfish.jimmer.sql.kt.ast.expression.*
 import org.springframework.stereotype.Service
 
 /**
@@ -31,8 +28,26 @@ class GetVideoPostPageQryHandler(
             where(table.videoName `ilike?` request.videoNameFuzzy)
             where(table.parentCategoryId `eq?` request.categoryParentId)
             where(table.categoryId `eq?` request.categoryId)
-            where(table.video.recommendType `eq?` request.recommendType)
             where(table.id `valueNotIn?` request.excludeVideoIds)
+            when (request.recommendType) {
+
+                RecommendType.RECOMMEND -> {
+                    where(table.video.recommendType eq RecommendType.RECOMMEND)
+                }
+
+                RecommendType.NOT_RECOMMEND -> {
+                    val v = table.`video?`
+
+                    where(
+                        or(
+                            v.id.isNull(),                             // 没视频
+                            v.recommendType eq RecommendType.NOT_RECOMMEND  // 有视频但为未推荐
+                        )
+                    )
+                }
+
+                else -> Unit
+            }
             // 按创建时间倒序
             orderBy(table.createTime.desc())
             select(table.fetchBy {
@@ -69,7 +84,7 @@ class GetVideoPostPageQryHandler(
                 originInfo = videoPost.originInfo,
                 tags = videoPost.tags,
                 introduction = videoPost.introduction,
-                duration = videoPost.duration ?: 0,
+                duration = videoPost.duration,
                 status = videoPost.status,
                 playCount = videoPost.video?.playCount ?: 0,
                 likeCount = videoPost.video?.likeCount ?: 0,
@@ -77,7 +92,7 @@ class GetVideoPostPageQryHandler(
                 commentCount = videoPost.video?.commentCount ?: 0,
                 coinCount = videoPost.video?.coinCount ?: 0,
                 collectCount = videoPost.video?.collectCount ?: 0,
-                recommendType = videoPost.video?.recommendType ?: RecommendType.UNKNOW,
+                recommendType = videoPost.video?.recommendType ?: RecommendType.NOT_RECOMMEND,
                 lastPlayTime = videoPost.video?.lastPlayTime ?: 0,
                 nickName = videoPost.customer.nickName,
                 avatar = videoPost.customer.relation!!.avatar,

@@ -7,12 +7,14 @@ import edu.only4.danmuku.application.queries._share.model.customerId
 import edu.only4.danmuku.application.queries._share.model.dto.VideoComment.CommentPageItem
 import edu.only4.danmuku.application.queries._share.model.parentId
 import edu.only4.danmuku.application.queries._share.model.postTime
+import edu.only4.danmuku.application.queries._share.model.topType
 import edu.only4.danmuku.application.queries._share.model.video
 import edu.only4.danmuku.application.queries._share.model.videoId
 import edu.only4.danmuku.application.queries._share.model.videoName
 import edu.only4.danmuku.application.queries.video_comment.VideoCommentPageQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.asc
+import org.babyfish.jimmer.sql.kt.ast.expression.case
 import org.babyfish.jimmer.sql.kt.ast.expression.desc
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.babyfish.jimmer.sql.kt.ast.expression.`eq?`
@@ -40,8 +42,16 @@ class VideoCommentPageQryHandler(
             where(table.video.customerId `eq?` request.videoUserId)
             // 视频名称模糊查询（可选）
             where(table.video.videoName `ilike?` request.videoNameFuzzy)
-            // 按发布时间倒序排列
-            orderBy(table.postTime.desc())
+            orderBy(
+                // CASE WHEN top_type = 1 THEN 0 ELSE 1 END ASC
+                case()
+                    .match(table.topType.eq(1), 0)  // WHEN top_type = 1 THEN 0
+                    .otherwise(1)                   // ELSE 1
+                    .asc(),
+
+                // 同一组内按发布时间倒序
+                table.postTime.desc()
+            )
             // DTO 投影
             select(table.fetch(CommentPageItem::class))
         }.fetchPage(request.pageNum - 1, request.pageSize)

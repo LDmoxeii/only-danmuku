@@ -41,9 +41,13 @@ object AdminCategorySave {
     @Mapper(componentModel = "default")
     interface Converter {
         @Mapping(source = "PCategoryId", target = "parentId")
+        @Mapping(source = "categoryCode", target = "code")
+        @Mapping(source = "categoryName", target = "name")
         fun toCreateCmd(request: Request): CreateCategoryCmd.Request
 
         @Mapping(source = "PCategoryId", target = "parentId")
+        @Mapping(source = "categoryCode", target = "code")
+        @Mapping(source = "categoryName", target = "name")
         fun toUpdateCmd(request: Request): UpdateCategoryInfoCmd.Request
 
         companion object {

@@ -14,7 +14,7 @@ import edu.only4.danmuku.domain.aggregates.video.enums.RecommendType
 object GetHotVideoPageQry {
 
     data class Request(
-        val lastPlayHour: Int = 24,
+        var lastPlayHour: Int = 24,
     ) : PageQueryParam<Response>()
 
     data class Response(

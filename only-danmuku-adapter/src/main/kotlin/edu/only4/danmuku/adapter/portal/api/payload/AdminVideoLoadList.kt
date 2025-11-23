@@ -57,6 +57,7 @@ object AdminVideoLoadList {
 
     @Mapper(componentModel = "default")
     interface Converter {
+        @Mapping(target = "recommendType", expression = "java(edu.only4.danmuku.domain.aggregates.video.enums.RecommendType.Companion.valueOfOrNull(request.getRecommendType()))")
         fun toQry(request: Request): GetVideoPostPageQry.Request
 
         @Mapping(source = "videoId", target = "videoId")

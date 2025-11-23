@@ -19,11 +19,15 @@ object UCenterLoadComment {
 
     data class CommentItem(
         var commentId: String? = null,
+        val avatar: String? = null,
         var videoId: String? = null,
         var videoName: String? = null,
+        val videoCover: String,
         var content: String? = null,
+        val imgPath: String? = null,
         var userId: String? = null,
         var nickName: String? = null,
+        val replyNickName: String? = null,
         @get:Translation(type = EpochSecondToDateStringTranslation.TYPE, other = "yyyy-MM-dd HH:mm:ss")
         var postTime: Long
     )
@@ -34,6 +38,8 @@ object UCenterLoadComment {
         @Mapping(source = "videoId", target = "videoId")
         @Mapping(source = "customerId", target = "userId")
         @Mapping(source = "customerNickname", target = "nickName")
+        @Mapping(source = "customerAvatar", target = "avatar")
+        @Mapping(source = "replyCustomerNickname", target = "replyNickName")
         fun fromApp(resp: VideoCommentPageQry.Response): CommentItem
 
         companion object {

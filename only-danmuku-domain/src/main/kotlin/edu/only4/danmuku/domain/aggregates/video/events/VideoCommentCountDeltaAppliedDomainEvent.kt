@@ -7,17 +7,17 @@ import edu.only4.danmuku.domain.aggregates.video.Video
 
 
 /**
- * 视频统计增量已应用
+ * 视频评论数变更
  *
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * @author cap4k-ddd-codegen
- * @date 2025/11/19
+ * @date 2025/11/23
  */
 @DomainEvent(persist = false)
 @Aggregate(
     aggregate = "Video",
-    name = "VideoStatisticsDeltaAppliedDomainEvent",
+    name = "VideoCommentCountDeltaAppliedDomainEvent",
     type = Aggregate.TYPE_DOMAIN_EVENT,
     description = ""
 )
-class VideoStatisticsDeltaAppliedDomainEvent(val entity: Video)
+class VideoCommentCountDeltaAppliedDomainEvent(val entity: Video, val delta: Int)

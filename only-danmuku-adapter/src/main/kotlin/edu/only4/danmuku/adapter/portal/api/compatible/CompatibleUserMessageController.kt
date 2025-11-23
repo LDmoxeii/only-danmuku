@@ -13,6 +13,7 @@ import edu.only4.danmuku.application.queries.message.GetNoReadMessageCountGroupQ
 import edu.only4.danmuku.application.queries.message.GetNoReadMessageCountQry
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -60,7 +61,7 @@ class CompatibleUserMessageController {
      * 加载消息列表
      */
     @PostMapping("/loadMessage")
-    fun getMessagePage(@Validated request: MessageLoad.Request): PageData<MessageLoad.MessageItem> {
+    fun getMessagePage(@RequestBody @Validated request: MessageLoad.Request): PageData<MessageLoad.MessageItem> {
         val queryReq = GetMessagePageQry.Request(
             messageType = request.messageType,
         ).apply {

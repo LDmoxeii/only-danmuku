@@ -6,14 +6,16 @@ import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
 import edu.only4.danmuku.domain._share.meta.video.SVideo
 import org.springframework.stereotype.Service
-import java.time.LocalDateTime
-import java.time.ZoneOffset
 import kotlin.jvm.optionals.getOrNull
 
 /**
- * 增加播放数
+ * 调整视频点赞数
+ *
+ * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
+ * @author cap4k-ddd-codegen
+ * @date 2025/11/23
  */
-object AddPlayCountCmd {
+object ApplyVideoLikeCountDeltaCmd {
 
     @Service
     class Handler : Command<Request, Response> {
@@ -22,25 +24,26 @@ object AddPlayCountCmd {
                 SVideo.predicateById(request.videoId),
             ).getOrNull() ?: throw KnownException("视频不存在：${request.videoId}")
 
-            // 增加播放数，并记录最后播放时间
-            video.applyPlayCountDelta(1)
-            video.attachLastPlayTime(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC))
+            val appliedDelta = video.applyLikeCountDelta(request.delta)
 
             Mediator.uow.save()
 
             return Response(
                 videoId = video.id,
-                playCount = video.playCount
+                likeCount = video.likeCount,
+                appliedDelta = appliedDelta
             )
         }
     }
 
     data class Request(
-        val videoId: Long
+        val videoId: Long,
+        val delta: Int = 1
     ) : RequestParam<Response>
 
     data class Response(
         val videoId: Long,
-        val playCount: Int?
+        val likeCount: Int,
+        val appliedDelta: Int
     )
 }

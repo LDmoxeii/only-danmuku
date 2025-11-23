@@ -43,10 +43,10 @@ class GetVideoDanmukuPageQryHandler(
                 videoCover = item.video.videoCover,
                 customerId = item.customer.id,
                 customerNickname = item.customer.nickName,
-                text = item.text,
-                mode = item.mode?.toInt(),
-                color = item.color,
-                time = item.time,
+                text = item.text!!,
+                mode = item.mode!!.toInt(),
+                color = item.color!!,
+                time = item.time!!,
                 postTime = item.postTime ?: 0L
             )
         }

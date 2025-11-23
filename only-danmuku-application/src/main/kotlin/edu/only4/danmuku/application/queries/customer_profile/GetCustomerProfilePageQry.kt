@@ -12,8 +12,8 @@ import com.only4.cap4k.ddd.core.application.query.PageQueryParam
 object GetCustomerProfilePageQry {
 
     data class Request(
-        val nickNameFuzzy: String? = null,
-        val status: Int? = null
+        var nickNameFuzzy: String? = null,
+        var status: Int? = null
     ) : PageQueryParam<UserItem>()
 
     data class UserItem(

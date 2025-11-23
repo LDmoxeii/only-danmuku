@@ -21,23 +21,23 @@ object UCenterLoadDanmu {
      * 弹幕项
      */
     data class DanmukuItem(
-        var danmukuId: String? = null,
-        var videoId: String? = null,
-        var videoName: String? = null,
-        var text: String? = null,
-        var userId: String? = null,
-        var mode: Int? = null,
-        var color: String? = null,
-        var time: Int? = null,
+        var danmukuId: Long,
+        var videoId: Long,
+        var videoName: String,
+        var text: String,
+        var userId: Long,
+        var nickName: String,
+        var mode: Int,
+        var color: String,
+        var time: Int,
         @get:Translation(type = EpochSecondToDateStringTranslation.TYPE, other = "yyyy-MM-dd HH:mm:ss")
         var postTime: Long,
     )
 
     @Mapper(componentModel = "default")
     interface Converter {
-        @Mapping(source = "danmukuId", target = "danmukuId")
-        @Mapping(source = "videoId", target = "videoId")
         @Mapping(source = "customerId", target = "userId")
+        @Mapping(source = "customerNickname", target = "nickName")
         fun fromApp(resp: GetVideoDanmukuPageQry.Response): DanmukuItem
 
         companion object {

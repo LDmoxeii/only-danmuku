@@ -14,9 +14,9 @@ import edu.only4.danmuku.application.queries.video.GetVideoInfoQry
 import edu.only4.danmuku.application.queries.video.GetVideoPageQry
 import edu.only4.danmuku.application.queries.video_file.GetVideoFilesByVideoIdQry
 import edu.only4.danmuku.domain.aggregates.video.enums.RecommendType
-import jakarta.validation.constraints.NotEmpty
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.time.Duration
@@ -36,7 +36,8 @@ class CompatibleVideoController {
     @SaIgnore
     @PostMapping("/loadVideo")
     fun getVideoPage(request: VideoLoad.Request): PageData<VideoLoad.VideoItem> {
-        val recommendType = if (request.categoryId == null && request.parentCategoryId == null) RecommendType.NOT_RECOMMEND else null
+        val recommendType =
+            if (request.categoryId == null && request.parentCategoryId == null) RecommendType.NOT_RECOMMEND else null
 
         val queryRequest = GetVideoPageQry.Request(
             categoryParentId = request.parentCategoryId,
@@ -72,7 +73,7 @@ class CompatibleVideoController {
     @SaIgnore
     @PostMapping("/getVideoInfo")
     fun getVideoInfo(
-        videoId: Long
+        videoId: Long,
     ): VideoGetInfo.Response {
         val currentUserId = LoginHelper.getUserId()
 
@@ -100,13 +101,12 @@ class CompatibleVideoController {
     @SaIgnore
     @PostMapping("/getVideoRecommend")
     fun getRecommendVideo(
-        @NotEmpty keyword: String,
-        videoId: Long,
+        @RequestBody request: VideoGetRecommend.Request,
     ): List<VideoGetRecommend.VideoItem> {
         val queryRequest = GetVideoPageQry.Request(
-            videoNameFuzzy = keyword,
+            videoNameFuzzy = request.keyword,
             recommendType = null,
-            excludeVideoIds = listOf(videoId)
+            excludeVideoIds = listOf(request.videoId)
         ).apply {
             pageNum = 1
             pageSize = 10

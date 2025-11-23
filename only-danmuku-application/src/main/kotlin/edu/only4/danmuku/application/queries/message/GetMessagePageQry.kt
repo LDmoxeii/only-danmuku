@@ -13,7 +13,7 @@ import edu.only4.danmuku.domain.aggregates.customer_message.extend.UserMessageEx
 object GetMessagePageQry {
 
     data class Request(
-        val messageType: Int? = null,
+        var messageType: Int? = null,
     ) : PageQueryParam<Response>()
 
     data class Response(

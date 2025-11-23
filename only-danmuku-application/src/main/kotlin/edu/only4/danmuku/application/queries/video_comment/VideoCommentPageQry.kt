@@ -12,9 +12,9 @@ import com.only4.cap4k.ddd.core.application.query.PageQueryParam
 object VideoCommentPageQry {
 
     data class Request(
-        val videoId: Long? = null,
-        val videoUserId: Long? = null,
-        val videoNameFuzzy: String? = null,
+        var videoId: Long? = null,
+        var videoUserId: Long? = null,
+        var videoNameFuzzy: String? = null,
     ) : PageQueryParam<Response>()
 
     data class Response(
