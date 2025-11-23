@@ -7,10 +7,16 @@ import edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity
 import edu.only4.danmuku.domain.aggregates.video.enums.PostType
 import edu.only4.danmuku.domain.aggregates.video.enums.RecommendType
 import edu.only4.danmuku.domain.aggregates.video.events.VideoBasicsSyncedDomainEvent
+import edu.only4.danmuku.domain.aggregates.video.events.VideoCoinCountDeltaAppliedDomainEvent
+import edu.only4.danmuku.domain.aggregates.video.events.VideoCollectCountDeltaAppliedDomainEvent
+import edu.only4.danmuku.domain.aggregates.video.events.VideoCommentCountDeltaAppliedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video.events.VideoCreatedDomainEvent
+import edu.only4.danmuku.domain.aggregates.video.events.VideoDanmukuCountDeltaAppliedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video.events.VideoDeletedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video.events.VideoInteractionChangedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video.events.VideoLastPlayTimeAttachedDomainEvent
+import edu.only4.danmuku.domain.aggregates.video.events.VideoLikeCountDeltaAppliedDomainEvent
+import edu.only4.danmuku.domain.aggregates.video.events.VideoPlayCountDeltaAppliedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video.events.VideoRecommendedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video.events.VideoStatisticsDeltaAppliedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video.events.VideoUnrecommendedDomainEvent
@@ -279,6 +285,64 @@ class Video(
         events().attach(this) { VideoInteractionChangedDomainEvent(this) }
     }
 
+    private fun calculateDelta(current: Int, delta: Int): Pair<Int, Int> {
+        if (delta == 0) return current to 0
+        val updated = (current + delta).coerceAtLeast(0)
+        return updated to (updated - current)
+    }
+
+    fun applyPlayCountDelta(delta: Int): Int {
+        val (updated, appliedDelta) = calculateDelta(playCount, delta)
+        if (appliedDelta == 0) return 0
+        playCount = updated
+        events().attach(this) { VideoPlayCountDeltaAppliedDomainEvent(this, appliedDelta) }
+        return appliedDelta
+    }
+
+    fun applyLikeCountDelta(delta: Int): Int {
+        val (updated, appliedDelta) = calculateDelta(likeCount, delta)
+        if (appliedDelta == 0) return 0
+        likeCount = updated
+        events().attach(this) { VideoLikeCountDeltaAppliedDomainEvent(this, appliedDelta) }
+        return appliedDelta
+    }
+
+    fun applyDanmukuCountDelta(delta: Int): Int {
+        val (updated, appliedDelta) = calculateDelta(danmukuCount, delta)
+        if (appliedDelta == 0) return 0
+        danmukuCount = updated
+        events().attach(this) { VideoDanmukuCountDeltaAppliedDomainEvent(this, appliedDelta) }
+        return appliedDelta
+    }
+
+    fun applyCommentCountDelta(delta: Int): Int {
+        val (updated, appliedDelta) = calculateDelta(commentCount, delta)
+        if (appliedDelta == 0) return 0
+        commentCount = updated
+        events().attach(this) { VideoCommentCountDeltaAppliedDomainEvent(this, appliedDelta) }
+        return appliedDelta
+    }
+
+    fun applyCoinCountDelta(delta: Int): Int {
+        val (updated, appliedDelta) = calculateDelta(coinCount, delta)
+        if (appliedDelta == 0) return 0
+        coinCount = updated
+        events().attach(this) { VideoCoinCountDeltaAppliedDomainEvent(this, appliedDelta) }
+        return appliedDelta
+    }
+
+    fun applyCollectCountDelta(delta: Int): Int {
+        val (updated, appliedDelta) = calculateDelta(collectCount, delta)
+        if (appliedDelta == 0) return 0
+        collectCount = updated
+        events().attach(this) { VideoCollectCountDeltaAppliedDomainEvent(this, appliedDelta) }
+        return appliedDelta
+    }
+
+    fun applyPlayStatisticsDelta(delta: Int): Int {
+        return applyPlayCountDelta(delta)
+    }
+
     fun applyStatisticsDelta(
         playCountDelta: Int = 0,
         likeCountDelta: Int = 0,
@@ -287,21 +351,17 @@ class Video(
         coinCountDelta: Int = 0,
         collectCountDelta: Int = 0,
     ) {
-        fun Int.applyDelta(delta: Int): Int {
-            if (delta == 0) return this
-            val updated = (this) + delta
-            return maxOf(updated, 0)
+        var changed = false
+        changed = applyPlayCountDelta(playCountDelta) != 0 || changed
+        changed = applyLikeCountDelta(likeCountDelta) != 0 || changed
+        changed = applyDanmukuCountDelta(danmukuCountDelta) != 0 || changed
+        changed = applyCommentCountDelta(commentCountDelta) != 0 || changed
+        changed = applyCoinCountDelta(coinCountDelta) != 0 || changed
+        changed = applyCollectCountDelta(collectCountDelta) != 0 || changed
+
+        if (changed) {
+            events().attach(this) { VideoStatisticsDeltaAppliedDomainEvent(entity = this) }
         }
-
-
-        playCount = playCount.applyDelta(playCountDelta)
-        likeCount = likeCount.applyDelta(likeCountDelta)
-        danmukuCount = danmukuCount.applyDelta(danmukuCountDelta)
-        commentCount = commentCount.applyDelta(commentCountDelta)
-        coinCount = coinCount.applyDelta(coinCountDelta)
-        collectCount = collectCount.applyDelta(collectCountDelta)
-
-        events().attach(this) { VideoStatisticsDeltaAppliedDomainEvent(entity = this) }
     }
 
     fun attachLastPlayTime(toEpochSecond: Long) {
