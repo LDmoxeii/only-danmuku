@@ -30,10 +30,7 @@ class GetMessagePageQryHandler(
         val page = sqlClient.createQuery(CustomerMessage::class) {
             where(table.customerId eq currentUserId)
             if (request.messageType != null) {
-                when(request.messageType) {
-                    4 -> where(table.messageType.valueIn(listOf(4, 5)))
-                    else -> where(table.messageType eq request.messageType)
-                }
+                where(table.messageType eq request.messageType!!)
             }
             orderBy(table.id.desc())
             select(table)

@@ -13,7 +13,6 @@ import org.hibernate.query.sqm.tree.select.SqmSortSpecification
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/11/04
  */
 
 // ============ 类型定义 ============
