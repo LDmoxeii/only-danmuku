@@ -19,7 +19,11 @@ class {{ QueryHandler }}(
     override fun exec(request: {{ Query }}.Request): {{ Query }}.Response {
 
         return {{ Query }}.Response(
-
+{%- if responseFields|length > 0 %}
+{%- for field in responseFields %}
+            {{ field.name }} = TODO("set {{ field.name }}"){% if not loop.last %},{% endif %}
+{%- endfor %}
+{%- endif %}
         )
     }
 }

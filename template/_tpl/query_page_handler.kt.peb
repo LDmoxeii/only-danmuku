@@ -17,6 +17,21 @@ class {{ Query }}Handler(
 ) : PageQuery<{{ Query }}.Request, {{ Query }}.Response> {
 
     override fun exec(request: {{ Query }}.Request): PageData<{{ Query }}.Response> {
-        TODO()
+        val items = listOf(
+            {{ Query }}.Response(
+{%- if responseFields|length > 0 %}
+{%- for field in responseFields %}
+                {{ field.name }} = TODO("set {{ field.name }}"){% if not loop.last %},{% endif %}
+{%- endfor %}
+{%- endif %}
+            )
+        )
+
+        return PageData.create(
+            pageNum = request.pageNum,
+            pageSize = request.pageSize,
+            list = items,
+            totalCount = items.size.toLong()
+        )
     }
 }

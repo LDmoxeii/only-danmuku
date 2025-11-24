@@ -14,9 +14,25 @@ import org.mapstruct.factory.Mappers
  */
 object {{ Payload }} {
 
-    class Request : PageParam()
+{%- if requestFields|length > 0 %}
+    data class Request(
+{%- for field in requestFields %}
+        val {{ field.name }}: {{ field.type }}{% if field.defaultValue is defined %} = {{ field.defaultValue }}{% endif %}{% if not loop.last %},{% endif %}
+{%- endfor %}
+    )
+{%- else %}
+    class Request
+{%- endif %}
 
+{%- if responseFields|length > 0 %}
+    data class Item(
+{%- for field in responseFields %}
+        val {{ field.name }}: {{ field.type }}{% if field.defaultValue is defined %} = {{ field.defaultValue }}{% endif %}{% if not loop.last %},{% endif %}
+{%- endfor %}
+    )
+{%- else %}
     class Item
+{%- endif %}
 
     @Mapper(componentModel = "default")
     interface Converter {
