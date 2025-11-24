@@ -9,7 +9,7 @@ import edu.only4.danmuku.domain.aggregates.video_file_post.VideoFilePost
  */
 @DomainEvent(persist = false)
 @Aggregate(
-    aggregate = "VideoDraft",
+    aggregate = "VideoPost",
     name = "VideoFileDraftTranscodedDomainEvent",
     type = Aggregate.TYPE_DOMAIN_EVENT,
     description = ""
