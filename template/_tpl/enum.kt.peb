@@ -30,12 +30,12 @@ enum class {{ Enum }}(
             entries.associateBy { it.{{ EnumValueField }} }
         }
 
-        fun valueOf(value: Int): {{ Enum }} {
-            return enumMap[value] ?: throw IllegalArgumentException("枚举类型{{ Enum }}枚举值转换异常，不存在的值: $value")
+        fun valueOf(value: Int?): {{ Enum }} {
+            return valueOfOrNull(value) ?: throw KnownException("枚举类型 {{ Enum }} 枚举值转换异常，不存在的值: $value")
         }
 
         fun valueOfOrNull(value: Int?): {{ Enum }}? {
-            return if (value == null) null else valueOf(value)
+            return enumMap[value]
         }
     }
 

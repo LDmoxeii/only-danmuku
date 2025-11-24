@@ -10,10 +10,10 @@ import edu.only4.danmuku.domain.aggregates.user.enums.UserType
 import edu.only4.danmuku.domain.aggregates.user.events.AccountDisabledDomainEvent
 import edu.only4.danmuku.domain.aggregates.user.events.AccountEnabledDomainEvent
 import edu.only4.danmuku.domain.aggregates.user.events.LoginInfoUpdatedDomainEvent
+import edu.only4.danmuku.domain.aggregates.user.events.PasswordChangedDomainEvent
 import edu.only4.danmuku.domain.aggregates.user.events.RelationshipBoundDomainEvent
 import edu.only4.danmuku.domain.aggregates.user.events.UserCreatedDomainEvent
 import edu.only4.danmuku.domain.aggregates.user.events.UserPhoneChangedDomainEvent
-import edu.only4.danmuku.domain.aggregates.user.events.PasswordChangedDomainEvent
 
 import jakarta.persistence.*
 import jakarta.persistence.Table
@@ -30,7 +30,7 @@ import org.hibernate.annotations.Where
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2025/11/20
+ * @date 2025/11/24
  */
 @Aggregate(aggregate = "User", name = "User", root = true, type = Aggregate.TYPE_ENTITY, description = "帐号，")
 @Entity

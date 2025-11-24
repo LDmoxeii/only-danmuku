@@ -5,8 +5,8 @@ import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
 
 import edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity
 import edu.only4.danmuku.domain.aggregates.video_file_upload_session.enums.UploadStatus
-import edu.only4.danmuku.domain.aggregates.video_file_upload_session.events.UploadSessionCreatedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video_file_upload_session.events.UploadSessionAbortedDomainEvent
+import edu.only4.danmuku.domain.aggregates.video_file_upload_session.events.UploadSessionCreatedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video_file_upload_session.events.VideoFileUploadSessionChunkUploadedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video_file_upload_session.events.VideoFileUploadSessionMarkedDoneDomainEvent
 
@@ -24,7 +24,7 @@ import org.hibernate.annotations.Where
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2025/11/04
+ * @date 2025/11/24
  */
 @Aggregate(aggregate = "VideoFileUploadSession", name = "VideoFileUploadSession", root = true, type = Aggregate.TYPE_ENTITY, description = "视频分片上传会话， 用于跟踪预上传与分片进度")
 @Entity

@@ -15,14 +15,11 @@ import jakarta.persistence.criteria.*
 import org.springframework.data.jpa.domain.Specification
 
 /**
- * 分类信息;
- *
  * Schema 类用于类型安全的 JPA Criteria 查询
  *
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/11/04
  */
 class SCategory(
     private val root: Path<Category>,

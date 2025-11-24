@@ -12,6 +12,7 @@ dependencies {
     implementation(libs.hutool.crypto)
 
     api(libs.ddd.starter)
+    api(libs.engine.common)
 
     // JSON utils for JPA converters
     implementation(libs.engine.json)

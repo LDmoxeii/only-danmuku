@@ -14,11 +14,8 @@ import kotlin.reflect.KClass
 import kotlin.reflect.full.memberProperties
 
 /**
- * 用户行为 点赞、评论;
- *
  * 该文件由 [cap4k-ddd-codegen-gradle-plugin] 生成
  * @author cap4k-ddd-codegen
- * @date 2025/11/04
  */
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)

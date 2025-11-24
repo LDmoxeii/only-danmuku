@@ -10,9 +10,9 @@ import edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerAvata
 import edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerNicknameUpdatedDomainEvent
 import edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerProfileCoinsRewardedDomainEvent
 import edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerProfileCreatedDomainEvent
+import edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerProfilePhoneChangedDomainEvent
 import edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerProfileRewardCoinsReclaimedDomainEvent
 import edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerProfileUpdatedDomainEvent
-import edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerProfilePhoneChangedDomainEvent
 
 import jakarta.persistence.*
 import jakarta.persistence.Table
@@ -29,7 +29,7 @@ import org.hibernate.annotations.Where
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2025/11/20
+ * @date 2025/11/24
  */
 @Aggregate(aggregate = "CustomerProfile", name = "CustomerProfile", root = true, type = Aggregate.TYPE_ENTITY, description = "用户信息，")
 @Entity
