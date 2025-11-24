@@ -13,8 +13,7 @@ import org.mapstruct.factory.Mappers
  * @date {{ date }}
  */
 object {{ Payload }} {
-
-{%- if requestFields|length > 0 %}
+{% if requestFields|length > 0 %}
     data class Request(
 {%- for field in requestFields %}
         val {{ field.name }}: {{ field.type }}{% if field.defaultValue is defined %} = {{ field.defaultValue }}{% endif %}{% if not loop.last %},{% endif %}
@@ -23,8 +22,7 @@ object {{ Payload }} {
 {%- else %}
     class Request
 {%- endif %}
-
-{%- if responseFields|length > 0 %}
+{% if responseFields|length > 0 %}
     data class Item(
 {%- for field in responseFields %}
         val {{ field.name }}: {{ field.type }}{% if field.defaultValue is defined %} = {{ field.defaultValue }}{% endif %}{% if not loop.last %},{% endif %}
