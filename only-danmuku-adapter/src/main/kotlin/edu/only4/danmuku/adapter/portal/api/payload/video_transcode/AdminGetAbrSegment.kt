@@ -13,7 +13,7 @@ import org.mapstruct.factory.Mappers
 object AdminGetAbrSegment {
 
     data class Request(
-        val filePostId: Long,
+        val fileId: Long,
         val quality: String,
         val ts: String
     )

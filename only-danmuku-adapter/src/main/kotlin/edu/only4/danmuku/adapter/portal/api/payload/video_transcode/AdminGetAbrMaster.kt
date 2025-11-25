@@ -13,7 +13,7 @@ import org.mapstruct.factory.Mappers
 object AdminGetAbrMaster {
 
     data class Request(
-        val filePostId: Long
+        val fileId: Long
     )
 
     data class Response(

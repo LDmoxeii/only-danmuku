@@ -3,9 +3,6 @@ package edu.only4.danmuku.adapter.portal.api.web
 import com.only.engine.exception.KnownException
 import com.only.engine.web.annotation.IgnoreResultWrapper
 import com.only4.cap4k.ddd.core.Mediator
-import edu.only4.danmuku.adapter.portal.api.payload.video_transcode.FrontGetAbrMaster
-import edu.only4.danmuku.adapter.portal.api.payload.video_transcode.FrontGetAbrPlaylist
-import edu.only4.danmuku.adapter.portal.api.payload.video_transcode.FrontGetAbrSegment
 import edu.only4.danmuku.adapter.portal.api.payload.video_transcode.FrontListAbrVariants
 import edu.only4.danmuku.application._share.config.properties.FileAppProperties
 import edu.only4.danmuku.application._share.constants.Constants
@@ -17,22 +14,19 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import java.io.File
 
 @RestController
-@RequestMapping("/api/video/abr")
+@RequestMapping("/video/abr")
 class VideoAbrController(
     private val fileProps: FileAppProperties,
 ) {
 
     @IgnoreResultWrapper
-    @PostMapping("/master")
-    fun master(@RequestBody request: FrontGetAbrMaster.Request): ResponseEntity<FileSystemResource> {
-        val post = Mediator.queries.send(GetVideoPostIdByFileIdQry.Request(fileId = request.fileId))
+    @GetMapping("/videoResource/{fileId}/master.m3u8")
+    fun master(@PathVariable fileId: Long): ResponseEntity<FileSystemResource> {
+        val post = Mediator.queries.send(GetVideoPostIdByFileIdQry.Request(fileId = fileId))
         val master = Mediator.queries.send(GetVideoAbrMasterQry.Request(fileId = post.filePostId))
         if (master.status != "SUCCESS") throw KnownException("转码未完成: ${master.status}")
         val masterFile = File(buildAbsolutePath(post.filePath, "master.m3u8"))
@@ -52,20 +46,24 @@ class VideoAbrController(
     }
 
     @IgnoreResultWrapper
-    @PostMapping("/playlist")
-    fun playlist(@RequestBody request: FrontGetAbrPlaylist.Request): ResponseEntity<FileSystemResource> {
-        val post = Mediator.queries.send(GetVideoPostIdByFileIdQry.Request(fileId = request.fileId))
+    @GetMapping("/videoResource/{fileId}/{quality}/index.m3u8")
+    fun playlist(@PathVariable fileId: Long, @PathVariable quality: String): ResponseEntity<FileSystemResource> {
+        val post = Mediator.queries.send(GetVideoPostIdByFileIdQry.Request(fileId = fileId))
         val base = post.filePath ?: throw KnownException("filePath 为空")
-        val playlistFile = File(buildAbsolutePath(base, "${request.quality}/index.m3u8"))
+        val playlistFile = File(buildAbsolutePath(base, "$quality/index.m3u8"))
         return asResource(playlistFile, MediaType.valueOf("application/vnd.apple.mpegurl"))
     }
 
     @IgnoreResultWrapper
-    @PostMapping("/segment")
-    fun segment(@RequestBody request: FrontGetAbrSegment.Request): ResponseEntity<FileSystemResource> {
-        val post = Mediator.queries.send(GetVideoPostIdByFileIdQry.Request(fileId = request.fileId))
+    @GetMapping("/videoResource/{fileId}/{quality}/{ts}")
+    fun segment(
+        @PathVariable fileId: Long,
+        @PathVariable quality: String,
+        @PathVariable ts: String
+    ): ResponseEntity<FileSystemResource> {
+        val post = Mediator.queries.send(GetVideoPostIdByFileIdQry.Request(fileId = fileId))
         val base = post.filePath ?: throw KnownException("filePath 为空")
-        val segmentFile = File(buildAbsolutePath(base, "${request.quality}/${request.ts}"))
+        val segmentFile = File(buildAbsolutePath(base, "$quality/$ts"))
         return asResource(segmentFile, MediaType.valueOf("video/mp2t"))
     }
 
