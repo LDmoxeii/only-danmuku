@@ -20,11 +20,11 @@ object MergeUploadToMp4Cli {
     ) : RequestParam<Response>
 
     data class Response(
-        val success: Boolean = true,
-        val outputDir: String,
-        val mergedMp4Path: String,
-        val duration: Int?,
-        val fileSize: Long?,
-        val failReason: String?
+        val success: Boolean,
+        val outputDir: String = "",
+        val mergedMp4Path: String = "",
+        val duration: Int? = null,
+        val fileSize: Long? = null,
+        val failReason: String? = null,
     )
 }

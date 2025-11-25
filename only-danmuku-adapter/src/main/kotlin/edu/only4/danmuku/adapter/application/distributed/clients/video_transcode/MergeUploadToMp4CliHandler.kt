@@ -58,16 +58,11 @@ class MergeUploadToMp4CliHandler(
                 mergedMp4Path = mergedMp4.absolutePath,
                 duration = duration,
                 fileSize = size,
-                failReason = null
             )
         }.getOrElse { ex ->
             logger.error("合并上传分片失败", ex)
             MergeUploadToMp4Cli.Response(
                 success = false,
-                outputDir = "",
-                mergedMp4Path = "",
-                duration = null,
-                fileSize = null,
                 failReason = ex.message
             )
         }
