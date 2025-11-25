@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS `video_hls_abr_variant`;
 CREATE TABLE `video_hls_abr_variant`
     (
     `id`                 bigint       NOT NULL COMMENT 'ID',
-    `file_id`            bigint       NOT NULL COMMENT '稿件态fileId@@Ref=video_file_post',
+    `file_id`            bigint       NOT NULL COMMENT '稿件态fileId;@Ref=video_file_post',
     `quality`            varchar(32)  NOT NULL COMMENT '清晰度档位，如 1080p/720p',
     `width`              int(11)      NOT NULL COMMENT '输出宽度(px)',
     `height`             int(11)      NOT NULL COMMENT '输出高度(px)',

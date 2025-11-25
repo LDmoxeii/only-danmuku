@@ -2,7 +2,7 @@
 
 ## 一、背景与目标
 - 现有视频转码/ABR 输出为明文 HLS，付费/私有内容存在泄露风险，无法满足“防盗链 + 按用户授权发放密钥”的需求。
-- 目标：在现有 ABR 链路之后追加“HLS AES-128 加密 + 密钥管理 + 解密发放”能力，确保播放器只有在拿到授权 token 后才能获取密钥完成播放。
+- 目标：在现有 ABR 链路之后追加“HLS AES-128 加密 + 密钥管理 + 解密发放”能力，支持**分辨率分级授权**（例：360/480 匿名可看，720/1080 需登录/付费）。
 - 保持对现有明文播放的兼容，允许按稿件配置是否加密；支持后续密钥轮换/吊销。
 
 ## 二、范围
@@ -42,30 +42,37 @@ PersistVideoEncryptResultCmd（写 encrypt 状态、密钥元数据、enc 目录
 - 失败/中断：`encrypt_status` 置 FAILED，保留明文 ABR 作为回退。  
 - 重新加密：生成新 keyVersion，覆盖 `enc/` 目录，旧 token 失效。
 
-### 3.3 密钥管理与 token
-- 单稿件单 keyVersion：`video_hls_encrypt_key` 记录 keyId、密文（KMS 加密）、IV、版本号、状态。  
-- token 发放：`IssueVideoHlsKeyTokenCmd` 生成短时 token（默认 10 分钟，可配置），落表 `video_hls_key_token`（哈希存储）。  
+### 3.3 分辨率分级授权
+- 授权粒度：到 quality（1080p/720p/480p/360p），支持“低清晰度匿名，高清晰度需登录/付费”。
+- 配置存储：新增 `video_hls_quality_auth` 记录 fileId + quality + auth_policy（枚举：PUBLIC/LOGIN/PAID/CUSTOM）。
+- master 下发策略：按用户态生成 master.m3u8，仅包含用户被授权的 quality；
+- Key 策略：`video_hls_encrypt_key` 可按 quality 绑定独立 key；token 中写入 `allowed_qualities`，请求 key 时校验 scope + policy。
+
+### 3.4 密钥管理与 token
+- 密钥：`video_hls_encrypt_key` 记录 keyId、密文（KMS 加密）、IV、版本号、状态，可按 quality 绑定（quality 为空表示通用）。  
+- token 发放：`IssueVideoHlsKeyTokenCmd` 生成短时 token（默认 10 分钟，可配置），落表 `video_hls_key_token`（哈希存储），携带 `allowed_qualities`。  
 - 播放流程：
-  1) 客户端先调用 `POST /video/enc/token`（前台/后台）获取 token；  
-  2) 客户端再请求 master.m3u8，接口层读取文件并替换 `__TOKEN__`；  
-  3) 播放器在取 key 时携带 token（作为 query），`GetEncryptedKeyPayload` 校验 token → 解密 KMS 密钥 → 下发 16 字节明文；  
+  1) 客户端调用 `POST /video/enc/token`（前台/后台）获取 token，返回授权的 qualities；  
+  2) 客户端请求 master.m3u8（按授权过滤）；  
+  3) 播放器在取 key 时携带 token（query），`GetEncryptedKeyPayload` 校验 token + scope → 解密 KMS 密钥 → 下发 16 字节明文；  
   4) token 默认一次性或有限使用次数（字段 `max_use`），可配置。
 - 轮换：`RotateVideoHlsKeyCli` + `PersistVideoEncryptResultCmd` 写新 keyVersion，新 master/m3u8 下发时自动携带最新 keyId，旧 token 拒绝。
 
-### 3.4 授权校验
-- 权限校验点：`IssueToken`（校验用户身份/订单/会员）+ `GetKey`（校验 token 未过期、未超次、未吊销）。  
+### 3.5 授权校验
+- 权限校验点：`IssueToken`（校验用户身份/订单/会员 + 计算 `allowed_qualities`）+ `GetKey`（校验 token 未过期、未超次、未吊销 + 是否覆盖当前 quality）。  
 - 管理端可跳过业务授权，但仍需 token 校验。  
 - 请求追踪：`video_hls_key_token` 记录发放主体、过期时间、使用计数，便于审计。
 
-### 3.5 兼容与回退
+### 3.6 兼容与回退
 - 明文路径保持不变；`enc/` 独立，不影响现有播放。  
 - 若 encrypt 失败或禁用，接口层回退到明文 m3u8。  
 - 运维可通过命令重置 encrypt 状态、删除 enc 目录后重新加密（不破坏明文）。
 
 ## 四、数据库设计（见 `video_encrypt_decrypt_update.sql`）
 1) `video_file_post`：新增加密状态/方式/密钥关联/失败原因。  
-2) 新表 `video_hls_encrypt_key`：记录 keyId、密文、IV、keyVersion、状态、过期时间。  
-3) 新表 `video_hls_key_token`：记录发放的 token（哈希）、绑定 keyId/fileId、过期时间、最大使用次数/已使用次数、签发主体、状态。
+2) 新表 `video_hls_encrypt_key`：记录 keyId、密文、IV、keyVersion、状态、过期时间，可选绑定 quality。  
+3) 新表 `video_hls_quality_auth`：存储分辨率授权策略（quality → auth_policy）。  
+4) 新表 `video_hls_key_token`：记录发放的 token（哈希）、绑定 keyId/fileId、过期时间、最大使用次数/已使用次数、签发主体、状态、`allowed_qualities`。
 
 ## 五、DDD / 应用元素（见 `video_encrypt_decrypt_gen.json`）
 - CLI（防腐层）：`GenerateVideoHlsKey`、`EncryptHlsWithKey`、`RotateVideoHlsKey`。  

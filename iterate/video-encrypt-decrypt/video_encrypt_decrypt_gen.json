@@ -5,8 +5,7 @@
     "name": "GenerateVideoHlsKey",
     "desc": "防腐层：向 KMS 申请随机 AES-128 key + IV，生成 keyId/keyUri 占位",
     "requestFields": [
-      { "name": "videoFilePostId", "type": "Long", "nullable": true },
-      { "name": "videoFileId", "type": "Long", "nullable": true },
+      { "name": "quality", "type": "String", "nullable": true, "desc": "可选：绑定到指定清晰度" },
       { "name": "method", "type": "String", "defaultValue": "HLS_AES_128" },
       { "name": "keyBytes", "type": "Int", "defaultValue": "16", "desc": "密钥长度（字节）" }
     ],
@@ -24,11 +23,10 @@
     "name": "EncryptHlsWithKey",
     "desc": "防腐层：使用指定 key 对已有 ABR 产物进行 HLS AES-128 加密，产出 enc/ 目录",
     "requestFields": [
-      { "name": "videoFilePostId", "type": "Long", "nullable": true },
-      { "name": "videoFileId", "type": "Long", "nullable": true },
       { "name": "sourceDir", "type": "String", "desc": "明文 ABR 目录，如 /video/.../" },
       { "name": "outputDir", "type": "String", "desc": "加密输出目录，如 /video/.../enc/" },
       { "name": "keyId", "type": "String" },
+      { "name": "quality", "type": "String", "nullable": true, "desc": "可选：仅加密指定 quality" },
       { "name": "keyPlainHex", "type": "String", "desc": "KMS 解密后的16字节 key，调用方负责安全传递" },
       { "name": "ivHex", "type": "String", "nullable": true },
       { "name": "segmentExt", "type": "String", "defaultValue": ".ts.enc" }
@@ -46,7 +44,6 @@
     "name": "RotateVideoHlsKey",
     "desc": "防腐层：触发新密钥生成与 m3u8 重写（可重用 EncryptHlsWithKey），用于密钥轮换",
     "requestFields": [
-      { "name": "videoFilePostId", "type": "Long" },
       { "name": "reason", "type": "String", "nullable": true }
     ],
     "responseFields": [
@@ -60,11 +57,12 @@
     "name": "PersistVideoEncryptResult",
     "desc": "根据加密 CLI 结果更新 VideoFilePost 状态，落密钥/目录元数据",
     "requestFields": [
-      { "name": "videoFilePostId", "type": "Long" },
+      { "name": "fileId", "type": "Long", "desc": "视频稿件分PId" },
       { "name": "success", "type": "Boolean" },
       { "name": "encryptMethod", "type": "String", "defaultValue": "HLS_AES_128" },
       { "name": "keyId", "type": "String", "nullable": true },
       { "name": "keyVersion", "type": "Int", "nullable": true },
+      { "name": "keyQuality", "type": "String", "nullable": true, "desc": "如为质量专属 key 则记录 quality" },
       { "name": "encryptedMasterPath", "type": "String", "nullable": true },
       { "name": "encryptedVariants", "type": "String", "nullable": true, "desc": "quality/playlistPath/segmentPrefix" },
       { "name": "failReason", "type": "String", "nullable": true }
@@ -76,20 +74,34 @@
   {
     "tag": "cmd",
     "package": "video_encrypt",
+    "name": "UpsertVideoHlsQualityAuth",
+    "desc": "设置分辨率分级授权策略（quality -> auth_policy）",
+    "requestFields": [
+      { "name": "fileId", "type": "Long", "desc": "视频稿件分PId" },
+      { "name": "policiesJson", "type": "String", "desc": "JSON 数组：quality/authPolicy" }
+    ],
+    "responseFields": [
+      { "name": "updated", "type": "Boolean", "defaultValue": "true" }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "video_encrypt",
     "name": "IssueVideoHlsKeyToken",
     "desc": "签发用于播放的短时 token，绑定 fileId+keyId+keyVersion",
     "requestFields": [
-      { "name": "videoFilePostId", "type": "Long", "nullable": true },
-      { "name": "videoFileId", "type": "Long", "nullable": true },
+      { "name": "fileId", "type": "Long", "desc": "视频稿件分PId" },
       { "name": "keyId", "type": "String" },
       { "name": "keyVersion", "type": "Int" },
       { "name": "audience", "type": "String", "nullable": true, "desc": "用户/终端标识" },
       { "name": "expireSeconds", "type": "Int", "defaultValue": "600" },
-      { "name": "maxUse", "type": "Int", "defaultValue": "5" }
+      { "name": "maxUse", "type": "Int", "defaultValue": "5" },
+      { "name": "allowedQualities", "type": "String", "nullable": true, "desc": "授权清晰度数组 JSON，空表示全量" }
     ],
     "responseFields": [
       { "name": "token", "type": "String" },
-      { "name": "expireAt", "type": "Long" }
+      { "name": "expireAt", "type": "Long" },
+      { "name": "allowedQualities", "type": "String", "nullable": true }
     ]
   },
   {
@@ -99,7 +111,8 @@
     "desc": "校验并消费 token（递增使用次数/失效），返回可下发的明文 key",
     "requestFields": [
       { "name": "token", "type": "String" },
-      { "name": "keyId", "type": "String" }
+      { "name": "keyId", "type": "String" },
+      { "name": "quality", "type": "String", "desc": "请求的清晰度，用于校验 scope" }
     ],
     "responseFields": [
       { "name": "valid", "type": "Boolean" },
@@ -112,9 +125,9 @@
     "tag": "qry",
     "package": "video_encrypt",
     "name": "GetVideoEncryptStatus",
-    "desc": "查询稿件/前台文件的加密状态及最新 key 信息",
+    "desc": "查询稿件文件的加密状态及最新 key 信息",
     "requestFields": [
-      { "name": "videoFilePostId", "type": "Long", "nullable": true },
+      { "name": "fileId", "type": "Long", "desc": "视频稿件分PId" },
       { "name": "videoFileId", "type": "Long", "nullable": true }
     ],
     "responseFields": [
@@ -122,6 +135,7 @@
       { "name": "encryptMethod", "type": "String", "nullable": true },
       { "name": "keyId", "type": "String", "nullable": true },
       { "name": "keyVersion", "type": "Int", "nullable": true },
+      { "name": "keyQuality", "type": "String", "nullable": true },
       { "name": "encryptedMasterPath", "type": "String", "nullable": true }
     ]
   },
@@ -131,14 +145,26 @@
     "name": "GetLatestVideoHlsKey",
     "desc": "查询可用的最新密钥元数据（不返回明文），用于拼接 m3u8 key URI",
     "requestFields": [
-      { "name": "videoFilePostId", "type": "Long", "nullable": true },
-      { "name": "videoFileId", "type": "Long", "nullable": true }
+      { "name": "fileId", "type": "Long", "desc": "视频稿件分PId" }
     ],
     "responseFields": [
       { "name": "keyId", "type": "String", "nullable": true },
       { "name": "keyVersion", "type": "Int", "nullable": true },
+      { "name": "keyQuality", "type": "String", "nullable": true },
       { "name": "keyUriTemplate", "type": "String", "nullable": true },
       { "name": "status", "type": "String" }
+    ]
+  },
+  {
+    "tag": "qry",
+    "package": "video_encrypt",
+    "name": "ListVideoQualityAuth",
+    "desc": "查询清晰度授权策略列表",
+    "requestFields": [
+      { "name": "fileId", "type": "Long", "desc": "视频稿件分PId" }
+    ],
+    "responseFields": [
+      { "name": "policiesJson", "type": "String", "desc": "quality/authPolicy 列表 JSON" }
     ]
   },
   {
@@ -151,7 +177,8 @@
     ],
     "responseFields": [
       { "name": "token", "type": "String" },
-      { "name": "expireAt", "type": "Long" }
+      { "name": "expireAt", "type": "Long" },
+      { "name": "allowedQualities", "type": "String", "nullable": true }
     ]
   },
   {
@@ -202,7 +229,8 @@
     "desc": "前台：根据 token 获取明文 AES key",
     "requestFields": [
       { "name": "keyId", "type": "String" },
-      { "name": "token", "type": "String" }
+      { "name": "token", "type": "String" },
+      { "name": "quality", "type": "String" }
     ],
     "responseFields": [
       { "name": "keyBytes", "type": "String", "desc": "Base64 编码的 16 字节 key" }
@@ -218,7 +246,8 @@
     ],
     "responseFields": [
       { "name": "token", "type": "String" },
-      { "name": "expireAt", "type": "Long" }
+      { "name": "expireAt", "type": "Long" },
+      { "name": "allowedQualities", "type": "String", "nullable": true }
     ]
   },
   {
@@ -269,7 +298,8 @@
     "desc": "后台：根据 token 获取明文 key（稿件态）",
     "requestFields": [
       { "name": "keyId", "type": "String" },
-      { "name": "token", "type": "String" }
+      { "name": "token", "type": "String" },
+      { "name": "quality", "type": "String" }
     ],
     "responseFields": [
       { "name": "keyBytes", "type": "String" }
