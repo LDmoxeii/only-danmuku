@@ -63,8 +63,9 @@ UpdateVideoFilePostTranscodeResultCmd 回写 transfer_result 与 ABR 元数据/v
     ├── index.m3u8
     ├── 0000.ts ...
 ```
-- 相对路径前缀来自上传合并输出 `video/{customerId}/{videoId}/{fileIndex}`，其中 `fileIndex` 目录下再分档位和 master。
-- 前台取资源仍按 `fileId`（`video_file`）→ 反查 `video_file_post_id` → 按上述相对路径拼接。
+- 相对路径前缀：`video/{customerId}/{videoId}/{fileIndex}`（fileIndex 目录下再分档位 + master）。
+- 前台：`fileId`（video_file）→ 查询稿件态 filePostId → 按上述相对路径拼接。
+- 后台：直接用稿件态 fileId。
 
 ## 四、数据库设计（见 `video_transcode_abr_update.sql`）
 1. 扩展 `video_file_post`
@@ -92,18 +93,17 @@ UpdateVideoFilePostTranscodeResultCmd 回写 transfer_result 与 ABR 元数据/v
   - `ListVideoAbrVariantsQry`：查询可用清晰度档位列表。
 
 ## 六、接口与对外契约
-- 前台（发布态 fileId，POST）：
-  - `POST /api/video/abr/master`：入参 `fileId`，返回 master.m3u8 路径（自动播放用）。
-  - `POST /api/video/abr/variants`：入参 `fileId`，返回可选档位列表（quality、宽高、码率、路径）。
-  - `POST /api/video/abr/playlist`：入参 `fileId`、`quality`，返回该档位 m3u8 路径。
-  - `POST /api/video/abr/segment`：入参 `fileId`、`quality`、`ts`，返回 ts 片段路径。
-- 后台（稿件态 filePostId，POST，与前台同形）：
-  - `POST /api/admin/video/abr/master`：`filePostId` → master 路径。
-  - `POST /api/admin/video/abr/variants`：`filePostId` → 档位列表。
-  - `POST /api/admin/video/abr/playlist`：`filePostId`、`quality` → m3u8 路径。
-  - `POST /api/admin/video/abr/segment`：`filePostId`、`quality`、`ts` → ts 路径。
-- 自动播放：客户端选择“自动”时走 master（ABR）；手动指定档位时走 playlist/segment 接口。
-- 运维重触发转码本迭代不做。
+- 前台（发布态 fileId）：
+  - `GET /video/abr/videoResource/{fileId}/master.m3u8`：自动播放（ABR）。
+  - `GET /video/abr/videoResource/{fileId}/{quality}/index.m3u8`：指定档位 m3u8。
+  - `GET /video/abr/videoResource/{fileId}/{quality}/{ts}`：指定档位 ts。
+  - `POST /video/abr/variants`：`{ fileId }` → 返回可用档位列表。
+- 后台（稿件态 fileId）：
+  - `GET /admin/video/abr/videoResource/{fileId}/master.m3u8`
+  - `GET /admin/video/abr/videoResource/{fileId}/{quality}/index.m3u8`
+  - `GET /admin/video/abr/videoResource/{fileId}/{quality}/{ts}`
+  - `POST /admin/video/abr/variants`：`{ fileId }` → 档位列表。
+- 自动播放：master；手动指定档位：playlist/segment。运维重触发转码不做。
 
 ## 七、交付物
 - 需求/设计文档：`iterate/video-transcode-abr/video-transcode-abr.md`
