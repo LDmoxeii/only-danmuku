@@ -270,9 +270,21 @@ class VideoFilePost(
         fileSize: Long?,
         filePath: String?,
         failReason: String?,
+        abrSourceWidth: Int?,
+        abrSourceHeight: Int?,
+        abrSourceBitrateKbps: Int?,
+        variants: List<VideoHlsAbrVariant>?
     ) {
+        // 更新 ABR 元数据（成功/失败都记录探测值，方便追踪）
+        abrSourceWidth?.let { this.abrSourceWidth = it }
+        abrSourceHeight?.let { this.abrSourceHeight = it }
+        abrSourceBitrateKbps?.let { this.abrSourceBitrateKbps = it }
+
         if (success) {
-            markTransferSuccess(duration, fileSize, filePath)
+            // 重置档位列表
+            videoHlsAbrVariants.clear()
+            variants?.let { videoHlsAbrVariants.addAll(it) }
+            markTransferSuccess(duration, fileSize, filePath ?: this.filePath)
         } else {
             markTransferFailed(failReason)
         }

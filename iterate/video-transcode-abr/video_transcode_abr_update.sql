@@ -26,7 +26,7 @@ CREATE TABLE `video_hls_abr_variant`
     `update_time`        bigint                DEFAULT NULL COMMENT '更新时间',
     `deleted`            bigint       NOT NULL DEFAULT 0 COMMENT '删除标识 0：未删除 id：已删除',
     PRIMARY KEY (`id`) USING BTREE,
-    UNIQUE KEY `uk_video_hls_abr_variant` (file_id, `quality`, `deleted`) USING BTREE,
+    UNIQUE KEY `uk_video_hls_abr_variant` (`file_id`, `quality`, `deleted`) USING BTREE,
     INDEX `idx_video_hls_abr_variant_height` (`height`) USING BTREE
     )
     ENGINE = InnoDB

@@ -9,6 +9,7 @@ import com.only4.cap4k.ddd.core.application.RequestParam
  * @author cap4k-ddd-codegen
  * @date 2025/11/21
  */
+@Deprecated("已被 TranscodeVideoFileToAbrCli 替代，多路转码使用新 CLI")
 object TranscodeVideoFileCli {
 
     data class Request(

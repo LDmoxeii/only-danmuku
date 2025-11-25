@@ -19,6 +19,7 @@ import kotlin.jvm.optionals.getOrNull
  * 防腐层：对单个上传文件执行转码，返回成功/失败、输出路径、时长
  */
 @Service
+@Deprecated("已被 TranscodeVideoFileToAbrCli 替代")
 class TranscodeVideoFileCliHandler(
     private val fileProps: FileAppProperties,
 ) : RequestHandler<TranscodeVideoFileCli.Request, TranscodeVideoFileCli.Response> {

@@ -70,9 +70,9 @@ UpdateVideoFilePostTranscodeResultCmd 回写 transfer_result 与 ABR 元数据/v
 1. 扩展 `video_file_post`
    - 字段：`abr_source_width/height/bitrate_kbps`；状态沿用 `transfer_result`（即该转码结果代表 ABR 多路转码结果）。master.m3u8 路径可由 `file_path` 派生（同目录）。
 2. 新表 `video_hls_abr_variant`
-   - 关联：`video_file_post_id`（稿件态 fileId，必要）。
+   - 关联：`file_id`（稿件态 fileId，必要）。
    - 字段：`quality`（1080p/720p/...）、宽高、视频/音频码率、带宽、variant m3u8 路径、切片前缀、segment 时长。
-   - 索引：`uk_video_hls_abr_variant`（`video_file_post_id + quality + deleted` 唯一）、`idx_video_hls_abr_variant_height`。
+   - 索引：`uk_video_hls_abr_variant`（`file_id + quality + deleted` 唯一）、`idx_video_hls_abr_variant_height`。
 - 前台访问：通过 `video_file.id` 反查 `video_file_post_id`，再取 `video_file_post` + `video_hls_abr_variant`；后台直接用 `video_file_post_id`。
 - 说明：`transfer_result` 继续表示基础转码（单路）结果；ABR 的独立状态用 `abr_status`，避免干扰现有“转码完成→进入审核”逻辑。
 
