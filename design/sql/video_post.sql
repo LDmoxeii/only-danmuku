@@ -39,7 +39,7 @@ CREATE TABLE video_file_post
     `id`              bigint           NOT NULL COMMENT 'ID',
     `upload_id`       bigint           NOT NULL COMMENT '上传ID',
     `customer_id`     bigint           NOT NULL COMMENT '用户ID',
-    `video_id`        bigint           NOT NULL COMMENT '视频ID@@Ref=video_post',
+    `video_id`        bigint           NOT NULL COMMENT '视频ID@',
     `file_index`      int(11)                                                       NOT NULL COMMENT '文件索引',
     `file_name`       varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL     DEFAULT NULL COMMENT '文件名',
     `file_size`       bigint(20)                                                    NULL     DEFAULT NULL COMMENT '文件大小',
@@ -58,5 +58,5 @@ CREATE TABLE video_file_post
     UNIQUE INDEX `uk_v_upload_id` (`upload_id`, `customer_id`, `deleted`) USING BTREE
     ) ENGINE = InnoDB
     CHARACTER SET = utf8mb4
-    COLLATE = utf8mb4_general_ci COMMENT = '视频文件信息;@P=video_post'
+    COLLATE = utf8mb4_general_ci COMMENT = '视频文件信息;'
     ROW_FORMAT = DYNAMIC;

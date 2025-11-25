@@ -1,0 +1,86 @@
+[
+  {
+    "tag": "cli",
+    "package": "video_transcode",
+    "name": "ProbeVideoResolution",
+    "desc": "防腐层：使用 ffprobe 获取源视频分辨率，为 ABR 档位决策提供输入",
+    "requestFields": [
+      { "name": "videoFilePostId", "type": "Long", "nullable": true },
+      { "name": "videoFileId", "type": "Long", "nullable": true },
+      { "name": "inputPath", "type": "String" }
+    ],
+    "responseFields": [
+      { "name": "width", "type": "Int" },
+      { "name": "height", "type": "Int" },
+      { "name": "bitrateKbps", "type": "Int", "nullable": true }
+    ]
+  },
+  {
+    "tag": "cli",
+    "package": "video_transcode",
+    "name": "TranscodeVideoFileToAbr",
+    "desc": "防腐层：调用 FFmpeg/脚本生成多分辨率 HLS 与 master.m3u8",
+    "requestFields": [
+      { "name": "videoFilePostId", "type": "Long", "nullable": true },
+      { "name": "videoFileId", "type": "Long", "nullable": true },
+      { "name": "sourcePath", "type": "String" },
+      { "name": "outputDir", "type": "String" },
+      { "name": "profiles", "type": "String", "desc": "档位配置JSON，含宽高/码率列表" },
+      { "name": "segmentDurationSec", "type": "Int", "defaultValue": "6" },
+      { "name": "taskId", "type": "String", "nullable": true, "desc": "幂等/追踪ID" },
+      { "name": "status", "type": "String", "nullable": true, "desc": "预期状态，供外部引擎回调时比对" }
+    ],
+    "responseFields": [
+      { "name": "accepted", "type": "Boolean", "defaultValue": "true" },
+      { "name": "variants", "type": "String", "desc": "档位列表JSON，包含 quality/width/height/videoBitrateKbps/audioBitrateKbps/bandwidthBps/playlistPath/segmentPrefix/segmentDuration" },
+      { "name": "failReason", "type": "String", "nullable": true }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "video_transcode",
+    "name": "UpdateVideoFilePostTranscodeResult",
+    "desc": "根据多路转码结果更新 VideoFilePost 状态并写入 ABR 元数据与档位",
+    "requestFields": [
+      { "name": "videoFilePostId", "type": "Long" },
+      { "name": "success", "type": "Boolean" },
+      { "name": "sourceWidth", "type": "Int", "nullable": true },
+      { "name": "sourceHeight", "type": "Int", "nullable": true },
+      { "name": "sourceBitrateKbps", "type": "Int", "nullable": true },
+      { "name": "variants", "type": "String", "desc": "档位列表JSON，含quality/宽高/码率/路径，来自 TranscodeVideoFileToAbrCli 响应，将拆分落地 video_hls_abr_variant" },
+      { "name": "duration", "type": "Int", "nullable": true },
+      { "name": "fileSize", "type": "Long", "nullable": true },
+      { "name": "failReason", "type": "String", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "transferResult", "type": "Int" }
+    ]
+  },
+  {
+    "tag": "qry",
+    "package": "video_transcode",
+    "name": "GetVideoAbrMaster",
+    "desc": "查询指定 fileId 的 ABR 状态（master.m3u8 路径可由 file_path 衍生）",
+    "requestFields": [
+      { "name": "videoFilePostId", "type": "Long", "nullable": true },
+      { "name": "videoFileId", "type": "Long", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "status", "type": "String" }
+    ]
+  },
+  {
+    "tag": "qry",
+    "package": "video_transcode",
+    "name": "ListVideoAbrVariants",
+    "desc": "查询指定 fileId 的可用清晰度档位列表（quality、宽高、码率、路径）",
+    "requestFields": [
+      { "name": "videoFilePostId", "type": "Long", "nullable": true },
+      { "name": "videoFileId", "type": "Long", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "qualities", "type": "List<String>" },
+      { "name": "variantJson", "type": "String", "desc": "档位详情JSON" }
+    ]
+  }
+]
