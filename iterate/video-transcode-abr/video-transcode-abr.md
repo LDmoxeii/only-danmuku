@@ -48,7 +48,7 @@ UpdateVideoFilePostTranscodeResultCmd 回写 transfer_result 与 ABR 元数据/v
 
 ### 3.3 目录/路径规范
 ```
-/videos/{fileId}/
+/video/{customerId}/{videoId}/{fileIndex}/
 ├── master.m3u8
 ├── 1080p/
 │   ├── index.m3u8
@@ -63,8 +63,8 @@ UpdateVideoFilePostTranscodeResultCmd 回写 transfer_result 与 ABR 元数据/v
     ├── index.m3u8
     ├── 0000.ts ...
 ```
-- `fileId` 取 `video_file_post_id`（或生成后的 `video_file_id`，以存量转码落地路径为准）。
-- Master/Variant 路径在 DB 中既保存相对目录（供对外接口）也保存绝对/存储路径（供离线任务和清理）。
+- 相对路径前缀来自上传合并输出 `video/{customerId}/{videoId}/{fileIndex}`，其中 `fileIndex` 目录下再分档位和 master。
+- 前台取资源仍按 `fileId`（`video_file`）→ 反查 `video_file_post_id` → 按上述相对路径拼接。
 
 ## 四、数据库设计（见 `video_transcode_abr_update.sql`）
 1. 扩展 `video_file_post`
