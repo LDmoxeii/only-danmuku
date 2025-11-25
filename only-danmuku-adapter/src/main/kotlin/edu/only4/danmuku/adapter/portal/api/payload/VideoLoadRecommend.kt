@@ -8,8 +8,6 @@ import org.mapstruct.factory.Mappers
 
 /**
  * 加载推荐视频接口载荷
- *
- * @see edu.only4.danmuku.adapter.portal.api.VideoController.videoLoadRecommend
  */
 object VideoLoadRecommend {
 

@@ -1,5 +1,6 @@
 package edu.only4.danmuku.adapter.portal.api.web
 
+import cn.dev33.satoken.annotation.SaIgnore
 import com.only.engine.exception.KnownException
 import com.only.engine.web.annotation.IgnoreResultWrapper
 import com.only4.cap4k.ddd.core.Mediator
@@ -17,6 +18,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.io.File
 
+@SaIgnore
 @RestController
 @RequestMapping("/video/abr")
 class VideoAbrController(

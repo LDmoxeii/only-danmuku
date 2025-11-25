@@ -7,8 +7,6 @@ import org.mapstruct.factory.Mappers
 
 /**
  * 获取系统设置接口载荷
- *
- * 参考：com.easylive.admin.controller.SettingController#getSetting
  */
 object AdminSettingGet {
 

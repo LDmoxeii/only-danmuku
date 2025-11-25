@@ -10,8 +10,6 @@ import org.mapstruct.factory.Mappers
 
 /**
  * 搜索视频接口载荷
- *
- * @see edu.only4.danmuku.adapter.portal.api.VideoController.videoSearch
  */
 object VideoSearch {
 

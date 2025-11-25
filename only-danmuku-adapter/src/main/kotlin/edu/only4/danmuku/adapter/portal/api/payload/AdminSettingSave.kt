@@ -7,8 +7,6 @@ import org.mapstruct.factory.Mappers
 
 /**
  * 保存系统设置接口载荷
- *
- * 参考：com.easylive.admin.controller.SettingController#saveSetting
  */
 object AdminSettingSave {
 

@@ -2,8 +2,6 @@ package edu.only4.danmuku.adapter.portal.api.payload
 
 /**
  * 获取实时统计信息接口载荷
- *
- * 参考：com.easylive.admin.controller.IndexController#getActualTimeStatisticsInfo
  */
 object AdminIndexGetActualTimeStatistics {
 

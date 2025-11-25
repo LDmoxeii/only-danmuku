@@ -4,8 +4,6 @@ import cn.dev33.satoken.annotation.SaIgnore
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.application.distributed.clients.UploadImageCli
 import edu.only4.danmuku.application.queries.file.GetFileResourceQry
-import edu.only4.danmuku.application.queries.file.GetVideoPostResourceQry
-import edu.only4.danmuku.application.queries.file.GetVideoPostResourceTsQry
 import jakarta.servlet.http.HttpServletResponse
 import org.jetbrains.annotations.NotNull
 import org.slf4j.LoggerFactory
@@ -66,50 +64,6 @@ class CompatibleAdminFileController {
         response.contentType = contentType
 
         response.setHeader("Cache-Control", "max-age=2592000")
-
-        readFile(response, result.filePath)
-    }
-
-    @SaIgnore
-    @GetMapping("/videoResource/{fileId}/")
-    fun getVideoResource(
-        @PathVariable fileId: Long,
-        response: HttpServletResponse,
-    ) {
-        val result = Mediator.queries.send(
-            GetVideoPostResourceQry.Request(fileId = fileId)
-        )
-
-        if (!result.exists) {
-            response.status = HttpServletResponse.SC_NOT_FOUND
-            return
-        }
-
-        response.contentType = "application/vnd.apple.mpegurl"
-
-        readFile(response, result.filePath)
-    }
-
-    @SaIgnore
-    @GetMapping("/videoResource/{fileId}/{ts}")
-    fun getVideoResourceTs(
-        @PathVariable fileId: Long,
-        @PathVariable ts: String,
-        response: HttpServletResponse,
-    ) {
-        val result = Mediator.queries.send(
-            GetVideoPostResourceTsQry.Request(
-                fileId = fileId,
-                ts = ts
-            )
-        )
-
-        if (!result.exists) {
-            response.status = HttpServletResponse.SC_NOT_FOUND
-            return
-        }
-
-        response.contentType = "video/mp2t"
 
         readFile(response, result.filePath)
     }
