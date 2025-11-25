@@ -239,7 +239,7 @@ class SVideoHlsAbrVariant(
 
 
     /**
-     * 稿件态fileId@
+     * 稿件态fileId;
      */
     val fileId: Field<Long> by lazy {
         Field(root.get("fileId"), criteriaBuilder)

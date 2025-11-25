@@ -1,4 +1,4 @@
-package edu.only4.danmuku.domain._share.meta.video_file_post
+package edu.only4.danmuku.domain._share.meta.video_hls_encrypt_key
 
 import com.only4.cap4k.ddd.domain.repo.JpaPredicate
 
@@ -8,10 +8,8 @@ import edu.only4.danmuku.domain._share.meta.OrderBuilder
 import edu.only4.danmuku.domain._share.meta.PredicateBuilder
 import edu.only4.danmuku.domain._share.meta.SchemaSpecification
 import edu.only4.danmuku.domain._share.meta.SubqueryConfigure
-import edu.only4.danmuku.domain.aggregates.video_file_post.VideoFilePost
-import edu.only4.danmuku.domain.aggregates.video_file_post.enums.EncryptStatus
-import edu.only4.danmuku.domain.aggregates.video_file_post.enums.TransferResult
-import edu.only4.danmuku.domain.aggregates.video_file_post.enums.UpdateType
+import edu.only4.danmuku.domain.aggregates.video_hls_encrypt_key.VideoHlsEncryptKey
+import edu.only4.danmuku.domain.aggregates.video_hls_encrypt_key.enums.EncryptKeyStatus
 
 import jakarta.persistence.criteria.*
 
@@ -24,47 +22,35 @@ import org.springframework.data.jpa.domain.Specification
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
  */
-class SVideoFilePost(
-    private val root: Path<VideoFilePost>,
+class SVideoHlsEncryptKey(
+    private val root: Path<VideoHlsEncryptKey>,
     private val criteriaBuilder: CriteriaBuilder,
 ) {
     class PROPERTY_NAMES {
 
         val id = "id"
 
-        val uploadId = "uploadId"
+        val fileId = "fileId"
 
-        val customerId = "customerId"
+        val quality = "quality"
 
-        val videoId = "videoId"
+        val keyId = "keyId"
 
-        val fileIndex = "fileIndex"
+        val keyCiphertext = "keyCiphertext"
 
-        val fileName = "fileName"
+        val ivHex = "ivHex"
 
-        val fileSize = "fileSize"
+        val keyVersion = "keyVersion"
 
-        val filePath = "filePath"
+        val method = "method"
 
-        val updateType = "updateType"
+        val keyUriTemplate = "keyUriTemplate"
 
-        val transferResult = "transferResult"
+        val expireTime = "expireTime"
 
-        val abrSourceWidth = "abrSourceWidth"
+        val status = "status"
 
-        val abrSourceHeight = "abrSourceHeight"
-
-        val abrSourceBitrateKbps = "abrSourceBitrateKbps"
-
-        val encryptStatus = "encryptStatus"
-
-        val encryptMethod = "encryptMethod"
-
-        val encryptKeyId = "encryptKeyId"
-
-        val encryptFailReason = "encryptFailReason"
-
-        val duration = "duration"
+        val remark = "remark"
 
         val createUserId = "createUserId"
 
@@ -93,7 +79,7 @@ class SVideoFilePost(
          * @return
          */
         @JvmStatic
-        fun specify(builder: PredicateBuilder<SVideoFilePost>): Specification<VideoFilePost> {
+        fun specify(builder: PredicateBuilder<SVideoHlsEncryptKey>): Specification<VideoHlsEncryptKey> {
             return specify(builder, false, emptyList())
         }
 
@@ -105,7 +91,7 @@ class SVideoFilePost(
          * @return
          */
         @JvmStatic
-        fun specify(builder: PredicateBuilder<SVideoFilePost>, distinct: Boolean): Specification<VideoFilePost> {
+        fun specify(builder: PredicateBuilder<SVideoHlsEncryptKey>, distinct: Boolean): Specification<VideoHlsEncryptKey> {
             return specify(builder, distinct, emptyList())
         }
 
@@ -118,9 +104,9 @@ class SVideoFilePost(
          */
         @JvmStatic
         fun specify(
-            builder: PredicateBuilder<SVideoFilePost>,
-            vararg orderBuilders: OrderBuilder<SVideoFilePost>,
-        ): Specification<VideoFilePost> {
+            builder: PredicateBuilder<SVideoHlsEncryptKey>,
+            vararg orderBuilders: OrderBuilder<SVideoHlsEncryptKey>,
+        ): Specification<VideoHlsEncryptKey> {
             return specify(builder, orderBuilders.toList())
         }
 
@@ -133,9 +119,9 @@ class SVideoFilePost(
          */
         @JvmStatic
         fun specify(
-            builder: PredicateBuilder<SVideoFilePost>,
-            orderBuilders: List<OrderBuilder<SVideoFilePost>>,
-        ): Specification<VideoFilePost> {
+            builder: PredicateBuilder<SVideoHlsEncryptKey>,
+            orderBuilders: List<OrderBuilder<SVideoHlsEncryptKey>>,
+        ): Specification<VideoHlsEncryptKey> {
             return specify(builder, false, orderBuilders)
         }
 
@@ -149,10 +135,10 @@ class SVideoFilePost(
         */
         @JvmStatic
         fun specify(
-            builder: PredicateBuilder<SVideoFilePost>,
+            builder: PredicateBuilder<SVideoHlsEncryptKey>,
             distinct: Boolean,
-            vararg orderBuilders: OrderBuilder<SVideoFilePost>,
-        ): Specification<VideoFilePost> {
+            vararg orderBuilders: OrderBuilder<SVideoHlsEncryptKey>,
+        ): Specification<VideoHlsEncryptKey> {
             return specify(builder, distinct, orderBuilders.toList())
         }
 
@@ -166,10 +152,10 @@ class SVideoFilePost(
         */
         @JvmStatic
         fun specify(
-            builder: PredicateBuilder<SVideoFilePost>,
+            builder: PredicateBuilder<SVideoHlsEncryptKey>,
             distinct: Boolean,
-            orderBuilders: List<OrderBuilder<SVideoFilePost>>,
-        ): Specification<VideoFilePost> {
+            orderBuilders: List<OrderBuilder<SVideoHlsEncryptKey>>,
+        ): Specification<VideoHlsEncryptKey> {
             return specify { schema, criteriaQuery, criteriaBuilder ->
                 criteriaQuery.where(builder.build(schema))
                 criteriaQuery.distinct(distinct)
@@ -187,9 +173,9 @@ class SVideoFilePost(
          * @return
          */
         @JvmStatic
-        fun specify(specifier: SchemaSpecification<VideoFilePost, SVideoFilePost>): Specification<VideoFilePost> {
+        fun specify(specifier: SchemaSpecification<VideoHlsEncryptKey, SVideoHlsEncryptKey>): Specification<VideoHlsEncryptKey> {
             return Specification { root, criteriaQuery, criteriaBuilder ->
-                val schema = SVideoFilePost(root, criteriaBuilder)
+                val schema = SVideoHlsEncryptKey(root, criteriaBuilder)
                 specifier.toPredicate(schema, criteriaQuery, criteriaBuilder)
             }
         }
@@ -208,8 +194,8 @@ class SVideoFilePost(
         @JvmStatic
         fun <E> subquery(
             resultClass: Class<E>,
-            selectBuilder: ExpressionBuilder<SVideoFilePost, E>,
-            predicateBuilder: PredicateBuilder<SVideoFilePost>,
+            selectBuilder: ExpressionBuilder<SVideoHlsEncryptKey, E>,
+            predicateBuilder: PredicateBuilder<SVideoHlsEncryptKey>,
             criteriaBuilder: CriteriaBuilder,
             criteriaQuery: CriteriaQuery<*>,
         ): Subquery<E> {
@@ -232,13 +218,13 @@ class SVideoFilePost(
         @JvmStatic
         fun <E> subquery(
             resultClass: Class<E>,
-            subqueryConfigure: SubqueryConfigure<E, SVideoFilePost>,
+            subqueryConfigure: SubqueryConfigure<E, SVideoHlsEncryptKey>,
             criteriaBuilder: CriteriaBuilder,
             criteriaQuery: CriteriaQuery<*>,
         ): Subquery<E> {
             val sq = criteriaQuery.subquery(resultClass)
-            val root = sq.from(VideoFilePost::class.java)
-            val schema = SVideoFilePost(root, criteriaBuilder)
+            val root = sq.from(VideoHlsEncryptKey::class.java)
+            val schema = SVideoHlsEncryptKey(root, criteriaBuilder)
             subqueryConfigure.configure(sq, schema)
             return sq
         }
@@ -249,8 +235,8 @@ class SVideoFilePost(
          * @return
          */
         @JvmStatic
-        fun predicateById(id: Any): JpaPredicate<VideoFilePost> {
-            return JpaPredicate.byId(VideoFilePost::class.java, id)
+        fun predicateById(id: Any): JpaPredicate<VideoHlsEncryptKey> {
+            return JpaPredicate.byId(VideoHlsEncryptKey::class.java, id)
         }
 
         /**
@@ -260,9 +246,9 @@ class SVideoFilePost(
         * @return
         */
         @JvmStatic
-        fun predicateByIds(ids: Iterable<*>): JpaPredicate<VideoFilePost> {
+        fun predicateByIds(ids: Iterable<*>): JpaPredicate<VideoHlsEncryptKey> {
             @Suppress("UNCHECKED_CAST")
-            return JpaPredicate.byIds(VideoFilePost::class.java, ids as Iterable<Any>)
+            return JpaPredicate.byIds(VideoHlsEncryptKey::class.java, ids as Iterable<Any>)
         }
 
         /**
@@ -272,8 +258,8 @@ class SVideoFilePost(
          * @return
          */
         @JvmStatic
-        fun predicateByIds(vararg ids: Any): JpaPredicate<VideoFilePost> {
-            return JpaPredicate.byIds(VideoFilePost::class.java, ids.toList())
+        fun predicateByIds(vararg ids: Any): JpaPredicate<VideoHlsEncryptKey> {
+            return JpaPredicate.byIds(VideoHlsEncryptKey::class.java, ids.toList())
         }
 
         /**
@@ -283,8 +269,8 @@ class SVideoFilePost(
          * @return
          */
         @JvmStatic
-        fun predicate(builder: PredicateBuilder<SVideoFilePost>): JpaPredicate<VideoFilePost> {
-            return JpaPredicate.bySpecification(VideoFilePost::class.java, specify(builder))
+        fun predicate(builder: PredicateBuilder<SVideoHlsEncryptKey>): JpaPredicate<VideoHlsEncryptKey> {
+            return JpaPredicate.bySpecification(VideoHlsEncryptKey::class.java, specify(builder))
         }
 
         /**
@@ -295,8 +281,8 @@ class SVideoFilePost(
          * @return
          */
         @JvmStatic
-        fun predicate(builder: PredicateBuilder<SVideoFilePost>, distinct: Boolean): JpaPredicate<VideoFilePost> {
-            return JpaPredicate.bySpecification(VideoFilePost::class.java, specify(builder, distinct))
+        fun predicate(builder: PredicateBuilder<SVideoHlsEncryptKey>, distinct: Boolean): JpaPredicate<VideoHlsEncryptKey> {
+            return JpaPredicate.bySpecification(VideoHlsEncryptKey::class.java, specify(builder, distinct))
         }
 
         /**
@@ -308,10 +294,10 @@ class SVideoFilePost(
          */
         @JvmStatic
         fun predicate(
-            builder: PredicateBuilder<SVideoFilePost>,
-            orderBuilders: List<OrderBuilder<SVideoFilePost>>,
-        ): JpaPredicate<VideoFilePost> {
-            return JpaPredicate.bySpecification(VideoFilePost::class.java, specify(builder, false, orderBuilders))
+            builder: PredicateBuilder<SVideoHlsEncryptKey>,
+            orderBuilders: List<OrderBuilder<SVideoHlsEncryptKey>>,
+        ): JpaPredicate<VideoHlsEncryptKey> {
+            return JpaPredicate.bySpecification(VideoHlsEncryptKey::class.java, specify(builder, false, orderBuilders))
         }
 
         /**
@@ -323,27 +309,10 @@ class SVideoFilePost(
          */
         @JvmStatic
         fun predicate(
-            builder: PredicateBuilder<SVideoFilePost>,
-            vararg orderBuilders: OrderBuilder<SVideoFilePost>,
-        ): JpaPredicate<VideoFilePost> {
-            return JpaPredicate.bySpecification(VideoFilePost::class.java, specify(builder, false, *orderBuilders))
-        }
-
-        /**
-         * 构建查询条件
-         *
-         * @param builder       查询条件构造器
-         * @param distinct      是否去重
-         * @param orderBuilders 排序构造器
-         * @return
-         */
-        @JvmStatic
-        fun predicate(
-            builder: PredicateBuilder<SVideoFilePost>,
-            distinct: Boolean,
-            orderBuilders: List<OrderBuilder<SVideoFilePost>>,
-        ): JpaPredicate<VideoFilePost> {
-            return JpaPredicate.bySpecification(VideoFilePost::class.java, specify(builder, distinct, orderBuilders))
+            builder: PredicateBuilder<SVideoHlsEncryptKey>,
+            vararg orderBuilders: OrderBuilder<SVideoHlsEncryptKey>,
+        ): JpaPredicate<VideoHlsEncryptKey> {
+            return JpaPredicate.bySpecification(VideoHlsEncryptKey::class.java, specify(builder, false, *orderBuilders))
         }
 
         /**
@@ -356,11 +325,28 @@ class SVideoFilePost(
          */
         @JvmStatic
         fun predicate(
-            builder: PredicateBuilder<SVideoFilePost>,
+            builder: PredicateBuilder<SVideoHlsEncryptKey>,
             distinct: Boolean,
-            vararg orderBuilders: OrderBuilder<SVideoFilePost>,
-        ): JpaPredicate<VideoFilePost> {
-            return JpaPredicate.bySpecification(VideoFilePost::class.java, specify(builder, distinct, *orderBuilders))
+            orderBuilders: List<OrderBuilder<SVideoHlsEncryptKey>>,
+        ): JpaPredicate<VideoHlsEncryptKey> {
+            return JpaPredicate.bySpecification(VideoHlsEncryptKey::class.java, specify(builder, distinct, orderBuilders))
+        }
+
+        /**
+         * 构建查询条件
+         *
+         * @param builder       查询条件构造器
+         * @param distinct      是否去重
+         * @param orderBuilders 排序构造器
+         * @return
+         */
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SVideoHlsEncryptKey>,
+            distinct: Boolean,
+            vararg orderBuilders: OrderBuilder<SVideoHlsEncryptKey>,
+        ): JpaPredicate<VideoHlsEncryptKey> {
+            return JpaPredicate.bySpecification(VideoHlsEncryptKey::class.java, specify(builder, distinct, *orderBuilders))
         }
 
         /**
@@ -370,15 +356,15 @@ class SVideoFilePost(
          * @return
          */
         @JvmStatic
-        fun predicate(specifier: SchemaSpecification<VideoFilePost, SVideoFilePost>): JpaPredicate<VideoFilePost> {
-            return JpaPredicate.bySpecification(VideoFilePost::class.java, specify(specifier))
+        fun predicate(specifier: SchemaSpecification<VideoHlsEncryptKey, SVideoHlsEncryptKey>): JpaPredicate<VideoHlsEncryptKey> {
+            return JpaPredicate.bySpecification(VideoHlsEncryptKey::class.java, specify(specifier))
         }
 
     }
 
     fun _criteriaBuilder(): CriteriaBuilder = criteriaBuilder
 
-    fun _root(): Path<VideoFilePost> = root
+    fun _root(): Path<VideoHlsEncryptKey> = root
 
 
     /**
@@ -390,138 +376,90 @@ class SVideoFilePost(
 
 
     /**
-     * 上传ID
+     * 稿件态 fileId
      */
-    val uploadId: Field<Long> by lazy {
-        Field(root.get("uploadId"), criteriaBuilder)
+    val fileId: Field<Long> by lazy {
+        Field(root.get("fileId"), criteriaBuilder)
     }
 
 
     /**
-     * 用户ID
+     * 绑定清晰度，空表示全局通用
      */
-    val customerId: Field<Long> by lazy {
-        Field(root.get("customerId"), criteriaBuilder)
+    val quality: Field<String?> by lazy {
+        Field(root.get("quality"), criteriaBuilder)
     }
 
 
     /**
-     * 视频ID
+     * Key ID（m3u8 暴露）
      */
-    val videoId: Field<Long> by lazy {
-        Field(root.get("videoId"), criteriaBuilder)
+    val keyId: Field<String> by lazy {
+        Field(root.get("keyId"), criteriaBuilder)
     }
 
 
     /**
-     * 文件索引
+     * 密钥密文（KMS 加密后 Base64）
      */
-    val fileIndex: Field<Int> by lazy {
-        Field(root.get("fileIndex"), criteriaBuilder)
+    val keyCiphertext: Field<String> by lazy {
+        Field(root.get("keyCiphertext"), criteriaBuilder)
     }
 
 
     /**
-     * 文件名
+     * IV hex（16字节，可空）
      */
-    val fileName: Field<String?> by lazy {
-        Field(root.get("fileName"), criteriaBuilder)
+    val ivHex: Field<String?> by lazy {
+        Field(root.get("ivHex"), criteriaBuilder)
     }
 
 
     /**
-     * 文件大小
+     * 密钥版本号（轮换递增）
      */
-    val fileSize: Field<Long?> by lazy {
-        Field(root.get("fileSize"), criteriaBuilder)
+    val keyVersion: Field<Int> by lazy {
+        Field(root.get("keyVersion"), criteriaBuilder)
     }
 
 
     /**
-     * 文件路径
+     * 加密方式
      */
-    val filePath: Field<String?> by lazy {
-        Field(root.get("filePath"), criteriaBuilder)
+    val method: Field<String> by lazy {
+        Field(root.get("method"), criteriaBuilder)
     }
 
 
     /**
-     * 更新类型
+     * m3u8 中的 URI 模板，含 token 占位
      */
-    val updateType: Field<UpdateType> by lazy {
-        Field(root.get("updateType"), criteriaBuilder)
+    val keyUriTemplate: Field<String> by lazy {
+        Field(root.get("keyUriTemplate"), criteriaBuilder)
     }
 
 
     /**
-     * 转码结果
+     * 过期时间（ms）
      */
-    val transferResult: Field<TransferResult> by lazy {
-        Field(root.get("transferResult"), criteriaBuilder)
+    val expireTime: Field<Long?> by lazy {
+        Field(root.get("expireTime"), criteriaBuilder)
     }
 
 
     /**
-     * ABR 源视频宽度(px)
+     * 状态
      */
-    val abrSourceWidth: Field<Int?> by lazy {
-        Field(root.get("abrSourceWidth"), criteriaBuilder)
+    val status: Field<EncryptKeyStatus> by lazy {
+        Field(root.get("status"), criteriaBuilder)
     }
 
 
     /**
-     * ABR 源视频高度(px)
+     * 备注/轮换原因
      */
-    val abrSourceHeight: Field<Int?> by lazy {
-        Field(root.get("abrSourceHeight"), criteriaBuilder)
-    }
-
-
-    /**
-     * ABR 源视频码率(kbps)
-     */
-    val abrSourceBitrateKbps: Field<Int?> by lazy {
-        Field(root.get("abrSourceBitrateKbps"), criteriaBuilder)
-    }
-
-
-    /**
-     * 加密状态
-     */
-    val encryptStatus: Field<EncryptStatus> by lazy {
-        Field(root.get("encryptStatus"), criteriaBuilder)
-    }
-
-
-    /**
-     * 加密方式，如 HLS_AES_128
-     */
-    val encryptMethod: Field<String?> by lazy {
-        Field(root.get("encryptMethod"), criteriaBuilder)
-    }
-
-
-    /**
-     * 关联密钥ID
-     */
-    val encryptKeyId: Field<Long?> by lazy {
-        Field(root.get("encryptKeyId"), criteriaBuilder)
-    }
-
-
-    /**
-     * 加密失败原因
-     */
-    val encryptFailReason: Field<String?> by lazy {
-        Field(root.get("encryptFailReason"), criteriaBuilder)
-    }
-
-
-    /**
-     * 持续时间（秒）
-     */
-    val duration: Field<Int?> by lazy {
-        Field(root.get("duration"), criteriaBuilder)
+    val remark: Field<String?> by lazy {
+        Field(root.get("remark"), criteriaBuilder)
     }
 
 
@@ -583,14 +521,6 @@ class SVideoFilePost(
 
 
     /**
-     * 关联: OneToMany - VideoHlsAbrVariant
-     */
-    val videoHlsAbrVariants: Field<Any> by lazy {
-        Field(root.get("videoHlsAbrVariants"), criteriaBuilder)
-    }
-
-
-    /**
      * 满足所有条件
      * @param restrictions
      * @return
@@ -643,7 +573,7 @@ class SVideoFilePost(
      * @param builder
      * @return
      */
-    fun spec(builder: PredicateBuilder<SVideoFilePost>): Predicate {
+    fun spec(builder: PredicateBuilder<SVideoHlsEncryptKey>): Predicate {
         return builder.build(this)
     }
 }

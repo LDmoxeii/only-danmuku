@@ -4,6 +4,7 @@ import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
 
 import edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity
+import edu.only4.danmuku.domain.aggregates.video_file_post.enums.EncryptStatus
 import edu.only4.danmuku.domain.aggregates.video_file_post.enums.TransferResult
 import edu.only4.danmuku.domain.aggregates.video_file_post.enums.UpdateType
 import edu.only4.danmuku.domain.aggregates.video_file_post.events.VideoFilePostCreatedDomainEvent
@@ -49,6 +50,10 @@ class VideoFilePost(
     abrSourceWidth: Int? = null,
     abrSourceHeight: Int? = null,
     abrSourceBitrateKbps: Int? = null,
+    encryptStatus: EncryptStatus = EncryptStatus.valueOf(1),
+    encryptMethod: String? = null,
+    encryptKeyId: Long? = null,
+    encryptFailReason: String? = null,
     duration: Int? = null,
 ) : AuditedFieldsEntity() {
     // 【字段映射开始】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
@@ -171,6 +176,43 @@ class VideoFilePost(
      */
     @Column(name = "`abr_source_bitrate_kbps`")
     var abrSourceBitrateKbps: Int? = abrSourceBitrateKbps
+        internal set
+
+    /**
+     * 加密状态
+     * 1:UNENCRYPTED:未加密
+     * 2:ENCRYPTING:加密中
+     * 3:ENCRYPTED:已加密
+     * 4:FAILED:失败
+     * int
+     */
+    @Convert(converter = EncryptStatus.Converter::class)
+    @Column(name = "`encrypt_status`")
+    var encryptStatus: EncryptStatus = encryptStatus
+        internal set
+
+    /**
+     * 加密方式，如 HLS_AES_128
+     * varchar(32)
+     */
+    @Column(name = "`encrypt_method`")
+    var encryptMethod: String? = encryptMethod
+        internal set
+
+    /**
+     * 关联密钥ID
+     * bigint
+     */
+    @Column(name = "`encrypt_key_id`")
+    var encryptKeyId: Long? = encryptKeyId
+        internal set
+
+    /**
+     * 加密失败原因
+     * varchar(512)
+     */
+    @Column(name = "`encrypt_fail_reason`")
+    var encryptFailReason: String? = encryptFailReason
         internal set
 
     /**
