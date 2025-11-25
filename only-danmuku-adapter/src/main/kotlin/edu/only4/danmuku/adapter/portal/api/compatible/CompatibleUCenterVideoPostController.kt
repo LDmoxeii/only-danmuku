@@ -79,8 +79,6 @@ class CompatibleUCenterVideoPostController {
                         videoId = newVideoId,
                         fileIndex = idx + 1,
                         fileName = item.fileName,
-                        fileSize = null,
-                        duration = null,
                     )
                 )
             }
@@ -119,8 +117,6 @@ class CompatibleUCenterVideoPostController {
                             videoId = videoId,
                             fileIndex = idx + 1,
                             fileName = item.fileName,
-                            fileSize = null,
-                            duration = null,
                         )
                     )
                 }

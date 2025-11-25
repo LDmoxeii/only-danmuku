@@ -4,6 +4,7 @@ import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.application.query.Query
 import edu.only4.danmuku.application.queries._share.model.VideoFile
 import edu.only4.danmuku.application.queries._share.model.filePath
+import edu.only4.danmuku.application.queries._share.model.id
 import edu.only4.danmuku.application.queries._share.model.videoFilePostId
 import edu.only4.danmuku.application.queries.video_transcode.GetVideoPostIdByFileIdQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
@@ -23,10 +24,10 @@ class GetVideoPostIdByFileIdQryHandler(
             select(table.videoFilePostId, table.filePath)
         }.fetchOneOrNull() ?: throw KnownException("文件不存在: ${request.fileId}")
 
-        val postId = row.first ?: throw KnownException("缺少稿件态 fileId: ${request.fileId}")
+        val postId = row._1 ?: throw KnownException("缺少稿件态 fileId: ${request.fileId}")
         return GetVideoPostIdByFileIdQry.Response(
             filePostId = postId,
-            filePath = row.second
+            filePath = row._2,
         )
     }
 }

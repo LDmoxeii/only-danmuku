@@ -30,8 +30,14 @@ class ListVideoAbrVariantsQryHandler(
 
         if (variants.isEmpty()) return emptyList()
 
-        val qualities = variants.map { it.quality }
-        val variantJson = JsonUtils.toJsonString(variants) ?: "[]"
+        // 按清晰度数字从大到小排序（如 1080p > 720p > 480p ...），无法解析数字的排在最后
+        val sortedVariants = variants.sortedWith(
+            compareByDescending<VideoHlsAbrVariant> { qualityScore(it.quality) }
+                .thenBy { it.quality }
+        )
+
+        val qualities = sortedVariants.map { it.quality }
+        val variantJson = JsonUtils.toJsonString(sortedVariants) ?: "[]"
 
         return listOf(
             ListVideoAbrVariantsQry.Response(
@@ -40,5 +46,14 @@ class ListVideoAbrVariantsQryHandler(
             )
         )
 
+    }
+
+    private fun qualityScore(quality: String): Int {
+        val number = QUALITY_NUMBER_REGEX.find(quality)?.groupValues?.getOrNull(1)?.toIntOrNull()
+        return number ?: Int.MIN_VALUE
+    }
+
+    companion object {
+        private val QUALITY_NUMBER_REGEX = Regex("(\\d+)")
     }
 }

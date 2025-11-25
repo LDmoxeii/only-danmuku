@@ -4,6 +4,7 @@ import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.application.query.Query
 import edu.only4.danmuku.application.queries._share.model.VideoFilePost
 import edu.only4.danmuku.application.queries._share.model.filePath
+import edu.only4.danmuku.application.queries._share.model.id
 import edu.only4.danmuku.application.queries.video_transcode.GetVideoFilePostPathQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
