@@ -1,0 +1,278 @@
+[
+  {
+    "tag": "cli",
+    "package": "video_encrypt",
+    "name": "GenerateVideoHlsKey",
+    "desc": "防腐层：向 KMS 申请随机 AES-128 key + IV，生成 keyId/keyUri 占位",
+    "requestFields": [
+      { "name": "videoFilePostId", "type": "Long", "nullable": true },
+      { "name": "videoFileId", "type": "Long", "nullable": true },
+      { "name": "method", "type": "String", "defaultValue": "HLS_AES_128" },
+      { "name": "keyBytes", "type": "Int", "defaultValue": "16", "desc": "密钥长度（字节）" }
+    ],
+    "responseFields": [
+      { "name": "keyId", "type": "String" },
+      { "name": "keyCiphertextBase64", "type": "String", "desc": "KMS 加密后的密钥密文" },
+      { "name": "ivHex", "type": "String", "nullable": true },
+      { "name": "keyVersion", "type": "Int", "defaultValue": "1" },
+      { "name": "keyUriTemplate", "type": "String", "desc": "m3u8 中写入的 URI，占位 token，如 /video/enc/key?keyId={keyId}&token=__TOKEN__" }
+    ]
+  },
+  {
+    "tag": "cli",
+    "package": "video_encrypt",
+    "name": "EncryptHlsWithKey",
+    "desc": "防腐层：使用指定 key 对已有 ABR 产物进行 HLS AES-128 加密，产出 enc/ 目录",
+    "requestFields": [
+      { "name": "videoFilePostId", "type": "Long", "nullable": true },
+      { "name": "videoFileId", "type": "Long", "nullable": true },
+      { "name": "sourceDir", "type": "String", "desc": "明文 ABR 目录，如 /video/.../" },
+      { "name": "outputDir", "type": "String", "desc": "加密输出目录，如 /video/.../enc/" },
+      { "name": "keyId", "type": "String" },
+      { "name": "keyPlainHex", "type": "String", "desc": "KMS 解密后的16字节 key，调用方负责安全传递" },
+      { "name": "ivHex", "type": "String", "nullable": true },
+      { "name": "segmentExt", "type": "String", "defaultValue": ".ts.enc" }
+    ],
+    "responseFields": [
+      { "name": "success", "type": "Boolean", "defaultValue": "true" },
+      { "name": "encryptedMasterPath", "type": "String", "desc": "enc/master.m3u8 相对路径" },
+      { "name": "encryptedVariants", "type": "String", "desc": "JSON 数组：quality/playlistPath/segmentPrefix/segmentCount" },
+      { "name": "failReason", "type": "String", "nullable": true }
+    ]
+  },
+  {
+    "tag": "cli",
+    "package": "video_encrypt",
+    "name": "RotateVideoHlsKey",
+    "desc": "防腐层：触发新密钥生成与 m3u8 重写（可重用 EncryptHlsWithKey），用于密钥轮换",
+    "requestFields": [
+      { "name": "videoFilePostId", "type": "Long" },
+      { "name": "reason", "type": "String", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "newKeyVersion", "type": "Int" },
+      { "name": "failReason", "type": "String", "nullable": true }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "video_encrypt",
+    "name": "PersistVideoEncryptResult",
+    "desc": "根据加密 CLI 结果更新 VideoFilePost 状态，落密钥/目录元数据",
+    "requestFields": [
+      { "name": "videoFilePostId", "type": "Long" },
+      { "name": "success", "type": "Boolean" },
+      { "name": "encryptMethod", "type": "String", "defaultValue": "HLS_AES_128" },
+      { "name": "keyId", "type": "String", "nullable": true },
+      { "name": "keyVersion", "type": "Int", "nullable": true },
+      { "name": "encryptedMasterPath", "type": "String", "nullable": true },
+      { "name": "encryptedVariants", "type": "String", "nullable": true, "desc": "quality/playlistPath/segmentPrefix" },
+      { "name": "failReason", "type": "String", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "encryptStatus", "type": "Int" }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "video_encrypt",
+    "name": "IssueVideoHlsKeyToken",
+    "desc": "签发用于播放的短时 token，绑定 fileId+keyId+keyVersion",
+    "requestFields": [
+      { "name": "videoFilePostId", "type": "Long", "nullable": true },
+      { "name": "videoFileId", "type": "Long", "nullable": true },
+      { "name": "keyId", "type": "String" },
+      { "name": "keyVersion", "type": "Int" },
+      { "name": "audience", "type": "String", "nullable": true, "desc": "用户/终端标识" },
+      { "name": "expireSeconds", "type": "Int", "defaultValue": "600" },
+      { "name": "maxUse", "type": "Int", "defaultValue": "5" }
+    ],
+    "responseFields": [
+      { "name": "token", "type": "String" },
+      { "name": "expireAt", "type": "Long" }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "video_encrypt",
+    "name": "ConsumeVideoHlsKeyToken",
+    "desc": "校验并消费 token（递增使用次数/失效），返回可下发的明文 key",
+    "requestFields": [
+      { "name": "token", "type": "String" },
+      { "name": "keyId", "type": "String" }
+    ],
+    "responseFields": [
+      { "name": "valid", "type": "Boolean" },
+      { "name": "keyPlainHex", "type": "String", "nullable": true },
+      { "name": "ivHex", "type": "String", "nullable": true },
+      { "name": "failReason", "type": "String", "nullable": true }
+    ]
+  },
+  {
+    "tag": "qry",
+    "package": "video_encrypt",
+    "name": "GetVideoEncryptStatus",
+    "desc": "查询稿件/前台文件的加密状态及最新 key 信息",
+    "requestFields": [
+      { "name": "videoFilePostId", "type": "Long", "nullable": true },
+      { "name": "videoFileId", "type": "Long", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "encryptStatus", "type": "Int" },
+      { "name": "encryptMethod", "type": "String", "nullable": true },
+      { "name": "keyId", "type": "String", "nullable": true },
+      { "name": "keyVersion", "type": "Int", "nullable": true },
+      { "name": "encryptedMasterPath", "type": "String", "nullable": true }
+    ]
+  },
+  {
+    "tag": "qry",
+    "package": "video_encrypt",
+    "name": "GetLatestVideoHlsKey",
+    "desc": "查询可用的最新密钥元数据（不返回明文），用于拼接 m3u8 key URI",
+    "requestFields": [
+      { "name": "videoFilePostId", "type": "Long", "nullable": true },
+      { "name": "videoFileId", "type": "Long", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "keyId", "type": "String", "nullable": true },
+      { "name": "keyVersion", "type": "Int", "nullable": true },
+      { "name": "keyUriTemplate", "type": "String", "nullable": true },
+      { "name": "status", "type": "String" }
+    ]
+  },
+  {
+    "tag": "payload",
+    "package": "video_encrypt",
+    "name": "FrontIssueEncToken",
+    "desc": "前台：申请播放 token",
+    "requestFields": [
+      { "name": "fileId", "type": "Long" }
+    ],
+    "responseFields": [
+      { "name": "token", "type": "String" },
+      { "name": "expireAt", "type": "Long" }
+    ]
+  },
+  {
+    "tag": "payload",
+    "package": "video_encrypt",
+    "name": "FrontGetEncMaster",
+    "desc": "前台：获取加密 master.m3u8，服务端自动替换 token",
+    "requestFields": [
+      { "name": "fileId", "type": "Long" },
+      { "name": "token", "type": "String" }
+    ],
+    "responseFields": [
+      { "name": "content", "type": "String", "desc": "m3u8 文本" }
+    ]
+  },
+  {
+    "tag": "payload",
+    "package": "video_encrypt",
+    "name": "FrontGetEncVariantPlaylist",
+    "desc": "前台：获取指定档位加密 m3u8（已替换 token）",
+    "requestFields": [
+      { "name": "fileId", "type": "Long" },
+      { "name": "quality", "type": "String" },
+      { "name": "token", "type": "String" }
+    ],
+    "responseFields": [
+      { "name": "content", "type": "String" }
+    ]
+  },
+  {
+    "tag": "payload",
+    "package": "video_encrypt",
+    "name": "FrontGetEncSegment",
+    "desc": "前台：获取加密 ts 片段（enc目录），用于播放器解密播放",
+    "requestFields": [
+      { "name": "fileId", "type": "Long" },
+      { "name": "quality", "type": "String" },
+      { "name": "ts", "type": "String" }
+    ],
+    "responseFields": [
+      { "name": "segmentPath", "type": "String" }
+    ]
+  },
+  {
+    "tag": "payload",
+    "package": "video_encrypt",
+    "name": "FrontGetEncKey",
+    "desc": "前台：根据 token 获取明文 AES key",
+    "requestFields": [
+      { "name": "keyId", "type": "String" },
+      { "name": "token", "type": "String" }
+    ],
+    "responseFields": [
+      { "name": "keyBytes", "type": "String", "desc": "Base64 编码的 16 字节 key" }
+    ]
+  },
+  {
+    "tag": "payload",
+    "package": "video_encrypt",
+    "name": "AdminIssueEncToken",
+    "desc": "后台：申请播放 token（稿件态）",
+    "requestFields": [
+      { "name": "filePostId", "type": "Long" }
+    ],
+    "responseFields": [
+      { "name": "token", "type": "String" },
+      { "name": "expireAt", "type": "Long" }
+    ]
+  },
+  {
+    "tag": "payload",
+    "package": "video_encrypt",
+    "name": "AdminGetEncMaster",
+    "desc": "后台：获取加密 master.m3u8（稿件态）",
+    "requestFields": [
+      { "name": "filePostId", "type": "Long" },
+      { "name": "token", "type": "String" }
+    ],
+    "responseFields": [
+      { "name": "content", "type": "String" }
+    ]
+  },
+  {
+    "tag": "payload",
+    "package": "video_encrypt",
+    "name": "AdminGetEncVariantPlaylist",
+    "desc": "后台：获取档位 m3u8（加密版，稿件态）",
+    "requestFields": [
+      { "name": "filePostId", "type": "Long" },
+      { "name": "quality", "type": "String" },
+      { "name": "token", "type": "String" }
+    ],
+    "responseFields": [
+      { "name": "content", "type": "String" }
+    ]
+  },
+  {
+    "tag": "payload",
+    "package": "video_encrypt",
+    "name": "AdminGetEncSegment",
+    "desc": "后台：获取加密 ts 片段（稿件态）",
+    "requestFields": [
+      { "name": "filePostId", "type": "Long" },
+      { "name": "quality", "type": "String" },
+      { "name": "ts", "type": "String" }
+    ],
+    "responseFields": [
+      { "name": "segmentPath", "type": "String" }
+    ]
+  },
+  {
+    "tag": "payload",
+    "package": "video_encrypt",
+    "name": "AdminGetEncKey",
+    "desc": "后台：根据 token 获取明文 key（稿件态）",
+    "requestFields": [
+      { "name": "keyId", "type": "String" },
+      { "name": "token", "type": "String" }
+    ],
+    "responseFields": [
+      { "name": "keyBytes", "type": "String" }
+    ]
+  }
+]

@@ -24,7 +24,7 @@ codegen {
     designFiles.from(
         fileTree("iterate") {
             include("**/*_gen.json")
-            exclude("**/video_hls_encryption_gen.json")
+            exclude("**/video_encrypt_decrypt_gen.json")
         }
     )
 
