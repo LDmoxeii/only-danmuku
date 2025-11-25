@@ -2,6 +2,7 @@ package edu.only4.danmuku.adapter.application.queries.video_transcode
 
 import com.only4.cap4k.ddd.core.application.query.Query
 import edu.only4.danmuku.application.queries._share.model.VideoFilePost
+import edu.only4.danmuku.application.queries._share.model.filePath
 import edu.only4.danmuku.application.queries._share.model.id
 import edu.only4.danmuku.application.queries._share.model.transferResult
 import edu.only4.danmuku.application.queries.video_transcode.GetVideoAbrMasterQry
@@ -22,12 +23,13 @@ class GetVideoAbrMasterQryHandler(
 ) : Query<GetVideoAbrMasterQry.Request, GetVideoAbrMasterQry.Response> {
 
     override fun exec(request: GetVideoAbrMasterQry.Request): GetVideoAbrMasterQry.Response {
-        val transferResult = sqlClient.createQuery(VideoFilePost::class) {
+        val row = sqlClient.createQuery(VideoFilePost::class) {
             where(table.id eq request.fileId)
-            select(table.transferResult)
+            select(table.transferResult, table.filePath)
         }.fetchOneOrNull()
 
-        val status = transferResult?.name ?: "UNKNOW"
-        return GetVideoAbrMasterQry.Response(status = status)
+        val status = row?.first?.name ?: "UNKNOW"
+        val masterPath = row?.second?.let { "$it/master.m3u8" }
+        return GetVideoAbrMasterQry.Response(status = status, masterPath = masterPath)
     }
 }

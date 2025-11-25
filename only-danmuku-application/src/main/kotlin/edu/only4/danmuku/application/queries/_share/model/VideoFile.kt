@@ -32,4 +32,7 @@ interface VideoFile : BaseEntity {
 
     @Column(name = "duration")
     val duration: Int?
+
+    @Column(name = "video_file_post_id")
+    val videoFilePostId: Long?
 }

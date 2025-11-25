@@ -247,5 +247,30 @@
     "responseFields": [
       { "name": "segmentPath", "type": "String" }
     ]
+  },
+  {
+    "tag": "qry",
+    "package": "video_transcode",
+    "name": "GetVideoPostIdByFileId",
+    "desc": "前台 fileId 映射到稿件态 filePostId 及路径",
+    "requestFields": [
+      { "name": "fileId", "type": "Long" }
+    ],
+    "responseFields": [
+      { "name": "filePostId", "type": "Long" },
+      { "name": "filePath", "type": "String", "nullable": true }
+    ]
+  },
+  {
+    "tag": "qry",
+    "package": "video_transcode",
+    "name": "GetVideoFilePostPath",
+    "desc": "根据稿件态 filePostId 获取存储路径",
+    "requestFields": [
+      { "name": "filePostId", "type": "Long" }
+    ],
+    "responseFields": [
+      { "name": "filePath", "type": "String", "nullable": true }
+    ]
   }
 ]

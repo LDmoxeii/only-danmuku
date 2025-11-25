@@ -16,6 +16,7 @@ object GetVideoAbrMasterQry {
     ) : RequestParam<Response>
 
     data class Response(
-        val status: String
+        val status: String,
+        val masterPath: String?
     )
 }
