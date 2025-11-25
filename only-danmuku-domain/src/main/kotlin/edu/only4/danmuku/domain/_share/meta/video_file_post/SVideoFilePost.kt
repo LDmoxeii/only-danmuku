@@ -49,6 +49,12 @@ class SVideoFilePost(
 
         val transferResult = "transferResult"
 
+        val abrSourceWidth = "abrSourceWidth"
+
+        val abrSourceHeight = "abrSourceHeight"
+
+        val abrSourceBitrateKbps = "abrSourceBitrateKbps"
+
         val duration = "duration"
 
         val createUserId = "createUserId"
@@ -447,6 +453,30 @@ class SVideoFilePost(
 
 
     /**
+     * ABR 源视频宽度(px)
+     */
+    val abrSourceWidth: Field<Int?> by lazy {
+        Field(root.get("abrSourceWidth"), criteriaBuilder)
+    }
+
+
+    /**
+     * ABR 源视频高度(px)
+     */
+    val abrSourceHeight: Field<Int?> by lazy {
+        Field(root.get("abrSourceHeight"), criteriaBuilder)
+    }
+
+
+    /**
+     * ABR 源视频码率(kbps)
+     */
+    val abrSourceBitrateKbps: Field<Int?> by lazy {
+        Field(root.get("abrSourceBitrateKbps"), criteriaBuilder)
+    }
+
+
+    /**
      * 持续时间（秒）
      */
     val duration: Field<Int?> by lazy {
@@ -509,6 +539,14 @@ class SVideoFilePost(
         Field(root.get("deleted"), criteriaBuilder)
     }
 
+
+
+    /**
+     * 关联: OneToMany - VideoHlsAbrVariant
+     */
+    val videoHlsAbrVariants: Field<Any> by lazy {
+        Field(root.get("videoHlsAbrVariants"), criteriaBuilder)
+    }
 
 
     /**
