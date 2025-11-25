@@ -29,7 +29,7 @@ CREATE TABLE `video_hls_encrypt_key`
     `update_time`       bigint                DEFAULT NULL COMMENT '更新时间',
     `deleted`           bigint       NOT NULL DEFAULT 0 COMMENT '删除标识 0：未删除 id：已删除',
     PRIMARY KEY (`id`) USING BTREE,
-    UNIQUE KEY `uk_video_hls_encrypt_key` (`file_id`, `key_id`, `key_version`, `quality`, `deleted`) USING BTREE,
+    UNIQUE KEY `uk_v_` (`file_id`, `key_id`, `key_version`, `quality`, `deleted`) USING BTREE,
     INDEX `idx_video_hls_encrypt_key_file` (`file_id`, `status`) USING BTREE,
     INDEX `idx_video_hls_encrypt_key_expire` (`expire_time`) USING BTREE
 )
@@ -53,7 +53,7 @@ CREATE TABLE `video_hls_quality_auth`
     `update_time`    bigint                DEFAULT NULL COMMENT '更新时间',
     `deleted`        bigint       NOT NULL DEFAULT 0 COMMENT '删除标识 0：未删除 id：已删除',
     PRIMARY KEY (`id`) USING BTREE,
-    UNIQUE KEY `uk_video_hls_quality_auth` (`file_id`, `quality`, `deleted`) USING BTREE,
+    UNIQUE KEY `uk_v_` (`file_id`, `quality`, `deleted`) USING BTREE,
     INDEX `idx_video_hls_quality_auth_policy` (`auth_policy`) USING BTREE
 )
     ENGINE = InnoDB
@@ -83,7 +83,7 @@ CREATE TABLE `video_hls_key_token`
     `update_time`     bigint                DEFAULT NULL COMMENT '更新时间',
     `deleted`         bigint       NOT NULL DEFAULT 0 COMMENT '删除标识 0：未删除 id：已删除',
     PRIMARY KEY (`id`) USING BTREE,
-    UNIQUE KEY `uk_video_hls_key_token_hash` (`token_hash`, `deleted`) USING BTREE,
+    UNIQUE KEY `uk_v_` (`token_hash`, `deleted`) USING BTREE,
     INDEX `idx_video_hls_key_token_file` (`file_id`, `key_id`, `status`) USING BTREE,
     INDEX `idx_video_hls_key_token_expire` (`expire_time`) USING BTREE
 )
