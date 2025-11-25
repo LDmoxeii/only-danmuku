@@ -141,5 +141,111 @@
     "responseFields": [
       { "name": "tempPath", "type": "String" }
     ]
+  },
+  {
+    "tag": "payload",
+    "package": "video_transcode",
+    "name": "FrontGetAbrMaster",
+    "desc": "前台：获取 ABR master 路径（自动播放）",
+    "requestFields": [
+      { "name": "fileId", "type": "Long" }
+    ],
+    "responseFields": [
+      { "name": "status", "type": "String" },
+      { "name": "masterPath", "type": "String", "nullable": true }
+    ]
+  },
+  {
+    "tag": "payload",
+    "package": "video_transcode",
+    "name": "FrontListAbrVariants",
+    "desc": "前台：获取可选档位列表",
+    "requestFields": [
+      { "name": "fileId", "type": "Long" }
+    ],
+    "responseFields": [
+      { "name": "qualities", "type": "List<String>" },
+      { "name": "variantJson", "type": "String" }
+    ]
+  },
+  {
+    "tag": "payload",
+    "package": "video_transcode",
+    "name": "FrontGetAbrPlaylist",
+    "desc": "前台：获取指定档位 m3u8 路径",
+    "requestFields": [
+      { "name": "fileId", "type": "Long" },
+      { "name": "quality", "type": "String" }
+    ],
+    "responseFields": [
+      { "name": "playlistPath", "type": "String" }
+    ]
+  },
+  {
+    "tag": "payload",
+    "package": "video_transcode",
+    "name": "FrontGetAbrSegment",
+    "desc": "前台：获取指定档位 ts 片段路径",
+    "requestFields": [
+      { "name": "fileId", "type": "Long" },
+      { "name": "quality", "type": "String" },
+      { "name": "ts", "type": "String" }
+    ],
+    "responseFields": [
+      { "name": "segmentPath", "type": "String" }
+    ]
+  },
+  {
+    "tag": "payload",
+    "package": "video_transcode",
+    "name": "AdminGetAbrMaster",
+    "desc": "后台：获取 ABR master 路径（稿件态）",
+    "requestFields": [
+      { "name": "filePostId", "type": "Long" }
+    ],
+    "responseFields": [
+      { "name": "status", "type": "String" },
+      { "name": "masterPath", "type": "String", "nullable": true }
+    ]
+  },
+  {
+    "tag": "payload",
+    "package": "video_transcode",
+    "name": "AdminListAbrVariants",
+    "desc": "后台：获取可选档位列表（稿件态）",
+    "requestFields": [
+      { "name": "filePostId", "type": "Long" }
+    ],
+    "responseFields": [
+      { "name": "qualities", "type": "List<String>" },
+      { "name": "variantJson", "type": "String" }
+    ]
+  },
+  {
+    "tag": "payload",
+    "package": "video_transcode",
+    "name": "AdminGetAbrPlaylist",
+    "desc": "后台：获取指定档位 m3u8 路径（稿件态）",
+    "requestFields": [
+      { "name": "filePostId", "type": "Long" },
+      { "name": "quality", "type": "String" }
+    ],
+    "responseFields": [
+      { "name": "playlistPath", "type": "String" }
+    ]
+  },
+  {
+    "tag": "payload",
+    "package": "video_transcode",
+    "name": "AdminGetAbrSegment",
+    "desc": "后台：获取指定档位 ts 路径（稿件态）",
+    "requestFields": [
+      { "name": "filePostId", "type": "Long" },
+      { "name": "quality", "type": "String" },
+      { "name": "ts", "type": "String" }
+    ],
+    "responseFields": [
+      { "name": "segmentPath", "type": "String" }
+    ]
   }
 ]

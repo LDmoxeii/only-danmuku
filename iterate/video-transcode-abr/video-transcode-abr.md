@@ -92,13 +92,18 @@ UpdateVideoFilePostTranscodeResultCmd 回写 transfer_result 与 ABR 元数据/v
   - `ListVideoAbrVariantsQry`：查询可用清晰度档位列表。
 
 ## 六、接口与对外契约
-- 静态资源：
-  - `GET /videoResource/{fileId}/master.m3u8`
-  - `GET /videoResource/{fileId}/{quality}/index.m3u8`
-  - `GET /videoResource/{fileId}/{quality}/{ts}`
-- 后台/内部 API 可补充：
-  - `GET /api/video/abr/{fileId}`：返回 master 地址 + 可用档位（走 Query）。
-  - `POST /api/video/abr/rebuild`：允许运维重新触发 ABR 转码（调用 `GenerateVideoAbrCmd`）。本迭代先不实现前端入口。
+- 前台（发布态 fileId，POST）：
+  - `POST /api/video/abr/master`：入参 `fileId`，返回 master.m3u8 路径（自动播放用）。
+  - `POST /api/video/abr/variants`：入参 `fileId`，返回可选档位列表（quality、宽高、码率、路径）。
+  - `POST /api/video/abr/playlist`：入参 `fileId`、`quality`，返回该档位 m3u8 路径。
+  - `POST /api/video/abr/segment`：入参 `fileId`、`quality`、`ts`，返回 ts 片段路径。
+- 后台（稿件态 filePostId，POST，与前台同形）：
+  - `POST /api/admin/video/abr/master`：`filePostId` → master 路径。
+  - `POST /api/admin/video/abr/variants`：`filePostId` → 档位列表。
+  - `POST /api/admin/video/abr/playlist`：`filePostId`、`quality` → m3u8 路径。
+  - `POST /api/admin/video/abr/segment`：`filePostId`、`quality`、`ts` → ts 路径。
+- 自动播放：客户端选择“自动”时走 master（ABR）；手动指定档位时走 playlist/segment 接口。
+- 运维重触发转码本迭代不做。
 
 ## 七、交付物
 - 需求/设计文档：`iterate/video-transcode-abr/video-transcode-abr.md`
