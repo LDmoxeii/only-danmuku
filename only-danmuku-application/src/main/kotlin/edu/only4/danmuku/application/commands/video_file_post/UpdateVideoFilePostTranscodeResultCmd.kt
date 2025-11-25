@@ -32,7 +32,7 @@ object UpdateVideoFilePostTranscodeResultCmd {
                 success = request.success,
                 duration = request.duration,
                 fileSize = request.fileSize,
-                filePath = file.filePath,
+                filePath = request.outputPath ?: file.filePath,
                 failReason = request.failReason,
                 abrSourceWidth = request.sourceWidth,
                 abrSourceHeight = request.sourceHeight,
@@ -72,6 +72,7 @@ object UpdateVideoFilePostTranscodeResultCmd {
     data class Request(
         val videoFilePostId: Long,
         val success: Boolean,
+        val outputPath: String? = null,
         val sourceWidth: Int? = null,
         val sourceHeight: Int? = null,
         val sourceBitrateKbps: Int? = null,

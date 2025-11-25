@@ -37,6 +37,53 @@
     ]
   },
   {
+    "tag": "cli",
+    "package": "video_transcode",
+    "name": "MergeUploadToMp4",
+    "desc": "防腐层：合并上传分片为临时 MP4，返回相对输出目录、时长、文件大小",
+    "requestFields": [
+      { "name": "uploadId", "type": "Long" },
+      { "name": "customerId", "type": "Long" },
+      { "name": "videoId", "type": "Long" },
+      { "name": "fileIndex", "type": "Int" },
+      { "name": "tempPath", "type": "String", "nullable": true, "desc": "上传会话临时目录，可为空则按 uploadId 推导" }
+    ],
+    "responseFields": [
+      { "name": "success", "type": "Boolean", "defaultValue": "true" },
+      { "name": "outputDir", "type": "String", "desc": "相对输出目录，如 video/{customerId}/{videoId}/{fileIndex}" },
+      { "name": "mergedMp4Path", "type": "String", "desc": "合并后的 MP4 绝对路径" },
+      { "name": "duration", "type": "Int", "nullable": true },
+      { "name": "fileSize", "type": "Long", "nullable": true },
+      { "name": "failReason", "type": "String", "nullable": true }
+    ]
+  },
+  {
+    "tag": "cli",
+    "package": "video_transcode",
+    "name": "CleanupMergedMp4",
+    "desc": "防腐层：删除合并生成的临时 MP4 文件",
+    "requestFields": [
+      { "name": "mergedMp4Path", "type": "String", "desc": "待删除的临时 MP4 绝对路径" }
+    ],
+    "responseFields": [
+      { "name": "success", "type": "Boolean", "defaultValue": "true" },
+      { "name": "failReason", "type": "String", "nullable": true }
+    ]
+  },
+  {
+    "tag": "cli",
+    "package": "video_transcode",
+    "name": "CleanupTempUploadDir",
+    "desc": "防腐层：删除上传会话的临时分片目录",
+    "requestFields": [
+      { "name": "tempPath", "type": "String", "desc": "上传会话临时目录，如 temp/{session}/" }
+    ],
+    "responseFields": [
+      { "name": "success", "type": "Boolean", "defaultValue": "true" },
+      { "name": "failReason", "type": "String", "nullable": true }
+    ]
+  },
+  {
     "tag": "cmd",
     "package": "video_transcode",
     "name": "UpdateVideoFilePostTranscodeResult",
@@ -81,6 +128,18 @@
     "responseFields": [
       { "name": "qualities", "type": "List<String>" },
       { "name": "variantJson", "type": "String", "desc": "档位详情JSON" }
+    ]
+  },
+  {
+    "tag": "qry",
+    "package": "video_transcode",
+    "name": "GetUploadSessionTempPath",
+    "desc": "查询上传会话的临时目录 tempPath",
+    "requestFields": [
+      { "name": "uploadId", "type": "Long" }
+    ],
+    "responseFields": [
+      { "name": "tempPath", "type": "String" }
     ]
   }
 ]
