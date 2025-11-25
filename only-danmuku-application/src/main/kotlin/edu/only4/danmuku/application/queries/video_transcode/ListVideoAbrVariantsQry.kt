@@ -12,8 +12,7 @@ import com.only4.cap4k.ddd.core.application.query.ListQueryParam
 object ListVideoAbrVariantsQry {
 
     data class Request(
-        val videoFilePostId: Long?,
-        val videoFileId: Long?
+        val fileId: Long,
     ) : ListQueryParam<Response>
 
     data class Response(

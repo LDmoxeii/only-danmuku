@@ -12,8 +12,7 @@ import com.only4.cap4k.ddd.core.application.RequestParam
 object GetVideoAbrMasterQry {
 
     data class Request(
-        val videoFilePostId: Long?,
-        val videoFileId: Long?
+        val fileId: Long,
     ) : RequestParam<Response>
 
     data class Response(

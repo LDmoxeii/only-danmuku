@@ -56,6 +56,15 @@ interface VideoFilePost : BaseEntity {
     @Column(name = "transfer_result")
     val transferResult: TransferResult
 
+    @Column(name = "abr_source_width")
+    val abrSourceWidth: Int?
+
+    @Column(name = "abr_source_height")
+    val abrSourceHeight: Int?
+
+    @Column(name = "abr_source_bitrate_kbps")
+    val abrSourceBitrateKbps: Int?
+
     @Column(name = "duration")
     val duration: Int?
 }
