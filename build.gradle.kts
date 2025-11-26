@@ -53,6 +53,8 @@ codegen {
             "UserTypeTranslation" to "edu.only4.danmuku.adapter.domain.translation.user.UserTypeTranslation",
             "PostType" to "edu.only4.danmuku.domain.aggregates.video_post.enums.PostType",
             "PostTypeTranslation" to "edu.only4.danmuku.adapter.domain.translation.video_post.PostTypeTranslation",
+            "EncryptMethod" to "edu.only4.danmuku.domain.aggregates.video_file_post.enums.EncryptMethod",
+            "EncryptMethodTranslation" to "edu.only4.danmuku.adapter.domain.translation.video_file_post.EncryptMethodTranslation"
         ))
     }
 }

@@ -4,6 +4,7 @@ import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
 
 import edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity
+import edu.only4.danmuku.domain.aggregates.video_file_post.enums.EncryptMethod
 import edu.only4.danmuku.domain.aggregates.video_file_post.enums.EncryptStatus
 import edu.only4.danmuku.domain.aggregates.video_file_post.enums.TransferResult
 import edu.only4.danmuku.domain.aggregates.video_file_post.enums.UpdateType
@@ -27,7 +28,7 @@ import org.hibernate.annotations.Where
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2025/11/25
+ * @date 2025/11/26
  */
 @Aggregate(aggregate = "VideoFilePost", name = "VideoFilePost", root = true, type = Aggregate.TYPE_ENTITY, description = "视频文件信息，")
 @Entity
@@ -51,7 +52,7 @@ class VideoFilePost(
     abrSourceHeight: Int? = null,
     abrSourceBitrateKbps: Int? = null,
     encryptStatus: EncryptStatus = EncryptStatus.valueOf(1),
-    encryptMethod: String? = null,
+    encryptMethod: EncryptMethod = EncryptMethod.valueOf(1),
     encryptKeyId: Long? = null,
     encryptFailReason: String? = null,
     duration: Int? = null,
@@ -192,11 +193,15 @@ class VideoFilePost(
         internal set
 
     /**
-     * 加密方式，如 HLS_AES_128
-     * varchar(32)
+     * 加密方式
+     * 1:HLS_AES_128:AES-128
+     * 2:SAMPLE_AES:SAMPLE-AES
+     * 3:DRM:DRM占位
+     * int
      */
+    @Convert(converter = EncryptMethod.Converter::class)
     @Column(name = "`encrypt_method`")
-    var encryptMethod: String? = encryptMethod
+    var encryptMethod: EncryptMethod = encryptMethod
         internal set
 
     /**

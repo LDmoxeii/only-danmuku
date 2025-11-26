@@ -13,39 +13,39 @@ import jakarta.persistence.AttributeConverter
  * @author cap4k-ddd-codegen
  * @date 2025/11/26
  */
-@Aggregate(aggregate = "VideoFilePost", name = "UpdateType", type = "enum", description = "")
-enum class UpdateType(
+@Aggregate(aggregate = "VideoFilePost", name = "EncryptMethod", type = "enum", description = "")
+enum class EncryptMethod(
     @field:JsonValue
     val code: Int,
     val desc: String
 ) {
 
     /**
-     * 未知类型
+     * AES-128
      */
-    UNKNOW(0, "未知类型"),
+    HLS_AES_128(1, "AES-128"),
 
     /**
-     * 无更新
+     * SAMPLE-AES
      */
-    NO_UPDATE(1, "无更新"),
+    SAMPLE_AES(2, "SAMPLE-AES"),
 
     /**
-     * 有更新
+     * DRM占位
      */
-    HAS_UPDATE(2, "有更新"),
+    DRM(3, "DRM占位"),
     ;
 
     companion object {
-        private val enumMap: Map<Int, UpdateType> by lazy {
+        private val enumMap: Map<Int, EncryptMethod> by lazy {
             entries.associateBy { it.code }
         }
 
-        fun valueOf(value: Int?): UpdateType {
-            return valueOfOrNull(value) ?: throw KnownException("枚举类型 UpdateType 枚举值转换异常，不存在的值: $value")
+        fun valueOf(value: Int?): EncryptMethod {
+            return valueOfOrNull(value) ?: throw KnownException("枚举类型 EncryptMethod 枚举值转换异常，不存在的值: $value")
         }
 
-        fun valueOfOrNull(value: Int?): UpdateType? {
+        fun valueOfOrNull(value: Int?): EncryptMethod? {
             return enumMap[value]
         }
     }
@@ -53,13 +53,13 @@ enum class UpdateType(
     /**
      * JPA转换器
      */
-    class Converter : AttributeConverter<UpdateType, Int> {
+    class Converter : AttributeConverter<EncryptMethod, Int> {
 
-        override fun convertToDatabaseColumn(attribute: UpdateType): Int {
+        override fun convertToDatabaseColumn(attribute: EncryptMethod): Int {
             return attribute.code
         }
 
-        override fun convertToEntityAttribute(dbData: Int): UpdateType {
+        override fun convertToEntityAttribute(dbData: Int): EncryptMethod {
             return valueOf(dbData)
         }
     }

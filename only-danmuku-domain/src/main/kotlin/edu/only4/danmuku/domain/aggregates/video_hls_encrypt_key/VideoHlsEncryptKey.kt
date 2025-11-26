@@ -3,6 +3,7 @@ package edu.only4.danmuku.domain.aggregates.video_hls_encrypt_key
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 
 import edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity
+import edu.only4.danmuku.domain.aggregates.video_file_post.enums.EncryptMethod
 import edu.only4.danmuku.domain.aggregates.video_hls_encrypt_key.enums.EncryptKeyStatus
 
 import jakarta.persistence.*
@@ -19,7 +20,7 @@ import org.hibernate.annotations.Where
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2025/11/25
+ * @date 2025/11/26
  */
 @Aggregate(aggregate = "VideoHlsEncryptKey", name = "VideoHlsEncryptKey", root = true, type = Aggregate.TYPE_ENTITY, description = "视频 HLS 加密密钥")
 @Entity
@@ -36,7 +37,7 @@ class VideoHlsEncryptKey(
     keyCiphertext: String = "",
     ivHex: String? = null,
     keyVersion: Int = 1,
-    method: String = "HLS_AES_128",
+    method: EncryptMethod = EncryptMethod.valueOf(1),
     keyUriTemplate: String = "",
     expireTime: Long? = null,
     status: EncryptKeyStatus = EncryptKeyStatus.valueOf(1),
@@ -105,10 +106,14 @@ class VideoHlsEncryptKey(
 
     /**
      * 加密方式
-     * varchar(32)
+     * 1:HLS_AES_128:AES-128
+     * 2:SAMPLE_AES:SAMPLE-AES
+     * 3:DRM:DRM占位
+     * int
      */
+    @Convert(converter = EncryptMethod.Converter::class)
     @Column(name = "`method`")
-    var method: String = method
+    var method: EncryptMethod = method
         internal set
 
     /**

@@ -9,6 +9,7 @@ import edu.only4.danmuku.domain._share.meta.PredicateBuilder
 import edu.only4.danmuku.domain._share.meta.SchemaSpecification
 import edu.only4.danmuku.domain._share.meta.SubqueryConfigure
 import edu.only4.danmuku.domain.aggregates.video_file_post.VideoFilePost
+import edu.only4.danmuku.domain.aggregates.video_file_post.enums.EncryptMethod
 import edu.only4.danmuku.domain.aggregates.video_file_post.enums.EncryptStatus
 import edu.only4.danmuku.domain.aggregates.video_file_post.enums.TransferResult
 import edu.only4.danmuku.domain.aggregates.video_file_post.enums.UpdateType
@@ -494,9 +495,9 @@ class SVideoFilePost(
 
 
     /**
-     * 加密方式，如 HLS_AES_128
+     * 加密方式
      */
-    val encryptMethod: Field<String?> by lazy {
+    val encryptMethod: Field<EncryptMethod> by lazy {
         Field(root.get("encryptMethod"), criteriaBuilder)
     }
 
