@@ -3,11 +3,10 @@ package edu.only4.danmuku.application.subscribers.domain.video_file_post
 import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.application.commands.video_file_post.UpdateVideoFilePostTranscodeResultCmd
+import edu.only4.danmuku.application.distributed.clients.video_transcode.CleanupMergedMp4Cli
 import edu.only4.danmuku.application.distributed.clients.video_transcode.MergeUploadToMp4Cli
 import edu.only4.danmuku.application.distributed.clients.video_transcode.ProbeVideoResolutionCli
 import edu.only4.danmuku.application.distributed.clients.video_transcode.TranscodeVideoFileToAbrCli
-import edu.only4.danmuku.application.distributed.clients.video_transcode.CleanupMergedMp4Cli
-import edu.only4.danmuku.application.distributed.clients.video_transcode.CleanupTempUploadDirCli
 import edu.only4.danmuku.application.queries.video_transcode.GetUploadSessionTempPathQry
 import edu.only4.danmuku.domain.aggregates.video_file_post.events.VideoFilePostCreatedDomainEvent
 import org.slf4j.LoggerFactory
@@ -90,10 +89,10 @@ class VideoFilePostCreatedDomainEventSubscriber {
                 runCatching { Mediator.requests.send(CleanupMergedMp4Cli.Request(mergedMp4Path = mp4)) }
                     .onFailure { logger.warn("清理临时 MP4 失败: {}", mp4, it) }
             }
-            tempPathUsed.let { tmp ->
-                runCatching { Mediator.requests.send(CleanupTempUploadDirCli.Request(tempPath = tmp)) }
-                    .onFailure { logger.warn("清理临时目录失败: {}", tmp, it) }
-            }
+//            tempPathUsed.let { tmp ->
+//                runCatching { Mediator.requests.send(CleanupTempUploadDirCli.Request(tempPath = tmp)) }
+//                    .onFailure { logger.warn("清理临时目录失败: {}", tmp, it) }
+//            }
         }
     }
 

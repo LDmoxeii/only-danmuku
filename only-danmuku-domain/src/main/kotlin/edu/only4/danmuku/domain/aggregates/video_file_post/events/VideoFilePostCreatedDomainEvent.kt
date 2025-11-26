@@ -2,6 +2,7 @@ package edu.only4.danmuku.domain.aggregates.video_file_post.events
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import com.only4.cap4k.ddd.core.domain.event.annotation.DomainEvent
+import com.only4.cap4k.ddd.core.share.annotation.Retry
 
 import edu.only4.danmuku.domain.aggregates.video_file_post.VideoFilePost
 
@@ -13,6 +14,7 @@ import edu.only4.danmuku.domain.aggregates.video_file_post.VideoFilePost
  * @author cap4k-ddd-codegen
  * @date 2025/11/21
  */
+@Retry(retryIntervals = [10, 20, 30])
 @DomainEvent(persist = true)
 @Aggregate(
     aggregate = "VideoFilePost",

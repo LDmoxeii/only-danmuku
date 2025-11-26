@@ -1,13 +1,10 @@
 package edu.only4.danmuku.application.commands.video_file_post
 
-import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
-import edu.only4.danmuku.domain._share.meta.video_post.SVideoPost
 import edu.only4.danmuku.domain.aggregates.video_file_post.factory.VideoFilePostFactory
 import org.springframework.stereotype.Service
-import kotlin.jvm.optionals.getOrNull
 
 /**
  * 基于上传会话为稿件创建/绑定 VideoFilePost 记录（初始转码中）
@@ -21,8 +18,8 @@ object CreateVideoFilePostCmd {
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
-            Mediator.repositories.findOne(SVideoPost.predicateById(request.videoId))
-                .getOrNull() ?: throw KnownException("视频稿件不存在: ${request.videoId}")
+//            Mediator.repositories.findOne(SVideoPost.predicateById(request.videoId))
+//                .getOrNull() ?: throw KnownException("视频稿件不存在: ${request.videoId}")
 
             val file = Mediator.factories.create(
                 VideoFilePostFactory.Payload(

@@ -217,15 +217,6 @@ class VideoPost(
     }
 
     /**
-     * 初始化草稿的文件列表（用于创建阶段），并同步视频总时长。
-     * （迁移后 video_file_post 独立为聚合，此方法保留兼容性但不再重建文件列表，仅设置总时长）
-     */
-    fun initializeFilesFromUploads(customerId: Long, uploads: List<UploadSpec>) {
-        val totalDuration = uploads.sumOf { it.duration }
-        this.duration = totalDuration.coerceAtLeast(0)
-    }
-
-    /**
      * 应用基础信息变更（仅对非空字段生效）
      * @return 是否发生了基础信息变化
      */

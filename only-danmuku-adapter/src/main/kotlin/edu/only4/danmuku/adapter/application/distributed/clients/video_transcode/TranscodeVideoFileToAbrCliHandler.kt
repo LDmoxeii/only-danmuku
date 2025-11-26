@@ -1,9 +1,10 @@
 package edu.only4.danmuku.adapter.application.distributed.clients.video_transcode
 
+import cn.hutool.core.util.RuntimeUtil
 import com.only.engine.exception.KnownException
 import com.only.engine.json.misc.JsonUtils
-import com.only4.cap4k.ddd.core.application.RequestHandler
 import com.only.engine.misc.FFprobeUtils
+import com.only4.cap4k.ddd.core.application.RequestHandler
 import edu.only4.danmuku.application._share.config.properties.FileAppProperties
 import edu.only4.danmuku.application._share.constants.Constants
 import edu.only4.danmuku.application.distributed.clients.video_transcode.TranscodeVideoFileToAbrCli
@@ -41,7 +42,8 @@ class TranscodeVideoFileToAbrCliHandler(
                 throw KnownException.systemError("无法创建输出目录: ${outputDir.absolutePath}")
             }
 
-            val sourceProbe = FFprobeUtils.probeVideoResolution(sourceFile.absolutePath, showLog = fileProps.showFFmpegLog)
+            val sourceProbe =
+                FFprobeUtils.probeVideoResolution(sourceFile.absolutePath, showLog = fileProps.showFFmpegLog)
             val profiles = parseProfiles(request.profiles)
             val filteredProfiles = profiles.filter { profile ->
                 profile.height <= sourceProbe.height && profile.width > 0 && profile.height > 0
@@ -70,7 +72,7 @@ class TranscodeVideoFileToAbrCliHandler(
                     audioBitrateKbps = profile.audioBitrateKbps,
                     segmentDuration = segmentDuration
                 )
-                val stdout = executeCommand(command)
+                val stdout = execForStdout(command)
                 if (stdout.isNotBlank()) {
                     logger.debug("ffmpeg stdout ({}): {}", profile.quality, stdout.trim())
                 }
@@ -180,19 +182,44 @@ class TranscodeVideoFileToAbrCliHandler(
         )
     }
 
-    private fun executeCommand(command: List<String>): String {
-        if (command.isEmpty()) {
-            throw KnownException.illegalArgument("command")
+    fun execForStdout(commands: List<String>): String {
+        if (commands.isEmpty()) {
+            throw KnownException.illegalArgument("commands")
         }
-        val process = Runtime.getRuntime().exec(command.toTypedArray())
-        val stdout = process.inputStream.bufferedReader().readText()
-        val stderr = process.errorStream.bufferedReader().readText()
-        val exitCode = process.waitFor()
-        if (exitCode != 0) {
-            logger.error("ffmpeg exitCode={} stderr={}", exitCode, stderr.trim())
-            throw KnownException.systemError("FFmpeg 转码失败: $stderr")
+
+        var process: Process? = null
+        return try {
+            process = RuntimeUtil.exec(*commands.toTypedArray())
+            val stdout = RuntimeUtil.getResult(process)
+            val stderr = RuntimeUtil.getErrorResult(process)
+            val exitCode = process.waitFor()
+
+            val commandLine = commands.joinToString(" ")
+            logger.debug("FFmpeg command executed: {} (exitCode={})", commandLine, exitCode)
+            if (stderr.isNotBlank()) {
+                logger.debug("FFmpeg stderr: {}", stderr.trim())
+            }
+            if (exitCode != 0) {
+                val message = buildString {
+                    append("FFmpeg 命令执行失败 (exitCode=").append(exitCode).append(")")
+                    if (stderr.isNotBlank()) {
+                        append(": ").append(stderr.trim())
+                    }
+                }
+                throw KnownException.systemError(message)
+            }
+
+            stdout
+        } catch (e: InterruptedException) {
+            Thread.currentThread().interrupt()
+            throw KnownException.systemError(e)
+        } catch (e: KnownException) {
+            throw e
+        } catch (e: Exception) {
+            throw KnownException.systemError(e)
+        } finally {
+            process?.destroy()
         }
-        return stdout
     }
 
     private fun writeMasterPlaylist(outputDir: File, variants: List<AbrVariantOutput>) {

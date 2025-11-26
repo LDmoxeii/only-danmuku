@@ -28,8 +28,8 @@ class GetVideoAbrMasterQryHandler(
             select(table.transferResult, table.filePath)
         }.fetchOneOrNull()
 
-        val status = row?.first?.name ?: "UNKNOW"
-        val masterPath = row?.second?.let { "$it/master.m3u8" }
+        val status = row?._1?.name ?: "UNKNOW"
+        val masterPath = row?._2?.let { "$it/master.m3u8" }
         return GetVideoAbrMasterQry.Response(status = status, masterPath = masterPath)
     }
 }

@@ -237,14 +237,6 @@ class VideoFilePost(
     }
 
     /**
-     * 标记转码开始
-     */
-    fun startTransfer() {
-        this.transferResult = TransferResult.TRANSCODING
-        this.updateType = UpdateType.HAS_UPDATE
-    }
-
-    /**
      * 标记转码成功并更新文件信息
      *
      * @param duration 视频时长(秒)
@@ -267,38 +259,6 @@ class VideoFilePost(
         this.transferResult = TransferResult.FAILED
         this.updateType = UpdateType.HAS_UPDATE
         events().attach(this) { VideoFilePostTranscodeResultUpdatedDomainEvent(this) }
-    }
-
-    /**
-     * 更新文件基本信息
-     *
-     * @param fileName 文件名
-     * @param fileSize 文件大小
-     */
-    fun updateFileInfo(fileName: String?, fileSize: Long?) {
-        fileName?.let { this.fileName = it }
-        fileSize?.let { this.fileSize = it }
-    }
-
-    /**
-     * 检查是否正在转码中
-     */
-    fun isTranscoding(): Boolean {
-        return this.transferResult == TransferResult.TRANSCODING
-    }
-
-    /**
-     * 检查转码是否成功
-     */
-    fun isTransferSuccess(): Boolean {
-        return this.transferResult == TransferResult.SUCCESS
-    }
-
-    /**
-     * 检查转码是否失败
-     */
-    fun isTransferFailed(): Boolean {
-        return this.transferResult == TransferResult.FAILED
     }
 
     fun onCreate() {
@@ -336,8 +296,6 @@ class VideoFilePost(
             markTransferFailed(failReason)
         }
     }
-
-    // UploadSpec / BuildResult / buildFromUploads 迁移至 VideoPost
 
     // 【行为方法结束】
 }

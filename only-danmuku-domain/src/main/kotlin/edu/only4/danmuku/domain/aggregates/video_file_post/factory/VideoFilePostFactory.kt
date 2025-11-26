@@ -37,7 +37,7 @@ class VideoFilePostFactory : AggregateFactory<VideoFilePostFactory.Payload, Vide
             duration = payload.duration,
             transferResult = TransferResult.TRANSCODING,
             updateType = UpdateType.HAS_UPDATE
-        ).also { it.onCreate() }
+        )
     }
 
     @Aggregate(

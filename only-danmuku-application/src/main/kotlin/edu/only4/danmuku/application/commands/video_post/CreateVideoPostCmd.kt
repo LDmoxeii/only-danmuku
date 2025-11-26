@@ -48,14 +48,7 @@ object CreateVideoPostCmd {
         val tags: String? = null,
         val introduction: String? = null,
         val interaction: String?,
-        val uploadFileList: List<VideoFileInfo> = emptyList(),
     ) : RequestParam<Response>
-
-    data class VideoFileInfo(
-        val uploadId: Long,
-        val fileIndex: Int,
-        val fileName: String,
-    )
 
     data class Response(
         val videoId: Long,
