@@ -12,8 +12,10 @@ import com.only4.cap4k.ddd.core.application.RequestParam
 object GenerateVideoHlsKeyCli {
 
     data class Request(
-        val quality: String?,
-        val method: String = HLS_AES_128,
+        val videoFilePostId: Long? = null,
+        val videoFileId: Long? = null,
+        val quality: String? = null,
+        val method: Int = 1,
         val keyBytes: Int = 16
     ) : RequestParam<Response>
 

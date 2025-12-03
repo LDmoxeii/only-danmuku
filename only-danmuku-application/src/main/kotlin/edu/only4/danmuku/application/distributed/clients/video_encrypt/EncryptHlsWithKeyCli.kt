@@ -12,19 +12,21 @@ import com.only4.cap4k.ddd.core.application.RequestParam
 object EncryptHlsWithKeyCli {
 
     data class Request(
+        val videoFilePostId: Long? = null,
+        val videoFileId: Long? = null,
         val sourceDir: String,
         val outputDir: String,
         val keyId: String,
-        val quality: String?,
+        val quality: String? = null,
         val keyPlainHex: String,
-        val ivHex: String?,
-        val segmentExt: String = .ts.enc
+        val ivHex: String? = null,
+        val segmentExt: String = ".ts.enc"
     ) : RequestParam<Response>
 
     data class Response(
         val success: Boolean = true,
         val encryptedMasterPath: String,
-        val encryptedVariants: String,
-        val failReason: String?
+        val encryptedVariants: String = "[]",
+        val failReason: String? = null
     )
 }

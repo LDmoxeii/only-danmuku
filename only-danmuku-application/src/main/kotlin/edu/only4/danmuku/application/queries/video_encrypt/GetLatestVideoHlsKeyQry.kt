@@ -12,7 +12,8 @@ import com.only4.cap4k.ddd.core.application.RequestParam
 object GetLatestVideoHlsKeyQry {
 
     data class Request(
-        val fileId: Long
+        val videoFilePostId: Long? = null,
+        val videoFileId: Long? = null
     ) : RequestParam<Response>
 
     data class Response(

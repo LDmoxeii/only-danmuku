@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.queries._share.model
 
+import edu.only4.danmuku.domain.aggregates.video_file_post.enums.EncryptMethod
+import edu.only4.danmuku.domain.aggregates.video_file_post.enums.EncryptStatus
 import edu.only4.danmuku.domain.aggregates.video_file_post.enums.TransferResult
 import edu.only4.danmuku.domain.aggregates.video_file_post.enums.UpdateType
 import org.babyfish.jimmer.sql.Column
@@ -67,4 +69,22 @@ interface VideoFilePost : BaseEntity {
 
     @Column(name = "duration")
     val duration: Int?
+
+    /**
+     * 加密状态 @E=1:UNENCRYPTED:未加密|2:ENCRYPTING:加密中|3:ENCRYPTED:已加密|4:FAILED:失败;@T=EncryptStatus
+     */
+    @Column(name = "encrypt_status")
+    val encryptStatus: EncryptStatus
+
+    /**
+     * 加密方式 @E=1:HLS_AES_128:AES-128|2:SAMPLE_AES:SAMPLE-AES|3:DRM:DRM占位;@T=EncryptMethod
+     */
+    @Column(name = "encrypt_method")
+    val encryptMethod: EncryptMethod
+
+    @Column(name = "encrypt_key_id")
+    val encryptKeyId: Long?
+
+    @Column(name = "encrypt_fail_reason")
+    val encryptFailReason: String?
 }

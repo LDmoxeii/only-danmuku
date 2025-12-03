@@ -12,6 +12,7 @@ import com.only4.cap4k.ddd.core.application.RequestParam
 object RotateVideoHlsKeyCli {
 
     data class Request(
+        val videoFilePostId: Long,
         val reason: String?
     ) : RequestParam<Response>
 

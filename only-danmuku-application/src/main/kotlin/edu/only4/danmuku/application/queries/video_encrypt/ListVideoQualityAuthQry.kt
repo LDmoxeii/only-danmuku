@@ -12,7 +12,8 @@ import com.only4.cap4k.ddd.core.application.query.ListQueryParam
 object ListVideoQualityAuthQry {
 
     data class Request(
-        val fileId: Long
+        val videoFilePostId: Long? = null,
+        val videoFileId: Long? = null
     ) : ListQueryParam<Response>
 
     data class Response(
