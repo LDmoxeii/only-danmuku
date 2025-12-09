@@ -1,12 +1,14 @@
 [
   {
-    "tag": "cli",
+    "tag": "cmd",
     "package": "video_encrypt",
     "name": "GenerateVideoHlsKey",
-    "desc": "防腐层：向 KMS 申请随机 AES-128 key + IV，生成 keyId/keyUri 占位",
+    "desc": "向 KMS 申请随机 AES-128 key + IV，生成 keyId/keyUri 占位",
     "requestFields": [
+      { "name": "videoFilePostId", "type": "Long", "desc": "视频稿件分PId" },
+      { "name": "videoFileId", "type": "Long", "desc": "视频分PId" },
       { "name": "quality", "type": "String", "nullable": true, "desc": "可选：绑定到指定清晰度" },
-      { "name": "method", "type": "String", "defaultValue": "HLS_AES_128" },
+      { "name": "method", "type": "String", "defaultValue": "\"HLS_AES_128\"" },
       { "name": "keyBytes", "type": "Int", "defaultValue": "16", "desc": "密钥长度（字节）" }
     ],
     "responseFields": [
@@ -29,7 +31,7 @@
       { "name": "quality", "type": "String", "nullable": true, "desc": "可选：仅加密指定 quality" },
       { "name": "keyPlainHex", "type": "String", "desc": "KMS 解密后的16字节 key，调用方负责安全传递" },
       { "name": "ivHex", "type": "String", "nullable": true },
-      { "name": "segmentExt", "type": "String", "defaultValue": ".ts.enc" }
+      { "name": "segmentExt", "type": "String", "defaultValue": "\".ts.enc\"" }
     ],
     "responseFields": [
       { "name": "success", "type": "Boolean", "defaultValue": "true" },
@@ -39,11 +41,13 @@
     ]
   },
   {
-    "tag": "cli",
+    "tag": "cmd",
     "package": "video_encrypt",
     "name": "RotateVideoHlsKey",
-    "desc": "防腐层：触发新密钥生成与 m3u8 重写（可重用 EncryptHlsWithKey），用于密钥轮换",
+    "desc": "触发新密钥生成与 m3u8 重写（可重用 EncryptHlsWithKey），用于密钥轮换",
     "requestFields": [
+      { "name": "videoFilePostId", "type": "Long", "desc": "视频稿件分PId" },
+      { "name": "videoFileId", "type": "Long", "desc": "视频分PId" },
       { "name": "reason", "type": "String", "nullable": true }
     ],
     "responseFields": [

@@ -84,26 +84,6 @@
     ]
   },
   {
-    "tag": "cmd",
-    "package": "video_transcode",
-    "name": "UpdateVideoFilePostTranscodeResult",
-    "desc": "根据多路转码结果更新 VideoFilePost 状态并写入 ABR 元数据与档位",
-    "requestFields": [
-      { "name": "videoFilePostId", "type": "Long" },
-      { "name": "success", "type": "Boolean" },
-      { "name": "sourceWidth", "type": "Int", "nullable": true },
-      { "name": "sourceHeight", "type": "Int", "nullable": true },
-      { "name": "sourceBitrateKbps", "type": "Int", "nullable": true },
-      { "name": "variants", "type": "String", "desc": "档位列表JSON，含quality/宽高/码率/路径，来自 TranscodeVideoFileToAbrCli 响应，将拆分落地 video_hls_abr_variant" },
-      { "name": "duration", "type": "Int", "nullable": true },
-      { "name": "fileSize", "type": "Long", "nullable": true },
-      { "name": "failReason", "type": "String", "nullable": true }
-    ],
-    "responseFields": [
-      { "name": "transferResult", "type": "Int" }
-    ]
-  },
-  {
     "tag": "qry",
     "package": "video_transcode",
     "name": "GetVideoAbrMaster",
