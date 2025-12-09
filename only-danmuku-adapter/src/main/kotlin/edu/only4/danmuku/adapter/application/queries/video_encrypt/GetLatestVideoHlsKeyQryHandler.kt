@@ -43,7 +43,6 @@ class GetLatestVideoHlsKeyQryHandler(
             where(table.fileId eq filePostId)
             where(table.status eq EncryptKeyStatus.ACTIVE)
             orderBy(table.keyVersion.desc())
-            limit(1)
             select(table)
         }.fetchOneOrNull()
 

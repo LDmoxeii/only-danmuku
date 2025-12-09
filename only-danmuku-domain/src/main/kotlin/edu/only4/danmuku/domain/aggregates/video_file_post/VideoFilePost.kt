@@ -299,7 +299,7 @@ class VideoFilePost(
 
     fun applyEncryptResult(
         success: Boolean,
-        method: edu.only4.danmuku.domain.aggregates.video_file_post.enums.EncryptMethod,
+        method: EncryptMethod,
         keyDbId: Long?,
         failReason: String?,
     ) {
@@ -307,7 +307,7 @@ class VideoFilePost(
         this.encryptKeyId = keyDbId
         this.encryptFailReason = failReason
         this.encryptStatus =
-            if (success) edu.only4.danmuku.domain.aggregates.video_file_post.enums.EncryptStatus.ENCRYPTED else edu.only4.danmuku.domain.aggregates.video_file_post.enums.EncryptStatus.FAILED
+            if (success) EncryptStatus.ENCRYPTED else EncryptStatus.FAILED
     }
 
     // 【行为方法结束】

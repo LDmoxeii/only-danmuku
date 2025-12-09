@@ -1,18 +1,7 @@
 package edu.only4.danmuku.adapter.application.queries.video_encrypt
 
 import com.only4.cap4k.ddd.core.application.query.Query
-import edu.only4.danmuku.application.queries._share.model.VideoFile
-import edu.only4.danmuku.application.queries._share.model.VideoFilePost
-import edu.only4.danmuku.application.queries._share.model.VideoHlsEncryptKey
-import edu.only4.danmuku.application.queries._share.model.encryptKeyId
-import edu.only4.danmuku.application.queries._share.model.encryptMethod
-import edu.only4.danmuku.application.queries._share.model.encryptStatus
-import edu.only4.danmuku.application.queries._share.model.filePath
-import edu.only4.danmuku.application.queries._share.model.id
-import edu.only4.danmuku.application.queries._share.model.keyId
-import edu.only4.danmuku.application.queries._share.model.keyVersion
-import edu.only4.danmuku.application.queries._share.model.quality
-import edu.only4.danmuku.application.queries._share.model.videoFilePostId
+import edu.only4.danmuku.application.queries._share.model.*
 import edu.only4.danmuku.application.queries.video_encrypt.GetVideoEncryptStatusQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.eq

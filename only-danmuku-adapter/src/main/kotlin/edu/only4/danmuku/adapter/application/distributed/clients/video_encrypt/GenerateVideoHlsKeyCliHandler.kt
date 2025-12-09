@@ -24,7 +24,7 @@ import java.util.UUID
 class GenerateVideoHlsKeyCliHandler : RequestHandler<GenerateVideoHlsKeyCli.Request, GenerateVideoHlsKeyCli.Response> {
     override fun exec(request: GenerateVideoHlsKeyCli.Request): GenerateVideoHlsKeyCli.Response {
         val fileId = request.videoFilePostId ?: request.videoFileId
-            ?: throw KnownException.illegalArgument("videoFilePostId")
+        ?: throw KnownException.illegalArgument("videoFilePostId")
         val method = EncryptMethod.valueOfOrNull(request.method)
             ?: throw KnownException.illegalArgument("method")
 
@@ -72,7 +72,7 @@ class GenerateVideoHlsKeyCliHandler : RequestHandler<GenerateVideoHlsKeyCli.Requ
                 schema.allNotNull(
                     schema.fileId.eq(fileId),
                     quality?.let { schema.quality.eq(it) }
-                )
+                )!!
             }
         )
         val maxVersion = keys.maxOfOrNull { it.keyVersion } ?: 0
