@@ -45,6 +45,18 @@ flowchart TB
     E5["VideoFilePostTranscodeResultUpdatedDomainEvent"]
     class E5 domainevent;
 
+    %% 加密密钥生成与加密编排
+    C7["GenerateVideoHlsKeyCmd"]
+    class C7 command;
+    E7["VideoHlsEncryptKeyCreatedDomainEvent"]
+    class E7 domainevent;
+    CLI2["EncryptHlsWithKeyCli"]
+    class CLI2 command;
+    C8["PersistVideoEncryptResultCmd"]
+    class C8 command;
+    A7["VideoFilePost.applyEncryptResult"]
+    class A7 entitymethod;
+
     %% 汇总稿件状态
     C6["RefreshVideoPostTranscodeStatusCmd"]
     class C6 command;
@@ -70,6 +82,9 @@ flowchart TB
     E4 --> C6
     N1 -->|更新后显式刷新| C6
     C6 --> A6 --> E6
+
+    %% 转码成功后触发加密
+    E5 --> C7 --> E7 --> CLI2 --> C8 --> A7
 
     %% Styles
     classDef controller fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,font-weight:bold;
