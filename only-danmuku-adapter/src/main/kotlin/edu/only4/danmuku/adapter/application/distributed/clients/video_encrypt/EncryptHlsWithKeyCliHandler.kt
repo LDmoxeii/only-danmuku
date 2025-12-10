@@ -38,10 +38,14 @@ class EncryptHlsWithKeyCliHandler(
                 throw KnownException.systemError("源目录不存在: $sourceDir")
             }
             val output = File(outputDir)
-            if (output.exists()) {
+            val existingVariants = listExistingVariants(output)
+            val isFullEncrypt = request.quality.isNullOrBlank()
+            if (isFullEncrypt && output.exists()) {
                 output.deleteRecursively()
             }
-            output.mkdirs()
+            if (!output.exists()) {
+                output.mkdirs()
+            }
 
             val qualities = mutableListOf<VariantInfo>()
             val keyBytes = hexToBytes(request.keyPlainHex).also { if (it.size != 16) throw KnownException.illegalArgument("keyPlainHex") }
@@ -56,6 +60,9 @@ class EncryptHlsWithKeyCliHandler(
                 if (!playlistFile.exists()) return@forEach
 
                 val targetDir = File(output, dir.name)
+                if (targetDir.exists()) {
+                    targetDir.deleteRecursively()
+                }
                 targetDir.mkdirs()
 
                 // 使用 ffmpeg 对单档位进行加密重切片
@@ -88,7 +95,8 @@ class EncryptHlsWithKeyCliHandler(
 
             val master = File(source, "master.m3u8")
             if (master.exists()) {
-                rewriteMaster(master, File(output, "master.m3u8"), qualities.map { it.playlistPath }.toSet())
+                val kept = existingVariants + qualities.map { it.playlistPath }
+                rewriteMaster(master, File(output, "master.m3u8"), kept.toSet())
             }
 
             val variantsJson = JsonUtils.toJsonString(qualities) ?: "[]"
@@ -241,6 +249,14 @@ class EncryptHlsWithKeyCliHandler(
             }
             Files.deleteIfExists(dir)
         }
+    }
+
+    private fun listExistingVariants(output: File): Set<String> {
+        if (!output.exists() || !output.isDirectory) return emptySet()
+        return output.listFiles { f -> f.isDirectory && File(f, "index.m3u8").exists() }
+            ?.map { "${it.name}/index.m3u8" }
+            ?.toSet()
+            ?: emptySet()
     }
 
     /**
