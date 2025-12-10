@@ -6,8 +6,8 @@ import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
 import edu.only4.danmuku.domain._share.meta.video_hls_encrypt_key.SVideoHlsEncryptKey
 import edu.only4.danmuku.domain.aggregates.video_file_post.enums.EncryptMethod
-import edu.only4.danmuku.domain.aggregates.video_hls_encrypt_key.VideoHlsEncryptKey
 import edu.only4.danmuku.domain.aggregates.video_hls_encrypt_key.enums.EncryptKeyStatus
+import edu.only4.danmuku.domain.aggregates.video_hls_encrypt_key.factory.VideoHlsEncryptKeyFactory
 
 import org.springframework.stereotype.Service
 import java.security.SecureRandom
@@ -38,8 +38,8 @@ object GenerateVideoHlsKeyCmd {
             val nextVersion = nextKeyVersion(fileId, request.quality)
             val keyUriTemplate = "/video/enc/key?keyId=$keyId&token=__TOKEN__"
 
-            Mediator.uow.persist(
-                VideoHlsEncryptKey(
+            Mediator.factories.create(
+                VideoHlsEncryptKeyFactory.Payload(
                     fileId = fileId,
                     quality = request.quality,
                     keyId = keyId,

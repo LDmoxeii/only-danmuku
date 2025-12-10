@@ -153,4 +153,10 @@ class VideoHlsEncryptKey(
         internal set
 
     // 【字段映射结束】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
+
+    // 【行为方法开始】
+    fun onCreate() {
+        // 预留生命周期钩子（如需触发事件/审计扩展）
+    }
+    // 【行为方法结束】
 }

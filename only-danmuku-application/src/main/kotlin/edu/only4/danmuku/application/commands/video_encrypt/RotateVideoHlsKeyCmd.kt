@@ -5,8 +5,8 @@ import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
 import edu.only4.danmuku.domain._share.meta.video_hls_encrypt_key.SVideoHlsEncryptKey
-import edu.only4.danmuku.domain.aggregates.video_hls_encrypt_key.VideoHlsEncryptKey
 import edu.only4.danmuku.domain.aggregates.video_hls_encrypt_key.enums.EncryptKeyStatus
+import edu.only4.danmuku.domain.aggregates.video_hls_encrypt_key.factory.VideoHlsEncryptKeyFactory
 import org.springframework.stereotype.Service
 import java.security.SecureRandom
 import java.util.*
@@ -34,8 +34,8 @@ object RotateVideoHlsKeyCmd {
                 val ivHex = ByteArray(16).also { SecureRandom().nextBytes(it) }.joinToString("") { b -> "%02x".format(b) }
                 val keyId = UUID.randomUUID().toString()
 
-                Mediator.uow.persist(
-                    VideoHlsEncryptKey(
+                Mediator.factories.create(
+                    VideoHlsEncryptKeyFactory.Payload(
                         fileId = latest.fileId,
                         quality = latest.quality,
                         keyId = keyId,
