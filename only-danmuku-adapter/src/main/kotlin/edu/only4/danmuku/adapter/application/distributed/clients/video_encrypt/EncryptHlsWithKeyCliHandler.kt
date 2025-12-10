@@ -27,6 +27,7 @@ class EncryptHlsWithKeyCliHandler(
     private val fileProps: FileAppProperties,
 ) : RequestHandler<EncryptHlsWithKeyCli.Request, EncryptHlsWithKeyCli.Response> {
     private val logger = LoggerFactory.getLogger(javaClass)
+    private val defaultEncryptQualities = setOf("720p", "1080p")
 
     override fun exec(request: EncryptHlsWithKeyCli.Request): EncryptHlsWithKeyCli.Response {
         return runCatching {
@@ -45,10 +46,12 @@ class EncryptHlsWithKeyCliHandler(
             val qualities = mutableListOf<VariantInfo>()
             val keyBytes = hexToBytes(request.keyPlainHex).also { if (it.size != 16) throw KnownException.illegalArgument("keyPlainHex") }
             val ivHex = resolveIvHex(request.ivHex)
+            val playlistDurationSec = detectSegmentDuration(source)
 
             source.listFiles { file -> file.isDirectory }?.forEach { dir ->
                 if (dir.name == "enc") return@forEach
-                if (!request.quality.isNullOrBlank() && dir.name != request.quality) return@forEach
+                val targetQualities = if (request.quality.isNullOrBlank()) defaultEncryptQualities else setOf(request.quality)
+                if (targetQualities.isNotEmpty() && !targetQualities.contains(dir.name)) return@forEach
                 val playlistFile = File(dir, "index.m3u8")
                 if (!playlistFile.exists()) return@forEach
 
@@ -57,13 +60,15 @@ class EncryptHlsWithKeyCliHandler(
 
                 // 使用 ffmpeg 对单档位进行加密重切片
                 val keyInfo = buildKeyInfoFile(keyBytes, ivHex, request.keyId)
-                val segmentPattern = File(targetDir, "seg_%05d${request.segmentExt}").absolutePath
+                val segmentPattern = "seg_%05d${request.segmentExt}"
                 val targetPlaylist = File(targetDir, "index.m3u8").absolutePath
                 val stdout = runFfmpegEncrypt(
                     inputM3u8 = playlistFile.absolutePath,
                     keyInfoPath = keyInfo.toAbsolutePath().toString(),
                     segmentPattern = segmentPattern,
-                    targetPlaylist = targetPlaylist
+                    targetPlaylist = targetPlaylist,
+                    workDir = targetDir,
+                    segmentDuration = playlistDurationSec
                 )
                 if (stdout.isNotBlank()) {
                     logger.debug("ffmpeg encrypt stdout ({}): {}", dir.name, stdout.trim())
@@ -83,7 +88,7 @@ class EncryptHlsWithKeyCliHandler(
 
             val master = File(source, "master.m3u8")
             if (master.exists()) {
-                Files.copy(master.toPath(), File(output, "master.m3u8").toPath(), StandardCopyOption.REPLACE_EXISTING)
+                rewriteMaster(master, File(output, "master.m3u8"), qualities.map { it.playlistPath }.toSet())
             }
 
             val variantsJson = JsonUtils.toJsonString(qualities) ?: "[]"
@@ -123,23 +128,27 @@ class EncryptHlsWithKeyCliHandler(
         return ivHex?.takeIf { it.isNotBlank() } ?: "00000000000000000000000000000000"
     }
 
-    private fun execForStdout(commands: List<String>): String {
+    private fun execForStdout(commands: List<String>, workDir: File? = null): String {
         if (commands.isEmpty()) {
             throw KnownException.illegalArgument("commands")
         }
 
         var process: Process? = null
         return try {
-            process = RuntimeUtil.exec(*commands.toTypedArray())
+            val pb = ProcessBuilder(commands)
+            if (workDir != null) {
+                pb.directory(workDir)
+            }
+            process = pb.redirectErrorStream(true).start()
             val stdout = RuntimeUtil.getResult(process)
             val stderr = RuntimeUtil.getErrorResult(process)
             val exitCode = process.waitFor()
 
-            val commandLine = commands.joinToString(" ")
-            logger.debug("FFmpeg command executed: {} (exitCode={})", commandLine, exitCode)
-            if (stderr.isNotBlank()) {
-                logger.debug("FFmpeg stderr: {}", stderr.trim())
-            }
+        val commandLine = commands.joinToString(" ")
+        logger.debug("FFmpeg command executed: {} (exitCode={})", commandLine, exitCode)
+        if (stderr.isNotBlank()) {
+            logger.debug("FFmpeg stderr: {}", stderr.trim())
+        }
             if (exitCode != 0) {
                 val message = buildString {
                     append("FFmpeg 命令执行失败 (exitCode=").append(exitCode).append(")")
@@ -197,21 +206,28 @@ class EncryptHlsWithKeyCliHandler(
         return keyInfoPath
     }
 
-    private fun runFfmpegEncrypt(inputM3u8: String, keyInfoPath: String, segmentPattern: String, targetPlaylist: String): String {
+    private fun runFfmpegEncrypt(
+        inputM3u8: String,
+        keyInfoPath: String,
+        segmentPattern: String,
+        targetPlaylist: String,
+        workDir: File,
+        segmentDuration: Int
+    ): String {
         val cmd = listOf(
             "ffmpeg",
             "-y",
             "-i", inputM3u8,
             "-c", "copy",
             "-f", "hls",
-            "-hls_time", "4",
+            "-hls_time", segmentDuration.toString(),
             "-hls_playlist_type", "vod",
             "-hls_flags", "independent_segments",
             "-hls_key_info_file", keyInfoPath,
             "-hls_segment_filename", segmentPattern,
             targetPlaylist
         )
-        return execForStdout(cmd)
+        return execForStdout(cmd, workDir)
     }
 
     private fun countSegments(dir: File, segmentExt: String): Int {
@@ -225,5 +241,51 @@ class EncryptHlsWithKeyCliHandler(
             }
             Files.deleteIfExists(dir)
         }
+    }
+
+    /**
+     * 读取源 master，保留与已加密变体匹配的流条目，写入新的 master
+     */
+    private fun rewriteMaster(sourceMaster: File, targetMaster: File, allowedPlaylists: Set<String>) {
+        val lines = sourceMaster.readLines()
+        val builder = StringBuilder()
+        builder.appendLine("#EXTM3U")
+        builder.appendLine("#EXT-X-VERSION:3")
+        var i = 0
+        while (i < lines.size) {
+            val line = lines[i]
+            if (line.startsWith("#EXT-X-STREAM-INF")) {
+                val next = lines.getOrNull(i + 1)
+                if (next != null && allowedPlaylists.contains(next.trim())) {
+                    builder.appendLine(line)
+                    builder.appendLine(next.trim())
+                }
+                i += 2
+                continue
+            }
+            i++
+        }
+        targetMaster.writeText(builder.toString())
+    }
+
+    /**
+     * 从源目录中探测分片时长，默认取首个 EXTINF，失败回退 4s
+     */
+    private fun detectSegmentDuration(sourceDir: File): Int {
+        val master = File(sourceDir, "master.m3u8")
+        val variant = sourceDir.listFiles { f -> f.isDirectory }?.firstOrNull { File(it, "index.m3u8").exists() }
+        val playlist = if (variant != null) File(variant, "index.m3u8") else null
+        val file = when {
+            playlist?.exists() == true -> playlist
+            master.exists() -> master
+            else -> null
+        } ?: return 4
+        return file.useLines { seq ->
+            seq.firstOrNull { it.startsWith("#EXTINF:") }
+                ?.removePrefix("#EXTINF:")
+                ?.substringBefore(",")
+                ?.toDoubleOrNull()
+                ?.let { if (it > 0) it else null }
+        }?.toInt() ?: 4
     }
 }
