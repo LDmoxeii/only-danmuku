@@ -4,7 +4,6 @@ import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
-import edu.only4.danmuku.application.distributed.clients.video_encrypt.GenerateVideoHlsKeyCli
 import edu.only4.danmuku.domain._share.meta.video_hls_encrypt_key.SVideoHlsEncryptKey
 import edu.only4.danmuku.domain.aggregates.video_file_post.enums.EncryptMethod
 import edu.only4.danmuku.domain.aggregates.video_hls_encrypt_key.VideoHlsEncryptKey
@@ -28,7 +27,7 @@ object GenerateVideoHlsKeyCmd {
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
             val fileId = request.videoFilePostId ?: request.videoFileId
-            ?: throw KnownException.illegalArgument("videoFilePostId")
+                ?: throw KnownException.illegalArgument("videoFilePostId")
             val method = EncryptMethod.valueOfOrNull(request.method)
                 ?: throw KnownException.illegalArgument("method")
 
@@ -86,10 +85,10 @@ object GenerateVideoHlsKeyCmd {
     }
 
     data class Request(
-        val videoFilePostId: Long,
-        val videoFileId: Long,
-        val quality: String?,
-        val method: String = "HLS_AES_128",
+        val videoFilePostId: Long? = null,
+        val videoFileId: Long? = null,
+        val quality: String? = null,
+        val method: Int = 1,
         val keyBytes: Int = 16
     ) : RequestParam<Response>
 

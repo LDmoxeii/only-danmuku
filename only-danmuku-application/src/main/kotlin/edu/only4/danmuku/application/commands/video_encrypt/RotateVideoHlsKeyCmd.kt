@@ -67,7 +67,7 @@ object RotateVideoHlsKeyCmd {
 
     data class Request(
         val videoFilePostId: Long,
-        val videoFileId: Long,
+        val videoFileId: Long? = null,
         val reason: String?
     ) : RequestParam<Response>
 
