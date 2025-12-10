@@ -20,6 +20,23 @@
     ]
   },
   {
+    "tag": "event",
+    "package": "video_encrypt",
+    "name": "VideoHlsEncryptKeyCreated",
+    "desc": "视频 HLS 加密密钥创建事件，驱动后续加密编排",
+    "requestFields": [
+      { "name": "fileId", "type": "Long", "desc": "视频稿件分PId" },
+      { "name": "quality", "type": "String", "nullable": true, "desc": "绑定清晰度，空表示全局" },
+      { "name": "keyId", "type": "String" },
+      { "name": "keyVersion", "type": "Int" },
+      { "name": "method", "type": "String", "desc": "加密方式枚举" },
+      { "name": "keyCiphertextBase64", "type": "String", "desc": "KMS 加密后的密钥密文" },
+      { "name": "ivHex", "type": "String", "nullable": true },
+      { "name": "keyUriTemplate", "type": "String", "desc": "m3u8 中写入的 URI 模板" }
+    ],
+    "responseFields": []
+  },
+  {
     "tag": "cli",
     "package": "video_encrypt",
     "name": "EncryptHlsWithKey",

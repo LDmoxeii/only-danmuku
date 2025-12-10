@@ -9,10 +9,12 @@ import edu.only4.danmuku.adapter.portal.api.payload.video_encrypt.AdminGetEncMas
 import edu.only4.danmuku.adapter.portal.api.payload.video_encrypt.AdminGetEncSegment
 import edu.only4.danmuku.adapter.portal.api.payload.video_encrypt.AdminGetEncVariantPlaylist
 import edu.only4.danmuku.adapter.portal.api.payload.video_encrypt.AdminIssueEncToken
+import edu.only4.danmuku.adapter.portal.api.payload.video_encrypt.AdminRotateEncKey
 import edu.only4.danmuku.application._share.config.properties.FileAppProperties
 import edu.only4.danmuku.application._share.constants.Constants
 import edu.only4.danmuku.application.commands.video_encrypt.ConsumeVideoHlsKeyTokenCmd
 import edu.only4.danmuku.application.commands.video_encrypt.IssueVideoHlsKeyTokenCmd
+import edu.only4.danmuku.application.commands.video_encrypt.RotateVideoHlsKeyCmd
 import edu.only4.danmuku.application.queries.video_encrypt.GetLatestVideoHlsKeyQry
 import edu.only4.danmuku.application.queries.video_encrypt.GetVideoEncryptStatusQry
 import edu.only4.danmuku.application.queries.video_transcode.GetVideoFilePostPathQry
@@ -53,6 +55,21 @@ class VideoEncryptAdminController(
             token = resp.token,
             expireAt = resp.expireAt,
             allowedQualities = resp.allowedQualities
+        )
+    }
+
+    @PostMapping("/rotateKey")
+    fun rotateKey(@RequestBody req: AdminRotateEncKey.Request): AdminRotateEncKey.Response {
+        val resp = Mediator.commands.send(
+            RotateVideoHlsKeyCmd.Request(
+                videoFilePostId = req.filePostId,
+                videoFileId = null,
+                reason = req.reason
+            )
+        )
+        return AdminRotateEncKey.Response(
+            newKeyVersion = resp.newKeyVersion,
+            failReason = resp.failReason
         )
     }
 
