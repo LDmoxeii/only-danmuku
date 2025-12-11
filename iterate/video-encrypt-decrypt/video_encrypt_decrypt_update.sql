@@ -1,7 +1,7 @@
 -- 1) video_file_post：加密状态与密钥关联
 ALTER TABLE `video_file_post`
-    ADD COLUMN `encrypt_status`      int(11)      NOT NULL DEFAULT 1 COMMENT '加密状态@E=1:UNENCRYPTED:未加密|2:ENCRYPTING:加密中|3:ENCRYPTED:已加密|4:FAILED:失败;@T=EncryptStatus' AFTER `abr_source_bitrate_kbps`,
-    ADD COLUMN `encrypt_method`      int(11)      NOT NULL DEFAULT 1 COMMENT '加密方式@E=1:HLS_AES_128:AES-128|2:SAMPLE_AES:SAMPLE-AES|3:DRM:DRM占位;@T=EncryptMethod' AFTER `encrypt_status`,
+    ADD COLUMN `encrypt_status`      int(11)      NOT NULL DEFAULT 1 COMMENT '加密状态@E=0:UNKNOW:未知|1:UNENCRYPTED:未加密|2:ENCRYPTING:加密中|3:ENCRYPTED:已加密|4:FAILED:失败;@T=EncryptStatus' AFTER `abr_source_bitrate_kbps`,
+    ADD COLUMN `encrypt_method`      int(11)      NOT NULL DEFAULT 1 COMMENT '加密方式@E=0:UNKNOW:未知|1:HLS_AES_128:AES-128|2:SAMPLE_AES:SAMPLE-AES|3:DRM:DRM占位;@T=EncryptMethod' AFTER `encrypt_status`,
     ADD COLUMN `encrypt_key_id`      bigint                DEFAULT NULL COMMENT '关联密钥ID' AFTER `encrypt_method`,
     ADD COLUMN `encrypt_fail_reason` varchar(512)          DEFAULT NULL COMMENT '加密失败原因' AFTER `encrypt_key_id`;
 
@@ -16,10 +16,10 @@ CREATE TABLE `video_hls_encrypt_key`
     `key_ciphertext`    varchar(512) NOT NULL COMMENT '密钥密文（KMS 加密后 Base64）',
     `iv_hex`            varchar(64)           DEFAULT NULL COMMENT 'IV hex（16字节，可空）',
     `key_version`       int(11)      NOT NULL DEFAULT 1 COMMENT '密钥版本号（轮换递增）',
-    `method`            int(11)      NOT NULL DEFAULT 1 COMMENT '加密方式@E=1:HLS_AES_128:AES-128|2:SAMPLE_AES:SAMPLE-AES|3:DRM:DRM占位;@T=EncryptMethod',
+    `method`            int(11)      NOT NULL DEFAULT 1 COMMENT '加密方式@E=0:UNKNOW:未知|1:HLS_AES_128:AES-128|2:SAMPLE_AES:SAMPLE-AES|3:DRM:DRM占位;@T=EncryptMethod',
     `key_uri_template`  varchar(512) NOT NULL COMMENT 'm3u8 中的 URI 模板，含 token 占位',
     `expire_time`       bigint                DEFAULT NULL COMMENT '过期时间（ms）',
-    `status`            int(11)      NOT NULL DEFAULT 1 COMMENT '状态@E=1:ACTIVE:可用|2:REVOKED:吊销|3:EXPIRED:过期;@T=EncryptKeyStatus',
+    `status`            int(11)      NOT NULL DEFAULT 1 COMMENT '状态@E=0:UNKNOW:未知|1:ACTIVE:可用|2:REVOKED:吊销|3:EXPIRED:过期;@T=EncryptKeyStatus',
     `remark`            varchar(256)          DEFAULT NULL COMMENT '备注/轮换原因',
     `create_user_id`    bigint                DEFAULT NULL COMMENT '创建人ID',
     `create_by`         varchar(32)           DEFAULT NULL COMMENT '创建人名称',
@@ -43,7 +43,7 @@ CREATE TABLE `video_hls_quality_auth`
     `id`             bigint       NOT NULL COMMENT 'ID',
     `file_id`        bigint       NOT NULL COMMENT '稿件态 fileId',
     `quality`        varchar(32)  NOT NULL COMMENT '清晰度档位，如 1080p',
-    `auth_policy`    int(11)      NOT NULL DEFAULT 1 COMMENT '授权策略@E=1:PUBLIC:公开|2:LOGIN:登录|3:PAID:付费|4:CUSTOM:自定义;@T=QualityAuthPolicy',
+    `auth_policy`    int(11)      NOT NULL DEFAULT 1 COMMENT '授权策略@E=0:UNKNOW:未知|1:PUBLIC:公开|2:LOGIN:登录|3:PAID:付费|4:CUSTOM:自定义;@T=QualityAuthPolicy',
     `remark`         varchar(256)          DEFAULT NULL COMMENT '备注/策略说明',
     `create_user_id` bigint                DEFAULT NULL COMMENT '创建人ID',
     `create_by`      varchar(32)           DEFAULT NULL COMMENT '创建人名称',
@@ -73,7 +73,7 @@ CREATE TABLE `video_hls_key_token`
     `expire_time`     bigint       NOT NULL COMMENT '过期时间（ms）',
     `max_use`         int(11)      NOT NULL DEFAULT 5 COMMENT '最大可用次数',
     `used_count`      int(11)      NOT NULL DEFAULT 0 COMMENT '已使用次数',
-    `status`          int(11)      NOT NULL DEFAULT 1 COMMENT '状态@E=1:VALID:有效|2:EXHAUSTED:已用尽|3:EXPIRED:过期|4:REVOKED:吊销;@T=EncryptTokenStatus',
+    `status`          int(11)      NOT NULL DEFAULT 1 COMMENT '状态@E=0:UNKNOW:未知|1:VALID:有效|2:EXHAUSTED:已用尽|3:EXPIRED:过期|4:REVOKED:吊销;@T=EncryptTokenStatus',
     `issue_ip`        varchar(64)           DEFAULT NULL COMMENT '签发 IP',
     `create_user_id`  bigint                DEFAULT NULL COMMENT '创建人ID',
     `create_by`       varchar(32)           DEFAULT NULL COMMENT '创建人名称',

@@ -25,7 +25,7 @@ import org.hibernate.annotations.Where
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2025/11/26
+ * @date 2025/12/11
  */
 @Aggregate(aggregate = "VideoHlsKeyToken", name = "VideoHlsKeyToken", root = true, type = Aggregate.TYPE_ENTITY, description = "HLS 加密播放 token")
 @Entity
@@ -135,6 +135,7 @@ class VideoHlsKeyToken(
 
     /**
      * 状态
+     * 0:UNKNOW:未知
      * 1:VALID:有效
      * 2:EXHAUSTED:已用尽
      * 3:EXPIRED:过期

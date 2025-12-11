@@ -18,6 +18,7 @@ import edu.only4.danmuku.application.commands.video_encrypt.RotateVideoHlsKeyCmd
 import edu.only4.danmuku.application.queries.video_encrypt.GetLatestVideoHlsKeyQry
 import edu.only4.danmuku.application.queries.video_encrypt.GetVideoEncryptStatusQry
 import edu.only4.danmuku.application.queries.video_transcode.GetVideoFilePostPathQry
+import org.springframework.core.io.ByteArrayResource
 import org.springframework.core.io.FileSystemResource
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
@@ -103,7 +104,9 @@ class VideoEncryptAdminController(
             ?: throw KnownException("缺少加密目录")
         val playlistFile = File(buildEncPath("$base/$quality/index.m3u8"))
         if (!playlistFile.exists()) return ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-        val content = playlistFile.readText().replace("__TOKEN__", token)
+        val content = playlistFile.readText()
+            .replace("__TOKEN__", token)
+            .replace("/video/enc/key?keyId=", "/video/enc/key?quality=$quality&keyId=")
         return ResponseEntity.ok()
             .contentType(MediaType.valueOf("application/vnd.apple.mpegurl"))
             .header(HttpHeaders.CONTENT_LENGTH, content.toByteArray().size.toString())
@@ -136,6 +139,30 @@ class VideoEncryptAdminController(
         return AdminGetEncKey.Response(keyBytes = resp.keyPlainHex ?: "")
     }
 
+    @IgnoreResultWrapper
+    @GetMapping("/key")
+    fun keyByGet(
+        @RequestParam token: String,
+        @RequestParam keyId: String,
+        @RequestParam(required = false) quality: String?
+    ): ResponseEntity<ByteArrayResource> {
+        val resp = Mediator.commands.send(
+            ConsumeVideoHlsKeyTokenCmd.Request(
+                token = token,
+                keyId = keyId,
+                quality = quality ?: ""
+            )
+        )
+        if (!resp.valid) throw KnownException(resp.failReason ?: "token 无效")
+        val keyHex = resp.keyPlainHex ?: throw KnownException("key 为空")
+        val keyBytes = hexToBytes(keyHex)
+        val resource = ByteArrayResource(keyBytes)
+        return ResponseEntity.ok()
+            .contentType(MediaType.APPLICATION_OCTET_STREAM)
+            .header(HttpHeaders.CONTENT_LENGTH, keyBytes.size.toString())
+            .body(resource)
+    }
+
     private fun buildEncPath(relative: String): String {
         return fileProps.projectFolder + Constants.FILE_FOLDER + relative.removePrefix("/")
     }
@@ -143,6 +170,11 @@ class VideoEncryptAdminController(
     private fun buildAbsolutePath(relativeBase: String, suffix: String): String {
         val normalizedSuffix = suffix.removePrefix("/")
         return fileProps.projectFolder + Constants.FILE_FOLDER + relativeBase.trimEnd('/') + "/" + normalizedSuffix
+    }
+
+    private fun hexToBytes(hex: String): ByteArray {
+        if (hex.length % 2 != 0) throw KnownException("key hex 长度异常")
+        return hex.chunked(2).map { it.toInt(16).toByte() }.toByteArray()
     }
 
     private fun asResource(file: File, mediaType: MediaType): ResponseEntity<FileSystemResource> {

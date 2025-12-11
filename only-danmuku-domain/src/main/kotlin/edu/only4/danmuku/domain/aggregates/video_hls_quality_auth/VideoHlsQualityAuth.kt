@@ -19,7 +19,7 @@ import org.hibernate.annotations.Where
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2025/11/26
+ * @date 2025/12/11
  */
 @Aggregate(aggregate = "VideoHlsQualityAuth", name = "VideoHlsQualityAuth", root = true, type = Aggregate.TYPE_ENTITY, description = "视频清晰度授权策略")
 @Entity
@@ -66,6 +66,7 @@ class VideoHlsQualityAuth(
 
     /**
      * 授权策略
+     * 0:UNKNOW:未知
      * 1:PUBLIC:公开
      * 2:LOGIN:登录
      * 3:PAID:付费

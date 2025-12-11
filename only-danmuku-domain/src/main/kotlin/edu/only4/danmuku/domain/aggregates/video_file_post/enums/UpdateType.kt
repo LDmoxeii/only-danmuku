@@ -11,7 +11,7 @@ import jakarta.persistence.AttributeConverter
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/11/26
+ * @date 2025/12/11
  */
 @Aggregate(aggregate = "VideoFilePost", name = "UpdateType", type = "enum", description = "")
 enum class UpdateType(

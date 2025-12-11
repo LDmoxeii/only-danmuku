@@ -28,7 +28,7 @@ import org.hibernate.annotations.Where
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2025/11/26
+ * @date 2025/12/11
  */
 @Aggregate(aggregate = "VideoFilePost", name = "VideoFilePost", root = true, type = Aggregate.TYPE_ENTITY, description = "视频文件信息，")
 @Entity
@@ -181,6 +181,7 @@ class VideoFilePost(
 
     /**
      * 加密状态
+     * 0:UNKNOW:未知
      * 1:UNENCRYPTED:未加密
      * 2:ENCRYPTING:加密中
      * 3:ENCRYPTED:已加密
@@ -194,6 +195,7 @@ class VideoFilePost(
 
     /**
      * 加密方式
+     * 0:UNKNOW:未知
      * 1:HLS_AES_128:AES-128
      * 2:SAMPLE_AES:SAMPLE-AES
      * 3:DRM:DRM占位

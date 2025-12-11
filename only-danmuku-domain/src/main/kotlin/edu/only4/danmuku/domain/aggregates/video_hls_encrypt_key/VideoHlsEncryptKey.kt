@@ -2,11 +2,14 @@ package edu.only4.danmuku.domain.aggregates.video_hls_encrypt_key
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
+
 import edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity
 import edu.only4.danmuku.domain.aggregates.video_file_post.enums.EncryptMethod
 import edu.only4.danmuku.domain.aggregates.video_hls_encrypt_key.enums.EncryptKeyStatus
 import edu.only4.danmuku.domain.aggregates.video_hls_encrypt_key.events.VideoHlsEncryptKeyCreatedDomainEvent
+
 import jakarta.persistence.*
+
 import org.hibernate.annotations.DynamicInsert
 import org.hibernate.annotations.DynamicUpdate
 import org.hibernate.annotations.GenericGenerator
@@ -19,7 +22,7 @@ import org.hibernate.annotations.Where
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2025/11/26
+ * @date 2025/12/11
  */
 @Aggregate(aggregate = "VideoHlsEncryptKey", name = "VideoHlsEncryptKey", root = true, type = Aggregate.TYPE_ENTITY, description = "视频 HLS 加密密钥")
 @Entity
@@ -105,6 +108,7 @@ class VideoHlsEncryptKey(
 
     /**
      * 加密方式
+     * 0:UNKNOW:未知
      * 1:HLS_AES_128:AES-128
      * 2:SAMPLE_AES:SAMPLE-AES
      * 3:DRM:DRM占位
@@ -133,6 +137,7 @@ class VideoHlsEncryptKey(
 
     /**
      * 状态
+     * 0:UNKNOW:未知
      * 1:ACTIVE:可用
      * 2:REVOKED:吊销
      * 3:EXPIRED:过期

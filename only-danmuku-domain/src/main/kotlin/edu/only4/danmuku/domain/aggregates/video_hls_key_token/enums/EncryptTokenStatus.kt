@@ -11,7 +11,7 @@ import jakarta.persistence.AttributeConverter
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/11/26
+ * @date 2025/12/11
  */
 @Aggregate(aggregate = "VideoHlsKeyToken", name = "EncryptTokenStatus", type = "enum", description = "")
 enum class EncryptTokenStatus(
@@ -19,6 +19,11 @@ enum class EncryptTokenStatus(
     val code: Int,
     val desc: String
 ) {
+
+    /**
+     * 未知
+     */
+    UNKNOW(0, "未知"),
 
     /**
      * 有效
