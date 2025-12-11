@@ -325,5 +325,18 @@
     "responseFields": [
       { "name": "keyBytes", "type": "String" }
     ]
+  },
+  {
+    "tag": "payload",
+    "package": "video_encrypt",
+    "name": "AdminRotateEncKey",
+    "requestFields": [
+      { "name": "filePostId", "type": "Long" },
+      { "name": "reason", "type": "String", "defaultValue": "null", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "newKeyVersion", "type": "Int" },
+      { "name": "failReason", "type": "String", "nullable": true }
+    ]
   }
 ]
