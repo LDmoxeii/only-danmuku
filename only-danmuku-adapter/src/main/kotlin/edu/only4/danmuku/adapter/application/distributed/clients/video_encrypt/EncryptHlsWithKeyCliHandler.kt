@@ -27,7 +27,6 @@ class EncryptHlsWithKeyCliHandler(
     private val fileProps: FileAppProperties,
 ) : RequestHandler<EncryptHlsWithKeyCli.Request, EncryptHlsWithKeyCli.Response> {
     private val logger = LoggerFactory.getLogger(javaClass)
-    private val defaultEncryptQualities = setOf("720p", "1080p")
 
     override fun exec(request: EncryptHlsWithKeyCli.Request): EncryptHlsWithKeyCli.Response {
         return runCatching {
@@ -54,8 +53,8 @@ class EncryptHlsWithKeyCliHandler(
 
             source.listFiles { file -> file.isDirectory }?.forEach { dir ->
                 if (dir.name == "enc") return@forEach
-                val targetQualities = if (request.quality.isNullOrBlank()) defaultEncryptQualities else setOf(request.quality)
-                if (targetQualities.isNotEmpty() && !targetQualities.contains(dir.name)) return@forEach
+                val shouldEncrypt = if (isFullEncrypt) true else dir.name == request.quality
+                if (!shouldEncrypt) return@forEach
                 val playlistFile = File(dir, "index.m3u8")
                 if (!playlistFile.exists()) return@forEach
 
