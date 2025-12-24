@@ -1,0 +1,148 @@
+[
+  {
+    "tag": "cli",
+    "package": "oss_storage",
+    "name": "OssUploadObject",
+    "desc": "上传单对象到 OSS",
+    "requestFields": [
+      { "name": "objectKey", "type": "String", "desc": "对象 key（相对路径）" },
+      { "name": "localPath", "type": "String", "desc": "本地文件绝对路径" },
+      { "name": "contentType", "type": "String", "nullable": true },
+      { "name": "metadata", "type": "String", "nullable": true, "desc": "可选元数据 JSON" }
+    ],
+    "responseFields": [
+      { "name": "url", "type": "String", "desc": "可访问 URL" },
+      { "name": "eTag", "type": "String", "nullable": true },
+      { "name": "size", "type": "Long" }
+    ]
+  },
+  {
+    "tag": "cli",
+    "package": "oss_storage",
+    "name": "OssUploadDirectory",
+    "desc": "上传目录到 OSS（用于 HLS 输出）",
+    "requestFields": [
+      { "name": "localDir", "type": "String", "desc": "本地目录绝对路径" },
+      { "name": "objectPrefix", "type": "String", "desc": "对象前缀，如 video/uid/vid/idx" },
+      { "name": "includeGlob", "type": "String", "nullable": true, "desc": "可选：包含规则" }
+    ],
+    "responseFields": [
+      { "name": "uploadedCount", "type": "Int" },
+      { "name": "prefix", "type": "String" }
+    ]
+  },
+  {
+    "tag": "cli",
+    "package": "oss_storage",
+    "name": "OssDeletePrefix",
+    "desc": "删除 OSS 前缀下的对象",
+    "requestFields": [
+      { "name": "objectPrefix", "type": "String" }
+    ],
+    "responseFields": [
+      { "name": "deletedCount", "type": "Int" },
+      { "name": "success", "type": "Boolean", "defaultValue": "true" }
+    ]
+  },
+  {
+    "tag": "cli",
+    "package": "file_storage",
+    "name": "UploadImageResource",
+    "desc": "上传图片到 OSS 并返回资源 key",
+    "requestFields": [
+      { "name": "file", "type": "MultipartFile" },
+      { "name": "createThumbnail", "type": "Boolean", "defaultValue": "false" },
+      { "name": "bizType", "type": "String", "desc": "AVATAR/COVER/CATEGORY/COMMON" }
+    ],
+    "responseFields": [
+      { "name": "resourceKey", "type": "String" },
+      { "name": "thumbnailKey", "type": "String", "nullable": true },
+      { "name": "publicUrl", "type": "String", "nullable": true }
+    ]
+  },
+  {
+    "tag": "cli",
+    "package": "video_storage",
+    "name": "UploadVideoAbrOutput",
+    "desc": "上传 ABR 输出目录到 OSS（含 master/variants/segments）",
+    "requestFields": [
+      { "name": "localOutputDir", "type": "String" },
+      { "name": "encOutputDir", "type": "String", "nullable": true },
+      { "name": "objectPrefix", "type": "String", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "success", "type": "Boolean", "defaultValue": "true" },
+      { "name": "storagePrefix", "type": "String" },
+      { "name": "encPrefix", "type": "String", "nullable": true },
+      { "name": "failReason", "type": "String", "nullable": true }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "video_storage",
+    "name": "PersistVideoStorageLocation",
+    "desc": "更新视频文件的存储前缀",
+    "requestFields": [
+      { "name": "videoFilePostId", "type": "Long" },
+      { "name": "storagePrefix", "type": "String" }
+    ],
+    "responseFields": [
+      { "name": "updated", "type": "Boolean", "defaultValue": "true" }
+    ]
+  },
+  {
+    "tag": "qry",
+    "package": "file_storage",
+    "name": "GetResourceAccessUrl",
+    "desc": "根据资源 key 返回可访问 URL（OSS）",
+    "requestFields": [
+      { "name": "resourceKey", "type": "String" },
+      { "name": "preferPresign", "type": "Boolean", "defaultValue": "false" },
+      { "name": "expireSeconds", "type": "Int", "defaultValue": "600" }
+    ],
+    "responseFields": [
+      { "name": "url", "type": "String" }
+    ]
+  },
+  {
+    "tag": "qry",
+    "package": "video_storage",
+    "name": "GetVideoHlsResourceUrl",
+    "desc": "获取 HLS 资源 URL（master/playlist/segment）",
+    "requestFields": [
+      { "name": "videoFileId", "type": "Long" },
+      { "name": "relativePath", "type": "String", "desc": "如 master.m3u8 或 720p/index.m3u8" }
+    ],
+    "responseFields": [
+      { "name": "url", "type": "String" },
+      { "name": "contentType", "type": "String", "nullable": true }
+    ]
+  },
+  {
+    "tag": "payload",
+    "package": "file_storage",
+    "name": "FrontGetFileResource",
+    "desc": "获取图片/通用资源（返回 URL 或直接内容）",
+    "requestFields": [
+      { "name": "sourceName", "type": "String" }
+    ],
+    "responseFields": [
+      { "name": "url", "type": "String", "nullable": true },
+      { "name": "contentType", "type": "String", "nullable": true },
+      { "name": "exists", "type": "Boolean" }
+    ]
+  },
+  {
+    "tag": "payload",
+    "package": "video_storage",
+    "name": "FrontGetAbrMaster",
+    "desc": "前台：获取 ABR master.m3u8（URL 或内容）",
+    "requestFields": [
+      { "name": "fileId", "type": "Long" }
+    ],
+    "responseFields": [
+      { "name": "url", "type": "String", "nullable": true },
+      { "name": "content", "type": "String", "nullable": true }
+    ]
+  }
+]
