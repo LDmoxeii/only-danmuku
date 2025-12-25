@@ -3,8 +3,6 @@ package edu.only4.danmuku.adapter.application.distributed.clients.file_upload_se
 import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.application.RequestHandler
 
-import edu.only4.danmuku.application._share.config.properties.FileAppProperties
-import edu.only4.danmuku.application._share.constants.Constants
 import edu.only4.danmuku.application.distributed.clients.file_upload_session.UploadVideoChunkStorageCli
 
 import org.springframework.stereotype.Service
@@ -18,9 +16,8 @@ import java.io.File
  * @date 2025/12/25
  */
 @Service
-class UploadVideoChunkStorageCliHandler(
-    private val fileProps: FileAppProperties,
-) : RequestHandler<UploadVideoChunkStorageCli.Request, UploadVideoChunkStorageCli.Response> {
+class UploadVideoChunkStorageCliHandler :
+    RequestHandler<UploadVideoChunkStorageCli.Request, UploadVideoChunkStorageCli.Response> {
     override fun exec(request: UploadVideoChunkStorageCli.Request): UploadVideoChunkStorageCli.Response {
         val tempPath = request.tempPath.trim()
         if (tempPath.isBlank()) {
@@ -29,25 +26,26 @@ class UploadVideoChunkStorageCliHandler(
         if (request.chunkIndex < 0) {
             throw KnownException.illegalArgument("chunkIndex")
         }
-        val baseRoot = File(fileProps.projectFolder + Constants.FILE_FOLDER + Constants.FILE_FOLDER_TEMP)
-        val targetDir = File(baseRoot, tempPath)
-        val baseCanonical = baseRoot.canonicalPath + File.separator
-        val targetCanonical = targetDir.canonicalPath
-        if (!targetCanonical.startsWith(baseCanonical)) {
-            throw KnownException("非法的存储路径")
-        }
+        val targetDir = resolveTempDir(tempPath)
         if (!targetDir.exists()) {
             targetDir.mkdirs()
         }
         val targetFile = File(targetDir, request.chunkIndex.toString())
         request.chunkFile.transferTo(targetFile)
 
-        val normalizedTemp = tempPath.trim('/','\\').replace('\\', '/')
-        val storedPath = "$normalizedTemp/${request.chunkIndex}"
+        val storedPath = targetFile.absolutePath.replace('\\', '/')
         return UploadVideoChunkStorageCli.Response(
             storedPath = storedPath,
             size = targetFile.length()
         )
+    }
+
+    private fun resolveTempDir(tempPath: String): File {
+        val target = File(tempPath)
+        if (target.isAbsolute) {
+            return target
+        }
+        throw KnownException("临时目录必须为绝对路径")
     }
 }
 

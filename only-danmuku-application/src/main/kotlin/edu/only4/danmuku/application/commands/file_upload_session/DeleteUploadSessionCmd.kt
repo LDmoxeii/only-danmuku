@@ -3,14 +3,11 @@ package edu.only4.danmuku.application.commands.file_upload_session
 import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
-import com.only4.cap4k.ddd.core.application.command.NoneResultCommandParam
-import edu.only4.danmuku.application._share.config.properties.FileAppProperties
-import edu.only4.danmuku.application._share.constants.Constants
+import com.only4.cap4k.ddd.core.application.command.Command
 import edu.only4.danmuku.application.validator.ValidateDeleteUploadSession
 import edu.only4.danmuku.domain._share.meta.video_file_upload_session.SVideoFileUploadSession
 import edu.only4.danmuku.domain.aggregates.video_file_upload_session.VideoFileUploadSession
 import org.springframework.stereotype.Service
-import java.io.File
 import java.time.Instant
 import kotlin.jvm.optionals.getOrNull
 
@@ -20,10 +17,8 @@ import kotlin.jvm.optionals.getOrNull
 object DeleteUploadSessionCmd {
 
     @Service
-    class Handler(
-        private val fileProps: FileAppProperties,
-    ) : NoneResultCommandParam<Request>() {
-        override fun exec(request: Request){
+    class Handler : Command<Request, Response> {
+        override fun exec(request: Request): Response {
             val uploadId = request.uploadId
 
             val session: VideoFileUploadSession = Mediator.repositories.findOne(
@@ -33,26 +28,17 @@ object DeleteUploadSessionCmd {
 
             session.ensureOwnedBy(request.customerId)
 
-            // 删除临时目录（安全校验）
-            val baseRoot = File(fileProps.projectFolder + Constants.FILE_FOLDER + Constants.FILE_FOLDER_TEMP)
-            val sessionRel = session.tempPath ?: ""
-            val targetDir = File(baseRoot, sessionRel)
-
-            // 通过 canonicalPath 做前缀校验，避免越权删除
-            val baseCanonical = baseRoot.canonicalPath + File.separator
-            val targetCanonical = targetDir.canonicalPath
-            if (!targetCanonical.startsWith(baseCanonical)) {
-                throw KnownException("非法的删除路径")
-            }
-            if (targetDir.exists()) {
-                targetDir.deleteRecursively()
-            }
+            val tempPath = session.tempPath?.trim().orEmpty()
 
             // 终止并软删除会话
             val now = Instant.now().epochSecond
             session.abort(now)
 
             Mediator.uow.remove(session)
+
+            return Response(
+                tempPath = tempPath.ifBlank { null }
+            )
         }
     }
 
@@ -60,6 +46,10 @@ object DeleteUploadSessionCmd {
     data class Request(
         val customerId: Long,
         val uploadId: Long,
-    ) : RequestParam<Unit>
+    ) : RequestParam<Response>
+
+    data class Response(
+        val tempPath: String?
+    )
 }
 

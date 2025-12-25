@@ -9,6 +9,7 @@ import edu.only4.danmuku.application.commands.file_upload_session.CreateUploadSe
 import edu.only4.danmuku.application.commands.file_upload_session.DeleteUploadSessionCmd
 import edu.only4.danmuku.application.commands.file_upload_session.UploadVideoChunkCmd
 import edu.only4.danmuku.application.distributed.clients.file_storage.UploadImageResourceCli
+import edu.only4.danmuku.application.distributed.clients.file_upload_session.DeleteUploadSessionTempDirCli
 import edu.only4.danmuku.application.distributed.clients.file_upload_session.UploadVideoChunkStorageCli
 import edu.only4.danmuku.application.queries.file_storage.GetResourceAccessUrlQry
 import edu.only4.danmuku.application.queries.video_transcode.GetUploadSessionTempPathQry
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.slf4j.LoggerFactory
 import java.net.URI
 
 /**
@@ -27,6 +29,7 @@ import java.net.URI
 @RequestMapping("/file")
 @Validated
 class CompatibleFileController {
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     @SaIgnore
     @IgnoreResultWrapper
@@ -100,12 +103,21 @@ class CompatibleFileController {
         uploadId: Long,
     ) {
         val currentUserId = LoginHelper.getUserId()!!
-        Mediator.commands.send(
+        val resp = Mediator.commands.send(
             DeleteUploadSessionCmd.Request(
                 customerId = currentUserId,
                 uploadId = uploadId
             )
         )
+        resp.tempPath?.takeIf { it.isNotBlank() }?.let { tempPath ->
+            runCatching {
+                Mediator.requests.send(
+                    DeleteUploadSessionTempDirCli.Request(tempPath = tempPath)
+                )
+            }.onFailure { ex ->
+                logger.warn("清理临时目录失败: {}", tempPath, ex)
+            }
+        }
     }
 
     @PostMapping("/uploadImage")

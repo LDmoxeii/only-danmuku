@@ -2,6 +2,7 @@ package edu.only4.danmuku.application.subscribers.domain.video_file_upload_sessi
 
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.application.commands.video_file_upload_session.InitTempAndStartUploadingCmd
+import edu.only4.danmuku.application.distributed.clients.file_upload_session.CreateUploadSessionTempDirCli
 import edu.only4.danmuku.domain.aggregates.video_file_upload_session.events.UploadSessionCreatedDomainEvent
 
 import org.springframework.context.event.EventListener
@@ -21,9 +22,15 @@ class UploadSessionCreatedDomainEventSubscriber {
     @EventListener(UploadSessionCreatedDomainEvent::class)
     fun on(event: UploadSessionCreatedDomainEvent) {
         // 会话创建成功后，触发初始化临时目录并标记开始上传的命令
+        val tempPath = Mediator.requests.send(
+            CreateUploadSessionTempDirCli.Request(
+                uploadId = event.entity.id
+            )
+        ).tempPath
         Mediator.commands.send(
             InitTempAndStartUploadingCmd.Request(
-                uploadId = event.entity.id
+                uploadId = event.entity.id,
+                tempPath = tempPath
             )
         )
     }

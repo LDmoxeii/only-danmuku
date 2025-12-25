@@ -87,7 +87,7 @@ class MergeUploadToMp4CliHandler(
         if (f.isAbsolute) {
             return f
         }
-        return File(fileProps.projectFolder + Constants.FILE_FOLDER + Constants.FILE_FOLDER_TEMP + tempPath)
+        throw KnownException("临时目录必须为绝对路径")
     }
 
     private fun cleanupTempDir(tempPath: String) {

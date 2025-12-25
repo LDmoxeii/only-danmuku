@@ -1,8 +1,6 @@
 package edu.only4.danmuku.adapter.application.distributed.clients.video_transcode
 
 import com.only4.cap4k.ddd.core.application.RequestHandler
-import edu.only4.danmuku.application._share.config.properties.FileAppProperties
-import edu.only4.danmuku.application._share.constants.Constants
 import edu.only4.danmuku.application.distributed.clients.video_transcode.CleanupTempUploadDirCli
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
@@ -15,9 +13,8 @@ import java.io.File
  * 警告：可以在本文件中添加自定义事件处理方法
  */
 @Service
-class CleanupTempUploadDirCliHandler(
-    private val fileProps: FileAppProperties,
-) : RequestHandler<CleanupTempUploadDirCli.Request, CleanupTempUploadDirCli.Response> {
+class CleanupTempUploadDirCliHandler :
+    RequestHandler<CleanupTempUploadDirCli.Request, CleanupTempUploadDirCli.Response> {
 
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -41,9 +38,9 @@ class CleanupTempUploadDirCliHandler(
 
     private fun resolveTempDir(tempPath: String): File {
         val f = File(tempPath)
-        if (f.isAbsolute) {
-            return f
+        if (!f.isAbsolute) {
+            throw IllegalArgumentException("临时目录必须为绝对路径")
         }
-        return File(fileProps.projectFolder + Constants.FILE_FOLDER + Constants.FILE_FOLDER_TEMP + tempPath)
+        return f
     }
 }
