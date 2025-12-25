@@ -7,7 +7,6 @@ import edu.only4.danmuku.application._share.config.properties.FileAppProperties
 import edu.only4.danmuku.application.commands.video_file_post.UpdateVideoFilePostTranscodeResultCmd
 import edu.only4.danmuku.application.distributed.clients.video_storage.UploadVideoAbrOutputCli
 import edu.only4.danmuku.application.distributed.clients.video_transcode.CleanupMergedMp4Cli
-import edu.only4.danmuku.application.distributed.clients.video_transcode.CleanupTempUploadDirCli
 import edu.only4.danmuku.application.distributed.clients.video_transcode.MergeUploadToMp4Cli
 import edu.only4.danmuku.application.distributed.clients.video_transcode.TranscodeVideoFileToAbrCli
 import edu.only4.danmuku.application.queries.video_transcode.GetUploadSessionTempPathQry
@@ -42,8 +41,6 @@ class VideoFilePostCreatedDomainEventSubscriber(
         runCatching {
             mergeResult = Mediator.requests.send(
                 MergeUploadToMp4Cli.Request(
-                    uploadId = file.uploadId,
-                    customerId = file.customerId,
                     videoId = file.videoId,
                     fileIndex = file.fileIndex,
                     tempPath = tempPathUsed
@@ -102,17 +99,9 @@ class VideoFilePostCreatedDomainEventSubscriber(
                 )
             )
         }.also {
-            mergeResult?.mergedMp4Path?.let { mp4 ->
-                runCatching { Mediator.requests.send(CleanupMergedMp4Cli.Request(mergedMp4Path = mp4)) }
-                    .onFailure { logger.warn("清理临时 MP4 失败: {}", mp4, it) }
-            }
             mergeResult?.outputDir?.let { dir ->
                 runCatching { File(dir).deleteRecursively() }
                     .onFailure { logger.warn("清理转码输出目录失败: {}", dir, it) }
-            }
-            tempPathUsed.let { tmp ->
-                runCatching { Mediator.requests.send(CleanupTempUploadDirCli.Request(tempPath = tmp)) }
-                    .onFailure { logger.warn("清理临时目录失败: {}", tmp, it) }
             }
         }
     }

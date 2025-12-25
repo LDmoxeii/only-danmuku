@@ -12,8 +12,6 @@ import com.only4.cap4k.ddd.core.application.RequestParam
 object MergeUploadToMp4Cli {
 
     data class Request(
-        val uploadId: Long,
-        val customerId: Long,
         val videoId: Long,
         val fileIndex: Int,
         val tempPath: String

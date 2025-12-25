@@ -28,9 +28,9 @@ class MergeUploadToMp4CliHandler(
     private val logger = LoggerFactory.getLogger(javaClass)
 
     override fun exec(request: MergeUploadToMp4Cli.Request): MergeUploadToMp4Cli.Response {
+        val tempPath = request.tempPath
         return runCatching {
-            val tempPath = request.tempPath
-            val sourceDir = File(fileProps.projectFolder + Constants.FILE_FOLDER + Constants.FILE_FOLDER_TEMP + tempPath)
+            val sourceDir = resolveTempDir(tempPath)
             if (!sourceDir.exists() || !sourceDir.isDirectory) {
                 throw KnownException("临时目录不存在: ${sourceDir.absolutePath}")
             }
@@ -65,6 +65,8 @@ class MergeUploadToMp4CliHandler(
                 success = false,
                 failReason = ex.message
             )
+        }.also {
+            cleanupTempDir(tempPath)
         }
     }
 
@@ -78,5 +80,26 @@ class MergeUploadToMp4CliHandler(
             }
         }
         chunkFiles.forEach { it.delete() }
+    }
+
+    private fun resolveTempDir(tempPath: String): File {
+        val f = File(tempPath)
+        if (f.isAbsolute) {
+            return f
+        }
+        return File(fileProps.projectFolder + Constants.FILE_FOLDER + Constants.FILE_FOLDER_TEMP + tempPath)
+    }
+
+    private fun cleanupTempDir(tempPath: String) {
+        runCatching {
+            val target = resolveTempDir(tempPath)
+            if (!target.exists()) return
+            val ok = target.deleteRecursively()
+            if (!ok) {
+                logger.warn("清理临时目录失败: {}", target.absolutePath)
+            }
+        }.onFailure { ex ->
+            logger.warn("清理临时目录失败: {}", tempPath, ex)
+        }
     }
 }
