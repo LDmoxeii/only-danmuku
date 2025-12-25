@@ -4,14 +4,10 @@ import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.NoneResultCommandParam
-import edu.only4.danmuku.application._share.config.properties.FileAppProperties
-import edu.only4.danmuku.application._share.constants.Constants
 import edu.only4.danmuku.application.validator.ValidateUploadChunk
 import edu.only4.danmuku.domain._share.meta.video_file_upload_session.SVideoFileUploadSession
 import edu.only4.danmuku.domain.aggregates.video_file_upload_session.VideoFileUploadSession
 import org.springframework.stereotype.Service
-import org.springframework.web.multipart.MultipartFile
-import java.io.File
 import java.time.Instant
 import kotlin.jvm.optionals.getOrNull
 
@@ -21,9 +17,7 @@ import kotlin.jvm.optionals.getOrNull
 object UploadVideoChunkCmd {
 
     @Service
-    class Handler(
-        private val fileProps: FileAppProperties,
-    ) : NoneResultCommandParam<Request>() {
+    class Handler : NoneResultCommandParam<Request>() {
         override fun exec(request: Request){
             val uploadId = request.uploadId
 
@@ -37,24 +31,9 @@ object UploadVideoChunkCmd {
             session.ensureActive()
             session.ensureChunkAllowed(request.chunkIndex)
 
-            // 构造分片写入路径
-            val base = fileProps.projectFolder +
-                    Constants.FILE_FOLDER +
-                    Constants.FILE_FOLDER_TEMP +
-                    (session.tempPath ?: throw KnownException("上传会话临时目录缺失"))
-
-            val targetDir = File(base)
-            if (!targetDir.exists()) {
-                targetDir.mkdirs()
-            }
-
-            val targetFile = File(targetDir, request.chunkIndex.toString())
-            // 写入分片（允许重传覆盖）
-            request.chunkFile.transferTo(targetFile)
-
             // 推进聚合状态
             val now = Instant.now().epochSecond
-            session.onChunkUploaded(request.chunkIndex, request.chunkFile.size, now)
+            session.onChunkUploaded(request.chunkIndex, request.chunkSize, now)
             session.tryMarkDoneIfComplete()
 
             Mediator.uow.save()
@@ -66,7 +45,7 @@ object UploadVideoChunkCmd {
         val customerId: Long,
         val uploadId: Long,
         val chunkIndex: Int,
-        val chunkFile: MultipartFile,
+        val chunkSize: Long,
     ) : RequestParam<Unit>
 }
 

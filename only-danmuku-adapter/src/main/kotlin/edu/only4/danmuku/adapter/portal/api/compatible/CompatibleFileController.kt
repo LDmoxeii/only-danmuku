@@ -9,7 +9,9 @@ import edu.only4.danmuku.application.commands.file_upload_session.CreateUploadSe
 import edu.only4.danmuku.application.commands.file_upload_session.DeleteUploadSessionCmd
 import edu.only4.danmuku.application.commands.file_upload_session.UploadVideoChunkCmd
 import edu.only4.danmuku.application.distributed.clients.file_storage.UploadImageResourceCli
+import edu.only4.danmuku.application.distributed.clients.file_upload_session.UploadVideoChunkStorageCli
 import edu.only4.danmuku.application.queries.file_storage.GetResourceAccessUrlQry
+import edu.only4.danmuku.application.queries.video_transcode.GetUploadSessionTempPathQry
 import jakarta.validation.constraints.NotEmpty
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
@@ -64,17 +66,27 @@ class CompatibleFileController {
      */
     @PostMapping("/uploadVideo")
     fun fileUploadVideo(
-        chunkFile: MultipartFile,
-        chunkIndex: Int,
-        uploadId: Long,
+        @RequestPart("chunkFile") chunkFile: MultipartFile,
+        @RequestParam("chunkIndex") chunkIndex: Int,
+        @RequestParam("uploadId") uploadId: Long,
     ): FileUploadVideo.Response {
         val currentUserId = LoginHelper.getUserId()!!
+        val tempPath = Mediator.queries.send(
+            GetUploadSessionTempPathQry.Request(uploadId = uploadId)
+        ).tempPath
+        val storageResp = Mediator.requests.send(
+            UploadVideoChunkStorageCli.Request(
+                tempPath = tempPath,
+                chunkIndex = chunkIndex,
+                chunkFile = chunkFile
+            )
+        )
         Mediator.commands.send(
             UploadVideoChunkCmd.Request(
                 customerId = currentUserId,
                 uploadId = uploadId,
                 chunkIndex = chunkIndex,
-                chunkFile = chunkFile
+                chunkSize = storageResp.size
             )
         )
         return FileUploadVideo.Response()

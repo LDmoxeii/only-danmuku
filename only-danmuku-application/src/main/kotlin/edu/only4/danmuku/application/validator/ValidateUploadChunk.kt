@@ -29,18 +29,21 @@ annotation class ValidateUploadChunk(
     val uploadIdField: String = "uploadId",
     val chunkIndexField: String = "chunkIndex",
     val chunkFileField: String = "chunkFile",
+    val chunkSizeField: String = "chunkSize",
 ) {
     class Validator : ConstraintValidator<ValidateUploadChunk, Any> {
         private lateinit var customerIdProp: String
         private lateinit var uploadIdProp: String
         private lateinit var chunkIndexProp: String
         private lateinit var chunkFileProp: String
+        private lateinit var chunkSizeProp: String
 
         override fun initialize(constraintAnnotation: ValidateUploadChunk) {
             customerIdProp = constraintAnnotation.customerIdField
             uploadIdProp = constraintAnnotation.uploadIdField
             chunkIndexProp = constraintAnnotation.chunkIndexField
             chunkFileProp = constraintAnnotation.chunkFileField
+            chunkSizeProp = constraintAnnotation.chunkSizeField
         }
 
         override fun isValid(value: Any?, context: ConstraintValidatorContext): Boolean {
@@ -73,7 +76,12 @@ annotation class ValidateUploadChunk(
             } ?: return violation("分片索引非法")
 
             val chunkFile = props[chunkFileProp]?.getter?.call(value) as? MultipartFile
-                ?: return violation("分片文件不能为空")
+            val chunkSize = when (val raw = props[chunkSizeProp]?.getter?.call(value)) {
+                is Number -> raw.toLong()
+                is String -> raw.toLongOrNull()
+                else -> null
+            }
+            val actualSize = chunkFile?.size ?: chunkSize ?: return violation("分片大小不能为空")
 
             val sys = Mediator.ioc.getBean(SysSettingProperties::class.java)
             val limitBytes = sys.videoSize.toLong() * Constants.MB_SIZE
@@ -97,7 +105,7 @@ annotation class ValidateUploadChunk(
                 return violation("分片索引非法")
             }
 
-            val newSize = (session.fileSize ?: 0L) + (chunkFile.size)
+            val newSize = (session.fileSize ?: 0L) + actualSize
             if (newSize > limitBytes) {
                 return violation("文件超过最大文件限制")
             }
