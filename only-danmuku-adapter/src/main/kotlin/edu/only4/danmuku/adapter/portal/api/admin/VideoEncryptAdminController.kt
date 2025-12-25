@@ -10,9 +10,9 @@ import edu.only4.danmuku.adapter.portal.api.payload.video_encrypt.AdminIssueEncT
 import edu.only4.danmuku.adapter.portal.api.payload.video_encrypt.AdminRotateEncKey
 import edu.only4.danmuku.application.commands.video_encrypt.ConsumeVideoHlsKeyTokenCmd
 import edu.only4.danmuku.application.commands.video_encrypt.IssueVideoHlsKeyTokenCmd
-import edu.only4.danmuku.application.commands.video_encrypt.RotateVideoHlsKeyCmd
+import edu.only4.danmuku.application.commands.video_encrypt.RotateVideoHlsKeyBatchCmd
 import edu.only4.danmuku.application.queries.file_storage.GetResourceAccessUrlQry
-import edu.only4.danmuku.application.queries.video_encrypt.GetLatestVideoHlsKeyQry
+import edu.only4.danmuku.application.queries.video_encrypt.GetLatestVideoHlsKeyVersionQry
 import edu.only4.danmuku.application.queries.video_encrypt.GetVideoEncryptStatusQry
 import org.springframework.core.io.ByteArrayResource
 import org.springframework.http.HttpHeaders
@@ -33,16 +33,17 @@ class VideoEncryptAdminController {
     @PostMapping("/token")
     fun issueToken(@RequestBody req: AdminIssueEncToken.Request): AdminIssueEncToken.Response {
         val latestKey = Mediator.queries.send(
-            GetLatestVideoHlsKeyQry.Request(videoFilePostId = req.filePostId, videoFileId = null)
+            GetLatestVideoHlsKeyVersionQry.Request(
+                videoFilePostId = req.filePostId,
+                videoFileId = null
+            )
         )
-        val keyId = latestKey.keyId ?: throw KnownException("未找到可用密钥")
         val keyVersion = latestKey.keyVersion ?: throw KnownException("未找到可用密钥版本")
 
         val resp = Mediator.commands.send(
             IssueVideoHlsKeyTokenCmd.Request(
                 videoFilePostId = req.filePostId,
                 videoFileId = null,
-                keyId = keyId,
                 keyVersion = keyVersion,
                 audience = null,
                 allowedQualities = null
@@ -58,9 +59,8 @@ class VideoEncryptAdminController {
     @PostMapping("/rotateKey")
     fun rotateKey(@RequestBody req: AdminRotateEncKey.Request): AdminRotateEncKey.Response {
         val resp = Mediator.commands.send(
-            RotateVideoHlsKeyCmd.Request(
+            RotateVideoHlsKeyBatchCmd.Request(
                 videoFilePostId = req.filePostId,
-                videoFileId = null,
                 reason = req.reason
             )
         )

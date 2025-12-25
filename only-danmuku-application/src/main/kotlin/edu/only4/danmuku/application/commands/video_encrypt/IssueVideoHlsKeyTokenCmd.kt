@@ -4,6 +4,7 @@ import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
 import com.only.engine.exception.KnownException
+import edu.only4.danmuku.application.queries.video_encrypt.GetLatestVideoHlsKeyVersionQry
 import edu.only4.danmuku.domain.aggregates.video_hls_key_token.VideoHlsKeyToken
 import edu.only4.danmuku.domain.aggregates.video_hls_key_token.enums.EncryptTokenStatus
 import org.springframework.stereotype.Service
@@ -13,7 +14,7 @@ import java.util.UUID
 
 
 /**
- * 签发用于播放的短时 token，绑定 fileId+keyId+keyVersion
+ * 签发用于播放的短时 token，绑定 fileId+keyVersion+allowedQualities
  *
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * @author cap4k-ddd-codegen
@@ -26,6 +27,12 @@ object IssueVideoHlsKeyTokenCmd {
         override fun exec(request: Request): Response {
             val fileId = request.videoFilePostId ?: request.videoFileId
                 ?: throw KnownException.illegalArgument("videoFilePostId")
+            val keyVersion = request.keyVersion ?: Mediator.queries.send(
+                GetLatestVideoHlsKeyVersionQry.Request(
+                    videoFilePostId = request.videoFilePostId ?: fileId,
+                    videoFileId = request.videoFileId
+                )
+            ).keyVersion ?: throw KnownException("未找到可用密钥版本")
 
             val now = System.currentTimeMillis()
             val expireAt = now + request.expireSeconds * 1000L
@@ -35,8 +42,7 @@ object IssueVideoHlsKeyTokenCmd {
             Mediator.uow.persist(
                 VideoHlsKeyToken(
                     fileId = fileId,
-                    keyId = request.keyId,
-                    keyVersion = request.keyVersion,
+                    keyVersion = keyVersion,
                     allowedQualities = request.allowedQualities,
                     tokenHash = tokenHash,
                     audience = request.audience,
@@ -51,6 +57,7 @@ object IssueVideoHlsKeyTokenCmd {
             return Response(
                 token = token,
                 expireAt = expireAt,
+                keyVersion = keyVersion,
                 allowedQualities = request.allowedQualities
             )
         }
@@ -65,8 +72,7 @@ object IssueVideoHlsKeyTokenCmd {
     data class Request(
         val videoFilePostId: Long?,
         val videoFileId: Long?,
-        val keyId: String,
-        val keyVersion: Int,
+        val keyVersion: Int?,
         val audience: String?,
         val expireSeconds: Int = 600,
         val maxUse: Int = 5,
@@ -76,6 +82,7 @@ object IssueVideoHlsKeyTokenCmd {
     data class Response(
         val token: String,
         val expireAt: Long,
+        val keyVersion: Int?,
         val allowedQualities: String?
     )
 }

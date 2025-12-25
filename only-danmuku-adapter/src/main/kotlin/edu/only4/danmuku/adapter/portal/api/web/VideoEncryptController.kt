@@ -12,7 +12,7 @@ import edu.only4.danmuku.adapter.portal.api.payload.video_encrypt.FrontListEncQu
 import edu.only4.danmuku.application.commands.video_encrypt.ConsumeVideoHlsKeyTokenCmd
 import edu.only4.danmuku.application.commands.video_encrypt.IssueVideoHlsKeyTokenCmd
 import edu.only4.danmuku.application.queries.file_storage.GetResourceAccessUrlQry
-import edu.only4.danmuku.application.queries.video_encrypt.GetLatestVideoHlsKeyQry
+import edu.only4.danmuku.application.queries.video_encrypt.GetLatestVideoHlsKeyVersionQry
 import edu.only4.danmuku.application.queries.video_encrypt.GetVideoEncryptStatusQry
 import edu.only4.danmuku.application.queries.video_encrypt.ListVideoQualityAuthQry
 import edu.only4.danmuku.application.queries.video_transcode.GetVideoPostIdByFileIdQry
@@ -38,9 +38,11 @@ class VideoEncryptController {
     fun issueToken(@RequestBody req: FrontIssueEncToken.Request): FrontIssueEncToken.Response {
         val post = Mediator.queries.send(GetVideoPostIdByFileIdQry.Request(fileId = req.fileId))
         val latestKey = Mediator.queries.send(
-            GetLatestVideoHlsKeyQry.Request(videoFilePostId = post.filePostId)
+            GetLatestVideoHlsKeyVersionQry.Request(
+                videoFilePostId = post.filePostId,
+                videoFileId = req.fileId
+            )
         )
-        val keyId = latestKey.keyId ?: throw KnownException("未找到可用密钥")
         val keyVersion = latestKey.keyVersion ?: throw KnownException("未找到可用密钥版本")
 
         val allowedQualities = computeAllowedQualities(post.filePostId)
@@ -49,7 +51,6 @@ class VideoEncryptController {
             IssueVideoHlsKeyTokenCmd.Request(
                 videoFilePostId = post.filePostId,
                 videoFileId = req.fileId,
-                keyId = keyId,
                 keyVersion = keyVersion,
                 audience = StpUtil.getLoginIdDefaultNull()?.toString(),
                 allowedQualities = allowedQualities

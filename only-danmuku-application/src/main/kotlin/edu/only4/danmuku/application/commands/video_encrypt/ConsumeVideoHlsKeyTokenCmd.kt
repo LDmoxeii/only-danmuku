@@ -32,10 +32,7 @@ object ConsumeVideoHlsKeyTokenCmd {
 
             val token = Mediator.repositories.findFirst(
                 JpaPredicate.bySpecification(VideoHlsKeyToken::class.java) { root, _, cb ->
-                    cb.and(
-                        cb.equal(root.get<String>("tokenHash"), tokenHash),
-                        cb.equal(root.get<String>("keyId"), request.keyId)
-                    )
+                    cb.equal(root.get<String>("tokenHash"), tokenHash)
                 }
             ).getOrNull() ?: return Response(valid = false, keyPlainHex = null, ivHex = null, failReason = "token_not_found")
 
@@ -57,7 +54,7 @@ object ConsumeVideoHlsKeyTokenCmd {
                 return Response(valid = false, keyPlainHex = null, ivHex = null, failReason = "quality_not_allowed")
             }
 
-            val key = loadKey(token, request.keyId)
+            val key = loadKey(token, request.keyId, request.quality)
                 ?: return Response(valid = false, keyPlainHex = null, ivHex = null, failReason = "key_not_found")
 
             val keyPlainHex = decodeBase64ToHex(key.keyCiphertext)
@@ -67,13 +64,14 @@ object ConsumeVideoHlsKeyTokenCmd {
             return Response(valid = true, keyPlainHex = keyPlainHex, ivHex = key.ivHex, failReason = null)
         }
 
-        private fun loadKey(token: VideoHlsKeyToken, keyId: String): VideoHlsEncryptKey? {
+        private fun loadKey(token: VideoHlsKeyToken, keyId: String, quality: String): VideoHlsEncryptKey? {
             return Mediator.repositories.findFirst(
                 SVideoHlsEncryptKey.predicate {
                     it.all(
                         it.fileId.eq(token.fileId),
                         it.keyId.eq(keyId),
-                        it.keyVersion.eq(token.keyVersion)
+                        it.keyVersion.eq(token.keyVersion),
+                        it.quality.eq(quality)
                     )
                 }
             ).getOrNull()
