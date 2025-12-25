@@ -1,6 +1,9 @@
 package edu.only4.danmuku.application.subscribers.domain.video_file_upload_session
 
+import com.only4.cap4k.ddd.core.Mediator
+import edu.only4.danmuku.application.distributed.clients.file_upload_session.DeleteUploadSessionTempDirCli
 import edu.only4.danmuku.domain.aggregates.video_file_upload_session.events.UploadSessionAbortedDomainEvent
+import org.slf4j.LoggerFactory
 
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Service
@@ -16,8 +19,18 @@ import org.springframework.stereotype.Service
 @Service
 class UploadSessionAbortedDomainEventSubscriber {
 
+    private val logger = LoggerFactory.getLogger(javaClass)
+
     @EventListener(UploadSessionAbortedDomainEvent::class)
     fun on(event: UploadSessionAbortedDomainEvent) {
-
+        event.entity.tempPath?.takeIf { it.isNotBlank() }?.let { tempPath ->
+            runCatching {
+                Mediator.requests.send(
+                    DeleteUploadSessionTempDirCli.Request(tempPath = tempPath)
+                )
+            }.onFailure { ex ->
+                logger.warn("清理临时目录失败: {}", tempPath, ex)
+            }
+        }
     }
 }

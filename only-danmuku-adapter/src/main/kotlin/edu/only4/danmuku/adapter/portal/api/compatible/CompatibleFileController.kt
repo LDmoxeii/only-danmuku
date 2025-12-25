@@ -103,21 +103,12 @@ class CompatibleFileController {
         uploadId: Long,
     ) {
         val currentUserId = LoginHelper.getUserId()!!
-        val resp = Mediator.commands.send(
+        Mediator.commands.send(
             DeleteUploadSessionCmd.Request(
                 customerId = currentUserId,
                 uploadId = uploadId
             )
         )
-        resp.tempPath?.takeIf { it.isNotBlank() }?.let { tempPath ->
-            runCatching {
-                Mediator.requests.send(
-                    DeleteUploadSessionTempDirCli.Request(tempPath = tempPath)
-                )
-            }.onFailure { ex ->
-                logger.warn("清理临时目录失败: {}", tempPath, ex)
-            }
-        }
     }
 
     @PostMapping("/uploadImage")
