@@ -12,9 +12,6 @@ interface VideoHlsKeyToken : BaseEntity {
     @Column(name = "file_id")
     val fileId: Long
 
-    @Column(name = "key_id")
-    val keyId: String
-
     @Column(name = "key_version")
     val keyVersion: Int
 
