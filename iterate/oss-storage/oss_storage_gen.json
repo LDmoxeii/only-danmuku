@@ -1,47 +1,17 @@
 [
   {
     "tag": "cli",
-    "package": "oss_storage",
-    "name": "OssUploadObject",
-    "desc": "上传单对象到 OSS",
+    "package": "file_upload_session",
+    "name": "UploadVideoChunkStorage",
+    "desc": "保存视频上传分片到临时存储（当前本地实现，可扩展为 OSS）",
     "requestFields": [
-      { "name": "objectKey", "type": "String", "desc": "对象 key（相对路径）" },
-      { "name": "localPath", "type": "String", "desc": "本地文件绝对路径" },
-      { "name": "contentType", "type": "String", "nullable": true },
-      { "name": "metadata", "type": "String", "nullable": true, "desc": "可选元数据 JSON" }
+      { "name": "tempPath", "type": "String", "desc": "上传会话临时目录（相对路径或对象前缀）" },
+      { "name": "chunkIndex", "type": "Int" },
+      { "name": "chunkFile", "type": "MultipartFile" }
     ],
     "responseFields": [
-      { "name": "url", "type": "String", "desc": "可访问 URL" },
-      { "name": "eTag", "type": "String", "nullable": true },
+      { "name": "storedPath", "type": "String", "desc": "实际存储路径或对象 key" },
       { "name": "size", "type": "Long" }
-    ]
-  },
-  {
-    "tag": "cli",
-    "package": "oss_storage",
-    "name": "OssUploadDirectory",
-    "desc": "上传目录到 OSS（用于 HLS 输出）",
-    "requestFields": [
-      { "name": "localDir", "type": "String", "desc": "本地目录绝对路径" },
-      { "name": "objectPrefix", "type": "String", "desc": "对象前缀，如 video/uid/vid/idx" },
-      { "name": "includeGlob", "type": "String", "nullable": true, "desc": "可选：包含规则" }
-    ],
-    "responseFields": [
-      { "name": "uploadedCount", "type": "Int" },
-      { "name": "prefix", "type": "String" }
-    ]
-  },
-  {
-    "tag": "cli",
-    "package": "oss_storage",
-    "name": "OssDeletePrefix",
-    "desc": "删除 OSS 前缀下的对象",
-    "requestFields": [
-      { "name": "objectPrefix", "type": "String" }
-    ],
-    "responseFields": [
-      { "name": "deletedCount", "type": "Int" },
-      { "name": "success", "type": "Boolean", "defaultValue": "true" }
     ]
   },
   {
@@ -75,19 +45,6 @@
       { "name": "storagePrefix", "type": "String" },
       { "name": "encPrefix", "type": "String", "nullable": true },
       { "name": "failReason", "type": "String", "nullable": true }
-    ]
-  },
-  {
-    "tag": "cmd",
-    "package": "video_storage",
-    "name": "PersistVideoStorageLocation",
-    "desc": "更新视频文件的存储前缀",
-    "requestFields": [
-      { "name": "videoFilePostId", "type": "Long" },
-      { "name": "storagePrefix", "type": "String" }
-    ],
-    "responseFields": [
-      { "name": "updated", "type": "Boolean", "defaultValue": "true" }
     ]
   },
   {
