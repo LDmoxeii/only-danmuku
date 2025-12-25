@@ -2,37 +2,33 @@ package edu.only4.danmuku.adapter.portal.api.admin
 
 import cn.dev33.satoken.annotation.SaIgnore
 import com.only.engine.exception.KnownException
+import com.only.engine.oss.factory.OssFactory
 import com.only.engine.web.annotation.IgnoreResultWrapper
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.adapter.portal.api.payload.video_encrypt.AdminGetEncKey
-import edu.only4.danmuku.adapter.portal.api.payload.video_encrypt.AdminGetEncMaster
-import edu.only4.danmuku.adapter.portal.api.payload.video_encrypt.AdminGetEncSegment
-import edu.only4.danmuku.adapter.portal.api.payload.video_encrypt.AdminGetEncVariantPlaylist
 import edu.only4.danmuku.adapter.portal.api.payload.video_encrypt.AdminIssueEncToken
 import edu.only4.danmuku.adapter.portal.api.payload.video_encrypt.AdminRotateEncKey
-import edu.only4.danmuku.application._share.config.properties.FileAppProperties
-import edu.only4.danmuku.application._share.constants.Constants
 import edu.only4.danmuku.application.commands.video_encrypt.ConsumeVideoHlsKeyTokenCmd
 import edu.only4.danmuku.application.commands.video_encrypt.IssueVideoHlsKeyTokenCmd
 import edu.only4.danmuku.application.commands.video_encrypt.RotateVideoHlsKeyCmd
+import edu.only4.danmuku.application.queries.file_storage.GetResourceAccessUrlQry
 import edu.only4.danmuku.application.queries.video_encrypt.GetLatestVideoHlsKeyQry
 import edu.only4.danmuku.application.queries.video_encrypt.GetVideoEncryptStatusQry
-import edu.only4.danmuku.application.queries.video_transcode.GetVideoFilePostPathQry
 import org.springframework.core.io.ByteArrayResource
-import org.springframework.core.io.FileSystemResource
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import java.io.File
+import java.net.URI
+import java.nio.charset.StandardCharsets
 
 @SaIgnore
 @RestController
 @RequestMapping("/admin/video/enc")
-class VideoEncryptAdminController(
-    private val fileProps: FileAppProperties,
-) {
+class VideoEncryptAdminController {
+
+    private val ossClient = OssFactory.instance()
 
     @PostMapping("/token")
     fun issueToken(@RequestBody req: AdminIssueEncToken.Request): AdminIssueEncToken.Response {
@@ -82,8 +78,7 @@ class VideoEncryptAdminController(
         )
         if (status.encryptStatus != "ENCRYPTED") throw KnownException("加密未完成: ${status.encryptStatus}")
         val path = status.encryptedMasterPath ?: throw KnownException("缺少加密路径")
-        val masterFile = File(buildEncPath(path))
-        val content = masterFile.readText().replace("__TOKEN__", token)
+        val content = readObjectAsText(path).replace("__TOKEN__", token)
         return ResponseEntity.ok()
             .contentType(MediaType.valueOf("application/vnd.apple.mpegurl"))
             .header(HttpHeaders.CONTENT_LENGTH, content.toByteArray().size.toString())
@@ -102,9 +97,9 @@ class VideoEncryptAdminController(
         )
         val base = status.encryptedMasterPath?.substringBeforeLast("/master.m3u8")
             ?: throw KnownException("缺少加密目录")
-        val playlistFile = File(buildEncPath("$base/$quality/index.m3u8"))
-        if (!playlistFile.exists()) return ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-        val content = playlistFile.readText()
+        val objectKey = "$base/$quality/index.m3u8"
+        val content = runCatching { readObjectAsText(objectKey) }
+            .getOrElse { return ResponseEntity.status(HttpStatus.NOT_FOUND).build() }
             .replace("__TOKEN__", token)
             .replace("/api/video/enc/key?keyId=", "/api/video/enc/key?quality=$quality&keyId=")
             .replace("/video/enc/key?keyId=", "/api/video/enc/key?quality=$quality&keyId=")
@@ -120,11 +115,19 @@ class VideoEncryptAdminController(
         @PathVariable fileId: Long,
         @PathVariable quality: String,
         @PathVariable ts: String
-    ): ResponseEntity<FileSystemResource> {
-        val path = Mediator.queries.send(GetVideoFilePostPathQry.Request(filePostId = fileId)).filePath
-            ?: throw KnownException("filePath 为空")
-        val segmentFile = File(buildAbsolutePath(path, "enc/$quality/$ts"))
-        return asResource(segmentFile, MediaType.valueOf("video/mp2t"))
+    ): ResponseEntity<Void> {
+        val status = Mediator.queries.send(
+            GetVideoEncryptStatusQry.Request(videoFilePostId = fileId, videoFileId = null)
+        )
+        val base = status.encryptedMasterPath?.substringBeforeLast("/master.m3u8")
+            ?: throw KnownException("缺少加密目录")
+        val objectKey = "$base/$quality/$ts"
+        val url = Mediator.queries.send(
+            GetResourceAccessUrlQry.Request(resourceKey = objectKey)
+        ).url
+        return ResponseEntity.status(HttpStatus.FOUND)
+            .location(URI.create(url))
+            .build()
     }
 
     @PostMapping("/key")
@@ -164,28 +167,14 @@ class VideoEncryptAdminController(
             .body(resource)
     }
 
-    private fun buildEncPath(relative: String): String {
-        return fileProps.projectFolder + Constants.FILE_FOLDER + relative.removePrefix("/")
-    }
-
-    private fun buildAbsolutePath(relativeBase: String, suffix: String): String {
-        val normalizedSuffix = suffix.removePrefix("/")
-        return fileProps.projectFolder + Constants.FILE_FOLDER + relativeBase.trimEnd('/') + "/" + normalizedSuffix
-    }
-
     private fun hexToBytes(hex: String): ByteArray {
         if (hex.length % 2 != 0) throw KnownException("key hex 长度异常")
         return hex.chunked(2).map { it.toInt(16).toByte() }.toByteArray()
     }
 
-    private fun asResource(file: File, mediaType: MediaType): ResponseEntity<FileSystemResource> {
-        if (!file.exists() || !file.isFile) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-        }
-        val resource = FileSystemResource(file)
-        return ResponseEntity.ok()
-            .contentType(mediaType)
-            .header(HttpHeaders.CONTENT_LENGTH, file.length().toString())
-            .body(resource)
+    private fun readObjectAsText(objectKey: String): String {
+        return ossClient.getObjectContent(objectKey)
+            .bufferedReader(StandardCharsets.UTF_8)
+            .use { it.readText() }
     }
 }

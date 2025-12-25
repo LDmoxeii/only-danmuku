@@ -11,9 +11,10 @@ import edu.only4.danmuku.application.distributed.clients.video_transcode.MergeUp
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import java.io.File
+import java.nio.file.Files
 
 /**
- * 防腐层：合并上传分片为临时 MP4，返回相对输出目录、时长、文件大小
+ * 防腐层：合并上传分片为临时 MP4，返回输出目录、时长、文件大小
  *
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * @author cap4k-ddd-codegen
@@ -34,9 +35,8 @@ class MergeUploadToMp4CliHandler(
                 throw KnownException("临时目录不存在: ${sourceDir.absolutePath}")
             }
 
-            val relativeOutput = "${Constants.FILE_VIDEO}${request.customerId}/${request.videoId}/${request.fileIndex}"
-            val outputDir = File(fileProps.projectFolder + Constants.FILE_FOLDER + relativeOutput).also { it.mkdirs() }
-            val mergedMp4 = File(outputDir, Constants.TEMP_VIDEO_NAME.removePrefix("/"))
+            val outputDir = Files.createTempDirectory("abr-output-${request.videoId}-${request.fileIndex}-").toFile()
+            val mergedMp4 = Files.createTempFile(outputDir.toPath(), "merge-", ".mp4").toFile()
 
             mergeChunks(sourceDir, mergedMp4)
 
@@ -54,7 +54,7 @@ class MergeUploadToMp4CliHandler(
             // 不删除 mergedMp4，后续 ABR 直接使用
             MergeUploadToMp4Cli.Response(
                 success = true,
-                outputDir = relativeOutput,
+                outputDir = outputDir.absolutePath,
                 mergedMp4Path = mergedMp4.absolutePath,
                 duration = duration,
                 fileSize = size,
@@ -80,4 +80,3 @@ class MergeUploadToMp4CliHandler(
         chunkFiles.forEach { it.delete() }
     }
 }
-

@@ -18,6 +18,7 @@ dependencies {
     api(libs.engine.web)
     api(libs.engine.doc)
     api(libs.engine.translation)
+    api(libs.engine.oss)
 
     api(project(":only-danmuku-application"))
 

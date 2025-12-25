@@ -1,5 +1,23 @@
 # OSS 存储引入设计说明
 
+## 0. 问题清单（单 key 全量加密）
+- [x] `RotateVideoHlsKeyCmd` 仅轮换“全局 key”（`quality = null`），新 key 也固定 `quality = null`，确保触发全量加密。
+- [ ] `GetLatestVideoHlsKeyQry` / token 签发逻辑应只使用全局 key（忽略带 `quality` 的历史数据），避免误取。
+- [ ] 单 key 模式下“清晰度分级授权”无法做到密钥隔离，需确认业务接受该限制或追加接口层强校验策略。
+- [x] `computeAllowedQualities()` 为空会导致 token 放行全部质量，需决定是否改为“无可用质量直接拒发 token”。
+- [x] 轮换时旧 key 是否标记 `REVOKED`（避免旧 token/旧 key 被继续使用）。
+- [x] 全量加密覆盖 OSS 前缀时，是否需要先删除旧对象，避免残留文件。
+
+## 0.1 未来扩展：按清晰度独立 key（当前不做）
+- [ ] Token 当前绑定单个 `keyId/keyVersion`（`video_hls_key_token`），按清晰度独立 key 需要：每清晰度签发 token，或解耦 token 与 keyId 并在取 key 时校验 keyId 属于同一 fileId。
+- [ ] `IssueVideoHlsKeyTokenCmd` + `GetLatestVideoHlsKeyQry` 假设只有一个 key，需要调整为支持按清晰度取 key 或发放通用 token。
+- [ ] `VideoFilePostTranscodeResultUpdatedDomainEventSubscriber` 仅生成一个 key（quality=null），需改为按 ABR 清晰度生成多个 key。
+- [ ] `VideoHlsEncryptKeyCreatedDomainEventSubscriber` 会对每个 key 触发加密，可能并发写同一 `enc/` 前缀；需要串行化或加锁避免覆盖/竞态。
+- [ ] `ConsumeVideoHlsKeyTokenCmd` 未验证请求的 `quality` 与 key 绑定的 `quality` 一致，按清晰度独立 key 需要补充校验。
+- [ ] `GetVideoEncryptStatusQry` 依赖 `video_file_post.encrypt_key_id`（单值），独立 key 后语义不明确，需要调整或弱化依赖。
+- [ ] `RotateVideoHlsKeyCmd` 只轮换最新 key（跨质量），应支持按清晰度轮换或批量轮换。
+- [ ] `computeAllowedQualities()` 为空时返回 null（等同放行所有质量），需要明确“无可用质量”是否应拒绝发 token。
+
 ## 一、背景与目标
 - 现有文件资源均落本地磁盘（`app.file.projectFolder + file/`），容量与 IO 成本高，扩容依赖机器。
 - 目标：引入 OSS 对象存储，覆盖**图片资源**与**视频转码产物**的持久化与访问，降低本地磁盘依赖，并为 CDN 加速预留空间。

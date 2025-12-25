@@ -21,6 +21,6 @@ object TranscodeVideoFileToAbrCli {
     data class Response(
         val accepted: Boolean = true,
         val variants: String,
-        val failReason: String?
+        val failReason: String? = null
     )
 }

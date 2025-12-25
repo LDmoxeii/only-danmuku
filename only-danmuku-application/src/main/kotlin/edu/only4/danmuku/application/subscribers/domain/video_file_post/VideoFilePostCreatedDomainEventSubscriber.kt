@@ -1,17 +1,21 @@
 package edu.only4.danmuku.application.subscribers.domain.video_file_post
 
 import com.only.engine.exception.KnownException
+import com.only.engine.misc.FFprobeUtils
 import com.only4.cap4k.ddd.core.Mediator
+import edu.only4.danmuku.application._share.config.properties.FileAppProperties
 import edu.only4.danmuku.application.commands.video_file_post.UpdateVideoFilePostTranscodeResultCmd
+import edu.only4.danmuku.application.distributed.clients.video_storage.UploadVideoAbrOutputCli
 import edu.only4.danmuku.application.distributed.clients.video_transcode.CleanupMergedMp4Cli
+import edu.only4.danmuku.application.distributed.clients.video_transcode.CleanupTempUploadDirCli
 import edu.only4.danmuku.application.distributed.clients.video_transcode.MergeUploadToMp4Cli
-import edu.only4.danmuku.application.distributed.clients.video_transcode.ProbeVideoResolutionCli
 import edu.only4.danmuku.application.distributed.clients.video_transcode.TranscodeVideoFileToAbrCli
 import edu.only4.danmuku.application.queries.video_transcode.GetUploadSessionTempPathQry
 import edu.only4.danmuku.domain.aggregates.video_file_post.events.VideoFilePostCreatedDomainEvent
 import org.slf4j.LoggerFactory
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Service
+import java.io.File
 
 /**
  * 文件分P创建完成事件，驱动转码 CLI
@@ -22,7 +26,9 @@ import org.springframework.stereotype.Service
  * @date 2025/11/21
  */
 @Service
-class VideoFilePostCreatedDomainEventSubscriber {
+class VideoFilePostCreatedDomainEventSubscriber(
+    private val fileProps: FileAppProperties,
+) {
 
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -45,11 +51,7 @@ class VideoFilePostCreatedDomainEventSubscriber {
             )
             if (!mergeResult.success) throw KnownException(mergeResult.failReason ?: "合并分片失败")
 
-            val probe = Mediator.requests.send(
-                ProbeVideoResolutionCli.Request(
-                    inputPath = mergeResult.mergedMp4Path
-                )
-            )
+            val probe = FFprobeUtils.probeVideoResolution(mergeResult.mergedMp4Path, showLog = fileProps.showFFmpegLog)
 
             val profilesJson = buildDefaultProfiles()
             val transcodeResult = Mediator.requests.send(
@@ -57,15 +59,30 @@ class VideoFilePostCreatedDomainEventSubscriber {
                     sourcePath = mergeResult.mergedMp4Path,
                     outputDir = mergeResult.outputDir,
                     profiles = profilesJson,
-                    segmentDurationSec = 6,
                 )
             )
+
+            if (!transcodeResult.accepted) {
+                throw KnownException(transcodeResult.failReason ?: "转码失败")
+            }
+
+            val storagePrefix = "video/${file.customerId}/${file.videoId}/${file.fileIndex}"
+            val uploadResp = Mediator.requests.send(
+                UploadVideoAbrOutputCli.Request(
+                    localOutputDir = mergeResult.outputDir,
+                    encOutputDir = null,
+                    objectPrefix = storagePrefix
+                )
+            )
+            if (!uploadResp.success) {
+                throw KnownException(uploadResp.failReason ?: "上传 OSS 失败")
+            }
 
             Mediator.commands.send(
                 UpdateVideoFilePostTranscodeResultCmd.Request(
                     videoFilePostId = file.id,
-                    success = transcodeResult.accepted,
-                    outputPath = mergeResult.outputDir,
+                    success = true,
+                    outputPath = uploadResp.storagePrefix,
                     sourceWidth = probe.width,
                     sourceHeight = probe.height,
                     sourceBitrateKbps = probe.bitrateKbps,
@@ -89,10 +106,14 @@ class VideoFilePostCreatedDomainEventSubscriber {
                 runCatching { Mediator.requests.send(CleanupMergedMp4Cli.Request(mergedMp4Path = mp4)) }
                     .onFailure { logger.warn("清理临时 MP4 失败: {}", mp4, it) }
             }
-//            tempPathUsed.let { tmp ->
-//                runCatching { Mediator.requests.send(CleanupTempUploadDirCli.Request(tempPath = tmp)) }
-//                    .onFailure { logger.warn("清理临时目录失败: {}", tmp, it) }
-//            }
+            mergeResult?.outputDir?.let { dir ->
+                runCatching { File(dir).deleteRecursively() }
+                    .onFailure { logger.warn("清理转码输出目录失败: {}", dir, it) }
+            }
+            tempPathUsed.let { tmp ->
+                runCatching { Mediator.requests.send(CleanupTempUploadDirCli.Request(tempPath = tmp)) }
+                    .onFailure { logger.warn("清理临时目录失败: {}", tmp, it) }
+            }
         }
     }
 

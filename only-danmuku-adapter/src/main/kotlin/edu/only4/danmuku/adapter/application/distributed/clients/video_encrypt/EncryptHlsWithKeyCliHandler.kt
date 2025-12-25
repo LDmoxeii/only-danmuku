@@ -4,15 +4,14 @@ import cn.hutool.core.util.RuntimeUtil
 import com.only4.cap4k.ddd.core.application.RequestHandler
 import com.only.engine.exception.KnownException
 import com.only.engine.json.misc.JsonUtils
-import edu.only4.danmuku.application._share.config.properties.FileAppProperties
-import edu.only4.danmuku.application._share.constants.Constants
+import com.only.engine.oss.core.OssClient
+import com.only.engine.oss.factory.OssFactory
 import edu.only4.danmuku.application.distributed.clients.video_encrypt.EncryptHlsWithKeyCli
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
-import java.nio.file.StandardCopyOption
 import java.util.UUID
 
 /**
@@ -23,20 +22,18 @@ import java.util.UUID
  * @date 2025/11/25
  */
 @Service
-class EncryptHlsWithKeyCliHandler(
-    private val fileProps: FileAppProperties,
-) : RequestHandler<EncryptHlsWithKeyCli.Request, EncryptHlsWithKeyCli.Response> {
+class EncryptHlsWithKeyCliHandler : RequestHandler<EncryptHlsWithKeyCli.Request, EncryptHlsWithKeyCli.Response> {
     private val logger = LoggerFactory.getLogger(javaClass)
 
     override fun exec(request: EncryptHlsWithKeyCli.Request): EncryptHlsWithKeyCli.Response {
+        var sourceTemp: Path? = null
+        var outputTemp: Path? = null
         return runCatching {
-            val sourceDir = resolveToAbsolute(request.sourceDir)
-            val outputDir = resolveToAbsolute(request.outputDir)
-            val source = File(sourceDir)
-            if (!source.exists() || !source.isDirectory) {
-                throw KnownException.systemError("源目录不存在: $sourceDir")
-            }
-            val output = File(outputDir)
+            val client = OssFactory.instance()
+            val sourceContext = prepareSourceContext(request.sourceDir, client).also { sourceTemp = it.tempPath }
+            val outputContext = prepareOutputContext(request.outputDir, request.quality, client).also { outputTemp = it.tempPath }
+            val source = sourceContext.localDir
+            val output = outputContext.localDir
             val existingVariants = listExistingVariants(output)
             val isFullEncrypt = request.quality.isNullOrBlank()
             if (isFullEncrypt && output.exists()) {
@@ -99,9 +96,15 @@ class EncryptHlsWithKeyCliHandler(
             }
 
             val variantsJson = JsonUtils.toJsonString(qualities) ?: "[]"
+            val prefix = outputContext.objectPrefix ?: throw KnownException.illegalArgument("outputDir")
+            if (isFullEncrypt) {
+                client.deleteByPrefix(prefix)
+            }
+            uploadDirectory(client, output, prefix)
+            val encryptedMasterPath = prefix.trimEnd('/') + "/master.m3u8"
             EncryptHlsWithKeyCli.Response(
                 success = true,
-                encryptedMasterPath = toRelativePath(output),
+                encryptedMasterPath = encryptedMasterPath,
                 encryptedVariants = variantsJson,
                 failReason = null
             )
@@ -112,15 +115,39 @@ class EncryptHlsWithKeyCliHandler(
                 encryptedVariants = "[]",
                 failReason = it.message
             )
+        }.also {
+            cleanupTempDir(sourceTemp)
+            cleanupTempDir(outputTemp)
         }
     }
 
-    private fun resolveToAbsolute(path: String): String {
-        val file = File(path)
-        if (file.isAbsolute) {
-            return file.absolutePath
+    private fun prepareSourceContext(sourceDir: String, client: OssClient): StorageContext {
+        val prefix = sourceDir.trim().trim('/')
+        if (prefix.isBlank()) {
+            throw KnownException.illegalArgument("sourceDir")
         }
-        return File(fileProps.projectFolder + Constants.FILE_FOLDER + path).absolutePath
+        val tempDir = Files.createTempDirectory("hls-src-").toFile()
+        val downloaded = downloadByPrefix(client, prefix, tempDir.toPath())
+        if (downloaded == 0) {
+            throw KnownException.systemError("源目录不存在: $sourceDir")
+        }
+        return StorageContext(tempDir, prefix, tempDir.toPath())
+    }
+
+    private fun prepareOutputContext(
+        outputDir: String,
+        quality: String?,
+        client: OssClient
+    ): StorageContext {
+        val prefix = outputDir.trim().trim('/')
+        if (prefix.isBlank()) {
+            throw KnownException.illegalArgument("outputDir")
+        }
+        val tempDir = Files.createTempDirectory("hls-enc-").toFile()
+        if (!quality.isNullOrBlank()) {
+            downloadByPrefix(client, prefix, tempDir.toPath())
+        }
+        return StorageContext(tempDir, prefix, tempDir.toPath())
     }
 
     private fun hexToBytes(hex: String): ByteArray {
@@ -176,16 +203,6 @@ class EncryptHlsWithKeyCliHandler(
             throw KnownException.systemError(e)
         } finally {
             process?.destroy()
-        }
-    }
-
-    private fun toRelativePath(output: File): String {
-        val base = File(fileProps.projectFolder + Constants.FILE_FOLDER)
-        return if (output.absolutePath.startsWith(base.absolutePath)) {
-            output.absolutePath.removePrefix(base.absolutePath).trimStart('\\', '/')
-                .let { if (it.isBlank()) "master.m3u8" else "$it/master.m3u8" }
-        } else {
-            File(output, "master.m3u8").absolutePath
         }
     }
 
@@ -303,4 +320,45 @@ class EncryptHlsWithKeyCliHandler(
                 ?.let { if (it > 0) it else null }
         }?.toInt() ?: 4
     }
+
+    private fun uploadDirectory(client: OssClient, baseDir: File, prefix: String) {
+        val basePath = baseDir.toPath()
+        Files.walk(basePath).use { paths ->
+            paths.filter { Files.isRegularFile(it) }.forEach { path ->
+                val relative = basePath.relativize(path).toString().replace('\\', '/')
+                val objectKey = "${prefix.trimEnd('/')}/$relative"
+                val contentType = Files.probeContentType(path)
+                path.toFile().inputStream().use { input ->
+                    client.upload(input, objectKey, Files.size(path), contentType)
+                }
+            }
+        }
+    }
+
+    private fun downloadByPrefix(client: OssClient, prefix: String, targetDir: Path): Int {
+        val normalized = prefix.trim().trimEnd('/')
+        val basePrefix = "$normalized/"
+        val keys = client.listKeysByPrefix(basePrefix)
+        if (keys.isEmpty()) {
+            return 0
+        }
+        keys.forEach { key ->
+            val relative = key.removePrefix(basePrefix).trimStart('/')
+            val target = targetDir.resolve(relative)
+            target.parent?.let { Files.createDirectories(it) }
+            client.downloadToFile(key, target)
+        }
+        return keys.size
+    }
+
+    private fun cleanupTempDir(path: Path?) {
+        if (path == null) return
+        runCatching { path.toFile().deleteRecursively() }
+    }
+
+    private data class StorageContext(
+        val localDir: File,
+        val objectPrefix: String?,
+        val tempPath: Path?
+    )
 }

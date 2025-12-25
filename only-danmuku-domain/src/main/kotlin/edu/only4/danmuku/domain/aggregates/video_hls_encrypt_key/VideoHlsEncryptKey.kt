@@ -162,5 +162,12 @@ class VideoHlsEncryptKey(
     fun onCreate() {
         events().attach(this) { VideoHlsEncryptKeyCreatedDomainEvent(this) }
     }
+
+    fun markRevoked(reason: String? = null) {
+        this.status = EncryptKeyStatus.REVOKED
+        if (!reason.isNullOrBlank()) {
+            this.remark = reason
+        }
+    }
     // 【行为方法结束】
 }

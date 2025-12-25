@@ -6,7 +6,6 @@ import com.only.engine.json.misc.JsonUtils
 import com.only.engine.misc.FFprobeUtils
 import com.only4.cap4k.ddd.core.application.RequestHandler
 import edu.only4.danmuku.application._share.config.properties.FileAppProperties
-import edu.only4.danmuku.application._share.constants.Constants
 import edu.only4.danmuku.application.distributed.clients.video_transcode.TranscodeVideoFileToAbrCli
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
@@ -29,8 +28,8 @@ class TranscodeVideoFileToAbrCliHandler(
 
     override fun exec(request: TranscodeVideoFileToAbrCli.Request): TranscodeVideoFileToAbrCli.Response {
         return runCatching {
-            val sourcePath = resolveToAbsolute(request.sourcePath)
-            val outputBaseDir = resolveToAbsolute(request.outputDir)
+            val sourcePath = request.sourcePath
+            val outputBaseDir = request.outputDir
             val segmentDuration = request.segmentDurationSec.coerceAtLeast(1)
 
             val sourceFile = File(sourcePath)
@@ -107,7 +106,6 @@ class TranscodeVideoFileToAbrCliHandler(
             TranscodeVideoFileToAbrCli.Response(
                 accepted = true,
                 variants = variantsJson,
-                failReason = null
             )
         }.getOrElse {
             logger.error("ABR 转码失败", it)
@@ -117,14 +115,6 @@ class TranscodeVideoFileToAbrCliHandler(
                 failReason = it.message
             )
         }
-    }
-
-    private fun resolveToAbsolute(path: String): String {
-        val file = File(path)
-        if (file.isAbsolute) {
-            return file.absolutePath
-        }
-        return File(fileProps.projectFolder + Constants.FILE_FOLDER + path).absolutePath
     }
 
     private fun parseProfiles(json: String): List<AbrProfile> {

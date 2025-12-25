@@ -47,6 +47,7 @@ codegen {
         rootEntityBaseClass.set("AuditedFieldsEntity")
         entityBaseClass.set("AuditedFieldsEntity")
         typeMapping.set(mapOf(
+            "MultipartFile" to "org.springframework.web.multipart.MultipartFile"
             "UserMessageExtend" to "edu.only4.danmuku.domain.aggregates.customer_message.extend.UserMessageExtend",
             "AuditedFieldsEntity" to "edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity",
             "UserType" to "edu.only4.danmuku.domain.aggregates.user.enums.UserType",

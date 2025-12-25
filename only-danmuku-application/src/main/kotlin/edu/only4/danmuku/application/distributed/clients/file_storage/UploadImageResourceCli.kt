@@ -1,6 +1,8 @@
 package edu.only4.danmuku.application.distributed.clients.file_storage
 
 import com.only4.cap4k.ddd.core.application.RequestParam
+import org.springframework.web.multipart.MultipartFile
+import java.time.format.DateTimeFormatter
 
 /**
  * 上传图片到 OSS 并返回资源 key
@@ -10,6 +12,9 @@ import com.only4.cap4k.ddd.core.application.RequestParam
  * @date 2025/12/24
  */
 object UploadImageResourceCli {
+
+    val MONTH_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMM")
+    const val RANDOM_STRING_LENGTH = 30
 
     data class Request(
         val file: MultipartFile,

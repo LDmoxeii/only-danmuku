@@ -1,28 +1,22 @@
 package edu.only4.danmuku.adapter.portal.api.compatible
 
 import cn.dev33.satoken.annotation.SaIgnore
-import cn.dev33.satoken.stp.StpUtil
 import com.only.engine.satoken.utils.LoginHelper
+import com.only.engine.web.annotation.IgnoreResultWrapper
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.adapter.portal.api.payload.FileUploadVideo
 import edu.only4.danmuku.application.commands.file_upload_session.CreateUploadSessionCmd
 import edu.only4.danmuku.application.commands.file_upload_session.DeleteUploadSessionCmd
 import edu.only4.danmuku.application.commands.file_upload_session.UploadVideoChunkCmd
-import edu.only4.danmuku.application.commands.video.AddPlayCountCmd
-import edu.only4.danmuku.application.commands.video_play_history.AddPlayHistoryCmd
-import edu.only4.danmuku.application.distributed.clients.UploadImageCli
-import edu.only4.danmuku.application.queries.file.GetFileResourceQry
-import edu.only4.danmuku.application.queries.file.GetVideoResourceQry
-import edu.only4.danmuku.application.queries.file.GetVideoResourceTsQry
-import jakarta.servlet.http.HttpServletRequest
-import jakarta.servlet.http.HttpServletResponse
+import edu.only4.danmuku.application.distributed.clients.file_storage.UploadImageResourceCli
+import edu.only4.danmuku.application.queries.file_storage.GetResourceAccessUrlQry
 import jakarta.validation.constraints.NotEmpty
-import org.slf4j.LoggerFactory
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
-import java.io.File
-import java.io.FileInputStream
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
+import java.net.URI
 
 /**
  * 文件操作控制器 - 处理文件上传、资源获取等操作
@@ -32,37 +26,18 @@ import java.io.FileInputStream
 @Validated
 class CompatibleFileController {
 
-    private val logger = LoggerFactory.getLogger(CompatibleAdminFileController::class.java)
-
     @SaIgnore
+    @IgnoreResultWrapper
     @GetMapping("/getResource")
     fun getResource(
-        @NotEmpty sourceName: String,
-        response: HttpServletResponse,
-    ) {
+        @NotEmpty sourceName: String
+    ): ResponseEntity<Void> {
         val result = Mediator.queries.send(
-            GetFileResourceQry.Request(sourceName = sourceName)
+            GetResourceAccessUrlQry.Request(resourceKey = sourceName)
         )
-
-        if (!result.exists) {
-            response.status = HttpServletResponse.SC_NOT_FOUND
-            return
-        }
-
-        val contentType = when (result.fileSuffix.lowercase()) {
-            ".jpg", ".jpeg" -> "image/jpeg"
-            ".png" -> "image/png"
-            ".gif" -> "image/gif"
-            ".webp" -> "image/webp"
-            ".bmp" -> "image/bmp"
-            ".svg" -> "image/svg+xml"
-            else -> "application/octet-stream"
-        }
-        response.contentType = contentType
-
-        response.setHeader("Cache-Control", "max-age=2592000")
-
-        readFile(response, result.filePath)
+        return ResponseEntity.status(HttpStatus.FOUND)
+            .location(URI.create(result.url))
+            .build()
     }
 
     /**
@@ -126,35 +101,14 @@ class CompatibleFileController {
         file: MultipartFile,
         createThumbnail: Boolean,
     ): String {
-        val filePath = Mediator.requests.send(
-            UploadImageCli.Request(
+        val resp = Mediator.requests.send(
+            UploadImageResourceCli.Request(
                 file = file,
-                createThumbnail = createThumbnail
+                createThumbnail = createThumbnail,
+                bizType = "COVER"
             )
         )
-        return filePath
-    }
-
-    private fun readFile(response: HttpServletResponse, filePath: String) {
-        val file = File(filePath)
-        if (!file.exists()) {
-            return
-        }
-
-        try {
-            response.outputStream.use { out ->
-                FileInputStream(file).use { inputStream ->
-                    val buffer = ByteArray(1024)
-                    var len: Int
-                    while (inputStream.read(buffer).also { len = it } != -1) {
-                        out.write(buffer, 0, len)
-                    }
-                    out.flush()
-                }
-            }
-        } catch (e: Exception) {
-            logger.error("读取文件异常: $filePath", e)
-        }
+        return resp.resourceKey
     }
 
 }

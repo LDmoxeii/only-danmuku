@@ -4,18 +4,14 @@ import cn.dev33.satoken.annotation.SaIgnore
 import cn.dev33.satoken.stp.StpUtil
 import com.only.engine.exception.KnownException
 import com.only.engine.json.misc.JsonUtils
+import com.only.engine.oss.factory.OssFactory
 import com.only.engine.web.annotation.IgnoreResultWrapper
 import com.only4.cap4k.ddd.core.Mediator
-import edu.only4.danmuku.adapter.portal.api.payload.video_encrypt.FrontGetEncKey
-import edu.only4.danmuku.adapter.portal.api.payload.video_encrypt.FrontGetEncMaster
-import edu.only4.danmuku.adapter.portal.api.payload.video_encrypt.FrontGetEncSegment
-import edu.only4.danmuku.adapter.portal.api.payload.video_encrypt.FrontGetEncVariantPlaylist
 import edu.only4.danmuku.adapter.portal.api.payload.video_encrypt.FrontIssueEncToken
 import edu.only4.danmuku.adapter.portal.api.payload.video_encrypt.FrontListEncQualities
-import edu.only4.danmuku.application._share.config.properties.FileAppProperties
-import edu.only4.danmuku.application._share.constants.Constants
 import edu.only4.danmuku.application.commands.video_encrypt.ConsumeVideoHlsKeyTokenCmd
 import edu.only4.danmuku.application.commands.video_encrypt.IssueVideoHlsKeyTokenCmd
+import edu.only4.danmuku.application.queries.file_storage.GetResourceAccessUrlQry
 import edu.only4.danmuku.application.queries.video_encrypt.GetLatestVideoHlsKeyQry
 import edu.only4.danmuku.application.queries.video_encrypt.GetVideoEncryptStatusQry
 import edu.only4.danmuku.application.queries.video_encrypt.ListVideoQualityAuthQry
@@ -23,22 +19,20 @@ import edu.only4.danmuku.application.queries.video_transcode.GetVideoPostIdByFil
 import edu.only4.danmuku.application.queries.video_transcode.ListVideoAbrVariantsQry
 import edu.only4.danmuku.domain.aggregates.video_hls_quality_auth.enums.QualityAuthPolicy
 import org.springframework.core.io.ByteArrayResource
-import org.springframework.core.io.FileSystemResource
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import java.io.File
+import java.net.URI
 import java.nio.charset.StandardCharsets
-import java.security.MessageDigest
 
 @SaIgnore
 @RestController
 @RequestMapping("/video/enc")
-class VideoEncryptController(
-    private val fileProps: FileAppProperties,
-) {
+class VideoEncryptController {
+
+    private val ossClient = OssFactory.instance()
 
     @PostMapping("/token")
     fun issueToken(@RequestBody req: FrontIssueEncToken.Request): FrontIssueEncToken.Response {
@@ -106,11 +100,8 @@ class VideoEncryptController(
         }
         val post = Mediator.queries.send(GetVideoPostIdByFileIdQry.Request(fileId = fileId))
         val allowedQualities = resolveAllowedQualities(post.filePostId)
-        val masterFile = File(buildEncPath(status.encryptedMasterPath))
-        if (!masterFile.exists()) {
-            throw KnownException("master 文件不存在")
-        }
-        val content = masterFile.readText()
+        val masterKey = status.encryptedMasterPath ?: throw KnownException("缺少加密路径")
+        val content = readObjectAsText(masterKey)
         val filtered = if (allowedQualities.isEmpty()) content else {
             filterMasterByAllowedQualities(content, allowedQualities.toSet())
         }
@@ -132,11 +123,9 @@ class VideoEncryptController(
         val status = encryptStatus(fileId)
         val base = status.encryptedMasterPath?.substringBeforeLast("/master.m3u8")
             ?: throw KnownException("缺少加密目录")
-        val playlistFile = File(buildEncPath("$base/$quality/index.m3u8"))
-        if (!playlistFile.exists()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-        }
-        val content = playlistFile.readText()
+        val objectKey = "$base/$quality/index.m3u8"
+        val content = runCatching { readObjectAsText(objectKey) }
+            .getOrElse { return ResponseEntity.status(HttpStatus.NOT_FOUND).build() }
             .replace("__TOKEN__", token)
             .replace("/api/video/enc/key?keyId=", "/api/video/enc/key?quality=$quality&keyId=")
             .replace("/video/enc/key?keyId=", "/api/video/enc/key?quality=$quality&keyId=")
@@ -152,12 +141,17 @@ class VideoEncryptController(
         @PathVariable fileId: Long,
         @PathVariable quality: String,
         @PathVariable ts: String
-    ): ResponseEntity<FileSystemResource> {
+    ): ResponseEntity<Void> {
         val status = encryptStatus(fileId)
         val base = status.encryptedMasterPath?.substringBeforeLast("/master.m3u8")
             ?: throw KnownException("缺少加密目录")
-        val segmentFile = File(buildEncPath("$base/$quality/$ts"))
-        return asResource(segmentFile, MediaType.valueOf("video/mp2t"))
+        val objectKey = "$base/$quality/$ts"
+        val url = Mediator.queries.send(
+            GetResourceAccessUrlQry.Request(resourceKey = objectKey)
+        ).url
+        return ResponseEntity.status(HttpStatus.FOUND)
+            .location(URI.create(url))
+            .build()
     }
 
     @IgnoreResultWrapper
@@ -194,25 +188,9 @@ class VideoEncryptController(
         )
     }
 
-    private fun buildEncPath(relative: String?): String {
-        val rel = relative ?: throw KnownException("缺少路径")
-        return fileProps.projectFolder + Constants.FILE_FOLDER + rel.removePrefix("/")
-    }
-
     private fun hexToBytes(hex: String): ByteArray {
         if (hex.length % 2 != 0) throw KnownException("key hex 长度异常")
         return hex.chunked(2).map { it.toInt(16).toByte() }.toByteArray()
-    }
-
-    private fun asResource(file: File, mediaType: MediaType): ResponseEntity<FileSystemResource> {
-        if (!file.exists() || !file.isFile) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-        }
-        val resource = FileSystemResource(file)
-        return ResponseEntity.ok()
-            .contentType(mediaType)
-            .header(HttpHeaders.CONTENT_LENGTH, file.length().toString())
-            .body(resource)
     }
 
     private fun loadQualityPolicies(filePostId: Long): List<PolicyPayload> {
@@ -306,6 +284,12 @@ class VideoEncryptController(
         return builder.toString()
     }
 
+    private fun readObjectAsText(objectKey: String): String {
+        return ossClient.getObjectContent(objectKey)
+            .bufferedReader(StandardCharsets.UTF_8)
+            .use { it.readText() }
+    }
+
     private fun playlistAllowed(playlist: String, allowedQualities: Set<String>): Boolean {
         val normalized = playlist.substringBefore("?").trim()
         return allowedQualities.any { quality ->
@@ -316,8 +300,15 @@ class VideoEncryptController(
     }
 
     private fun computeAllowedQualities(filePostId: Long): String? {
-        val allowed = resolveAllowedQualities(filePostId)
-        if (allowed.isEmpty()) return null
+        val policies = loadQualityPolicies(filePostId)
+        if (policies.isEmpty()) return null
+        val allowLogin = StpUtil.isLogin()
+        val allowed = policies.filter {
+            isPlayable(resolvePolicy(it.authPolicy), allowLogin)
+        }.map { it.quality }
+        if (allowed.isEmpty()) {
+            throw KnownException("无可用清晰度")
+        }
         return JsonUtils.toJsonString(allowed)
     }
 

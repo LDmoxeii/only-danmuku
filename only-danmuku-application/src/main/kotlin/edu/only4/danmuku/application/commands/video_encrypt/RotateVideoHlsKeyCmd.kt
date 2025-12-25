@@ -24,11 +24,18 @@ object RotateVideoHlsKeyCmd {
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
             return runCatching {
-                val latest = Mediator.repositories.find(
+                val keys = Mediator.repositories.find(
                     SVideoHlsEncryptKey.predicate { it.fileId.eq(request.videoFilePostId) }
-                ).maxByOrNull { it.keyVersion } ?: throw KnownException("未找到可轮换的密钥")
+                )
+                if (keys.isEmpty()) {
+                    throw KnownException("未找到可轮换的密钥")
+                }
+                val latest = keys.maxByOrNull { it.keyVersion } ?: throw KnownException("未找到可轮换的密钥")
 
-                val newVersion = latest.keyVersion + 1
+                keys.filter { it.status == EncryptKeyStatus.ACTIVE }
+                    .forEach { it.markRevoked(request.reason) }
+
+                val newVersion = (keys.maxOfOrNull { it.keyVersion } ?: 0) + 1
                 val keyBytes = ByteArray(16).also { SecureRandom().nextBytes(it) }
                 val keyCiphertext = Base64.getEncoder().encodeToString(keyBytes)
                 val ivHex = ByteArray(16).also { SecureRandom().nextBytes(it) }.joinToString("") { b -> "%02x".format(b) }
@@ -37,7 +44,7 @@ object RotateVideoHlsKeyCmd {
                 Mediator.factories.create(
                     VideoHlsEncryptKeyFactory.Payload(
                         fileId = latest.fileId,
-                        quality = latest.quality,
+                        quality = null,
                         keyId = keyId,
                         keyCiphertext = keyCiphertext,
                         ivHex = ivHex,
