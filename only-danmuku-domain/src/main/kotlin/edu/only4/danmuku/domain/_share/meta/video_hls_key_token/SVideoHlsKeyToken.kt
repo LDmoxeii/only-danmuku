@@ -32,8 +32,6 @@ class SVideoHlsKeyToken(
 
         val fileId = "fileId"
 
-        val keyId = "keyId"
-
         val keyVersion = "keyVersion"
 
         val allowedQualities = "allowedQualities"
@@ -380,14 +378,6 @@ class SVideoHlsKeyToken(
      */
     val fileId: Field<Long> by lazy {
         Field(root.get("fileId"), criteriaBuilder)
-    }
-
-
-    /**
-     * Key ID
-     */
-    val keyId: Field<String> by lazy {
-        Field(root.get("keyId"), criteriaBuilder)
     }
 
 

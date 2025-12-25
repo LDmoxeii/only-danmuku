@@ -33,7 +33,7 @@ codegen {
         username.set("root")
         password.set("123456")
         schema.set("only_danmuku")
-        tables.set("video_file_post,video_hls_abr_variant,video_hls_encrypt_key,video_hls_quality_auth,video_hls_key_token")
+        tables.set("video_hls_key_token")
         ignoreTables.set("")
     }
 
