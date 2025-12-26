@@ -385,9 +385,9 @@ class SVideoHlsEncryptKey(
 
 
     /**
-     * 绑定清晰度，空表示全局通用
+     * 绑定清晰度
      */
-    val quality: Field<String?> by lazy {
+    val quality: Field<String> by lazy {
         Field(root.get("quality"), criteriaBuilder)
     }
 

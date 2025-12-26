@@ -14,7 +14,7 @@ interface VideoHlsEncryptKey : BaseEntity {
     val fileId: Long
 
     @Column(name = "quality")
-    val quality: String?
+    val quality: String
 
     @Column(name = "key_id")
     val keyId: String

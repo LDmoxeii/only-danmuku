@@ -12,7 +12,7 @@ object UniqueVideoHlsEncryptKeyQry {
         val fileId: Long,
         val keyId: String,
         val keyVersion: Int,
-        val quality: String?,
+        val quality: String,
         val excludeVideoHlsEncryptKeyId: Long?
     ) : RequestParam<Response>
 
