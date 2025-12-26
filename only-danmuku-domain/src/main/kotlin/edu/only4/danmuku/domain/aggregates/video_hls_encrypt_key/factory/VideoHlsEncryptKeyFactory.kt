@@ -50,7 +50,7 @@ class VideoHlsEncryptKeyFactory : AggregateFactory<VideoHlsEncryptKeyFactory.Pay
     )
     data class Payload(
         val fileId: Long,
-        val quality: String?,
+        val quality: String,
         val keyId: String,
         val keyCiphertext: String,
         val ivHex: String?,
