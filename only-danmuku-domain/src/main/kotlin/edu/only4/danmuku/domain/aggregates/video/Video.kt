@@ -358,6 +358,7 @@ class Video(
         this.introduction = introduction
         this.interaction = interaction
         this.duration = duration
+        this.recommendType = RecommendType.NOT_RECOMMEND
 
         // 分P重建
         this.videoFiles.clear()
