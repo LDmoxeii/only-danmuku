@@ -32,8 +32,6 @@ import java.nio.charset.StandardCharsets
 @RequestMapping("/video/enc")
 class VideoEncryptController {
 
-    private val ossClient = OssFactory.instance()
-
     @PostMapping("/token")
     fun issueToken(@RequestBody req: FrontIssueEncToken.Request): FrontIssueEncToken.Response {
         val post = Mediator.queries.send(GetVideoPostIdByFileIdQry.Request(fileId = req.fileId))
@@ -127,13 +125,11 @@ class VideoEncryptController {
         val objectKey = "$base/$quality/index.m3u8"
         val content = runCatching { readObjectAsText(objectKey) }
             .getOrElse { return ResponseEntity.status(HttpStatus.NOT_FOUND).build() }
-            .replace("__TOKEN__", token)
-            .replace("/api/video/enc/key?keyId=", "/api/video/enc/key?quality=$quality&keyId=")
-            .replace("/video/enc/key?keyId=", "/api/video/enc/key?quality=$quality&keyId=")
+        val replaced = content.replace("__TOKEN__", token)
         return ResponseEntity.ok()
             .contentType(MediaType.valueOf("application/vnd.apple.mpegurl"))
-            .header(HttpHeaders.CONTENT_LENGTH, content.toByteArray().size.toString())
-            .body(content)
+            .header(HttpHeaders.CONTENT_LENGTH, replaced.toByteArray().size.toString())
+            .body(replaced)
     }
 
     @IgnoreResultWrapper
@@ -286,7 +282,7 @@ class VideoEncryptController {
     }
 
     private fun readObjectAsText(objectKey: String): String {
-        return ossClient.getObjectContent(objectKey)
+        return OssFactory.instance().getObjectContent(objectKey)
             .bufferedReader(StandardCharsets.UTF_8)
             .use { it.readText() }
     }

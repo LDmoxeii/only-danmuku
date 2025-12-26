@@ -78,6 +78,17 @@ only:
         store: redis
     redis:
       enable: true
+    oss:
+      enable: true
+      endpoint: http://127.0.0.1:9000
+      domain: ""
+      bucketName: only-danmuku
+      accessKey: minioadmin
+      secretKey: minioadmin
+      region: us-east-1
+      prefix: uploads
+      https: false
+      accessPolicy: "0"
     # redisson 配置
     redisson:
       # redis key前缀
