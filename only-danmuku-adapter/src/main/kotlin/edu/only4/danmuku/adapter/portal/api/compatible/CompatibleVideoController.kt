@@ -13,6 +13,7 @@ import edu.only4.danmuku.application.queries.video.GetRecommendVideosQry
 import edu.only4.danmuku.application.queries.video.GetVideoInfoQry
 import edu.only4.danmuku.application.queries.video.GetVideoPageQry
 import edu.only4.danmuku.application.queries.video_file.GetVideoFilesByVideoIdQry
+import edu.only4.danmuku.application.queries.video_search.SearchVideoByEsQry
 import edu.only4.danmuku.domain.aggregates.video.enums.RecommendType
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
@@ -163,22 +164,22 @@ class CompatibleVideoController {
     fun searchVideo(@Validated request: VideoSearch.Request): PageData<VideoSearch.VideoItem> {
         RedisUtils.incrZSetScore(Constants.REDIS_KEY_VIDEO_SEARCH_COUNT, request.keyword, 1.0)
 
-        val queryRequest = GetVideoPageQry.Request(
-            videoNameFuzzy = request.keyword,
+        val queryRequest = SearchVideoByEsQry.Request(
+            keyword = request.keyword,
+            orderType = request.orderType
         ).apply {
             pageNum = request.pageNum
             pageSize = request.pageSize
         }
 
         val queryResult = Mediator.queries.send(queryRequest)
+        val list = queryResult.list.map { VideoSearch.Converter.INSTANCE.fromEs(it) }
 
         return PageData.create(
-            pageNum = queryRequest.pageNum,
-            pageSize = queryRequest.pageSize,
-
-            list = queryResult.list.map { VideoSearch.Converter.INSTANCE.fromApp(it) },
-
-            totalCount = queryResult.totalCount,
+            pageNum = queryResult.pageNum,
+            pageSize = queryResult.pageSize,
+            list = list,
+            totalCount = queryResult.totalCount
         )
     }
 

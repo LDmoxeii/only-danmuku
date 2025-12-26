@@ -7,6 +7,7 @@ dependencies {
     api(libs.spring.data)
     api(libs.spring.web)
     api(libs.spring.messaging)
+    api(libs.spring.elasticsearch)
     api(libs.druid)
     api(libs.mysql)
 

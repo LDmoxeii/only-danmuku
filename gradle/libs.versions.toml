@@ -41,6 +41,7 @@ spring-web = { module = "org.springframework.boot:spring-boot-starter-web" }
 spring-validation = { module = "org.springframework.boot:spring-boot-starter-validation" }
 spring-data = { module = "org.springframework.boot:spring-boot-starter-data-jpa" }
 spring-messaging = { module = "org.springframework:spring-messaging", version.ref = "spring-boot" }
+spring-elasticsearch = { module = "org.springframework.boot:spring-boot-starter-data-elasticsearch" }
 
 annotation = { module = "jakarta.annotation:jakarta.annotation-api" }
 blazebit-persistence-querydsl = { module = "com.blazebit:blaze-persistence-integration-querydsl-expressions-jakarta", version.ref = "blazebit" }

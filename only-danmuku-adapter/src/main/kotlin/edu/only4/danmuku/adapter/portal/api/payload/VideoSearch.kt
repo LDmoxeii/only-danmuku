@@ -4,6 +4,7 @@ import com.only.engine.translation.annotation.Translation
 import com.only.engine.translation.translation.EpochSecondToDateStringTranslation
 import com.only4.cap4k.ddd.core.share.PageParam
 import edu.only4.danmuku.application.queries.video.GetVideoPageQry
+import edu.only4.danmuku.application.queries.video_search.SearchVideoByEsQry
 import jakarta.validation.constraints.NotEmpty
 import org.mapstruct.Mapper
 import org.mapstruct.factory.Mappers
@@ -55,6 +56,7 @@ object VideoSearch {
     @Mapper(componentModel = "default")
     interface Converter {
         fun fromApp(resp: GetVideoPageQry.Response): VideoItem
+        fun fromEs(resp: SearchVideoByEsQry.Response): VideoItem
 
         companion object { val INSTANCE: Converter = Mappers.getMapper(Converter::class.java) }
     }
