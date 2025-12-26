@@ -10,6 +10,7 @@ dependencies {
     api(libs.spring.elasticsearch)
     api(libs.druid)
     api(libs.mysql)
+    api(libs.opentelemetry.api)
 
     api(libs.jimmer.starter)
 
