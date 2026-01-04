@@ -1,0 +1,125 @@
+[
+  {
+    "tag": "payload",
+    "package": "video_post",
+    "name": "VideoPostFileSpec",
+    "desc": "稿件分P文件创建参数",
+    "requestFields": [
+      { "name": "uploadId", "type": "Long" },
+      { "name": "fileIndex", "type": "Int" },
+      { "name": "fileName", "type": "String", "nullable": true },
+      { "name": "fileSize", "type": "Long", "nullable": true },
+      { "name": "duration", "type": "Int", "nullable": true }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "video_post",
+    "name": "CreateVideoPost",
+    "desc": "创建视频稿件并创建分P文件（聚合内）",
+    "requestFields": [
+      { "name": "customerId", "type": "Long" },
+      { "name": "videoName", "type": "String" },
+      { "name": "videoCover", "type": "String", "nullable": true },
+      { "name": "parentCategoryId", "type": "Long" },
+      { "name": "categoryId", "type": "Long", "nullable": true },
+      { "name": "postType", "type": "PostType", "defaultValue": "ORIGINAL" },
+      { "name": "originInfo", "type": "String", "nullable": true },
+      { "name": "tags", "type": "String", "nullable": true },
+      { "name": "introduction", "type": "String", "nullable": true },
+      { "name": "interaction", "type": "String", "nullable": true },
+      { "name": "uploadFileList", "type": "List<VideoPostFileSpec>" }
+    ],
+    "responseFields": [
+      { "name": "videoId", "type": "Long" }
+    ]
+  },
+  {
+    "tag": "qry",
+    "package": "video_post_job",
+    "name": "ListTranscodingVideoPosts",
+    "desc": "列出待转码分P（transfer_result=TRANSCODING）",
+    "requestFields": [
+      { "name": "batchSize", "type": "Int", "defaultValue": "50" }
+    ],
+    "responseFields": [
+      { "name": "videoPostId", "type": "Long" },
+      { "name": "fileIndex", "type": "Int" },
+      { "name": "uploadId", "type": "Long" }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "video_post_job",
+    "name": "ApplyVideoPostTranscodeResult",
+    "desc": "回写单个分P转码结果（聚合内变更）",
+    "requestFields": [
+      { "name": "videoPostId", "type": "Long" },
+      { "name": "fileIndex", "type": "Int" },
+      { "name": "success", "type": "Boolean" },
+      { "name": "outputPath", "type": "String", "nullable": true },
+      { "name": "sourceWidth", "type": "Int", "nullable": true },
+      { "name": "sourceHeight", "type": "Int", "nullable": true },
+      { "name": "sourceBitrateKbps", "type": "Int", "nullable": true },
+      { "name": "variants", "type": "String", "nullable": true },
+      { "name": "duration", "type": "Int", "nullable": true },
+      { "name": "fileSize", "type": "Long", "nullable": true },
+      { "name": "failReason", "type": "String", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "success", "type": "Boolean", "defaultValue": "true" },
+      { "name": "failReason", "type": "String", "nullable": true }
+    ]
+  },
+  {
+    "tag": "qry",
+    "package": "video_post_job",
+    "name": "ListEncryptPendingVideoPosts",
+    "desc": "列出待加密分P（transfer_result=SUCCESS && encrypt_status=UNENCRYPTED）",
+    "requestFields": [
+      { "name": "batchSize", "type": "Int", "defaultValue": "50" }
+    ],
+    "responseFields": [
+      { "name": "videoPostId", "type": "Long" },
+      { "name": "fileIndex", "type": "Int" }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "video_post_job",
+    "name": "GenerateVideoPostQualityKeys",
+    "desc": "生成分P质量 key（聚合内变更，返回 keysJson）",
+    "requestFields": [
+      { "name": "videoPostId", "type": "Long" },
+      { "name": "fileIndex", "type": "Int" },
+      { "name": "qualities", "type": "List<String>" },
+      { "name": "method", "type": "String", "defaultValue": "HLS_AES_128" },
+      { "name": "keyBytes", "type": "Int", "defaultValue": "16" }
+    ],
+    "responseFields": [
+      { "name": "keyVersion", "type": "Int" },
+      { "name": "keysJson", "type": "String" }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "video_post_job",
+    "name": "ApplyVideoPostEncryptResult",
+    "desc": "回写单个分P加密结果（聚合内变更）",
+    "requestFields": [
+      { "name": "videoPostId", "type": "Long" },
+      { "name": "fileIndex", "type": "Int" },
+      { "name": "success", "type": "Boolean" },
+      { "name": "encryptMethod", "type": "String", "defaultValue": "HLS_AES_128" },
+      { "name": "keyVersion", "type": "Int" },
+      { "name": "encryptedMasterPath", "type": "String", "nullable": true },
+      { "name": "encryptedVariants", "type": "String", "nullable": true },
+      { "name": "failReason", "type": "String", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "success", "type": "Boolean", "defaultValue": "true" },
+      { "name": "failReason", "type": "String", "nullable": true }
+    ]
+  }
+]

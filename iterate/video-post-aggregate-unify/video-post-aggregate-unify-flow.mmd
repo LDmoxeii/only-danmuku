@@ -1,0 +1,46 @@
+sequenceDiagram
+  autonumber
+  participant Scheduler as Scheduler/Job
+  participant Qry as Job Query
+  participant Cmd as Job Command
+  participant Repo as Repository
+  participant Upload as UploadSession Repo
+  participant Transcode as Transcode CLI
+  participant Storage as OSS Storage CLI
+  participant Encrypt as Encrypt CLI
+
+  Note over Scheduler,Cmd: Job A - 转码编排
+  Scheduler->>Qry: ListTranscodingVideoPosts(batchSize)
+  Qry-->>Scheduler: videoPostId + fileIndex + uploadId
+  loop each item
+    Scheduler->>Qry: GetUploadSessionTempPathQry(uploadId)
+    Qry-->>Scheduler: tempPath
+    Scheduler->>Transcode: MergeUploadToMp4Cli(tempPath)
+    Transcode-->>Scheduler: mergedMp4Path + outputDir + duration + fileSize
+    Scheduler->>Transcode: TranscodeVideoFileToAbrCli(mergedMp4Path)
+    Transcode-->>Scheduler: abrVariants
+    Scheduler->>Storage: UploadVideoAbrOutputCli(outputDir)
+    Storage-->>Scheduler: storagePrefix
+    Scheduler->>Cmd: ApplyVideoPostTranscodeResult(...)
+    Cmd->>Repo: load VideoPost aggregate
+    Cmd->>Repo: save VideoPost aggregate
+  end
+
+  Note over Scheduler,Cmd: Job B - 加密编排
+  Scheduler->>Qry: ListEncryptPendingVideoPosts(batchSize)
+  Qry-->>Scheduler: videoPostId + fileIndex
+  loop each item
+    Scheduler->>Qry: ListVideoAbrVariantsQry(videoPostId, fileIndex)
+    Qry-->>Scheduler: qualities
+    Scheduler->>Cmd: GenerateVideoPostQualityKeys(videoPostId, fileIndex, qualities)
+    Cmd->>Repo: load VideoPost aggregate
+    Cmd->>Repo: save VideoPost aggregate
+    Cmd-->>Scheduler: keysJson + keyVersion
+    Scheduler->>Qry: GetVideoFilePostPathQry(videoPostId, fileIndex)
+    Qry-->>Scheduler: filePath
+    Scheduler->>Encrypt: EncryptHlsWithQualityKeysCli(filePath, keysJson)
+    Encrypt-->>Scheduler: encryptedMasterPath + encryptedVariants
+    Scheduler->>Cmd: ApplyVideoPostEncryptResult(...)
+    Cmd->>Repo: load VideoPost aggregate
+    Cmd->>Repo: save VideoPost aggregate
+  end
