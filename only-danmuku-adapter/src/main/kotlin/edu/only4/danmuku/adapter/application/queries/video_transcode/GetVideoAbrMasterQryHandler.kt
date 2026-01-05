@@ -4,6 +4,7 @@ import com.only4.cap4k.ddd.core.application.query.Query
 import edu.only4.danmuku.application.queries._share.model.VideoFilePost
 import edu.only4.danmuku.application.queries._share.model.filePath
 import edu.only4.danmuku.application.queries._share.model.id
+import edu.only4.danmuku.application.queries._share.model.transcodeOutputPrefix
 import edu.only4.danmuku.application.queries._share.model.transferResult
 import edu.only4.danmuku.application.queries.video_transcode.GetVideoAbrMasterQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
@@ -25,11 +26,12 @@ class GetVideoAbrMasterQryHandler(
     override fun exec(request: GetVideoAbrMasterQry.Request): GetVideoAbrMasterQry.Response {
         val row = sqlClient.createQuery(VideoFilePost::class) {
             where(table.id eq request.fileId)
-            select(table.transferResult, table.filePath)
+            select(table.transferResult, table.transcodeOutputPrefix, table.filePath)
         }.fetchOneOrNull()
 
         val status = row?._1?.name ?: "UNKNOW"
-        val masterPath = row?._2?.let { "$it/master.m3u8" }
+        val outputPrefix = row?._2?.takeIf { it.isNotBlank() } ?: row?._3
+        val masterPath = outputPrefix?.trimEnd('/')?.let { "$it/master.m3u8" }
         return GetVideoAbrMasterQry.Response(status = status, masterPath = masterPath)
     }
 }

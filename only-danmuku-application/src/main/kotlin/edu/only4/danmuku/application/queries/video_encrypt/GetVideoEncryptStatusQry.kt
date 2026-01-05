@@ -12,8 +12,8 @@ import com.only4.cap4k.ddd.core.application.RequestParam
 object GetVideoEncryptStatusQry {
 
     data class Request(
-        val videoFilePostId: Long? = null,
-        val videoFileId: Long? = null
+        val videoPostId: Long,
+        val fileIndex: Int
     ) : RequestParam<Response>
 
     data class Response(

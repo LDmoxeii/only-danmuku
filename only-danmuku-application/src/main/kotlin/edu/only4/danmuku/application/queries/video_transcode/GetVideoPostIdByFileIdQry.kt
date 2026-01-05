@@ -13,6 +13,8 @@ object GetVideoPostIdByFileIdQry {
 
     data class Response(
         val filePostId: Long,
-        val filePath: String?
+        val filePath: String?,
+        val videoPostId: Long,
+        val fileIndex: Int
     )
 }

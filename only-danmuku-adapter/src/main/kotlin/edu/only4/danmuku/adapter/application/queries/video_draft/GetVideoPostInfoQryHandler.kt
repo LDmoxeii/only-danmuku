@@ -5,7 +5,7 @@ import edu.only4.danmuku.application.queries._share.model.customerId
 import edu.only4.danmuku.application.queries._share.model.dto.VideoFilePost.VideoFilePostItem
 import edu.only4.danmuku.application.queries._share.model.dto.VideoPost.VideoPostDetail
 import edu.only4.danmuku.application.queries._share.model.id
-import edu.only4.danmuku.application.queries._share.model.videoId
+import edu.only4.danmuku.application.queries._share.model.videoPostId
 import edu.only4.danmuku.application.queries.video_draft.GetVideoPostInfoQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
@@ -33,7 +33,7 @@ class GetVideoPostInfoQryHandler(
 
         // 查询视频文件列表
         val videoFiles = sqlClient.findAll(VideoFilePostItem::class) {
-            where(table.videoId eq request.videoPostId)
+            where(table.videoPostId eq request.videoPostId)
         }
 
         return GetVideoPostInfoQry.Response(
@@ -59,7 +59,6 @@ class GetVideoPostInfoQryHandler(
                     fileSize = file.fileSize ?: 0L,
                     filePath = file.filePath,
                     duration = file.duration ?: 0,
-                    updateType = file.updateType,
                     transferResult = file.transferResult,
                 )
             }

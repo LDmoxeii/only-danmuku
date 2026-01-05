@@ -31,5 +31,13 @@ object StartVideoPostProcessingCmd {
         val fileList: List<VideoPostProcessingFileSpec>
     ) : RequestParam<Response>
 
+    data class VideoPostProcessingFileSpec(
+        val uploadId: Long,
+        val fileIndex: Int,
+        val fileName: String?,
+        val fileSize: Long?,
+        val duration: Int?
+    )
+
     class Response
 }

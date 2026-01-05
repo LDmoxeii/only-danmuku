@@ -3,7 +3,7 @@ package edu.only4.danmuku.domain.aggregates.video_post
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 
 import edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity
-import edu.only4.danmuku.domain.aggregates.video_file_post.enums.EncryptMethod
+import edu.only4.danmuku.domain.aggregates.video_post.enums.EncryptMethod
 import edu.only4.danmuku.domain.aggregates.video_post.enums.EncryptStatus
 import edu.only4.danmuku.domain.aggregates.video_post.enums.TransferResult
 
@@ -198,4 +198,24 @@ class VideoFilePost(
         internal set
 
     // 【字段映射结束】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
+
+    // 【行为方法开始】
+    fun applyEncryptResult(
+        success: Boolean,
+        method: EncryptMethod,
+        keyVersion: Int?,
+        outputPrefix: String?,
+    ) {
+        this.encryptMethod = method
+        this.encryptKeyVersion = keyVersion
+        if (success) {
+            if (!outputPrefix.isNullOrBlank()) {
+                this.encryptOutputPrefix = outputPrefix
+            }
+            this.encryptStatus = EncryptStatus.ENCRYPTED
+        } else {
+            this.encryptStatus = EncryptStatus.FAILED
+        }
+    }
+    // 【行为方法结束】
 }

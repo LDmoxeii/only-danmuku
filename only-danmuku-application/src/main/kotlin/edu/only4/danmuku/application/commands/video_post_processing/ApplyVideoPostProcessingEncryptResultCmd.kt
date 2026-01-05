@@ -32,7 +32,7 @@ object ApplyVideoPostProcessingEncryptResultCmd {
         val videoPostId: Long,
         val fileIndex: Int,
         val success: Boolean,
-        val encryptMethod: String = HLS_AES_128,
+        val encryptMethod: String = "HLS_AES_128",
         val keyVersion: Int,
         val encryptedPrefix: String?,
         val encryptedMasterPath: String?,

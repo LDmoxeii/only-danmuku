@@ -1,9 +1,8 @@
 package edu.only4.danmuku.application.queries._share.model
 
-import edu.only4.danmuku.domain.aggregates.video_file_post.enums.EncryptMethod
-import edu.only4.danmuku.domain.aggregates.video_file_post.enums.EncryptStatus
-import edu.only4.danmuku.domain.aggregates.video_file_post.enums.TransferResult
-import edu.only4.danmuku.domain.aggregates.video_file_post.enums.UpdateType
+import edu.only4.danmuku.domain.aggregates.video_post.enums.EncryptMethod
+import edu.only4.danmuku.domain.aggregates.video_post.enums.EncryptStatus
+import edu.only4.danmuku.domain.aggregates.video_post.enums.TransferResult
 import org.babyfish.jimmer.sql.Column
 import org.babyfish.jimmer.sql.Entity
 import org.babyfish.jimmer.sql.IdView
@@ -22,6 +21,9 @@ interface VideoFilePost : BaseEntity {
     @IdView
     val uploadId: Long
 
+    @IdView
+    val videoPostId: Long
+
     @OneToOne
     @JoinColumn(name = "upload_id")
     val upload: VideoFileUploadSession
@@ -31,8 +33,8 @@ interface VideoFilePost : BaseEntity {
     val customer: CustomerProfile
 
     @ManyToOne
-    @JoinColumn(name = "video_id")
-    val video: VideoPost
+    @JoinColumn(name = "video_post_id")
+    val videoPost: VideoPost
 
     @Column(name = "file_index")
     val fileIndex: Int
@@ -46,26 +48,20 @@ interface VideoFilePost : BaseEntity {
     @Column(name = "file_path")
     val filePath: String?
 
-    /**
-     * 更新类型 @E=0:UNKNOW:未知类型|1:NO_UPDATE:无更新|2:HAS_UPDATE:有更新;@T=UpdateType
-     */
-    @Column(name = "update_type")
-    val updateType: UpdateType
+    @Column(name = "transcode_output_prefix")
+    val transcodeOutputPrefix: String?
+
+    @Column(name = "transcode_variants_json")
+    val transcodeVariantsJson: String?
+
+    @Column(name = "encrypt_output_prefix")
+    val encryptOutputPrefix: String?
 
     /**
      * 转码结果 @E=0:UNKNOW:未知结果|1:TRANSCODING:转码中|2:SUCCESS:转码成功|3:FAILED:转码失败;@T=TransferResult
      */
     @Column(name = "transfer_result")
     val transferResult: TransferResult
-
-    @Column(name = "abr_source_width")
-    val abrSourceWidth: Int?
-
-    @Column(name = "abr_source_height")
-    val abrSourceHeight: Int?
-
-    @Column(name = "abr_source_bitrate_kbps")
-    val abrSourceBitrateKbps: Int?
 
     @Column(name = "duration")
     val duration: Int?
@@ -82,9 +78,6 @@ interface VideoFilePost : BaseEntity {
     @Column(name = "encrypt_method")
     val encryptMethod: EncryptMethod
 
-    @Column(name = "encrypt_key_id")
-    val encryptKeyId: Long?
-
-    @Column(name = "encrypt_fail_reason")
-    val encryptFailReason: String?
+    @Column(name = "encrypt_key_version")
+    val encryptKeyVersion: Int?
 }

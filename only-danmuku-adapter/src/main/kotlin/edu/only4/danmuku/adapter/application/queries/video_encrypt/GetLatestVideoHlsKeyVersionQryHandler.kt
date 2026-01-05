@@ -21,13 +21,9 @@ class GetLatestVideoHlsKeyVersionQryHandler(
 ) : Query<GetLatestVideoHlsKeyVersionQry.Request, GetLatestVideoHlsKeyVersionQry.Response> {
 
     override fun exec(request: GetLatestVideoHlsKeyVersionQry.Request): GetLatestVideoHlsKeyVersionQry.Response {
-        val filePostId = resolveFilePostId(request) ?: return GetLatestVideoHlsKeyVersionQry.Response(
-            keyVersion = null,
-            qualities = null
-        )
-
         val versions = sqlClient.createQuery(VideoHlsEncryptKey::class) {
-            where(table.fileId eq filePostId)
+            where(table.videoPostId eq request.videoPostId)
+            where(table.fileIndex eq request.fileIndex)
             where(table.status eq EncryptKeyStatus.ACTIVE)
             select(table.keyVersion)
         }.execute()
@@ -37,7 +33,8 @@ class GetLatestVideoHlsKeyVersionQryHandler(
         )
 
         val qualities = sqlClient.createQuery(VideoHlsEncryptKey::class) {
-            where(table.fileId eq filePostId)
+            where(table.videoPostId eq request.videoPostId)
+            where(table.fileIndex eq request.fileIndex)
             where(table.keyVersion eq latestVersion)
             where(table.status eq EncryptKeyStatus.ACTIVE)
             select(table.quality)
@@ -52,15 +49,6 @@ class GetLatestVideoHlsKeyVersionQryHandler(
             keyVersion = latestVersion,
             qualities = qualities
         )
-    }
-
-    private fun resolveFilePostId(request: GetLatestVideoHlsKeyVersionQry.Request): Long? {
-        if (request.videoFilePostId > 0) return request.videoFilePostId
-        val videoFileId = request.videoFileId ?: return null
-        return sqlClient.createQuery(VideoFile::class) {
-            where(table.id eq videoFileId)
-            select(table.videoFilePostId)
-        }.fetchOneOrNull()
     }
 
     private fun qualityScore(quality: String): Int {

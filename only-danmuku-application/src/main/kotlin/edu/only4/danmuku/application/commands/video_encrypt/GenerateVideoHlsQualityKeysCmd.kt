@@ -6,7 +6,7 @@ import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
 import edu.only4.danmuku.domain._share.meta.video_hls_encrypt_key.SVideoHlsEncryptKey
-import edu.only4.danmuku.domain.aggregates.video_file_post.enums.EncryptMethod
+import edu.only4.danmuku.domain.aggregates.video_post.enums.EncryptMethod
 import edu.only4.danmuku.domain.aggregates.video_hls_encrypt_key.enums.EncryptKeyStatus
 import edu.only4.danmuku.domain.aggregates.video_hls_encrypt_key.factory.VideoHlsEncryptKeyFactory
 import org.springframework.stereotype.Service
@@ -26,7 +26,8 @@ object GenerateVideoHlsQualityKeysCmd {
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
-            val fileId = request.videoFilePostId
+            val videoPostId = request.videoPostId
+            val fileIndex = request.fileIndex
             val qualities = request.qualities
                 .mapNotNull { it.trim().takeIf(String::isNotBlank) }
                 .distinct()
@@ -36,7 +37,7 @@ object GenerateVideoHlsQualityKeysCmd {
             val method = runCatching { EncryptMethod.valueOf(request.method) }
                 .getOrNull() ?: throw KnownException.illegalArgument("method")
 
-            val keyVersion = nextKeyVersion(fileId)
+            val keyVersion = nextKeyVersion(videoPostId, fileIndex)
             val payloads = qualities.map { quality ->
                 val keyBytes = generateRandomBytes(request.keyBytes)
                 val keyId = UUID.randomUUID().toString()
@@ -46,7 +47,8 @@ object GenerateVideoHlsQualityKeysCmd {
 
                 Mediator.factories.create(
                     VideoHlsEncryptKeyFactory.Payload(
-                        fileId = fileId,
+                        videoPostId = videoPostId,
+                        fileIndex = fileIndex,
                         quality = quality,
                         keyId = keyId,
                         keyCiphertext = keyCiphertextBase64,
@@ -84,9 +86,14 @@ object GenerateVideoHlsQualityKeysCmd {
         return ByteArray(length).also { SecureRandom().nextBytes(it) }
     }
 
-    private fun nextKeyVersion(fileId: Long): Int {
+    private fun nextKeyVersion(videoPostId: Long, fileIndex: Int): Int {
         val keys = Mediator.repositories.find(
-            SVideoHlsEncryptKey.predicate { schema -> schema.fileId.eq(fileId) }
+            SVideoHlsEncryptKey.predicate { schema ->
+                schema.all(
+                    schema.videoPostId.eq(videoPostId),
+                    schema.fileIndex.eq(fileIndex)
+                )
+            }
         )
         val maxVersion = keys.maxOfOrNull { it.keyVersion } ?: 0
         return maxVersion + 1
@@ -102,8 +109,8 @@ object GenerateVideoHlsQualityKeysCmd {
     )
 
     data class Request(
-        val videoFilePostId: Long,
-        val videoFileId: Long?,
+        val videoPostId: Long,
+        val fileIndex: Int,
         val qualities: List<String>,
         val method: String = "HLS_AES_128",
         val keyBytes: Int = 16

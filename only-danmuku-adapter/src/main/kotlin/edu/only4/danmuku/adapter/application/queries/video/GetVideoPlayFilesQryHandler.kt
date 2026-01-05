@@ -7,6 +7,7 @@ import edu.only4.danmuku.application.queries._share.model.dto.VideoFile.VideoFil
 import edu.only4.danmuku.application.queries._share.model.fetchBy
 import edu.only4.danmuku.application.queries._share.model.fileIndex
 import edu.only4.danmuku.application.queries._share.model.videoId
+import edu.only4.danmuku.application.queries._share.model.videoPostId
 import edu.only4.danmuku.application.queries.video.GetVideoPlayFilesQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.asc
@@ -29,13 +30,13 @@ class GetVideoPlayFilesQryHandler(
         // 使用 Jimmer 查询视频文件列表
         val fileList = sqlClient.createQuery(VideoFilePost::class) {
             // 按视频ID过滤
-            where(table.videoId eq request.videoId)
+            where(table.videoPostId eq request.videoId)
             // 按文件索引排序
             orderBy(table.fileIndex.asc())
             // DTO 投影
             select(table.fetchBy {
                 allScalarFields()
-                video()
+                videoPost()
             })
         }.execute()
 
@@ -43,7 +44,7 @@ class GetVideoPlayFilesQryHandler(
         return fileList.map { file ->
             GetVideoPlayFilesQry.Response(
                 fileId = file.id,
-                videoId = file.video.id,
+                videoId = file.videoPost.id,
                 fileIndex = file.fileIndex,
                 fileName = file.fileName,
                 fileSize = file.fileSize,

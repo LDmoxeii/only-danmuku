@@ -9,7 +9,7 @@ import edu.only4.danmuku.application.queries._share.model.fileIndex
 import edu.only4.danmuku.application.queries._share.model.id
 import edu.only4.danmuku.application.queries._share.model.transferResult
 import edu.only4.danmuku.application.queries._share.model.uploadId
-import edu.only4.danmuku.application.queries._share.model.video
+import edu.only4.danmuku.application.queries._share.model.videoPost
 
 import org.springframework.stereotype.Service
 import org.babyfish.jimmer.sql.kt.KSqlClient
@@ -31,7 +31,7 @@ class GetVideoFilePostsByPostIdQryHandler(
     override fun exec(request: GetVideoFilePostsByPostIdQry.Request): GetVideoFilePostsByPostIdQry.Response {
 
         val list = sqlClient.createQuery(VideoFilePost::class) {
-            where(table.video.id eq request.videoPostId)
+            where(table.videoPost.id eq request.videoPostId)
             orderBy(table.fileIndex.asc())
             select(
                 table.id,

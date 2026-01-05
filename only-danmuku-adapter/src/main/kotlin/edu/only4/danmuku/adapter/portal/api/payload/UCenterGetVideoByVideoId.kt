@@ -70,8 +70,6 @@ object UCenterGetVideoByVideoId {
         var filePath: String? = null,
         /** 时长(秒) */
         var duration: Int? = null,
-        /** 更新类型 */
-        var updateType: Int? = null,
         /** 转码结果 */
         var transferResult: Int? = null,
     )

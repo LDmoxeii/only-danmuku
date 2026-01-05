@@ -8,15 +8,15 @@ import org.babyfish.jimmer.sql.ManyToOne
 import org.babyfish.jimmer.sql.Table
 
 @Entity
-@Table(name = "video_hls_abr_variant")
-interface VideoHlsAbrVariant : BaseEntity {
+@Table(name = "video_post_processing_variant")
+interface VideoPostProcessingVariant : BaseEntity {
 
     @IdView
-    val fileId: Long
+    val videoPostProcessingFileId: Long
 
     @ManyToOne
-    @JoinColumn(name = "file_id")
-    val file: VideoFilePost
+    @JoinColumn(name = "parent_id")
+    val videoPostProcessingFile: VideoPostProcessingFile
 
     @Column(name = "quality")
     val quality: String

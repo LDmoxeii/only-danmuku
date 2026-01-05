@@ -3,10 +3,11 @@ package edu.only4.danmuku.adapter.application.queries.video_encrypt
 import com.only.engine.json.misc.JsonUtils
 import com.only4.cap4k.ddd.core.application.query.ListQuery
 import edu.only4.danmuku.application.queries._share.model.VideoHlsEncryptKey
-import edu.only4.danmuku.application.queries._share.model.fileId
+import edu.only4.danmuku.application.queries._share.model.fileIndex
 import edu.only4.danmuku.application.queries._share.model.keyVersion
 import edu.only4.danmuku.application.queries._share.model.quality
 import edu.only4.danmuku.application.queries._share.model.status
+import edu.only4.danmuku.application.queries._share.model.videoPostId
 import edu.only4.danmuku.application.queries.video_encrypt.ListVideoHlsEncryptKeysQry
 import edu.only4.danmuku.domain.aggregates.video_hls_encrypt_key.enums.EncryptKeyStatus
 import org.babyfish.jimmer.sql.kt.KSqlClient
@@ -14,7 +15,7 @@ import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.springframework.stereotype.Service
 
 /**
- * 按 fileId + keyVersion 查询质量 key 列表
+ * 按 videoPostId + fileIndex + keyVersion 查询质量 key 列表
  *
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * @author cap4k-ddd-codegen
@@ -26,11 +27,12 @@ class ListVideoHlsEncryptKeysQryHandler(
 ) : ListQuery<ListVideoHlsEncryptKeysQry.Request, ListVideoHlsEncryptKeysQry.Response> {
 
     override fun exec(request: ListVideoHlsEncryptKeysQry.Request): List<ListVideoHlsEncryptKeysQry.Response> {
-        val filePostId = request.videoFilePostId
-        val keyVersion = request.keyVersion ?: resolveLatestKeyVersion(filePostId) ?: return emptyList()
+        val keyVersion = request.keyVersion
+            ?: resolveLatestKeyVersion(request.videoPostId, request.fileIndex) ?: return emptyList()
 
         val keys = sqlClient.createQuery(VideoHlsEncryptKey::class) {
-            where(table.fileId eq filePostId)
+            where(table.videoPostId eq request.videoPostId)
+            where(table.fileIndex eq request.fileIndex)
             where(table.keyVersion eq keyVersion)
             select(table)
         }.execute()
@@ -54,9 +56,10 @@ class ListVideoHlsEncryptKeysQryHandler(
 
     }
 
-    private fun resolveLatestKeyVersion(filePostId: Long): Int? {
+    private fun resolveLatestKeyVersion(videoPostId: Long, fileIndex: Int): Int? {
         val versions = sqlClient.createQuery(VideoHlsEncryptKey::class) {
-            where(table.fileId eq filePostId)
+            where(table.videoPostId eq videoPostId)
+            where(table.fileIndex eq fileIndex)
             where(table.status eq EncryptKeyStatus.ACTIVE)
             select(table.keyVersion)
         }.execute()

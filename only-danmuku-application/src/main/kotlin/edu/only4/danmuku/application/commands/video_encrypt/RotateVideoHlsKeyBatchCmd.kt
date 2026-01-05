@@ -4,10 +4,10 @@ import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
 import edu.only4.danmuku.application.distributed.clients.video_encrypt.EncryptHlsWithQualityKeysCli
-import edu.only4.danmuku.application.queries.video_transcode.GetVideoFilePostPathQry
-import edu.only4.danmuku.application.queries.video_transcode.ListVideoAbrVariantsQry
+import edu.only4.danmuku.domain._share.meta.video_post.SVideoPost
 
 import org.springframework.stereotype.Service
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * 批量轮换所有清晰度 key 并触发重加密
@@ -22,21 +22,25 @@ object RotateVideoHlsKeyBatchCmd {
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
             return runCatching {
-                val filePostId = request.videoFilePostId
-                val qualities = Mediator.queries.send(
-                    ListVideoAbrVariantsQry.Request(fileId = filePostId)
-                ).firstOrNull()?.qualities ?: emptyList()
+                val videoPost = Mediator.repositories.findOne(
+                    SVideoPost.predicateById(request.videoPostId)
+                ).getOrNull() ?: throw IllegalStateException("稿件不存在: ${request.videoPostId}")
+                val file = videoPost.videoFilePosts.firstOrNull { it.fileIndex == request.fileIndex }
+                    ?: throw IllegalStateException("分P不存在: videoPostId=${request.videoPostId}, fileIndex=${request.fileIndex}")
+                val qualities = file.videoFilePostVariants
+                    .map { it.quality }
+                    .mapNotNull { it.trim().takeIf(String::isNotBlank) }
+                    .distinct()
                 if (qualities.isEmpty()) {
-                    throw IllegalStateException("未找到可用清晰度: $filePostId")
+                    throw IllegalStateException("未找到可用清晰度: videoPostId=${request.videoPostId}, fileIndex=${request.fileIndex}")
                 }
-                val path = Mediator.queries.send(
-                    GetVideoFilePostPathQry.Request(filePostId = filePostId)
-                ).filePath ?: throw IllegalStateException("filePath 为空: $filePostId")
+                val path = file.filePath
+                    ?: throw IllegalStateException("filePath 为空: videoPostId=${request.videoPostId}, fileIndex=${request.fileIndex}")
 
                 val generated = Mediator.commands.send(
                     GenerateVideoHlsQualityKeysCmd.Request(
-                        videoFilePostId = filePostId,
-                        videoFileId = null,
+                        videoPostId = request.videoPostId,
+                        fileIndex = request.fileIndex,
                         qualities = qualities
                     )
                 )
@@ -52,7 +56,8 @@ object RotateVideoHlsKeyBatchCmd {
 
                 Mediator.commands.send(
                     PersistVideoEncryptBatchResultCmd.Request(
-                        videoFilePostId = filePostId,
+                        videoPostId = request.videoPostId,
+                        fileIndex = request.fileIndex,
                         success = encrypted.success,
                         keyVersion = generated.keyVersion,
                         encryptedMasterPath = encrypted.encryptedMasterPath,
@@ -76,7 +81,8 @@ object RotateVideoHlsKeyBatchCmd {
     }
 
     data class Request(
-        val videoFilePostId: Long,
+        val videoPostId: Long,
+        val fileIndex: Int,
         val reason: String?
     ) : RequestParam<Response>
 

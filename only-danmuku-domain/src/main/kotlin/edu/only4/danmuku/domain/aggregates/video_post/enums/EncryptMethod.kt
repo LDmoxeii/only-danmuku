@@ -1,4 +1,4 @@
-package edu.only4.danmuku.domain.aggregates.video_file_post.enums
+package edu.only4.danmuku.domain.aggregates.video_post.enums
 import com.fasterxml.jackson.annotation.JsonValue
 
 import com.only.engine.exception.KnownException
@@ -6,6 +6,7 @@ import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 
 import jakarta.persistence.AttributeConverter
+import kotlin.collections.get
 
 /**
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成

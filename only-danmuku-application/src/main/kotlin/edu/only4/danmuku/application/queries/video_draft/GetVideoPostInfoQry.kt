@@ -1,9 +1,8 @@
 package edu.only4.danmuku.application.queries.video_draft
 
 import com.only4.cap4k.ddd.core.application.RequestParam
-import edu.only4.danmuku.domain.aggregates.video_file_post.enums.TransferResult
+import edu.only4.danmuku.domain.aggregates.video_post.enums.TransferResult
 import edu.only4.danmuku.domain.aggregates.video_post.enums.PostType
-import edu.only4.danmuku.domain.aggregates.video_file_post.enums.UpdateType
 import edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus
 
 /**
@@ -51,7 +50,6 @@ object GetVideoPostInfoQry {
         val fileSize: Long,
         val filePath: String?,
         val duration: Int,
-        val updateType: UpdateType,
         val transferResult: TransferResult,
     )
 }

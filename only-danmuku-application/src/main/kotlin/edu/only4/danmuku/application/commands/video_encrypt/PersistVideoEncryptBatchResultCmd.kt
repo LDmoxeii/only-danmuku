@@ -4,9 +4,8 @@ import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
-import edu.only4.danmuku.domain._share.meta.video_file_post.SVideoFilePost
-import edu.only4.danmuku.domain._share.meta.video_hls_encrypt_key.SVideoHlsEncryptKey
-import edu.only4.danmuku.domain.aggregates.video_file_post.enums.EncryptMethod
+import edu.only4.danmuku.domain._share.meta.video_post.SVideoPost
+import edu.only4.danmuku.domain.aggregates.video_post.enums.EncryptMethod
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
 
@@ -22,22 +21,21 @@ object PersistVideoEncryptBatchResultCmd {
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
-            val file = Mediator.repositories.findOne(
-                SVideoFilePost.predicateById(request.videoFilePostId)
-            ).getOrNull() ?: throw KnownException("分P不存在: ${request.videoFilePostId}")
+            val videoPost = Mediator.repositories.findOne(
+                SVideoPost.predicateById(request.videoPostId)
+            ).getOrNull() ?: throw KnownException("稿件不存在: ${request.videoPostId}")
+            val file = videoPost.videoFilePosts.firstOrNull { it.fileIndex == request.fileIndex }
+                ?: throw KnownException("分P不存在: videoPostId=${request.videoPostId}, fileIndex=${request.fileIndex}")
 
             val method = runCatching { EncryptMethod.valueOf(request.encryptMethod) }
                 .getOrNull() ?: throw KnownException.illegalArgument("encryptMethod")
 
-            val keyDbId = resolveKeyDbId(
-                fileId = file.id,
-                keyVersion = request.keyVersion
-            )
+            val outputPrefix = resolveOutputPrefix(request.encryptedMasterPath)
             file.applyEncryptResult(
                 success = request.success,
                 method = method,
-                keyDbId = keyDbId ?: file.encryptKeyId,
-                failReason = request.failReason
+                keyVersion = request.keyVersion,
+                outputPrefix = if (request.success) outputPrefix else null
             )
             Mediator.uow.save()
 
@@ -48,20 +46,19 @@ object PersistVideoEncryptBatchResultCmd {
 
     }
 
-    private fun resolveKeyDbId(fileId: Long, keyVersion: Int): Long? {
-        val found = Mediator.repositories.findFirst(
-            SVideoHlsEncryptKey.predicate { schema ->
-                schema.all(
-                    schema.fileId.eq(fileId),
-                    schema.keyVersion.eq(keyVersion)
-                )
-            }
-        )
-        return found.getOrNull()?.id
+    private fun resolveOutputPrefix(masterPath: String?): String? {
+        if (masterPath.isNullOrBlank()) return null
+        val trimmed = masterPath.trim()
+        return if (trimmed.endsWith("/master.m3u8")) {
+            trimmed.removeSuffix("/master.m3u8")
+        } else {
+            trimmed.substringBeforeLast("/", trimmed)
+        }.trimEnd('/')
     }
 
     data class Request(
-        val videoFilePostId: Long,
+        val videoPostId: Long,
+        val fileIndex: Int,
         val success: Boolean,
         val encryptMethod: String = "HLS_AES_128",
         val keyVersion: Int,

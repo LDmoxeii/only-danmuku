@@ -21,28 +21,22 @@ class GetVideoEncryptStatusQryHandler(
 ) : Query<GetVideoEncryptStatusQry.Request, GetVideoEncryptStatusQry.Response> {
 
     override fun exec(request: GetVideoEncryptStatusQry.Request): GetVideoEncryptStatusQry.Response {
-        val filePostId = resolveFilePostId(request) ?: return GetVideoEncryptStatusQry.Response(
-            encryptStatus = "NOT_FOUND",
-            encryptMethod = null,
-            keyId = null,
-            keyVersion = null,
-            keyQuality = null,
-            encryptedMasterPath = null
-        )
-
         val row = sqlClient.createQuery(VideoFilePost::class) {
-            where(table.id eq filePostId)
-            select(table.encryptStatus, table.encryptMethod, table.filePath)
+            where(table.videoPost.id eq request.videoPostId)
+            where(table.fileIndex eq request.fileIndex)
+            select(table.encryptStatus, table.encryptMethod, table.encryptOutputPrefix, table.filePath)
         }.fetchOneOrNull()
 
         val status = row?._1?.name ?: "NOT_FOUND"
         val method = row?._2?.name
-        val masterPath = row?._3?.let { "$it/enc/master.m3u8" }
+        val outputPrefix = row?._3?.takeIf { it.isNotBlank() } ?: row?._4
+        val masterPath = outputPrefix?.trimEnd('/')?.let { "$it/master.m3u8" }
 
-        val latestVersion = resolveLatestKeyVersion(filePostId)
+        val latestVersion = resolveLatestKeyVersion(request.videoPostId, request.fileIndex)
         val key = latestVersion?.let { version ->
             sqlClient.createQuery(VideoHlsEncryptKey::class) {
-                where(table.fileId eq filePostId)
+                where(table.videoPostId eq request.videoPostId)
+                where(table.fileIndex eq request.fileIndex)
                 where(table.keyVersion eq version)
                 where(table.status eq EncryptKeyStatus.ACTIVE)
                 select(table)
@@ -64,9 +58,10 @@ class GetVideoEncryptStatusQryHandler(
         )
     }
 
-    private fun resolveLatestKeyVersion(filePostId: Long): Int? {
+    private fun resolveLatestKeyVersion(videoPostId: Long, fileIndex: Int): Int? {
         val versions = sqlClient.createQuery(VideoHlsEncryptKey::class) {
-            where(table.fileId eq filePostId)
+            where(table.videoPostId eq videoPostId)
+            where(table.fileIndex eq fileIndex)
             where(table.status eq EncryptKeyStatus.ACTIVE)
             select(table.keyVersion)
         }.execute()
@@ -76,15 +71,6 @@ class GetVideoEncryptStatusQryHandler(
     private fun qualityScore(quality: String): Int {
         val number = QUALITY_NUMBER_REGEX.find(quality)?.groupValues?.getOrNull(1)?.toIntOrNull()
         return number ?: Int.MIN_VALUE
-    }
-
-    private fun resolveFilePostId(request: GetVideoEncryptStatusQry.Request): Long? {
-        request.videoFilePostId?.let { return it }
-        val videoFileId = request.videoFileId ?: return null
-        return sqlClient.createQuery(VideoFile::class) {
-            where(table.id eq videoFileId)
-            select(table.videoFilePostId)
-        }.fetchOneOrNull()
     }
 
     companion object {

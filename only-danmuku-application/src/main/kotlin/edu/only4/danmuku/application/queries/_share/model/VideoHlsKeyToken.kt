@@ -9,8 +9,14 @@ import org.babyfish.jimmer.sql.Table
 @Table(name = "video_hls_key_token")
 interface VideoHlsKeyToken : BaseEntity {
 
-    @Column(name = "file_id")
-    val fileId: Long
+    @Column(name = "video_post_id")
+    val videoPostId: Long
+
+    @Column(name = "video_id")
+    val videoId: Long?
+
+    @Column(name = "file_index")
+    val fileIndex: Int
 
     @Column(name = "key_version")
     val keyVersion: Int

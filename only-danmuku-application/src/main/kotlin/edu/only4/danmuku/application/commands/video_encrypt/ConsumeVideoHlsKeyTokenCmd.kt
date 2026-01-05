@@ -68,7 +68,8 @@ object ConsumeVideoHlsKeyTokenCmd {
             return Mediator.repositories.findFirst(
                 SVideoHlsEncryptKey.predicate {
                     it.all(
-                        it.fileId.eq(token.fileId),
+                        it.videoPostId.eq(token.videoPostId),
+                        it.fileIndex.eq(token.fileIndex),
                         it.keyId.eq(keyId),
                         it.keyVersion.eq(token.keyVersion),
                         it.quality.eq(quality)

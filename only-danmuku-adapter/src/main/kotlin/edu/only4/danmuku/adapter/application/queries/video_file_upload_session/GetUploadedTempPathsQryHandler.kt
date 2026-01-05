@@ -22,8 +22,8 @@ class GetUploadedTempPathsQryHandler(
     override fun exec(request: GetUploadedTempPathsQry.Request): List<String> {
         // 依据 videoId 和 customerId 关联查询上传会话的临时路径
         val tempPaths = sqlClient.createQuery(VideoFilePost::class) {
-            where(table.video.id eq request.videoId)
-            where(table.video.customerId eq request.customerId)
+            where(table.videoPost.id eq request.videoId)
+            where(table.videoPost.customerId eq request.customerId)
             select(table.upload.tempPath)
         }.execute()
 

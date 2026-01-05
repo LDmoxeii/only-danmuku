@@ -1,6 +1,5 @@
 package edu.only4.danmuku.adapter.portal.api.compatible
 
-import com.only.engine.json.misc.JsonUtils
 import com.only.engine.json.validate.JsonPattern
 import com.only.engine.json.validate.JsonType
 import com.only.engine.satoken.utils.LoginHelper
@@ -10,17 +9,13 @@ import edu.only4.danmuku.adapter.portal.api.payload.UCenterGetVideoByVideoId
 import edu.only4.danmuku.adapter.portal.api.payload.UCenterGetVideoCountInfo
 import edu.only4.danmuku.adapter.portal.api.payload.UCenterLoadVideoList
 import edu.only4.danmuku.adapter.portal.api.payload.UCenterPostVideo
-import edu.only4.danmuku.application.commands.video_file_post.CreateVideoFilePostCmd
-import edu.only4.danmuku.application.commands.video_file_post.DeleteVideoFilePostCmd
 import edu.only4.danmuku.application.commands.video_post.ChangeVideoPostInteractionCmd
 import edu.only4.danmuku.application.commands.video_post.CreateVideoPostCmd
 import edu.only4.danmuku.application.commands.video_post.DeleteVideoPostCmd
-import edu.only4.danmuku.application.commands.video_post.RefreshVideoPostTranscodeStatusCmd
 import edu.only4.danmuku.application.commands.video_post.UpdateVideoPostCmd
 import edu.only4.danmuku.application.queries.video_draft.GetUserVideoPostQry
 import edu.only4.danmuku.application.queries.video_draft.GetVideoDraftCountByStatusQry
 import edu.only4.danmuku.application.queries.video_draft.GetVideoPostInfoQry
-import edu.only4.danmuku.application.queries.video_file_post.GetVideoFilePostsByPostIdQry
 import edu.only4.danmuku.domain.aggregates.video_post.enums.PostType
 import edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus
 import jakarta.validation.constraints.NotEmpty
@@ -52,11 +47,8 @@ class CompatibleUCenterVideoPostController {
     ): UCenterPostVideo.Response {
         val currentUserId = LoginHelper.getUserId()!!
 
-        // 解析上传文件列表 JSON（兼容 uploadId/fileId 混合场景）
-        val mixedList = JsonUtils.parseArray(uploadFileList, UCenterPostVideo.MixedFileItem::class.java)
-
         if (videoId == null) {
-            val createResp = Mediator.commands.send(
+            Mediator.commands.send(
                 CreateVideoPostCmd.Request(
                     customerId = currentUserId,
                     videoCover = videoCover,
@@ -70,18 +62,6 @@ class CompatibleUCenterVideoPostController {
                     interaction = interaction,
                 )
             )
-            val newVideoId = createResp.videoId
-            mixedList.forEachIndexed { idx, item ->
-                Mediator.commands.send(
-                    CreateVideoFilePostCmd.Request(
-                        uploadId = item.uploadId,
-                        customerId = currentUserId,
-                        videoId = newVideoId,
-                        fileIndex = idx + 1,
-                        fileName = item.fileName,
-                    )
-                )
-            }
         } else {
             Mediator.commands.send(
                 UpdateVideoPostCmd.Request(
@@ -97,37 +77,6 @@ class CompatibleUCenterVideoPostController {
                     introduction = introduction,
                     interaction = interaction,
                 )
-            )
-
-            val exists = Mediator.queries.send(
-                GetVideoFilePostsByPostIdQry.Request(videoPostId = videoId)
-            ).files
-            val existingIds = exists.map { it.videoFilePostId }.toMutableSet()
-            val desiredIds = mutableSetOf<Long>()
-
-            mixedList.forEachIndexed { idx, item ->
-                val fileId = item.fileId
-                if (fileId != null) {
-                    desiredIds.add(fileId)
-                } else {
-                    Mediator.commands.send(
-                        CreateVideoFilePostCmd.Request(
-                            uploadId = item.uploadId,
-                            customerId = currentUserId,
-                            videoId = videoId,
-                            fileIndex = idx + 1,
-                            fileName = item.fileName,
-                        )
-                    )
-                }
-            }
-
-            existingIds.minus(desiredIds).forEach { removeId ->
-                Mediator.commands.send(DeleteVideoFilePostCmd.Request(videoFilePostId = removeId))
-            }
-
-            Mediator.commands.send(
-                RefreshVideoPostTranscodeStatusCmd.Request(videoPostId = videoId)
             )
         }
 

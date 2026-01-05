@@ -38,7 +38,7 @@ interface VideoPost : BaseEntity {
     @JoinColumn(name = "category_id")
     val category: Category?
 
-    @OneToMany(mappedBy = "video")
+    @OneToMany(mappedBy = "videoPost")
     val videoFiles : List<VideoFilePost>
 
     @Column(name = "video_cover")

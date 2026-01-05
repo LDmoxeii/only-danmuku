@@ -17,7 +17,7 @@ import edu.only4.danmuku.application.queries.video_encrypt.GetVideoEncryptStatus
 import edu.only4.danmuku.application.queries.video_encrypt.ListVideoQualityAuthQry
 import edu.only4.danmuku.application.queries.video_transcode.GetVideoPostIdByFileIdQry
 import edu.only4.danmuku.application.queries.video_transcode.ListVideoAbrVariantsQry
-import edu.only4.danmuku.domain.aggregates.video_hls_quality_auth.enums.QualityAuthPolicy
+import edu.only4.danmuku.domain.aggregates.video_quality_policy.enums.QualityAuthPolicy
 import org.springframework.core.io.ByteArrayResource
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
@@ -37,18 +37,18 @@ class VideoEncryptController {
         val post = Mediator.queries.send(GetVideoPostIdByFileIdQry.Request(fileId = req.fileId))
         val latestKey = Mediator.queries.send(
             GetLatestVideoHlsKeyVersionQry.Request(
-                videoFilePostId = post.filePostId,
-                videoFileId = req.fileId
+                videoPostId = post.videoPostId,
+                fileIndex = post.fileIndex
             )
         )
         val keyVersion = latestKey.keyVersion ?: throw KnownException("未找到可用密钥版本")
 
-        val allowedQualities = computeAllowedQualities(post.filePostId)
+        val allowedQualities = computeAllowedQualities(req.fileId)
 
         val resp = Mediator.commands.send(
             IssueVideoHlsKeyTokenCmd.Request(
-                videoFilePostId = post.filePostId,
-                videoFileId = req.fileId,
+                videoPostId = post.videoPostId,
+                fileIndex = post.fileIndex,
                 keyVersion = keyVersion,
                 audience = StpUtil.getLoginIdDefaultNull()?.toString(),
                 allowedQualities = allowedQualities
@@ -64,7 +64,7 @@ class VideoEncryptController {
     @PostMapping("/qualities")
     fun qualities(@RequestBody req: FrontListEncQualities.Request): FrontListEncQualities.Response {
         val post = Mediator.queries.send(GetVideoPostIdByFileIdQry.Request(fileId = req.fileId))
-        val policies = loadQualityPolicies(post.filePostId)
+        val policies = loadQualityPolicies(req.fileId)
         val allowLogin = StpUtil.isLogin()
         val items = if (policies.isEmpty()) {
             loadAbrQualities(post.filePostId).map { quality ->
@@ -98,7 +98,7 @@ class VideoEncryptController {
             throw KnownException("加密未完成: ${status.encryptStatus}")
         }
         val post = Mediator.queries.send(GetVideoPostIdByFileIdQry.Request(fileId = fileId))
-        val allowedQualities = resolveAllowedQualities(post.filePostId)
+        val allowedQualities = resolveAllowedQualities(fileId)
         val masterKey = status.encryptedMasterPath ?: throw KnownException("缺少加密路径")
         val content = readObjectAsText(masterKey)
         val filtered = if (allowedQualities.isEmpty()) content else {
@@ -179,8 +179,8 @@ class VideoEncryptController {
         val post = Mediator.queries.send(GetVideoPostIdByFileIdQry.Request(fileId = videoFileId))
         return Mediator.queries.send(
             GetVideoEncryptStatusQry.Request(
-                videoFilePostId = post.filePostId,
-                videoFileId = videoFileId
+                videoPostId = post.videoPostId,
+                fileIndex = post.fileIndex
             )
         )
     }
@@ -190,9 +190,9 @@ class VideoEncryptController {
         return hex.chunked(2).map { it.toInt(16).toByte() }.toByteArray()
     }
 
-    private fun loadQualityPolicies(filePostId: Long): List<PolicyPayload> {
+    private fun loadQualityPolicies(videoFileId: Long): List<PolicyPayload> {
         val policiesJson = Mediator.queries.send(
-            ListVideoQualityAuthQry.Request(videoFilePostId = filePostId, videoFileId = null)
+            ListVideoQualityAuthQry.Request(videoFilePostId = null, videoFileId = videoFileId)
         ).firstOrNull()?.policiesJson
         if (policiesJson.isNullOrBlank()) return emptyList()
         return JsonUtils.parseArray(policiesJson, PolicyPayload::class.java)
@@ -205,8 +205,8 @@ class VideoEncryptController {
             ?: emptyList()
     }
 
-    private fun resolveAllowedQualities(filePostId: Long): List<String> {
-        val policies = loadQualityPolicies(filePostId)
+    private fun resolveAllowedQualities(videoFileId: Long): List<String> {
+        val policies = loadQualityPolicies(videoFileId)
         if (policies.isEmpty()) return emptyList()
         val allowLogin = StpUtil.isLogin()
         return policies.filter {
@@ -296,8 +296,8 @@ class VideoEncryptController {
         }
     }
 
-    private fun computeAllowedQualities(filePostId: Long): String? {
-        val policies = loadQualityPolicies(filePostId)
+    private fun computeAllowedQualities(videoFileId: Long): String? {
+        val policies = loadQualityPolicies(videoFileId)
         if (policies.isEmpty()) return null
         val allowLogin = StpUtil.isLogin()
         val allowed = policies.filter {

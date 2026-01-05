@@ -6,7 +6,7 @@ import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 
 import edu.only4.danmuku.domain.aggregates.video_hls_encrypt_key.VideoHlsEncryptKey
 import edu.only4.danmuku.domain.aggregates.video_hls_encrypt_key.enums.EncryptKeyStatus
-import edu.only4.danmuku.domain.aggregates.video_file_post.enums.EncryptMethod
+import edu.only4.danmuku.domain.aggregates.video_post.enums.EncryptMethod
 
 import org.springframework.stereotype.Service
 
@@ -28,7 +28,9 @@ class VideoHlsEncryptKeyFactory : AggregateFactory<VideoHlsEncryptKeyFactory.Pay
 
     override fun create(payload: Payload): VideoHlsEncryptKey {
         return VideoHlsEncryptKey(
-            fileId = payload.fileId,
+            videoPostId = payload.videoPostId,
+            videoId = payload.videoId,
+            fileIndex = payload.fileIndex,
             quality = payload.quality,
             keyId = payload.keyId,
             keyCiphertext = payload.keyCiphertext,
@@ -49,7 +51,9 @@ class VideoHlsEncryptKeyFactory : AggregateFactory<VideoHlsEncryptKeyFactory.Pay
         description = ""
     )
     data class Payload(
-        val fileId: Long,
+        val videoPostId: Long,
+        val fileIndex: Int,
+        val videoId: Long? = null,
         val quality: String,
         val keyId: String,
         val keyCiphertext: String,

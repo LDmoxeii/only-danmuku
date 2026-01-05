@@ -6,6 +6,8 @@ import edu.only4.danmuku.application.queries._share.model.VideoPostProcessingVar
 import edu.only4.danmuku.application.queries._share.model.id
 import edu.only4.danmuku.application.queries._share.model.parentId
 import edu.only4.danmuku.application.queries._share.model.quality
+import edu.only4.danmuku.application.queries._share.model.videoPostProcessingFileId
+import edu.only4.danmuku.application.queries._share.model.videoPostProcessingId
 import edu.only4.danmuku.application.queries.video_post_processing.UniqueVideoPostProcessingVariantParentIdQualityQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.`ne?`
@@ -25,7 +27,7 @@ class UniqueVideoPostProcessingVariantParentIdQualityQryHandler(
 
     override fun exec(request: UniqueVideoPostProcessingVariantParentIdQualityQry.Request): UniqueVideoPostProcessingVariantParentIdQualityQry.Response {
         val exists = sqlClient.exists(VideoPostProcessingVariant::class) {
-            where(table.parentId eq request.parentId)
+            where(table.videoPostProcessingFileId eq request.parentId)
             where(table.quality eq request.quality)
             where(table.id `ne?` request.excludeVideoPostProcessingVariantId)
         }

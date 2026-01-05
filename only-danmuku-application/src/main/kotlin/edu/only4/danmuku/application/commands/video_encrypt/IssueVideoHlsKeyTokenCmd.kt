@@ -14,7 +14,7 @@ import java.util.UUID
 
 
 /**
- * 签发用于播放的短时 token，绑定 fileId+keyVersion+allowedQualities
+ * 签发用于播放的短时 token，绑定 videoPostId+fileIndex+keyVersion+allowedQualities
  *
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * @author cap4k-ddd-codegen
@@ -25,12 +25,10 @@ object IssueVideoHlsKeyTokenCmd {
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
-            val fileId = request.videoFilePostId ?: request.videoFileId
-                ?: throw KnownException.illegalArgument("videoFilePostId")
             val keyVersion = request.keyVersion ?: Mediator.queries.send(
                 GetLatestVideoHlsKeyVersionQry.Request(
-                    videoFilePostId = request.videoFilePostId ?: fileId,
-                    videoFileId = request.videoFileId
+                    videoPostId = request.videoPostId,
+                    fileIndex = request.fileIndex
                 )
             ).keyVersion ?: throw KnownException("未找到可用密钥版本")
 
@@ -41,7 +39,8 @@ object IssueVideoHlsKeyTokenCmd {
 
             Mediator.uow.persist(
                 VideoHlsKeyToken(
-                    fileId = fileId,
+                    videoPostId = request.videoPostId,
+                    fileIndex = request.fileIndex,
                     keyVersion = keyVersion,
                     allowedQualities = request.allowedQualities,
                     tokenHash = tokenHash,
@@ -70,8 +69,8 @@ object IssueVideoHlsKeyTokenCmd {
     }
 
     data class Request(
-        val videoFilePostId: Long?,
-        val videoFileId: Long?,
+        val videoPostId: Long,
+        val fileIndex: Int,
         val keyVersion: Int?,
         val audience: String?,
         val expireSeconds: Int = 600,

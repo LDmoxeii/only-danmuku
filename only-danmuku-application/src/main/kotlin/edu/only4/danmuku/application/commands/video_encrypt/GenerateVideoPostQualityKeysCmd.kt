@@ -32,7 +32,7 @@ object GenerateVideoPostQualityKeysCmd {
         val videoPostId: Long,
         val fileIndex: Int,
         val qualities: List<String>,
-        val method: String = HLS_AES_128,
+        val method: String = "HLS_AES_128",
         val keyBytes: Int = 16
     ) : RequestParam<Response>
 

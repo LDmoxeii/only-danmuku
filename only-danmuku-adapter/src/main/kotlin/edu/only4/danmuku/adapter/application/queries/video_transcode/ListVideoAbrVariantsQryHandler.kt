@@ -2,8 +2,8 @@ package edu.only4.danmuku.adapter.application.queries.video_transcode
 
 import com.only.engine.json.misc.JsonUtils
 import com.only4.cap4k.ddd.core.application.query.ListQuery
-import edu.only4.danmuku.application.queries._share.model.VideoHlsAbrVariant
-import edu.only4.danmuku.application.queries._share.model.fileId
+import edu.only4.danmuku.application.queries._share.model.VideoFilePostVariant
+import edu.only4.danmuku.application.queries._share.model.filePostId
 import edu.only4.danmuku.application.queries.video_transcode.ListVideoAbrVariantsQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
@@ -23,8 +23,8 @@ class ListVideoAbrVariantsQryHandler(
 
     override fun exec(request: ListVideoAbrVariantsQry.Request): List<ListVideoAbrVariantsQry.Response> {
 
-        val variants = sqlClient.createQuery(VideoHlsAbrVariant::class) {
-            where(table.fileId eq request.fileId)
+        val variants = sqlClient.createQuery(VideoFilePostVariant::class) {
+            where(table.filePostId eq request.fileId)
             select(table)
         }.execute()
 
@@ -32,7 +32,7 @@ class ListVideoAbrVariantsQryHandler(
 
         // 按清晰度数字从大到小排序（如 1080p > 720p > 480p ...），无法解析数字的排在最后
         val sortedVariants = variants.sortedWith(
-            compareByDescending<VideoHlsAbrVariant> { qualityScore(it.quality) }
+            compareByDescending<VideoFilePostVariant> { qualityScore(it.quality) }
                 .thenBy { it.quality }
         )
 

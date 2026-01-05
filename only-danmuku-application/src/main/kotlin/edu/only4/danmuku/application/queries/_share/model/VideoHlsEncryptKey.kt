@@ -1,6 +1,6 @@
 package edu.only4.danmuku.application.queries._share.model
 
-import edu.only4.danmuku.domain.aggregates.video_file_post.enums.EncryptMethod
+import edu.only4.danmuku.domain.aggregates.video_post.enums.EncryptMethod
 import edu.only4.danmuku.domain.aggregates.video_hls_encrypt_key.enums.EncryptKeyStatus
 import org.babyfish.jimmer.sql.Column
 import org.babyfish.jimmer.sql.Entity
@@ -10,8 +10,14 @@ import org.babyfish.jimmer.sql.Table
 @Table(name = "video_hls_encrypt_key")
 interface VideoHlsEncryptKey : BaseEntity {
 
-    @Column(name = "file_id")
-    val fileId: Long
+    @Column(name = "video_post_id")
+    val videoPostId: Long
+
+    @Column(name = "video_id")
+    val videoId: Long?
+
+    @Column(name = "file_index")
+    val fileIndex: Int
 
     @Column(name = "quality")
     val quality: String

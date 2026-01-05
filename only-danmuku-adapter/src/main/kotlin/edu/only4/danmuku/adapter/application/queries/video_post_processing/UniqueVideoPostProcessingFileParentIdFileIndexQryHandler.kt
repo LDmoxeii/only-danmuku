@@ -6,6 +6,7 @@ import edu.only4.danmuku.application.queries._share.model.VideoPostProcessingFil
 import edu.only4.danmuku.application.queries._share.model.fileIndex
 import edu.only4.danmuku.application.queries._share.model.id
 import edu.only4.danmuku.application.queries._share.model.parentId
+import edu.only4.danmuku.application.queries._share.model.videoPostProcessingId
 import edu.only4.danmuku.application.queries.video_post_processing.UniqueVideoPostProcessingFileParentIdFileIndexQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.`ne?`
@@ -25,7 +26,7 @@ class UniqueVideoPostProcessingFileParentIdFileIndexQryHandler(
 
     override fun exec(request: UniqueVideoPostProcessingFileParentIdFileIndexQry.Request): UniqueVideoPostProcessingFileParentIdFileIndexQry.Response {
         val exists = sqlClient.exists(VideoPostProcessingFile::class) {
-            where(table.parentId eq request.parentId)
+            where(table.videoPostProcessingId eq request.parentId)
             where(table.fileIndex eq request.fileIndex)
             where(table.id `ne?` request.excludeVideoPostProcessingFileId)
         }
