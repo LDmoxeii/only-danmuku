@@ -23,8 +23,8 @@ codegen {
     archTemplate.set("cap4k-ddd-codegen-template-multi-nested.json")
     designFiles.from(
         fileTree("iterate") {
-            include("**/video_search_es_gen.json")
-//            exclude("**/video_encrypt_decrypt_gen.json")
+            include("**/*_gen.json")
+            exclude("achrived/**", "deprecated/**")
         }
     )
 
