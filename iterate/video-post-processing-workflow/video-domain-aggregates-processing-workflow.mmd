@@ -1,0 +1,51 @@
+flowchart LR
+  %% Aggregates (same directory = same aggregate)
+  subgraph AggVideoPost["Aggregate: video_post"]
+    VideoPost["VideoPost (root)"]
+    VideoFilePost["VideoFilePost (child)"]
+    VideoFilePostVariant["VideoFilePostVariant (child)"]
+    VideoPost -->|contains| VideoFilePost
+    VideoFilePost -->|contains| VideoFilePostVariant
+  end
+
+  subgraph AggVideoPostProcessing["Aggregate: video_post_processing"]
+    VideoPostProcessing["VideoPostProcessing (root)"]
+    VideoPostProcessingFile["VideoPostProcessingFile (child)"]
+    VideoPostProcessingVariant["VideoPostProcessingVariant (child)"]
+    VideoPostProcessing -->|contains| VideoPostProcessingFile
+    VideoPostProcessingFile -->|contains| VideoPostProcessingVariant
+  end
+
+  subgraph AggUploadSession["Aggregate: video_file_upload_session"]
+    UploadSession["VideoFileUploadSession (root)"]
+  end
+
+  subgraph AggVideo["Aggregate: video"]
+    Video["Video (root)"]
+    VideoFile["VideoFile (child)"]
+    VideoFileVariant["VideoFileVariant (child)"]
+    Video -->|contains| VideoFile
+    VideoFile -->|contains| VideoFileVariant
+  end
+
+  subgraph AggVideoQualityPolicy["Aggregate: video_quality_policy"]
+    VideoQualityPolicy["VideoQualityPolicy (root)"]
+  end
+
+  subgraph AggVideoHlsEncryptKey["Aggregate: video_hls_encrypt_key"]
+    VideoHlsEncryptKey["VideoHlsEncryptKey (root)"]
+  end
+
+  subgraph AggVideoHlsKeyToken["Aggregate: video_hls_key_token"]
+    VideoHlsKeyToken["VideoHlsKeyToken (root)"]
+  end
+
+  %% Cross-aggregate references (dashed)
+  VideoPostProcessing -.->|videoPostId| VideoPost
+  VideoPostProcessingFile -.->|uploadId| UploadSession
+  Video -.->|videoPostId| VideoPost
+  VideoHlsEncryptKey -.->|videoPostId + fileIndex| VideoPost
+  VideoHlsEncryptKey -.->|videoId + fileIndex| Video
+  VideoHlsKeyToken -.->|videoPostId + fileIndex| VideoPost
+  VideoHlsKeyToken -.->|videoId + fileIndex| Video
+  VideoQualityPolicy -.->|videoId + fileIndex + quality| Video

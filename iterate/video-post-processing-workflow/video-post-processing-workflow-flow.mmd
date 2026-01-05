@@ -1,0 +1,95 @@
+sequenceDiagram
+  autonumber
+  actor User as User
+  participant Ctrl as VideoPostController
+  participant CreateCmd as CreateVideoPostCmd
+  participant Post as VideoPost
+  participant StartProcCmd as StartVideoPostProcessingCmd
+  participant Proc as VideoPostProcessing
+  participant ProcStartedSub as VideoPostProcessingStartedSubscriber
+  participant UploadQry as GetUploadSessionTempPathQry
+  participant MergeCli as MergeUploadToMp4ByPathCli
+  participant TranscodeCli as TranscodeVideoFileToAbrByPathCli
+  participant UploadCli as UploadVideoAbrOutputCli
+  participant ApplyTransCmd as ApplyVideoPostProcessingTranscodeResultCmd
+  participant TranscodeSub as VideoPostProcessingTranscodeCompletedSubscriber
+  participant KeyCmd as GenerateVideoPostQualityKeysCmd
+  participant EncryptCli as EncryptHlsWithQualityKeysCli
+  participant ApplyEncCmd as ApplyVideoPostProcessingEncryptResultCmd
+  participant ProcSub as VideoPostProcessingCompletedSubscriber
+  participant SyncPostCmd as SyncVideoPostProcessStatusCmd
+  participant ListProcFilesQry as ListVideoPostProcessingFilesForSync
+  participant SyncFilePostCmd as SyncVideoFilePostFromProcessingCmd
+  participant AuditPassSub as VideoAuditPassedDomainEventSubscriber
+  participant ListKeysQry as ListVideoHlsEncryptKeysByPostFile
+  participant ListTokensQry as ListVideoHlsKeyTokensByPostFile
+  participant BindKeyCmd as BindVideoHlsEncryptKeyToVideoCmd
+  participant BindTokenCmd as BindVideoHlsKeyTokenToVideoCmd
+
+  User->>Ctrl: POST /video/post
+  Ctrl->>CreateCmd: CreateVideoPostCmd.Request(...)
+  CreateCmd->>Post: create(...)
+  Post-->>CreateCmd: VideoPostCreatedDomainEvent
+  CreateCmd->>CreateCmd: UoW save
+  Post-->>StartProcCmd: VideoPostCreatedDomainEvent
+  StartProcCmd->>Proc: start(fileList)
+  StartProcCmd->>StartProcCmd: UoW save
+
+  Proc-->>ProcStartedSub: VideoPostProcessingStartedDomainEvent
+  loop each file in event
+    ProcStartedSub->>UploadQry: GetUploadSessionTempPathQry(uploadId)
+    UploadQry-->>ProcStartedSub: tempPath
+    ProcStartedSub->>MergeCli: MergeUploadToMp4ByPathCli(tempPath, outputDir)
+    MergeCli-->>ProcStartedSub: mergedMp4Path + outputDir + duration + fileSize
+    ProcStartedSub->>TranscodeCli: TranscodeVideoFileToAbrByPathCli(mergedMp4Path, outputDir)
+    TranscodeCli-->>ProcStartedSub: variantsJson
+    ProcStartedSub->>UploadCli: UploadVideoAbrOutputCli(outputDir, objectPrefix)
+    UploadCli-->>ProcStartedSub: storagePrefix
+    ProcStartedSub->>ApplyTransCmd: ApplyVideoPostProcessingTranscodeResultCmd(...)
+    ApplyTransCmd->>Proc: applyTranscodeResult(...)
+    ApplyTransCmd->>ApplyTransCmd: UoW save
+    opt success
+      Proc-->>TranscodeSub: VideoPostProcessingTranscodeCompletedDomainEvent
+    end
+  end
+
+  loop each transcode completed event
+    TranscodeSub->>KeyCmd: GenerateVideoPostQualityKeysCmd(videoPostId, fileIndex, qualities)
+    KeyCmd-->>TranscodeSub: keyVersion + keysJson
+    TranscodeSub->>EncryptCli: EncryptHlsWithQualityKeysCli(sourceDir, encOutputDir, keysJson)
+    EncryptCli-->>TranscodeSub: encryptedMasterPath + encryptedVariants
+    TranscodeSub->>ApplyEncCmd: ApplyVideoPostProcessingEncryptResultCmd(...)
+    ApplyEncCmd->>Proc: applyEncryptResult(...)
+    ApplyEncCmd->>ApplyEncCmd: UoW save
+    opt all steps completed
+      Proc-->>ProcSub: VideoPostProcessingCompletedDomainEvent
+      ProcSub->>SyncPostCmd: SyncVideoPostProcessStatusCmd(videoPostId, targetStatus)
+      SyncPostCmd->>Post: markStatus(PENDING_REVIEW)
+      SyncPostCmd->>SyncPostCmd: UoW save
+      ProcSub->>ListProcFilesQry: ListVideoPostProcessingFilesForSync(videoPostId)
+      ListProcFilesQry-->>ProcSub: fileList
+      loop each file in fileList
+        ProcSub->>SyncFilePostCmd: SyncVideoFilePostFromProcessingCmd(videoPostId, fileIndex, ...)
+        SyncFilePostCmd->>Post: syncFilePostFromProcessing(fileIndex, ...)
+        SyncFilePostCmd->>SyncFilePostCmd: UoW save
+      end
+    end
+  end
+
+  opt audit passed
+    Note over AuditPassSub: videoId 由转正流程产出
+    loop each file in videoPost
+      AuditPassSub->>ListKeysQry: ListVideoHlsEncryptKeysByPostFile(videoPostId, fileIndex)
+      ListKeysQry-->>AuditPassSub: keyIds
+      loop each key
+        AuditPassSub->>BindKeyCmd: BindVideoHlsEncryptKeyToVideoCmd(keyId, videoId)
+        BindKeyCmd->>BindKeyCmd: UoW save
+      end
+      AuditPassSub->>ListTokensQry: ListVideoHlsKeyTokensByPostFile(videoPostId, fileIndex)
+      ListTokensQry-->>AuditPassSub: tokenIds
+      loop each token
+        AuditPassSub->>BindTokenCmd: BindVideoHlsKeyTokenToVideoCmd(tokenId, videoId)
+        BindTokenCmd->>BindTokenCmd: UoW save
+      end
+    end
+  end
