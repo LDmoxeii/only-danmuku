@@ -11,7 +11,7 @@ import jakarta.persistence.AttributeConverter
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2025/12/26
+ * @date 2026/01/05
  */
 @Aggregate(aggregate = "VideoHlsEncryptKey", name = "EncryptKeyStatus", type = "enum", description = "")
 enum class EncryptKeyStatus(

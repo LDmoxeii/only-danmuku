@@ -532,6 +532,14 @@ class SVideoPost(
 
 
     /**
+     * 关联: OneToMany - VideoFilePost
+     */
+    val videoFilePosts: Field<Any> by lazy {
+        Field(root.get("videoFilePosts"), criteriaBuilder)
+    }
+
+
+    /**
      * 满足所有条件
      * @param restrictions
      * @return

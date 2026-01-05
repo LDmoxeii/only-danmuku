@@ -31,7 +31,11 @@ class SVideoHlsEncryptKey(
 
         val id = "id"
 
-        val fileId = "fileId"
+        val videoPostId = "videoPostId"
+
+        val videoId = "videoId"
+
+        val fileIndex = "fileIndex"
 
         val quality = "quality"
 
@@ -377,10 +381,26 @@ class SVideoHlsEncryptKey(
 
 
     /**
-     * 稿件态 fileId
+     * 视频稿件ID
      */
-    val fileId: Field<Long> by lazy {
-        Field(root.get("fileId"), criteriaBuilder)
+    val videoPostId: Field<Long> by lazy {
+        Field(root.get("videoPostId"), criteriaBuilder)
+    }
+
+
+    /**
+     * 视频ID
+     */
+    val videoId: Field<Long?> by lazy {
+        Field(root.get("videoId"), criteriaBuilder)
+    }
+
+
+    /**
+     * 文件索引
+     */
+    val fileIndex: Field<Int> by lazy {
+        Field(root.get("fileIndex"), criteriaBuilder)
     }
 
 

@@ -25,7 +25,7 @@ import org.hibernate.annotations.Where
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2025/12/25
+ * @date 2026/01/05
  */
 @Aggregate(aggregate = "VideoHlsKeyToken", name = "VideoHlsKeyToken", root = true, type = Aggregate.TYPE_ENTITY, description = "HLS 加密播放 token")
 @Entity
@@ -36,7 +36,9 @@ import org.hibernate.annotations.Where
 @Where(clause = "`deleted` = 0")
 class VideoHlsKeyToken(
     id: Long = 0L,
-    fileId: Long = 0L,
+    videoPostId: Long = 0L,
+    videoId: Long? = null,
+    fileIndex: Int = 0,
     keyVersion: Int = 1,
     allowedQualities: String? = null,
     tokenHash: String = "",
@@ -61,11 +63,27 @@ class VideoHlsKeyToken(
         internal set
 
     /**
-     * 稿件态 fileId
+     * 视频稿件ID
      * bigint
      */
-    @Column(name = "`file_id`")
-    var fileId: Long = fileId
+    @Column(name = "`video_post_id`")
+    var videoPostId: Long = videoPostId
+        internal set
+
+    /**
+     * 视频ID
+     * bigint
+     */
+    @Column(name = "`video_id`")
+    var videoId: Long? = videoId
+        internal set
+
+    /**
+     * 文件索引
+     * int
+     */
+    @Column(name = "`file_index`")
+    var fileIndex: Int = fileIndex
         internal set
 
     /**

@@ -33,7 +33,7 @@ codegen {
         username.set("root")
         password.set("123456")
         schema.set("only_danmuku")
-        tables.set("video_hls_encrypt_key")
+        tables.set("")
         ignoreTables.set("")
     }
 

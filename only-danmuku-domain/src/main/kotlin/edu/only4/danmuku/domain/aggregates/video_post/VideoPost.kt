@@ -19,7 +19,7 @@ import org.hibernate.annotations.*
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2025/11/24
+ * @date 2026/01/05
  */
 @Aggregate(aggregate = "VideoPost", name = "VideoPost", root = true, type = Aggregate.TYPE_ENTITY, description = "视频信息，")
 @Entity
@@ -44,6 +44,10 @@ class VideoPost(
     duration: Int = 0,
 ) : AuditedFieldsEntity() {
     // 【字段映射开始】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
+    @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.EAGER, orphanRemoval = true)
+    @Fetch(FetchMode.SUBSELECT)
+    @JoinColumn(name = "`video_post_id`", nullable = false)
+    var videoFilePosts: MutableList<VideoFilePost> = mutableListOf()
 
     /**
      * ID
