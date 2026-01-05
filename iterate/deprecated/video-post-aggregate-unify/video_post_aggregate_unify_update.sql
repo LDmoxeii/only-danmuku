@@ -1,0 +1,3 @@
+-- No mandatory schema changes for aggregate unification.
+-- Optional indexes for job scanning (enable if query volume grows):
+-- CREATE INDEX idx_video_file_post_process ON video_file_post (transfer_result, encrypt_status, update_type, video_id);

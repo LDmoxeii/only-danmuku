@@ -1,0 +1,315 @@
+[
+  {
+    "tag": "payload",
+    "package": "video_post_processing",
+    "name": "VideoPostProcessingFileSpec",
+    "desc": "处理聚合文件创建参数（不暴露子实体ID）",
+    "requestFields": [
+      { "name": "uploadId", "type": "Long" },
+      { "name": "fileIndex", "type": "Int" },
+      { "name": "fileName", "type": "String", "nullable": true },
+      { "name": "fileSize", "type": "Long", "nullable": true },
+      { "name": "duration", "type": "Int", "nullable": true }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "video_post_processing",
+    "name": "StartVideoPostProcessing",
+    "desc": "初始化稿件处理聚合（文件清单）",
+    "requestFields": [
+      { "name": "videoPostId", "type": "Long" },
+      { "name": "fileList", "type": "List<VideoPostProcessingFileSpec>" }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "video_post_processing",
+    "name": "VideoPostProcessingStarted",
+    "desc": "处理聚合已初始化事件，携带 fileList(uploadId,fileIndex,outputDir,objectPrefix,encOutputDir)",
+    "aggregates": ["VideoPostProcessing"],
+    "entity": "VideoPostProcessing",
+    "persist": false
+  },
+  {
+    "tag": "cmd",
+    "package": "video_post_processing",
+    "name": "ApplyVideoPostProcessingTranscodeResult",
+    "desc": "回写单个分P转码结果（处理聚合内变更）",
+    "requestFields": [
+      { "name": "videoPostId", "type": "Long" },
+      { "name": "fileIndex", "type": "Int" },
+      { "name": "success", "type": "Boolean" },
+      { "name": "outputPrefix", "type": "String", "nullable": true },
+      { "name": "outputPath", "type": "String", "nullable": true },
+      { "name": "duration", "type": "Int", "nullable": true },
+      { "name": "fileSize", "type": "Long", "nullable": true },
+      { "name": "variantsJson", "type": "String", "nullable": true },
+      { "name": "failReason", "type": "String", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "success", "type": "Boolean", "defaultValue": "true" },
+      { "name": "failReason", "type": "String", "nullable": true }
+    ]
+  },
+  {
+    "tag": "de",
+    "package": "video_post_processing",
+    "name": "VideoPostProcessingTranscodeCompleted",
+    "desc": "单个分P转码完成事件，携带 outputPrefix/encOutputDir/variantsJson，驱动加密编排",
+    "aggregates": ["VideoPostProcessing"],
+    "entity": "VideoPostProcessing",
+    "persist": false
+  },
+  {
+    "tag": "cmd",
+    "package": "video_post_processing",
+    "name": "ApplyVideoPostProcessingEncryptResult",
+    "desc": "回写单个分P加密结果（处理聚合内变更）",
+    "requestFields": [
+      { "name": "videoPostId", "type": "Long" },
+      { "name": "fileIndex", "type": "Int" },
+      { "name": "success", "type": "Boolean" },
+      { "name": "encryptMethod", "type": "String", "defaultValue": "HLS_AES_128" },
+      { "name": "keyVersion", "type": "Int" },
+      { "name": "encryptedPrefix", "type": "String", "nullable": true },
+      { "name": "encryptedMasterPath", "type": "String", "nullable": true },
+      { "name": "encryptedVariants", "type": "String", "nullable": true },
+      { "name": "failReason", "type": "String", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "success", "type": "Boolean", "defaultValue": "true" },
+      { "name": "failReason", "type": "String", "nullable": true }
+    ]
+  },
+  {
+    "tag": "de",
+    "package": "video_post_processing",
+    "name": "VideoPostProcessingCompleted",
+    "desc": "处理聚合完成事件，驱动稿件状态与稿件文件/分辨率回填",
+    "aggregates": ["VideoPostProcessing"],
+    "entity": "VideoPostProcessing",
+    "persist": false
+  },
+  {
+    "tag": "cmd",
+    "package": "video_encrypt",
+    "name": "GenerateVideoPostQualityKeys",
+    "desc": "生成清晰度密钥（不暴露子实体ID）",
+    "requestFields": [
+      { "name": "videoPostId", "type": "Long" },
+      { "name": "fileIndex", "type": "Int" },
+      { "name": "qualities", "type": "List<String>" },
+      { "name": "method", "type": "String", "defaultValue": "HLS_AES_128" },
+      { "name": "keyBytes", "type": "Int", "defaultValue": "16" }
+    ],
+    "responseFields": [
+      { "name": "keyVersion", "type": "Int" },
+      { "name": "keysJson", "type": "String" }
+    ]
+  },
+  {
+    "tag": "qry",
+    "package": "video_encrypt",
+    "name": "ListVideoHlsEncryptKeysByPostFile",
+    "desc": "按 videoPostId + fileIndex 查询密钥ID列表（转正绑定用）",
+    "requestFields": [
+      { "name": "videoPostId", "type": "Long" },
+      { "name": "fileIndex", "type": "Int" }
+    ],
+    "responseFields": [
+      { "name": "encryptKeyId", "type": "Long" }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "video_encrypt",
+    "name": "BindVideoHlsEncryptKeyToVideo",
+    "desc": "审核通过后补充 videoId（密钥转正绑定）",
+    "requestFields": [
+      { "name": "encryptKeyId", "type": "Long" },
+      { "name": "videoId", "type": "Long" }
+    ],
+    "responseFields": [
+      { "name": "success", "type": "Boolean", "defaultValue": "true" }
+    ]
+  },
+  {
+    "tag": "qry",
+    "package": "video_encrypt",
+    "name": "ListVideoHlsKeyTokensByPostFile",
+    "desc": "按 videoPostId + fileIndex 查询 token ID 列表（转正绑定用）",
+    "requestFields": [
+      { "name": "videoPostId", "type": "Long" },
+      { "name": "fileIndex", "type": "Int" }
+    ],
+    "responseFields": [
+      { "name": "tokenId", "type": "Long" }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "video_encrypt",
+    "name": "BindVideoHlsKeyTokenToVideo",
+    "desc": "审核通过后补充 videoId（token 转正绑定）",
+    "requestFields": [
+      { "name": "tokenId", "type": "Long" },
+      { "name": "videoId", "type": "Long" }
+    ],
+    "responseFields": [
+      { "name": "success", "type": "Boolean", "defaultValue": "true" }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "video_quality_policy",
+    "name": "SetVideoQualityPolicy",
+    "desc": "设置视频清晰度策略（转正后配置）",
+    "requestFields": [
+      { "name": "videoId", "type": "Long" },
+      { "name": "fileIndex", "type": "Int" },
+      { "name": "quality", "type": "String" },
+      { "name": "authPolicy", "type": "QualityAuthPolicy" },
+      { "name": "remark", "type": "String", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "success", "type": "Boolean", "defaultValue": "true" }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "video_post",
+    "name": "SyncVideoPostProcessStatus",
+    "desc": "处理聚合事件驱动：更新稿件整体状态",
+    "requestFields": [
+      { "name": "videoPostId", "type": "Long" },
+      { "name": "targetStatus", "type": "VideoStatus" },
+      { "name": "duration", "type": "Int", "nullable": true },
+      { "name": "failReason", "type": "String", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "success", "type": "Boolean", "defaultValue": "true" }
+    ]
+  },
+  {
+    "tag": "qry",
+    "package": "video_post_processing",
+    "name": "ListVideoPostProcessingFilesForSync",
+    "desc": "查询处理完成后的文件清单与产物摘要（含分辨率档位），用于回填稿件态文件",
+    "requestFields": [
+      { "name": "videoPostId", "type": "Long" }
+    ],
+    "responseFields": [
+      { "name": "fileIndex", "type": "Int" },
+      { "name": "transcodeOutputPrefix", "type": "String", "nullable": true },
+      { "name": "encryptOutputPrefix", "type": "String", "nullable": true },
+      { "name": "variantsJson", "type": "String", "nullable": true },
+      { "name": "duration", "type": "Int", "nullable": true },
+      { "name": "fileSize", "type": "Long", "nullable": true },
+      { "name": "encryptMethod", "type": "String", "nullable": true },
+      { "name": "keyVersion", "type": "Int", "nullable": true }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "video_post",
+    "name": "SyncVideoFilePostFromProcessing",
+    "desc": "处理完成后回填 VideoPost 子实体 VideoFilePost 与其分辨率档位（不暴露子实体ID）",
+    "requestFields": [
+      { "name": "videoPostId", "type": "Long" },
+      { "name": "fileIndex", "type": "Int" },
+      { "name": "transcodeOutputPrefix", "type": "String", "nullable": true },
+      { "name": "encryptOutputPrefix", "type": "String", "nullable": true },
+      { "name": "variantsJson", "type": "String", "nullable": true },
+      { "name": "duration", "type": "Int", "nullable": true },
+      { "name": "fileSize", "type": "Long", "nullable": true },
+      { "name": "encryptMethod", "type": "String", "nullable": true },
+      { "name": "keyVersion", "type": "Int", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "success", "type": "Boolean", "defaultValue": "true" }
+    ]
+  },
+  {
+    "tag": "qry",
+    "package": "video_transcode",
+    "name": "GetUploadSessionTempPath",
+    "desc": "查询上传会话的临时目录 tempPath",
+    "requestFields": [
+      { "name": "uploadId", "type": "Long" }
+    ],
+    "responseFields": [
+      { "name": "tempPath", "type": "String" }
+    ]
+  },
+  {
+    "tag": "cli",
+    "package": "video_transcode",
+    "name": "MergeUploadToMp4ByPath",
+    "desc": "防腐层：按路径合并分片为 MP4（不接触数据库ID）",
+    "requestFields": [
+      { "name": "tempPath", "type": "String" },
+      { "name": "outputDir", "type": "String" }
+    ],
+    "responseFields": [
+      { "name": "success", "type": "Boolean", "defaultValue": "true" },
+      { "name": "outputDir", "type": "String" },
+      { "name": "mergedMp4Path", "type": "String" },
+      { "name": "duration", "type": "Int", "nullable": true },
+      { "name": "fileSize", "type": "Long", "nullable": true },
+      { "name": "failReason", "type": "String", "nullable": true }
+    ]
+  },
+  {
+    "tag": "cli",
+    "package": "video_transcode",
+    "name": "TranscodeVideoFileToAbrByPath",
+    "desc": "防腐层：按路径转码生成 ABR 输出（不接触数据库ID）",
+    "requestFields": [
+      { "name": "sourcePath", "type": "String" },
+      { "name": "outputDir", "type": "String" },
+      { "name": "profiles", "type": "String" },
+      { "name": "segmentDurationSec", "type": "Int", "defaultValue": "6" },
+      { "name": "taskId", "type": "String", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "accepted", "type": "Boolean", "defaultValue": "true" },
+      { "name": "variantsJson", "type": "String" },
+      { "name": "failReason", "type": "String", "nullable": true }
+    ]
+  },
+  {
+    "tag": "cli",
+    "package": "video_transcode",
+    "name": "UploadVideoAbrOutput",
+    "desc": "防腐层：上传 ABR 输出目录到对象存储（不接触数据库ID）",
+    "requestFields": [
+      { "name": "outputDir", "type": "String" },
+      { "name": "objectPrefix", "type": "String" }
+    ],
+    "responseFields": [
+      { "name": "success", "type": "Boolean", "defaultValue": "true" },
+      { "name": "storagePrefix", "type": "String", "nullable": true },
+      { "name": "failReason", "type": "String", "nullable": true }
+    ]
+  },
+  {
+    "tag": "cli",
+    "package": "video_encrypt",
+    "name": "EncryptHlsWithQualityKeys",
+    "desc": "防腐层：按密钥对 HLS 输出进行加密（不接触数据库ID）",
+    "requestFields": [
+      { "name": "sourceDir", "type": "String" },
+      { "name": "outputDir", "type": "String" },
+      { "name": "keysJson", "type": "String" }
+    ],
+    "responseFields": [
+      { "name": "success", "type": "Boolean", "defaultValue": "true" },
+      { "name": "encryptedMasterPath", "type": "String", "nullable": true },
+      { "name": "encryptedVariants", "type": "String", "nullable": true },
+      { "name": "failReason", "type": "String", "nullable": true }
+    ]
+  }
+]

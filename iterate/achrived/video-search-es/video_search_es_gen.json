@@ -1,0 +1,54 @@
+[
+  {
+    "tag": "qry",
+    "package": "video_search",
+    "name": "SearchVideoByEs",
+    "desc": "使用 ES 搜索视频（替代数据库模糊查询）",
+    "requestFields": [
+      { "name": "keyword", "type": "String", "desc": "搜索关键词" },
+      { "name": "orderType", "type": "Int", "nullable": true },
+      { "name": "pageNum", "type": "Int", "defaultValue": "1" },
+      { "name": "pageSize", "type": "Int", "defaultValue": "20" }
+    ],
+    "responseFields": [
+      { "name": "videoId", "type": "Long" },
+      { "name": "videoCover", "type": "String", "nullable": true },
+      { "name": "videoName", "type": "String", "nullable": true },
+      { "name": "userId", "type": "Long", "nullable": true },
+      { "name": "createTime", "type": "Long" },
+      { "name": "lastUpdateTime", "type": "Long", "nullable": true },
+      { "name": "parentCategoryId", "type": "Long" },
+      { "name": "categoryId", "type": "Long", "nullable": true },
+      { "name": "postType", "type": "Int" },
+      { "name": "originInfo", "type": "String", "nullable": true },
+      { "name": "tags", "type": "String", "nullable": true },
+      { "name": "introduction", "type": "String", "nullable": true },
+      { "name": "duration", "type": "Int" },
+      { "name": "playCount", "type": "Int" },
+      { "name": "likeCount", "type": "Int" },
+      { "name": "danmuCount", "type": "Int" },
+      { "name": "commentCount", "type": "Int" },
+      { "name": "coinCount", "type": "Int" },
+      { "name": "collectCount", "type": "Int" },
+      { "name": "recommendType", "type": "Int" },
+      { "name": "lastPlayTime", "type": "Long", "nullable": true },
+      { "name": "nickName", "type": "String", "nullable": true },
+      { "name": "avatar", "type": "String", "nullable": true },
+      { "name": "categoryFullName", "type": "String", "nullable": true }
+    ]
+  },
+  {
+    "tag": "cli",
+    "package": "video_search",
+    "name": "SyncVideoBasicsToEs",
+    "desc": "同步视频基础信息到 ES（upsert 文档）",
+    "requestFields": [
+      { "name": "videoId", "type": "Long" },
+      { "name": "videoPostId", "type": "Long", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "success", "type": "Boolean", "defaultValue": "true" },
+      { "name": "failReason", "type": "String", "nullable": true }
+    ]
+  }
+]

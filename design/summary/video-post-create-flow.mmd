@@ -1,0 +1,73 @@
+sequenceDiagram
+  autonumber
+  actor FE as Frontend
+  participant Ctrl as CompatibleUCenterVideoPostController
+  participant CreatePost as CreateVideoPostCmd
+  participant VideoPost as VideoPost
+  participant CreateFile as CreateVideoFilePostCmd
+  participant FilePost as VideoFilePost
+  participant FileCreatedSub as VideoFilePostCreatedDomainEventSubscriber
+  participant TempQry as GetUploadSessionTempPathQry
+  participant MergeCli as MergeUploadToMp4Cli
+  participant Probe as FFprobeUtils
+  participant TranscodeCli as TranscodeVideoFileToAbrCli
+  participant UploadCli as UploadVideoAbrOutputCli
+  participant UpdateTranscode as UpdateVideoFilePostTranscodeResultCmd
+  participant FileUpdatedSub as VideoFilePostTranscodeResultUpdatedDomainEventSubscriber
+  participant RefreshStatus as RefreshVideoPostTranscodeStatusCmd
+  participant GenKeys as GenerateVideoHlsQualityKeysCmd
+  participant Key as VideoHlsEncryptKey
+  participant KeyCreatedSub as VideoHlsEncryptKeyCreatedDomainEventSubscriber
+  participant UpsertAuth as UpsertVideoHlsQualityAuthCmd
+  participant EncryptCli as EncryptHlsWithQualityKeysCli
+  participant PersistEncrypt as PersistVideoEncryptBatchResultCmd
+
+  FE->>Ctrl: POST /ucenter/postVideo (videoId=null, uploadFileList)
+  Ctrl->>CreatePost: CreateVideoPostCmd.Request(...)
+  CreatePost->>VideoPost: Mediator.factories.create(VideoPostFactory.Payload)
+  Note over VideoPost: onCreate auto-triggered by Mediator.factories.create
+  VideoPost-->>CreatePost: VideoDraftCreatedDomainEvent
+  CreatePost->>CreatePost: UoW save
+  CreatePost-->>Ctrl: videoId
+  Ctrl-->>FE: response
+
+  loop each upload file item
+    Ctrl->>CreateFile: CreateVideoFilePostCmd.Request(uploadId, videoId, fileIndex, fileName)
+    CreateFile->>FilePost: Mediator.factories.create(VideoFilePostFactory.Payload)
+    Note over FilePost: onCreate auto-triggered by Mediator.factories.create
+    FilePost-->>CreateFile: VideoFilePostCreatedDomainEvent
+    CreateFile->>CreateFile: UoW save
+    FilePost-->>FileCreatedSub: VideoFilePostCreatedDomainEvent
+
+    FileCreatedSub->>TempQry: GetUploadSessionTempPathQry(uploadId)
+    TempQry-->>FileCreatedSub: tempPath
+    FileCreatedSub->>MergeCli: MergeUploadToMp4Cli(tempPath)
+    MergeCli-->>FileCreatedSub: mergedMp4Path, outputDir, duration, fileSize
+    FileCreatedSub->>Probe: probeVideoResolution(mergedMp4Path)
+    Probe-->>FileCreatedSub: width, height, bitrateKbps
+    FileCreatedSub->>TranscodeCli: TranscodeVideoFileToAbrCli(sourcePath, profiles)
+    TranscodeCli-->>FileCreatedSub: accepted, variants
+    FileCreatedSub->>UploadCli: UploadVideoAbrOutputCli(outputDir)
+    UploadCli-->>FileCreatedSub: success, storagePrefix
+    alt transcode/upload success
+      FileCreatedSub->>UpdateTranscode: UpdateVideoFilePostTranscodeResultCmd(success=true,...)
+    else failure
+      FileCreatedSub->>UpdateTranscode: UpdateVideoFilePostTranscodeResultCmd(success=false,...)
+    end
+
+    UpdateTranscode->>FilePost: applyTranscodeResult(...)
+    FilePost-->>FileUpdatedSub: VideoFilePostTranscodeResultUpdatedDomainEvent
+    FileUpdatedSub->>RefreshStatus: RefreshVideoPostTranscodeStatusCmd(videoPostId)
+
+    alt success and encryptStatus=UNENCRYPTED
+      FileUpdatedSub->>GenKeys: GenerateVideoHlsQualityKeysCmd(qualities, method)
+      GenKeys->>Key: Mediator.factories.create(VideoHlsEncryptKeyFactory.Payload) xN
+      Note over Key: onCreate auto-triggered by Mediator.factories.create
+      Key-->>KeyCreatedSub: VideoHlsEncryptKeyCreatedDomainEvent
+      KeyCreatedSub->>UpsertAuth: UpsertVideoHlsQualityAuthCmd
+      GenKeys-->>FileUpdatedSub: keysJson, keyVersion
+      FileUpdatedSub->>EncryptCli: EncryptHlsWithQualityKeysCli(sourceDir, outputDir, keysJson)
+      EncryptCli-->>FileUpdatedSub: success, encrypted paths
+      FileUpdatedSub->>PersistEncrypt: PersistVideoEncryptBatchResultCmd(...)
+    end
+  end
