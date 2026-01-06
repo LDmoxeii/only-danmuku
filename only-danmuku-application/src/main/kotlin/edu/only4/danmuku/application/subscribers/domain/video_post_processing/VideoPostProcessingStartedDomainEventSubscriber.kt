@@ -3,6 +3,7 @@ package edu.only4.danmuku.application.subscribers.domain.video_post_processing
 import com.only.engine.json.misc.JsonUtils
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.application.commands.video_post_processing.ApplyVideoPostProcessingTranscodeResultCmd
+import edu.only4.danmuku.application.distributed.clients.video_transcode.GenerateVideoAbrMasterCli
 import edu.only4.danmuku.application.distributed.clients.video_transcode.MergeUploadToMp4ByPathCli
 import edu.only4.danmuku.application.distributed.clients.video_transcode.TranscodeVideoFileToAbrByPathCli
 import edu.only4.danmuku.application.distributed.clients.video_transcode.UploadVideoAbrOutputCli
@@ -85,18 +86,42 @@ class VideoPostProcessingStartedDomainEventSubscriber {
                     objectPrefix = file.objectPrefix
                 )
             )
-            val success = uploaded.success
+            if (!uploaded.success) {
+                Mediator.commands.send(
+                    ApplyVideoPostProcessingTranscodeResultCmd.Request(
+                        videoPostId = event.videoPostId,
+                        fileIndex = file.fileIndex,
+                        success = false,
+                        outputPrefix = null,
+                        outputPath = file.outputDir,
+                        duration = merged.duration,
+                        fileSize = merged.fileSize,
+                        variantsJson = null,
+                        failReason = uploaded.failReason
+                    )
+                )
+                return@forEach
+            }
+
+            val outputPrefix = uploaded.storagePrefix ?: file.objectPrefix
+            val master = Mediator.requests.send(
+                GenerateVideoAbrMasterCli.Request(
+                    outputPrefix = outputPrefix,
+                    variantsJson = transcode.variantsJson
+                )
+            )
+            val success = master.success
             Mediator.commands.send(
                 ApplyVideoPostProcessingTranscodeResultCmd.Request(
                     videoPostId = event.videoPostId,
                     fileIndex = file.fileIndex,
                     success = success,
-                    outputPrefix = if (success) (uploaded.storagePrefix ?: file.objectPrefix) else null,
+                    outputPrefix = if (success) outputPrefix else null,
                     outputPath = file.outputDir,
                     duration = merged.duration,
                     fileSize = merged.fileSize,
                     variantsJson = if (success) transcode.variantsJson else null,
-                    failReason = if (success) null else uploaded.failReason
+                    failReason = if (success) null else master.failReason
                 )
             )
         }

@@ -3,7 +3,7 @@ package edu.only4.danmuku.application.distributed.clients.video_transcode
 import com.only4.cap4k.ddd.core.application.RequestParam
 
 /**
- * 防腐层：调用 FFmpeg/脚本生成多分辨率 HLS 与 master.m3u8
+ * 防腐层：调用 FFmpeg/脚本生成多分辨率 HLS（不包含 master.m3u8）
  *
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * @author cap4k-ddd-codegen

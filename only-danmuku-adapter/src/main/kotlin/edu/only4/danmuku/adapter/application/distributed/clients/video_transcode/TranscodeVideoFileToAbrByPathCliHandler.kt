@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service
 import java.io.File
 
 /**
- * 防腐层：调用 FFmpeg/脚本生成多分辨率 HLS 与 master.m3u8
+ * 防腐层：调用 FFmpeg/脚本生成多分辨率 HLS（不生成 master.m3u8）
  *
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：可以在本文件中添加自定义事件处理方法
@@ -50,7 +50,7 @@ class TranscodeVideoFileToAbrByPathCliHandler(
             if (filteredProfiles.isEmpty()) {
                 return TranscodeVideoFileToAbrByPathCli.Response(
                     accepted = false,
-                    variants = "[]",
+                    variantsJson = "[]",
                     failReason = "源视频分辨率过低，无法匹配任何预置档位"
                 )
             }
@@ -95,23 +95,21 @@ class TranscodeVideoFileToAbrByPathCliHandler(
             if (variantOutputs.isEmpty()) {
                 return TranscodeVideoFileToAbrByPathCli.Response(
                     accepted = false,
-                    variants = "[]",
+                    variantsJson = "[]",
                     failReason = "未生成任何 ABR 档位"
                 )
             }
 
-            writeMasterPlaylist(outputDir, variantOutputs)
-
             val variantsJson = JsonUtils.toJsonString(variantOutputs) ?: "[]"
             TranscodeVideoFileToAbrByPathCli.Response(
                 accepted = true,
-                variants = variantsJson,
+                variantsJson = variantsJson,
             )
         }.getOrElse {
             logger.error("ABR 转码失败", it)
             TranscodeVideoFileToAbrByPathCli.Response(
                 accepted = false,
-                variants = "[]",
+                variantsJson = "[]",
                 failReason = it.message
             )
         }
@@ -209,18 +207,6 @@ class TranscodeVideoFileToAbrByPathCliHandler(
             throw KnownException.systemError(e)
         } finally {
             process?.destroy()
-        }
-    }
-
-    private fun writeMasterPlaylist(outputDir: File, variants: List<AbrVariantOutput>) {
-        val masterFile = File(outputDir, "master.m3u8")
-        masterFile.printWriter().use { writer ->
-            writer.println("#EXTM3U")
-            writer.println("#EXT-X-VERSION:3")
-            variants.forEach { variant ->
-                writer.println("#EXT-X-STREAM-INF:BANDWIDTH=${variant.bandwidthBps},RESOLUTION=${variant.width}x${variant.height}")
-                writer.println(variant.playlistPath)
-            }
         }
     }
 

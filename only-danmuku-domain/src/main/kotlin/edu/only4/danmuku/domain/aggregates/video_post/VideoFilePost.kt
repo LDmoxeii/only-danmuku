@@ -3,7 +3,6 @@ package edu.only4.danmuku.domain.aggregates.video_post
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 
 import edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity
-import edu.only4.danmuku.domain.aggregates.video_file_post.enums.EncryptMethod
 import edu.only4.danmuku.domain.aggregates.video_post.enums.EncryptMethod
 import edu.only4.danmuku.domain.aggregates.video_post.enums.EncryptStatus
 import edu.only4.danmuku.domain.aggregates.video_post.enums.TransferResult

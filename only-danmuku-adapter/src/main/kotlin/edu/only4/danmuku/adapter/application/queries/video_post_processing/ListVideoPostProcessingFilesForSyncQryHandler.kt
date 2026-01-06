@@ -1,22 +1,11 @@
 package edu.only4.danmuku.adapter.application.queries.video_post_processing
 
 import com.only4.cap4k.ddd.core.application.query.ListQuery
-
-import edu.only4.danmuku.application.queries._share.model.VideoHlsEncryptKey
-import edu.only4.danmuku.application.queries._share.model.VideoPostProcessingFile
-import edu.only4.danmuku.application.queries._share.model.fileIndex
-import edu.only4.danmuku.application.queries._share.model.transcodeOutputPrefix
-import edu.only4.danmuku.application.queries._share.model.transcodeVariantsJson
-import edu.only4.danmuku.application.queries._share.model.encryptOutputPrefix
-import edu.only4.danmuku.application.queries._share.model.duration
-import edu.only4.danmuku.application.queries._share.model.fileSize
-import edu.only4.danmuku.application.queries._share.model.videoPostProcessing
-import edu.only4.danmuku.application.queries._share.model.videoPostId
+import edu.only4.danmuku.application.queries._share.model.*
 import edu.only4.danmuku.application.queries.video_post_processing.ListVideoPostProcessingFilesForSyncQry
-
-import org.springframework.stereotype.Service
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
+import org.springframework.stereotype.Service
 
 /**
  * 查询处理完成后的文件清单与产物摘要（含分辨率档位），用于回填稿件态文件

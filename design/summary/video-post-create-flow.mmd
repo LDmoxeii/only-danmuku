@@ -4,70 +4,91 @@ sequenceDiagram
   participant Ctrl as CompatibleUCenterVideoPostController
   participant CreatePost as CreateVideoPostCmd
   participant VideoPost as VideoPost
-  participant CreateFile as CreateVideoFilePostCmd
-  participant FilePost as VideoFilePost
-  participant FileCreatedSub as VideoFilePostCreatedDomainEventSubscriber
+  participant TranscodeReqSub as VideoPostTranscodingRequestedDomainEventSubscriber
+  participant StartProcessing as StartVideoPostProcessingCmd
+  participant Processing as VideoPostProcessing
+  participant ProcessingStartedSub as VideoPostProcessingStartedDomainEventSubscriber
   participant TempQry as GetUploadSessionTempPathQry
-  participant MergeCli as MergeUploadToMp4Cli
-  participant Probe as FFprobeUtils
-  participant TranscodeCli as TranscodeVideoFileToAbrCli
+  participant MergeCli as MergeUploadToMp4ByPathCli
+  participant TranscodeCli as TranscodeVideoFileToAbrByPathCli
   participant UploadCli as UploadVideoAbrOutputCli
-  participant UpdateTranscode as UpdateVideoFilePostTranscodeResultCmd
-  participant FileUpdatedSub as VideoFilePostTranscodeResultUpdatedDomainEventSubscriber
-  participant RefreshStatus as RefreshVideoPostTranscodeStatusCmd
-  participant GenKeys as GenerateVideoHlsQualityKeysCmd
-  participant Key as VideoHlsEncryptKey
-  participant KeyCreatedSub as VideoHlsEncryptKeyCreatedDomainEventSubscriber
-  participant UpsertAuth as UpsertVideoHlsQualityAuthCmd
-  participant EncryptCli as EncryptHlsWithQualityKeysCli
-  participant PersistEncrypt as PersistVideoEncryptBatchResultCmd
+  participant GenMasterCli as GenerateVideoAbrMasterCli
+  participant ApplyTranscode as ApplyVideoPostProcessingTranscodeResultCmd
+  participant TranscodeDoneSub as VideoPostProcessingTranscodeCompletedDomainEventSubscriber
+  participant PrepareEncryptCtx as PrepareVideoPostProcessingEncryptContextCmd
+  participant EncryptCtxPreparedSub as VideoPostProcessingEncryptContextPreparedDomainEventSubscriber
+  participant GenKeyCmd as GenerateVideoPostQualityKeyCmd
+  participant KeyAgg as VideoHlsEncryptKey
+  participant KeyCreatedSub as VideoPostQualityKeyGeneratedDomainEventSubscriber
+  participant EncryptVariantCli as EncryptHlsVariantWithKeyCli
+  participant ApplyVariantEncrypt as ApplyVideoPostProcessingVariantEncryptResultCmd
+  participant FileEncryptCompletedSub as VideoPostProcessingFileEncryptCompletedDomainEventSubscriber
+  participant GenEncMasterCli as GenerateEncryptedMasterByVariantsCli
+  participant ApplyEncrypt as ApplyVideoPostProcessingEncryptResultCmd
+  participant ProcessingCompletedSub as VideoPostProcessingCompletedDomainEventSubscriber
+  participant SyncPost as SyncVideoPostProcessStatusCmd
 
-  FE->>Ctrl: POST /ucenter/postVideo (videoId=null, uploadFileList)
+  FE->>Ctrl: POST /ucenter/createVideo (uploadFileList)
   Ctrl->>CreatePost: CreateVideoPostCmd.Request(...)
-  CreatePost->>VideoPost: Mediator.factories.create(VideoPostFactory.Payload)
-  Note over VideoPost: onCreate auto-triggered by Mediator.factories.create
-  VideoPost-->>CreatePost: VideoDraftCreatedDomainEvent
+  CreatePost->>VideoPost: create + append VideoFilePost[]
+  Note over VideoPost: markTranscoding(fileList)
+  VideoPost-->>CreatePost: VideoPostTranscodingRequestedDomainEvent
   CreatePost->>CreatePost: UoW save
   CreatePost-->>Ctrl: videoId
   Ctrl-->>FE: response
 
-  loop each upload file item
-    Ctrl->>CreateFile: CreateVideoFilePostCmd.Request(uploadId, videoId, fileIndex, fileName)
-    CreateFile->>FilePost: Mediator.factories.create(VideoFilePostFactory.Payload)
-    Note over FilePost: onCreate auto-triggered by Mediator.factories.create
-    FilePost-->>CreateFile: VideoFilePostCreatedDomainEvent
-    CreateFile->>CreateFile: UoW save
-    FilePost-->>FileCreatedSub: VideoFilePostCreatedDomainEvent
+  VideoPost-->>TranscodeReqSub: VideoPostTranscodingRequestedDomainEvent
+  TranscodeReqSub->>StartProcessing: StartVideoPostProcessingCmd(fileList)
+  StartProcessing->>Processing: create/find + appendFiles
+  Processing-->>StartProcessing: VideoPostProcessingStartedDomainEvent
+  StartProcessing->>StartProcessing: UoW save
 
-    FileCreatedSub->>TempQry: GetUploadSessionTempPathQry(uploadId)
-    TempQry-->>FileCreatedSub: tempPath
-    FileCreatedSub->>MergeCli: MergeUploadToMp4Cli(tempPath)
-    MergeCli-->>FileCreatedSub: mergedMp4Path, outputDir, duration, fileSize
-    FileCreatedSub->>Probe: probeVideoResolution(mergedMp4Path)
-    Probe-->>FileCreatedSub: width, height, bitrateKbps
-    FileCreatedSub->>TranscodeCli: TranscodeVideoFileToAbrCli(sourcePath, profiles)
-    TranscodeCli-->>FileCreatedSub: accepted, variants
-    FileCreatedSub->>UploadCli: UploadVideoAbrOutputCli(outputDir)
-    UploadCli-->>FileCreatedSub: success, storagePrefix
-    alt transcode/upload success
-      FileCreatedSub->>UpdateTranscode: UpdateVideoFilePostTranscodeResultCmd(success=true,...)
+  Processing-->>ProcessingStartedSub: VideoPostProcessingStartedDomainEvent
+  loop each upload file
+    ProcessingStartedSub->>TempQry: GetUploadSessionTempPathQry(uploadId)
+    TempQry-->>ProcessingStartedSub: tempPath
+    ProcessingStartedSub->>MergeCli: MergeUploadToMp4ByPathCli(tempPath, outputDir)
+    MergeCli-->>ProcessingStartedSub: mergedMp4Path, duration, fileSize
+    ProcessingStartedSub->>TranscodeCli: TranscodeVideoFileToAbrByPathCli(sourcePath, profiles)
+    TranscodeCli-->>ProcessingStartedSub: accepted, variantsJson
+    ProcessingStartedSub->>UploadCli: UploadVideoAbrOutputCli(outputDir, objectPrefix)
+    UploadCli-->>ProcessingStartedSub: success, storagePrefix
+    alt upload success
+      ProcessingStartedSub->>GenMasterCli: GenerateVideoAbrMasterCli(outputPrefix, variantsJson)
+      GenMasterCli-->>ProcessingStartedSub: success, masterPath
+    end
+    alt transcode/upload/master success
+      ProcessingStartedSub->>ApplyTranscode: ApplyVideoPostProcessingTranscodeResultCmd(success=true,...)
     else failure
-      FileCreatedSub->>UpdateTranscode: UpdateVideoFilePostTranscodeResultCmd(success=false,...)
+      ProcessingStartedSub->>ApplyTranscode: ApplyVideoPostProcessingTranscodeResultCmd(success=false,...)
     end
 
-    UpdateTranscode->>FilePost: applyTranscodeResult(...)
-    FilePost-->>FileUpdatedSub: VideoFilePostTranscodeResultUpdatedDomainEvent
-    FileUpdatedSub->>RefreshStatus: RefreshVideoPostTranscodeStatusCmd(videoPostId)
+    ApplyTranscode->>Processing: applyTranscodeResult(...)
+    Processing-->>TranscodeDoneSub: VideoPostProcessingTranscodeCompletedDomainEvent
+    TranscodeDoneSub->>PrepareEncryptCtx: PrepareVideoPostProcessingEncryptContextCmd
+    PrepareEncryptCtx->>Processing: prepareEncryptContext(...)
+    Processing-->>EncryptCtxPreparedSub: VideoPostProcessingEncryptContextPreparedDomainEvent
 
-    alt success and encryptStatus=UNENCRYPTED
-      FileUpdatedSub->>GenKeys: GenerateVideoHlsQualityKeysCmd(qualities, method)
-      GenKeys->>Key: Mediator.factories.create(VideoHlsEncryptKeyFactory.Payload) xN
-      Note over Key: onCreate auto-triggered by Mediator.factories.create
-      Key-->>KeyCreatedSub: VideoHlsEncryptKeyCreatedDomainEvent
-      KeyCreatedSub->>UpsertAuth: UpsertVideoHlsQualityAuthCmd
-      GenKeys-->>FileUpdatedSub: keysJson, keyVersion
-      FileUpdatedSub->>EncryptCli: EncryptHlsWithQualityKeysCli(sourceDir, outputDir, keysJson)
-      EncryptCli-->>FileUpdatedSub: success, encrypted paths
-      FileUpdatedSub->>PersistEncrypt: PersistVideoEncryptBatchResultCmd(...)
+    alt context ok and qualities not empty
+      loop each quality
+        EncryptCtxPreparedSub->>GenKeyCmd: GenerateVideoPostQualityKeyCmd(quality, keyVersion)
+        GenKeyCmd->>KeyAgg: create VideoHlsEncryptKey
+        KeyAgg-->>KeyCreatedSub: VideoHlsEncryptKeyCreatedDomainEvent
+        KeyCreatedSub->>EncryptVariantCli: EncryptHlsVariantWithKeyCli(sourceDir, outputDir, quality, key)
+        EncryptVariantCli-->>KeyCreatedSub: success, playlistPath
+        KeyCreatedSub->>ApplyVariantEncrypt: ApplyVideoPostProcessingVariantEncryptResultCmd(...)
+        ApplyVariantEncrypt->>Processing: applyVariantEncryptResult(...)
+      end
+    else context missing
+      EncryptCtxPreparedSub->>ApplyEncrypt: ApplyVideoPostProcessingEncryptResultCmd(success=false,...)
     end
+
+    Processing-->>FileEncryptCompletedSub: VideoPostProcessingFileEncryptCompletedDomainEvent
+    FileEncryptCompletedSub->>GenEncMasterCli: GenerateEncryptedMasterByVariantsCli(outputDir, variantsJson)
+    GenEncMasterCli-->>FileEncryptCompletedSub: success, masterPath
+    FileEncryptCompletedSub->>ApplyEncrypt: ApplyVideoPostProcessingEncryptResultCmd(...)
+    ApplyEncrypt->>Processing: applyEncryptResult(...)
   end
+
+  Processing-->>ProcessingCompletedSub: VideoPostProcessingCompletedDomainEvent
+  ProcessingCompletedSub->>SyncPost: SyncVideoPostProcessStatusCmd(...)

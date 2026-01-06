@@ -1,17 +1,7 @@
 package edu.only4.danmuku.adapter.application.queries.video_post_processing
 
 import com.only4.cap4k.ddd.core.application.query.ListQuery
-import edu.only4.danmuku.application.queries._share.model.VideoPostProcessingVariant
-import edu.only4.danmuku.application.queries._share.model.bandwidthBps
-import edu.only4.danmuku.application.queries._share.model.encryptStatus
-import edu.only4.danmuku.application.queries._share.model.fileIndex
-import edu.only4.danmuku.application.queries._share.model.height
-import edu.only4.danmuku.application.queries._share.model.playlistPath
-import edu.only4.danmuku.application.queries._share.model.quality
-import edu.only4.danmuku.application.queries._share.model.videoPostId
-import edu.only4.danmuku.application.queries._share.model.videoPostProcessing
-import edu.only4.danmuku.application.queries._share.model.videoPostProcessingFile
-import edu.only4.danmuku.application.queries._share.model.width
+import edu.only4.danmuku.application.queries._share.model.*
 import edu.only4.danmuku.application.queries.video_post_processing.ListVideoPostProcessingVariantsForEncryptMasterQry
 import edu.only4.danmuku.domain.aggregates.video_post_processing.enums.ProcessStatus
 import org.babyfish.jimmer.sql.kt.KSqlClient
