@@ -15,8 +15,8 @@ import edu.only4.danmuku.application.queries.file_storage.GetResourceAccessUrlQr
 import edu.only4.danmuku.application.queries.video_encrypt.GetLatestVideoHlsKeyVersionQry
 import edu.only4.danmuku.application.queries.video_encrypt.GetVideoEncryptStatusQry
 import edu.only4.danmuku.application.queries.video_encrypt.ListVideoQualityAuthQry
-import edu.only4.danmuku.application.queries.video_transcode.GetVideoPostIdByFileIdQry
-import edu.only4.danmuku.application.queries.video_transcode.ListVideoAbrVariantsQry
+import edu.only4.danmuku.application.queries.video.GetVideoFileContextByIdQry
+import edu.only4.danmuku.application.queries.video.ListVideoFileVariantsQry
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.enums.QualityAuthPolicy
 import org.springframework.core.io.ByteArrayResource
 import org.springframework.http.HttpHeaders
@@ -34,11 +34,11 @@ class VideoEncryptController {
 
     @PostMapping("/token")
     fun issueToken(@RequestBody req: FrontIssueEncToken.Request): FrontIssueEncToken.Response {
-        val post = Mediator.queries.send(GetVideoPostIdByFileIdQry.Request(fileId = req.fileId))
+        val context = resolveFileContext(req.fileId)
         val latestKey = Mediator.queries.send(
             GetLatestVideoHlsKeyVersionQry.Request(
-                videoPostId = post.videoPostId,
-                fileIndex = post.fileIndex
+                videoPostId = context.videoPostId,
+                fileIndex = context.fileIndex
             )
         )
         val keyVersion = latestKey.keyVersion ?: throw KnownException("未找到可用密钥版本")
@@ -47,8 +47,8 @@ class VideoEncryptController {
 
         val resp = Mediator.commands.send(
             IssueVideoHlsKeyTokenCmd.Request(
-                videoPostId = post.videoPostId,
-                fileIndex = post.fileIndex,
+                videoPostId = context.videoPostId,
+                fileIndex = context.fileIndex,
                 keyVersion = keyVersion,
                 audience = StpUtil.getLoginIdDefaultNull()?.toString(),
                 allowedQualities = allowedQualities
@@ -63,11 +63,10 @@ class VideoEncryptController {
 
     @PostMapping("/qualities")
     fun qualities(@RequestBody req: FrontListEncQualities.Request): FrontListEncQualities.Response {
-        val post = Mediator.queries.send(GetVideoPostIdByFileIdQry.Request(fileId = req.fileId))
         val policies = loadQualityPolicies(req.fileId)
         val allowLogin = StpUtil.isLogin()
         val items = if (policies.isEmpty()) {
-            loadAbrQualities(post.filePostId).map { quality ->
+            loadAbrQualities(req.fileId).map { quality ->
                 FrontListEncQualities.QualityItem(
                     quality = quality,
                     authPolicy = QualityAuthPolicy.PUBLIC.code,
@@ -97,7 +96,6 @@ class VideoEncryptController {
         if (status.encryptStatus != "ENCRYPTED") {
             throw KnownException("加密未完成: ${status.encryptStatus}")
         }
-        val post = Mediator.queries.send(GetVideoPostIdByFileIdQry.Request(fileId = fileId))
         val allowedQualities = resolveAllowedQualities(fileId)
         val masterKey = status.encryptedMasterPath ?: throw KnownException("缺少加密路径")
         val content = readObjectAsText(masterKey)
@@ -176,11 +174,11 @@ class VideoEncryptController {
     }
 
     private fun encryptStatus(videoFileId: Long): GetVideoEncryptStatusQry.Response {
-        val post = Mediator.queries.send(GetVideoPostIdByFileIdQry.Request(fileId = videoFileId))
+        val context = resolveFileContext(videoFileId)
         return Mediator.queries.send(
             GetVideoEncryptStatusQry.Request(
-                videoPostId = post.videoPostId,
-                fileIndex = post.fileIndex
+                videoPostId = context.videoPostId,
+                fileIndex = context.fileIndex
             )
         )
     }
@@ -198,11 +196,15 @@ class VideoEncryptController {
         return JsonUtils.parseArray(policiesJson, PolicyPayload::class.java)
     }
 
-    private fun loadAbrQualities(filePostId: Long): List<String> {
-        return Mediator.queries.send(ListVideoAbrVariantsQry.Request(fileId = filePostId))
+    private fun loadAbrQualities(videoFileId: Long): List<String> {
+        return Mediator.queries.send(ListVideoFileVariantsQry.Request(fileId = videoFileId))
             .firstOrNull()
             ?.qualities
             ?: emptyList()
+    }
+
+    private fun resolveFileContext(videoFileId: Long): GetVideoFileContextByIdQry.Response {
+        return Mediator.queries.send(GetVideoFileContextByIdQry.Request(fileId = videoFileId))
     }
 
     private fun resolveAllowedQualities(videoFileId: Long): List<String> {
