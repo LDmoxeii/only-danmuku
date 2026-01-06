@@ -363,17 +363,33 @@ class Video(
         // 分P重建
         this.videoFiles.clear()
         files.sortedBy { it.fileIndex }.forEach { f ->
-            this.videoFiles.add(
-                VideoFile(
-                    customerId = f.customerId,
-                    videoFilePostId = f.videoFilePostId,
-                    fileName = f.fileName,
-                    fileIndex = f.fileIndex,
-                    fileSize = f.fileSize,
-                    filePath = f.filePath,
-                    duration = f.duration,
-                )
+            val file = VideoFile(
+                customerId = f.customerId,
+                videoFilePostId = f.videoFilePostId,
+                fileName = f.fileName,
+                fileIndex = f.fileIndex,
+                fileSize = f.fileSize,
+                filePath = f.filePath,
+                duration = f.duration,
             )
+            if (f.variants.isNotEmpty()) {
+                file.videoFileVariants.addAll(
+                    f.variants.map { variant ->
+                        VideoFileVariant(
+                            quality = variant.quality,
+                            width = variant.width,
+                            height = variant.height,
+                            videoBitrateKbps = variant.videoBitrateKbps,
+                            audioBitrateKbps = variant.audioBitrateKbps,
+                            bandwidthBps = variant.bandwidthBps,
+                            playlistPath = variant.playlistPath,
+                            segmentPrefix = variant.segmentPrefix,
+                            segmentDuration = variant.segmentDuration
+                        )
+                    }
+                )
+            }
+            this.videoFiles.add(file)
         }
 
         events().attach(this) { VideoBasicsSyncedDomainEvent(entity = this) }
@@ -389,5 +405,18 @@ class Video(
         val fileSize: Long?,
         val filePath: String?,
         val duration: Int?,
+        val variants: List<SyncFileVariantArgs> = emptyList(),
+    )
+
+    data class SyncFileVariantArgs(
+        val quality: String,
+        val width: Int,
+        val height: Int,
+        val videoBitrateKbps: Int,
+        val audioBitrateKbps: Int,
+        val bandwidthBps: Int,
+        val playlistPath: String,
+        val segmentPrefix: String?,
+        val segmentDuration: Int?,
     )
 }

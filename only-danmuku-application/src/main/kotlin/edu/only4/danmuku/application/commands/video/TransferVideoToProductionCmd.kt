@@ -24,6 +24,19 @@ object TransferVideoToProductionCmd {
                 throw KnownException("稿件文件不存在: ${request.videoPostId}")
             }
             val files = post.videoFilePosts.sortedBy { it.fileIndex }.map { file ->
+                val variants = file.videoFilePostVariants.map { variant ->
+                    Video.SyncFileVariantArgs(
+                        quality = variant.quality,
+                        width = variant.width,
+                        height = variant.height,
+                        videoBitrateKbps = variant.videoBitrateKbps,
+                        audioBitrateKbps = variant.audioBitrateKbps,
+                        bandwidthBps = variant.bandwidthBps,
+                        playlistPath = variant.playlistPath,
+                        segmentPrefix = variant.segmentPrefix,
+                        segmentDuration = variant.segmentDuration
+                    )
+                }
                 Video.SyncFileArgs(
                     videoFilePostId = file.id,
                     customerId = file.customerId,
@@ -32,6 +45,7 @@ object TransferVideoToProductionCmd {
                     fileSize = file.fileSize,
                     filePath = resolveFilePath(file),
                     duration = file.duration,
+                    variants = variants,
                 )
             }
 
