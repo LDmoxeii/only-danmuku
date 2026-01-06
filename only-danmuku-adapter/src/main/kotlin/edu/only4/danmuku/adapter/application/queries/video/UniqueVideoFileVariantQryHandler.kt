@@ -1,17 +1,15 @@
 package edu.only4.danmuku.adapter.application.queries.video
 
 import com.only4.cap4k.ddd.core.application.query.Query
-
 import edu.only4.danmuku.application.queries._share.model.VideoFileVariant
 import edu.only4.danmuku.application.queries._share.model.id
-import edu.only4.danmuku.application.queries._share.model.parentId
 import edu.only4.danmuku.application.queries._share.model.quality
+import edu.only4.danmuku.application.queries._share.model.videoFileId
 import edu.only4.danmuku.application.queries.video.UniqueVideoFileVariantQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
-import org.babyfish.jimmer.sql.kt.ast.expression.`ne?`
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
+import org.babyfish.jimmer.sql.kt.ast.expression.`ne?`
 import org.babyfish.jimmer.sql.kt.exists
-
 import org.springframework.stereotype.Service
 
 /**
@@ -25,7 +23,7 @@ class UniqueVideoFileVariantQryHandler(
 
     override fun exec(request: UniqueVideoFileVariantQry.Request): UniqueVideoFileVariantQry.Response {
         val exists = sqlClient.exists(VideoFileVariant::class) {
-            where(table.parentId eq request.parentId)
+            where(table.videoFileId eq request.parentId)
             where(table.quality eq request.quality)
             where(table.id `ne?` request.excludeVideoFileVariantId)
         }
