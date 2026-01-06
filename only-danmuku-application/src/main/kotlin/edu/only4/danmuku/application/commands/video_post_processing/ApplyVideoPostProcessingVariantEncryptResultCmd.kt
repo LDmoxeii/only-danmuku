@@ -1,8 +1,12 @@
 package edu.only4.danmuku.application.commands.video_post_processing
 
+import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
+import edu.only4.danmuku.domain._share.meta.video_post_processing.SVideoPostProcessing
+import edu.only4.danmuku.domain.aggregates.video_post.enums.EncryptMethod
+import kotlin.jvm.optionals.getOrNull
 
 import org.springframework.stereotype.Service
 
@@ -18,10 +22,28 @@ object ApplyVideoPostProcessingVariantEncryptResultCmd {
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
+            val method = runCatching { EncryptMethod.valueOf(request.encryptMethod) }
+                .getOrNull() ?: throw KnownException.illegalArgument("encryptMethod")
+            val processing = Mediator.repositories.findFirst(
+                SVideoPostProcessing.predicate { schema ->
+                    schema.videoPostId.eq(request.videoPostId)
+                }
+            ).getOrNull() ?: throw KnownException("处理聚合不存在: ${request.videoPostId}")
+
+            processing.applyVariantEncryptResult(
+                fileIndex = request.fileIndex,
+                quality = request.quality,
+                success = request.success,
+                method = method,
+                keyVersion = request.keyVersion,
+                playlistPath = request.playlistPath,
+                segmentPrefix = request.segmentPrefix,
+                failReason = request.failReason
+            )
             Mediator.uow.save()
 
             return Response(
-                success = TODO("set success")
+                success = request.success
             )
         }
 
@@ -32,7 +54,7 @@ object ApplyVideoPostProcessingVariantEncryptResultCmd {
         val fileIndex: Int,
         val quality: String,
         val success: Boolean,
-        val encryptMethod: String = HLS_AES_128,
+        val encryptMethod: String = "HLS_AES_128",
         val keyVersion: Int,
         val playlistPath: String?,
         val segmentPrefix: String?,

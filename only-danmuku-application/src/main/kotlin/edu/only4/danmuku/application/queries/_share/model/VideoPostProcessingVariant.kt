@@ -1,5 +1,6 @@
 package edu.only4.danmuku.application.queries._share.model
 
+import edu.only4.danmuku.domain.aggregates.video_post_processing.enums.ProcessStatus
 import org.babyfish.jimmer.sql.Column
 import org.babyfish.jimmer.sql.Entity
 import org.babyfish.jimmer.sql.IdView
@@ -44,4 +45,13 @@ interface VideoPostProcessingVariant : BaseEntity {
 
     @Column(name = "segment_duration")
     val segmentDuration: Int?
+
+    @Column(name = "transcode_status")
+    val transcodeStatus: ProcessStatus
+
+    @Column(name = "encrypt_status")
+    val encryptStatus: ProcessStatus
+
+    @Column(name = "encrypt_fail_reason")
+    val encryptFailReason: String?
 }

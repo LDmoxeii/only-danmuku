@@ -1,5 +1,6 @@
 package edu.only4.danmuku.application.queries._share.model
 
+import edu.only4.danmuku.domain.aggregates.video_post.enums.EncryptMethod
 import edu.only4.danmuku.domain.aggregates.video_post_processing.enums.ProcessStatus
 import org.babyfish.jimmer.sql.Column
 import org.babyfish.jimmer.sql.Entity
@@ -30,6 +31,12 @@ interface VideoPostProcessingFile : BaseEntity {
 
     @Column(name = "encrypt_status")
     val encryptStatus: ProcessStatus
+
+    @Column(name = "encrypt_method")
+    val encryptMethod: EncryptMethod
+
+    @Column(name = "encrypt_key_version")
+    val encryptKeyVersion: Int?
 
     @Column(name = "transcode_output_prefix")
     val transcodeOutputPrefix: String?

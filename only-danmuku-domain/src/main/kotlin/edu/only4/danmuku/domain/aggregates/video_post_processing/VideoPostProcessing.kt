@@ -4,8 +4,11 @@ import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
 
 import edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity
+import edu.only4.danmuku.domain.aggregates.video_post.enums.EncryptMethod
 import edu.only4.danmuku.domain.aggregates.video_post_processing.enums.ProcessStatus
 import edu.only4.danmuku.domain.aggregates.video_post_processing.events.VideoPostProcessingCompletedDomainEvent
+import edu.only4.danmuku.domain.aggregates.video_post_processing.events.VideoPostProcessingEncryptContextPreparedDomainEvent
+import edu.only4.danmuku.domain.aggregates.video_post_processing.events.VideoPostProcessingFileEncryptCompletedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video_post_processing.events.VideoPostProcessingStartedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video_post_processing.events.VideoPostProcessingTranscodeCompletedDomainEvent
 
@@ -208,9 +211,16 @@ class VideoPostProcessing(
         if (success) {
             file.encryptStatus = ProcessStatus.PROCESSING
             file.videoPostProcessingVariants.clear()
-            file.videoPostProcessingVariants.addAll(variants)
+            file.videoPostProcessingVariants.addAll(variants.map { variant ->
+                variant.apply {
+                    transcodeStatus = ProcessStatus.SUCCESS
+                    encryptStatus = ProcessStatus.PENDING
+                    encryptFailReason = null
+                }
+            })
         } else if (file.encryptStatus != ProcessStatus.SKIPPED) {
             file.encryptStatus = ProcessStatus.SKIPPED
+            file.videoPostProcessingVariants.clear()
         }
         refreshStatus()
         if (success) {
@@ -225,6 +235,74 @@ class VideoPostProcessing(
                 )
             }
         }
+    }
+
+    fun prepareEncryptContext(
+        fileIndex: Int,
+        method: EncryptMethod,
+        keyVersion: Int,
+    ): EncryptContext {
+        val file = getFile(fileIndex)
+        file.encryptMethod = method
+        file.encryptKeyVersion = keyVersion
+        events().attach(this) {
+            VideoPostProcessingEncryptContextPreparedDomainEvent(
+                videoPostId = videoPostId,
+                fileIndex = fileIndex,
+                keyVersion = keyVersion,
+                transcodeOutputPrefix = file.transcodeOutputPrefix,
+                encryptOutputDir = file.encryptOutputDir,
+                variantsJson = file.transcodeVariantsJson,
+                entity = this
+            )
+        }
+        return EncryptContext(
+            keyVersion = keyVersion,
+            transcodeOutputPrefix = file.transcodeOutputPrefix,
+            encryptOutputDir = file.encryptOutputDir
+        )
+    }
+
+    fun applyVariantEncryptResult(
+        fileIndex: Int,
+        quality: String,
+        success: Boolean,
+        method: EncryptMethod,
+        keyVersion: Int,
+        playlistPath: String?,
+        segmentPrefix: String?,
+        failReason: String?,
+    ) {
+        val file = getFile(fileIndex)
+        file.encryptMethod = method
+        file.encryptKeyVersion = keyVersion
+        val variant = file.videoPostProcessingVariants.firstOrNull { it.quality == quality }
+            ?: throw IllegalStateException("处理档位不存在: fileIndex=$fileIndex, quality=$quality")
+        variant.encryptStatus = if (success) ProcessStatus.SUCCESS else ProcessStatus.FAILED
+        variant.encryptFailReason = if (success) null else failReason
+        if (!playlistPath.isNullOrBlank()) {
+            variant.playlistPath = playlistPath
+        }
+        if (!segmentPrefix.isNullOrBlank()) {
+            variant.segmentPrefix = segmentPrefix
+        }
+        if (!success) {
+            file.encryptStatus = ProcessStatus.FAILED
+            file.failReason = failReason
+            refreshStatus()
+            return
+        }
+        file.failReason = null
+        if (isFileVariantsEncrypted(file)) {
+            events().attach(this) {
+                VideoPostProcessingFileEncryptCompletedDomainEvent(
+                    videoPostId = videoPostId,
+                    fileIndex = fileIndex,
+                    entity = this
+                )
+            }
+        }
+        refreshStatus()
     }
 
     fun applyEncryptResult(
@@ -270,6 +348,11 @@ class VideoPostProcessing(
             ?: throw IllegalStateException("处理文件不存在: fileIndex=$fileIndex")
     }
 
+    private fun isFileVariantsEncrypted(file: VideoPostProcessingFile): Boolean {
+        return file.videoPostProcessingVariants.isNotEmpty() &&
+            file.videoPostProcessingVariants.all { isDone(it.encryptStatus) }
+    }
+
     private fun buildStartedFileList(files: List<VideoPostProcessingFile>): List<VideoPostProcessingStartedDomainEvent.FileItem> {
         return files.map { file ->
             VideoPostProcessingStartedDomainEvent.FileItem(
@@ -304,6 +387,12 @@ class VideoPostProcessing(
     private fun isDone(status: ProcessStatus): Boolean {
         return status == ProcessStatus.SUCCESS || status == ProcessStatus.SKIPPED
     }
+
+    data class EncryptContext(
+        val keyVersion: Int,
+        val transcodeOutputPrefix: String?,
+        val encryptOutputDir: String?,
+    )
 
     data class AppendFileSpec(
         val uploadId: Long,
