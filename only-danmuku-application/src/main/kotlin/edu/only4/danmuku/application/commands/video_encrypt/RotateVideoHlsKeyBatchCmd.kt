@@ -38,7 +38,7 @@ object RotateVideoHlsKeyBatchCmd {
                     ?: throw IllegalStateException("filePath 为空: videoPostId=${request.videoPostId}, fileIndex=${request.fileIndex}")
 
                 val generated = Mediator.commands.send(
-                    GenerateVideoHlsQualityKeysCmd.Request(
+                    GenerateVideoPostQualityKeysCmd.Request(
                         videoPostId = request.videoPostId,
                         fileIndex = request.fileIndex,
                         qualities = qualities

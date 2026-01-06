@@ -2,15 +2,10 @@ package edu.only4.danmuku.adapter.portal.api.compatible
 
 import com.only.engine.exception.KnownException
 import com.only.engine.json.misc.JsonUtils
-import com.only.engine.json.validate.JsonPattern
-import com.only.engine.json.validate.JsonType
 import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.share.PageData
-import edu.only4.danmuku.adapter.portal.api.payload.UCenterGetVideoByVideoId
-import edu.only4.danmuku.adapter.portal.api.payload.UCenterGetVideoCountInfo
-import edu.only4.danmuku.adapter.portal.api.payload.UCenterLoadVideoList
-import edu.only4.danmuku.adapter.portal.api.payload.UCenterPostVideo
+import edu.only4.danmuku.adapter.portal.api.payload.*
 import edu.only4.danmuku.application.commands.video_post.ChangeVideoPostInteractionCmd
 import edu.only4.danmuku.application.commands.video_post.CreateVideoPostCmd
 import edu.only4.danmuku.application.commands.video_post.DeleteVideoPostCmd
@@ -18,10 +13,7 @@ import edu.only4.danmuku.application.commands.video_post.UpdateVideoPostCmd
 import edu.only4.danmuku.application.queries.video_draft.GetUserVideoPostQry
 import edu.only4.danmuku.application.queries.video_draft.GetVideoDraftCountByStatusQry
 import edu.only4.danmuku.application.queries.video_draft.GetVideoPostInfoQry
-import edu.only4.danmuku.domain.aggregates.video_post.enums.PostType
 import edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus
-import jakarta.validation.constraints.NotEmpty
-import jakarta.validation.constraints.Size
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -34,89 +26,78 @@ import org.springframework.web.bind.annotation.RestController
 class CompatibleUCenterVideoPostController {
 
     @PostMapping("/createVideo")
-    fun createVideo(
-        @NotEmpty videoCover: String,
-        @NotEmpty @Size(max = 100) videoName: String,
-        parentCategoryId: Long,
-        categoryId: Long?,
-        postType: PostType,
-        originInfo: String?,
-        @NotEmpty @Size(max = 300) tags: String,
-        @Size(max = 2000) introduction: String?,
-        @Size(max = 3) interaction: String?,
-        @NotEmpty @JsonPattern(type = JsonType.ARRAY) uploadFileList: String,
-    ): UCenterPostVideo.Response {
+    fun createVideo(@RequestBody @Validated request: CreateVideoPost.Request): CreateVideoPost.Response {
         val currentUserId = LoginHelper.getUserId()!!
-        val uploadFiles = parseUploadFileList(uploadFileList, required = true)
-        val fileSpecs = uploadFiles.map { item ->
-            CreateVideoPostCmd.VideoPostFileSpec(
-                uploadId = item.uploadId,
-                fileIndex = item.fileIndex,
-                fileName = item.fileName,
-                fileSize = item.fileSize,
-                duration = item.duration
-            )
-        }
+        val seenIndex = mutableSetOf<Int>()
+        val uploadFiles = JsonUtils.parseArray(request.uploadFileList, CreateVideoPost.PostFileItem::class.java)
+            .mapIndexed { index, item ->
+                val fileIndex = item.fileIndex ?: index
+                if (!seenIndex.add(fileIndex)) {
+                    throw KnownException("文件索引重复: $fileIndex")
+                }
+                CreateVideoPostCmd.VideoPostFileSpec(
+                    uploadId = item.uploadId,
+                    fileIndex = fileIndex,
+                    fileName = item.fileName,
+                    fileSize = item.fileSize,
+                    duration = item.duration
+                )
+            }
         Mediator.commands.send(
             CreateVideoPostCmd.Request(
                 customerId = currentUserId,
-                videoCover = videoCover,
-                videoName = videoName,
-                parentCategoryId = parentCategoryId,
-                categoryId = categoryId,
-                postType = postType,
-                originInfo = originInfo,
-                tags = tags,
-                introduction = introduction,
-                interaction = interaction,
-                uploadFileList = fileSpecs,
+                videoCover = request.videoCover,
+                videoName = request.videoName,
+                parentCategoryId = request.parentCategoryId,
+                categoryId = request.categoryId,
+                postType = request.postType,
+                originInfo = request.originInfo,
+                tags = request.tags,
+                introduction = request.introduction,
+                interaction = request.interaction,
+                uploadFileList = uploadFiles,
             )
         )
-        return UCenterPostVideo.Response()
+        return CreateVideoPost.Response()
     }
 
     @PostMapping("/updateVideo")
     fun updateVideo(
-        videoPostId: Long,
-        @NotEmpty videoCover: String,
-        @NotEmpty @Size(max = 100) videoName: String,
-        parentCategoryId: Long,
-        categoryId: Long?,
-        postType: PostType,
-        originInfo: String?,
-        @NotEmpty @Size(max = 300) tags: String,
-        @Size(max = 2000) introduction: String?,
-        @Size(max = 3) interaction: String?,
-        @NotEmpty @JsonPattern(type = JsonType.ARRAY) uploadFileList: String,
-    ): UCenterPostVideo.Response {
+        @RequestBody @Validated request: UpdateVideoPost.Request
+    ): UpdateVideoPost.Response {
         val currentUserId = LoginHelper.getUserId()!!
-        val uploadFiles = parseUploadFileList(uploadFileList, required = true)
-        val fileSpecs = uploadFiles.map { item ->
-            UpdateVideoPostCmd.VideoPostFileSpec(
-                uploadId = item.uploadId,
-                fileIndex = item.fileIndex,
-                fileName = item.fileName,
-                fileSize = item.fileSize,
-                duration = item.duration
-            )
-        }
+        val seenIndex = mutableSetOf<Int>()
+        val uploadFiles = JsonUtils.parseArray(request.uploadFileList, UpdateVideoPost.PostFileItem::class.java)
+            .mapIndexed { index, item ->
+                val fileIndex = item.fileIndex ?: index
+                if (!seenIndex.add(fileIndex)) {
+                    throw KnownException("文件索引重复: $fileIndex")
+                }
+                UpdateVideoPostCmd.VideoPostFileSpec(
+                    uploadId = item.uploadId,
+                    fileIndex = fileIndex,
+                    fileName = item.fileName,
+                    fileSize = item.fileSize,
+                    duration = item.duration
+                )
+            }
         Mediator.commands.send(
             UpdateVideoPostCmd.Request(
-                videoPostId = videoPostId,
+                videoPostId = request.videoPostId,
                 customerId = currentUserId,
-                videoName = videoName,
-                videoCover = videoCover,
-                pCategoryId = parentCategoryId,
-                categoryId = categoryId,
-                postType = postType,
-                originInfo = originInfo,
-                tags = tags,
-                introduction = introduction,
-                interaction = interaction,
-                uploadFileList = fileSpecs,
+                videoCover = request.videoCover,
+                videoName = request.videoName,
+                pCategoryId = request.parentCategoryId,
+                categoryId = request.categoryId,
+                postType = request.postType,
+                originInfo = request.originInfo,
+                tags = request.tags,
+                introduction = request.introduction,
+                interaction = request.interaction,
+                uploadFileList = uploadFiles,
             )
         )
-        return UCenterPostVideo.Response()
+        return UpdateVideoPost.Response()
     }
 
     @PostMapping("/loadVideoList")
@@ -127,7 +108,10 @@ class CompatibleUCenterVideoPostController {
             userId = currentUserId,
             status = if (request.status == VideoStatus.UNKNOW) null else request.status,
             videoNameFuzzy = request.videoNameFuzzy,
-            excludeStatusArray = if (request.status == VideoStatus.UNKNOW) listOf(VideoStatus.REVIEW_PASSED, VideoStatus.REVIEW_FAILED) else null // 进行中排除审核通过和不通过
+            excludeStatusArray = if (request.status == VideoStatus.UNKNOW) listOf(
+                VideoStatus.REVIEW_PASSED,
+                VideoStatus.REVIEW_FAILED
+            ) else null // 进行中排除审核通过和不通过
         ).apply {
             pageNum = request.pageNum
             pageSize = 999
@@ -221,44 +205,6 @@ class CompatibleUCenterVideoPostController {
                 operatorId = currentUserId
             )
         )
-    }
-
-    private data class UploadFileSpec(
-        val uploadId: Long,
-        val fileIndex: Int,
-        val fileName: String,
-        val fileSize: Long?,
-        val duration: Int?,
-    )
-
-    private fun parseUploadFileList(uploadFileList: String?, required: Boolean): List<UploadFileSpec> {
-        if (uploadFileList.isNullOrBlank()) {
-            if (required) {
-                throw KnownException("uploadFileList不能为空")
-            }
-            return emptyList()
-        }
-        val uploadFiles = JsonUtils.parseArray(uploadFileList, UCenterPostVideo.MixedFileItem::class.java)
-        if (uploadFiles.isEmpty()) {
-            if (required) {
-                throw KnownException("uploadFileList不能为空")
-            }
-            return emptyList()
-        }
-        val seenIndex = mutableSetOf<Int>()
-        return uploadFiles.mapIndexed { index, item ->
-            val fileIndex = item.fileIndex ?: index
-            if (!seenIndex.add(fileIndex)) {
-                throw KnownException("文件索引重复: $fileIndex")
-            }
-            UploadFileSpec(
-                uploadId = item.uploadId,
-                fileIndex = fileIndex,
-                fileName = item.fileName,
-                fileSize = item.fileSize,
-                duration = item.duration
-            )
-        }
     }
 }
 

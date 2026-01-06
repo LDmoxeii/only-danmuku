@@ -3,11 +3,8 @@ package edu.only4.danmuku.domain.aggregates.video_post_processing.factory
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregateFactory
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePayload
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
-
 import edu.only4.danmuku.domain.aggregates.video_post_processing.VideoPostProcessing
-import edu.only4.danmuku.domain.aggregates.video_post_processing.VideoPostProcessingFile
 import edu.only4.danmuku.domain.aggregates.video_post_processing.enums.ProcessStatus
-
 import org.springframework.stereotype.Service
 
 /**
@@ -29,32 +26,14 @@ class VideoPostProcessingFactory : AggregateFactory<VideoPostProcessingFactory.P
     override fun create(payload: Payload): VideoPostProcessing {
         val processing = VideoPostProcessing(
             videoPostId = payload.videoPostId,
-            totalFiles = payload.fileList.size,
+            totalFiles = payload.fileSize,
             transcodeStatus = ProcessStatus.PROCESSING,
             encryptStatus = ProcessStatus.PENDING,
             transcodeDoneCount = 0,
             encryptDoneCount = 0,
             failedCount = 0,
-            lastFailReason = null,
         )
 
-        val files = payload.fileList.map { spec ->
-            VideoPostProcessingFile(
-                fileIndex = spec.fileIndex,
-                uploadId = spec.uploadId,
-                transcodeStatus = ProcessStatus.PROCESSING,
-                encryptStatus = ProcessStatus.PENDING,
-                transcodeOutputPrefix = spec.transcodeOutputPrefix,
-                transcodeOutputPath = spec.transcodeOutputPath,
-                transcodeVariantsJson = null,
-                encryptOutputDir = spec.encryptOutputDir,
-                encryptOutputPrefix = null,
-                duration = spec.duration,
-                fileSize = spec.fileSize,
-                failReason = null,
-            )
-        }
-        processing.videoPostProcessingFiles.addAll(files)
         return processing
     }
 
@@ -66,17 +45,7 @@ class VideoPostProcessingFactory : AggregateFactory<VideoPostProcessingFactory.P
     )
     data class Payload(
         val videoPostId: Long,
-        val fileList: List<FilePayload>
+        val fileSize: Int,
     ) : AggregatePayload<VideoPostProcessing>
-
-    data class FilePayload(
-        val uploadId: Long,
-        val fileIndex: Int,
-        val transcodeOutputPath: String,
-        val transcodeOutputPrefix: String,
-        val encryptOutputDir: String,
-        val duration: Int?,
-        val fileSize: Long?,
-    )
 
 }

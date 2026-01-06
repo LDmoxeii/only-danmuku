@@ -19,4 +19,4 @@ import edu.only4.danmuku.domain.aggregates.video_post.VideoPost
     type = Aggregate.TYPE_DOMAIN_EVENT,
     description = ""
 )
-class VideoDraftCreatedDomainEvent(val entity: VideoPost)
+class VideoPostCreatedDomainEvent(val entity: VideoPost)

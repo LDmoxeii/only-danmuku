@@ -144,14 +144,7 @@ class VideoPostProcessing(
 
     // 【行为方法开始】
 
-    fun onStarted() {
-        events().attach(this) {
-            VideoPostProcessingStartedDomainEvent(
-                videoPostId = this.videoPostId,
-                fileList = buildStartedFileList(videoPostProcessingFiles),
-                entity = this
-            )
-        }
+    fun onCreate() {
     }
 
     fun appendFiles(fileList: List<AppendFileSpec>) {
@@ -258,14 +251,6 @@ class VideoPostProcessing(
                 )
             }
         }
-    }
-
-    fun getEncryptOutputDir(fileIndex: Int): String? {
-        return getFile(fileIndex).encryptOutputDir
-    }
-
-    fun getTranscodeOutputPrefix(fileIndex: Int): String? {
-        return getFile(fileIndex).transcodeOutputPrefix
     }
 
     fun isAllStepsCompleted(): Boolean {

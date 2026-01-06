@@ -1,0 +1,141 @@
+[
+  {
+    "tag": "cmd",
+    "package": "video_post_processing",
+    "name": "PrepareVideoPostProcessingEncryptContext",
+    "desc": "准备单分P加密上下文（分配 keyVersion 并返回输出路径）",
+    "requestFields": [
+      { "name": "videoPostId", "type": "Long" },
+      { "name": "fileIndex", "type": "Int" },
+      { "name": "encryptMethod", "type": "String", "defaultValue": "HLS_AES_128" }
+    ],
+    "responseFields": [
+      { "name": "keyVersion", "type": "Int" },
+      { "name": "transcodeOutputPrefix", "type": "String", "nullable": true },
+      { "name": "encryptOutputDir", "type": "String", "nullable": true }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "video_encrypt",
+    "name": "GenerateVideoPostQualityKey",
+    "desc": "为单个清晰度生成密钥（转码后）",
+    "requestFields": [
+      { "name": "videoPostId", "type": "Long" },
+      { "name": "fileIndex", "type": "Int" },
+      { "name": "quality", "type": "String" },
+      { "name": "keyVersion", "type": "Int" },
+      { "name": "method", "type": "String", "defaultValue": "HLS_AES_128" },
+      { "name": "keyBytes", "type": "Int", "defaultValue": "16" }
+    ],
+    "responseFields": [
+      { "name": "success", "type": "Boolean", "defaultValue": "true" }
+    ]
+  },
+  {
+    "tag": "de",
+    "package": "video_encrypt",
+    "name": "VideoPostQualityKeyGenerated",
+    "desc": "单个清晰度密钥已生成事件，驱动单档位加密",
+    "aggregates": ["VideoHlsEncryptKey"],
+    "entity": "VideoHlsEncryptKey",
+    "persist": false
+  },
+  {
+    "tag": "qry",
+    "package": "video_post_processing",
+    "name": "GetVideoPostProcessingEncryptContext",
+    "desc": "查询处理文件加密上下文（输出前缀/目录）",
+    "requestFields": [
+      { "name": "videoPostId", "type": "Long" },
+      { "name": "fileIndex", "type": "Int" }
+    ],
+    "responseFields": [
+      { "name": "transcodeOutputPrefix", "type": "String", "nullable": true },
+      { "name": "encryptOutputDir", "type": "String", "nullable": true }
+    ]
+  },
+  {
+    "tag": "cli",
+    "package": "video_encrypt",
+    "name": "EncryptHlsVariantWithKey",
+    "desc": "防腐层：按清晰度加密单档位 HLS 输出（不清空前缀）",
+    "requestFields": [
+      { "name": "sourceDir", "type": "String" },
+      { "name": "outputDir", "type": "String" },
+      { "name": "quality", "type": "String" },
+      { "name": "keyPlainHex", "type": "String" },
+      { "name": "ivHex", "type": "String", "nullable": true },
+      { "name": "keyUriTemplate", "type": "String", "nullable": true },
+      { "name": "segmentExt", "type": "String", "defaultValue": ".ts.enc" }
+    ],
+    "responseFields": [
+      { "name": "success", "type": "Boolean", "defaultValue": "true" },
+      { "name": "playlistPath", "type": "String", "nullable": true },
+      { "name": "segmentPrefix", "type": "String", "nullable": true },
+      { "name": "segmentCount", "type": "Int", "nullable": true },
+      { "name": "failReason", "type": "String", "nullable": true }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "video_post_processing",
+    "name": "ApplyVideoPostProcessingVariantEncryptResult",
+    "desc": "回写单个清晰度加密结果并汇总状态",
+    "requestFields": [
+      { "name": "videoPostId", "type": "Long" },
+      { "name": "fileIndex", "type": "Int" },
+      { "name": "quality", "type": "String" },
+      { "name": "success", "type": "Boolean" },
+      { "name": "encryptMethod", "type": "String", "defaultValue": "HLS_AES_128" },
+      { "name": "keyVersion", "type": "Int" },
+      { "name": "playlistPath", "type": "String", "nullable": true },
+      { "name": "segmentPrefix", "type": "String", "nullable": true },
+      { "name": "failReason", "type": "String", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "success", "type": "Boolean", "defaultValue": "true" }
+    ]
+  },
+  {
+    "tag": "de",
+    "package": "video_post_processing",
+    "name": "VideoPostProcessingFileEncryptCompleted",
+    "desc": "单个分P所有清晰度加密完成事件，驱动加密 master 生成",
+    "aggregates": ["VideoPostProcessing"],
+    "entity": "VideoPostProcessing",
+    "persist": false
+  },
+  {
+    "tag": "qry",
+    "package": "video_post_processing",
+    "name": "ListVideoPostProcessingVariantsForEncryptMaster",
+    "desc": "查询某分P的清晰度档位元数据，用于生成加密 master",
+    "requestFields": [
+      { "name": "videoPostId", "type": "Long" },
+      { "name": "fileIndex", "type": "Int" }
+    ],
+    "responseFields": [
+      { "name": "quality", "type": "String" },
+      { "name": "width", "type": "Int" },
+      { "name": "height", "type": "Int" },
+      { "name": "bandwidthBps", "type": "Int" },
+      { "name": "playlistPath", "type": "String" }
+    ]
+  },
+  {
+    "tag": "cli",
+    "package": "video_encrypt",
+    "name": "GenerateEncryptedMasterByVariants",
+    "desc": "防腐层：按档位列表生成加密 master.m3u8",
+    "requestFields": [
+      { "name": "outputDir", "type": "String" },
+      { "name": "variantsJson", "type": "String" }
+    ],
+    "responseFields": [
+      { "name": "success", "type": "Boolean", "defaultValue": "true" },
+      { "name": "masterPath", "type": "String", "nullable": true },
+      { "name": "failReason", "type": "String", "nullable": true }
+    ]
+  }
+]

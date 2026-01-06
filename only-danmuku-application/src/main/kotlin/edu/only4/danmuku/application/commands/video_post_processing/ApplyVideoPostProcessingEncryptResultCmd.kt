@@ -52,9 +52,9 @@ object ApplyVideoPostProcessingEncryptResultCmd {
         val success: Boolean,
         val encryptMethod: String = "HLS_AES_128",
         val keyVersion: Int,
-        val encryptedPrefix: String?,
-        val encryptedMasterPath: String?,
-        val encryptedVariants: String?,
+        val encryptedPrefix: String? = null,
+        val encryptedMasterPath: String? = null,
+        val encryptedVariants: String? = null,
         val failReason: String?
     ) : RequestParam<Response>
 

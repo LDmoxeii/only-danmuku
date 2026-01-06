@@ -178,7 +178,7 @@ class VideoPost(
     // 【行为方法开始】
 
     fun onCreate() {
-        events().attach(this) { VideoDraftCreatedDomainEvent(this) }
+        events().attach(this) { VideoPostCreatedDomainEvent(this) }
     }
 
     fun onDelete() {

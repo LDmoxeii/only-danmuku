@@ -34,9 +34,6 @@ class VideoPostProcessingTranscodeCompletedDomainEventSubscriber {
                     success = false,
                     encryptMethod = "HLS_AES_128",
                     keyVersion = 0,
-                    encryptedPrefix = null,
-                    encryptedMasterPath = null,
-                    encryptedVariants = null,
                     failReason = "加密入参缺失"
                 )
             )

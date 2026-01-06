@@ -1,0 +1,40 @@
+sequenceDiagram
+    participant TransSub as VideoPostProcessingTranscodeCompletedSubscriber
+    participant PrepCmd as PrepareVideoPostProcessingEncryptContextCmd
+    participant KeyCmd as GenerateVideoPostQualityKeyCmd
+    participant KeyEv as VideoPostQualityKeyGeneratedDomainEvent
+    participant KeySub as KeyGeneratedSubscriber
+    participant CtxQry as GetVideoPostProcessingEncryptContextQry
+    participant EncCli as EncryptHlsVariantWithKeyCli
+    participant ApplyVar as ApplyVideoPostProcessingVariantEncryptResultCmd
+    participant ProcAgg as VideoPostProcessing
+    participant FileEncEv as VideoPostProcessingFileEncryptCompletedDomainEvent
+    participant FileEncSub as FileEncryptCompletedSubscriber
+    participant VarQry as ListVideoPostProcessingVariantsForEncryptMasterQry
+    participant MasterCli as GenerateEncryptedMasterByVariantsCli
+    participant DoneEv as VideoPostProcessingCompletedDomainEvent
+    participant SyncCmd as SyncVideoPostProcessStatusCmd
+
+    TransSub->>PrepCmd: Prepare(videoPostId, fileIndex)
+    PrepCmd-->>TransSub: keyVersion + encOutputDir
+
+    loop each variant quality
+        TransSub->>KeyCmd: GenerateKey(videoPostId, fileIndex, quality, keyVersion)
+        KeyCmd-->>KeyEv: VideoPostQualityKeyGenerated
+        KeyEv-->>KeySub: event
+        KeySub->>CtxQry: Get encrypt context
+        CtxQry-->>KeySub: sourcePrefix + encOutputDir
+        KeySub->>EncCli: Encrypt single variant
+        EncCli-->>KeySub: encrypt result
+        KeySub->>ApplyVar: Apply variant encrypt result
+        ApplyVar-->>ProcAgg: update variant/file/aggregate status
+    end
+
+    ProcAgg-->>FileEncEv: all variants of file encrypted
+    FileEncEv-->>FileEncSub: event
+    FileEncSub->>VarQry: list variants
+    VarQry-->>FileEncSub: variants list
+    FileEncSub->>MasterCli: generate encrypted master
+
+    ProcAgg-->>DoneEv: all files encrypted
+    DoneEv-->>SyncCmd: SyncVideoPostProcessStatusCmd

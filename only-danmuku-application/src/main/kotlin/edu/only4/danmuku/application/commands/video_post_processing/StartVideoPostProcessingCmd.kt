@@ -6,11 +6,10 @@ import com.only4.cap4k.ddd.core.application.command.Command
 import edu.only4.danmuku.domain._share.meta.video_post_processing.SVideoPostProcessing
 import edu.only4.danmuku.domain.aggregates.video_post_processing.VideoPostProcessing
 import edu.only4.danmuku.domain.aggregates.video_post_processing.factory.VideoPostProcessingFactory
-import java.nio.file.Paths
-import java.util.UUID
-
 import org.springframework.stereotype.Service
-import kotlin.jvm.optionals.getOrNull
+import java.nio.file.Paths
+import java.util.*
+import kotlin.jvm.optionals.getOrElse
 
 /**
  * 初始化稿件处理聚合（文件清单）
@@ -38,32 +37,20 @@ object StartVideoPostProcessingCmd {
                     fileSize = spec.fileSize
                 )
             }
-            val processing = Mediator.repositories.findFirst(
+            val processing = Mediator.repositories.findOne(
                 SVideoPostProcessing.predicate { schema ->
                     schema.videoPostId.eq(request.videoPostId)
                 }
-            ).getOrNull()
-            if (processing == null) {
-                val created = Mediator.factories.create(
+            ).getOrElse {
+                Mediator.factories.create(
                     VideoPostProcessingFactory.Payload(
                         videoPostId = request.videoPostId,
-                        fileList = filePayloads.map { spec ->
-                            VideoPostProcessingFactory.FilePayload(
-                                uploadId = spec.uploadId,
-                                fileIndex = spec.fileIndex,
-                                transcodeOutputPath = spec.transcodeOutputPath,
-                                transcodeOutputPrefix = spec.transcodeOutputPrefix,
-                                encryptOutputDir = spec.encryptOutputDir,
-                                duration = spec.duration,
-                                fileSize = spec.fileSize
-                            )
-                        }
+                        fileSize = request.fileList.sumOf { it.fileSize ?: 0 }.toInt()
                     )
                 )
-                created.onStarted()
-            } else {
-                processing.appendFiles(filePayloads)
             }
+
+            processing.appendFiles(filePayloads)
             Mediator.uow.save()
 
             return Response(

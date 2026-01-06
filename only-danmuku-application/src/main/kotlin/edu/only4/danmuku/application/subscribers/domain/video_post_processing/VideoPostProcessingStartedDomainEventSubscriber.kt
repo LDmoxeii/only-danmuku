@@ -60,7 +60,6 @@ class VideoPostProcessingStartedDomainEventSubscriber {
                     outputDir = file.outputDir,
                     profiles = profilesJson,
                     segmentDurationSec = 6,
-                    taskId = "${event.videoPostId}-${file.fileIndex}"
                 )
             )
             if (!transcode.accepted) {
