@@ -38,7 +38,7 @@ object GenerateVideoPostQualityKeyCmd {
             val ivHex = generateRandomBytes(16).joinToString("") { "%02x".format(it) }
             val keyUriTemplate = "/video/enc/key?keyId=$keyId&quality=$quality&token=__TOKEN__"
 
-            val key = Mediator.factories.create(
+            Mediator.factories.create(
                 VideoHlsEncryptKeyFactory.Payload(
                     videoPostId = request.videoPostId,
                     fileIndex = request.fileIndex,
@@ -54,7 +54,6 @@ object GenerateVideoPostQualityKeyCmd {
                     remark = null
                 )
             )
-            key.onCreate()
             Mediator.uow.save()
 
             return Response(

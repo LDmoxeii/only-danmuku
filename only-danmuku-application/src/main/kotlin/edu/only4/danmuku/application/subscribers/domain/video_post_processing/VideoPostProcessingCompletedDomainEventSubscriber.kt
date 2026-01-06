@@ -35,11 +35,24 @@ class VideoPostProcessingCompletedDomainEventSubscriber {
         )
 
         val fileItems = files.map { file ->
+            val variants = file.variants.map { variant ->
+                SyncVideoPostProcessStatusCmd.VariantItem(
+                    quality = variant.quality,
+                    width = variant.width,
+                    height = variant.height,
+                    videoBitrateKbps = variant.videoBitrateKbps,
+                    audioBitrateKbps = variant.audioBitrateKbps,
+                    bandwidthBps = variant.bandwidthBps,
+                    playlistPath = variant.playlistPath,
+                    segmentPrefix = variant.segmentPrefix,
+                    segmentDuration = variant.segmentDuration
+                )
+            }
             SyncVideoPostProcessStatusCmd.FileItem(
                 fileIndex = file.fileIndex,
                 transcodeOutputPrefix = file.transcodeOutputPrefix,
                 encryptOutputPrefix = file.encryptOutputPrefix,
-                variantsJson = file.variantsJson,
+                variants = variants,
                 duration = file.duration,
                 fileSize = file.fileSize,
                 encryptMethod = file.encryptMethod,

@@ -45,14 +45,8 @@ interface VideoFilePost : BaseEntity {
     @Column(name = "file_size")
     val fileSize: Long?
 
-    @Column(name = "file_path")
-    val filePath: String?
-
     @Column(name = "transcode_output_prefix")
     val transcodeOutputPrefix: String?
-
-    @Column(name = "transcode_variants_json")
-    val transcodeVariantsJson: String?
 
     @Column(name = "encrypt_output_prefix")
     val encryptOutputPrefix: String?

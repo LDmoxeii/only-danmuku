@@ -24,7 +24,7 @@ class GetUploadedTempPathsQryHandler(
         val tempPaths = sqlClient.createQuery(VideoFilePost::class) {
             where(table.videoPost.id eq request.videoId)
             where(table.videoPost.customerId eq request.customerId)
-            select(table.upload.tempPath)
+            select(table.upload.tempDir)
         }.execute()
 
         return tempPaths.filterNotNull().distinct()

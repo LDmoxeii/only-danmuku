@@ -57,7 +57,7 @@ class GetVideoPostInfoQryHandler(
                     fileIndex = file.fileIndex,
                     fileName = file.fileName ?: "",
                     fileSize = file.fileSize ?: 0L,
-                    filePath = file.filePath,
+                    filePath = file.transcodeOutputPrefix,
                     duration = file.duration ?: 0,
                     transferResult = file.transferResult,
                 )

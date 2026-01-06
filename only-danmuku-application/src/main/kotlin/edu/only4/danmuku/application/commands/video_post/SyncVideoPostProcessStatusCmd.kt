@@ -3,7 +3,6 @@ package edu.only4.danmuku.application.commands.video_post
 import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
-import com.only.engine.json.misc.JsonUtils
 import com.only4.cap4k.ddd.core.application.command.Command
 
 import edu.only4.danmuku.domain._share.meta.video_post.SVideoPost
@@ -39,11 +38,22 @@ object SyncVideoPostProcessStatusCmd {
 
                 file.applyTranscodeResult(
                     outputPrefix = fileItem.transcodeOutputPrefix,
-                    variantsJson = fileItem.variantsJson,
                     duration = fileItem.duration,
                     fileSize = fileItem.fileSize
                 )
-                val variants = parseVariants(fileItem.variantsJson)
+                val variants = fileItem.variants.map { payload ->
+                    VideoFilePostVariant(
+                        quality = payload.quality,
+                        width = payload.width,
+                        height = payload.height,
+                        videoBitrateKbps = payload.videoBitrateKbps,
+                        audioBitrateKbps = payload.audioBitrateKbps,
+                        bandwidthBps = payload.bandwidthBps,
+                        playlistPath = payload.playlistPath,
+                        segmentPrefix = payload.segmentPrefix,
+                        segmentDuration = payload.segmentDuration
+                    )
+                }
                 file.syncVariants(variants)
 
                 if (!fileItem.encryptMethod.isNullOrBlank() && !fileItem.encryptOutputPrefix.isNullOrBlank()) {
@@ -78,7 +88,7 @@ object SyncVideoPostProcessStatusCmd {
         val fileIndex: Int,
         val transcodeOutputPrefix: String?,
         val encryptOutputPrefix: String?,
-        val variantsJson: String?,
+        val variants: List<VariantItem> = emptyList(),
         val duration: Int?,
         val fileSize: Long?,
         val encryptMethod: String?,
@@ -89,26 +99,7 @@ object SyncVideoPostProcessStatusCmd {
         val success: Boolean = true
     )
 
-    private fun parseVariants(variantsJson: String?): List<VideoFilePostVariant> {
-        if (variantsJson.isNullOrBlank()) return emptyList()
-        val payloads = JsonUtils.parseArray(variantsJson, VariantPayload::class.java)
-        if (payloads.isEmpty()) return emptyList()
-        return payloads.map { payload ->
-            VideoFilePostVariant(
-                quality = payload.quality,
-                width = payload.width,
-                height = payload.height,
-                videoBitrateKbps = payload.videoBitrateKbps,
-                audioBitrateKbps = payload.audioBitrateKbps,
-                bandwidthBps = payload.bandwidthBps,
-                playlistPath = payload.playlistPath,
-                segmentPrefix = payload.segmentPrefix,
-                segmentDuration = payload.segmentDuration
-            )
-        }
-    }
-
-    data class VariantPayload(
+    data class VariantItem(
         val quality: String = "",
         val width: Int = 0,
         val height: Int = 0,

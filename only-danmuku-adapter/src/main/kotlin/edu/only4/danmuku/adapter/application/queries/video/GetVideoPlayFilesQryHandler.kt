@@ -1,12 +1,9 @@
 package edu.only4.danmuku.adapter.application.queries.video
 
 import com.only4.cap4k.ddd.core.application.query.ListQuery
-import edu.only4.danmuku.application.queries._share.model.VideoFile
 import edu.only4.danmuku.application.queries._share.model.VideoFilePost
-import edu.only4.danmuku.application.queries._share.model.dto.VideoFile.VideoFileItem
 import edu.only4.danmuku.application.queries._share.model.fetchBy
 import edu.only4.danmuku.application.queries._share.model.fileIndex
-import edu.only4.danmuku.application.queries._share.model.videoId
 import edu.only4.danmuku.application.queries._share.model.videoPostId
 import edu.only4.danmuku.application.queries.video.GetVideoPlayFilesQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
@@ -48,7 +45,7 @@ class GetVideoPlayFilesQryHandler(
                 fileIndex = file.fileIndex,
                 fileName = file.fileName,
                 fileSize = file.fileSize,
-                filePath = file.filePath,
+                filePath = file.transcodeOutputPrefix,
                 duration = file.duration
             )
         }

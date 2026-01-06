@@ -39,9 +39,7 @@ class VideoFilePost(
     fileIndex: Int = 0,
     fileName: String? = null,
     fileSize: Long? = null,
-    filePath: String? = null,
     transcodeOutputPrefix: String? = null,
-    transcodeVariantsJson: String? = null,
     encryptOutputPrefix: String? = null,
     transferResult: TransferResult = TransferResult.valueOf(0),
     encryptStatus: EncryptStatus = EncryptStatus.valueOf(1),
@@ -110,27 +108,11 @@ class VideoFilePost(
         internal set
 
     /**
-     * 文件路径
-     * varchar(100)
-     */
-    @Column(name = "`file_path`")
-    var filePath: String? = filePath
-        internal set
-
-    /**
      * 转码输出对象前缀
      * varchar(512)
      */
     @Column(name = "`transcode_output_prefix`")
     var transcodeOutputPrefix: String? = transcodeOutputPrefix
-        internal set
-
-    /**
-     * 转码清晰度结果 JSON
-     * text
-     */
-    @Column(name = "`transcode_variants_json`")
-    var transcodeVariantsJson: String? = transcodeVariantsJson
         internal set
 
     /**
@@ -220,14 +202,12 @@ class VideoFilePost(
 
     fun applyTranscodeResult(
         outputPrefix: String?,
-        variantsJson: String?,
         duration: Int?,
         fileSize: Long?,
     ) {
         if (!outputPrefix.isNullOrBlank()) {
             this.transcodeOutputPrefix = outputPrefix
         }
-        this.transcodeVariantsJson = variantsJson
         if (duration != null) {
             this.duration = duration
         }

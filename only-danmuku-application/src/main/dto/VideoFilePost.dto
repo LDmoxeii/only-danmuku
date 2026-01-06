@@ -7,7 +7,7 @@ VideoFilePostItem {
     fileIndex
     fileName
     fileSize
-    filePath
+    transcodeOutputPrefix
     transferResult
     duration
 }

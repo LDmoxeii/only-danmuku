@@ -24,7 +24,7 @@ class GetVideoEncryptStatusQryHandler(
         val row = sqlClient.createQuery(VideoFilePost::class) {
             where(table.videoPost.id eq request.videoPostId)
             where(table.fileIndex eq request.fileIndex)
-            select(table.encryptStatus, table.encryptMethod, table.encryptOutputPrefix, table.filePath)
+            select(table.encryptStatus, table.encryptMethod, table.encryptOutputPrefix, table.transcodeOutputPrefix)
         }.fetchOneOrNull()
 
         val status = row?._1?.name ?: "NOT_FOUND"

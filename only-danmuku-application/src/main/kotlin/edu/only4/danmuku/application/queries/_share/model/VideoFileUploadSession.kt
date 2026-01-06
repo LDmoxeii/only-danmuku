@@ -25,8 +25,8 @@ interface VideoFileUploadSession : BaseEntity {
     @Column(name = "file_size")
     val fileSize: Long?
 
-    @Column(name = "temp_path")
-    val tempPath: String?
+    @Column(name = "temp_dir")
+    val tempDir: String?
 
     @Column(name = "status")
     val status: Int

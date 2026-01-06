@@ -42,11 +42,7 @@ class SVideoFilePost(
 
         val fileSize = "fileSize"
 
-        val filePath = "filePath"
-
         val transcodeOutputPrefix = "transcodeOutputPrefix"
-
-        val transcodeVariantsJson = "transcodeVariantsJson"
 
         val encryptOutputPrefix = "encryptOutputPrefix"
 
@@ -300,26 +296,10 @@ class SVideoFilePost(
 
 
     /**
-     * 文件路径
-     */
-    val filePath: Field<String?> by lazy {
-        Field(root.get("filePath"), criteriaBuilder)
-    }
-
-
-    /**
      * 转码输出对象前缀
      */
     val transcodeOutputPrefix: Field<String?> by lazy {
         Field(root.get("transcodeOutputPrefix"), criteriaBuilder)
-    }
-
-
-    /**
-     * 转码清晰度结果 JSON
-     */
-    val transcodeVariantsJson: Field<String?> by lazy {
-        Field(root.get("transcodeVariantsJson"), criteriaBuilder)
     }
 
 

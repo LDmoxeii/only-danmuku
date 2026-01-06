@@ -28,12 +28,32 @@ class ListVideoPostProcessingFilesForSyncQryHandler(
                     fileIndex()
                     transcodeOutputPrefix()
                     encryptOutputPrefix()
-                    transcodeVariantsJson()
                     duration()
                     fileSize()
                 }
             )
         }.execute()
+
+        val variants = sqlClient.createQuery(VideoPostProcessingVariant::class) {
+            where(table.videoPostProcessingFile.videoPostProcessing.videoPostId eq request.videoPostId)
+            select(
+                table.fetchBy {
+                    quality()
+                    width()
+                    height()
+                    videoBitrateKbps()
+                    audioBitrateKbps()
+                    bandwidthBps()
+                    playlistPath()
+                    segmentPrefix()
+                    segmentDuration()
+                    videoPostProcessingFile {
+                        fileIndex()
+                    }
+                }
+            )
+        }.execute()
+        val variantMap = variants.groupBy { it.videoPostProcessingFile.fileIndex }
 
         val keys = sqlClient.createQuery(VideoHlsEncryptKey::class) {
             where(table.videoPostId eq request.videoPostId)
@@ -49,7 +69,24 @@ class ListVideoPostProcessingFilesForSyncQryHandler(
                 fileIndex = file.fileIndex,
                 transcodeOutputPrefix = file.transcodeOutputPrefix,
                 encryptOutputPrefix = file.encryptOutputPrefix,
-                variantsJson = file.transcodeVariantsJson,
+                variants = variantMap[file.fileIndex]
+                    ?.sortedWith(
+                        compareByDescending<VideoPostProcessingVariant> { it.bandwidthBps }
+                            .thenBy { it.quality }
+                    )
+                    ?.map { variant ->
+                        ListVideoPostProcessingFilesForSyncQry.VariantItem(
+                            quality = variant.quality,
+                            width = variant.width,
+                            height = variant.height,
+                            videoBitrateKbps = variant.videoBitrateKbps,
+                            audioBitrateKbps = variant.audioBitrateKbps,
+                            bandwidthBps = variant.bandwidthBps,
+                            playlistPath = variant.playlistPath,
+                            segmentPrefix = variant.segmentPrefix,
+                            segmentDuration = variant.segmentDuration
+                        )
+                    } ?: emptyList(),
                 duration = file.duration,
                 fileSize = file.fileSize,
                 encryptMethod = key?.method?.name,

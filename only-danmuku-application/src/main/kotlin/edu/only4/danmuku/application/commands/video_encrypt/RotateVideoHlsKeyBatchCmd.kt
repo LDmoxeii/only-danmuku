@@ -34,8 +34,8 @@ object RotateVideoHlsKeyBatchCmd {
                 if (qualities.isEmpty()) {
                     throw IllegalStateException("未找到可用清晰度: videoPostId=${request.videoPostId}, fileIndex=${request.fileIndex}")
                 }
-                val path = file.filePath
-                    ?: throw IllegalStateException("filePath 为空: videoPostId=${request.videoPostId}, fileIndex=${request.fileIndex}")
+                val path = file.transcodeOutputPrefix
+                    ?: throw IllegalStateException("转码输出前缀为空: videoPostId=${request.videoPostId}, fileIndex=${request.fileIndex}")
 
                 val generated = Mediator.commands.send(
                     GenerateVideoPostQualityKeysCmd.Request(
