@@ -61,19 +61,6 @@ spring:
       timeout: 10s
       # 是否开启ssl
       ssl.enabled: false
-  ssl:
-    bundle:
-      pem:
-        elasticsearch:
-          truststore:
-            certificate: file:C:/Users/EDY/scoop/apps/elasticsearch/current/config/certs/http_ca.crt
-  elasticsearch:
-    uris: https://127.0.0.1:9200
-    username: elastic
-    password: "5=7sUQTGcRf_3FVN=aPz"
-    restclient:
-      ssl:
-        bundle: elasticsearch
 
 logging:
   level:
@@ -216,6 +203,3 @@ jimmer:
 app:
   file:
     show-f-fmpeg-log: true
-  video-search:
-    es:
-      index: only-danmuku-video

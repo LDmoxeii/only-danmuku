@@ -64,61 +64,16 @@ class SearchVideoByEsQryHandler(
     }
 
     private fun buildQuery(keyword: String): Query {
-        val trimmed = keyword.trim()
-        if (trimmed.length <= 1) {
-            val like = "*$trimmed*"
-            return Query.of { q ->
-                q.bool { b ->
-                    b.should { s ->
-                        s.multiMatch { mm ->
-                            mm.query(trimmed)
-                                .fields(
-                                    "videoName^3",
-                                    "tags^2",
-                                    "introduction",
-                                    "categoryFullName",
-                                    "nickName"
-                                )
-                        }
-                    }
-                    b.should { s ->
-                        s.wildcard { w ->
-                            w.field("videoName.keyword").value(like).caseInsensitive(true)
-                        }
-                    }
-                    b.should { s ->
-                        s.wildcard { w ->
-                            w.field("tags.keyword").value(like).caseInsensitive(true)
-                        }
-                    }
-                    b.minimumShouldMatch("1")
-                }
-            }
-        }
         return Query.of { q ->
-            q.bool { b ->
-                b.should { s ->
-                    s.multiMatch { mm ->
-                        mm.query(trimmed)
-                            .fields(
-                                "videoName^3",
-                                "tags^2",
-                                "introduction",
-                                "categoryFullName",
-                                "nickName"
-                            )
-                    }
-                }
-                b.should { s ->
-                    s.multiMatch { mm ->
-                        mm.query(trimmed)
-                            .fields(
-                                "videoName.ngram^2",
-                                "tags.ngram"
-                            )
-                    }
-                }
-                b.minimumShouldMatch("1")
+            q.multiMatch { mm ->
+                mm.query(keyword)
+                    .fields(
+                        "videoName^3",
+                        "tags^2",
+                        "introduction",
+                        "categoryFullName",
+                        "nickName"
+                    )
             }
         }
     }

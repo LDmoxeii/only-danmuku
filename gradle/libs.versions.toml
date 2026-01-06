@@ -26,7 +26,6 @@ hibernate-core = "7.0.10.Final"
 junit = "5.13.4"
 mockk = "1.13.8"
 kotlin-compile-testing = "0.8.0"
-opentelemetry = "1.43.0"
 
 [libraries]
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -82,8 +81,6 @@ hibernate-processor = { module = "org.hibernate.orm:hibernate-processor", versio
 # MapStruct
 mapstruct = { module = "org.mapstruct:mapstruct", version.ref = "mapstruct" }
 mapstruct-processor = { module = "org.mapstruct:mapstruct-processor", version.ref = "mapstruct" }
-
-opentelemetry-api = { module = "io.opentelemetry:opentelemetry-api", version.ref = "opentelemetry" }
 
 druid = { module = "com.alibaba:druid-spring-boot-starter", version = "1.2.8" }
 mysql = { module = "com.mysql:mysql-connector-j", version = "8.1.0" }
