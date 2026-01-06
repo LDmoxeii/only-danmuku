@@ -6,6 +6,7 @@ import edu.only4.danmuku.domain._share.meta.OrderBuilder
 import edu.only4.danmuku.domain._share.meta.PredicateBuilder
 import edu.only4.danmuku.domain._share.meta.SchemaSpecification
 import edu.only4.danmuku.domain._share.meta.SubqueryConfigure
+import edu.only4.danmuku.domain.aggregates.video_post.enums.EncryptMethod
 import edu.only4.danmuku.domain.aggregates.video_post_processing.VideoPostProcessingFile
 import edu.only4.danmuku.domain.aggregates.video_post_processing.enums.ProcessStatus
 
@@ -37,6 +38,10 @@ class SVideoPostProcessingFile(
         val transcodeStatus = "transcodeStatus"
 
         val encryptStatus = "encryptStatus"
+
+        val encryptMethod = "encryptMethod"
+
+        val encryptKeyVersion = "encryptKeyVersion"
 
         val transcodeOutputPrefix = "transcodeOutputPrefix"
 
@@ -282,6 +287,22 @@ class SVideoPostProcessingFile(
      */
     val encryptStatus: Field<ProcessStatus> by lazy {
         Field(root.get("encryptStatus"), criteriaBuilder)
+    }
+
+
+    /**
+     * 加密方式
+     */
+    val encryptMethod: Field<EncryptMethod> by lazy {
+        Field(root.get("encryptMethod"), criteriaBuilder)
+    }
+
+
+    /**
+     * 加密密钥版本
+     */
+    val encryptKeyVersion: Field<Int?> by lazy {
+        Field(root.get("encryptKeyVersion"), criteriaBuilder)
     }
 
 

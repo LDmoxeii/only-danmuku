@@ -6,8 +6,8 @@ import edu.only4.danmuku.domain._share.meta.OrderBuilder
 import edu.only4.danmuku.domain._share.meta.PredicateBuilder
 import edu.only4.danmuku.domain._share.meta.SchemaSpecification
 import edu.only4.danmuku.domain._share.meta.SubqueryConfigure
-import edu.only4.danmuku.domain.aggregates.video_post.enums.EncryptMethod
 import edu.only4.danmuku.domain.aggregates.video_post.VideoFilePost
+import edu.only4.danmuku.domain.aggregates.video_post.enums.EncryptMethod
 import edu.only4.danmuku.domain.aggregates.video_post.enums.EncryptStatus
 import edu.only4.danmuku.domain.aggregates.video_post.enums.TransferResult
 

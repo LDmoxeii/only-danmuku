@@ -7,6 +7,7 @@ import edu.only4.danmuku.domain._share.meta.PredicateBuilder
 import edu.only4.danmuku.domain._share.meta.SchemaSpecification
 import edu.only4.danmuku.domain._share.meta.SubqueryConfigure
 import edu.only4.danmuku.domain.aggregates.video_post_processing.VideoPostProcessingVariant
+import edu.only4.danmuku.domain.aggregates.video_post_processing.enums.ProcessStatus
 
 import jakarta.persistence.criteria.*
 
@@ -46,6 +47,12 @@ class SVideoPostProcessingVariant(
         val segmentPrefix = "segmentPrefix"
 
         val segmentDuration = "segmentDuration"
+
+        val transcodeStatus = "transcodeStatus"
+
+        val encryptStatus = "encryptStatus"
+
+        val encryptFailReason = "encryptFailReason"
 
         val createUserId = "createUserId"
 
@@ -315,6 +322,30 @@ class SVideoPostProcessingVariant(
      */
     val segmentDuration: Field<Int?> by lazy {
         Field(root.get("segmentDuration"), criteriaBuilder)
+    }
+
+
+    /**
+     * 转码状态
+     */
+    val transcodeStatus: Field<ProcessStatus> by lazy {
+        Field(root.get("transcodeStatus"), criteriaBuilder)
+    }
+
+
+    /**
+     * 加密状态
+     */
+    val encryptStatus: Field<ProcessStatus> by lazy {
+        Field(root.get("encryptStatus"), criteriaBuilder)
+    }
+
+
+    /**
+     * 加密失败原因
+     */
+    val encryptFailReason: Field<String?> by lazy {
+        Field(root.get("encryptFailReason"), criteriaBuilder)
     }
 
 

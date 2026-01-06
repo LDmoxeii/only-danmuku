@@ -3,6 +3,7 @@ package edu.only4.danmuku.domain.aggregates.video_post_processing
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 
 import edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity
+import edu.only4.danmuku.domain.aggregates.video_post_processing.enums.ProcessStatus
 
 import jakarta.persistence.*
 
@@ -18,7 +19,7 @@ import org.hibernate.annotations.Where
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2026/01/05
+ * @date 2026/01/06
  */
 @Aggregate(aggregate = "VideoPostProcessing", name = "VideoPostProcessingVariant", root = false, type = Aggregate.TYPE_ENTITY, description = "视频稿件处理分辨率档位，")
 @Entity
@@ -38,6 +39,9 @@ class VideoPostProcessingVariant(
     playlistPath: String = "",
     segmentPrefix: String? = null,
     segmentDuration: Int? = null,
+    transcodeStatus: ProcessStatus = ProcessStatus.valueOf(0),
+    encryptStatus: ProcessStatus = ProcessStatus.valueOf(0),
+    encryptFailReason: String? = null,
 ) : AuditedFieldsEntity() {
     // 【字段映射开始】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
     @ManyToOne(cascade = [], fetch = FetchType.EAGER)
@@ -125,6 +129,44 @@ class VideoPostProcessingVariant(
      */
     @Column(name = "`segment_duration`")
     var segmentDuration: Int? = segmentDuration
+        internal set
+
+    /**
+     * 转码状态
+     * 0:UNKNOW:未知
+     * 1:PENDING:待处理
+     * 2:PROCESSING:处理中
+     * 3:SUCCESS:成功
+     * 4:FAILED:失败
+     * 5:SKIPPED:跳过
+     * tinyint(1)
+     */
+    @Convert(converter = ProcessStatus.Converter::class)
+    @Column(name = "`transcode_status`")
+    var transcodeStatus: ProcessStatus = transcodeStatus
+        internal set
+
+    /**
+     * 加密状态
+     * 0:UNKNOW:未知
+     * 1:PENDING:待处理
+     * 2:PROCESSING:处理中
+     * 3:SUCCESS:成功
+     * 4:FAILED:失败
+     * 5:SKIPPED:跳过
+     * tinyint(1)
+     */
+    @Convert(converter = ProcessStatus.Converter::class)
+    @Column(name = "`encrypt_status`")
+    var encryptStatus: ProcessStatus = encryptStatus
+        internal set
+
+    /**
+     * 加密失败原因
+     * varchar(512)
+     */
+    @Column(name = "`encrypt_fail_reason`")
+    var encryptFailReason: String? = encryptFailReason
         internal set
 
     // 【字段映射结束】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动

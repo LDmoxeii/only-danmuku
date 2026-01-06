@@ -1,6 +1,7 @@
 package edu.only4.danmuku.domain.aggregates.video_file_upload_session
 
 import com.only.engine.exception.KnownException
+
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
 
@@ -25,15 +26,9 @@ import org.hibernate.annotations.Where
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2026/01/05
+ * @date 2026/01/06
  */
-@Aggregate(
-    aggregate = "VideoFileUploadSession",
-    name = "VideoFileUploadSession",
-    root = true,
-    type = Aggregate.TYPE_ENTITY,
-    description = "视频分片上传会话， 用于跟踪预上传与分片进度"
-)
+@Aggregate(aggregate = "VideoFileUploadSession", name = "VideoFileUploadSession", root = true, type = Aggregate.TYPE_ENTITY, description = "视频分片上传会话， 用于跟踪预上传与分片进度")
 @Entity
 @Table(name = "`video_file_upload_session`")
 @DynamicInsert
@@ -47,7 +42,7 @@ class VideoFileUploadSession(
     chunks: Int = 0,
     chunkIndex: Int = 0,
     fileSize: Long? = 0L,
-    tempPath: String? = null,
+    tempDir: String? = null,
     status: UploadStatus = UploadStatus.valueOf(0),
     duration: Int? = null,
     expiresAt: Long? = null,
@@ -60,10 +55,7 @@ class VideoFileUploadSession(
      */
     @Id
     @GeneratedValue(generator = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator")
-    @GenericGenerator(
-        name = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator",
-        strategy = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator"
-    )
+    @GenericGenerator(name = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator", strategy = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator")
     @Column(name = "`id`", insertable = false, updatable = false)
     var id: Long = id
         internal set
@@ -112,8 +104,8 @@ class VideoFileUploadSession(
      * 临时目录（绝对或相对路径）
      * varchar(512)
      */
-    @Column(name = "`temp_path`")
-    var tempDir: String? = tempPath
+    @Column(name = "`temp_dir`")
+    var tempDir: String? = tempDir
         internal set
 
     /**

@@ -3,6 +3,7 @@ package edu.only4.danmuku.domain.aggregates.video_post_processing
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 
 import edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity
+import edu.only4.danmuku.domain.aggregates.video_post.enums.EncryptMethod
 import edu.only4.danmuku.domain.aggregates.video_post_processing.enums.ProcessStatus
 
 import jakarta.persistence.*
@@ -21,7 +22,7 @@ import org.hibernate.annotations.Where
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2026/01/05
+ * @date 2026/01/06
  */
 @Aggregate(aggregate = "VideoPostProcessing", name = "VideoPostProcessingFile", root = false, type = Aggregate.TYPE_ENTITY, description = "视频稿件处理文件状态，")
 @Entity
@@ -36,6 +37,8 @@ class VideoPostProcessingFile(
     uploadId: Long = 0L,
     transcodeStatus: ProcessStatus = ProcessStatus.valueOf(0),
     encryptStatus: ProcessStatus = ProcessStatus.valueOf(0),
+    encryptMethod: EncryptMethod = EncryptMethod.valueOf(1),
+    encryptKeyVersion: Int? = null,
     transcodeOutputPrefix: String? = null,
     transcodeOutputPath: String? = null,
     transcodeVariantsJson: String? = null,
@@ -109,6 +112,27 @@ class VideoPostProcessingFile(
     @Convert(converter = ProcessStatus.Converter::class)
     @Column(name = "`encrypt_status`")
     var encryptStatus: ProcessStatus = encryptStatus
+        internal set
+
+    /**
+     * 加密方式
+     * 0:UNKNOW:未知
+     * 1:HLS_AES_128:AES-128
+     * 2:SAMPLE_AES:SAMPLE-AES
+     * 3:DRM:DRM占位
+     * int
+     */
+    @Convert(converter = EncryptMethod.Converter::class)
+    @Column(name = "`encrypt_method`")
+    var encryptMethod: EncryptMethod = encryptMethod
+        internal set
+
+    /**
+     * 加密密钥版本
+     * int
+     */
+    @Column(name = "`encrypt_key_version`")
+    var encryptKeyVersion: Int? = encryptKeyVersion
         internal set
 
     /**

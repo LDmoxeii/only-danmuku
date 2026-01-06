@@ -40,7 +40,7 @@ class SVideoFileUploadSession(
 
         val fileSize = "fileSize"
 
-        val tempPath = "tempPath"
+        val tempDir = "tempDir"
 
         val status = "status"
 
@@ -414,8 +414,8 @@ class SVideoFileUploadSession(
     /**
      * 临时目录（绝对或相对路径）
      */
-    val tempPath: Field<String?> by lazy {
-        Field(root.get("tempPath"), criteriaBuilder)
+    val tempDir: Field<String?> by lazy {
+        Field(root.get("tempDir"), criteriaBuilder)
     }
 
 
