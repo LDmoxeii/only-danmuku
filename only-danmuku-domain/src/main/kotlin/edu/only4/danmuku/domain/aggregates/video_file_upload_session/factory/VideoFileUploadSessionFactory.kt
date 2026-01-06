@@ -32,9 +32,7 @@ class VideoFileUploadSessionFactory : AggregateFactory<VideoFileUploadSessionFac
             chunks = payload.chunks,
             chunkIndex = 0,
             fileSize = 0,
-            tempPath = null,
             status = UploadStatus.CREATED,
-            duration = null,
             expiresAt = payload.expiresAt,
         )
     }

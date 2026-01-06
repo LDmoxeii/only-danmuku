@@ -22,7 +22,7 @@ class UploadSessionCreatedDomainEventSubscriber {
     @EventListener(UploadSessionCreatedDomainEvent::class)
     fun on(event: UploadSessionCreatedDomainEvent) {
         // 会话创建成功后，触发初始化临时目录并标记开始上传的命令
-        val tempPath = Mediator.requests.send(
+        val tempDir = Mediator.requests.send(
             CreateUploadSessionTempDirCli.Request(
                 uploadId = event.entity.id
             )
@@ -30,7 +30,7 @@ class UploadSessionCreatedDomainEventSubscriber {
         Mediator.commands.send(
             InitTempAndStartUploadingCmd.Request(
                 uploadId = event.entity.id,
-                tempPath = tempPath
+                tempDir = tempDir
             )
         )
     }

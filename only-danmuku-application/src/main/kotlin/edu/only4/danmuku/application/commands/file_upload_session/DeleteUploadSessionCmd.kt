@@ -28,7 +28,7 @@ object DeleteUploadSessionCmd {
 
             session.ensureOwnedBy(request.customerId)
 
-            val tempPath = session.tempPath?.trim().orEmpty()
+            val tempPath = session.tempDir?.trim().orEmpty()
 
             // 终止并软删除会话
             val now = Instant.now().epochSecond

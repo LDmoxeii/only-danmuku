@@ -1,5 +1,6 @@
 package edu.only4.danmuku.domain.aggregates.video_file_upload_session
 
+import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
 
@@ -26,7 +27,13 @@ import org.hibernate.annotations.Where
  * @author cap4k-ddd-codegen
  * @date 2026/01/05
  */
-@Aggregate(aggregate = "VideoFileUploadSession", name = "VideoFileUploadSession", root = true, type = Aggregate.TYPE_ENTITY, description = "视频分片上传会话， 用于跟踪预上传与分片进度")
+@Aggregate(
+    aggregate = "VideoFileUploadSession",
+    name = "VideoFileUploadSession",
+    root = true,
+    type = Aggregate.TYPE_ENTITY,
+    description = "视频分片上传会话， 用于跟踪预上传与分片进度"
+)
 @Entity
 @Table(name = "`video_file_upload_session`")
 @DynamicInsert
@@ -53,7 +60,10 @@ class VideoFileUploadSession(
      */
     @Id
     @GeneratedValue(generator = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator")
-    @GenericGenerator(name = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator", strategy = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator")
+    @GenericGenerator(
+        name = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator",
+        strategy = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator"
+    )
     @Column(name = "`id`", insertable = false, updatable = false)
     var id: Long = id
         internal set
@@ -103,7 +113,7 @@ class VideoFileUploadSession(
      * varchar(512)
      */
     @Column(name = "`temp_path`")
-    var tempPath: String? = tempPath
+    var tempDir: String? = tempPath
         internal set
 
     /**
@@ -144,14 +154,14 @@ class VideoFileUploadSession(
     /** 校验归属 */
     fun ensureOwnedBy(userId: Long) {
         if (this.customerId != userId) {
-            throw IllegalArgumentException("没有权限操作该上传")
+            throw KnownException.illegalArgument("没有权限操作该上传")
         }
     }
 
     /** 校验会话处于活跃可上传状态 */
     fun ensureActive() {
         if (this.status == UploadStatus.ABORTED || this.status == UploadStatus.EXPIRED) {
-            throw IllegalStateException("上传会话不可用")
+            throw KnownException.illegalArgument("上传会话不可用")
         }
     }
 
@@ -160,11 +170,29 @@ class VideoFileUploadSession(
      */
     fun ensureChunkAllowed(incomingChunkIndex: Int) {
         if (incomingChunkIndex < 0 || incomingChunkIndex > this.chunks - 1) {
-            throw IllegalArgumentException("分片索引非法")
+            throw KnownException.illegalArgument("分片索引非法")
         }
         if ((incomingChunkIndex - 1) > this.chunkIndex) {
-            throw IllegalArgumentException("分片索引非法")
+            throw KnownException.illegalArgument("分片索引非法")
         }
+    }
+
+    fun onCreate() {
+        events().attach(this) { UploadSessionCreatedDomainEvent(this) }
+    }
+
+    fun onDelete() {
+        // no-op
+    }
+
+    /**
+     * 终止会话（放弃上传）
+     */
+    fun abort(now: Long) {
+        this.status = UploadStatus.ABORTED
+        this.updateTime = now
+
+        events().attach(this) { UploadSessionAbortedDomainEvent(this) }
     }
 
     /**
@@ -183,7 +211,9 @@ class VideoFileUploadSession(
         events().attach(this) { VideoFileUploadSessionChunkUploadedDomainEvent(this) }
     }
 
-    /** 若已到最后一个分片，则标记完成 */
+    /**
+     * 若已到最后一个分片，则标记完成
+     */
     fun tryMarkDoneIfComplete() {
         if (this.chunkIndex >= this.chunks - 1) {
             this.status = UploadStatus.DONE
@@ -191,19 +221,11 @@ class VideoFileUploadSession(
         }
     }
 
-    /** 终止会话（放弃上传） */
-    fun abort(now: Long) {
-        this.status = UploadStatus.ABORTED
-        this.updateTime = now
-
-        events().attach(this) { UploadSessionAbortedDomainEvent(this)}
-    }
-
     /**
      * 初始化会话的临时目录并进入上传中状态
      */
-    fun initTempAndStartUploading(tempPath: String, now: Long) {
-        this.tempPath = tempPath
+    fun initTempAndStartUploading(tempDir: String, now: Long) {
+        this.tempDir = tempDir
         if (this.status == UploadStatus.CREATED) {
             this.status = UploadStatus.UPLOADING
         }
@@ -211,11 +233,4 @@ class VideoFileUploadSession(
     }
 
     // 【行为方法结束】
-
-    /**
-     * 聚合创建时触发的事件
-     */
-    fun onCreate() {
-        events().attach(this) { UploadSessionCreatedDomainEvent(this) }
-    }
 }

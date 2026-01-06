@@ -23,7 +23,7 @@ class UploadSessionAbortedDomainEventSubscriber {
 
     @EventListener(UploadSessionAbortedDomainEvent::class)
     fun on(event: UploadSessionAbortedDomainEvent) {
-        event.entity.tempPath?.takeIf { it.isNotBlank() }?.let { tempPath ->
+        event.entity.tempDir?.takeIf { it.isNotBlank() }?.let { tempPath ->
             runCatching {
                 Mediator.requests.send(
                     DeleteUploadSessionTempDirCli.Request(tempPath = tempPath)

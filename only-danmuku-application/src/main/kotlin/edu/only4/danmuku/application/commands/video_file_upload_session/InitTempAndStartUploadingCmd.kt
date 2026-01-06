@@ -11,7 +11,6 @@ import java.time.Instant
 import kotlin.jvm.optionals.getOrNull
 
 /**
- * TODO： 这个应该属于防腐端而不是命令，后续调整
  * 初始化临时文件并标记开始上传
  *
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
@@ -27,12 +26,12 @@ object InitTempAndStartUploadingCmd {
                 SVideoFileUploadSession.predicateById(request.uploadId)
             ).getOrNull() ?: return Response()
 
-            val tempPath = request.tempPath.trim()
-            if (tempPath.isBlank()) {
+            val tempDir = request.tempDir.trim()
+            if (tempDir.isBlank()) {
                 throw KnownException.illegalArgument("tempPath")
             }
             val now = Instant.now().epochSecond
-            session.initTempAndStartUploading(tempPath, now)
+            session.initTempAndStartUploading(tempDir, now)
 
             Mediator.uow.save()
 
@@ -44,7 +43,7 @@ object InitTempAndStartUploadingCmd {
 
     class Request(
         val uploadId: Long,
-        val tempPath: String,
+        val tempDir: String,
     ) : RequestParam<Response>
 
     class Response(
