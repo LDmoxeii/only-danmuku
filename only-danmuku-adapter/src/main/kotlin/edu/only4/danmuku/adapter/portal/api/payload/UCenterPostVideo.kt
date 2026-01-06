@@ -7,8 +7,10 @@ object UCenterPostVideo {
 
     data class MixedFileItem(
         val uploadId: Long,
-        val fileId: Long? = null,
         val fileName: String,
+        val fileIndex: Int? = null,
+        val fileSize: Long? = null,
+        val duration: Int? = null,
     )
 
     class Response()

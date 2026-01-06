@@ -34,7 +34,7 @@ class VideoPostFactory : AggregateFactory<VideoPostFactory.Payload, VideoPost> {
             customerId = entityPayload.customerId,
             pCategoryId = entityPayload.pCategoryId,
             categoryId = entityPayload.categoryId,
-            status = entityPayload.status ?: VideoStatus.TRANSCODING,
+            status = entityPayload.status ?: VideoStatus.UNKNOW,
             postType = entityPayload.postType ?: PostType.valueOf(1),
             originInfo = entityPayload.originInfo,
             tags = entityPayload.tags,

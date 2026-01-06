@@ -1,9 +1,13 @@
 package edu.only4.danmuku.domain.aggregates.video_post_processing
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
+import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
 
 import edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity
 import edu.only4.danmuku.domain.aggregates.video_post_processing.enums.ProcessStatus
+import edu.only4.danmuku.domain.aggregates.video_post_processing.events.VideoPostProcessingCompletedDomainEvent
+import edu.only4.danmuku.domain.aggregates.video_post_processing.events.VideoPostProcessingStartedDomainEvent
+import edu.only4.danmuku.domain.aggregates.video_post_processing.events.VideoPostProcessingTranscodeCompletedDomainEvent
 
 import jakarta.persistence.*
 
@@ -137,4 +141,194 @@ class VideoPostProcessing(
         internal set
 
     // 【字段映射结束】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
+
+    // 【行为方法开始】
+
+    fun onStarted() {
+        events().attach(this) {
+            VideoPostProcessingStartedDomainEvent(
+                videoPostId = this.videoPostId,
+                fileList = buildStartedFileList(videoPostProcessingFiles),
+                entity = this
+            )
+        }
+    }
+
+    fun appendFiles(fileList: List<AppendFileSpec>) {
+        if (fileList.isEmpty()) return
+        val existing = videoPostProcessingFiles.map { it.fileIndex }.toMutableSet()
+        val appended = fileList.filter { existing.add(it.fileIndex) }.map { spec ->
+            VideoPostProcessingFile(
+                fileIndex = spec.fileIndex,
+                uploadId = spec.uploadId,
+                transcodeStatus = ProcessStatus.PROCESSING,
+                encryptStatus = ProcessStatus.PENDING,
+                transcodeOutputPrefix = spec.transcodeOutputPrefix,
+                transcodeOutputPath = spec.transcodeOutputPath,
+                transcodeVariantsJson = null,
+                encryptOutputDir = spec.encryptOutputDir,
+                encryptOutputPrefix = null,
+                duration = spec.duration,
+                fileSize = spec.fileSize,
+                failReason = null,
+            )
+        }
+        if (appended.isEmpty()) return
+        videoPostProcessingFiles.addAll(appended)
+        refreshStatus()
+        events().attach(this) {
+            VideoPostProcessingStartedDomainEvent(
+                videoPostId = this.videoPostId,
+                fileList = buildStartedFileList(appended),
+                entity = this
+            )
+        }
+    }
+
+    fun applyTranscodeResult(
+        fileIndex: Int,
+        success: Boolean,
+        outputPrefix: String?,
+        outputPath: String?,
+        duration: Int?,
+        fileSize: Long?,
+        variantsJson: String?,
+        failReason: String?,
+        variants: List<VideoPostProcessingVariant>,
+    ) {
+        val file = getFile(fileIndex)
+        file.transcodeStatus = if (success) ProcessStatus.SUCCESS else ProcessStatus.FAILED
+        if (!outputPrefix.isNullOrBlank()) {
+            file.transcodeOutputPrefix = outputPrefix
+        }
+        if (!outputPath.isNullOrBlank()) {
+            file.transcodeOutputPath = outputPath
+        }
+        file.transcodeVariantsJson = variantsJson
+        if (duration != null) {
+            file.duration = duration
+        }
+        if (fileSize != null) {
+            file.fileSize = fileSize
+        }
+        file.failReason = if (success) null else failReason
+        if (success) {
+            file.encryptStatus = ProcessStatus.PROCESSING
+            file.videoPostProcessingVariants.clear()
+            file.videoPostProcessingVariants.addAll(variants)
+        } else if (file.encryptStatus != ProcessStatus.SKIPPED) {
+            file.encryptStatus = ProcessStatus.SKIPPED
+        }
+        refreshStatus()
+        if (success) {
+            events().attach(this) {
+                VideoPostProcessingTranscodeCompletedDomainEvent(
+                    videoPostId = videoPostId,
+                    fileIndex = fileIndex,
+                    outputPrefix = file.transcodeOutputPrefix,
+                    encOutputDir = file.encryptOutputDir,
+                    variantsJson = file.transcodeVariantsJson,
+                    entity = this
+                )
+            }
+        }
+    }
+
+    fun applyEncryptResult(
+        fileIndex: Int,
+        success: Boolean,
+        encryptedPrefix: String?,
+        failReason: String?,
+    ) {
+        val file = getFile(fileIndex)
+        file.encryptStatus = if (success) ProcessStatus.SUCCESS else ProcessStatus.FAILED
+        if (success && !encryptedPrefix.isNullOrBlank()) {
+            file.encryptOutputPrefix = encryptedPrefix
+        }
+        file.failReason = if (success) null else failReason
+        refreshStatus()
+        if (isAllStepsCompleted()) {
+            events().attach(this) {
+                VideoPostProcessingCompletedDomainEvent(
+                    videoPostId = videoPostId,
+                    duration = totalDuration(),
+                    failedCount = failedCount,
+                    lastFailReason = lastFailReason,
+                    entity = this
+                )
+            }
+        }
+    }
+
+    fun getEncryptOutputDir(fileIndex: Int): String? {
+        return getFile(fileIndex).encryptOutputDir
+    }
+
+    fun getTranscodeOutputPrefix(fileIndex: Int): String? {
+        return getFile(fileIndex).transcodeOutputPrefix
+    }
+
+    fun isAllStepsCompleted(): Boolean {
+        if (videoPostProcessingFiles.isEmpty() || failedCount > 0) return false
+        return videoPostProcessingFiles.all { file ->
+            isDone(file.transcodeStatus) && isDone(file.encryptStatus)
+        }
+    }
+
+    fun totalDuration(): Int? {
+        val durations = videoPostProcessingFiles.mapNotNull { it.duration }
+        return if (durations.isEmpty()) null else durations.sum()
+    }
+
+    private fun getFile(fileIndex: Int): VideoPostProcessingFile {
+        return videoPostProcessingFiles.firstOrNull { it.fileIndex == fileIndex }
+            ?: throw IllegalStateException("处理文件不存在: fileIndex=$fileIndex")
+    }
+
+    private fun buildStartedFileList(files: List<VideoPostProcessingFile>): List<VideoPostProcessingStartedDomainEvent.FileItem> {
+        return files.map { file ->
+            VideoPostProcessingStartedDomainEvent.FileItem(
+                uploadId = file.uploadId,
+                fileIndex = file.fileIndex,
+                outputDir = file.transcodeOutputPath ?: "",
+                objectPrefix = file.transcodeOutputPrefix ?: "",
+                encOutputDir = file.encryptOutputDir ?: ""
+            )
+        }
+    }
+
+    private fun refreshStatus() {
+        totalFiles = videoPostProcessingFiles.size
+        transcodeDoneCount = videoPostProcessingFiles.count { isDone(it.transcodeStatus) }
+        encryptDoneCount = videoPostProcessingFiles.count { isDone(it.encryptStatus) }
+        failedCount = videoPostProcessingFiles.count { it.transcodeStatus == ProcessStatus.FAILED || it.encryptStatus == ProcessStatus.FAILED }
+        lastFailReason = videoPostProcessingFiles.mapNotNull { it.failReason?.takeIf(String::isNotBlank) }.lastOrNull()
+        transcodeStatus = resolveStatus(videoPostProcessingFiles.map { it.transcodeStatus })
+        encryptStatus = resolveStatus(videoPostProcessingFiles.map { it.encryptStatus })
+    }
+
+    private fun resolveStatus(statuses: List<ProcessStatus>): ProcessStatus {
+        if (statuses.isEmpty()) return ProcessStatus.UNKNOW
+        if (statuses.any { it == ProcessStatus.FAILED }) return ProcessStatus.FAILED
+        if (statuses.all { it == ProcessStatus.SKIPPED }) return ProcessStatus.SKIPPED
+        if (statuses.all { it == ProcessStatus.PENDING }) return ProcessStatus.PENDING
+        if (statuses.all { isDone(it) }) return ProcessStatus.SUCCESS
+        return ProcessStatus.PROCESSING
+    }
+
+    private fun isDone(status: ProcessStatus): Boolean {
+        return status == ProcessStatus.SUCCESS || status == ProcessStatus.SKIPPED
+    }
+
+    data class AppendFileSpec(
+        val uploadId: Long,
+        val fileIndex: Int,
+        val transcodeOutputPath: String,
+        val transcodeOutputPrefix: String,
+        val encryptOutputDir: String,
+        val duration: Int?,
+        val fileSize: Long?,
+    )
+
+    // 【行为方法结束】
 }

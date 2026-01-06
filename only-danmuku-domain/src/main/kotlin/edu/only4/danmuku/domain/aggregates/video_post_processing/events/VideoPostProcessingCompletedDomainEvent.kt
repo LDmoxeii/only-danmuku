@@ -21,5 +21,9 @@ import edu.only4.danmuku.domain.aggregates.video_post_processing.VideoPostProces
     description = ""
 )
 class VideoPostProcessingCompletedDomainEvent(
-    val entity: VideoPostProcessing
+    val videoPostId: Long,
+    val duration: Int?,
+    val failedCount: Int,
+    val lastFailReason: String?,
+    val entity: VideoPostProcessing,
 )

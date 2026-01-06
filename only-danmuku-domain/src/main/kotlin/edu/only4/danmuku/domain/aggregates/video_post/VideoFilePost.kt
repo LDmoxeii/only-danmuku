@@ -217,5 +217,29 @@ class VideoFilePost(
             this.encryptStatus = EncryptStatus.FAILED
         }
     }
+
+    fun applyTranscodeResult(
+        outputPrefix: String?,
+        variantsJson: String?,
+        duration: Int?,
+        fileSize: Long?,
+    ) {
+        if (!outputPrefix.isNullOrBlank()) {
+            this.transcodeOutputPrefix = outputPrefix
+        }
+        this.transcodeVariantsJson = variantsJson
+        if (duration != null) {
+            this.duration = duration
+        }
+        if (fileSize != null) {
+            this.fileSize = fileSize
+        }
+        this.transferResult = TransferResult.SUCCESS
+    }
+
+    fun syncVariants(variants: List<VideoFilePostVariant>) {
+        this.videoFilePostVariants.clear()
+        this.videoFilePostVariants.addAll(variants)
+    }
     // 【行为方法结束】
 }

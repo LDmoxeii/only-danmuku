@@ -1,8 +1,11 @@
 package edu.only4.danmuku.application.commands.video_post_processing
 
+import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
+import edu.only4.danmuku.domain._share.meta.video_post_processing.SVideoPostProcessing
+import kotlin.jvm.optionals.getOrNull
 
 import org.springframework.stereotype.Service
 
@@ -18,11 +21,26 @@ object ApplyVideoPostProcessingEncryptResultCmd {
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
+            val processing = Mediator.repositories.findFirst(
+                SVideoPostProcessing.predicate { schema ->
+                    schema.videoPostId.eq(request.videoPostId)
+                }
+            ).getOrNull() ?: throw KnownException("处理聚合不存在: ${request.videoPostId}")
+
+            val outputPrefix = request.encryptedPrefix?.takeIf { it.isNotBlank() }
+                ?: resolveOutputPrefix(request.encryptedMasterPath)
+            processing.applyEncryptResult(
+                fileIndex = request.fileIndex,
+                success = request.success,
+                encryptedPrefix = if (request.success) outputPrefix else null,
+                failReason = request.failReason
+            )
+
             Mediator.uow.save()
 
             return Response(
-                success = TODO("set success"),
-                failReason = TODO("set failReason")
+                success = request.success,
+                failReason = request.failReason
             )
         }
 
@@ -44,4 +62,14 @@ object ApplyVideoPostProcessingEncryptResultCmd {
         val success: Boolean = true,
         val failReason: String?
     )
+
+    private fun resolveOutputPrefix(masterPath: String?): String? {
+        if (masterPath.isNullOrBlank()) return null
+        val trimmed = masterPath.trim()
+        return if (trimmed.endsWith("/master.m3u8")) {
+            trimmed.removeSuffix("/master.m3u8")
+        } else {
+            trimmed.substringBeforeLast("/", trimmed)
+        }.trimEnd('/')
+    }
 }

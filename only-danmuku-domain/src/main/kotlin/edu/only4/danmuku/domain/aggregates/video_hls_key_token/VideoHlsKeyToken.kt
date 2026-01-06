@@ -181,5 +181,10 @@ class VideoHlsKeyToken(
             this.status = EncryptTokenStatus.EXHAUSTED
         }
     }
+
+    fun bindVideoId(videoId: Long) {
+        if (this.videoId == videoId) return
+        this.videoId = videoId
+    }
     // 【行为方法结束】
 }

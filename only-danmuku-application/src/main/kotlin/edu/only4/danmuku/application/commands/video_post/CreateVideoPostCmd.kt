@@ -4,8 +4,10 @@ import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
 import edu.only4.danmuku.application.validator.MaxVideoPCount
+import edu.only4.danmuku.domain.aggregates.video_post.VideoFilePost
+import edu.only4.danmuku.domain.aggregates.video_post.VideoPost
 import edu.only4.danmuku.domain.aggregates.video_post.enums.PostType
-import edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus
+import edu.only4.danmuku.domain.aggregates.video_post.enums.TransferResult
 import edu.only4.danmuku.domain.aggregates.video_post.factory.VideoPostFactory
 import org.springframework.stereotype.Service
 
@@ -26,9 +28,30 @@ object CreateVideoPostCmd {
                     tags = request.tags,
                     introduction = request.introduction,
                     interaction = request.interaction,
-                    status = VideoStatus.TRANSCODING,
                 )
             )
+            val filePosts = request.uploadFileList.map { spec ->
+                VideoFilePost(
+                    uploadId = spec.uploadId,
+                    customerId = request.customerId,
+                    fileIndex = spec.fileIndex,
+                    fileName = spec.fileName,
+                    fileSize = spec.fileSize,
+                    duration = spec.duration,
+                    transferResult = TransferResult.TRANSCODING
+                )
+            }
+            post.videoFilePosts.addAll(filePosts)
+            val transcodeFiles = request.uploadFileList.map { spec ->
+                VideoPost.TranscodeFileSpec(
+                    uploadId = spec.uploadId,
+                    fileIndex = spec.fileIndex,
+                    fileName = spec.fileName,
+                    fileSize = spec.fileSize,
+                    duration = spec.duration
+                )
+            }
+            post.markTranscoding(transcodeFiles)
 
             Mediator.uow.save()
 
@@ -48,9 +71,18 @@ object CreateVideoPostCmd {
         val tags: String? = null,
         val introduction: String? = null,
         val interaction: String?,
+        val uploadFileList: List<VideoPostFileSpec>,
     ) : RequestParam<Response>
 
     data class Response(
         val videoId: Long,
+    )
+
+    data class VideoPostFileSpec(
+        val uploadId: Long,
+        val fileIndex: Int,
+        val fileName: String,
+        val fileSize: Long?,
+        val duration: Int?,
     )
 }

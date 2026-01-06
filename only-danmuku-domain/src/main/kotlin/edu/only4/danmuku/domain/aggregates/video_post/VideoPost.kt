@@ -7,6 +7,7 @@ import edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity
 import edu.only4.danmuku.domain.aggregates.video_post.enums.PostType
 import edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus
 import edu.only4.danmuku.domain.aggregates.video_post.events.*
+import edu.only4.danmuku.domain.aggregates.video_post.events.VideoPostTranscodingRequestedDomainEvent.FileItem
 
 import jakarta.persistence.*
 
@@ -184,9 +185,6 @@ class VideoPost(
         events().attach(this) { VideoPostDeletedDomainEvent(this) }
     }
 
-    fun onUpdate() {
-    }
-
     /** 审核通过 */
     fun reviewPass() {
         if (this.status == VideoStatus.REVIEW_PASSED) return
@@ -206,14 +204,44 @@ class VideoPost(
         this.status = VideoStatus.PENDING_REVIEW
     }
 
-    /** 标记为转码中 */
-    fun markTranscoding() {
+    /** 标记为转码中，并在需要时发布转码请求事件 */
+    fun markTranscoding(fileList: List<TranscodeFileSpec> = emptyList()) {
         this.status = VideoStatus.TRANSCODING
+        if (fileList.isNotEmpty()) {
+            val items = fileList.map { spec ->
+                FileItem(
+                    uploadId = spec.uploadId,
+                    fileIndex = spec.fileIndex,
+                    fileName = spec.fileName,
+                    fileSize = spec.fileSize,
+                    duration = spec.duration
+                )
+            }
+            events().attach(this) {
+                VideoPostTranscodingRequestedDomainEvent(
+                    videoPostId = this.id,
+                    fileList = items,
+                    entity = this
+                )
+            }
+        }
     }
 
     /** 标记为转码失败 */
     fun markTranscodeFailed() {
         this.status = VideoStatus.TRANSCODE_FAILED
+    }
+
+    /** 按目标状态更新稿件状态（保持聚合内完成状态切换） */
+    fun applyProcessStatus(targetStatus: VideoStatus) {
+        when (targetStatus) {
+            VideoStatus.PENDING_REVIEW -> markPendingReview()
+            VideoStatus.TRANSCODING -> markTranscoding()
+            VideoStatus.TRANSCODE_FAILED -> markTranscodeFailed()
+            VideoStatus.REVIEW_PASSED -> reviewPass()
+            VideoStatus.REVIEW_FAILED -> reviewFail()
+            else -> {}
+        }
     }
 
     /**
@@ -295,18 +323,13 @@ class VideoPost(
         events().attach(this) { VideoPostInteractionChangedDomainEvent(this) }
     }
 
-    // 【行为方法结束】
-
-    // 【语义化编辑方法开始】
-
-    /**
-     * 上传占位信息（与 video_file_post 解耦后仅用于初始化总时长）
-     */
-    data class UploadSpec(
+    data class TranscodeFileSpec(
         val uploadId: Long,
-        val fileIndex: Int = 0,
-        val fileName: String = "",
-        val fileSize: Long = 0,
-        val duration: Int = 0,
+        val fileIndex: Int,
+        val fileName: String?,
+        val fileSize: Long?,
+        val duration: Int?,
     )
+
+    // 【行为方法结束
 }

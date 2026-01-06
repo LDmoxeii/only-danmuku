@@ -187,5 +187,10 @@ class VideoHlsEncryptKey(
             this.remark = reason
         }
     }
+
+    fun bindVideoId(videoId: Long) {
+        if (this.videoId == videoId) return
+        this.videoId = videoId
+    }
     // 【行为方法结束】
 }

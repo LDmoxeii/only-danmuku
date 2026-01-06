@@ -21,5 +21,10 @@ import edu.only4.danmuku.domain.aggregates.video_post_processing.VideoPostProces
     description = ""
 )
 class VideoPostProcessingTranscodeCompletedDomainEvent(
-    val entity: VideoPostProcessing
+    val videoPostId: Long,
+    val fileIndex: Int,
+    val outputPrefix: String?,
+    val encOutputDir: String?,
+    val variantsJson: String?,
+    val entity: VideoPostProcessing,
 )

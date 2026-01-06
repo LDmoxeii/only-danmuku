@@ -1,8 +1,8 @@
 package edu.only4.danmuku.adapter.application.distributed.clients.video_transcode
 
 import com.only4.cap4k.ddd.core.application.RequestHandler
-
 import edu.only4.danmuku.application.distributed.clients.video_transcode.TranscodeVideoFileToAbrByPathCli
+import edu.only4.danmuku.application.distributed.clients.video_transcode.TranscodeVideoFileToAbrCli
 
 import org.springframework.stereotype.Service
 
@@ -14,12 +14,22 @@ import org.springframework.stereotype.Service
  * @date 2026/01/05
  */
 @Service
-class TranscodeVideoFileToAbrByPathCliHandler : RequestHandler<TranscodeVideoFileToAbrByPathCli.Request, TranscodeVideoFileToAbrByPathCli.Response> {
+class TranscodeVideoFileToAbrByPathCliHandler(
+    private val delegate: TranscodeVideoFileToAbrCliHandler,
+) : RequestHandler<TranscodeVideoFileToAbrByPathCli.Request, TranscodeVideoFileToAbrByPathCli.Response> {
     override fun exec(request: TranscodeVideoFileToAbrByPathCli.Request): TranscodeVideoFileToAbrByPathCli.Response {
+        val result = delegate.exec(
+            TranscodeVideoFileToAbrCli.Request(
+                sourcePath = request.sourcePath,
+                outputDir = request.outputDir,
+                profiles = request.profiles,
+                segmentDurationSec = request.segmentDurationSec
+            )
+        )
         return TranscodeVideoFileToAbrByPathCli.Response(
-            accepted = TODO("set accepted"),
-            variantsJson = TODO("set variantsJson"),
-            failReason = TODO("set failReason")
+            accepted = result.accepted,
+            variantsJson = result.variants,
+            failReason = result.failReason
         )
     }
 }

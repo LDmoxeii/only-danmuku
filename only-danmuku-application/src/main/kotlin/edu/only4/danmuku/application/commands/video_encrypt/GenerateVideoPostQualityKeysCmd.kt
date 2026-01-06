@@ -18,11 +18,18 @@ object GenerateVideoPostQualityKeysCmd {
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
-            Mediator.uow.save()
-
+            val generated = Mediator.commands.send(
+                GenerateVideoHlsQualityKeysCmd.Request(
+                    videoPostId = request.videoPostId,
+                    fileIndex = request.fileIndex,
+                    qualities = request.qualities,
+                    method = request.method,
+                    keyBytes = request.keyBytes
+                )
+            )
             return Response(
-                keyVersion = TODO("set keyVersion"),
-                keysJson = TODO("set keysJson")
+                keyVersion = generated.keyVersion,
+                keysJson = generated.keysJson
             )
         }
 

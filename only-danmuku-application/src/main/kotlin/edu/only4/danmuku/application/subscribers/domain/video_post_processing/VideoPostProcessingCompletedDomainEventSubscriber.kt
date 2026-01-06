@@ -1,5 +1,9 @@
 package edu.only4.danmuku.application.subscribers.domain.video_post_processing
 
+import com.only4.cap4k.ddd.core.Mediator
+import edu.only4.danmuku.application.commands.video_post.SyncVideoPostProcessStatusCmd
+import edu.only4.danmuku.application.queries.video_post_processing.ListVideoPostProcessingFilesForSyncQry
+import edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus
 import edu.only4.danmuku.domain.aggregates.video_post_processing.events.VideoPostProcessingCompletedDomainEvent
 
 import org.springframework.context.event.EventListener
@@ -18,6 +22,39 @@ class VideoPostProcessingCompletedDomainEventSubscriber {
 
     @EventListener(VideoPostProcessingCompletedDomainEvent::class)
     fun on(event: VideoPostProcessingCompletedDomainEvent) {
+        val targetStatus = if (event.failedCount > 0) {
+            VideoStatus.TRANSCODE_FAILED
+        } else {
+            VideoStatus.PENDING_REVIEW
+        }
 
+        val files = Mediator.queries.send(
+            ListVideoPostProcessingFilesForSyncQry.Request(
+                videoPostId = event.videoPostId
+            )
+        )
+
+        val fileItems = files.map { file ->
+            SyncVideoPostProcessStatusCmd.FileItem(
+                fileIndex = file.fileIndex,
+                transcodeOutputPrefix = file.transcodeOutputPrefix,
+                encryptOutputPrefix = file.encryptOutputPrefix,
+                variantsJson = file.variantsJson,
+                duration = file.duration,
+                fileSize = file.fileSize,
+                encryptMethod = file.encryptMethod,
+                keyVersion = file.keyVersion
+            )
+        }
+
+        Mediator.commands.send(
+            SyncVideoPostProcessStatusCmd.Request(
+                videoPostId = event.videoPostId,
+                targetStatus = targetStatus,
+                duration = event.duration,
+                failReason = event.lastFailReason,
+                fileList = fileItems
+            )
+        )
     }
 }

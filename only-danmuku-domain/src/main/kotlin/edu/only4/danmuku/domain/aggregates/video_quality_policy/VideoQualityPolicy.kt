@@ -96,4 +96,14 @@ class VideoQualityPolicy(
         internal set
 
     // 【字段映射结束】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
+
+    // 【行为方法开始】
+    fun applyPolicy(
+        authPolicy: QualityAuthPolicy,
+        remark: String?,
+    ) {
+        this.authPolicy = authPolicy
+        this.remark = remark
+    }
+    // 【行为方法结束】
 }

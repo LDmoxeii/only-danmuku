@@ -5,6 +5,7 @@ import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePayload
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.VideoQualityPolicy
+import edu.only4.danmuku.domain.aggregates.video_quality_policy.enums.QualityAuthPolicy
 
 import org.springframework.stereotype.Service
 
@@ -25,9 +26,13 @@ import org.springframework.stereotype.Service
 class VideoQualityPolicyFactory : AggregateFactory<VideoQualityPolicyFactory.Payload, VideoQualityPolicy> {
 
     override fun create(payload: Payload): VideoQualityPolicy {
-        return VideoQualityPolicy().apply {
-
-        }
+        return VideoQualityPolicy(
+            videoId = payload.videoId,
+            fileIndex = payload.fileIndex,
+            quality = payload.quality,
+            authPolicy = payload.authPolicy,
+            remark = payload.remark
+        )
     }
 
      @Aggregate(
@@ -37,7 +42,11 @@ class VideoQualityPolicyFactory : AggregateFactory<VideoQualityPolicyFactory.Pay
         description = ""
     )
     data class Payload(
-        val name: String
+        val videoId: Long,
+        val fileIndex: Int,
+        val quality: String,
+        val authPolicy: QualityAuthPolicy,
+        val remark: String?,
     ) : AggregatePayload<VideoQualityPolicy>
 
 }
