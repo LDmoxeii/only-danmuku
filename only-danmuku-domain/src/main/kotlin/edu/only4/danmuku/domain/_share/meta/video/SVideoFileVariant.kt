@@ -6,7 +6,7 @@ import edu.only4.danmuku.domain._share.meta.OrderBuilder
 import edu.only4.danmuku.domain._share.meta.PredicateBuilder
 import edu.only4.danmuku.domain._share.meta.SchemaSpecification
 import edu.only4.danmuku.domain._share.meta.SubqueryConfigure
-import edu.only4.danmuku.domain.aggregates.video.VideoFile
+import edu.only4.danmuku.domain.aggregates.video.VideoFileVariant
 
 import jakarta.persistence.criteria.*
 
@@ -19,29 +19,33 @@ import org.springframework.data.jpa.domain.Specification
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
  */
-class SVideoFile(
-    private val root: Path<VideoFile>,
+class SVideoFileVariant(
+    private val root: Path<VideoFileVariant>,
     private val criteriaBuilder: CriteriaBuilder,
 ) {
     class PROPERTY_NAMES {
 
         val id = "id"
 
-        val customerId = "customerId"
+        val parentId = "parentId"
 
-        val videoId = "videoId"
+        val quality = "quality"
 
-        val videoFilePostId = "videoFilePostId"
+        val width = "width"
 
-        val fileName = "fileName"
+        val height = "height"
 
-        val fileIndex = "fileIndex"
+        val videoBitrateKbps = "videoBitrateKbps"
 
-        val fileSize = "fileSize"
+        val audioBitrateKbps = "audioBitrateKbps"
 
-        val filePath = "filePath"
+        val bandwidthBps = "bandwidthBps"
 
-        val duration = "duration"
+        val playlistPath = "playlistPath"
+
+        val segmentPrefix = "segmentPrefix"
+
+        val segmentDuration = "segmentDuration"
 
         val createUserId = "createUserId"
 
@@ -70,7 +74,7 @@ class SVideoFile(
          * @return
          */
         @JvmStatic
-        fun specify(builder: PredicateBuilder<SVideoFile>): Specification<VideoFile> {
+        fun specify(builder: PredicateBuilder<SVideoFileVariant>): Specification<VideoFileVariant> {
             return specify(builder, false, emptyList())
         }
 
@@ -82,7 +86,7 @@ class SVideoFile(
          * @return
          */
         @JvmStatic
-        fun specify(builder: PredicateBuilder<SVideoFile>, distinct: Boolean): Specification<VideoFile> {
+        fun specify(builder: PredicateBuilder<SVideoFileVariant>, distinct: Boolean): Specification<VideoFileVariant> {
             return specify(builder, distinct, emptyList())
         }
 
@@ -95,9 +99,9 @@ class SVideoFile(
          */
         @JvmStatic
         fun specify(
-            builder: PredicateBuilder<SVideoFile>,
-            vararg orderBuilders: OrderBuilder<SVideoFile>,
-        ): Specification<VideoFile> {
+            builder: PredicateBuilder<SVideoFileVariant>,
+            vararg orderBuilders: OrderBuilder<SVideoFileVariant>,
+        ): Specification<VideoFileVariant> {
             return specify(builder, orderBuilders.toList())
         }
 
@@ -110,9 +114,9 @@ class SVideoFile(
          */
         @JvmStatic
         fun specify(
-            builder: PredicateBuilder<SVideoFile>,
-            orderBuilders: List<OrderBuilder<SVideoFile>>,
-        ): Specification<VideoFile> {
+            builder: PredicateBuilder<SVideoFileVariant>,
+            orderBuilders: List<OrderBuilder<SVideoFileVariant>>,
+        ): Specification<VideoFileVariant> {
             return specify(builder, false, orderBuilders)
         }
 
@@ -126,10 +130,10 @@ class SVideoFile(
         */
         @JvmStatic
         fun specify(
-            builder: PredicateBuilder<SVideoFile>,
+            builder: PredicateBuilder<SVideoFileVariant>,
             distinct: Boolean,
-            vararg orderBuilders: OrderBuilder<SVideoFile>,
-        ): Specification<VideoFile> {
+            vararg orderBuilders: OrderBuilder<SVideoFileVariant>,
+        ): Specification<VideoFileVariant> {
             return specify(builder, distinct, orderBuilders.toList())
         }
 
@@ -143,10 +147,10 @@ class SVideoFile(
         */
         @JvmStatic
         fun specify(
-            builder: PredicateBuilder<SVideoFile>,
+            builder: PredicateBuilder<SVideoFileVariant>,
             distinct: Boolean,
-            orderBuilders: List<OrderBuilder<SVideoFile>>,
-        ): Specification<VideoFile> {
+            orderBuilders: List<OrderBuilder<SVideoFileVariant>>,
+        ): Specification<VideoFileVariant> {
             return specify { schema, criteriaQuery, criteriaBuilder ->
                 criteriaQuery.where(builder.build(schema))
                 criteriaQuery.distinct(distinct)
@@ -164,9 +168,9 @@ class SVideoFile(
          * @return
          */
         @JvmStatic
-        fun specify(specifier: SchemaSpecification<VideoFile, SVideoFile>): Specification<VideoFile> {
+        fun specify(specifier: SchemaSpecification<VideoFileVariant, SVideoFileVariant>): Specification<VideoFileVariant> {
             return Specification { root, criteriaQuery, criteriaBuilder ->
-                val schema = SVideoFile(root, criteriaBuilder)
+                val schema = SVideoFileVariant(root, criteriaBuilder)
                 specifier.toPredicate(schema, criteriaQuery, criteriaBuilder)
             }
         }
@@ -185,8 +189,8 @@ class SVideoFile(
         @JvmStatic
         fun <E> subquery(
             resultClass: Class<E>,
-            selectBuilder: ExpressionBuilder<SVideoFile, E>,
-            predicateBuilder: PredicateBuilder<SVideoFile>,
+            selectBuilder: ExpressionBuilder<SVideoFileVariant, E>,
+            predicateBuilder: PredicateBuilder<SVideoFileVariant>,
             criteriaBuilder: CriteriaBuilder,
             criteriaQuery: CriteriaQuery<*>,
         ): Subquery<E> {
@@ -209,13 +213,13 @@ class SVideoFile(
         @JvmStatic
         fun <E> subquery(
             resultClass: Class<E>,
-            subqueryConfigure: SubqueryConfigure<E, SVideoFile>,
+            subqueryConfigure: SubqueryConfigure<E, SVideoFileVariant>,
             criteriaBuilder: CriteriaBuilder,
             criteriaQuery: CriteriaQuery<*>,
         ): Subquery<E> {
             val sq = criteriaQuery.subquery(resultClass)
-            val root = sq.from(VideoFile::class.java)
-            val schema = SVideoFile(root, criteriaBuilder)
+            val root = sq.from(VideoFileVariant::class.java)
+            val schema = SVideoFileVariant(root, criteriaBuilder)
             subqueryConfigure.configure(sq, schema)
             return sq
         }
@@ -223,7 +227,7 @@ class SVideoFile(
 
     fun _criteriaBuilder(): CriteriaBuilder = criteriaBuilder
 
-    fun _root(): Path<VideoFile> = root
+    fun _root(): Path<VideoFileVariant> = root
 
 
     /**
@@ -235,66 +239,82 @@ class SVideoFile(
 
 
     /**
-     * 用户ID
+     * 视频文件ID
      */
-    val customerId: Field<Long> by lazy {
-        Field(root.get("customerId"), criteriaBuilder)
+    val parentId: Field<Long> by lazy {
+        Field(root.get("parentId"), criteriaBuilder)
     }
 
 
     /**
-     * 视频ID
+     * 清晰度档位，如 1080p/720p
      */
-    val videoId: Field<Long> by lazy {
-        Field(root.get("videoId"), criteriaBuilder)
+    val quality: Field<String> by lazy {
+        Field(root.get("quality"), criteriaBuilder)
     }
 
 
     /**
-     * 视频文件草稿ID
+     * 输出宽度(px)
      */
-    val videoFilePostId: Field<Long> by lazy {
-        Field(root.get("videoFilePostId"), criteriaBuilder)
+    val width: Field<Int> by lazy {
+        Field(root.get("width"), criteriaBuilder)
     }
 
 
     /**
-     * 文件名
+     * 输出高度(px)
      */
-    val fileName: Field<String?> by lazy {
-        Field(root.get("fileName"), criteriaBuilder)
+    val height: Field<Int> by lazy {
+        Field(root.get("height"), criteriaBuilder)
     }
 
 
     /**
-     * 文件索引
+     * 视频码率(kbps)
      */
-    val fileIndex: Field<Int> by lazy {
-        Field(root.get("fileIndex"), criteriaBuilder)
+    val videoBitrateKbps: Field<Int> by lazy {
+        Field(root.get("videoBitrateKbps"), criteriaBuilder)
     }
 
 
     /**
-     * 文件大小
+     * 音频码率(kbps)
      */
-    val fileSize: Field<Long?> by lazy {
-        Field(root.get("fileSize"), criteriaBuilder)
+    val audioBitrateKbps: Field<Int> by lazy {
+        Field(root.get("audioBitrateKbps"), criteriaBuilder)
     }
 
 
     /**
-     * 文件路径
+     * Master 中的 BANDWIDTH（bps）
      */
-    val filePath: Field<String?> by lazy {
-        Field(root.get("filePath"), criteriaBuilder)
+    val bandwidthBps: Field<Int> by lazy {
+        Field(root.get("bandwidthBps"), criteriaBuilder)
     }
 
 
     /**
-     * 持续时间（秒）
+     * 子清晰度 m3u8 路径，如 720p/index.m3u8
      */
-    val duration: Field<Int?> by lazy {
-        Field(root.get("duration"), criteriaBuilder)
+    val playlistPath: Field<String> by lazy {
+        Field(root.get("playlistPath"), criteriaBuilder)
+    }
+
+
+    /**
+     * 切片目录前缀，如 720p/
+     */
+    val segmentPrefix: Field<String?> by lazy {
+        Field(root.get("segmentPrefix"), criteriaBuilder)
+    }
+
+
+    /**
+     * 切片目标时长（秒）
+     */
+    val segmentDuration: Field<Int?> by lazy {
+        Field(root.get("segmentDuration"), criteriaBuilder)
     }
 
 
@@ -356,18 +376,10 @@ class SVideoFile(
 
 
     /**
-     * 关联: ManyToOne - Video
+     * 关联: ManyToOne - VideoFile
      */
-    val video: Field<Any> by lazy {
-        Field(root.get("video"), criteriaBuilder)
-    }
-
-
-    /**
-     * 关联: OneToMany - VideoFileVariant
-     */
-    val videoFileVariants: Field<Any> by lazy {
-        Field(root.get("videoFileVariants"), criteriaBuilder)
+    val videoFile: Field<Any> by lazy {
+        Field(root.get("videoFile"), criteriaBuilder)
     }
 
 
@@ -424,7 +436,7 @@ class SVideoFile(
      * @param builder
      * @return
      */
-    fun spec(builder: PredicateBuilder<SVideoFile>): Predicate {
+    fun spec(builder: PredicateBuilder<SVideoFileVariant>): Predicate {
         return builder.build(this)
     }
 }

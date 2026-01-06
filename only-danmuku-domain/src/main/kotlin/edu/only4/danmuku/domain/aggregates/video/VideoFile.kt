@@ -8,6 +8,8 @@ import jakarta.persistence.*
 
 import org.hibernate.annotations.DynamicInsert
 import org.hibernate.annotations.DynamicUpdate
+import org.hibernate.annotations.Fetch
+import org.hibernate.annotations.FetchMode
 import org.hibernate.annotations.GenericGenerator
 import org.hibernate.annotations.SQLDelete
 import org.hibernate.annotations.Where
@@ -41,6 +43,10 @@ class VideoFile(
     @ManyToOne(cascade = [], fetch = FetchType.EAGER)
     @JoinColumn(name = "`video_id`", nullable = false, insertable = false, updatable = false)
     var video: Video? = null
+    @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.EAGER, orphanRemoval = true)
+    @Fetch(FetchMode.SUBSELECT)
+    @JoinColumn(name = "`parent_id`", nullable = false)
+    var videoFileVariants: MutableList<VideoFileVariant> = mutableListOf()
 
     /**
      * ID
