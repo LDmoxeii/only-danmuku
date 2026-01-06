@@ -1,6 +1,6 @@
 package edu.only4.danmuku.application.queries.video_search
 
-import com.only4.cap4k.ddd.core.application.query.PageQueryParam
+import com.only4.cap4k.ddd.core.application.RequestParam
 
 /**
  * 使用 ES 搜索视频（替代数据库模糊查询）
@@ -13,8 +13,10 @@ object SearchVideoByEsQry {
 
     data class Request(
         val keyword: String,
-        val orderType: Int? = null
-    ) : PageQueryParam<Response>()
+        val orderType: Int?,
+        val pageNum: Int = 1,
+        val pageSize: Int = 20
+    ) : RequestParam<Response>
 
     data class Response(
         val videoId: Long,
