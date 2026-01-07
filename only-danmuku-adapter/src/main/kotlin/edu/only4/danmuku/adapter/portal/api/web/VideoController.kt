@@ -8,11 +8,11 @@ import com.only4.cap4k.ddd.core.share.PageData
 import edu.only4.danmuku.adapter.portal.api._share.constant.Constants
 import edu.only4.danmuku.adapter.portal.api.payload.video.ReportVideoPlayOnline
 import edu.only4.danmuku.adapter.portal.api.payload.video.GetVideoDetail
-import edu.only4.danmuku.adapter.portal.api.payload.video.GetRecommendVideoList
+import edu.only4.danmuku.adapter.portal.api.payload.video.GetVideoRecommendList
 import edu.only4.danmuku.adapter.portal.api.payload.video.GetVideoPage
 import edu.only4.danmuku.adapter.portal.api.payload.video.GetHotVidePage
 import edu.only4.danmuku.adapter.portal.api.payload.video.GetVideoPList
-import edu.only4.danmuku.adapter.portal.api.payload.video.GetRecommendVideos
+import edu.only4.danmuku.adapter.portal.api.payload.video.GetRecommendVideoList
 import edu.only4.danmuku.adapter.portal.api.payload.video.VideoSearch
 import edu.only4.danmuku.application.queries.customer_action.GetUserActionsByVideoIdQry
 import edu.only4.danmuku.application.queries.video.GetHotVideoPageQry
@@ -34,9 +34,9 @@ class VideoController {
 
     @SaIgnore
     @PostMapping("/getRecommendVideoList")
-    fun getRecommendVideoList(): List<GetRecommendVideos.Item> {
+    fun getRecommendVideoList(): List<GetRecommendVideoList.Item> {
         val videoList = Mediator.queries.send(GetRecommendVideosQry.Request())
-        return videoList.map { GetRecommendVideos.Converter.INSTANCE.fromApp(it) }
+        return videoList.map { GetRecommendVideoList.Converter.INSTANCE.fromApp(it) }
     }
 
     @SaIgnore
@@ -101,8 +101,8 @@ class VideoController {
     }
 
     @SaIgnore
-    @PostMapping("/getRecommendVideoList")
-    fun getRecommendVideoList(@RequestBody @Validated  request: GetRecommendVideoList.Request): List<GetRecommendVideoList.Item> {
+    @PostMapping("/getVideoRecommendList")
+    fun getVideoRecommendList(@RequestBody @Validated  request: GetVideoRecommendList.Request): List<GetVideoRecommendList.Item> {
         val queryRequest = GetVideoPageQry.Request(
             videoNameFuzzy = request.keyword,
             recommendType = null,
@@ -114,7 +114,7 @@ class VideoController {
 
         val queryResult = Mediator.queries.send(queryRequest)
 
-        return queryResult.list.map { GetRecommendVideoList.Converter.INSTANCE.fromApp(it) }
+        return queryResult.list.map { GetVideoRecommendList.Converter.INSTANCE.fromApp(it) }
     }
 
     @SaIgnore

@@ -1,28 +1,18 @@
 package edu.only4.danmuku.adapter.portal.api.payload.video
 
-import edu.only4.danmuku.application.queries.video.GetVideoPageQry
-import jakarta.validation.constraints.NotEmpty
+import com.only.engine.translation.annotation.Translation
+import com.only.engine.translation.translation.EpochSecondToDateStringTranslation
+import edu.only4.danmuku.application.queries.video.GetRecommendVideosQry
 import org.mapstruct.Mapper
 import org.mapstruct.factory.Mappers
 
 /**
- * 获取推荐视频(基于关键词)接口载荷
+ * 加载推荐视频接口载荷
  */
 object GetRecommendVideoList {
 
     /**
-     * 请求参数
-     */
-    data class Request(
-        /** 关键词 */
-        @field:NotEmpty(message = "关键词不能为空")
-        val keyword: String = "",
-        /** 当前视频ID(排除) */
-        val videoId: Long
-    )
-
-    /**
-     * 响应结果 - 推荐视频列表
+     * 响应结果 - 返回推荐视频列表
      */
     data class Response(
         /** 推荐视频列表 */
@@ -30,36 +20,21 @@ object GetRecommendVideoList {
     )
 
     data class Item(
-        var videoId: Long,
-        var videoCover: String?,
-        var videoName: String?,
-        var userId: Long?,
-        var createTime: Long,
-        var lastUpdateTime: Long?,
-        var parentCategoryId: Long,
-        var categoryId: Long?,
-        var postType: Int,
-        var originInfo: String?,
-        var tags: String?,
-        var introduction: String?,
-        var duration: Int,
-        val status: Int,
-        var playCount: Int,
-        var likeCount: Int,
-        var danmuCount: Int,
-        var commentCount: Int,
-        var coinCount: Int,
-        var collectCount: Int,
-        var recommendType: Int,
-        var lastPlayTime: Long?,
+        var videoId: String? = null,
+        var videoCover: String? = null,
+        var videoName: String? = null,
+        var userId: String? = null,
         var nickName: String? = null,
         var avatar: String? = null,
-        var categoryFullName: String?,
+        var playCount: Int? = null,
+        var likeCount: Int? = null,
+        @get:Translation(type = EpochSecondToDateStringTranslation.TYPE, other = "yyyy-MM-dd")
+        var createTime: Long
     )
 
     @Mapper(componentModel = "default")
     interface Converter {
-        fun fromApp(resp: GetVideoPageQry.Response): Item
+        fun fromApp(resp: GetRecommendVideosQry.Response): Item
 
         companion object { val INSTANCE: Converter = Mappers.getMapper(Converter::class.java) }
     }
