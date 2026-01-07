@@ -7,8 +7,8 @@ import com.only.engine.json.misc.JsonUtils
 import com.only.engine.oss.factory.OssFactory
 import com.only.engine.web.annotation.IgnoreResultWrapper
 import com.only4.cap4k.ddd.core.Mediator
-import edu.only4.danmuku.adapter.portal.api.payload.video_encrypt.FrontIssueEncToken
-import edu.only4.danmuku.adapter.portal.api.payload.video_encrypt.FrontListEncQualities
+import edu.only4.danmuku.adapter.portal.api.payload.video_encrypt.IssueToken
+import edu.only4.danmuku.adapter.portal.api.payload.video_encrypt.GetVideEncVariants
 import edu.only4.danmuku.application.commands.video_encrypt.ConsumeVideoHlsKeyTokenCmd
 import edu.only4.danmuku.application.commands.video_encrypt.IssueVideoHlsKeyTokenCmd
 import edu.only4.danmuku.application.queries.file_storage.GetResourceAccessUrlQry
@@ -32,9 +32,9 @@ import java.nio.charset.StandardCharsets
 @RequestMapping("/video/enc")
 class VideoEncryptController {
 
-    @PostMapping("/token")
-    fun issueToken(@RequestBody req: FrontIssueEncToken.Request): FrontIssueEncToken.Response {
-        val context = resolveFileContext(req.fileId)
+    @PostMapping("/issueToken")
+    fun issueToken(@RequestBody request: IssueToken.Request): IssueToken.Response {
+        val context = resolveFileContext(request.fileId)
         val latestKey = Mediator.queries.send(
             GetLatestVideoHlsKeyVersionQry.Request(
                 videoPostId = context.videoPostId,
@@ -43,7 +43,7 @@ class VideoEncryptController {
         )
         val keyVersion = latestKey.keyVersion ?: throw KnownException("未找到可用密钥版本")
 
-        val allowedQualities = computeAllowedQualities(req.fileId)
+        val allowedQualities = computeAllowedQualities(request.fileId)
 
         val resp = Mediator.commands.send(
             IssueVideoHlsKeyTokenCmd.Request(
@@ -54,20 +54,20 @@ class VideoEncryptController {
                 allowedQualities = allowedQualities
             )
         )
-        return FrontIssueEncToken.Response(
+        return IssueToken.Response(
             token = resp.token,
             expireAt = resp.expireAt,
             allowedQualities = resp.allowedQualities
         )
     }
 
-    @PostMapping("/qualities")
-    fun qualities(@RequestBody req: FrontListEncQualities.Request): FrontListEncQualities.Response {
-        val policies = loadQualityPolicies(req.fileId)
+    @PostMapping("/variants")
+    fun variants(@RequestBody request: GetVideEncVariants.Request): GetVideEncVariants.Response {
+        val policies = loadQualityPolicies(request.fileId)
         val allowLogin = StpUtil.isLogin()
         val items = if (policies.isEmpty()) {
-            loadAbrQualities(req.fileId).map { quality ->
-                FrontListEncQualities.QualityItem(
+            loadAbrQualities(request.fileId).map { quality ->
+                GetVideEncVariants.QualityItem(
                     quality = quality,
                     authPolicy = QualityAuthPolicy.PUBLIC.code,
                     playable = true
@@ -76,14 +76,14 @@ class VideoEncryptController {
         } else {
             sortPolicies(policies).map { payload ->
                 val policy = resolvePolicy(payload.authPolicy)
-                FrontListEncQualities.QualityItem(
+                GetVideEncVariants.QualityItem(
                     quality = payload.quality,
                     authPolicy = policy.code,
                     playable = isPlayable(policy, allowLogin)
                 )
             }
         }
-        return FrontListEncQualities.Response(items)
+        return GetVideEncVariants.Response(items)
     }
 
     @IgnoreResultWrapper

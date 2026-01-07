@@ -15,8 +15,8 @@ object ChangeVideoPostInteractionCmd {
         override fun exec(request: Request) {
 
             val videoPost = Mediator.repositories.findOne(
-                SVideoPost.predicateById(request.videoId)
-            ).getOrNull() ?: throw KnownException("视频草稿不存在：${request.videoId}")
+                SVideoPost.predicateById(request.videoPostId)
+            ).getOrNull() ?: throw KnownException("视频草稿不存在：${request.videoPostId}")
 
             if (videoPost.customerId != request.userId) {
                 throw KnownException("无权限修改该视频互动设置")
@@ -29,7 +29,7 @@ object ChangeVideoPostInteractionCmd {
     }
 
     data class Request(
-        val videoId: Long,
+        val videoPostId: Long,
         val userId: Long,
         val interaction: String?,
     ) : RequestParam<Unit>
