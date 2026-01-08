@@ -1,16 +1,15 @@
 package edu.only4.danmuku.application.commands.video_encrypt
 
+import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
-import com.only.engine.exception.KnownException
 import edu.only4.danmuku.application.queries.video_encrypt.GetLatestVideoHlsKeyVersionQry
-import edu.only4.danmuku.domain.aggregates.video_hls_key_token.VideoHlsKeyToken
-import edu.only4.danmuku.domain.aggregates.video_hls_key_token.enums.EncryptTokenStatus
+import edu.only4.danmuku.domain.aggregates.video_hls_key_token.factory.VideoHlsKeyTokenFactory
 import org.springframework.stereotype.Service
 import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
-import java.util.UUID
+import java.util.*
 
 
 /**
@@ -37,9 +36,10 @@ object IssueVideoHlsKeyTokenCmd {
             val token = UUID.randomUUID().toString().replace("-", "")
             val tokenHash = sha256(token)
 
-            Mediator.uow.persist(
-                VideoHlsKeyToken(
+            Mediator.factories.create(
+                VideoHlsKeyTokenFactory.Payload(
                     videoPostId = request.videoPostId,
+                    videoId = request.videoId,
                     fileIndex = request.fileIndex,
                     keyVersion = keyVersion,
                     allowedQualities = request.allowedQualities,
@@ -47,10 +47,9 @@ object IssueVideoHlsKeyTokenCmd {
                     audience = request.audience,
                     expireTime = expireAt,
                     maxUse = request.maxUse.coerceAtLeast(1),
-                    usedCount = 0,
-                    status = EncryptTokenStatus.VALID
                 )
             )
+
             Mediator.uow.save()
 
             return Response(
@@ -70,11 +69,12 @@ object IssueVideoHlsKeyTokenCmd {
 
     data class Request(
         val videoPostId: Long,
+        val videoId: Long,
         val fileIndex: Int,
         val keyVersion: Int?,
         val audience: String?,
         val expireSeconds: Int = 600,
-        val maxUse: Int = 5,
+        val maxUse: Int = 30,
         val allowedQualities: String?
     ) : RequestParam<Response>
 

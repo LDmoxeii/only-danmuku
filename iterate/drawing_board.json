@@ -1,0 +1,11 @@
+[
+  {
+    "tag": "de",
+    "package": "video_hls_key_token",
+    "name": "VideoHlsKeyTokenIssued",
+    "desc": "视频 HLS 密钥 Token 已签发",
+    "aggregates": ["VideoHlsKeyToken"],
+    "entity": "VideoHlsKeyToken",
+    "persist": true
+  }
+]

@@ -48,6 +48,7 @@ class VideoEncryptController {
         val resp = Mediator.commands.send(
             IssueVideoHlsKeyTokenCmd.Request(
                 videoPostId = context.videoPostId,
+                videoId = context.videoId,
                 fileIndex = context.fileIndex,
                 keyVersion = keyVersion,
                 audience = StpUtil.getLoginIdDefaultNull()?.toString(),

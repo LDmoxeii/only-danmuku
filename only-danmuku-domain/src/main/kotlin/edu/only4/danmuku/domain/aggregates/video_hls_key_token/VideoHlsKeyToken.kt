@@ -1,23 +1,13 @@
 package edu.only4.danmuku.domain.aggregates.video_hls_key_token
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
-
+import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
 import edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity
 import edu.only4.danmuku.domain.aggregates.video_hls_key_token.enums.EncryptTokenStatus
-
+import edu.only4.danmuku.domain.aggregates.video_hls_key_token.events.VideoHlsKeyTokenIssuedDomainEvent
 import jakarta.persistence.*
-import jakarta.persistence.Column
-import jakarta.persistence.Convert
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.Id
 import jakarta.persistence.Table
-
-import org.hibernate.annotations.DynamicInsert
-import org.hibernate.annotations.DynamicUpdate
-import org.hibernate.annotations.GenericGenerator
-import org.hibernate.annotations.SQLDelete
-import org.hibernate.annotations.Where
+import org.hibernate.annotations.*
 
 /**
  * HLS 加密播放 token
@@ -167,6 +157,11 @@ class VideoHlsKeyToken(
     // 【字段映射结束】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
 
     // 【行为方法开始】
+
+    fun onCreate() {
+        events().attach(this) { VideoHlsKeyTokenIssuedDomainEvent(this) }
+    }
+
     fun markExpired() {
         this.status = EncryptTokenStatus.EXPIRED
     }

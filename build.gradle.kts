@@ -23,6 +23,7 @@ codegen {
     archTemplate.set("cap4k-ddd-codegen-template-multi-nested.json")
     designFiles.from(
         fileTree("iterate") {
+            include("drawing_board.json")
             include("**/*_gen.json")
             exclude("achrived/**", "deprecated/**")
         }
