@@ -18,7 +18,8 @@ object TransferVideoToProductionCmd {
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
             val post = Mediator.repositories.findOne(
-                SVideoPost.predicateById(request.videoPostId)
+                SVideoPost.predicateById(request.videoPostId),
+                persist = false,
             ).getOrNull() ?: throw KnownException("稿件不存在: ${request.videoPostId}")
             if (post.videoFilePosts.isEmpty()) {
                 throw KnownException("稿件文件不存在: ${request.videoPostId}")

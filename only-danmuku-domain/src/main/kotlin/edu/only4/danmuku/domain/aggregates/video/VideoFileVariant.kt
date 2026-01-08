@@ -40,9 +40,6 @@ class VideoFileVariant(
     segmentDuration: Int? = null,
 ) : AuditedFieldsEntity() {
     // 【字段映射开始】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
-    @ManyToOne(cascade = [], fetch = FetchType.EAGER)
-    @JoinColumn(name = "`parent_id`", nullable = false, insertable = false, updatable = false)
-    var videoFile: VideoFile? = null
 
     /**
      * ID
