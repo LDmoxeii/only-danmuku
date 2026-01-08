@@ -51,7 +51,7 @@ object SaveSetting {
          * 用户最多可以发送的弹幕数量
          */
         @field:Min(value = 1, message = "用户最大弹幕数量不能小于1")
-        val danmuCount: Int,
+        val danmukuCount: Int,
     )
 
     class Response

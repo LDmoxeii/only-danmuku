@@ -51,7 +51,7 @@ object GetSetting {
         /**
          * 用户最多可以发送的弹幕数量，默认值为20
          */
-        var danmuCount: Int = 20,
+        var danmukuCount: Int = 20,
     )
 
     @Mapper(componentModel = "default")

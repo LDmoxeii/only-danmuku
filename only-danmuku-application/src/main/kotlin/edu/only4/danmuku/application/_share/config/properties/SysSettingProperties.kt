@@ -38,7 +38,7 @@ class SysSettingProperties {
     /**
      * 用户最多可以发送的弹幕数量，默认值为20。
      */
-    var danmuCount: Int = 20
+    var danmukuCount: Int = 20
 
     /**
      * 修改昵称所需的硬币数量，默认值为1。

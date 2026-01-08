@@ -58,7 +58,7 @@ class GetUserVideoPostsQryHandler(
                     interaction = post.interaction,
                     playCount = post.video?.playCount ?: 0,
                     likeCount = post.video?.likeCount ?: 0,
-                    danmuCount = post.video?.danmukuCount ?: 0,
+                    danmukuCount = post.video?.danmukuCount ?: 0,
                     commentCount = post.video?.commentCount ?: 0,
                     coinCount = post.video?.coinCount ?: 0,
                     collectCount = post.video?.collectCount ?: 0

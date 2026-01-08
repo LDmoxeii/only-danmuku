@@ -31,7 +31,7 @@ object GetUserVideoPostQry {
         val interaction: String? = null,
         val playCount: Int? = 0,
         val likeCount: Int? = 0,
-        val danmuCount: Int? = 0,
+        val danmukuCount: Int? = 0,
         val commentCount: Int? = 0,
         val coinCount: Int? = 0,
         val collectCount: Int? = 0,
