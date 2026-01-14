@@ -1,4 +1,4 @@
-package edu.only4.danmuku.application.queries.video_post
+package edu.only4.danmuku.application.queries.video_hls_encrypt_key
 
 import com.only4.cap4k.ddd.core.application.RequestParam
 
@@ -6,12 +6,15 @@ import com.only4.cap4k.ddd.core.application.RequestParam
  * 该文件由 [cap4k-ddd-codegen-gradle-plugin] 生成
  * @author cap4k-ddd-codegen
  */
-object UniqueVideoFilePostVariantParentIdQualityQry {
+object UniqueVideoHlsEncryptKeyQry {
 
     class Request(
-        val parentId: Long,
+        val videoPostId: Long,
+        val fileIndex: Int,
+        val keyId: String,
+        val keyVersion: Int,
         val quality: String,
-        val excludeVideoFilePostVariantId: Long?
+        val excludeVideoHlsEncryptKeyId: Long?
     ) : RequestParam<Response>
 
     class Response(

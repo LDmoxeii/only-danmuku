@@ -5,7 +5,7 @@ import com.only4.cap4k.ddd.core.application.query.Query
 import edu.only4.danmuku.application.queries._share.model.VideoPostProcessing
 import edu.only4.danmuku.application.queries._share.model.id
 import edu.only4.danmuku.application.queries._share.model.videoPostId
-import edu.only4.danmuku.application.queries.video_post_processing.UniqueVideoPostProcessingVideoPostIdQry
+import edu.only4.danmuku.application.queries.video_post_processing.UniqueVideoPostProcessingQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.`ne?`
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
@@ -18,17 +18,17 @@ import org.springframework.stereotype.Service
  * @author cap4k-ddd-codegen
  */
 @Service
-class UniqueVideoPostProcessingVideoPostIdQryHandler(
+class UniqueVideoPostProcessingQryHandler(
     private val sqlClient: KSqlClient,
-) : Query<UniqueVideoPostProcessingVideoPostIdQry.Request, UniqueVideoPostProcessingVideoPostIdQry.Response> {
+) : Query<UniqueVideoPostProcessingQry.Request, UniqueVideoPostProcessingQry.Response> {
 
-    override fun exec(request: UniqueVideoPostProcessingVideoPostIdQry.Request): UniqueVideoPostProcessingVideoPostIdQry.Response {
+    override fun exec(request: UniqueVideoPostProcessingQry.Request): UniqueVideoPostProcessingQry.Response {
         val exists = sqlClient.exists(VideoPostProcessing::class) {
             where(table.videoPostId eq request.videoPostId)
             where(table.id `ne?` request.excludeVideoPostProcessingId)
         }
 
-        return UniqueVideoPostProcessingVideoPostIdQry.Response(
+        return UniqueVideoPostProcessingQry.Response(
             exists = exists
         )
     }

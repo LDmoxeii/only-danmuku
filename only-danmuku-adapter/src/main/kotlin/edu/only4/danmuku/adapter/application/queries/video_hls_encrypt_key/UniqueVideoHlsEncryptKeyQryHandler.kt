@@ -9,7 +9,7 @@ import edu.only4.danmuku.application.queries._share.model.keyId
 import edu.only4.danmuku.application.queries._share.model.keyVersion
 import edu.only4.danmuku.application.queries._share.model.quality
 import edu.only4.danmuku.application.queries._share.model.videoPostId
-import edu.only4.danmuku.application.queries.video_hls_encrypt_key.UniqueVideoHlsEncryptKeyVideoPostIdFileIndexKeyIdKeyVersionQualityQry
+import edu.only4.danmuku.application.queries.video_hls_encrypt_key.UniqueVideoHlsEncryptKeyQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.`ne?`
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
@@ -22,11 +22,11 @@ import org.springframework.stereotype.Service
  * @author cap4k-ddd-codegen
  */
 @Service
-class UniqueVideoHlsEncryptKeyVideoPostIdFileIndexKeyIdKeyVersionQualityQryHandler(
+class UniqueVideoHlsEncryptKeyQryHandler(
     private val sqlClient: KSqlClient,
-) : Query<UniqueVideoHlsEncryptKeyVideoPostIdFileIndexKeyIdKeyVersionQualityQry.Request, UniqueVideoHlsEncryptKeyVideoPostIdFileIndexKeyIdKeyVersionQualityQry.Response> {
+) : Query<UniqueVideoHlsEncryptKeyQry.Request, UniqueVideoHlsEncryptKeyQry.Response> {
 
-    override fun exec(request: UniqueVideoHlsEncryptKeyVideoPostIdFileIndexKeyIdKeyVersionQualityQry.Request): UniqueVideoHlsEncryptKeyVideoPostIdFileIndexKeyIdKeyVersionQualityQry.Response {
+    override fun exec(request: UniqueVideoHlsEncryptKeyQry.Request): UniqueVideoHlsEncryptKeyQry.Response {
         val exists = sqlClient.exists(VideoHlsEncryptKey::class) {
             where(table.videoPostId eq request.videoPostId)
             where(table.fileIndex eq request.fileIndex)
@@ -36,7 +36,7 @@ class UniqueVideoHlsEncryptKeyVideoPostIdFileIndexKeyIdKeyVersionQualityQryHandl
             where(table.id `ne?` request.excludeVideoHlsEncryptKeyId)
         }
 
-        return UniqueVideoHlsEncryptKeyVideoPostIdFileIndexKeyIdKeyVersionQualityQry.Response(
+        return UniqueVideoHlsEncryptKeyQry.Response(
             exists = exists
         )
     }

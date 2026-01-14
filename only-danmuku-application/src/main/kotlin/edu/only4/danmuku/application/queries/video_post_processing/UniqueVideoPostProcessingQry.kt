@@ -6,12 +6,11 @@ import com.only4.cap4k.ddd.core.application.RequestParam
  * 该文件由 [cap4k-ddd-codegen-gradle-plugin] 生成
  * @author cap4k-ddd-codegen
  */
-object UniqueVideoPostProcessingFileParentIdFileIndexQry {
+object UniqueVideoPostProcessingQry {
 
     class Request(
-        val parentId: Long,
-        val fileIndex: Int,
-        val excludeVideoPostProcessingFileId: Long?
+        val videoPostId: Long,
+        val excludeVideoPostProcessingId: Long?
     ) : RequestParam<Response>
 
     class Response(

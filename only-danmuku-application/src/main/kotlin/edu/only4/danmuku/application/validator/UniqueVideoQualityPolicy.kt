@@ -2,7 +2,7 @@ package edu.only4.danmuku.application.validator
 
 import com.only4.cap4k.ddd.core.Mediator
 
-import edu.only4.danmuku.application.queries.video_post.UniqueVideoFilePostVideoPostIdFileIndexQry
+import edu.only4.danmuku.application.queries.video_quality_policy.UniqueVideoQualityPolicyQry
 
 import jakarta.validation.Constraint
 import jakarta.validation.ConstraintValidator
@@ -18,25 +18,28 @@ import kotlin.reflect.full.memberProperties
  */
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)
-@Constraint(validatedBy = [UniqueVideoFilePostVideoPostIdFileIndex.Validator::class])
+@Constraint(validatedBy = [UniqueVideoQualityPolicy.Validator::class])
 @MustBeDocumented
-annotation class UniqueVideoFilePostVideoPostIdFileIndex(
+annotation class UniqueVideoQualityPolicy(
     val message: String = "唯一性校验未通过",
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [],
-    val videoPostIdField: String = "videoPostId",
+    val videoIdField: String = "videoId",
     val fileIndexField: String = "fileIndex",
-    val videoFilePostIdField: String = "videoFilePostId",
+    val qualityField: String = "quality",
+    val videoQualityPolicyIdField: String = "videoQualityPolicyId",
 ) {
-    class Validator : ConstraintValidator<UniqueVideoFilePostVideoPostIdFileIndex, Any> {
-        private lateinit var videoPostIdProperty: String
+    class Validator : ConstraintValidator<UniqueVideoQualityPolicy, Any> {
+        private lateinit var videoIdProperty: String
         private lateinit var fileIndexProperty: String
-        private lateinit var videoFilePostIdProperty: String
+        private lateinit var qualityProperty: String
+        private lateinit var videoQualityPolicyIdProperty: String
 
-        override fun initialize(constraintAnnotation: UniqueVideoFilePostVideoPostIdFileIndex) {
-            videoPostIdProperty = constraintAnnotation.videoPostIdField
+        override fun initialize(constraintAnnotation: UniqueVideoQualityPolicy) {
+            videoIdProperty = constraintAnnotation.videoIdField
             fileIndexProperty = constraintAnnotation.fileIndexField
-            videoFilePostIdProperty = constraintAnnotation.videoFilePostIdField
+            qualityProperty = constraintAnnotation.qualityField
+            videoQualityPolicyIdProperty = constraintAnnotation.videoQualityPolicyIdField
         }
 
         override fun isValid(value: Any?, context: ConstraintValidatorContext): Boolean {
@@ -45,24 +48,28 @@ annotation class UniqueVideoFilePostVideoPostIdFileIndex(
             val props = value::class.memberProperties.associateBy { it.name }
 
             // 读取唯一字段值
-            val videoPostId = props[videoPostIdProperty]?.getter?.call(value) as? Long?
+            val videoId = props[videoIdProperty]?.getter?.call(value) as? Long?
             val fileIndex = props[fileIndexProperty]?.getter?.call(value) as? Int?
+            val quality = props[qualityProperty]?.getter?.call(value) as? String?
+            val qualityTrimmed = quality?.trim()
 
             // 读取排除 ID
-            val excludeId = props[videoFilePostIdProperty]?.getter?.call(value) as? Long
+            val excludeId = props[videoQualityPolicyIdProperty]?.getter?.call(value) as? Long
 
             // 所有参数均有值（字符串非空）才进行校验
             val allPresent =
-                (videoPostId != null) &&
-                (fileIndex != null)
+                (videoId != null) &&
+                (fileIndex != null) &&
+                (qualityTrimmed != null && qualityTrimmed.isNotBlank())
             if (!allPresent) return true
 
             val result = runCatching {
                 Mediator.queries.send(
-                    UniqueVideoFilePostVideoPostIdFileIndexQry.Request(
-                        videoPostId = videoPostId!!,
+                    UniqueVideoQualityPolicyQry.Request(
+                        videoId = videoId!!,
                         fileIndex = fileIndex!!,
-                        excludeVideoFilePostId = excludeId,
+                        quality = qualityTrimmed!!,
+                        excludeVideoQualityPolicyId = excludeId,
                     )
                 )
             }.getOrNull() ?: return false

@@ -1,19 +1,15 @@
 package edu.only4.danmuku.adapter.application.queries.video_post_processing
 
 import com.only4.cap4k.ddd.core.application.query.Query
-
 import edu.only4.danmuku.application.queries._share.model.VideoPostProcessingVariant
 import edu.only4.danmuku.application.queries._share.model.id
-import edu.only4.danmuku.application.queries._share.model.parentId
 import edu.only4.danmuku.application.queries._share.model.quality
 import edu.only4.danmuku.application.queries._share.model.videoPostProcessingFileId
-import edu.only4.danmuku.application.queries._share.model.videoPostProcessingId
-import edu.only4.danmuku.application.queries.video_post_processing.UniqueVideoPostProcessingVariantParentIdQualityQry
+import edu.only4.danmuku.application.queries.video_post_processing.UniqueVideoPostProcessingVariantQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
-import org.babyfish.jimmer.sql.kt.ast.expression.`ne?`
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
+import org.babyfish.jimmer.sql.kt.ast.expression.`ne?`
 import org.babyfish.jimmer.sql.kt.exists
-
 import org.springframework.stereotype.Service
 
 /**
@@ -21,18 +17,18 @@ import org.springframework.stereotype.Service
  * @author cap4k-ddd-codegen
  */
 @Service
-class UniqueVideoPostProcessingVariantParentIdQualityQryHandler(
+class UniqueVideoPostProcessingVariantQryHandler(
     private val sqlClient: KSqlClient,
-) : Query<UniqueVideoPostProcessingVariantParentIdQualityQry.Request, UniqueVideoPostProcessingVariantParentIdQualityQry.Response> {
+) : Query<UniqueVideoPostProcessingVariantQry.Request, UniqueVideoPostProcessingVariantQry.Response> {
 
-    override fun exec(request: UniqueVideoPostProcessingVariantParentIdQualityQry.Request): UniqueVideoPostProcessingVariantParentIdQualityQry.Response {
+    override fun exec(request: UniqueVideoPostProcessingVariantQry.Request): UniqueVideoPostProcessingVariantQry.Response {
         val exists = sqlClient.exists(VideoPostProcessingVariant::class) {
             where(table.videoPostProcessingFileId eq request.parentId)
             where(table.quality eq request.quality)
             where(table.id `ne?` request.excludeVideoPostProcessingVariantId)
         }
 
-        return UniqueVideoPostProcessingVariantParentIdQualityQry.Response(
+        return UniqueVideoPostProcessingVariantQry.Response(
             exists = exists
         )
     }

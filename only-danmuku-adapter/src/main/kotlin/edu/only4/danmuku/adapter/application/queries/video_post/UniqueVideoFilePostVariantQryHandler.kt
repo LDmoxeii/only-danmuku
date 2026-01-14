@@ -5,7 +5,7 @@ import edu.only4.danmuku.application.queries._share.model.VideoFilePostVariant
 import edu.only4.danmuku.application.queries._share.model.filePostId
 import edu.only4.danmuku.application.queries._share.model.id
 import edu.only4.danmuku.application.queries._share.model.quality
-import edu.only4.danmuku.application.queries.video_post.UniqueVideoFilePostVariantParentIdQualityQry
+import edu.only4.danmuku.application.queries.video_post.UniqueVideoFilePostVariantQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.babyfish.jimmer.sql.kt.ast.expression.`ne?`
@@ -17,18 +17,18 @@ import org.springframework.stereotype.Service
  * @author cap4k-ddd-codegen
  */
 @Service
-class UniqueVideoFilePostVariantParentIdQualityQryHandler(
+class UniqueVideoFilePostVariantQryHandler(
     private val sqlClient: KSqlClient,
-) : Query<UniqueVideoFilePostVariantParentIdQualityQry.Request, UniqueVideoFilePostVariantParentIdQualityQry.Response> {
+) : Query<UniqueVideoFilePostVariantQry.Request, UniqueVideoFilePostVariantQry.Response> {
 
-    override fun exec(request: UniqueVideoFilePostVariantParentIdQualityQry.Request): UniqueVideoFilePostVariantParentIdQualityQry.Response {
+    override fun exec(request: UniqueVideoFilePostVariantQry.Request): UniqueVideoFilePostVariantQry.Response {
         val exists = sqlClient.exists(VideoFilePostVariant::class) {
             where(table.filePostId eq request.parentId)
             where(table.quality eq request.quality)
             where(table.id `ne?` request.excludeVideoFilePostVariantId)
         }
 
-        return UniqueVideoFilePostVariantParentIdQualityQry.Response(
+        return UniqueVideoFilePostVariantQry.Response(
             exists = exists
         )
     }

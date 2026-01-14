@@ -2,7 +2,7 @@ package edu.only4.danmuku.application.validator
 
 import com.only4.cap4k.ddd.core.Mediator
 
-import edu.only4.danmuku.application.queries.video_post_processing.UniqueVideoPostProcessingFileParentIdFileIndexQry
+import edu.only4.danmuku.application.queries.video_post_processing.UniqueVideoPostProcessingFileQry
 
 import jakarta.validation.Constraint
 import jakarta.validation.ConstraintValidator
@@ -18,9 +18,9 @@ import kotlin.reflect.full.memberProperties
  */
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)
-@Constraint(validatedBy = [UniqueVideoPostProcessingFileParentIdFileIndex.Validator::class])
+@Constraint(validatedBy = [UniqueVideoPostProcessingFile.Validator::class])
 @MustBeDocumented
-annotation class UniqueVideoPostProcessingFileParentIdFileIndex(
+annotation class UniqueVideoPostProcessingFile(
     val message: String = "唯一性校验未通过",
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [],
@@ -28,12 +28,12 @@ annotation class UniqueVideoPostProcessingFileParentIdFileIndex(
     val fileIndexField: String = "fileIndex",
     val videoPostProcessingFileIdField: String = "videoPostProcessingFileId",
 ) {
-    class Validator : ConstraintValidator<UniqueVideoPostProcessingFileParentIdFileIndex, Any> {
+    class Validator : ConstraintValidator<UniqueVideoPostProcessingFile, Any> {
         private lateinit var parentIdProperty: String
         private lateinit var fileIndexProperty: String
         private lateinit var videoPostProcessingFileIdProperty: String
 
-        override fun initialize(constraintAnnotation: UniqueVideoPostProcessingFileParentIdFileIndex) {
+        override fun initialize(constraintAnnotation: UniqueVideoPostProcessingFile) {
             parentIdProperty = constraintAnnotation.parentIdField
             fileIndexProperty = constraintAnnotation.fileIndexField
             videoPostProcessingFileIdProperty = constraintAnnotation.videoPostProcessingFileIdField
@@ -59,7 +59,7 @@ annotation class UniqueVideoPostProcessingFileParentIdFileIndex(
 
             val result = runCatching {
                 Mediator.queries.send(
-                    UniqueVideoPostProcessingFileParentIdFileIndexQry.Request(
+                    UniqueVideoPostProcessingFileQry.Request(
                         parentId = parentId!!,
                         fileIndex = fileIndex!!,
                         excludeVideoPostProcessingFileId = excludeId,

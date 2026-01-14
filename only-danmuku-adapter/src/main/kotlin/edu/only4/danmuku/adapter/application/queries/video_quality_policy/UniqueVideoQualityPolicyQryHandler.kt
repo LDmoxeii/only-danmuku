@@ -7,7 +7,7 @@ import edu.only4.danmuku.application.queries._share.model.fileIndex
 import edu.only4.danmuku.application.queries._share.model.id
 import edu.only4.danmuku.application.queries._share.model.quality
 import edu.only4.danmuku.application.queries._share.model.videoId
-import edu.only4.danmuku.application.queries.video_quality_policy.UniqueVideoQualityPolicyVideoIdFileIndexQualityQry
+import edu.only4.danmuku.application.queries.video_quality_policy.UniqueVideoQualityPolicyQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.`ne?`
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
@@ -20,11 +20,11 @@ import org.springframework.stereotype.Service
  * @author cap4k-ddd-codegen
  */
 @Service
-class UniqueVideoQualityPolicyVideoIdFileIndexQualityQryHandler(
+class UniqueVideoQualityPolicyQryHandler(
     private val sqlClient: KSqlClient,
-) : Query<UniqueVideoQualityPolicyVideoIdFileIndexQualityQry.Request, UniqueVideoQualityPolicyVideoIdFileIndexQualityQry.Response> {
+) : Query<UniqueVideoQualityPolicyQry.Request, UniqueVideoQualityPolicyQry.Response> {
 
-    override fun exec(request: UniqueVideoQualityPolicyVideoIdFileIndexQualityQry.Request): UniqueVideoQualityPolicyVideoIdFileIndexQualityQry.Response {
+    override fun exec(request: UniqueVideoQualityPolicyQry.Request): UniqueVideoQualityPolicyQry.Response {
         val exists = sqlClient.exists(VideoQualityPolicy::class) {
             where(table.videoId eq request.videoId)
             where(table.fileIndex eq request.fileIndex)
@@ -32,7 +32,7 @@ class UniqueVideoQualityPolicyVideoIdFileIndexQualityQryHandler(
             where(table.id `ne?` request.excludeVideoQualityPolicyId)
         }
 
-        return UniqueVideoQualityPolicyVideoIdFileIndexQualityQry.Response(
+        return UniqueVideoQualityPolicyQry.Response(
             exists = exists
         )
     }

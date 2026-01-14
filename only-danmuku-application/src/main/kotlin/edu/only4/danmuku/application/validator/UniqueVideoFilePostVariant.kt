@@ -2,7 +2,7 @@ package edu.only4.danmuku.application.validator
 
 import com.only4.cap4k.ddd.core.Mediator
 
-import edu.only4.danmuku.application.queries.video_post.UniqueVideoFilePostVariantParentIdQualityQry
+import edu.only4.danmuku.application.queries.video_post.UniqueVideoFilePostVariantQry
 
 import jakarta.validation.Constraint
 import jakarta.validation.ConstraintValidator
@@ -18,9 +18,9 @@ import kotlin.reflect.full.memberProperties
  */
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)
-@Constraint(validatedBy = [UniqueVideoFilePostVariantParentIdQuality.Validator::class])
+@Constraint(validatedBy = [UniqueVideoFilePostVariant.Validator::class])
 @MustBeDocumented
-annotation class UniqueVideoFilePostVariantParentIdQuality(
+annotation class UniqueVideoFilePostVariant(
     val message: String = "唯一性校验未通过",
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [],
@@ -28,12 +28,12 @@ annotation class UniqueVideoFilePostVariantParentIdQuality(
     val qualityField: String = "quality",
     val videoFilePostVariantIdField: String = "videoFilePostVariantId",
 ) {
-    class Validator : ConstraintValidator<UniqueVideoFilePostVariantParentIdQuality, Any> {
+    class Validator : ConstraintValidator<UniqueVideoFilePostVariant, Any> {
         private lateinit var parentIdProperty: String
         private lateinit var qualityProperty: String
         private lateinit var videoFilePostVariantIdProperty: String
 
-        override fun initialize(constraintAnnotation: UniqueVideoFilePostVariantParentIdQuality) {
+        override fun initialize(constraintAnnotation: UniqueVideoFilePostVariant) {
             parentIdProperty = constraintAnnotation.parentIdField
             qualityProperty = constraintAnnotation.qualityField
             videoFilePostVariantIdProperty = constraintAnnotation.videoFilePostVariantIdField
@@ -60,7 +60,7 @@ annotation class UniqueVideoFilePostVariantParentIdQuality(
 
             val result = runCatching {
                 Mediator.queries.send(
-                    UniqueVideoFilePostVariantParentIdQualityQry.Request(
+                    UniqueVideoFilePostVariantQry.Request(
                         parentId = parentId!!,
                         quality = qualityTrimmed!!,
                         excludeVideoFilePostVariantId = excludeId,

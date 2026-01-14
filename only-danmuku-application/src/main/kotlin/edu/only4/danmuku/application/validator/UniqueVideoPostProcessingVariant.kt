@@ -2,7 +2,7 @@ package edu.only4.danmuku.application.validator
 
 import com.only4.cap4k.ddd.core.Mediator
 
-import edu.only4.danmuku.application.queries.video_post_processing.UniqueVideoPostProcessingVariantParentIdQualityQry
+import edu.only4.danmuku.application.queries.video_post_processing.UniqueVideoPostProcessingVariantQry
 
 import jakarta.validation.Constraint
 import jakarta.validation.ConstraintValidator
@@ -18,9 +18,9 @@ import kotlin.reflect.full.memberProperties
  */
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)
-@Constraint(validatedBy = [UniqueVideoPostProcessingVariantParentIdQuality.Validator::class])
+@Constraint(validatedBy = [UniqueVideoPostProcessingVariant.Validator::class])
 @MustBeDocumented
-annotation class UniqueVideoPostProcessingVariantParentIdQuality(
+annotation class UniqueVideoPostProcessingVariant(
     val message: String = "唯一性校验未通过",
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [],
@@ -28,12 +28,12 @@ annotation class UniqueVideoPostProcessingVariantParentIdQuality(
     val qualityField: String = "quality",
     val videoPostProcessingVariantIdField: String = "videoPostProcessingVariantId",
 ) {
-    class Validator : ConstraintValidator<UniqueVideoPostProcessingVariantParentIdQuality, Any> {
+    class Validator : ConstraintValidator<UniqueVideoPostProcessingVariant, Any> {
         private lateinit var parentIdProperty: String
         private lateinit var qualityProperty: String
         private lateinit var videoPostProcessingVariantIdProperty: String
 
-        override fun initialize(constraintAnnotation: UniqueVideoPostProcessingVariantParentIdQuality) {
+        override fun initialize(constraintAnnotation: UniqueVideoPostProcessingVariant) {
             parentIdProperty = constraintAnnotation.parentIdField
             qualityProperty = constraintAnnotation.qualityField
             videoPostProcessingVariantIdProperty = constraintAnnotation.videoPostProcessingVariantIdField
@@ -60,7 +60,7 @@ annotation class UniqueVideoPostProcessingVariantParentIdQuality(
 
             val result = runCatching {
                 Mediator.queries.send(
-                    UniqueVideoPostProcessingVariantParentIdQualityQry.Request(
+                    UniqueVideoPostProcessingVariantQry.Request(
                         parentId = parentId!!,
                         quality = qualityTrimmed!!,
                         excludeVideoPostProcessingVariantId = excludeId,

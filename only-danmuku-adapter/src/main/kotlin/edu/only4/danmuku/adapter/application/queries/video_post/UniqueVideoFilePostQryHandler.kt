@@ -6,7 +6,7 @@ import edu.only4.danmuku.application.queries._share.model.VideoFilePost
 import edu.only4.danmuku.application.queries._share.model.fileIndex
 import edu.only4.danmuku.application.queries._share.model.id
 import edu.only4.danmuku.application.queries._share.model.videoPostId
-import edu.only4.danmuku.application.queries.video_post.UniqueVideoFilePostVideoPostIdFileIndexQry
+import edu.only4.danmuku.application.queries.video_post.UniqueVideoFilePostQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.`ne?`
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
@@ -19,18 +19,18 @@ import org.springframework.stereotype.Service
  * @author cap4k-ddd-codegen
  */
 @Service
-class UniqueVideoFilePostVideoPostIdFileIndexQryHandler(
+class UniqueVideoFilePostQryHandler(
     private val sqlClient: KSqlClient,
-) : Query<UniqueVideoFilePostVideoPostIdFileIndexQry.Request, UniqueVideoFilePostVideoPostIdFileIndexQry.Response> {
+) : Query<UniqueVideoFilePostQry.Request, UniqueVideoFilePostQry.Response> {
 
-    override fun exec(request: UniqueVideoFilePostVideoPostIdFileIndexQry.Request): UniqueVideoFilePostVideoPostIdFileIndexQry.Response {
+    override fun exec(request: UniqueVideoFilePostQry.Request): UniqueVideoFilePostQry.Response {
         val exists = sqlClient.exists(VideoFilePost::class) {
             where(table.videoPostId eq request.videoPostId)
             where(table.fileIndex eq request.fileIndex)
             where(table.id `ne?` request.excludeVideoFilePostId)
         }
 
-        return UniqueVideoFilePostVideoPostIdFileIndexQry.Response(
+        return UniqueVideoFilePostQry.Response(
             exists = exists
         )
     }
