@@ -17,17 +17,14 @@ object UnFocusCmd {
             val userIdStr = request.userId.toString()
             val focusIdStr = request.focusUserId.toString()
 
-            val toRemove = Mediator.repositories.find(
+            Mediator.repositories.remove(
                 SCustomerFocus.predicate { schema ->
                     schema.all(
                         schema.customerId eq userIdStr,
                         schema.focusCustomerId eq focusIdStr
                     )
-                },
-                persist = false
+                }
             )
-
-            toRemove.forEach(Mediator.uow::remove)
 
             Mediator.uow.save()
         }
