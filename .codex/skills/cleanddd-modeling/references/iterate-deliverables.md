@@ -34,5 +34,15 @@
 ## DDL 结构变更脚本
 - 使用 MySQL DDL（`ALTER TABLE` / `CREATE TABLE`）。
 - 每个变更前加 `--` 注释，说明意图。
-- 新增列补充 `COMMENT`，枚举字段使用 `@E=...;@T=EnumName` 风格。
+- 新增列补充 `COMMENT`，枚举字段使用 `@Enum`/`@E` + `@Type`/`@T` 风格（如 `@Enum=...;@Type=EnumName`）。
 - 如无结构变更，仍保留文件并写入 `-- no schema change`。
+
+## 数据库注解（COMMENT）
+- 注解写在表/列 COMMENT 中：`@Name` 或 `@Name=value`；多个注解用 `;` 分隔，注解片段会从最终注释文本中剔除。
+- 主要影响：实体/枚举/关系/聚合生成、字段类型映射、懒加载与只读字段等。
+- 完整注解清单与效果参见 `references/DB_ANNOTATIONS.md`。
+- 示例：
+
+```sql
+COMMENT 'Order status @Type=OrderStatus; @Enum=0:NEW:New|1:PAID:Paid;'
+```

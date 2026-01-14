@@ -22,6 +22,10 @@ description: 基于 cleanddd-requirements-analysis 结果输出 CleanDDD 建模�
 ## 建模元素 JSON
 - 参照 `references/iterate-deliverables.md` 的 tag/字段约定；保持与 `design/_gen` 与 `iterate/*/*_gen.json` 一致。
 
+## 数据库注解（表/列 COMMENT）
+- 参照 `references/DB_ANNOTATIONS.md` 的注解语法与作用；必要时在 DDL 的 `COMMENT` 中写入 `@Name` / `@Name=value`。
+- 注解用于影响 codegen（如表/列忽略、关系、枚举、类型、聚合根/值对象等），需在交付说明中标出关键注解。
+
 ## 工作流
 1) 校验输入：确认需求条目表、业务实体视图、触发/后续动作表齐备；缺口先追问或注明假设。
 2) 定义聚合：基于职责和不变式，定义聚合根、实体/值对象、行为、触发的领域事件；保持聚合间无直接引用。
