@@ -485,22 +485,18 @@ DROP TABLE IF EXISTS `video_file_post`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `video_file_post` (
   `id` bigint NOT NULL COMMENT 'ID',
+  `video_post_id` bigint NOT NULL COMMENT '视频稿件ID',
   `upload_id` bigint NOT NULL COMMENT '上传ID',
   `customer_id` bigint NOT NULL COMMENT '用户ID',
-  `video_id` bigint NOT NULL COMMENT '视频ID',
   `file_index` int NOT NULL COMMENT '文件索引',
   `file_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '文件名',
   `file_size` bigint DEFAULT NULL COMMENT '文件大小',
-  `file_path` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '文件路径',
-  `update_type` tinyint NOT NULL DEFAULT '0' COMMENT '更新类型 @E=0:UNKNOW:未知类型|1:NO_UPDATE:无更新|2:HAS_UPDATE:有更新;@T=UpdateType',
+  `transcode_output_prefix` varchar(512) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '转码输出对象前缀',
+  `encrypt_output_prefix` varchar(512) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '加密输出对象前缀',
   `transfer_result` tinyint NOT NULL DEFAULT '0' COMMENT '转码结果 @E=0:UNKNOW:未知结果|1:TRANSCODING:转码中|2:SUCCESS:转码成功|3:FAILED:转码失败;@T=TransferResult',
-  `abr_source_width` int DEFAULT NULL COMMENT 'ABR 源视频宽度(px)',
-  `abr_source_height` int DEFAULT NULL COMMENT 'ABR 源视频高度(px)',
-  `abr_source_bitrate_kbps` int DEFAULT NULL COMMENT 'ABR 源视频码率(kbps)',
   `encrypt_status` int NOT NULL DEFAULT '1' COMMENT '加密状态@E=0:UNKNOW:未知|1:UNENCRYPTED:未加密|2:ENCRYPTING:加密中|3:ENCRYPTED:已加密|4:FAILED:失败;@T=EncryptStatus',
   `encrypt_method` int NOT NULL DEFAULT '1' COMMENT '加密方式@E=0:UNKNOW:未知|1:HLS_AES_128:AES-128|2:SAMPLE_AES:SAMPLE-AES|3:DRM:DRM占位;@T=EncryptMethod',
-  `encrypt_key_id` bigint DEFAULT NULL COMMENT '关联密钥ID',
-  `encrypt_fail_reason` varchar(512) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '加密失败原因',
+  `encrypt_key_version` int DEFAULT NULL COMMENT '加密密钥版本',
   `duration` int DEFAULT NULL COMMENT '持续时间（秒）',
   `create_user_id` bigint DEFAULT NULL COMMENT '创建人ID',
   `create_by` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人名称',
@@ -510,8 +506,41 @@ CREATE TABLE `video_file_post` (
   `update_time` bigint DEFAULT NULL COMMENT '更新时间',
   `deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE KEY `uk_v_upload_id` (`upload_id`,`customer_id`,`deleted`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='视频文件信息;';
+  UNIQUE KEY `uk_v_upload_id` (`upload_id`,`customer_id`,`deleted`) USING BTREE,
+  UNIQUE KEY `uk_i` (`video_post_id`,`file_index`,`deleted`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='视频文件信息;@P=video_post;';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `video_file_post_variant`
+--
+
+DROP TABLE IF EXISTS `video_file_post_variant`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `video_file_post_variant` (
+  `id` bigint NOT NULL COMMENT 'ID',
+  `parent_id` bigint NOT NULL COMMENT '稿件文件ID@Ref=video_file_post',
+  `quality` varchar(32) NOT NULL COMMENT '清晰度档位，如 1080p/720p',
+  `width` int NOT NULL COMMENT '输出宽度(px)',
+  `height` int NOT NULL COMMENT '输出高度(px)',
+  `video_bitrate_kbps` int NOT NULL COMMENT '视频码率(kbps)',
+  `audio_bitrate_kbps` int NOT NULL COMMENT '音频码率(kbps)',
+  `bandwidth_bps` int NOT NULL COMMENT 'Master 中的 BANDWIDTH（bps）',
+  `playlist_path` varchar(512) NOT NULL COMMENT '子清晰度 m3u8 路径，如 720p/index.m3u8',
+  `segment_prefix` varchar(512) DEFAULT NULL COMMENT '切片目录前缀，如 720p/',
+  `segment_duration` int DEFAULT NULL COMMENT '切片目标时长（秒）',
+  `create_user_id` bigint DEFAULT NULL COMMENT '创建人ID',
+  `create_by` varchar(32) DEFAULT NULL COMMENT '创建人名称',
+  `create_time` bigint DEFAULT NULL COMMENT '创建时间',
+  `update_user_id` bigint DEFAULT NULL COMMENT '更新人ID',
+  `update_by` varchar(32) DEFAULT NULL COMMENT '更新人名称',
+  `update_time` bigint DEFAULT NULL COMMENT '更新时间',
+  `deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `uk_i` (`parent_id`,`quality`,`deleted`),
+  KEY `idx_vfpv_height` (`height`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='视频稿件文件分辨率档位;@P=video_file_post;';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -528,7 +557,7 @@ CREATE TABLE `video_file_upload_session` (
   `chunks` int NOT NULL COMMENT '分片总数',
   `chunk_index` int NOT NULL DEFAULT '0' COMMENT '当前已上传的最大分片索引',
   `file_size` bigint DEFAULT '0' COMMENT '累计已上传大小（字节）',
-  `temp_path` varchar(512) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '临时目录（绝对或相对路径）',
+  `temp_dir` varchar(512) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '临时目录（绝对或相对路径）',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态 @E=0:UNKNOW:未知类型|1:CREATED:已创建|2:UPLOADING:上传中|3:DONE:完成|4:ABORTED:已放弃|5:EXPIRED:已过期;@T=UploadStatus',
   `duration` int DEFAULT NULL COMMENT '视频时长（秒，可选）',
   `create_user_id` bigint DEFAULT NULL COMMENT '创建人ID',
@@ -546,24 +575,24 @@ CREATE TABLE `video_file_upload_session` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `video_hls_abr_variant`
+-- Table structure for table `video_file_variant`
 --
 
-DROP TABLE IF EXISTS `video_hls_abr_variant`;
+DROP TABLE IF EXISTS `video_file_variant`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `video_hls_abr_variant` (
+CREATE TABLE `video_file_variant` (
   `id` bigint NOT NULL COMMENT 'ID',
-  `file_id` bigint NOT NULL COMMENT '稿件态fileId;@Ref=video_file_post',
+  `parent_id` bigint NOT NULL COMMENT '视频文件ID@Ref=video_file',
   `quality` varchar(32) NOT NULL COMMENT '清晰度档位，如 1080p/720p',
   `width` int NOT NULL COMMENT '输出宽度(px)',
   `height` int NOT NULL COMMENT '输出高度(px)',
   `video_bitrate_kbps` int NOT NULL COMMENT '视频码率(kbps)',
   `audio_bitrate_kbps` int NOT NULL COMMENT '音频码率(kbps)',
-  `bandwidth_bps` int NOT NULL COMMENT 'Master 中的 BANDWIDTH（bps，视频+音频估算）',
+  `bandwidth_bps` int NOT NULL COMMENT 'Master 中的 BANDWIDTH（bps）',
   `playlist_path` varchar(512) NOT NULL COMMENT '子清晰度 m3u8 路径，如 720p/index.m3u8',
   `segment_prefix` varchar(512) DEFAULT NULL COMMENT '切片目录前缀，如 720p/',
-  `segment_duration` int DEFAULT NULL COMMENT '切片目标时长（秒），便于校验',
+  `segment_duration` int DEFAULT NULL COMMENT '切片目标时长（秒）',
   `create_user_id` bigint DEFAULT NULL COMMENT '创建人ID',
   `create_by` varchar(32) DEFAULT NULL COMMENT '创建人名称',
   `create_time` bigint DEFAULT NULL COMMENT '创建时间',
@@ -572,9 +601,9 @@ CREATE TABLE `video_hls_abr_variant` (
   `update_time` bigint DEFAULT NULL COMMENT '更新时间',
   `deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE KEY `uk_v_quality` (`file_id`,`quality`,`deleted`) USING BTREE,
-  KEY `idx_video_hls_abr_variant_height` (`height`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='视频 HLS ABR 清晰度档位;@P=video_file_post;';
+  UNIQUE KEY `uk_i` (`parent_id`,`quality`,`deleted`) USING BTREE,
+  KEY `idx_vfv_height` (`height`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='视频文件分辨率档位;@P=video_file;';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -586,7 +615,9 @@ DROP TABLE IF EXISTS `video_hls_encrypt_key`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `video_hls_encrypt_key` (
   `id` bigint NOT NULL COMMENT 'ID',
-  `file_id` bigint NOT NULL COMMENT '稿件态 fileId',
+  `video_post_id` bigint NOT NULL COMMENT '视频稿件ID',
+  `video_id` bigint DEFAULT NULL COMMENT '视频ID',
+  `file_index` int NOT NULL COMMENT '文件索引',
   `quality` varchar(32) NOT NULL COMMENT '绑定清晰度',
   `key_id` varchar(64) NOT NULL COMMENT 'Key ID（m3u8 暴露）',
   `key_ciphertext` varchar(512) NOT NULL COMMENT '密钥密文（KMS 加密后 Base64）',
@@ -605,9 +636,10 @@ CREATE TABLE `video_hls_encrypt_key` (
   `update_time` bigint DEFAULT NULL COMMENT '更新时间',
   `deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE KEY `uk_i` (`file_id`,`key_id`,`key_version`,`quality`,`deleted`) USING BTREE,
-  KEY `idx_video_hls_encrypt_key_file` (`file_id`,`status`) USING BTREE,
-  KEY `idx_video_hls_encrypt_key_expire` (`expire_time`) USING BTREE
+  UNIQUE KEY `uk_i` (`video_post_id`,`file_index`,`key_id`,`key_version`,`quality`,`deleted`),
+  KEY `idx_video_hls_encrypt_key_expire` (`expire_time`) USING BTREE,
+  KEY `idx_video_hls_encrypt_key_post` (`video_post_id`,`file_index`,`status`),
+  KEY `idx_video_hls_encrypt_key_video` (`video_id`,`file_index`,`status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='视频 HLS 加密密钥';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -620,7 +652,9 @@ DROP TABLE IF EXISTS `video_hls_key_token`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `video_hls_key_token` (
   `id` bigint NOT NULL COMMENT 'ID',
-  `file_id` bigint NOT NULL COMMENT '稿件态 fileId',
+  `video_post_id` bigint NOT NULL COMMENT '视频稿件ID',
+  `video_id` bigint DEFAULT NULL COMMENT '视频ID',
+  `file_index` int NOT NULL COMMENT '文件索引',
   `key_version` int NOT NULL DEFAULT '1' COMMENT '密钥版本',
   `allowed_qualities` varchar(512) DEFAULT NULL COMMENT '授权清晰度列表 JSON，空表示全量',
   `token_hash` varchar(128) NOT NULL COMMENT 'token 哈希（sha256）',
@@ -639,35 +673,10 @@ CREATE TABLE `video_hls_key_token` (
   `deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `uk_i` (`token_hash`,`deleted`) USING BTREE,
-  KEY `idx_video_hls_key_token_file` (`file_id`,`status`) USING BTREE,
-  KEY `idx_video_hls_key_token_expire` (`expire_time`) USING BTREE
+  KEY `idx_video_hls_key_token_expire` (`expire_time`) USING BTREE,
+  KEY `idx_video_hls_key_token_post` (`video_post_id`,`file_index`,`status`),
+  KEY `idx_video_hls_key_token_video` (`video_id`,`file_index`,`status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='HLS 加密播放 token';
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `video_hls_quality_auth`
---
-
-DROP TABLE IF EXISTS `video_hls_quality_auth`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `video_hls_quality_auth` (
-  `id` bigint NOT NULL COMMENT 'ID',
-  `file_id` bigint NOT NULL COMMENT '稿件态 fileId',
-  `quality` varchar(32) NOT NULL COMMENT '清晰度档位，如 1080p',
-  `auth_policy` int NOT NULL DEFAULT '1' COMMENT '授权策略@E=0:UNKNOW:未知|1:PUBLIC:公开|2:LOGIN:登录|3:PAID:付费|4:CUSTOM:自定义;@T=QualityAuthPolicy',
-  `remark` varchar(256) DEFAULT NULL COMMENT '备注/策略说明',
-  `create_user_id` bigint DEFAULT NULL COMMENT '创建人ID',
-  `create_by` varchar(32) DEFAULT NULL COMMENT '创建人名称',
-  `create_time` bigint DEFAULT NULL COMMENT '创建时间',
-  `update_user_id` bigint DEFAULT NULL COMMENT '更新人ID',
-  `update_by` varchar(32) DEFAULT NULL COMMENT '更新人名称',
-  `update_time` bigint DEFAULT NULL COMMENT '更新时间',
-  `deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE KEY `uk_i` (`file_id`,`quality`,`deleted`) USING BTREE,
-  KEY `idx_video_hls_quality_auth_policy` (`auth_policy`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='视频清晰度授权策略';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -724,6 +733,137 @@ CREATE TABLE `video_post` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='视频信息;@Spe;@Fac;';
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `video_post_processing`
+--
+
+DROP TABLE IF EXISTS `video_post_processing`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `video_post_processing` (
+  `id` bigint NOT NULL COMMENT 'ID',
+  `video_post_id` bigint NOT NULL COMMENT '视频稿件ID',
+  `total_files` int NOT NULL COMMENT '分P总数',
+  `transcode_status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '转码状态 @E=0:UNKNOW:未知|1:PENDING:待处理|2:PROCESSING:处理中|3:SUCCESS:成功|4:FAILED:失败|5:SKIPPED:跳过;@T=ProcessStatus',
+  `encrypt_status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '加密状态 @E=0:UNKNOW:未知|1:PENDING:待处理|2:PROCESSING:处理中|3:SUCCESS:成功|4:FAILED:失败|5:SKIPPED:跳过;@T=ProcessStatus',
+  `transcode_done_count` int NOT NULL DEFAULT '0' COMMENT '转码完成数',
+  `encrypt_done_count` int NOT NULL DEFAULT '0' COMMENT '加密完成数（含 SKIPPED）',
+  `failed_count` int NOT NULL DEFAULT '0' COMMENT '失败文件数',
+  `last_fail_reason` varchar(512) DEFAULT NULL COMMENT '最近失败原因',
+  `create_user_id` bigint DEFAULT NULL COMMENT '创建人ID',
+  `create_by` varchar(32) DEFAULT NULL COMMENT '创建人名称',
+  `create_time` bigint DEFAULT NULL COMMENT '创建时间',
+  `update_user_id` bigint DEFAULT NULL COMMENT '更新人ID',
+  `update_by` varchar(32) DEFAULT NULL COMMENT '更新人名称',
+  `update_time` bigint DEFAULT NULL COMMENT '更新时间',
+  `deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `uk_i` (`video_post_id`,`deleted`),
+  KEY `idx_vpp_status` (`transcode_status`,`encrypt_status`,`update_time`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='视频稿件处理聚合;@Spe;@Fac;';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `video_post_processing_file`
+--
+
+DROP TABLE IF EXISTS `video_post_processing_file`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `video_post_processing_file` (
+  `id` bigint NOT NULL COMMENT 'ID',
+  `parent_id` bigint NOT NULL COMMENT '视频稿件处理ID@Ref=video_post_processing',
+  `file_index` int NOT NULL COMMENT '文件索引',
+  `upload_id` bigint NOT NULL COMMENT '上传会话ID',
+  `transcode_status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '转码状态 @E=0:UNKNOW:未知|1:PENDING:待处理|2:PROCESSING:处理中|3:SUCCESS:成功|4:FAILED:失败|5:SKIPPED:跳过;@T=ProcessStatus',
+  `encrypt_status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '加密状态 @E=0:UNKNOW:未知|1:PENDING:待处理|2:PROCESSING:处理中|3:SUCCESS:成功|4:FAILED:失败|5:SKIPPED:跳过;@T=ProcessStatus',
+  `encrypt_method` int NOT NULL DEFAULT '1' COMMENT '加密方式@E=0:UNKNOW:未知|1:HLS_AES_128:AES-128|2:SAMPLE_AES:SAMPLE-AES|3:DRM:DRM占位;@T=EncryptMethod',
+  `encrypt_key_version` int DEFAULT NULL COMMENT '加密密钥版本',
+  `transcode_output_prefix` varchar(512) DEFAULT NULL COMMENT '转码输出对象前缀',
+  `transcode_output_path` varchar(512) DEFAULT NULL COMMENT '转码输出本地路径',
+  `transcode_variants_json` text COMMENT '转码清晰度结果 JSON',
+  `encrypt_output_dir` varchar(512) DEFAULT NULL COMMENT '加密输出本地目录',
+  `encrypt_output_prefix` varchar(512) DEFAULT NULL COMMENT '加密输出对象前缀',
+  `duration` int DEFAULT NULL COMMENT '时长（秒）',
+  `file_size` bigint DEFAULT NULL COMMENT '文件大小',
+  `fail_reason` varchar(512) DEFAULT NULL COMMENT '失败原因',
+  `create_user_id` bigint DEFAULT NULL COMMENT '创建人ID',
+  `create_by` varchar(32) DEFAULT NULL COMMENT '创建人名称',
+  `create_time` bigint DEFAULT NULL COMMENT '创建时间',
+  `update_user_id` bigint DEFAULT NULL COMMENT '更新人ID',
+  `update_by` varchar(32) DEFAULT NULL COMMENT '更新人名称',
+  `update_time` bigint DEFAULT NULL COMMENT '更新时间',
+  `deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `uk_i` (`parent_id`,`file_index`,`deleted`),
+  KEY `idx_vppf_post` (`parent_id`) USING BTREE,
+  KEY `idx_vppf_transcode` (`transcode_status`,`update_time`) USING BTREE,
+  KEY `idx_vppf_encrypt` (`encrypt_status`,`update_time`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='视频稿件处理文件状态;@P=video_post_processing;';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `video_post_processing_variant`
+--
+
+DROP TABLE IF EXISTS `video_post_processing_variant`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `video_post_processing_variant` (
+  `id` bigint NOT NULL COMMENT 'ID',
+  `parent_id` bigint NOT NULL COMMENT '视频稿件处理文件ID@Ref=video_post_processing_file',
+  `quality` varchar(32) NOT NULL COMMENT '清晰度档位，如 1080p/720p',
+  `width` int NOT NULL COMMENT '输出宽度(px)',
+  `height` int NOT NULL COMMENT '输出高度(px)',
+  `video_bitrate_kbps` int NOT NULL COMMENT '视频码率(kbps)',
+  `audio_bitrate_kbps` int NOT NULL COMMENT '音频码率(kbps)',
+  `bandwidth_bps` int NOT NULL COMMENT 'Master 中的 BANDWIDTH（bps）',
+  `playlist_path` varchar(512) NOT NULL COMMENT '子清晰度 m3u8 路径，如 720p/index.m3u8',
+  `segment_prefix` varchar(512) DEFAULT NULL COMMENT '切片目录前缀，如 720p/',
+  `segment_duration` int DEFAULT NULL COMMENT '切片目标时长（秒）',
+  `transcode_status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '转码状态 @E=0:UNKNOW:未知|1:PENDING:待处理|2:PROCESSING:处理中|3:SUCCESS:成功|4:FAILED:失败|5:SKIPPED:跳过;@T=ProcessStatus',
+  `encrypt_status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '加密状态 @E=0:UNKNOW:未知|1:PENDING:待处理|2:PROCESSING:处理中|3:SUCCESS:成功|4:FAILED:失败|5:SKIPPED:跳过;@T=ProcessStatus',
+  `encrypt_fail_reason` varchar(512) DEFAULT NULL COMMENT '加密失败原因',
+  `create_user_id` bigint DEFAULT NULL COMMENT '创建人ID',
+  `create_by` varchar(32) DEFAULT NULL COMMENT '创建人名称',
+  `create_time` bigint DEFAULT NULL COMMENT '创建时间',
+  `update_user_id` bigint DEFAULT NULL COMMENT '更新人ID',
+  `update_by` varchar(32) DEFAULT NULL COMMENT '更新人名称',
+  `update_time` bigint DEFAULT NULL COMMENT '更新时间',
+  `deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `uk_i` (`parent_id`,`quality`,`deleted`),
+  KEY `idx_vpp_av_height` (`height`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='视频稿件处理分辨率档位;@P=video_post_processing_file;';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `video_quality_policy`
+--
+
+DROP TABLE IF EXISTS `video_quality_policy`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `video_quality_policy` (
+  `id` bigint NOT NULL COMMENT 'ID',
+  `video_id` bigint NOT NULL COMMENT '视频ID',
+  `file_index` int NOT NULL COMMENT '文件索引',
+  `quality` varchar(32) NOT NULL COMMENT '清晰度档位，如 1080p',
+  `auth_policy` int NOT NULL DEFAULT '1' COMMENT '授权策略@E=0:UNKNOW:未知|1:PUBLIC:公开|2:LOGIN:登录|3:PAID:付费|4:CUSTOM:自定义;@T=QualityAuthPolicy',
+  `remark` varchar(256) DEFAULT NULL COMMENT '备注/策略说明',
+  `create_user_id` bigint DEFAULT NULL COMMENT '创建人ID',
+  `create_by` varchar(32) DEFAULT NULL COMMENT '创建人名称',
+  `create_time` bigint DEFAULT NULL COMMENT '创建时间',
+  `update_user_id` bigint DEFAULT NULL COMMENT '更新人ID',
+  `update_by` varchar(32) DEFAULT NULL COMMENT '更新人名称',
+  `update_time` bigint DEFAULT NULL COMMENT '更新时间',
+  `deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `uk_i` (`video_id`,`file_index`,`quality`,`deleted`),
+  KEY `idx_video_quality_policy` (`auth_policy`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='视频清晰度策略;@Spe;@Fac;';
+/*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -734,4 +874,4 @@ CREATE TABLE `video_post` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-12-26 15:15:03
+-- Dump completed on 2026-01-14 15:38:08
