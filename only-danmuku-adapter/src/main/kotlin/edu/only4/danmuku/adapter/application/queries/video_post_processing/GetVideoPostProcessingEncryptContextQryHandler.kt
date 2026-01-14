@@ -21,7 +21,7 @@ class GetVideoPostProcessingEncryptContextQryHandler(
 
     override fun exec(request: GetVideoPostProcessingEncryptContextQry.Request): GetVideoPostProcessingEncryptContextQry.Response {
         val file = sqlClient.createQuery(VideoPostProcessingFile::class) {
-            where(table.videoPostProcessing.videoPostId eq request.videoPostId)
+            where(table.parent.videoPostId eq request.videoPostId)
             where(table.fileIndex eq request.fileIndex)
             select(
                 table.fetchBy {

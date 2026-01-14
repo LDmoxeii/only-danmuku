@@ -27,7 +27,7 @@ class SVideoFileVariant(
 
         val id = "id"
 
-        val parentId = "parentId"
+        val fileId = "fileId"
 
         val quality = "quality"
 
@@ -241,8 +241,8 @@ class SVideoFileVariant(
     /**
      * 视频文件ID
      */
-    val parentId: Field<Long> by lazy {
-        Field(root.get("parentId"), criteriaBuilder)
+    val fileId: Field<Long> by lazy {
+        Field(root.get("fileId"), criteriaBuilder)
     }
 
 

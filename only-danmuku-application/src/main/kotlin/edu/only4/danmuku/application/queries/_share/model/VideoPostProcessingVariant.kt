@@ -13,11 +13,11 @@ import org.babyfish.jimmer.sql.Table
 interface VideoPostProcessingVariant : BaseEntity {
 
     @IdView
-    val videoPostProcessingFileId: Long
+    val parentId: Long
 
     @ManyToOne
     @JoinColumn(name = "parent_id")
-    val videoPostProcessingFile: VideoPostProcessingFile
+    val parent: VideoPostProcessingFile
 
     @Column(name = "quality")
     val quality: String

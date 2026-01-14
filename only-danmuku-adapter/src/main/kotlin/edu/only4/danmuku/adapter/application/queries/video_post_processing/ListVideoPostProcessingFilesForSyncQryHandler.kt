@@ -22,7 +22,7 @@ class ListVideoPostProcessingFilesForSyncQryHandler(
     override fun exec(request: ListVideoPostProcessingFilesForSyncQry.Request): List<ListVideoPostProcessingFilesForSyncQry.Response> {
 
         val files = sqlClient.createQuery(VideoPostProcessingFile::class) {
-            where(table.videoPostProcessing.videoPostId eq request.videoPostId)
+            where(table.parent.videoPostId eq request.videoPostId)
             select(
                 table.fetchBy {
                     fileIndex()
@@ -35,7 +35,7 @@ class ListVideoPostProcessingFilesForSyncQryHandler(
         }.execute()
 
         val variants = sqlClient.createQuery(VideoPostProcessingVariant::class) {
-            where(table.videoPostProcessingFile.videoPostProcessing.videoPostId eq request.videoPostId)
+            where(table.parent.parent.videoPostId eq request.videoPostId)
             select(
                 table.fetchBy {
                     quality()
@@ -47,13 +47,13 @@ class ListVideoPostProcessingFilesForSyncQryHandler(
                     playlistPath()
                     segmentPrefix()
                     segmentDuration()
-                    videoPostProcessingFile {
+                    parent {
                         fileIndex()
                     }
                 }
             )
         }.execute()
-        val variantMap = variants.groupBy { it.videoPostProcessingFile.fileIndex }
+        val variantMap = variants.groupBy { it.parent.fileIndex }
 
         val keys = sqlClient.createQuery(VideoHlsEncryptKey::class) {
             where(table.videoPostId eq request.videoPostId)

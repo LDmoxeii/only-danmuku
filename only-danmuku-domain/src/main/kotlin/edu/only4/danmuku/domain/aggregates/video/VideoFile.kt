@@ -45,7 +45,7 @@ class VideoFile(
     var video: Video? = null
     @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.EAGER, orphanRemoval = true)
     @Fetch(FetchMode.SUBSELECT)
-    @JoinColumn(name = "`parent_id`", nullable = false)
+    @JoinColumn(name = "`file_id`", nullable = false)
     var videoFileVariants: MutableList<VideoFileVariant> = mutableListOf()
 
     /**

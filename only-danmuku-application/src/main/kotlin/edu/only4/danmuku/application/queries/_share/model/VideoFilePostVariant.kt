@@ -15,7 +15,7 @@ interface VideoFilePostVariant : BaseEntity {
     val filePostId: Long
 
     @ManyToOne
-    @JoinColumn(name = "parent_id")
+    @JoinColumn(name = "file_post_id")
     val filePost: VideoFilePost
 
     @Column(name = "quality")

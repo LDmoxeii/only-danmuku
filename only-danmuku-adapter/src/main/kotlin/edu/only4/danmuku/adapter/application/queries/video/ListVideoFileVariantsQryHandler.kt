@@ -3,7 +3,7 @@ package edu.only4.danmuku.adapter.application.queries.video
 import com.only.engine.json.misc.JsonUtils
 import com.only4.cap4k.ddd.core.application.query.ListQuery
 import edu.only4.danmuku.application.queries._share.model.VideoFileVariant
-import edu.only4.danmuku.application.queries._share.model.videoFileId
+import edu.only4.danmuku.application.queries._share.model.fileId
 import edu.only4.danmuku.application.queries.video.ListVideoFileVariantsQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
@@ -16,7 +16,7 @@ class ListVideoFileVariantsQryHandler(
 
     override fun exec(request: ListVideoFileVariantsQry.Request): List<ListVideoFileVariantsQry.Response> {
         val variants = sqlClient.createQuery(VideoFileVariant::class) {
-            where(table.videoFileId eq request.fileId)
+            where(table.fileId eq request.fileId)
             select(table)
         }.execute()
 

@@ -22,8 +22,8 @@ class ListVideoPostProcessingVariantsForEncryptMasterQryHandler(
 
     override fun exec(request: ListVideoPostProcessingVariantsForEncryptMasterQry.Request): List<ListVideoPostProcessingVariantsForEncryptMasterQry.Response> {
         val variants = sqlClient.createQuery(VideoPostProcessingVariant::class) {
-            where(table.videoPostProcessingFile.videoPostProcessing.videoPostId eq request.videoPostId)
-            where(table.videoPostProcessingFile.fileIndex eq request.fileIndex)
+            where(table.parent.parent.videoPostId eq request.videoPostId)
+            where(table.parent.fileIndex eq request.fileIndex)
             where(table.encryptStatus eq ProcessStatus.SUCCESS)
             select(
                 table.fetchBy {

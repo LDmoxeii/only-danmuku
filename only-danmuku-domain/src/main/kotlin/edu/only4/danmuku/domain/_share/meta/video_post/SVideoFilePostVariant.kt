@@ -27,7 +27,7 @@ class SVideoFilePostVariant(
 
         val id = "id"
 
-        val parentId = "parentId"
+        val filePostId = "filePostId"
 
         val quality = "quality"
 
@@ -241,8 +241,8 @@ class SVideoFilePostVariant(
     /**
      * 稿件文件ID
      */
-    val parentId: Field<Long> by lazy {
-        Field(root.get("parentId"), criteriaBuilder)
+    val filePostId: Field<Long> by lazy {
+        Field(root.get("filePostId"), criteriaBuilder)
     }
 
 

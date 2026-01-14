@@ -9,7 +9,7 @@ import com.only4.cap4k.ddd.core.application.RequestParam
 object UniqueVideoFilePostVariantQry {
 
     class Request(
-        val parentId: Long,
+        val filePostId: Long,
         val quality: String,
         val excludeVideoFilePostVariantId: Long?
     ) : RequestParam<Response>
