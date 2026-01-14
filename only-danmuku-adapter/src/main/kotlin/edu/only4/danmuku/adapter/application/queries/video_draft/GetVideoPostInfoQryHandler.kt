@@ -1,9 +1,10 @@
 package edu.only4.danmuku.adapter.application.queries.video_draft
 
 import com.only4.cap4k.ddd.core.application.query.Query
+import edu.only4.danmuku.application.queries._share.model.VideoFilePost
+import edu.only4.danmuku.application.queries._share.model.VideoPost
 import edu.only4.danmuku.application.queries._share.model.customerId
-import edu.only4.danmuku.application.queries._share.model.dto.VideoFilePost.VideoFilePostItem
-import edu.only4.danmuku.application.queries._share.model.dto.VideoPost.VideoPostDetail
+import edu.only4.danmuku.application.queries._share.model.fetchBy
 import edu.only4.danmuku.application.queries._share.model.id
 import edu.only4.danmuku.application.queries._share.model.videoPostId
 import edu.only4.danmuku.application.queries.video_draft.GetVideoPostInfoQry
@@ -26,15 +27,36 @@ class GetVideoPostInfoQryHandler(
     override fun exec(request: GetVideoPostInfoQry.Request): GetVideoPostInfoQry.Response {
 
         // 查询视频草稿信息
-        val videoPost = sqlClient.findOne(VideoPostDetail::class) {
+        val videoPost = sqlClient.createQuery(VideoPost::class) {
             where(table.id eq request.videoPostId)
             where(table.customerId eq request.userId)
-        }
+            select(table.fetchBy {
+                parentCategoryId()
+                categoryId()
+                videoCover()
+                videoName()
+                status()
+                postType()
+                originInfo()
+                tags()
+                introduction()
+                interaction()
+            })
+        }.fetchOne()
 
         // 查询视频文件列表
-        val videoFiles = sqlClient.findAll(VideoFilePostItem::class) {
+        val videoFiles = sqlClient.createQuery(VideoFilePost::class) {
             where(table.videoPostId eq request.videoPostId)
-        }
+            select(table.fetchBy {
+                videoPostId()
+                fileIndex()
+                fileName()
+                fileSize()
+                transcodeOutputPrefix()
+                transferResult()
+                duration()
+            })
+        }.execute()
 
         return GetVideoPostInfoQry.Response(
             videoInfo = GetVideoPostInfoQry.VideoInfo(

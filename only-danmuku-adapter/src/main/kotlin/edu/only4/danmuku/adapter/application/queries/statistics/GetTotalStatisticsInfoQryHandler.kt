@@ -1,8 +1,10 @@
 package edu.only4.danmuku.adapter.application.queries.statistics
 
 import com.only4.cap4k.ddd.core.application.query.Query
+import edu.only4.danmuku.application.queries._share.model.Statistics
 import edu.only4.danmuku.application.queries._share.model.customerId
-import edu.only4.danmuku.application.queries._share.model.dto.Statistics.PreviousDayStatistics
+import edu.only4.danmuku.application.queries._share.model.dataType
+import edu.only4.danmuku.application.queries._share.model.statisticsCount
 import edu.only4.danmuku.application.queries.statistics.GetTotalStatisticsInfoQry
 import edu.only4.danmuku.domain.aggregates.statistics.enums.StatisticsDataType
 import org.babyfish.jimmer.sql.kt.KSqlClient
@@ -23,14 +25,15 @@ class GetTotalStatisticsInfoQryHandler(
 
     override fun exec(request: GetTotalStatisticsInfoQry.Request): GetTotalStatisticsInfoQry.Response {
 
-        val statisticsList = sqlClient.findAll(PreviousDayStatistics::class) {
+        val statisticsList = sqlClient.createQuery(Statistics::class) {
             where(table.customerId `eq?` request.userId)
-        }
+            select(table.dataType, table.statisticsCount)
+        }.execute()
 
         // 按数据类型分组统计（合并）
         val countsByType = statisticsList
-            .groupingBy { it.dataType }
-            .fold(0) { acc, item -> acc + (item.statisticsCount ?: 0) }
+            .groupingBy { it._1 }
+            .fold(0) { acc, item -> acc + (item._2 ?: 0) }
 
         return GetTotalStatisticsInfoQry.Response(
             userCount = countsByType[StatisticsDataType.FANS] ?: 0,        // 粉丝

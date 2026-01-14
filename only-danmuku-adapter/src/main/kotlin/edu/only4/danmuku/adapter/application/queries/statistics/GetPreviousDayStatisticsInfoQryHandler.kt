@@ -1,8 +1,10 @@
 package edu.only4.danmuku.adapter.application.queries.statistics
 
 import com.only4.cap4k.ddd.core.application.query.Query
+import edu.only4.danmuku.application.queries._share.model.Statistics
 import edu.only4.danmuku.application.queries._share.model.customerId
-import edu.only4.danmuku.application.queries._share.model.dto.Statistics.StatisticsSimple
+import edu.only4.danmuku.application.queries._share.model.dataType
+import edu.only4.danmuku.application.queries._share.model.statisticsCount
 import edu.only4.danmuku.application.queries._share.model.statisticsDate
 import edu.only4.danmuku.application.queries.statistics.GetPreviousDayStatisticsInfoQry
 import edu.only4.danmuku.domain.aggregates.statistics.enums.StatisticsDataType
@@ -33,15 +35,16 @@ class GetPreviousDayStatisticsInfoQryHandler(
             .toEpochSecond()
 
         // 查询前一天的统计数据（支持可选 userId 过滤）
-        val previousDayStatisticsList = sqlClient.findAll(StatisticsSimple::class) {
+        val previousDayStatisticsList = sqlClient.createQuery(Statistics::class) {
             where(table.statisticsDate ge previousDayStartOfDay)
             where(table.customerId `eq?` request.userId)
-        }
+            select(table.dataType, table.statisticsCount)
+        }.execute()
 
         // 按数据类型分组统计 - 前一天数据
         val previousDayCountsByType = previousDayStatisticsList
-            .groupingBy { it.dataType }
-            .fold(0) { acc, item -> acc + (item.statisticsCount ?: 0) }
+            .groupingBy { it._1 }
+            .fold(0) { acc, item -> acc + (item._2 ?: 0) }
 
         return GetPreviousDayStatisticsInfoQry.Response(
             userCount = previousDayCountsByType[StatisticsDataType.FANS] ?: 0,        // 粉丝

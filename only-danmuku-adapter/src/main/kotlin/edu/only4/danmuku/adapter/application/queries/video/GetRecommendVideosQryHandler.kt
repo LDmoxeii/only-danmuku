@@ -1,7 +1,8 @@
 package edu.only4.danmuku.adapter.application.queries.video
 
 import com.only4.cap4k.ddd.core.application.query.ListQuery
-import edu.only4.danmuku.application.queries._share.model.dto.Video.VideoListItem
+import edu.only4.danmuku.application.queries._share.model.Video
+import edu.only4.danmuku.application.queries._share.model.fetchBy
 import edu.only4.danmuku.application.queries._share.model.playCount
 import edu.only4.danmuku.application.queries._share.model.recommendType
 import edu.only4.danmuku.application.queries.video.GetRecommendVideosQry
@@ -25,10 +26,23 @@ class GetRecommendVideosQryHandler(
 
     override fun exec(request: GetRecommendVideosQry.Request): List<GetRecommendVideosQry.Response> {
         // 查询推荐视频列表 (recommendType = 2 表示已推荐)
-        val videoList = sqlClient.findAll(VideoListItem::class) {
+        val videoList = sqlClient.createQuery(Video::class) {
             where(table.recommendType eq RecommendType.RECOMMEND)
             orderBy(table.playCount.desc())  // 按播放数降序
-        }
+            select(table.fetchBy {
+                createTime()
+                videoCover()
+                videoName()
+                playCount()
+                likeCount()
+                customer {
+                    relation {
+                        nickName()
+                        avatar()
+                    }
+                }
+            })
+        }.execute()
 
         // 转换为响应格式
         return videoList.map { video ->

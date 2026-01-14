@@ -1,8 +1,9 @@
 package edu.only4.danmuku.adapter.application.queries.user
 
 import com.only4.cap4k.ddd.core.application.query.Query
-import edu.only4.danmuku.application.queries._share.model.dto.User.UserAccountInfo
+import edu.only4.danmuku.application.queries._share.model.User
 import edu.only4.danmuku.application.queries._share.model.email
+import edu.only4.danmuku.application.queries._share.model.fetchBy
 import edu.only4.danmuku.application.queries.user.GetAccountInfoByEmailQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
@@ -21,9 +22,15 @@ class GetAccountInfoByEmailQryHandler(
 ) : Query<GetAccountInfoByEmailQry.Request, GetAccountInfoByEmailQry.Response> {
 
     override fun exec(request: GetAccountInfoByEmailQry.Request): GetAccountInfoByEmailQry.Response {
-        val userAccountInfo = sqlClient.findOneOrNull(UserAccountInfo::class) {
+        val userAccountInfo = sqlClient.createQuery(User::class) {
             where(table.email eq request.email)
-        } ?: throw IllegalArgumentException("用户不存在: ${request.email}")
+            select(table.fetchBy {
+                nickName()
+                email()
+                password()
+                type()
+            })
+        }.fetchOneOrNull() ?: throw IllegalArgumentException("用户不存在: ${request.email}")
 
         // 转换为查询响应
         return GetAccountInfoByEmailQry.Response(

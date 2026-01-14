@@ -4,7 +4,7 @@ import com.only4.cap4k.ddd.core.application.query.PageQuery
 import com.only4.cap4k.ddd.core.share.PageData
 import edu.only4.danmuku.application.queries._share.model.VideoComment
 import edu.only4.danmuku.application.queries._share.model.customerId
-import edu.only4.danmuku.application.queries._share.model.dto.VideoComment.CommentPageItem
+import edu.only4.danmuku.application.queries._share.model.fetchBy
 import edu.only4.danmuku.application.queries._share.model.parentId
 import edu.only4.danmuku.application.queries._share.model.postTime
 import edu.only4.danmuku.application.queries._share.model.topType
@@ -34,7 +34,7 @@ class VideoCommentPageQryHandler(
 ) : PageQuery<VideoCommentPageQry.Request, VideoCommentPageQry.Response> {
 
     override fun exec(request: VideoCommentPageQry.Request): PageData<VideoCommentPageQry.Response> {
-        // 使用 Jimmer 查询评论分页数据，使用 DTO 投影
+        // 使用 Jimmer 查询评论分页数据，使用动态投影
         val pageResult = sqlClient.createQuery(VideoComment::class) {
             // 视频ID精确查询（可选）
             where(table.videoId `eq?` request.videoId)
@@ -52,11 +52,32 @@ class VideoCommentPageQryHandler(
                 // 同一组内按发布时间倒序
                 table.postTime.desc()
             )
-            // DTO 投影
-            select(table.fetch(CommentPageItem::class))
+            select(table.fetchBy {
+                parentId()
+                content()
+                imgPath()
+                postTime()
+                likeCount()
+                hateCount()
+                topType()
+                video {
+                    customerId()
+                    videoName()
+                    videoCover()
+                }
+                customer {
+                    relation {
+                        nickName()
+                        avatar()
+                    }
+                }
+                replyCustomer {
+                    nickName()
+                }
+            })
         }.fetchPage(request.pageNum - 1, request.pageSize)
 
-        // 将 DTO 转换为查询响应
+        // 将读模型转换为查询响应
         val responseList = pageResult.rows.map { item ->
             toResponse(item, loadChildren = true)
         }
@@ -71,9 +92,9 @@ class VideoCommentPageQryHandler(
     }
 
     /**
-     * 将 DTO 转换为查询响应，支持递归加载子评论
+     * 将读模型转换为查询响应，支持递归加载子评论
      */
-    private fun toResponse(item: CommentPageItem, loadChildren: Boolean): VideoCommentPageQry.Response {
+    private fun toResponse(item: VideoComment, loadChildren: Boolean): VideoCommentPageQry.Response {
         // 查询子评论
         val children = if (loadChildren) {
             loadChildComments(item.id)
@@ -112,7 +133,29 @@ class VideoCommentPageQryHandler(
         val childComments = sqlClient.createQuery(VideoComment::class) {
             where(table.parentId eq parentCommentId)
             orderBy(table.postTime.asc()) // 子评论按时间正序
-            select(table.fetch(CommentPageItem::class))
+            select(table.fetchBy {
+                parentId()
+                content()
+                imgPath()
+                postTime()
+                likeCount()
+                hateCount()
+                topType()
+                video {
+                    customerId()
+                    videoName()
+                    videoCover()
+                }
+                customer {
+                    relation {
+                        nickName()
+                        avatar()
+                    }
+                }
+                replyCustomer {
+                    nickName()
+                }
+            })
         }.execute()
 
         // 递归转换子评论

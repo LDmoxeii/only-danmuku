@@ -1,7 +1,8 @@
 package edu.only4.danmuku.adapter.application.queries.customer_video_series
 
 import com.only4.cap4k.ddd.core.application.query.Query
-import edu.only4.danmuku.application.queries._share.model.dto.CustomerVideoSeries.CustomerVideoSeriesDetail
+import edu.only4.danmuku.application.queries._share.model.CustomerVideoSeries
+import edu.only4.danmuku.application.queries._share.model.fetchBy
 import edu.only4.danmuku.application.queries._share.model.id
 import edu.only4.danmuku.application.queries.customer_video_series.GetCustomerVideoSeriesInfoQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
@@ -18,13 +19,30 @@ class GetCustomerVideoSeriesInfoQryHandler(
 
     override fun exec(request: GetCustomerVideoSeriesInfoQry.Request): GetCustomerVideoSeriesInfoQry.Response {
         // 查询系列详情，携带系列视频列表
-        val series = sqlClient.findOne(CustomerVideoSeriesDetail::class) {
+        val series = sqlClient.createQuery(CustomerVideoSeries::class) {
             where(table.id eq request.seriesId)
-        }
+            select(table.fetchBy {
+                seriesName()
+                seriesDescription()
+                sort()
+                createTime()
+                customer {
+                }
+                seriesVideos {
+                    sort()
+                    video {
+                        videoCover()
+                        videoName()
+                        createTime()
+                        playCount()
+                    }
+                }
+            })
+        }.fetchOne()
 
         return GetCustomerVideoSeriesInfoQry.Response(
             seriesId = series.id,
-            userId = series.customerId,
+            userId = series.customer.id,
             seriesName = series.seriesName,
             seriesDescription = series.seriesDescription,
             sort = series.sort,
@@ -43,4 +61,3 @@ class GetCustomerVideoSeriesInfoQryHandler(
         )
     }
 }
-

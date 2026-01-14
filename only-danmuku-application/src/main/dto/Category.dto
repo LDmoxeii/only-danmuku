@@ -12,13 +12,3 @@ CategoryTreeNode {
     icon
     background
 }
-
-CategorySimple {
-    id
-    id(parent)
-    sort
-    code
-    name
-    icon
-    background
-}

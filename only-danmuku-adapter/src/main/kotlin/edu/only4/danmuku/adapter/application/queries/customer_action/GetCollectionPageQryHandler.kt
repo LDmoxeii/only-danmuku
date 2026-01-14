@@ -5,11 +5,12 @@ import com.only4.cap4k.ddd.core.share.PageData
 import edu.only4.danmuku.application.queries._share.model.CustomerAction
 import edu.only4.danmuku.application.queries._share.model.actionType
 import edu.only4.danmuku.application.queries._share.model.customerId
-import edu.only4.danmuku.application.queries._share.model.dto.CustomerAction.CustomerActionSimple
+import edu.only4.danmuku.application.queries._share.model.fetchBy
 import edu.only4.danmuku.application.queries.customer_action.GetCollectionPageQry
 import edu.only4.danmuku.domain.aggregates.customer_action.enums.ActionType
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
+import org.springframework.data.jpa.domain.AbstractPersistable_.id
 import org.springframework.stereotype.Service
 
 /**
@@ -30,7 +31,21 @@ class GetCollectionPageQryHandler(
             sqlClient.createQuery(CustomerAction::class) {
                 where(table.customerId eq request.customerId)
                 where(table.actionType eq ActionType.FAVORITE_VIDEO)
-                select(table.fetch(CustomerActionSimple::class))
+                select(table.fetchBy {
+                    actionType()
+                    actionCount()
+                    actionTime()
+                    customer {
+                    }
+                    videoOwner {
+                    }
+                    comment {
+                    }
+                    video {
+                        videoName()
+                        videoCover()
+                    }
+                })
             }.fetchPage(request.pageNum - 1, request.pageSize)
 
         return PageData.create(
@@ -40,11 +55,11 @@ class GetCollectionPageQryHandler(
                 GetCollectionPageQry.Response(
                     actionId = action.id,
                     videoId = action.video?.id,
-                    videoUserId = action.videoOwnerId,
-                    commentId = action.commentId,
+                    videoUserId = action.videoOwner.id,
+                    commentId = action.comment?.id,
                     actionType = action.actionType,
                     actionCount = action.actionCount,
-                    userId = action.customerId,
+                    userId = action.customer.id,
                     actionTime = action.actionTime,
                     videoName = action.video?.videoName,
                     videoCover = action.video?.videoCover,

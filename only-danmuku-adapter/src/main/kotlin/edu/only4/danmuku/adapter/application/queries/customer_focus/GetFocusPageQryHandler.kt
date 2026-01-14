@@ -4,11 +4,11 @@ import com.only4.cap4k.ddd.core.application.query.PageQuery
 import com.only4.cap4k.ddd.core.share.PageData
 import edu.only4.danmuku.application.queries._share.model.CustomerFocus
 import edu.only4.danmuku.application.queries._share.model.customerId
-import edu.only4.danmuku.application.queries._share.model.dto.CustomerFocus.CustomerFocusSimple
 import edu.only4.danmuku.application.queries._share.model.fetchBy
 import edu.only4.danmuku.application.queries._share.model.focusCustomerId
 import edu.only4.danmuku.application.queries.customer_focus.GetFocusPageQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
+import org.babyfish.jimmer.sql.kt.ast.expression.count
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.springframework.stereotype.Service
 
@@ -27,6 +27,7 @@ class GetFocusPageQryHandler(
             sqlClient.createQuery(CustomerFocus::class) {
                 where(table.customerId eq request.userId)
                 select(table.fetchBy {
+                    focusCustomerId()
                     focusCustomer {
                         relation {
                             nickName()
@@ -38,18 +39,20 @@ class GetFocusPageQryHandler(
             }.fetchPage(request.pageNum - 1, request.pageSize)
 
         // 预取我的粉丝集合：哪些人关注了我，用于判断是否互关
-        val myFansUserIds = sqlClient.findAll(CustomerFocusSimple::class) {
+        val myFansUserIds = sqlClient.createQuery(CustomerFocus::class) {
             where(table.focusCustomerId eq request.userId)
-        }.map { it.customerId }.toSet()
+            select(table.customerId)
+        }.execute().toSet()
 
         return PageData.create(
             pageNum = request.pageNum,
             pageSize = request.pageSize,
             list = pageResult.rows.mapNotNull { focus ->
                 // 统计该用户的粉丝数
-                val fansCount = sqlClient.findAll(CustomerFocusSimple::class) {
+                val fansCount = sqlClient.createQuery(CustomerFocus::class) {
                     where(table.focusCustomerId eq focus.focusCustomerId)
-                }.size
+                    select(count(table))
+                }.fetchOne().toInt()
 
                 GetFocusPageQry.Response(
                     focusUserId = focus.focusCustomerId,
@@ -65,4 +68,3 @@ class GetFocusPageQryHandler(
         )
     }
 }
-

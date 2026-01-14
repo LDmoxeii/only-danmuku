@@ -1,8 +1,9 @@
 package edu.only4.danmuku.adapter.application.queries.customer_video_series
 
 import com.only4.cap4k.ddd.core.application.query.ListQuery
+import edu.only4.danmuku.application.queries._share.model.CustomerVideoSeries
 import edu.only4.danmuku.application.queries._share.model.customerId
-import edu.only4.danmuku.application.queries._share.model.dto.CustomerVideoSeries.CustomerVideoSeriesDetail
+import edu.only4.danmuku.application.queries._share.model.fetchBy
 import edu.only4.danmuku.application.queries.customer_video_series.GetCustomerVideoSeriesVideoQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
@@ -22,9 +23,22 @@ class GetCustomerVideoSeriesVideoQryHandler(
 
     override fun exec(request: GetCustomerVideoSeriesVideoQry.Request): List<GetCustomerVideoSeriesVideoQry.Response> {
         // 查询用户的所有系列及其视频
-        val seriesList = sqlClient.findAll(CustomerVideoSeriesDetail::class) {
+        val seriesList = sqlClient.createQuery(CustomerVideoSeries::class) {
             where(table.customerId eq request.userId)
-        }
+            select(table.fetchBy {
+                seriesName()
+                seriesDescription()
+                sort()
+                seriesVideos {
+                    sort()
+                    video {
+                        videoCover()
+                        videoName()
+                        playCount()
+                    }
+                }
+            })
+        }.execute()
 
         // 转换为响应格式
         return seriesList.map { series ->

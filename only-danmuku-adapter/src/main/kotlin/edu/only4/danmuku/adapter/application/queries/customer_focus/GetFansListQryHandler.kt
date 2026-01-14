@@ -4,11 +4,11 @@ import com.only4.cap4k.ddd.core.application.query.PageQuery
 import com.only4.cap4k.ddd.core.share.PageData
 import edu.only4.danmuku.application.queries._share.model.CustomerFocus
 import edu.only4.danmuku.application.queries._share.model.customerId
-import edu.only4.danmuku.application.queries._share.model.dto.CustomerFocus.CustomerFocusSimple
 import edu.only4.danmuku.application.queries._share.model.fetchBy
 import edu.only4.danmuku.application.queries._share.model.focusCustomerId
 import edu.only4.danmuku.application.queries.customer_focus.GetFansListQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
+import org.babyfish.jimmer.sql.kt.ast.expression.count
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.springframework.stereotype.Service
 
@@ -27,6 +27,7 @@ class GetFansListQryHandler(
             sqlClient.createQuery(CustomerFocus::class) {
                 where(table.focusCustomerId eq request.userId)
                 select(table.fetchBy {
+                    customerId()
                     customer {
                         relation {
                             nickName()
@@ -39,19 +40,20 @@ class GetFansListQryHandler(
             }.fetchPage(request.pageNum - 1, request.pageSize)
 
         // 我关注过的用户集合：用于判断互关
-        val myFocusUserIds = sqlClient.findAll(CustomerFocusSimple::class) {
+        val myFocusUserIds = sqlClient.createQuery(CustomerFocus::class) {
             where(table.customerId eq request.userId)
             select(table.focusCustomerId)
-        }.map { it.focusCustomerId }.toSet()
+        }.execute().toSet()
 
         return PageData.create(
             pageNum = request.pageNum,
             pageSize = request.pageSize,
             list = pageResult.rows.mapNotNull { focus ->
                 // 统计该用户的粉丝数
-                val fansCount = sqlClient.findAll(CustomerFocusSimple::class) {
+                val fansCount = sqlClient.createQuery(CustomerFocus::class) {
                     where(table.focusCustomerId eq focus.customerId)
-                }.size
+                    select(count(table))
+                }.fetchOne().toInt()
                 GetFansListQry.Response(
                     userId = focus.customerId,
                     nickName = focus.customer.relation!!.nickName,
@@ -66,4 +68,3 @@ class GetFansListQryHandler(
         )
     }
 }
-

@@ -4,7 +4,6 @@ import com.only4.cap4k.ddd.core.application.query.PageQuery
 import com.only4.cap4k.ddd.core.share.PageData
 import com.only4.cap4k.ddd.domain.repo.toSpringData
 import edu.only4.danmuku.application.queries._share.model.*
-import edu.only4.danmuku.application.queries._share.model.dto.VideoDanmuku.DanmukuPageItem
 import edu.only4.danmuku.application.queries.video_danmuku.GetVideoDanmukuPageQry
 import org.babyfish.jimmer.spring.repository.orderBy
 import org.babyfish.jimmer.sql.kt.KSqlClient
@@ -32,7 +31,20 @@ class GetVideoDanmukuPageQryHandler(
             where(table.video.videoName `ilike?` request.videoNameFuzzy)
             orderBy(table.postTime.desc())
             orderBy(toSpringData(request.sort))
-            select(table.fetch(DanmukuPageItem::class))
+            select(table.fetchBy {
+                text()
+                mode()
+                color()
+                time()
+                postTime()
+                video {
+                    videoName()
+                    videoCover()
+                }
+                customer {
+                    nickName()
+                }
+            })
         }.fetchPage(request.pageNum - 1, request.pageSize)
 
         val responseList = pageResult.rows.map { item ->
