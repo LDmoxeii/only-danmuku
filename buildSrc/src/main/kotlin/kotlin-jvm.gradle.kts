@@ -2,7 +2,10 @@
 // `buildSrc` is a Gradle-recognized directory and every plugin there will be easily available in the rest of the build.
 package buildsrc.convention
 
+import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.api.tasks.testing.logging.TestLogEvent
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import java.io.File
 import java.time.Duration
 
 plugins {
@@ -40,20 +43,21 @@ tasks.withType<Test>().configureEach {
 }
 
 // Cap4k code analysis compiler plugin (IR/K2)
-val cap4kPluginDir = file("D:/ideaProjects/code-analysis/cap4k/cap4k-code-analysis-compiler-plugin/build/libs")
-val cap4kCoreDir = file("D:/ideaProjects/code-analysis/cap4k/cap4k-extensions-code-analysis-core/build/libs")
-val cap4kPluginJar = cap4kPluginDir.listFiles()
-    ?.firstOrNull { it.name.startsWith("cap4k-code-analysis-compiler-plugin") && it.name.endsWith(".jar") && !it.name.endsWith("-sources.jar") }
-val cap4kCoreJar = cap4kCoreDir.listFiles()
-    ?.firstOrNull { it.name.startsWith("cap4k-extensions-code-analysis-core") && it.name.endsWith(".jar") && !it.name.endsWith("-sources.jar") }
+val cap4kCompilerPluginClasspath = configurations.create("cap4kCompilerPluginClasspath") {
+    isCanBeConsumed = false
+    isCanBeResolved = true
+}
+val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
+dependencies {
+    cap4kCompilerPluginClasspath(libs.findLibrary("cap4k-code-analysis-compiler-plugin").get())
+    cap4kCompilerPluginClasspath(libs.findLibrary("cap4k-extensions-code-analysis-core").get())
+}
+val cap4kPluginArgs = providers.provider {
+    cap4kCompilerPluginClasspath
+        .resolve()
+        .map { "-Xplugin=${it.absolutePath}" }
+}
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-    if (cap4kPluginJar != null && cap4kCoreJar != null) {
-        compilerOptions {
-            freeCompilerArgs.addAll(
-                "-Xplugin=${cap4kPluginJar.absolutePath}",
-                "-Xplugin=${cap4kCoreJar.absolutePath}"
-            )
-        }
-    }
+tasks.withType<KotlinCompile>().configureEach {
+    compilerOptions.freeCompilerArgs.addAll(cap4kPluginArgs)
 }
