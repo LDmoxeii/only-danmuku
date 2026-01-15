@@ -1,16 +1,10 @@
 package edu.only4.danmuku.domain.aggregates.video_post
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
-
 import edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity
-
 import jakarta.persistence.*
-
-import org.hibernate.annotations.DynamicInsert
-import org.hibernate.annotations.DynamicUpdate
-import org.hibernate.annotations.GenericGenerator
-import org.hibernate.annotations.SQLDelete
-import org.hibernate.annotations.Where
+import jakarta.persistence.Table
+import org.hibernate.annotations.*
 
 /**
  * 视频稿件文件分辨率档位;
@@ -40,9 +34,6 @@ class VideoFilePostVariant(
     segmentDuration: Int? = null,
 ) : AuditedFieldsEntity() {
     // 【字段映射开始】本段落由[cap4k-ddd-codegen-gradle-plugin]维护，请不要手工改动
-    @ManyToOne(cascade = [], fetch = FetchType.EAGER)
-    @JoinColumn(name = "`file_post_id`", nullable = false, insertable = false, updatable = false)
-    var videoFilePost: VideoFilePost? = null
 
     /**
      * ID
@@ -50,7 +41,10 @@ class VideoFilePostVariant(
      */
     @Id
     @GeneratedValue(generator = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator")
-    @GenericGenerator(name = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator", strategy = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator")
+    @GenericGenerator(
+        name = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator",
+        strategy = "com.only4.cap4k.ddd.domain.distributed.SnowflakeIdentifierGenerator"
+    )
     @Column(name = "`id`", insertable = false, updatable = false)
     var id: Long = id
         internal set
