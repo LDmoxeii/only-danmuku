@@ -1,0 +1,23 @@
+{
+  "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::cancelFocus",
+  "entryType" : "controllermethod",
+  "nodeCount" : 2,
+  "edgeCount" : 1,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::cancelFocus",
+    "name" : "UHomeController::cancelFocus",
+    "fullName" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::cancelFocus",
+    "type" : "controllermethod"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.customer_focus.UnFocusCmd.Request",
+    "name" : "UnFocusCmd.Request",
+    "fullName" : "edu.only4.danmuku.application.commands.customer_focus.UnFocusCmd.Request",
+    "type" : "command"
+  } ],
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::cancelFocus",
+    "toId" : "edu.only4.danmuku.application.commands.customer_focus.UnFocusCmd.Request",
+    "type" : "ControllerMethodToCommand",
+    "label" : null
+  } ]
+}

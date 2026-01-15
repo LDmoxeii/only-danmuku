@@ -1,0 +1,8 @@
+flowchart TD
+  N1([VideoSeriesController::getVideoSeries])
+  class N1 controllermethod
+  N2{{GetCustomerVideoSeriesListQry.Request}}
+  class N2 query
+  N1 -->|ControllerMethodToQuery| N2
+  classDef controllermethod fill:#FDE68A,stroke:#B45309,color:#111827
+  classDef query fill:#93C5FD,stroke:#1D4ED8,color:#0F172A

@@ -1,0 +1,220 @@
+flowchart TD
+  N1[[EncryptHlsVariantWithKeyCliHandler]]
+  class N1 clihandler
+  N2[[GenerateEncryptedMasterByVariantsCliHandler]]
+  class N2 clihandler
+  N3[[GenerateVideoAbrMasterCliHandler]]
+  class N3 clihandler
+  N4[[MergeUploadToMp4ByPathCliHandler]]
+  class N4 clihandler
+  N5[[TranscodeVideoFileToAbrByPathCliHandler]]
+  class N5 clihandler
+  N6[[UploadVideoAbrOutputCliHandler]]
+  class N6 clihandler
+  N7[[GetVideoPostProcessingEncryptContextQryHandler]]
+  class N7 queryhandler
+  N8[[GetUploadSessionTempPathQryHandler]]
+  class N8 queryhandler
+  N9([UCenterVideoPostController::save])
+  class N9 controllermethod
+  N10[[GenerateVideoPostQualityKeyCmd.Handler]]
+  class N10 commandhandler
+  N11{{GenerateVideoPostQualityKeyCmd.Request}}
+  class N11 command
+  N12[[CreateVideoPostCmd.Handler]]
+  class N12 commandhandler
+  N13{{CreateVideoPostCmd.Request}}
+  class N13 command
+  N14[[SyncVideoPostProcessStatusCmd.Handler]]
+  class N14 commandhandler
+  N15{{SyncVideoPostProcessStatusCmd.Request}}
+  class N15 command
+  N16[[ApplyVideoPostProcessingEncryptResultCmd.Handler]]
+  class N16 commandhandler
+  N17{{ApplyVideoPostProcessingEncryptResultCmd.Request}}
+  class N17 command
+  N18[[ApplyVideoPostProcessingTranscodeResultCmd.Handler]]
+  class N18 commandhandler
+  N19{{ApplyVideoPostProcessingTranscodeResultCmd.Request}}
+  class N19 command
+  N20[[ApplyVideoPostProcessingVariantEncryptResultCmd.Handler]]
+  class N20 commandhandler
+  N21{{ApplyVideoPostProcessingVariantEncryptResultCmd.Request}}
+  class N21 command
+  N22[[PrepareVideoPostProcessingEncryptContextCmd.Handler]]
+  class N22 commandhandler
+  N23{{PrepareVideoPostProcessingEncryptContextCmd.Request}}
+  class N23 command
+  N24[[StartVideoPostProcessingCmd.Handler]]
+  class N24 commandhandler
+  N25{{StartVideoPostProcessingCmd.Request}}
+  class N25 command
+  N26{{EncryptHlsVariantWithKeyCli.Request}}
+  class N26 cli
+  N27{{GenerateEncryptedMasterByVariantsCli.Request}}
+  class N27 cli
+  N28{{GenerateVideoAbrMasterCli.Request}}
+  class N28 cli
+  N29{{MergeUploadToMp4ByPathCli.Request}}
+  class N29 cli
+  N30{{TranscodeVideoFileToAbrByPathCli.Request}}
+  class N30 cli
+  N31{{UploadVideoAbrOutputCli.Request}}
+  class N31 cli
+  N32{{GetVideoPostProcessingEncryptContextQry.Request}}
+  class N32 query
+  N33{{GetUploadSessionTempPathQry.Request}}
+  class N33 query
+  N34[[VideoPostQualityKeyGeneratedDomainEventSubscriber::on]]
+  class N34 domaineventhandler
+  N35[[VideoPostCreatedDomainEventSubscriber::on]]
+  class N35 domaineventhandler
+  N36[[VideoPostTranscodingRequestedDomainEventSubscriber::on]]
+  class N36 domaineventhandler
+  N37[[VideoPostProcessingCompletedDomainEventSubscriber::on]]
+  class N37 domaineventhandler
+  N38[[VideoPostProcessingEncryptContextPreparedDomainEventSubscriber::on]]
+  class N38 domaineventhandler
+  N39[[VideoPostProcessingFileEncryptCompletedDomainEventSubscriber::on]]
+  class N39 domaineventhandler
+  N40[[VideoPostProcessingStartedDomainEventSubscriber::on]]
+  class N40 domaineventhandler
+  N41[[VideoPostProcessingTranscodeCompletedDomainEventSubscriber::on]]
+  class N41 domaineventhandler
+  N42(VideoHlsEncryptKey::onCreate)
+  class N42 entitymethod
+  N43((VideoHlsEncryptKeyCreatedDomainEvent))
+  class N43 domainevent
+  N44(VideoFilePost::&lt;get-fileIndex&gt;)
+  class N44 entitymethod
+  N45(VideoFilePost::applyEncryptResult)
+  class N45 entitymethod
+  N46(VideoFilePost::applyTranscodeResult)
+  class N46 entitymethod
+  N47(VideoFilePost::syncVariants)
+  class N47 entitymethod
+  N48(VideoPost::&lt;get-id&gt;)
+  class N48 entitymethod
+  N49(VideoPost::&lt;get-videoFilePosts&gt;)
+  class N49 entitymethod
+  N50(VideoPost::applyProcessStatus)
+  class N50 entitymethod
+  N51(VideoPost::markTranscoding)
+  class N51 entitymethod
+  N52(VideoPost::onCreate)
+  class N52 entitymethod
+  N53(VideoPost::updateDuration)
+  class N53 entitymethod
+  N54((VideoPostCreatedDomainEvent))
+  class N54 domainevent
+  N55((VideoPostTranscodingRequestedDomainEvent))
+  class N55 domainevent
+  N56(VideoPostProcessing::&lt;get-videoPostProcessingFiles&gt;)
+  class N56 entitymethod
+  N57(VideoPostProcessing::appendFiles)
+  class N57 entitymethod
+  N58(VideoPostProcessing::applyEncryptResult)
+  class N58 entitymethod
+  N59(VideoPostProcessing::applyTranscodeResult)
+  class N59 entitymethod
+  N60(VideoPostProcessing::applyVariantEncryptResult)
+  class N60 entitymethod
+  N61(VideoPostProcessing::onCreate)
+  class N61 entitymethod
+  N62(VideoPostProcessing::prepareEncryptContext)
+  class N62 entitymethod
+  N63(VideoPostProcessingFile::&lt;get-encryptKeyVersion&gt;)
+  class N63 entitymethod
+  N64(VideoPostProcessingFile::&lt;get-fileIndex&gt;)
+  class N64 entitymethod
+  N65((VideoPostProcessingCompletedDomainEvent))
+  class N65 domainevent
+  N66((VideoPostProcessingEncryptContextPreparedDomainEvent))
+  class N66 domainevent
+  N67((VideoPostProcessingFileEncryptCompletedDomainEvent))
+  class N67 domainevent
+  N68((VideoPostProcessingStartedDomainEvent))
+  class N68 domainevent
+  N69((VideoPostProcessingTranscodeCompletedDomainEvent))
+  class N69 domainevent
+  N9 -->|ControllerMethodToCommand| N13
+  N10 -->|CommandHandlerToEntityMethod| N42
+  N11 -->|CommandToCommandHandler| N10
+  N12 -->|CommandHandlerToEntityMethod| N48
+  N12 -->|CommandHandlerToEntityMethod| N49
+  N12 -->|CommandHandlerToEntityMethod| N51
+  N12 -->|CommandHandlerToEntityMethod| N52
+  N13 -->|CommandToCommandHandler| N12
+  N14 -->|CommandHandlerToEntityMethod| N44
+  N14 -->|CommandHandlerToEntityMethod| N45
+  N14 -->|CommandHandlerToEntityMethod| N46
+  N14 -->|CommandHandlerToEntityMethod| N47
+  N14 -->|CommandHandlerToEntityMethod| N49
+  N14 -->|CommandHandlerToEntityMethod| N50
+  N14 -->|CommandHandlerToEntityMethod| N53
+  N15 -->|CommandToCommandHandler| N14
+  N16 -->|CommandHandlerToEntityMethod| N58
+  N17 -->|CommandToCommandHandler| N16
+  N18 -->|CommandHandlerToEntityMethod| N59
+  N19 -->|CommandToCommandHandler| N18
+  N20 -->|CommandHandlerToEntityMethod| N60
+  N21 -->|CommandToCommandHandler| N20
+  N22 -->|CommandHandlerToEntityMethod| N56
+  N22 -->|CommandHandlerToEntityMethod| N62
+  N22 -->|CommandHandlerToEntityMethod| N63
+  N22 -->|CommandHandlerToEntityMethod| N64
+  N23 -->|CommandToCommandHandler| N22
+  N24 -->|CommandHandlerToEntityMethod| N57
+  N24 -->|CommandHandlerToEntityMethod| N61
+  N25 -->|CommandToCommandHandler| N24
+  N26 -->|CliToCliHandler| N1
+  N27 -->|CliToCliHandler| N2
+  N28 -->|CliToCliHandler| N3
+  N29 -->|CliToCliHandler| N4
+  N30 -->|CliToCliHandler| N5
+  N31 -->|CliToCliHandler| N6
+  N32 -->|QueryToQueryHandler| N7
+  N33 -->|QueryToQueryHandler| N8
+  N34 -->|DomainEventHandlerToCommand| N21
+  N34 -->|DomainEventHandlerToCli| N26
+  N34 -->|DomainEventHandlerToQuery| N32
+  N36 -->|DomainEventHandlerToCommand| N25
+  N37 -->|DomainEventHandlerToCommand| N15
+  N38 -->|DomainEventHandlerToCommand| N11
+  N38 -->|DomainEventHandlerToCommand| N17
+  N39 -->|DomainEventHandlerToCommand| N17
+  N39 -->|DomainEventHandlerToCli| N27
+  N39 -->|DomainEventHandlerToQuery| N32
+  N40 -->|DomainEventHandlerToCommand| N19
+  N40 -->|DomainEventHandlerToCli| N28
+  N40 -->|DomainEventHandlerToCli| N29
+  N40 -->|DomainEventHandlerToCli| N30
+  N40 -->|DomainEventHandlerToCli| N31
+  N40 -->|DomainEventHandlerToQuery| N33
+  N41 -->|DomainEventHandlerToCommand| N23
+  N42 -->|EntityMethodToDomainEvent| N43
+  N43 -->|DomainEventToHandler| N34
+  N51 -->|EntityMethodToDomainEvent| N55
+  N52 -->|EntityMethodToDomainEvent| N54
+  N54 -->|DomainEventToHandler| N35
+  N55 -->|DomainEventToHandler| N36
+  N57 -->|EntityMethodToDomainEvent| N68
+  N58 -->|EntityMethodToDomainEvent| N65
+  N59 -->|EntityMethodToDomainEvent| N69
+  N60 -->|EntityMethodToDomainEvent| N67
+  N62 -->|EntityMethodToDomainEvent| N66
+  N65 -->|DomainEventToHandler| N37
+  N66 -->|DomainEventToHandler| N38
+  N67 -->|DomainEventToHandler| N39
+  N68 -->|DomainEventToHandler| N40
+  N69 -->|DomainEventToHandler| N41
+  classDef cli fill:#86EFAC,stroke:#15803D,color:#0F172A
+  classDef clihandler fill:#22C55E,stroke:#166534,color:#F0FDF4
+  classDef command fill:#FDBA74,stroke:#C2410C,color:#111827
+  classDef commandhandler fill:#F97316,stroke:#9A3412,color:#111827
+  classDef controllermethod fill:#FDE68A,stroke:#B45309,color:#111827
+  classDef domainevent fill:#FECACA,stroke:#B91C1C,color:#111827
+  classDef domaineventhandler fill:#F87171,stroke:#991B1B,color:#111827
+  classDef entitymethod fill:#F3F4F6,stroke:#6B7280,color:#111827
+  classDef query fill:#93C5FD,stroke:#1D4ED8,color:#0F172A
+  classDef queryhandler fill:#3B82F6,stroke:#1E40AF,color:#F8FAFC

@@ -1,0 +1,33 @@
+{
+  "entryId" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::getUserCountInfo",
+  "entryType" : "controllermethod",
+  "nodeCount" : 3,
+  "edgeCount" : 2,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.application.queries.user.GetUserCountInfoQryHandler",
+    "name" : "GetUserCountInfoQryHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.queries.user.GetUserCountInfoQryHandler",
+    "type" : "queryhandler"
+  }, {
+    "id" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::getUserCountInfo",
+    "name" : "AccountController::getUserCountInfo",
+    "fullName" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::getUserCountInfo",
+    "type" : "controllermethod"
+  }, {
+    "id" : "edu.only4.danmuku.application.queries.user.GetUserCountInfoQry.Request",
+    "name" : "GetUserCountInfoQry.Request",
+    "fullName" : "edu.only4.danmuku.application.queries.user.GetUserCountInfoQry.Request",
+    "type" : "query"
+  } ],
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::getUserCountInfo",
+    "toId" : "edu.only4.danmuku.application.queries.user.GetUserCountInfoQry.Request",
+    "type" : "ControllerMethodToQuery",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.queries.user.GetUserCountInfoQry.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.queries.user.GetUserCountInfoQryHandler",
+    "type" : "QueryToQueryHandler",
+    "label" : null
+  } ]
+}

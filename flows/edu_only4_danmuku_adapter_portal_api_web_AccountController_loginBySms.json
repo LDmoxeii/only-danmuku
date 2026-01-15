@@ -1,0 +1,63 @@
+{
+  "entryId" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::loginBySms",
+  "entryType" : "controllermethod",
+  "nodeCount" : 6,
+  "edgeCount" : 5,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.application.queries.customer_profile.GetCustomerProfileQryHandler",
+    "name" : "GetCustomerProfileQryHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.queries.customer_profile.GetCustomerProfileQryHandler",
+    "type" : "queryhandler"
+  }, {
+    "id" : "edu.only4.danmuku.adapter.application.queries.user.GetUserByPhoneQryHandler",
+    "name" : "GetUserByPhoneQryHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.queries.user.GetUserByPhoneQryHandler",
+    "type" : "queryhandler"
+  }, {
+    "id" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::loginBySms",
+    "name" : "AccountController::loginBySms",
+    "fullName" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::loginBySms",
+    "type" : "controllermethod"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.user.UpdateLoginInfoCmd.Request",
+    "name" : "UpdateLoginInfoCmd.Request",
+    "fullName" : "edu.only4.danmuku.application.commands.user.UpdateLoginInfoCmd.Request",
+    "type" : "command"
+  }, {
+    "id" : "edu.only4.danmuku.application.queries.customer_profile.GetCustomerProfileQry.Request",
+    "name" : "GetCustomerProfileQry.Request",
+    "fullName" : "edu.only4.danmuku.application.queries.customer_profile.GetCustomerProfileQry.Request",
+    "type" : "query"
+  }, {
+    "id" : "edu.only4.danmuku.application.queries.user.GetUserByPhoneQry.Request",
+    "name" : "GetUserByPhoneQry.Request",
+    "fullName" : "edu.only4.danmuku.application.queries.user.GetUserByPhoneQry.Request",
+    "type" : "query"
+  } ],
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::loginBySms",
+    "toId" : "edu.only4.danmuku.application.commands.user.UpdateLoginInfoCmd.Request",
+    "type" : "ControllerMethodToCommand",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::loginBySms",
+    "toId" : "edu.only4.danmuku.application.queries.customer_profile.GetCustomerProfileQry.Request",
+    "type" : "ControllerMethodToQuery",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::loginBySms",
+    "toId" : "edu.only4.danmuku.application.queries.user.GetUserByPhoneQry.Request",
+    "type" : "ControllerMethodToQuery",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.queries.customer_profile.GetCustomerProfileQry.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.queries.customer_profile.GetCustomerProfileQryHandler",
+    "type" : "QueryToQueryHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.queries.user.GetUserByPhoneQry.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.queries.user.GetUserByPhoneQryHandler",
+    "type" : "QueryToQueryHandler",
+    "label" : null
+  } ]
+}

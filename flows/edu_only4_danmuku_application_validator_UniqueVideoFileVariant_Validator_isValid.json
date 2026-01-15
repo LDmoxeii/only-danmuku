@@ -1,0 +1,33 @@
+{
+  "entryId" : "edu.only4.danmuku.application.validator.UniqueVideoFileVariant.Validator::isValid",
+  "entryType" : "validator",
+  "nodeCount" : 3,
+  "edgeCount" : 2,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.application.queries.video.UniqueVideoFileVariantQryHandler",
+    "name" : "UniqueVideoFileVariantQryHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.queries.video.UniqueVideoFileVariantQryHandler",
+    "type" : "queryhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.queries.video.UniqueVideoFileVariantQry.Request",
+    "name" : "UniqueVideoFileVariantQry.Request",
+    "fullName" : "edu.only4.danmuku.application.queries.video.UniqueVideoFileVariantQry.Request",
+    "type" : "query"
+  }, {
+    "id" : "edu.only4.danmuku.application.validator.UniqueVideoFileVariant.Validator::isValid",
+    "name" : "UniqueVideoFileVariant.Validator::isValid",
+    "fullName" : "edu.only4.danmuku.application.validator.UniqueVideoFileVariant.Validator::isValid",
+    "type" : "validator"
+  } ],
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.application.queries.video.UniqueVideoFileVariantQry.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.queries.video.UniqueVideoFileVariantQryHandler",
+    "type" : "QueryToQueryHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.validator.UniqueVideoFileVariant.Validator::isValid",
+    "toId" : "edu.only4.danmuku.application.queries.video.UniqueVideoFileVariantQry.Request",
+    "type" : "ValidatorToQuery",
+    "label" : null
+  } ]
+}

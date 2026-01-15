@@ -1,0 +1,23 @@
+{
+  "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UserMessageController::readAll",
+  "entryType" : "controllermethod",
+  "nodeCount" : 2,
+  "edgeCount" : 1,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.portal.api.web.UserMessageController::readAll",
+    "name" : "UserMessageController::readAll",
+    "fullName" : "edu.only4.danmuku.adapter.portal.api.web.UserMessageController::readAll",
+    "type" : "controllermethod"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.customer_message.MarkAllAsReadCmd.Request",
+    "name" : "MarkAllAsReadCmd.Request",
+    "fullName" : "edu.only4.danmuku.application.commands.customer_message.MarkAllAsReadCmd.Request",
+    "type" : "command"
+  } ],
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.web.UserMessageController::readAll",
+    "toId" : "edu.only4.danmuku.application.commands.customer_message.MarkAllAsReadCmd.Request",
+    "type" : "ControllerMethodToCommand",
+    "label" : null
+  } ]
+}

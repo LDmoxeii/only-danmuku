@@ -1,0 +1,33 @@
+{
+  "entryId" : "edu.only4.danmuku.application.validator.UniqueUserNickname.Validator::isNicknameUnique",
+  "entryType" : "validator",
+  "nodeCount" : 3,
+  "edgeCount" : 2,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.application.queries.user.CheckNicknameExistsQryHandler",
+    "name" : "CheckNicknameExistsQryHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.queries.user.CheckNicknameExistsQryHandler",
+    "type" : "queryhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.queries.user.CheckNicknameExistsQry.Request",
+    "name" : "CheckNicknameExistsQry.Request",
+    "fullName" : "edu.only4.danmuku.application.queries.user.CheckNicknameExistsQry.Request",
+    "type" : "query"
+  }, {
+    "id" : "edu.only4.danmuku.application.validator.UniqueUserNickname.Validator::isNicknameUnique",
+    "name" : "UniqueUserNickname.Validator::isNicknameUnique",
+    "fullName" : "edu.only4.danmuku.application.validator.UniqueUserNickname.Validator::isNicknameUnique",
+    "type" : "validator"
+  } ],
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.application.queries.user.CheckNicknameExistsQry.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.queries.user.CheckNicknameExistsQryHandler",
+    "type" : "QueryToQueryHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.validator.UniqueUserNickname.Validator::isNicknameUnique",
+    "toId" : "edu.only4.danmuku.application.queries.user.CheckNicknameExistsQry.Request",
+    "type" : "ValidatorToQuery",
+    "label" : null
+  } ]
+}

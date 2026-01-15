@@ -1,0 +1,378 @@
+{
+  "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoCommentController::post",
+  "entryType" : "controllermethod",
+  "nodeCount" : 36,
+  "edgeCount" : 38,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.application.queries.video_comment.GetCommentByIdQryHandler",
+    "name" : "GetCommentByIdQryHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.queries.video_comment.GetCommentByIdQryHandler",
+    "type" : "queryhandler"
+  }, {
+    "id" : "edu.only4.danmuku.adapter.portal.api.web.VideoCommentController::post",
+    "name" : "VideoCommentController::post",
+    "fullName" : "edu.only4.danmuku.adapter.portal.api.web.VideoCommentController::post",
+    "type" : "controllermethod"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.customer_message.SendCommentMessageCmd.Handler",
+    "name" : "SendCommentMessageCmd.Handler",
+    "fullName" : "edu.only4.danmuku.application.commands.customer_message.SendCommentMessageCmd.Handler",
+    "type" : "commandhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.customer_message.SendCommentMessageCmd.Request",
+    "name" : "SendCommentMessageCmd.Request",
+    "fullName" : "edu.only4.danmuku.application.commands.customer_message.SendCommentMessageCmd.Request",
+    "type" : "command"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.customer_message.SendReplyMessageCmd.Handler",
+    "name" : "SendReplyMessageCmd.Handler",
+    "fullName" : "edu.only4.danmuku.application.commands.customer_message.SendReplyMessageCmd.Handler",
+    "type" : "commandhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.customer_message.SendReplyMessageCmd.Request",
+    "name" : "SendReplyMessageCmd.Request",
+    "fullName" : "edu.only4.danmuku.application.commands.customer_message.SendReplyMessageCmd.Request",
+    "type" : "command"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.statistics.UpdateStatisticsInfoCmd.Request",
+    "name" : "UpdateStatisticsInfoCmd.Request",
+    "fullName" : "edu.only4.danmuku.application.commands.statistics.UpdateStatisticsInfoCmd.Request",
+    "type" : "command"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.video.ApplyVideoCommentCountDeltaCmd.Handler",
+    "name" : "ApplyVideoCommentCountDeltaCmd.Handler",
+    "fullName" : "edu.only4.danmuku.application.commands.video.ApplyVideoCommentCountDeltaCmd.Handler",
+    "type" : "commandhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.video.ApplyVideoCommentCountDeltaCmd.Request",
+    "name" : "ApplyVideoCommentCountDeltaCmd.Request",
+    "fullName" : "edu.only4.danmuku.application.commands.video.ApplyVideoCommentCountDeltaCmd.Request",
+    "type" : "command"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.video_comment.PostCommentCmd.Handler",
+    "name" : "PostCommentCmd.Handler",
+    "fullName" : "edu.only4.danmuku.application.commands.video_comment.PostCommentCmd.Handler",
+    "type" : "commandhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.video_comment.PostCommentCmd.Request",
+    "name" : "PostCommentCmd.Request",
+    "fullName" : "edu.only4.danmuku.application.commands.video_comment.PostCommentCmd.Request",
+    "type" : "command"
+  }, {
+    "id" : "edu.only4.danmuku.application.queries.video_comment.GetCommentByIdQry.Request",
+    "name" : "GetCommentByIdQry.Request",
+    "fullName" : "edu.only4.danmuku.application.queries.video_comment.GetCommentByIdQry.Request",
+    "type" : "query"
+  }, {
+    "id" : "edu.only4.danmuku.application.subscribers.domain.customer_message.CustomerMessageCollectionCreatedDomainEventSubscriber::on",
+    "name" : "CustomerMessageCollectionCreatedDomainEventSubscriber::on",
+    "fullName" : "edu.only4.danmuku.application.subscribers.domain.customer_message.CustomerMessageCollectionCreatedDomainEventSubscriber::on",
+    "type" : "domaineventhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.subscribers.domain.customer_message.CustomerMessageCommentMentionCreatedDomainEventSubscriber::on",
+    "name" : "CustomerMessageCommentMentionCreatedDomainEventSubscriber::on",
+    "fullName" : "edu.only4.danmuku.application.subscribers.domain.customer_message.CustomerMessageCommentMentionCreatedDomainEventSubscriber::on",
+    "type" : "domaineventhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.subscribers.domain.customer_message.CustomerMessageLikeCreatedDomainEventSubscriber::on",
+    "name" : "CustomerMessageLikeCreatedDomainEventSubscriber::on",
+    "fullName" : "edu.only4.danmuku.application.subscribers.domain.customer_message.CustomerMessageLikeCreatedDomainEventSubscriber::on",
+    "type" : "domaineventhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.subscribers.domain.customer_message.CustomerMessagePrivateCreatedDomainEventSubscriber::on",
+    "name" : "CustomerMessagePrivateCreatedDomainEventSubscriber::on",
+    "fullName" : "edu.only4.danmuku.application.subscribers.domain.customer_message.CustomerMessagePrivateCreatedDomainEventSubscriber::on",
+    "type" : "domaineventhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.subscribers.domain.customer_message.CustomerMessageSystemCreatedDomainEventSubscriber::on",
+    "name" : "CustomerMessageSystemCreatedDomainEventSubscriber::on",
+    "fullName" : "edu.only4.danmuku.application.subscribers.domain.customer_message.CustomerMessageSystemCreatedDomainEventSubscriber::on",
+    "type" : "domaineventhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.subscribers.domain.video.VideoCommentCountDeltaAppliedDomainEventSubscriber::on",
+    "name" : "VideoCommentCountDeltaAppliedDomainEventSubscriber::on",
+    "fullName" : "edu.only4.danmuku.application.subscribers.domain.video.VideoCommentCountDeltaAppliedDomainEventSubscriber::on",
+    "type" : "domaineventhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.subscribers.domain.video_comment.CommentPostedDomainEventSubscriber::on",
+    "name" : "CommentPostedDomainEventSubscriber::on",
+    "fullName" : "edu.only4.danmuku.application.subscribers.domain.video_comment.CommentPostedDomainEventSubscriber::on",
+    "type" : "domaineventhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.subscribers.domain.video_comment.CommentPostedDomainEventSubscriber::on1",
+    "name" : "CommentPostedDomainEventSubscriber::on1",
+    "fullName" : "edu.only4.danmuku.application.subscribers.domain.video_comment.CommentPostedDomainEventSubscriber::on1",
+    "type" : "domaineventhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.subscribers.domain.video_comment.CommentPostedDomainEventSubscriber::on2",
+    "name" : "CommentPostedDomainEventSubscriber::on2",
+    "fullName" : "edu.only4.danmuku.application.subscribers.domain.video_comment.CommentPostedDomainEventSubscriber::on2",
+    "type" : "domaineventhandler"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.customer_message.CustomerMessage::onCreate",
+    "name" : "CustomerMessage::onCreate",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.customer_message.CustomerMessage::onCreate",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.customer_message.events.CustomerMessageCollectionCreatedDomainEvent",
+    "name" : "CustomerMessageCollectionCreatedDomainEvent",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.customer_message.events.CustomerMessageCollectionCreatedDomainEvent",
+    "type" : "domainevent"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.customer_message.events.CustomerMessageCommentMentionCreatedDomainEvent",
+    "name" : "CustomerMessageCommentMentionCreatedDomainEvent",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.customer_message.events.CustomerMessageCommentMentionCreatedDomainEvent",
+    "type" : "domainevent"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.customer_message.events.CustomerMessageLikeCreatedDomainEvent",
+    "name" : "CustomerMessageLikeCreatedDomainEvent",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.customer_message.events.CustomerMessageLikeCreatedDomainEvent",
+    "type" : "domainevent"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.customer_message.events.CustomerMessagePrivateCreatedDomainEvent",
+    "name" : "CustomerMessagePrivateCreatedDomainEvent",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.customer_message.events.CustomerMessagePrivateCreatedDomainEvent",
+    "type" : "domainevent"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.customer_message.events.CustomerMessageSystemCreatedDomainEvent",
+    "name" : "CustomerMessageSystemCreatedDomainEvent",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.customer_message.events.CustomerMessageSystemCreatedDomainEvent",
+    "type" : "domainevent"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video.Video::<get-commentCount>",
+    "name" : "Video::<get-commentCount>",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video.Video::<get-commentCount>",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video.Video::<get-customerId>",
+    "name" : "Video::<get-customerId>",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video.Video::<get-customerId>",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video.Video::<get-id>",
+    "name" : "Video::<get-id>",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video.Video::<get-id>",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video.Video::applyCommentCountDelta",
+    "name" : "Video::applyCommentCountDelta",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video.Video::applyCommentCountDelta",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video.events.VideoCommentCountDeltaAppliedDomainEvent",
+    "name" : "VideoCommentCountDeltaAppliedDomainEvent",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video.events.VideoCommentCountDeltaAppliedDomainEvent",
+    "type" : "domainevent"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_comment.VideoComment::<get-customerId>",
+    "name" : "VideoComment::<get-customerId>",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_comment.VideoComment::<get-customerId>",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_comment.VideoComment::<get-id>",
+    "name" : "VideoComment::<get-id>",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_comment.VideoComment::<get-id>",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_comment.VideoComment::onCreate",
+    "name" : "VideoComment::onCreate",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_comment.VideoComment::onCreate",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_comment.events.CommentPostedDomainEvent",
+    "name" : "CommentPostedDomainEvent",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_comment.events.CommentPostedDomainEvent",
+    "type" : "domainevent"
+  } ],
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.web.VideoCommentController::post",
+    "toId" : "edu.only4.danmuku.application.commands.video_comment.PostCommentCmd.Request",
+    "type" : "ControllerMethodToCommand",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.web.VideoCommentController::post",
+    "toId" : "edu.only4.danmuku.application.queries.video_comment.GetCommentByIdQry.Request",
+    "type" : "ControllerMethodToQuery",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.customer_message.SendCommentMessageCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.customer_message.CustomerMessage::onCreate",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.customer_message.SendCommentMessageCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video.Video::<get-customerId>",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.customer_message.SendCommentMessageCmd.Request",
+    "toId" : "edu.only4.danmuku.application.commands.customer_message.SendCommentMessageCmd.Handler",
+    "type" : "CommandToCommandHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.customer_message.SendReplyMessageCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.customer_message.CustomerMessage::onCreate",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.customer_message.SendReplyMessageCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_comment.VideoComment::<get-customerId>",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.customer_message.SendReplyMessageCmd.Request",
+    "toId" : "edu.only4.danmuku.application.commands.customer_message.SendReplyMessageCmd.Handler",
+    "type" : "CommandToCommandHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video.ApplyVideoCommentCountDeltaCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video.Video::<get-commentCount>",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video.ApplyVideoCommentCountDeltaCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video.Video::<get-id>",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video.ApplyVideoCommentCountDeltaCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video.Video::applyCommentCountDelta",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video.ApplyVideoCommentCountDeltaCmd.Request",
+    "toId" : "edu.only4.danmuku.application.commands.video.ApplyVideoCommentCountDeltaCmd.Handler",
+    "type" : "CommandToCommandHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_comment.PostCommentCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video.Video::<get-customerId>",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_comment.PostCommentCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_comment.VideoComment::<get-id>",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_comment.PostCommentCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_comment.VideoComment::onCreate",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_comment.PostCommentCmd.Request",
+    "toId" : "edu.only4.danmuku.application.commands.video_comment.PostCommentCmd.Handler",
+    "type" : "CommandToCommandHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.queries.video_comment.GetCommentByIdQry.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.queries.video_comment.GetCommentByIdQryHandler",
+    "type" : "QueryToQueryHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.subscribers.domain.video.VideoCommentCountDeltaAppliedDomainEventSubscriber::on",
+    "toId" : "edu.only4.danmuku.application.commands.statistics.UpdateStatisticsInfoCmd.Request",
+    "type" : "DomainEventHandlerToCommand",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.subscribers.domain.video_comment.CommentPostedDomainEventSubscriber::on",
+    "toId" : "edu.only4.danmuku.application.commands.video.ApplyVideoCommentCountDeltaCmd.Request",
+    "type" : "DomainEventHandlerToCommand",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.subscribers.domain.video_comment.CommentPostedDomainEventSubscriber::on1",
+    "toId" : "edu.only4.danmuku.application.commands.customer_message.SendCommentMessageCmd.Request",
+    "type" : "DomainEventHandlerToCommand",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.subscribers.domain.video_comment.CommentPostedDomainEventSubscriber::on2",
+    "toId" : "edu.only4.danmuku.application.commands.customer_message.SendReplyMessageCmd.Request",
+    "type" : "DomainEventHandlerToCommand",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.subscribers.domain.video_comment.CommentPostedDomainEventSubscriber::on2",
+    "toId" : "edu.only4.danmuku.application.queries.video_comment.GetCommentByIdQry.Request",
+    "type" : "DomainEventHandlerToQuery",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.customer_message.CustomerMessage::onCreate",
+    "toId" : "edu.only4.danmuku.domain.aggregates.customer_message.events.CustomerMessageCollectionCreatedDomainEvent",
+    "type" : "EntityMethodToDomainEvent",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.customer_message.CustomerMessage::onCreate",
+    "toId" : "edu.only4.danmuku.domain.aggregates.customer_message.events.CustomerMessageCommentMentionCreatedDomainEvent",
+    "type" : "EntityMethodToDomainEvent",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.customer_message.CustomerMessage::onCreate",
+    "toId" : "edu.only4.danmuku.domain.aggregates.customer_message.events.CustomerMessageLikeCreatedDomainEvent",
+    "type" : "EntityMethodToDomainEvent",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.customer_message.CustomerMessage::onCreate",
+    "toId" : "edu.only4.danmuku.domain.aggregates.customer_message.events.CustomerMessagePrivateCreatedDomainEvent",
+    "type" : "EntityMethodToDomainEvent",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.customer_message.CustomerMessage::onCreate",
+    "toId" : "edu.only4.danmuku.domain.aggregates.customer_message.events.CustomerMessageSystemCreatedDomainEvent",
+    "type" : "EntityMethodToDomainEvent",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.customer_message.events.CustomerMessageCollectionCreatedDomainEvent",
+    "toId" : "edu.only4.danmuku.application.subscribers.domain.customer_message.CustomerMessageCollectionCreatedDomainEventSubscriber::on",
+    "type" : "DomainEventToHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.customer_message.events.CustomerMessageCommentMentionCreatedDomainEvent",
+    "toId" : "edu.only4.danmuku.application.subscribers.domain.customer_message.CustomerMessageCommentMentionCreatedDomainEventSubscriber::on",
+    "type" : "DomainEventToHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.customer_message.events.CustomerMessageLikeCreatedDomainEvent",
+    "toId" : "edu.only4.danmuku.application.subscribers.domain.customer_message.CustomerMessageLikeCreatedDomainEventSubscriber::on",
+    "type" : "DomainEventToHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.customer_message.events.CustomerMessagePrivateCreatedDomainEvent",
+    "toId" : "edu.only4.danmuku.application.subscribers.domain.customer_message.CustomerMessagePrivateCreatedDomainEventSubscriber::on",
+    "type" : "DomainEventToHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.customer_message.events.CustomerMessageSystemCreatedDomainEvent",
+    "toId" : "edu.only4.danmuku.application.subscribers.domain.customer_message.CustomerMessageSystemCreatedDomainEventSubscriber::on",
+    "type" : "DomainEventToHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.video.Video::applyCommentCountDelta",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video.events.VideoCommentCountDeltaAppliedDomainEvent",
+    "type" : "EntityMethodToDomainEvent",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.video.events.VideoCommentCountDeltaAppliedDomainEvent",
+    "toId" : "edu.only4.danmuku.application.subscribers.domain.video.VideoCommentCountDeltaAppliedDomainEventSubscriber::on",
+    "type" : "DomainEventToHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.video_comment.VideoComment::onCreate",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_comment.events.CommentPostedDomainEvent",
+    "type" : "EntityMethodToDomainEvent",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.video_comment.events.CommentPostedDomainEvent",
+    "toId" : "edu.only4.danmuku.application.subscribers.domain.video_comment.CommentPostedDomainEventSubscriber::on",
+    "type" : "DomainEventToHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.video_comment.events.CommentPostedDomainEvent",
+    "toId" : "edu.only4.danmuku.application.subscribers.domain.video_comment.CommentPostedDomainEventSubscriber::on1",
+    "type" : "DomainEventToHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.video_comment.events.CommentPostedDomainEvent",
+    "toId" : "edu.only4.danmuku.application.subscribers.domain.video_comment.CommentPostedDomainEventSubscriber::on2",
+    "type" : "DomainEventToHandler",
+    "label" : null
+  } ]
+}

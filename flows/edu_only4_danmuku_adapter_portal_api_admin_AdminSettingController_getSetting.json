@@ -1,0 +1,13 @@
+{
+  "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminSettingController::getSetting",
+  "entryType" : "controllermethod",
+  "nodeCount" : 1,
+  "edgeCount" : 0,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.portal.api.admin.AdminSettingController::getSetting",
+    "name" : "AdminSettingController::getSetting",
+    "fullName" : "edu.only4.danmuku.adapter.portal.api.admin.AdminSettingController::getSetting",
+    "type" : "controllermethod"
+  } ],
+  "edges" : [ ]
+}

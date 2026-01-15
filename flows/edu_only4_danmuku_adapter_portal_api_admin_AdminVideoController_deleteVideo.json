@@ -1,0 +1,23 @@
+{
+  "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminVideoController::deleteVideo",
+  "entryType" : "controllermethod",
+  "nodeCount" : 2,
+  "edgeCount" : 1,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.portal.api.admin.AdminVideoController::deleteVideo",
+    "name" : "AdminVideoController::deleteVideo",
+    "fullName" : "edu.only4.danmuku.adapter.portal.api.admin.AdminVideoController::deleteVideo",
+    "type" : "controllermethod"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.video_post.DeleteVideoPostCmd.Request",
+    "name" : "DeleteVideoPostCmd.Request",
+    "fullName" : "edu.only4.danmuku.application.commands.video_post.DeleteVideoPostCmd.Request",
+    "type" : "command"
+  } ],
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminVideoController::deleteVideo",
+    "toId" : "edu.only4.danmuku.application.commands.video_post.DeleteVideoPostCmd.Request",
+    "type" : "ControllerMethodToCommand",
+    "label" : null
+  } ]
+}

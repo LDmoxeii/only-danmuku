@@ -1,0 +1,13 @@
+{
+  "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoCommentController::page",
+  "entryType" : "controllermethod",
+  "nodeCount" : 1,
+  "edgeCount" : 0,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.portal.api.web.VideoCommentController::page",
+    "name" : "VideoCommentController::page",
+    "fullName" : "edu.only4.danmuku.adapter.portal.api.web.VideoCommentController::page",
+    "type" : "controllermethod"
+  } ],
+  "edges" : [ ]
+}

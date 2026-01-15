@@ -1,0 +1,23 @@
+{
+  "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminInteractController::deleteComment",
+  "entryType" : "controllermethod",
+  "nodeCount" : 2,
+  "edgeCount" : 1,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.portal.api.admin.AdminInteractController::deleteComment",
+    "name" : "AdminInteractController::deleteComment",
+    "fullName" : "edu.only4.danmuku.adapter.portal.api.admin.AdminInteractController::deleteComment",
+    "type" : "controllermethod"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.video_comment.DeleteVideoCommentCmd.Request",
+    "name" : "DeleteVideoCommentCmd.Request",
+    "fullName" : "edu.only4.danmuku.application.commands.video_comment.DeleteVideoCommentCmd.Request",
+    "type" : "command"
+  } ],
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminInteractController::deleteComment",
+    "toId" : "edu.only4.danmuku.application.commands.video_comment.DeleteVideoCommentCmd.Request",
+    "type" : "ControllerMethodToCommand",
+    "label" : null
+  } ]
+}

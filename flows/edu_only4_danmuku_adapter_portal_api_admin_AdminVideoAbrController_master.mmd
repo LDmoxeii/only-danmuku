@@ -1,0 +1,18 @@
+flowchart TD
+  N1[[GetVideoAbrMasterQryHandler]]
+  class N1 queryhandler
+  N2[[GetVideoFilePostPathQryHandler]]
+  class N2 queryhandler
+  N3([AdminVideoAbrController::master])
+  class N3 controllermethod
+  N4{{GetVideoAbrMasterQry.Request}}
+  class N4 query
+  N5{{GetVideoFilePostPathQry.Request}}
+  class N5 query
+  N3 -->|ControllerMethodToQuery| N4
+  N3 -->|ControllerMethodToQuery| N5
+  N4 -->|QueryToQueryHandler| N1
+  N5 -->|QueryToQueryHandler| N2
+  classDef controllermethod fill:#FDE68A,stroke:#B45309,color:#111827
+  classDef query fill:#93C5FD,stroke:#1D4ED8,color:#0F172A
+  classDef queryhandler fill:#3B82F6,stroke:#1E40AF,color:#F8FAFC

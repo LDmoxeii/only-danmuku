@@ -1,0 +1,28 @@
+flowchart TD
+  N1([VideoSeriesController::saveSeriesVideo])
+  class N1 controllermethod
+  N2[[UpdateCustomerVideoSeriesVideosCmd.Handler]]
+  class N2 commandhandler
+  N3{{UpdateCustomerVideoSeriesVideosCmd.Request}}
+  class N3 command
+  N4(CustomerVideoSeries::&lt;get-customerId&gt;)
+  class N4 entitymethod
+  N5(CustomerVideoSeries::&lt;get-customerVideoSeriesVideos&gt;)
+  class N5 entitymethod
+  N6(CustomerVideoSeries::replaceVideos)
+  class N6 entitymethod
+  N7(CustomerVideoSeriesVideo::&lt;get-sort&gt;)
+  class N7 entitymethod
+  N8(CustomerVideoSeriesVideo::&lt;get-videoId&gt;)
+  class N8 entitymethod
+  N1 -->|ControllerMethodToCommand| N3
+  N2 -->|CommandHandlerToEntityMethod| N4
+  N2 -->|CommandHandlerToEntityMethod| N5
+  N2 -->|CommandHandlerToEntityMethod| N6
+  N2 -->|CommandHandlerToEntityMethod| N7
+  N2 -->|CommandHandlerToEntityMethod| N8
+  N3 -->|CommandToCommandHandler| N2
+  classDef command fill:#FDBA74,stroke:#C2410C,color:#111827
+  classDef commandhandler fill:#F97316,stroke:#9A3412,color:#111827
+  classDef controllermethod fill:#FDE68A,stroke:#B45309,color:#111827
+  classDef entitymethod fill:#F3F4F6,stroke:#6B7280,color:#111827

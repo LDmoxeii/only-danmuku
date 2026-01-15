@@ -1,0 +1,22 @@
+flowchart TD
+  N1[[GetCustomerProfileQryHandler]]
+  class N1 queryhandler
+  N2[[GetUserByPhoneQryHandler]]
+  class N2 queryhandler
+  N3([AccountController::loginBySms])
+  class N3 controllermethod
+  N4{{UpdateLoginInfoCmd.Request}}
+  class N4 command
+  N5{{GetCustomerProfileQry.Request}}
+  class N5 query
+  N6{{GetUserByPhoneQry.Request}}
+  class N6 query
+  N3 -->|ControllerMethodToCommand| N4
+  N3 -->|ControllerMethodToQuery| N5
+  N3 -->|ControllerMethodToQuery| N6
+  N5 -->|QueryToQueryHandler| N1
+  N6 -->|QueryToQueryHandler| N2
+  classDef command fill:#FDBA74,stroke:#C2410C,color:#111827
+  classDef controllermethod fill:#FDE68A,stroke:#B45309,color:#111827
+  classDef query fill:#93C5FD,stroke:#1D4ED8,color:#0F172A
+  classDef queryhandler fill:#3B82F6,stroke:#1E40AF,color:#F8FAFC

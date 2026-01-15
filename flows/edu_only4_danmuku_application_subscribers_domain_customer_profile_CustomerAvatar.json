@@ -1,0 +1,33 @@
+{
+  "entryId" : "edu.only4.danmuku.application.subscribers.domain.customer_profile.CustomerAvatarUpdatedDomainEventSubscriber::on",
+  "entryType" : "clisendermethod",
+  "nodeCount" : 3,
+  "edgeCount" : 2,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.application.distributed.clients.RefreshLoginSessionCliHandler",
+    "name" : "RefreshLoginSessionCliHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.distributed.clients.RefreshLoginSessionCliHandler",
+    "type" : "clihandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.distributed.clients.RefreshLoginSessionCli.Request",
+    "name" : "RefreshLoginSessionCli.Request",
+    "fullName" : "edu.only4.danmuku.application.distributed.clients.RefreshLoginSessionCli.Request",
+    "type" : "cli"
+  }, {
+    "id" : "edu.only4.danmuku.application.subscribers.domain.customer_profile.CustomerAvatarUpdatedDomainEventSubscriber::on",
+    "name" : "CustomerAvatarUpdatedDomainEventSubscriber::on",
+    "fullName" : "edu.only4.danmuku.application.subscribers.domain.customer_profile.CustomerAvatarUpdatedDomainEventSubscriber::on",
+    "type" : "clisendermethod"
+  } ],
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.application.distributed.clients.RefreshLoginSessionCli.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.distributed.clients.RefreshLoginSessionCliHandler",
+    "type" : "CliToCliHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.subscribers.domain.customer_profile.CustomerAvatarUpdatedDomainEventSubscriber::on",
+    "toId" : "edu.only4.danmuku.application.distributed.clients.RefreshLoginSessionCli.Request",
+    "type" : "CliSenderMethodToCli",
+    "label" : null
+  } ]
+}

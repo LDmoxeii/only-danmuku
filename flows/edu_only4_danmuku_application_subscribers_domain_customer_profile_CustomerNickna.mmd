@@ -1,0 +1,16 @@
+flowchart TD
+  N1[[RefreshLoginSessionCliHandler]]
+  class N1 clihandler
+  N2{{SpendCoinsForNicknameChangeCmd.Request}}
+  class N2 command
+  N3{{RefreshLoginSessionCli.Request}}
+  class N3 cli
+  N4[/CustomerNicknameUpdatedDomainEventSubscriber::on/]
+  class N4 commandsendermethod
+  N3 -->|CliToCliHandler| N1
+  N4 -->|CommandSenderMethodToCommand| N2
+  N4 -->|CliSenderMethodToCli| N3
+  classDef cli fill:#86EFAC,stroke:#15803D,color:#0F172A
+  classDef clihandler fill:#22C55E,stroke:#166534,color:#F0FDF4
+  classDef command fill:#FDBA74,stroke:#C2410C,color:#111827
+  classDef commandsendermethod fill:#FED7AA,stroke:#C2410C,color:#111827

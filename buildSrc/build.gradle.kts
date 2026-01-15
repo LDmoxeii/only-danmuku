@@ -16,4 +16,5 @@ dependencies {
     implementation(libs.kotlin.allopen.plugin)
     // Add a dependency on the Kotlin JPA plugin for JPA entity class generation.
     implementation(libs.kotlin.noarg.plugin)
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.17.2")
 }

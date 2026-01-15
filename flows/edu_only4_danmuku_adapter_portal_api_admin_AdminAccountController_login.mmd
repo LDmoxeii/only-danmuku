@@ -1,0 +1,61 @@
+flowchart TD
+  N1[[CaptchaValidCliHandler]]
+  class N1 clihandler
+  N2[[GetAccountInfoByEmailQryHandler]]
+  class N2 queryhandler
+  N3[[GetRecentPasswordFailureCountQryHandler]]
+  class N3 queryhandler
+  N4([AdminAccountController::login])
+  class N4 controllermethod
+  N5[[RecordAbnormalOperationCmd.Handler]]
+  class N5 commandhandler
+  N6{{RecordAbnormalOperationCmd.Request}}
+  class N6 command
+  N7[[RecordLoginLogCmd.Handler]]
+  class N7 commandhandler
+  N8{{RecordLoginLogCmd.Request}}
+  class N8 command
+  N9{{CaptchaValidCli.Request}}
+  class N9 cli
+  N10{{GetAccountInfoByEmailQry.Request}}
+  class N10 query
+  N11{{GetRecentPasswordFailureCountQry.Request}}
+  class N11 query
+  N12[[PasswordInputFailedDomainEventSubscriber::on]]
+  class N12 domaineventhandler
+  N13(UserAbnormalOperationLog::&lt;get-id&gt;)
+  class N13 entitymethod
+  N14(UserAbnormalOperationLog::onCreate)
+  class N14 entitymethod
+  N15(UserLoginLog::&lt;get-id&gt;)
+  class N15 entitymethod
+  N16(UserLoginLog::onCreate)
+  class N16 entitymethod
+  N17((PasswordInputFailedDomainEvent))
+  class N17 domainevent
+  N4 -->|ControllerMethodToCommand| N8
+  N4 -->|ControllerMethodToCli| N9
+  N4 -->|ControllerMethodToQuery| N10
+  N5 -->|CommandHandlerToEntityMethod| N13
+  N5 -->|CommandHandlerToEntityMethod| N14
+  N6 -->|CommandToCommandHandler| N5
+  N7 -->|CommandHandlerToEntityMethod| N15
+  N7 -->|CommandHandlerToEntityMethod| N16
+  N8 -->|CommandToCommandHandler| N7
+  N9 -->|CliToCliHandler| N1
+  N10 -->|QueryToQueryHandler| N2
+  N11 -->|QueryToQueryHandler| N3
+  N12 -->|DomainEventHandlerToCommand| N6
+  N12 -->|DomainEventHandlerToQuery| N11
+  N16 -->|EntityMethodToDomainEvent| N17
+  N17 -->|DomainEventToHandler| N12
+  classDef cli fill:#86EFAC,stroke:#15803D,color:#0F172A
+  classDef clihandler fill:#22C55E,stroke:#166534,color:#F0FDF4
+  classDef command fill:#FDBA74,stroke:#C2410C,color:#111827
+  classDef commandhandler fill:#F97316,stroke:#9A3412,color:#111827
+  classDef controllermethod fill:#FDE68A,stroke:#B45309,color:#111827
+  classDef domainevent fill:#FECACA,stroke:#B91C1C,color:#111827
+  classDef domaineventhandler fill:#F87171,stroke:#991B1B,color:#111827
+  classDef entitymethod fill:#F3F4F6,stroke:#6B7280,color:#111827
+  classDef query fill:#93C5FD,stroke:#1D4ED8,color:#0F172A
+  classDef queryhandler fill:#3B82F6,stroke:#1E40AF,color:#F8FAFC

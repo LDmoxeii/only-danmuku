@@ -1,0 +1,123 @@
+{
+  "entryId" : "edu.only4.danmuku.adapter.portal.api.web.FileController::preUploadVideo",
+  "entryType" : "controllermethod",
+  "nodeCount" : 12,
+  "edgeCount" : 11,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.application.distributed.clients.file_upload_session.CreateUploadSessionTempDirCliHandler",
+    "name" : "CreateUploadSessionTempDirCliHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.distributed.clients.file_upload_session.CreateUploadSessionTempDirCliHandler",
+    "type" : "clihandler"
+  }, {
+    "id" : "edu.only4.danmuku.adapter.portal.api.web.FileController::preUploadVideo",
+    "name" : "FileController::preUploadVideo",
+    "fullName" : "edu.only4.danmuku.adapter.portal.api.web.FileController::preUploadVideo",
+    "type" : "controllermethod"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.file_upload_session.CreateUploadSessionCmd.Handler",
+    "name" : "CreateUploadSessionCmd.Handler",
+    "fullName" : "edu.only4.danmuku.application.commands.file_upload_session.CreateUploadSessionCmd.Handler",
+    "type" : "commandhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.file_upload_session.CreateUploadSessionCmd.Request",
+    "name" : "CreateUploadSessionCmd.Request",
+    "fullName" : "edu.only4.danmuku.application.commands.file_upload_session.CreateUploadSessionCmd.Request",
+    "type" : "command"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.video_file_upload_session.InitTempAndStartUploadingCmd.Handler",
+    "name" : "InitTempAndStartUploadingCmd.Handler",
+    "fullName" : "edu.only4.danmuku.application.commands.video_file_upload_session.InitTempAndStartUploadingCmd.Handler",
+    "type" : "commandhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.video_file_upload_session.InitTempAndStartUploadingCmd.Request",
+    "name" : "InitTempAndStartUploadingCmd.Request",
+    "fullName" : "edu.only4.danmuku.application.commands.video_file_upload_session.InitTempAndStartUploadingCmd.Request",
+    "type" : "command"
+  }, {
+    "id" : "edu.only4.danmuku.application.distributed.clients.file_upload_session.CreateUploadSessionTempDirCli.Request",
+    "name" : "CreateUploadSessionTempDirCli.Request",
+    "fullName" : "edu.only4.danmuku.application.distributed.clients.file_upload_session.CreateUploadSessionTempDirCli.Request",
+    "type" : "cli"
+  }, {
+    "id" : "edu.only4.danmuku.application.subscribers.domain.video_file_upload_session.UploadSessionCreatedDomainEventSubscriber::on",
+    "name" : "UploadSessionCreatedDomainEventSubscriber::on",
+    "fullName" : "edu.only4.danmuku.application.subscribers.domain.video_file_upload_session.UploadSessionCreatedDomainEventSubscriber::on",
+    "type" : "domaineventhandler"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_file_upload_session.VideoFileUploadSession::<get-id>",
+    "name" : "VideoFileUploadSession::<get-id>",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_file_upload_session.VideoFileUploadSession::<get-id>",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_file_upload_session.VideoFileUploadSession::initTempAndStartUploading",
+    "name" : "VideoFileUploadSession::initTempAndStartUploading",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_file_upload_session.VideoFileUploadSession::initTempAndStartUploading",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_file_upload_session.VideoFileUploadSession::onCreate",
+    "name" : "VideoFileUploadSession::onCreate",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_file_upload_session.VideoFileUploadSession::onCreate",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_file_upload_session.events.UploadSessionCreatedDomainEvent",
+    "name" : "UploadSessionCreatedDomainEvent",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_file_upload_session.events.UploadSessionCreatedDomainEvent",
+    "type" : "domainevent"
+  } ],
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.web.FileController::preUploadVideo",
+    "toId" : "edu.only4.danmuku.application.commands.file_upload_session.CreateUploadSessionCmd.Request",
+    "type" : "ControllerMethodToCommand",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.file_upload_session.CreateUploadSessionCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_file_upload_session.VideoFileUploadSession::<get-id>",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.file_upload_session.CreateUploadSessionCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_file_upload_session.VideoFileUploadSession::onCreate",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.file_upload_session.CreateUploadSessionCmd.Request",
+    "toId" : "edu.only4.danmuku.application.commands.file_upload_session.CreateUploadSessionCmd.Handler",
+    "type" : "CommandToCommandHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_file_upload_session.InitTempAndStartUploadingCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_file_upload_session.VideoFileUploadSession::initTempAndStartUploading",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_file_upload_session.InitTempAndStartUploadingCmd.Request",
+    "toId" : "edu.only4.danmuku.application.commands.video_file_upload_session.InitTempAndStartUploadingCmd.Handler",
+    "type" : "CommandToCommandHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.distributed.clients.file_upload_session.CreateUploadSessionTempDirCli.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.distributed.clients.file_upload_session.CreateUploadSessionTempDirCliHandler",
+    "type" : "CliToCliHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.subscribers.domain.video_file_upload_session.UploadSessionCreatedDomainEventSubscriber::on",
+    "toId" : "edu.only4.danmuku.application.commands.video_file_upload_session.InitTempAndStartUploadingCmd.Request",
+    "type" : "DomainEventHandlerToCommand",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.subscribers.domain.video_file_upload_session.UploadSessionCreatedDomainEventSubscriber::on",
+    "toId" : "edu.only4.danmuku.application.distributed.clients.file_upload_session.CreateUploadSessionTempDirCli.Request",
+    "type" : "DomainEventHandlerToCli",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.video_file_upload_session.VideoFileUploadSession::onCreate",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_file_upload_session.events.UploadSessionCreatedDomainEvent",
+    "type" : "EntityMethodToDomainEvent",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.video_file_upload_session.events.UploadSessionCreatedDomainEvent",
+    "toId" : "edu.only4.danmuku.application.subscribers.domain.video_file_upload_session.UploadSessionCreatedDomainEventSubscriber::on",
+    "type" : "DomainEventToHandler",
+    "label" : null
+  } ]
+}

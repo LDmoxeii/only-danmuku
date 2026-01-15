@@ -1,0 +1,12 @@
+flowchart TD
+  N1([VideoSeriesController::deleteVideoSeries])
+  class N1 controllermethod
+  N2[[DeleteVideoSeriesCmd.Handler]]
+  class N2 commandhandler
+  N3{{DeleteVideoSeriesCmd.Request}}
+  class N3 command
+  N1 -->|ControllerMethodToCommand| N3
+  N3 -->|CommandToCommandHandler| N2
+  classDef command fill:#FDBA74,stroke:#C2410C,color:#111827
+  classDef commandhandler fill:#F97316,stroke:#9A3412,color:#111827
+  classDef controllermethod fill:#FDE68A,stroke:#B45309,color:#111827

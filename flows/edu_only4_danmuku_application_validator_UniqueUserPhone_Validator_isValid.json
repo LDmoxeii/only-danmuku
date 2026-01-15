@@ -1,0 +1,33 @@
+{
+  "entryId" : "edu.only4.danmuku.application.validator.UniqueUserPhone.Validator::isValid",
+  "entryType" : "validator",
+  "nodeCount" : 3,
+  "edgeCount" : 2,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.application.queries.user.UniqueUserPhoneQryHandler",
+    "name" : "UniqueUserPhoneQryHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.queries.user.UniqueUserPhoneQryHandler",
+    "type" : "queryhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.queries.user.UniqueUserPhoneQry.Request",
+    "name" : "UniqueUserPhoneQry.Request",
+    "fullName" : "edu.only4.danmuku.application.queries.user.UniqueUserPhoneQry.Request",
+    "type" : "query"
+  }, {
+    "id" : "edu.only4.danmuku.application.validator.UniqueUserPhone.Validator::isValid",
+    "name" : "UniqueUserPhone.Validator::isValid",
+    "fullName" : "edu.only4.danmuku.application.validator.UniqueUserPhone.Validator::isValid",
+    "type" : "validator"
+  } ],
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.application.queries.user.UniqueUserPhoneQry.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.queries.user.UniqueUserPhoneQryHandler",
+    "type" : "QueryToQueryHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.validator.UniqueUserPhone.Validator::isValid",
+    "toId" : "edu.only4.danmuku.application.queries.user.UniqueUserPhoneQry.Request",
+    "type" : "ValidatorToQuery",
+    "label" : null
+  } ]
+}

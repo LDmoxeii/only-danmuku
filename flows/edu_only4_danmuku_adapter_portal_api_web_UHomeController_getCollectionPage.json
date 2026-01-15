@@ -1,0 +1,13 @@
+{
+  "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::getCollectionPage",
+  "entryType" : "controllermethod",
+  "nodeCount" : 1,
+  "edgeCount" : 0,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::getCollectionPage",
+    "name" : "UHomeController::getCollectionPage",
+    "fullName" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::getCollectionPage",
+    "type" : "controllermethod"
+  } ],
+  "edges" : [ ]
+}

@@ -1,0 +1,33 @@
+{
+  "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UserMessageController::getNoReadCountGroup",
+  "entryType" : "controllermethod",
+  "nodeCount" : 3,
+  "edgeCount" : 2,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.application.queries.customer_message.GetNoReadMessageCountGroupQryHandler",
+    "name" : "GetNoReadMessageCountGroupQryHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.queries.customer_message.GetNoReadMessageCountGroupQryHandler",
+    "type" : "queryhandler"
+  }, {
+    "id" : "edu.only4.danmuku.adapter.portal.api.web.UserMessageController::getNoReadCountGroup",
+    "name" : "UserMessageController::getNoReadCountGroup",
+    "fullName" : "edu.only4.danmuku.adapter.portal.api.web.UserMessageController::getNoReadCountGroup",
+    "type" : "controllermethod"
+  }, {
+    "id" : "edu.only4.danmuku.application.queries.message.GetNoReadMessageCountGroupQry.Request",
+    "name" : "GetNoReadMessageCountGroupQry.Request",
+    "fullName" : "edu.only4.danmuku.application.queries.message.GetNoReadMessageCountGroupQry.Request",
+    "type" : "query"
+  } ],
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.web.UserMessageController::getNoReadCountGroup",
+    "toId" : "edu.only4.danmuku.application.queries.message.GetNoReadMessageCountGroupQry.Request",
+    "type" : "ControllerMethodToQuery",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.queries.message.GetNoReadMessageCountGroupQry.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.queries.customer_message.GetNoReadMessageCountGroupQryHandler",
+    "type" : "QueryToQueryHandler",
+    "label" : null
+  } ]
+}

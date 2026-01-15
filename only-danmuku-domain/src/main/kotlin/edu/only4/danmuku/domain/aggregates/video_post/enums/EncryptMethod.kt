@@ -1,12 +1,9 @@
 package edu.only4.danmuku.domain.aggregates.video_post.enums
+
 import com.fasterxml.jackson.annotation.JsonValue
-
 import com.only.engine.exception.KnownException
-
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
-
 import jakarta.persistence.AttributeConverter
-import kotlin.collections.get
 
 /**
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
@@ -14,7 +11,7 @@ import kotlin.collections.get
  * @author cap4k-ddd-codegen
  * @date 2025/11/26
  */
-@Aggregate(aggregate = "VideoFilePost", name = "EncryptMethod", type = "enum", description = "")
+@Aggregate(aggregate = "VideoPost", name = "EncryptMethod", type = "enum", description = "")
 enum class EncryptMethod(
     @field:JsonValue
     val code: Int,
@@ -43,7 +40,8 @@ enum class EncryptMethod(
         }
 
         fun valueOf(value: Int?): EncryptMethod {
-            return valueOfOrNull(value) ?: throw KnownException("枚举类型 EncryptMethod 枚举值转换异常，不存在的值: $value")
+            return valueOfOrNull(value)
+                ?: throw KnownException("枚举类型 EncryptMethod 枚举值转换异常，不存在的值: $value")
         }
 
         fun valueOfOrNull(value: Int?): EncryptMethod? {

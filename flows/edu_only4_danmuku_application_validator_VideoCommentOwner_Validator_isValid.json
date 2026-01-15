@@ -1,0 +1,33 @@
+{
+  "entryId" : "edu.only4.danmuku.application.validator.VideoCommentOwner.Validator::isValid",
+  "entryType" : "validator",
+  "nodeCount" : 3,
+  "edgeCount" : 2,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.application.queries.video_comment.GetCommentByIdQryHandler",
+    "name" : "GetCommentByIdQryHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.queries.video_comment.GetCommentByIdQryHandler",
+    "type" : "queryhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.queries.video_comment.GetCommentByIdQry.Request",
+    "name" : "GetCommentByIdQry.Request",
+    "fullName" : "edu.only4.danmuku.application.queries.video_comment.GetCommentByIdQry.Request",
+    "type" : "query"
+  }, {
+    "id" : "edu.only4.danmuku.application.validator.VideoCommentOwner.Validator::isValid",
+    "name" : "VideoCommentOwner.Validator::isValid",
+    "fullName" : "edu.only4.danmuku.application.validator.VideoCommentOwner.Validator::isValid",
+    "type" : "validator"
+  } ],
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.application.queries.video_comment.GetCommentByIdQry.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.queries.video_comment.GetCommentByIdQryHandler",
+    "type" : "QueryToQueryHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.validator.VideoCommentOwner.Validator::isValid",
+    "toId" : "edu.only4.danmuku.application.queries.video_comment.GetCommentByIdQry.Request",
+    "type" : "ValidatorToQuery",
+    "label" : null
+  } ]
+}

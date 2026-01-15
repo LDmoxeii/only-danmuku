@@ -1,0 +1,24 @@
+flowchart TD
+  N1[[CheckFocusStatusQryHandler]]
+  class N1 queryhandler
+  N2[[GetCustomerProfileQryHandler]]
+  class N2 queryhandler
+  N3[[GetTotalStatisticsInfoQryHandler]]
+  class N3 queryhandler
+  N4([UHomeController::getCustomerProfileDetail])
+  class N4 controllermethod
+  N5{{CheckFocusStatusQry.Request}}
+  class N5 query
+  N6{{GetCustomerProfileQry.Request}}
+  class N6 query
+  N7{{GetTotalStatisticsInfoQry.Request}}
+  class N7 query
+  N4 -->|ControllerMethodToQuery| N5
+  N4 -->|ControllerMethodToQuery| N6
+  N4 -->|ControllerMethodToQuery| N7
+  N5 -->|QueryToQueryHandler| N1
+  N6 -->|QueryToQueryHandler| N2
+  N7 -->|QueryToQueryHandler| N3
+  classDef controllermethod fill:#FDE68A,stroke:#B45309,color:#111827
+  classDef query fill:#93C5FD,stroke:#1D4ED8,color:#0F172A
+  classDef queryhandler fill:#3B82F6,stroke:#1E40AF,color:#F8FAFC

@@ -1,0 +1,53 @@
+{
+  "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminIndexController::getActualTimeStatistics",
+  "entryType" : "controllermethod",
+  "nodeCount" : 5,
+  "edgeCount" : 4,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.application.queries.statistics.GetPreviousDayStatisticsInfoQryHandler",
+    "name" : "GetPreviousDayStatisticsInfoQryHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.queries.statistics.GetPreviousDayStatisticsInfoQryHandler",
+    "type" : "queryhandler"
+  }, {
+    "id" : "edu.only4.danmuku.adapter.application.queries.statistics.GetTotalStatisticsInfoQryHandler",
+    "name" : "GetTotalStatisticsInfoQryHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.queries.statistics.GetTotalStatisticsInfoQryHandler",
+    "type" : "queryhandler"
+  }, {
+    "id" : "edu.only4.danmuku.adapter.portal.api.admin.AdminIndexController::getActualTimeStatistics",
+    "name" : "AdminIndexController::getActualTimeStatistics",
+    "fullName" : "edu.only4.danmuku.adapter.portal.api.admin.AdminIndexController::getActualTimeStatistics",
+    "type" : "controllermethod"
+  }, {
+    "id" : "edu.only4.danmuku.application.queries.statistics.GetPreviousDayStatisticsInfoQry.Request",
+    "name" : "GetPreviousDayStatisticsInfoQry.Request",
+    "fullName" : "edu.only4.danmuku.application.queries.statistics.GetPreviousDayStatisticsInfoQry.Request",
+    "type" : "query"
+  }, {
+    "id" : "edu.only4.danmuku.application.queries.statistics.GetTotalStatisticsInfoQry.Request",
+    "name" : "GetTotalStatisticsInfoQry.Request",
+    "fullName" : "edu.only4.danmuku.application.queries.statistics.GetTotalStatisticsInfoQry.Request",
+    "type" : "query"
+  } ],
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminIndexController::getActualTimeStatistics",
+    "toId" : "edu.only4.danmuku.application.queries.statistics.GetPreviousDayStatisticsInfoQry.Request",
+    "type" : "ControllerMethodToQuery",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminIndexController::getActualTimeStatistics",
+    "toId" : "edu.only4.danmuku.application.queries.statistics.GetTotalStatisticsInfoQry.Request",
+    "type" : "ControllerMethodToQuery",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.queries.statistics.GetPreviousDayStatisticsInfoQry.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.queries.statistics.GetPreviousDayStatisticsInfoQryHandler",
+    "type" : "QueryToQueryHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.queries.statistics.GetTotalStatisticsInfoQry.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.queries.statistics.GetTotalStatisticsInfoQryHandler",
+    "type" : "QueryToQueryHandler",
+    "label" : null
+  } ]
+}

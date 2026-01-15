@@ -1,0 +1,23 @@
+{
+  "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::focus",
+  "entryType" : "controllermethod",
+  "nodeCount" : 2,
+  "edgeCount" : 1,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::focus",
+    "name" : "UHomeController::focus",
+    "fullName" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::focus",
+    "type" : "controllermethod"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.customer_focus.FocusCmd.Request",
+    "name" : "FocusCmd.Request",
+    "fullName" : "edu.only4.danmuku.application.commands.customer_focus.FocusCmd.Request",
+    "type" : "command"
+  } ],
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::focus",
+    "toId" : "edu.only4.danmuku.application.commands.customer_focus.FocusCmd.Request",
+    "type" : "ControllerMethodToCommand",
+    "label" : null
+  } ]
+}

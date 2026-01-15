@@ -1,0 +1,23 @@
+{
+  "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminCategoryController::delete",
+  "entryType" : "controllermethod",
+  "nodeCount" : 2,
+  "edgeCount" : 1,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.portal.api.admin.AdminCategoryController::delete",
+    "name" : "AdminCategoryController::delete",
+    "fullName" : "edu.only4.danmuku.adapter.portal.api.admin.AdminCategoryController::delete",
+    "type" : "controllermethod"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.category.DeleteCategoryCmd.Request",
+    "name" : "DeleteCategoryCmd.Request",
+    "fullName" : "edu.only4.danmuku.application.commands.category.DeleteCategoryCmd.Request",
+    "type" : "command"
+  } ],
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminCategoryController::delete",
+    "toId" : "edu.only4.danmuku.application.commands.category.DeleteCategoryCmd.Request",
+    "type" : "ControllerMethodToCommand",
+    "label" : null
+  } ]
+}

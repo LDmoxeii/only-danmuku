@@ -1,0 +1,13 @@
+{
+  "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoController::reportVideoPlayOnline",
+  "entryType" : "controllermethod",
+  "nodeCount" : 1,
+  "edgeCount" : 0,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.portal.api.web.VideoController::reportVideoPlayOnline",
+    "name" : "VideoController::reportVideoPlayOnline",
+    "fullName" : "edu.only4.danmuku.adapter.portal.api.web.VideoController::reportVideoPlayOnline",
+    "type" : "controllermethod"
+  } ],
+  "edges" : [ ]
+}

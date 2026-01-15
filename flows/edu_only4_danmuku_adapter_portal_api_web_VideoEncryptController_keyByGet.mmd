@@ -1,0 +1,52 @@
+flowchart TD
+  N1([VideoEncryptController::keyByGet])
+  class N1 controllermethod
+  N2[[ConsumeVideoHlsKeyTokenCmd.Handler]]
+  class N2 commandhandler
+  N3{{ConsumeVideoHlsKeyTokenCmd.Request}}
+  class N3 command
+  N4(VideoHlsEncryptKey::&lt;get-ivHex&gt;)
+  class N4 entitymethod
+  N5(VideoHlsEncryptKey::&lt;get-keyCiphertext&gt;)
+  class N5 entitymethod
+  N6(VideoHlsKeyToken::&lt;get-allowedQualities&gt;)
+  class N6 entitymethod
+  N7(VideoHlsKeyToken::&lt;get-expireTime&gt;)
+  class N7 entitymethod
+  N8(VideoHlsKeyToken::&lt;get-fileIndex&gt;)
+  class N8 entitymethod
+  N9(VideoHlsKeyToken::&lt;get-keyVersion&gt;)
+  class N9 entitymethod
+  N10(VideoHlsKeyToken::&lt;get-maxUse&gt;)
+  class N10 entitymethod
+  N11(VideoHlsKeyToken::&lt;get-status&gt;)
+  class N11 entitymethod
+  N12(VideoHlsKeyToken::&lt;get-usedCount&gt;)
+  class N12 entitymethod
+  N13(VideoHlsKeyToken::&lt;get-videoPostId&gt;)
+  class N13 entitymethod
+  N14(VideoHlsKeyToken::consumeOnce)
+  class N14 entitymethod
+  N15(VideoHlsKeyToken::markExhausted)
+  class N15 entitymethod
+  N16(VideoHlsKeyToken::markExpired)
+  class N16 entitymethod
+  N1 -->|ControllerMethodToCommand| N3
+  N2 -->|CommandHandlerToEntityMethod| N4
+  N2 -->|CommandHandlerToEntityMethod| N5
+  N2 -->|CommandHandlerToEntityMethod| N6
+  N2 -->|CommandHandlerToEntityMethod| N7
+  N2 -->|CommandHandlerToEntityMethod| N8
+  N2 -->|CommandHandlerToEntityMethod| N9
+  N2 -->|CommandHandlerToEntityMethod| N10
+  N2 -->|CommandHandlerToEntityMethod| N11
+  N2 -->|CommandHandlerToEntityMethod| N12
+  N2 -->|CommandHandlerToEntityMethod| N13
+  N2 -->|CommandHandlerToEntityMethod| N14
+  N2 -->|CommandHandlerToEntityMethod| N15
+  N2 -->|CommandHandlerToEntityMethod| N16
+  N3 -->|CommandToCommandHandler| N2
+  classDef command fill:#FDBA74,stroke:#C2410C,color:#111827
+  classDef commandhandler fill:#F97316,stroke:#9A3412,color:#111827
+  classDef controllermethod fill:#FDE68A,stroke:#B45309,color:#111827
+  classDef entitymethod fill:#F3F4F6,stroke:#6B7280,color:#111827

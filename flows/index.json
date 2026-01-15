@@ -1,0 +1,1130 @@
+{
+  "generatedAt" : "2026-01-15T10:13:01Z",
+  "inputDirs" : [ "D:\\ideaProjects\\code-analysis\\only-danmuku\\only-danmuku-adapter\\build\\cap4k-code-analysis", "D:\\ideaProjects\\code-analysis\\only-danmuku\\only-danmuku-application\\build\\cap4k-code-analysis", "D:\\ideaProjects\\code-analysis\\only-danmuku\\only-danmuku-domain\\build\\cap4k-code-analysis" ],
+  "entryTypes" : [ "<anonymous>", "clisendermethod", "commandsendermethod", "controllermethod", "querysendermethod", "validator" ],
+  "entryTypeCounts" : {
+    "<anonymous>" : 1,
+    "controllermethod" : 112,
+    "querysendermethod" : 1,
+    "commandsendermethod" : 2,
+    "clisendermethod" : 1,
+    "validator" : 42
+  },
+  "nodeCount" : 2092,
+  "edgeCount" : 849,
+  "flowCount" : 159,
+  "flows" : [ {
+    "entryId" : "<anonymous>",
+    "entryType" : "<anonymous>",
+    "nodeCount" : 410,
+    "edgeCount" : 482,
+    "json" : "anonymous.json",
+    "mermaid" : "anonymous.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminAccountController::checkCode",
+    "entryType" : "controllermethod",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_adapter_portal_api_admin_AdminAccountController_checkCode.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_admin_AdminAccountController_checkCode.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminAccountController::login",
+    "entryType" : "controllermethod",
+    "nodeCount" : 17,
+    "edgeCount" : 16,
+    "json" : "edu_only4_danmuku_adapter_portal_api_admin_AdminAccountController_login.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_admin_AdminAccountController_login.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminAccountController::logout",
+    "entryType" : "controllermethod",
+    "nodeCount" : 13,
+    "edgeCount" : 12,
+    "json" : "edu_only4_danmuku_adapter_portal_api_admin_AdminAccountController_logout.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_admin_AdminAccountController_logout.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminCategoryController::changeSort",
+    "entryType" : "controllermethod",
+    "nodeCount" : 2,
+    "edgeCount" : 1,
+    "json" : "edu_only4_danmuku_adapter_portal_api_admin_AdminCategoryController_changeSort.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_admin_AdminCategoryController_changeSort.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminCategoryController::delete",
+    "entryType" : "controllermethod",
+    "nodeCount" : 2,
+    "edgeCount" : 1,
+    "json" : "edu_only4_danmuku_adapter_portal_api_admin_AdminCategoryController_delete.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_admin_AdminCategoryController_delete.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminCategoryController::getCategoryTree",
+    "entryType" : "controllermethod",
+    "nodeCount" : 1,
+    "edgeCount" : 0,
+    "json" : "edu_only4_danmuku_adapter_portal_api_admin_AdminCategoryController_getCategoryTr.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_admin_AdminCategoryController_getCategoryTr.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminCategoryController::save",
+    "entryType" : "controllermethod",
+    "nodeCount" : 1,
+    "edgeCount" : 0,
+    "json" : "edu_only4_danmuku_adapter_portal_api_admin_AdminCategoryController_save.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_admin_AdminCategoryController_save.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminFileController::getResource",
+    "entryType" : "controllermethod",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_adapter_portal_api_admin_AdminFileController_getResource.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_admin_AdminFileController_getResource.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminFileController::uploadImage",
+    "entryType" : "controllermethod",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_adapter_portal_api_admin_AdminFileController_uploadImage.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_admin_AdminFileController_uploadImage.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminIndexController::getActualTimeStatistics",
+    "entryType" : "controllermethod",
+    "nodeCount" : 5,
+    "edgeCount" : 4,
+    "json" : "edu_only4_danmuku_adapter_portal_api_admin_AdminIndexController_getActualTimeSta.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_admin_AdminIndexController_getActualTimeSta.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminIndexController::getWeekStatisticsInfo",
+    "entryType" : "controllermethod",
+    "nodeCount" : 1,
+    "edgeCount" : 0,
+    "json" : "edu_only4_danmuku_adapter_portal_api_admin_AdminIndexController_getWeekStatistic.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_admin_AdminIndexController_getWeekStatistic.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminInteractController::deleteComment",
+    "entryType" : "controllermethod",
+    "nodeCount" : 2,
+    "edgeCount" : 1,
+    "json" : "edu_only4_danmuku_adapter_portal_api_admin_AdminInteractController_deleteComment.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_admin_AdminInteractController_deleteComment.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminInteractController::deleteDanmuku",
+    "entryType" : "controllermethod",
+    "nodeCount" : 2,
+    "edgeCount" : 1,
+    "json" : "edu_only4_danmuku_adapter_portal_api_admin_AdminInteractController_deleteDanmuku.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_admin_AdminInteractController_deleteDanmuku.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminInteractController::getVideoCommentPage",
+    "entryType" : "controllermethod",
+    "nodeCount" : 1,
+    "edgeCount" : 0,
+    "json" : "edu_only4_danmuku_adapter_portal_api_admin_AdminInteractController_getVideoComme.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_admin_AdminInteractController_getVideoComme.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminInteractController::page",
+    "entryType" : "controllermethod",
+    "nodeCount" : 1,
+    "edgeCount" : 0,
+    "json" : "edu_only4_danmuku_adapter_portal_api_admin_AdminInteractController_page.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_admin_AdminInteractController_page.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminSettingController::getSetting",
+    "entryType" : "controllermethod",
+    "nodeCount" : 1,
+    "edgeCount" : 0,
+    "json" : "edu_only4_danmuku_adapter_portal_api_admin_AdminSettingController_getSetting.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_admin_AdminSettingController_getSetting.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminSettingController::saveSetting",
+    "entryType" : "controllermethod",
+    "nodeCount" : 1,
+    "edgeCount" : 0,
+    "json" : "edu_only4_danmuku_adapter_portal_api_admin_AdminSettingController_saveSetting.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_admin_AdminSettingController_saveSetting.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminUserController::changeStatus",
+    "entryType" : "controllermethod",
+    "nodeCount" : 2,
+    "edgeCount" : 1,
+    "json" : "edu_only4_danmuku_adapter_portal_api_admin_AdminUserController_changeStatus.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_admin_AdminUserController_changeStatus.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminUserController::page",
+    "entryType" : "controllermethod",
+    "nodeCount" : 1,
+    "edgeCount" : 0,
+    "json" : "edu_only4_danmuku_adapter_portal_api_admin_AdminUserController_page.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_admin_AdminUserController_page.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminVideoAbrController::getVariants",
+    "entryType" : "controllermethod",
+    "nodeCount" : 1,
+    "edgeCount" : 0,
+    "json" : "edu_only4_danmuku_adapter_portal_api_admin_AdminVideoAbrController_getVariants.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_admin_AdminVideoAbrController_getVariants.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminVideoAbrController::master",
+    "entryType" : "controllermethod",
+    "nodeCount" : 5,
+    "edgeCount" : 4,
+    "json" : "edu_only4_danmuku_adapter_portal_api_admin_AdminVideoAbrController_master.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_admin_AdminVideoAbrController_master.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminVideoAbrController::playlist",
+    "entryType" : "controllermethod",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_adapter_portal_api_admin_AdminVideoAbrController_playlist.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_admin_AdminVideoAbrController_playlist.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminVideoAbrController::segment",
+    "entryType" : "controllermethod",
+    "nodeCount" : 5,
+    "edgeCount" : 4,
+    "json" : "edu_only4_danmuku_adapter_portal_api_admin_AdminVideoAbrController_segment.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_admin_AdminVideoAbrController_segment.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminVideoController::auditVideo",
+    "entryType" : "controllermethod",
+    "nodeCount" : 25,
+    "edgeCount" : 26,
+    "json" : "edu_only4_danmuku_adapter_portal_api_admin_AdminVideoController_auditVideo.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_admin_AdminVideoController_auditVideo.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminVideoController::deleteVideo",
+    "entryType" : "controllermethod",
+    "nodeCount" : 2,
+    "edgeCount" : 1,
+    "json" : "edu_only4_danmuku_adapter_portal_api_admin_AdminVideoController_deleteVideo.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_admin_AdminVideoController_deleteVideo.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminVideoController::getVideoPList",
+    "entryType" : "controllermethod",
+    "nodeCount" : 1,
+    "edgeCount" : 0,
+    "json" : "edu_only4_danmuku_adapter_portal_api_admin_AdminVideoController_getVideoPList.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_admin_AdminVideoController_getVideoPList.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminVideoController::page",
+    "entryType" : "controllermethod",
+    "nodeCount" : 1,
+    "edgeCount" : 0,
+    "json" : "edu_only4_danmuku_adapter_portal_api_admin_AdminVideoController_page.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_admin_AdminVideoController_page.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminVideoController::recommendVideo",
+    "entryType" : "controllermethod",
+    "nodeCount" : 2,
+    "edgeCount" : 1,
+    "json" : "edu_only4_danmuku_adapter_portal_api_admin_AdminVideoController_recommendVideo.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_admin_AdminVideoController_recommendVideo.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::autoLogin",
+    "entryType" : "controllermethod",
+    "nodeCount" : 1,
+    "edgeCount" : 0,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_AccountController_autoLogin.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_AccountController_autoLogin.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::changePassword",
+    "entryType" : "controllermethod",
+    "nodeCount" : 7,
+    "edgeCount" : 6,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_AccountController_changePassword.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_AccountController_changePassword.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::checkCode",
+    "entryType" : "controllermethod",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_AccountController_checkCode.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_AccountController_checkCode.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::getUserCountInfo",
+    "entryType" : "controllermethod",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_AccountController_getUserCountInfo.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_AccountController_getUserCountInfo.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::login",
+    "entryType" : "controllermethod",
+    "nodeCount" : 20,
+    "edgeCount" : 19,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_AccountController_login.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_AccountController_login.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::loginBySms",
+    "entryType" : "controllermethod",
+    "nodeCount" : 6,
+    "edgeCount" : 5,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_AccountController_loginBySms.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_AccountController_loginBySms.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::logout",
+    "entryType" : "controllermethod",
+    "nodeCount" : 13,
+    "edgeCount" : 12,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_AccountController_logout.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_AccountController_logout.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::register",
+    "entryType" : "controllermethod",
+    "nodeCount" : 4,
+    "edgeCount" : 3,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_AccountController_register.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_AccountController_register.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::sendSmsCode",
+    "entryType" : "controllermethod",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_AccountController_sendSmsCode.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_AccountController_sendSmsCode.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.CategoryController::getCategoryTree",
+    "entryType" : "controllermethod",
+    "nodeCount" : 1,
+    "edgeCount" : 0,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_CategoryController_getCategoryTree.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_CategoryController_getCategoryTree.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.FileController::deleteUploadSession",
+    "entryType" : "controllermethod",
+    "nodeCount" : 10,
+    "edgeCount" : 9,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_FileController_deleteUploadSession.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_FileController_deleteUploadSession.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.FileController::getResource",
+    "entryType" : "controllermethod",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_FileController_getResource.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_FileController_getResource.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.FileController::preUploadVideo",
+    "entryType" : "controllermethod",
+    "nodeCount" : 12,
+    "edgeCount" : 11,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_FileController_preUploadVideo.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_FileController_preUploadVideo.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.FileController::uploadImage",
+    "entryType" : "controllermethod",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_FileController_uploadImage.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_FileController_uploadImage.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.FileController::uploadVideo",
+    "entryType" : "controllermethod",
+    "nodeCount" : 6,
+    "edgeCount" : 5,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_FileController_uploadVideo.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_FileController_uploadVideo.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.SettingController::getSetting",
+    "entryType" : "controllermethod",
+    "nodeCount" : 1,
+    "edgeCount" : 0,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_SettingController_getSetting.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_SettingController_getSetting.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UCenterInteractController::deleteComment",
+    "entryType" : "controllermethod",
+    "nodeCount" : 2,
+    "edgeCount" : 1,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_UCenterInteractController_deleteComment.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_UCenterInteractController_deleteComment.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UCenterInteractController::deleteDanmuku",
+    "entryType" : "controllermethod",
+    "nodeCount" : 2,
+    "edgeCount" : 1,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_UCenterInteractController_deleteDanmuku.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_UCenterInteractController_deleteDanmuku.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UCenterInteractController::getAllVideoList",
+    "entryType" : "controllermethod",
+    "nodeCount" : 1,
+    "edgeCount" : 0,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_UCenterInteractController_getAllVideoLi.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_UCenterInteractController_getAllVideoLi.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UCenterInteractController::getCommentPage",
+    "entryType" : "controllermethod",
+    "nodeCount" : 1,
+    "edgeCount" : 0,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_UCenterInteractController_getCommentPag.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_UCenterInteractController_getCommentPag.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UCenterInteractController::getDanmukuPage",
+    "entryType" : "controllermethod",
+    "nodeCount" : 1,
+    "edgeCount" : 0,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_UCenterInteractController_getDanmukuPag.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_UCenterInteractController_getDanmukuPag.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UCenterStatisticsController::getActualTimeStatistics",
+    "entryType" : "controllermethod",
+    "nodeCount" : 5,
+    "edgeCount" : 4,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_UCenterStatisticsController_getActualTi.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_UCenterStatisticsController_getActualTi.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UCenterStatisticsController::getWeekStatisticsInfo",
+    "entryType" : "controllermethod",
+    "nodeCount" : 1,
+    "edgeCount" : 0,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_UCenterStatisticsController_getWeekStat.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_UCenterStatisticsController_getWeekStat.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UCenterVideoPostController::delete",
+    "entryType" : "controllermethod",
+    "nodeCount" : 2,
+    "edgeCount" : 1,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_UCenterVideoPostController_delete.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_UCenterVideoPostController_delete.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UCenterVideoPostController::getCountInfo",
+    "entryType" : "controllermethod",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_UCenterVideoPostController_getCountInfo.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_UCenterVideoPostController_getCountInfo.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UCenterVideoPostController::getPage",
+    "entryType" : "controllermethod",
+    "nodeCount" : 1,
+    "edgeCount" : 0,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_UCenterVideoPostController_getPage.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_UCenterVideoPostController_getPage.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UCenterVideoPostController::getVideoByVideoId",
+    "entryType" : "controllermethod",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_UCenterVideoPostController_getVideoByVi.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_UCenterVideoPostController_getVideoByVi.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UCenterVideoPostController::save",
+    "entryType" : "controllermethod",
+    "nodeCount" : 69,
+    "edgeCount" : 71,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_UCenterVideoPostController_save.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_UCenterVideoPostController_save.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UCenterVideoPostController::saveInteraction",
+    "entryType" : "controllermethod",
+    "nodeCount" : 2,
+    "edgeCount" : 1,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_UCenterVideoPostController_saveInteract.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_UCenterVideoPostController_saveInteract.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UCenterVideoPostController::update",
+    "entryType" : "controllermethod",
+    "nodeCount" : 70,
+    "edgeCount" : 73,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_UCenterVideoPostController_update.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_UCenterVideoPostController_update.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::bindPhone",
+    "entryType" : "controllermethod",
+    "nodeCount" : 11,
+    "edgeCount" : 10,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_UHomeController_bindPhone.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_UHomeController_bindPhone.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::cancelFocus",
+    "entryType" : "controllermethod",
+    "nodeCount" : 2,
+    "edgeCount" : 1,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_UHomeController_cancelFocus.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_UHomeController_cancelFocus.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::focus",
+    "entryType" : "controllermethod",
+    "nodeCount" : 2,
+    "edgeCount" : 1,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_UHomeController_focus.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_UHomeController_focus.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::getCollectionPage",
+    "entryType" : "controllermethod",
+    "nodeCount" : 1,
+    "edgeCount" : 0,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_UHomeController_getCollectionPage.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_UHomeController_getCollectionPage.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::getCustomerProfileDetail",
+    "entryType" : "controllermethod",
+    "nodeCount" : 7,
+    "edgeCount" : 6,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_UHomeController_getCustomerProfileDetai.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_UHomeController_getCustomerProfileDetai.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::getFansPage",
+    "entryType" : "controllermethod",
+    "nodeCount" : 1,
+    "edgeCount" : 0,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_UHomeController_getFansPage.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_UHomeController_getFansPage.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::getFocusPage",
+    "entryType" : "controllermethod",
+    "nodeCount" : 1,
+    "edgeCount" : 0,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_UHomeController_getFocusPage.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_UHomeController_getFocusPage.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::getVideoPage",
+    "entryType" : "controllermethod",
+    "nodeCount" : 1,
+    "edgeCount" : 0,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_UHomeController_getVideoPage.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_UHomeController_getVideoPage.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::saveTheme",
+    "entryType" : "controllermethod",
+    "nodeCount" : 2,
+    "edgeCount" : 1,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_UHomeController_saveTheme.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_UHomeController_saveTheme.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::update",
+    "entryType" : "controllermethod",
+    "nodeCount" : 2,
+    "edgeCount" : 1,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_UHomeController_update.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_UHomeController_update.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UserActionController::doAction",
+    "entryType" : "controllermethod",
+    "nodeCount" : 70,
+    "edgeCount" : 84,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_UserActionController_doAction.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_UserActionController_doAction.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UserMessageController::delete",
+    "entryType" : "controllermethod",
+    "nodeCount" : 2,
+    "edgeCount" : 1,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_UserMessageController_delete.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_UserMessageController_delete.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UserMessageController::getNoReadCount",
+    "entryType" : "controllermethod",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_UserMessageController_getNoReadCount.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_UserMessageController_getNoReadCount.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UserMessageController::getNoReadCountGroup",
+    "entryType" : "controllermethod",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_UserMessageController_getNoReadCountGro.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_UserMessageController_getNoReadCountGro.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UserMessageController::page",
+    "entryType" : "controllermethod",
+    "nodeCount" : 1,
+    "edgeCount" : 0,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_UserMessageController_page.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_UserMessageController_page.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UserMessageController::readAll",
+    "entryType" : "controllermethod",
+    "nodeCount" : 2,
+    "edgeCount" : 1,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_UserMessageController_readAll.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_UserMessageController_readAll.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoAbrController::master",
+    "entryType" : "controllermethod",
+    "nodeCount" : 5,
+    "edgeCount" : 4,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoAbrController_master.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoAbrController_master.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoAbrController::playlist",
+    "entryType" : "controllermethod",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoAbrController_playlist.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoAbrController_playlist.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoAbrController::segment",
+    "entryType" : "controllermethod",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoAbrController_segment.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoAbrController_segment.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoAbrController::variants",
+    "entryType" : "controllermethod",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoAbrController_variants.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoAbrController_variants.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoCommentController::cancelTop",
+    "entryType" : "controllermethod",
+    "nodeCount" : 2,
+    "edgeCount" : 1,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoCommentController_cancelTop.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoCommentController_cancelTop.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoCommentController::delete",
+    "entryType" : "controllermethod",
+    "nodeCount" : 2,
+    "edgeCount" : 1,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoCommentController_delete.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoCommentController_delete.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoCommentController::page",
+    "entryType" : "controllermethod",
+    "nodeCount" : 1,
+    "edgeCount" : 0,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoCommentController_page.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoCommentController_page.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoCommentController::post",
+    "entryType" : "controllermethod",
+    "nodeCount" : 36,
+    "edgeCount" : 38,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoCommentController_post.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoCommentController_post.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoCommentController::top",
+    "entryType" : "controllermethod",
+    "nodeCount" : 2,
+    "edgeCount" : 1,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoCommentController_top.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoCommentController_top.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoController::detail",
+    "entryType" : "controllermethod",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoController_detail.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoController_detail.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoController::getHotVidePage",
+    "entryType" : "controllermethod",
+    "nodeCount" : 1,
+    "edgeCount" : 0,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoController_getHotVidePage.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoController_getHotVidePage.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoController::getRecommendVideoList",
+    "entryType" : "controllermethod",
+    "nodeCount" : 1,
+    "edgeCount" : 0,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoController_getRecommendVideoList.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoController_getRecommendVideoList.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoController::getSearchKeywordTop",
+    "entryType" : "controllermethod",
+    "nodeCount" : 1,
+    "edgeCount" : 0,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoController_getSearchKeywordTop.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoController_getSearchKeywordTop.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoController::getVideoPList",
+    "entryType" : "controllermethod",
+    "nodeCount" : 1,
+    "edgeCount" : 0,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoController_getVideoPList.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoController_getVideoPList.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoController::getVideoRecommendList",
+    "entryType" : "controllermethod",
+    "nodeCount" : 1,
+    "edgeCount" : 0,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoController_getVideoRecommendList.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoController_getVideoRecommendList.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoController::page",
+    "entryType" : "controllermethod",
+    "nodeCount" : 1,
+    "edgeCount" : 0,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoController_page.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoController_page.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoController::reportVideoPlayOnline",
+    "entryType" : "controllermethod",
+    "nodeCount" : 1,
+    "edgeCount" : 0,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoController_reportVideoPlayOnline.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoController_reportVideoPlayOnline.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoController::search",
+    "entryType" : "controllermethod",
+    "nodeCount" : 1,
+    "edgeCount" : 0,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoController_search.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoController_search.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoDanmukuController::getList",
+    "entryType" : "controllermethod",
+    "nodeCount" : 1,
+    "edgeCount" : 0,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoDanmukuController_getList.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoDanmukuController_getList.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoDanmukuController::postDanmuku",
+    "entryType" : "controllermethod",
+    "nodeCount" : 2,
+    "edgeCount" : 1,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoDanmukuController_postDanmuku.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoDanmukuController_postDanmuku.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoEncryptController::issueToken",
+    "entryType" : "controllermethod",
+    "nodeCount" : 20,
+    "edgeCount" : 19,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoEncryptController_issueToken.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoEncryptController_issueToken.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoEncryptController::keyByGet",
+    "entryType" : "controllermethod",
+    "nodeCount" : 16,
+    "edgeCount" : 15,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoEncryptController_keyByGet.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoEncryptController_keyByGet.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoEncryptController::master",
+    "entryType" : "controllermethod",
+    "nodeCount" : 5,
+    "edgeCount" : 4,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoEncryptController_master.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoEncryptController_master.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoEncryptController::playlist",
+    "entryType" : "controllermethod",
+    "nodeCount" : 5,
+    "edgeCount" : 4,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoEncryptController_playlist.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoEncryptController_playlist.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoEncryptController::segment",
+    "entryType" : "controllermethod",
+    "nodeCount" : 7,
+    "edgeCount" : 6,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoEncryptController_segment.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoEncryptController_segment.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoEncryptController::variants",
+    "entryType" : "controllermethod",
+    "nodeCount" : 1,
+    "edgeCount" : 0,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoEncryptController_variants.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoEncryptController_variants.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoHistoryController::delete",
+    "entryType" : "controllermethod",
+    "nodeCount" : 2,
+    "edgeCount" : 1,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoHistoryController_delete.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoHistoryController_delete.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoHistoryController::historyClean",
+    "entryType" : "controllermethod",
+    "nodeCount" : 2,
+    "edgeCount" : 1,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoHistoryController_historyClean.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoHistoryController_historyClean.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoHistoryController::page",
+    "entryType" : "controllermethod",
+    "nodeCount" : 1,
+    "edgeCount" : 0,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoHistoryController_page.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoHistoryController_page.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoSeriesController::changeSort",
+    "entryType" : "controllermethod",
+    "nodeCount" : 5,
+    "edgeCount" : 4,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoSeriesController_changeSort.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoSeriesController_changeSort.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoSeriesController::deleteSeriesVideo",
+    "entryType" : "controllermethod",
+    "nodeCount" : 4,
+    "edgeCount" : 3,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoSeriesController_deleteSeriesVideo.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoSeriesController_deleteSeriesVideo.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoSeriesController::deleteVideoSeries",
+    "entryType" : "controllermethod",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoSeriesController_deleteVideoSeries.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoSeriesController_deleteVideoSeries.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoSeriesController::detail",
+    "entryType" : "controllermethod",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoSeriesController_detail.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoSeriesController_detail.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoSeriesController::getAllVideoList",
+    "entryType" : "controllermethod",
+    "nodeCount" : 2,
+    "edgeCount" : 1,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoSeriesController_getAllVideoList.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoSeriesController_getAllVideoList.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoSeriesController::getVideoSeries",
+    "entryType" : "controllermethod",
+    "nodeCount" : 2,
+    "edgeCount" : 1,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoSeriesController_getVideoSeries.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoSeriesController_getVideoSeries.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoSeriesController::loadVideoSeriesWithVideo",
+    "entryType" : "controllermethod",
+    "nodeCount" : 2,
+    "edgeCount" : 1,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoSeriesController_loadVideoSeriesWi.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoSeriesController_loadVideoSeriesWi.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoSeriesController::saveSeriesVideo",
+    "entryType" : "controllermethod",
+    "nodeCount" : 8,
+    "edgeCount" : 7,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoSeriesController_saveSeriesVideo.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoSeriesController_saveSeriesVideo.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoSeriesController::saveVideoSeries",
+    "entryType" : "controllermethod",
+    "nodeCount" : 16,
+    "edgeCount" : 20,
+    "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoSeriesController_saveVideoSeries.json",
+    "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoSeriesController_saveVideoSeries.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.application.commands.video_encrypt.IssueVideoHlsKeyTokenCmd.Handler::exec",
+    "entryType" : "querysendermethod",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_application_commands_video_encrypt_IssueVideoHlsKeyTokenCmd_Ha.json",
+    "mermaid" : "edu_only4_danmuku_application_commands_video_encrypt_IssueVideoHlsKeyTokenCmd_Ha.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.application.commands.video_encrypt.RotateVideoHlsKeyBatchCmd.Handler::exec",
+    "entryType" : "commandsendermethod",
+    "nodeCount" : 36,
+    "edgeCount" : 39,
+    "json" : "edu_only4_danmuku_application_commands_video_encrypt_RotateVideoHlsKeyBatchCmd_H.json",
+    "mermaid" : "edu_only4_danmuku_application_commands_video_encrypt_RotateVideoHlsKeyBatchCmd_H.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.application.subscribers.domain.customer_profile.CustomerAvatarUpdatedDomainEventSubscriber::on",
+    "entryType" : "clisendermethod",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_application_subscribers_domain_customer_profile_CustomerAvatar.json",
+    "mermaid" : "edu_only4_danmuku_application_subscribers_domain_customer_profile_CustomerAvatar.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.application.subscribers.domain.customer_profile.CustomerNicknameUpdatedDomainEventSubscriber::on",
+    "entryType" : "commandsendermethod",
+    "nodeCount" : 4,
+    "edgeCount" : 3,
+    "json" : "edu_only4_danmuku_application_subscribers_domain_customer_profile_CustomerNickna.json",
+    "mermaid" : "edu_only4_danmuku_application_subscribers_domain_customer_profile_CustomerNickna.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.application.validator.CategoryDeletionAllowed.Validator::isValid",
+    "entryType" : "validator",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_application_validator_CategoryDeletionAllowed_Validator_isVali.json",
+    "mermaid" : "edu_only4_danmuku_application_validator_CategoryDeletionAllowed_Validator_isVali.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.application.validator.CategoryMustExist.Validator::isValid",
+    "entryType" : "validator",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_application_validator_CategoryMustExist_Validator_isValid.json",
+    "mermaid" : "edu_only4_danmuku_application_validator_CategoryMustExist_Validator_isValid.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.application.validator.CommentDeletePermission.Validator::isValid",
+    "entryType" : "validator",
+    "nodeCount" : 5,
+    "edgeCount" : 4,
+    "json" : "edu_only4_danmuku_application_validator_CommentDeletePermission_Validator_isVali.json",
+    "mermaid" : "edu_only4_danmuku_application_validator_CommentDeletePermission_Validator_isVali.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.application.validator.CommentExists.Validator::isValid",
+    "entryType" : "validator",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_application_validator_CommentExists_Validator_isValid.json",
+    "mermaid" : "edu_only4_danmuku_application_validator_CommentExists_Validator_isValid.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.application.validator.CommentNotClosed.Validator::isValid",
+    "entryType" : "validator",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_application_validator_CommentNotClosed_Validator_isValid.json",
+    "mermaid" : "edu_only4_danmuku_application_validator_CommentNotClosed_Validator_isValid.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.application.validator.DanmukuDeletePermission.Validator::isValid",
+    "entryType" : "validator",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_application_validator_DanmukuDeletePermission_Validator_isVali.json",
+    "mermaid" : "edu_only4_danmuku_application_validator_DanmukuDeletePermission_Validator_isVali.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.application.validator.DanmukuExists.Validator::isValid",
+    "entryType" : "validator",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_application_validator_DanmukuExists_Validator_isValid.json",
+    "mermaid" : "edu_only4_danmuku_application_validator_DanmukuExists_Validator_isValid.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.application.validator.DanmukuInteractionAllowed.Validator::isValid",
+    "entryType" : "validator",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_application_validator_DanmukuInteractionAllowed_Validator_isVa.json",
+    "mermaid" : "edu_only4_danmuku_application_validator_DanmukuInteractionAllowed_Validator_isVa.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.application.validator.NicknameChangeAllowed.Validator::isValid",
+    "entryType" : "validator",
+    "nodeCount" : 5,
+    "edgeCount" : 4,
+    "json" : "edu_only4_danmuku_application_validator_NicknameChangeAllowed_Validator_isValid.json",
+    "mermaid" : "edu_only4_danmuku_application_validator_NicknameChangeAllowed_Validator_isValid.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.application.validator.NotSelfCoin.Validator::isValid",
+    "entryType" : "validator",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_application_validator_NotSelfCoin_Validator_isValid.json",
+    "mermaid" : "edu_only4_danmuku_application_validator_NotSelfCoin_Validator_isValid.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.application.validator.ReplyCommentExists.Validator::isValid",
+    "entryType" : "validator",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_application_validator_ReplyCommentExists_Validator_isValid.json",
+    "mermaid" : "edu_only4_danmuku_application_validator_ReplyCommentExists_Validator_isValid.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.application.validator.SeriesBelongToUser.Validator::isValid",
+    "entryType" : "validator",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_application_validator_SeriesBelongToUser_Validator_isValid.json",
+    "mermaid" : "edu_only4_danmuku_application_validator_SeriesBelongToUser_Validator_isValid.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.application.validator.SeriesOwnership.Validator::isValid",
+    "entryType" : "validator",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_application_validator_SeriesOwnership_Validator_isValid.json",
+    "mermaid" : "edu_only4_danmuku_application_validator_SeriesOwnership_Validator_isValid.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.application.validator.SufficientCoinBalance.Validator::isValid",
+    "entryType" : "validator",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_application_validator_SufficientCoinBalance_Validator_isValid.json",
+    "mermaid" : "edu_only4_danmuku_application_validator_SufficientCoinBalance_Validator_isValid.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.application.validator.UniqueCategoryCode.Validator::isValid",
+    "entryType" : "validator",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_application_validator_UniqueCategoryCode_Validator_isValid.json",
+    "mermaid" : "edu_only4_danmuku_application_validator_UniqueCategoryCode_Validator_isValid.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.application.validator.UniqueCustomerActionType.Validator::isValid",
+    "entryType" : "validator",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_application_validator_UniqueCustomerActionType_Validator_isVal.json",
+    "mermaid" : "edu_only4_danmuku_application_validator_UniqueCustomerActionType_Validator_isVal.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.application.validator.UniqueCustomerProfileEmail.Validator::isValid",
+    "entryType" : "validator",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_application_validator_UniqueCustomerProfileEmail_Validator_isV.json",
+    "mermaid" : "edu_only4_danmuku_application_validator_UniqueCustomerProfileEmail_Validator_isV.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.application.validator.UniqueCustomerProfileNickName.Validator::isValid",
+    "entryType" : "validator",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_application_validator_UniqueCustomerProfileNickName_Validator_.json",
+    "mermaid" : "edu_only4_danmuku_application_validator_UniqueCustomerProfileNickName_Validator_.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.application.validator.UniqueCustomerProfilePhone.Validator::isValid",
+    "entryType" : "validator",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_application_validator_UniqueCustomerProfilePhone_Validator_isV.json",
+    "mermaid" : "edu_only4_danmuku_application_validator_UniqueCustomerProfilePhone_Validator_isV.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.application.validator.UniqueSeriesNameForUser.Validator::isValid",
+    "entryType" : "validator",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_application_validator_UniqueSeriesNameForUser_Validator_isVali.json",
+    "mermaid" : "edu_only4_danmuku_application_validator_UniqueSeriesNameForUser_Validator_isVali.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.application.validator.UniqueUserEmail.Validator::isValid",
+    "entryType" : "validator",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_application_validator_UniqueUserEmail_Validator_isValid.json",
+    "mermaid" : "edu_only4_danmuku_application_validator_UniqueUserEmail_Validator_isValid.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.application.validator.UniqueUserNickname.Validator::isNicknameUnique",
+    "entryType" : "validator",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_application_validator_UniqueUserNickname_Validator_isNicknameU.json",
+    "mermaid" : "edu_only4_danmuku_application_validator_UniqueUserNickname_Validator_isNicknameU.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.application.validator.UniqueUserPhone.Validator::isValid",
+    "entryType" : "validator",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_application_validator_UniqueUserPhone_Validator_isValid.json",
+    "mermaid" : "edu_only4_danmuku_application_validator_UniqueUserPhone_Validator_isValid.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.application.validator.UniqueVideoFilePost.Validator::isValid",
+    "entryType" : "validator",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_application_validator_UniqueVideoFilePost_Validator_isValid.json",
+    "mermaid" : "edu_only4_danmuku_application_validator_UniqueVideoFilePost_Validator_isValid.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.application.validator.UniqueVideoFilePostUploadId.Validator::isValid",
+    "entryType" : "validator",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_application_validator_UniqueVideoFilePostUploadId_Validator_is.json",
+    "mermaid" : "edu_only4_danmuku_application_validator_UniqueVideoFilePostUploadId_Validator_is.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.application.validator.UniqueVideoFilePostVariant.Validator::isValid",
+    "entryType" : "validator",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_application_validator_UniqueVideoFilePostVariant_Validator_isV.json",
+    "mermaid" : "edu_only4_danmuku_application_validator_UniqueVideoFilePostVariant_Validator_isV.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.application.validator.UniqueVideoFileVariant.Validator::isValid",
+    "entryType" : "validator",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_application_validator_UniqueVideoFileVariant_Validator_isValid.json",
+    "mermaid" : "edu_only4_danmuku_application_validator_UniqueVideoFileVariant_Validator_isValid.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.application.validator.UniqueVideoHlsEncryptKey.Validator::isValid",
+    "entryType" : "validator",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_application_validator_UniqueVideoHlsEncryptKey_Validator_isVal.json",
+    "mermaid" : "edu_only4_danmuku_application_validator_UniqueVideoHlsEncryptKey_Validator_isVal.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.application.validator.UniqueVideoHlsKeyToken.Validator::isValid",
+    "entryType" : "validator",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_application_validator_UniqueVideoHlsKeyToken_Validator_isValid.json",
+    "mermaid" : "edu_only4_danmuku_application_validator_UniqueVideoHlsKeyToken_Validator_isValid.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.application.validator.UniqueVideoPostProcessing.Validator::isValid",
+    "entryType" : "validator",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_application_validator_UniqueVideoPostProcessing_Validator_isVa.json",
+    "mermaid" : "edu_only4_danmuku_application_validator_UniqueVideoPostProcessing_Validator_isVa.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.application.validator.UniqueVideoPostProcessingFile.Validator::isValid",
+    "entryType" : "validator",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_application_validator_UniqueVideoPostProcessingFile_Validator_.json",
+    "mermaid" : "edu_only4_danmuku_application_validator_UniqueVideoPostProcessingFile_Validator_.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.application.validator.UniqueVideoPostProcessingVariant.Validator::isValid",
+    "entryType" : "validator",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_application_validator_UniqueVideoPostProcessingVariant_Validat.json",
+    "mermaid" : "edu_only4_danmuku_application_validator_UniqueVideoPostProcessingVariant_Validat.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.application.validator.UniqueVideoQualityPolicy.Validator::isValid",
+    "entryType" : "validator",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_application_validator_UniqueVideoQualityPolicy_Validator_isVal.json",
+    "mermaid" : "edu_only4_danmuku_application_validator_UniqueVideoQualityPolicy_Validator_isVal.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.application.validator.UserExists.Validator::isValid",
+    "entryType" : "validator",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_application_validator_UserExists_Validator_isValid.json",
+    "mermaid" : "edu_only4_danmuku_application_validator_UserExists_Validator_isValid.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.application.validator.VideoCommentOwner.Validator::isValid",
+    "entryType" : "validator",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_application_validator_VideoCommentOwner_Validator_isValid.json",
+    "mermaid" : "edu_only4_danmuku_application_validator_VideoCommentOwner_Validator_isValid.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.application.validator.VideoDeletePermission.Validator::isValid",
+    "entryType" : "validator",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_application_validator_VideoDeletePermission_Validator_isValid.json",
+    "mermaid" : "edu_only4_danmuku_application_validator_VideoDeletePermission_Validator_isValid.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.application.validator.VideoExists.Validator::isValid",
+    "entryType" : "validator",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_application_validator_VideoExists_Validator_isValid.json",
+    "mermaid" : "edu_only4_danmuku_application_validator_VideoExists_Validator_isValid.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.application.validator.VideoIdsBelongToUser.Validator::isValid",
+    "entryType" : "validator",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_application_validator_VideoIdsBelongToUser_Validator_isValid.json",
+    "mermaid" : "edu_only4_danmuku_application_validator_VideoIdsBelongToUser_Validator_isValid.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.application.validator.VideoInSeries.Validator::isValid",
+    "entryType" : "validator",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_application_validator_VideoInSeries_Validator_isValid.json",
+    "mermaid" : "edu_only4_danmuku_application_validator_VideoInSeries_Validator_isValid.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.application.validator.VideoPostEditableStatus.Validator::isValid",
+    "entryType" : "validator",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_application_validator_VideoPostEditableStatus_Validator_isVali.json",
+    "mermaid" : "edu_only4_danmuku_application_validator_VideoPostEditableStatus_Validator_isVali.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.application.validator.VideoPostExists.Validator::isValid",
+    "entryType" : "validator",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_application_validator_VideoPostExists_Validator_isValid.json",
+    "mermaid" : "edu_only4_danmuku_application_validator_VideoPostExists_Validator_isValid.mmd"
+  }, {
+    "entryId" : "edu.only4.danmuku.application.validator.VideoPostStatusPending.Validator::isValid",
+    "entryType" : "validator",
+    "nodeCount" : 3,
+    "edgeCount" : 2,
+    "json" : "edu_only4_danmuku_application_validator_VideoPostStatusPending_Validator_isValid.json",
+    "mermaid" : "edu_only4_danmuku_application_validator_VideoPostStatusPending_Validator_isValid.mmd"
+  } ]
+}

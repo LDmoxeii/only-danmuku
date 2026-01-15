@@ -1,0 +1,68 @@
+flowchart TD
+  N1[[GetVideoFileContextByIdQryHandler]]
+  class N1 queryhandler
+  N2[[GetLatestVideoHlsKeyVersionQryHandler]]
+  class N2 queryhandler
+  N3([VideoEncryptController::issueToken])
+  class N3 controllermethod
+  N4{{UpdateStatisticsInfoCmd.Request}}
+  class N4 command
+  N5[[ApplyVideoPlayCountDeltaCmd.Handler]]
+  class N5 commandhandler
+  N6{{ApplyVideoPlayCountDeltaCmd.Request}}
+  class N6 command
+  N7[[IssueVideoHlsKeyTokenCmd.Handler]]
+  class N7 commandhandler
+  N8{{IssueVideoHlsKeyTokenCmd.Request}}
+  class N8 command
+  N9{{AddPlayHistoryCmd.Request}}
+  class N9 command
+  N10{{GetVideoFileContextByIdQry.Request}}
+  class N10 query
+  N11{{GetLatestVideoHlsKeyVersionQry.Request}}
+  class N11 query
+  N12[[VideoPlayCountDeltaAppliedDomainEventSubscriber::on]]
+  class N12 domaineventhandler
+  N13[[VideoHlsKeyTokenIssuedDomainEventSubscriber::addPlayHistoryCmd]]
+  class N13 domaineventhandler
+  N14[[VideoHlsKeyTokenIssuedDomainEventSubscriber::applyVideoPlayCountDelta]]
+  class N14 domaineventhandler
+  N15(Video::&lt;get-id&gt;)
+  class N15 entitymethod
+  N16(Video::&lt;get-playCount&gt;)
+  class N16 entitymethod
+  N17(Video::applyPlayCountDelta)
+  class N17 entitymethod
+  N18((VideoPlayCountDeltaAppliedDomainEvent))
+  class N18 domainevent
+  N19(VideoHlsKeyToken::onCreate)
+  class N19 entitymethod
+  N20((VideoHlsKeyTokenIssuedDomainEvent))
+  class N20 domainevent
+  N3 -->|ControllerMethodToCommand| N8
+  N3 -->|ControllerMethodToQuery| N10
+  N3 -->|ControllerMethodToQuery| N11
+  N5 -->|CommandHandlerToEntityMethod| N15
+  N5 -->|CommandHandlerToEntityMethod| N16
+  N5 -->|CommandHandlerToEntityMethod| N17
+  N6 -->|CommandToCommandHandler| N5
+  N7 -->|CommandHandlerToEntityMethod| N19
+  N8 -->|CommandToCommandHandler| N7
+  N10 -->|QueryToQueryHandler| N1
+  N11 -->|QueryToQueryHandler| N2
+  N12 -->|DomainEventHandlerToCommand| N4
+  N13 -->|DomainEventHandlerToCommand| N9
+  N14 -->|DomainEventHandlerToCommand| N6
+  N17 -->|EntityMethodToDomainEvent| N18
+  N18 -->|DomainEventToHandler| N12
+  N19 -->|EntityMethodToDomainEvent| N20
+  N20 -->|DomainEventToHandler| N13
+  N20 -->|DomainEventToHandler| N14
+  classDef command fill:#FDBA74,stroke:#C2410C,color:#111827
+  classDef commandhandler fill:#F97316,stroke:#9A3412,color:#111827
+  classDef controllermethod fill:#FDE68A,stroke:#B45309,color:#111827
+  classDef domainevent fill:#FECACA,stroke:#B91C1C,color:#111827
+  classDef domaineventhandler fill:#F87171,stroke:#991B1B,color:#111827
+  classDef entitymethod fill:#F3F4F6,stroke:#6B7280,color:#111827
+  classDef query fill:#93C5FD,stroke:#1D4ED8,color:#0F172A
+  classDef queryhandler fill:#3B82F6,stroke:#1E40AF,color:#F8FAFC

@@ -1,0 +1,24 @@
+flowchart TD
+  N1[[UploadVideoChunkStorageCliHandler]]
+  class N1 clihandler
+  N2[[GetUploadSessionTempPathQryHandler]]
+  class N2 queryhandler
+  N3([FileController::uploadVideo])
+  class N3 controllermethod
+  N4{{UploadVideoChunkCmd.Request}}
+  class N4 command
+  N5{{UploadVideoChunkStorageCli.Request}}
+  class N5 cli
+  N6{{GetUploadSessionTempPathQry.Request}}
+  class N6 query
+  N3 -->|ControllerMethodToCommand| N4
+  N3 -->|ControllerMethodToCli| N5
+  N3 -->|ControllerMethodToQuery| N6
+  N5 -->|CliToCliHandler| N1
+  N6 -->|QueryToQueryHandler| N2
+  classDef cli fill:#86EFAC,stroke:#15803D,color:#0F172A
+  classDef clihandler fill:#22C55E,stroke:#166534,color:#F0FDF4
+  classDef command fill:#FDBA74,stroke:#C2410C,color:#111827
+  classDef controllermethod fill:#FDE68A,stroke:#B45309,color:#111827
+  classDef query fill:#93C5FD,stroke:#1D4ED8,color:#0F172A
+  classDef queryhandler fill:#3B82F6,stroke:#1E40AF,color:#F8FAFC

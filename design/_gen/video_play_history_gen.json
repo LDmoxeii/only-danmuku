@@ -1,8 +1,0 @@
-[
-  {
-    "tag": "qry",
-    "package": "video_play_history",
-    "name": "GetUserPlayHistory",
-    "desc": "获取用户播放历史记录"
-  }
-]

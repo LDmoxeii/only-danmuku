@@ -1,0 +1,33 @@
+{
+  "entryId" : "edu.only4.danmuku.application.validator.UniqueCustomerProfilePhone.Validator::isValid",
+  "entryType" : "validator",
+  "nodeCount" : 3,
+  "edgeCount" : 2,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.application.queries.customer_profile.UniqueCustomerProfilePhoneQryHandler",
+    "name" : "UniqueCustomerProfilePhoneQryHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.queries.customer_profile.UniqueCustomerProfilePhoneQryHandler",
+    "type" : "queryhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.queries.customer_profile.UniqueCustomerProfilePhoneQry.Request",
+    "name" : "UniqueCustomerProfilePhoneQry.Request",
+    "fullName" : "edu.only4.danmuku.application.queries.customer_profile.UniqueCustomerProfilePhoneQry.Request",
+    "type" : "query"
+  }, {
+    "id" : "edu.only4.danmuku.application.validator.UniqueCustomerProfilePhone.Validator::isValid",
+    "name" : "UniqueCustomerProfilePhone.Validator::isValid",
+    "fullName" : "edu.only4.danmuku.application.validator.UniqueCustomerProfilePhone.Validator::isValid",
+    "type" : "validator"
+  } ],
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.application.queries.customer_profile.UniqueCustomerProfilePhoneQry.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.queries.customer_profile.UniqueCustomerProfilePhoneQryHandler",
+    "type" : "QueryToQueryHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.validator.UniqueCustomerProfilePhone.Validator::isValid",
+    "toId" : "edu.only4.danmuku.application.queries.customer_profile.UniqueCustomerProfilePhoneQry.Request",
+    "type" : "ValidatorToQuery",
+    "label" : null
+  } ]
+}

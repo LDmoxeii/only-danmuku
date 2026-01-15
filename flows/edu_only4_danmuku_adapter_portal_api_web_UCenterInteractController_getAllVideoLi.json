@@ -1,0 +1,13 @@
+{
+  "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UCenterInteractController::getAllVideoList",
+  "entryType" : "controllermethod",
+  "nodeCount" : 1,
+  "edgeCount" : 0,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.portal.api.web.UCenterInteractController::getAllVideoList",
+    "name" : "UCenterInteractController::getAllVideoList",
+    "fullName" : "edu.only4.danmuku.adapter.portal.api.web.UCenterInteractController::getAllVideoList",
+    "type" : "controllermethod"
+  } ],
+  "edges" : [ ]
+}

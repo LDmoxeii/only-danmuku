@@ -1,0 +1,23 @@
+{
+  "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoHistoryController::historyClean",
+  "entryType" : "controllermethod",
+  "nodeCount" : 2,
+  "edgeCount" : 1,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.portal.api.web.VideoHistoryController::historyClean",
+    "name" : "VideoHistoryController::historyClean",
+    "fullName" : "edu.only4.danmuku.adapter.portal.api.web.VideoHistoryController::historyClean",
+    "type" : "controllermethod"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.video_play_history.ClearHistoryCmd.Request",
+    "name" : "ClearHistoryCmd.Request",
+    "fullName" : "edu.only4.danmuku.application.commands.video_play_history.ClearHistoryCmd.Request",
+    "type" : "command"
+  } ],
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.web.VideoHistoryController::historyClean",
+    "toId" : "edu.only4.danmuku.application.commands.video_play_history.ClearHistoryCmd.Request",
+    "type" : "ControllerMethodToCommand",
+    "label" : null
+  } ]
+}

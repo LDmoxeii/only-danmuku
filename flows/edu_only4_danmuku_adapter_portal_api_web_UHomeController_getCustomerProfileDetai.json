@@ -1,0 +1,73 @@
+{
+  "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::getCustomerProfileDetail",
+  "entryType" : "controllermethod",
+  "nodeCount" : 7,
+  "edgeCount" : 6,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.application.queries.customer_focus.CheckFocusStatusQryHandler",
+    "name" : "CheckFocusStatusQryHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.queries.customer_focus.CheckFocusStatusQryHandler",
+    "type" : "queryhandler"
+  }, {
+    "id" : "edu.only4.danmuku.adapter.application.queries.customer_profile.GetCustomerProfileQryHandler",
+    "name" : "GetCustomerProfileQryHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.queries.customer_profile.GetCustomerProfileQryHandler",
+    "type" : "queryhandler"
+  }, {
+    "id" : "edu.only4.danmuku.adapter.application.queries.statistics.GetTotalStatisticsInfoQryHandler",
+    "name" : "GetTotalStatisticsInfoQryHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.queries.statistics.GetTotalStatisticsInfoQryHandler",
+    "type" : "queryhandler"
+  }, {
+    "id" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::getCustomerProfileDetail",
+    "name" : "UHomeController::getCustomerProfileDetail",
+    "fullName" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::getCustomerProfileDetail",
+    "type" : "controllermethod"
+  }, {
+    "id" : "edu.only4.danmuku.application.queries.customer_focus.CheckFocusStatusQry.Request",
+    "name" : "CheckFocusStatusQry.Request",
+    "fullName" : "edu.only4.danmuku.application.queries.customer_focus.CheckFocusStatusQry.Request",
+    "type" : "query"
+  }, {
+    "id" : "edu.only4.danmuku.application.queries.customer_profile.GetCustomerProfileQry.Request",
+    "name" : "GetCustomerProfileQry.Request",
+    "fullName" : "edu.only4.danmuku.application.queries.customer_profile.GetCustomerProfileQry.Request",
+    "type" : "query"
+  }, {
+    "id" : "edu.only4.danmuku.application.queries.statistics.GetTotalStatisticsInfoQry.Request",
+    "name" : "GetTotalStatisticsInfoQry.Request",
+    "fullName" : "edu.only4.danmuku.application.queries.statistics.GetTotalStatisticsInfoQry.Request",
+    "type" : "query"
+  } ],
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::getCustomerProfileDetail",
+    "toId" : "edu.only4.danmuku.application.queries.customer_focus.CheckFocusStatusQry.Request",
+    "type" : "ControllerMethodToQuery",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::getCustomerProfileDetail",
+    "toId" : "edu.only4.danmuku.application.queries.customer_profile.GetCustomerProfileQry.Request",
+    "type" : "ControllerMethodToQuery",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::getCustomerProfileDetail",
+    "toId" : "edu.only4.danmuku.application.queries.statistics.GetTotalStatisticsInfoQry.Request",
+    "type" : "ControllerMethodToQuery",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.queries.customer_focus.CheckFocusStatusQry.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.queries.customer_focus.CheckFocusStatusQryHandler",
+    "type" : "QueryToQueryHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.queries.customer_profile.GetCustomerProfileQry.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.queries.customer_profile.GetCustomerProfileQryHandler",
+    "type" : "QueryToQueryHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.queries.statistics.GetTotalStatisticsInfoQry.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.queries.statistics.GetTotalStatisticsInfoQryHandler",
+    "type" : "QueryToQueryHandler",
+    "label" : null
+  } ]
+}

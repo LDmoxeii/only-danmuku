@@ -1,0 +1,33 @@
+{
+  "entryId" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::checkCode",
+  "entryType" : "controllermethod",
+  "nodeCount" : 3,
+  "edgeCount" : 2,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.application.distributed.clients.CaptchaGenCliHandler",
+    "name" : "CaptchaGenCliHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.distributed.clients.CaptchaGenCliHandler",
+    "type" : "clihandler"
+  }, {
+    "id" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::checkCode",
+    "name" : "AccountController::checkCode",
+    "fullName" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::checkCode",
+    "type" : "controllermethod"
+  }, {
+    "id" : "edu.only4.danmuku.application.distributed.clients.CaptchaGenCli.Request",
+    "name" : "CaptchaGenCli.Request",
+    "fullName" : "edu.only4.danmuku.application.distributed.clients.CaptchaGenCli.Request",
+    "type" : "cli"
+  } ],
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::checkCode",
+    "toId" : "edu.only4.danmuku.application.distributed.clients.CaptchaGenCli.Request",
+    "type" : "ControllerMethodToCli",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.distributed.clients.CaptchaGenCli.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.distributed.clients.CaptchaGenCliHandler",
+    "type" : "CliToCliHandler",
+    "label" : null
+  } ]
+}

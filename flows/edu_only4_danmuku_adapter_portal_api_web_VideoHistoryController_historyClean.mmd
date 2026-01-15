@@ -1,0 +1,8 @@
+flowchart TD
+  N1([VideoHistoryController::historyClean])
+  class N1 controllermethod
+  N2{{ClearHistoryCmd.Request}}
+  class N2 command
+  N1 -->|ControllerMethodToCommand| N2
+  classDef command fill:#FDBA74,stroke:#C2410C,color:#111827
+  classDef controllermethod fill:#FDE68A,stroke:#B45309,color:#111827

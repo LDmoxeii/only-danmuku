@@ -1,0 +1,33 @@
+{
+  "entryId" : "edu.only4.danmuku.application.validator.SufficientCoinBalance.Validator::isValid",
+  "entryType" : "validator",
+  "nodeCount" : 3,
+  "edgeCount" : 2,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.application.queries.customer_profile.CheckUserCoinBalanceQryHandler",
+    "name" : "CheckUserCoinBalanceQryHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.queries.customer_profile.CheckUserCoinBalanceQryHandler",
+    "type" : "queryhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.queries.customer_profile.CheckUserCoinBalanceQry.Request",
+    "name" : "CheckUserCoinBalanceQry.Request",
+    "fullName" : "edu.only4.danmuku.application.queries.customer_profile.CheckUserCoinBalanceQry.Request",
+    "type" : "query"
+  }, {
+    "id" : "edu.only4.danmuku.application.validator.SufficientCoinBalance.Validator::isValid",
+    "name" : "SufficientCoinBalance.Validator::isValid",
+    "fullName" : "edu.only4.danmuku.application.validator.SufficientCoinBalance.Validator::isValid",
+    "type" : "validator"
+  } ],
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.application.queries.customer_profile.CheckUserCoinBalanceQry.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.queries.customer_profile.CheckUserCoinBalanceQryHandler",
+    "type" : "QueryToQueryHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.validator.SufficientCoinBalance.Validator::isValid",
+    "toId" : "edu.only4.danmuku.application.queries.customer_profile.CheckUserCoinBalanceQry.Request",
+    "type" : "ValidatorToQuery",
+    "label" : null
+  } ]
+}

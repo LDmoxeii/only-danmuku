@@ -1,0 +1,13 @@
+{
+  "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::getFocusPage",
+  "entryType" : "controllermethod",
+  "nodeCount" : 1,
+  "edgeCount" : 0,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::getFocusPage",
+    "name" : "UHomeController::getFocusPage",
+    "fullName" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::getFocusPage",
+    "type" : "controllermethod"
+  } ],
+  "edges" : [ ]
+}

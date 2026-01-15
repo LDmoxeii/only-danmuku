@@ -1,0 +1,13 @@
+{
+  "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UCenterInteractController::getDanmukuPage",
+  "entryType" : "controllermethod",
+  "nodeCount" : 1,
+  "edgeCount" : 0,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.portal.api.web.UCenterInteractController::getDanmukuPage",
+    "name" : "UCenterInteractController::getDanmukuPage",
+    "fullName" : "edu.only4.danmuku.adapter.portal.api.web.UCenterInteractController::getDanmukuPage",
+    "type" : "controllermethod"
+  } ],
+  "edges" : [ ]
+}

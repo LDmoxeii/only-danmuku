@@ -1,0 +1,18 @@
+flowchart TD
+  N1[[CheckUserCoinBalanceQryHandler]]
+  class N1 queryhandler
+  N2[[GetCustomerProfileQryHandler]]
+  class N2 queryhandler
+  N3{{CheckUserCoinBalanceQry.Request}}
+  class N3 query
+  N4{{GetCustomerProfileQry.Request}}
+  class N4 query
+  N5[/NicknameChangeAllowed.Validator::isValid/]
+  class N5 validator
+  N3 -->|QueryToQueryHandler| N1
+  N4 -->|QueryToQueryHandler| N2
+  N5 -->|ValidatorToQuery| N3
+  N5 -->|ValidatorToQuery| N4
+  classDef query fill:#93C5FD,stroke:#1D4ED8,color:#0F172A
+  classDef queryhandler fill:#3B82F6,stroke:#1E40AF,color:#F8FAFC
+  classDef validator fill:#FEF3C7,stroke:#B45309,color:#111827

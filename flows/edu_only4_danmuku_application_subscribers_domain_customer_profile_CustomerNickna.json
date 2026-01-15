@@ -1,0 +1,43 @@
+{
+  "entryId" : "edu.only4.danmuku.application.subscribers.domain.customer_profile.CustomerNicknameUpdatedDomainEventSubscriber::on",
+  "entryType" : "commandsendermethod",
+  "nodeCount" : 4,
+  "edgeCount" : 3,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.application.distributed.clients.RefreshLoginSessionCliHandler",
+    "name" : "RefreshLoginSessionCliHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.distributed.clients.RefreshLoginSessionCliHandler",
+    "type" : "clihandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.customer_profile.SpendCoinsForNicknameChangeCmd.Request",
+    "name" : "SpendCoinsForNicknameChangeCmd.Request",
+    "fullName" : "edu.only4.danmuku.application.commands.customer_profile.SpendCoinsForNicknameChangeCmd.Request",
+    "type" : "command"
+  }, {
+    "id" : "edu.only4.danmuku.application.distributed.clients.RefreshLoginSessionCli.Request",
+    "name" : "RefreshLoginSessionCli.Request",
+    "fullName" : "edu.only4.danmuku.application.distributed.clients.RefreshLoginSessionCli.Request",
+    "type" : "cli"
+  }, {
+    "id" : "edu.only4.danmuku.application.subscribers.domain.customer_profile.CustomerNicknameUpdatedDomainEventSubscriber::on",
+    "name" : "CustomerNicknameUpdatedDomainEventSubscriber::on",
+    "fullName" : "edu.only4.danmuku.application.subscribers.domain.customer_profile.CustomerNicknameUpdatedDomainEventSubscriber::on",
+    "type" : "commandsendermethod"
+  } ],
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.application.distributed.clients.RefreshLoginSessionCli.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.distributed.clients.RefreshLoginSessionCliHandler",
+    "type" : "CliToCliHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.subscribers.domain.customer_profile.CustomerNicknameUpdatedDomainEventSubscriber::on",
+    "toId" : "edu.only4.danmuku.application.commands.customer_profile.SpendCoinsForNicknameChangeCmd.Request",
+    "type" : "CommandSenderMethodToCommand",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.subscribers.domain.customer_profile.CustomerNicknameUpdatedDomainEventSubscriber::on",
+    "toId" : "edu.only4.danmuku.application.distributed.clients.RefreshLoginSessionCli.Request",
+    "type" : "CliSenderMethodToCli",
+    "label" : null
+  } ]
+}

@@ -1,0 +1,53 @@
+{
+  "entryId" : "edu.only4.danmuku.application.validator.NicknameChangeAllowed.Validator::isValid",
+  "entryType" : "validator",
+  "nodeCount" : 5,
+  "edgeCount" : 4,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.application.queries.customer_profile.CheckUserCoinBalanceQryHandler",
+    "name" : "CheckUserCoinBalanceQryHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.queries.customer_profile.CheckUserCoinBalanceQryHandler",
+    "type" : "queryhandler"
+  }, {
+    "id" : "edu.only4.danmuku.adapter.application.queries.customer_profile.GetCustomerProfileQryHandler",
+    "name" : "GetCustomerProfileQryHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.queries.customer_profile.GetCustomerProfileQryHandler",
+    "type" : "queryhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.queries.customer_profile.CheckUserCoinBalanceQry.Request",
+    "name" : "CheckUserCoinBalanceQry.Request",
+    "fullName" : "edu.only4.danmuku.application.queries.customer_profile.CheckUserCoinBalanceQry.Request",
+    "type" : "query"
+  }, {
+    "id" : "edu.only4.danmuku.application.queries.customer_profile.GetCustomerProfileQry.Request",
+    "name" : "GetCustomerProfileQry.Request",
+    "fullName" : "edu.only4.danmuku.application.queries.customer_profile.GetCustomerProfileQry.Request",
+    "type" : "query"
+  }, {
+    "id" : "edu.only4.danmuku.application.validator.NicknameChangeAllowed.Validator::isValid",
+    "name" : "NicknameChangeAllowed.Validator::isValid",
+    "fullName" : "edu.only4.danmuku.application.validator.NicknameChangeAllowed.Validator::isValid",
+    "type" : "validator"
+  } ],
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.application.queries.customer_profile.CheckUserCoinBalanceQry.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.queries.customer_profile.CheckUserCoinBalanceQryHandler",
+    "type" : "QueryToQueryHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.queries.customer_profile.GetCustomerProfileQry.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.queries.customer_profile.GetCustomerProfileQryHandler",
+    "type" : "QueryToQueryHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.validator.NicknameChangeAllowed.Validator::isValid",
+    "toId" : "edu.only4.danmuku.application.queries.customer_profile.CheckUserCoinBalanceQry.Request",
+    "type" : "ValidatorToQuery",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.validator.NicknameChangeAllowed.Validator::isValid",
+    "toId" : "edu.only4.danmuku.application.queries.customer_profile.GetCustomerProfileQry.Request",
+    "type" : "ValidatorToQuery",
+    "label" : null
+  } ]
+}

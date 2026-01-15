@@ -1,0 +1,23 @@
+{
+  "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UCenterVideoPostController::saveInteraction",
+  "entryType" : "controllermethod",
+  "nodeCount" : 2,
+  "edgeCount" : 1,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.portal.api.web.UCenterVideoPostController::saveInteraction",
+    "name" : "UCenterVideoPostController::saveInteraction",
+    "fullName" : "edu.only4.danmuku.adapter.portal.api.web.UCenterVideoPostController::saveInteraction",
+    "type" : "controllermethod"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.video_post.ChangeVideoPostInteractionCmd.Request",
+    "name" : "ChangeVideoPostInteractionCmd.Request",
+    "fullName" : "edu.only4.danmuku.application.commands.video_post.ChangeVideoPostInteractionCmd.Request",
+    "type" : "command"
+  } ],
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.web.UCenterVideoPostController::saveInteraction",
+    "toId" : "edu.only4.danmuku.application.commands.video_post.ChangeVideoPostInteractionCmd.Request",
+    "type" : "ControllerMethodToCommand",
+    "label" : null
+  } ]
+}

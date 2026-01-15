@@ -1,0 +1,38 @@
+flowchart TD
+  N1[[DeleteUploadSessionTempDirCliHandler]]
+  class N1 clihandler
+  N2([FileController::deleteUploadSession])
+  class N2 controllermethod
+  N3[[DeleteUploadSessionCmd.Handler]]
+  class N3 commandhandler
+  N4{{DeleteUploadSessionCmd.Request}}
+  class N4 command
+  N5{{DeleteUploadSessionTempDirCli.Request}}
+  class N5 cli
+  N6[[UploadSessionAbortedDomainEventSubscriber::on]]
+  class N6 domaineventhandler
+  N7(VideoFileUploadSession::&lt;get-tempDir&gt;)
+  class N7 entitymethod
+  N8(VideoFileUploadSession::abort)
+  class N8 entitymethod
+  N9(VideoFileUploadSession::ensureOwnedBy)
+  class N9 entitymethod
+  N10((UploadSessionAbortedDomainEvent))
+  class N10 domainevent
+  N2 -->|ControllerMethodToCommand| N4
+  N3 -->|CommandHandlerToEntityMethod| N7
+  N3 -->|CommandHandlerToEntityMethod| N8
+  N3 -->|CommandHandlerToEntityMethod| N9
+  N4 -->|CommandToCommandHandler| N3
+  N5 -->|CliToCliHandler| N1
+  N6 -->|DomainEventHandlerToCli| N5
+  N8 -->|EntityMethodToDomainEvent| N10
+  N10 -->|DomainEventToHandler| N6
+  classDef cli fill:#86EFAC,stroke:#15803D,color:#0F172A
+  classDef clihandler fill:#22C55E,stroke:#166534,color:#F0FDF4
+  classDef command fill:#FDBA74,stroke:#C2410C,color:#111827
+  classDef commandhandler fill:#F97316,stroke:#9A3412,color:#111827
+  classDef controllermethod fill:#FDE68A,stroke:#B45309,color:#111827
+  classDef domainevent fill:#FECACA,stroke:#B91C1C,color:#111827
+  classDef domaineventhandler fill:#F87171,stroke:#991B1B,color:#111827
+  classDef entitymethod fill:#F3F4F6,stroke:#6B7280,color:#111827

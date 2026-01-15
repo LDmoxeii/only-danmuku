@@ -1,0 +1,33 @@
+{
+  "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminFileController::uploadImage",
+  "entryType" : "controllermethod",
+  "nodeCount" : 3,
+  "edgeCount" : 2,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.application.distributed.clients.file_storage.UploadImageResourceCliHandler",
+    "name" : "UploadImageResourceCliHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.distributed.clients.file_storage.UploadImageResourceCliHandler",
+    "type" : "clihandler"
+  }, {
+    "id" : "edu.only4.danmuku.adapter.portal.api.admin.AdminFileController::uploadImage",
+    "name" : "AdminFileController::uploadImage",
+    "fullName" : "edu.only4.danmuku.adapter.portal.api.admin.AdminFileController::uploadImage",
+    "type" : "controllermethod"
+  }, {
+    "id" : "edu.only4.danmuku.application.distributed.clients.file_storage.UploadImageResourceCli.Request",
+    "name" : "UploadImageResourceCli.Request",
+    "fullName" : "edu.only4.danmuku.application.distributed.clients.file_storage.UploadImageResourceCli.Request",
+    "type" : "cli"
+  } ],
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminFileController::uploadImage",
+    "toId" : "edu.only4.danmuku.application.distributed.clients.file_storage.UploadImageResourceCli.Request",
+    "type" : "ControllerMethodToCli",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.distributed.clients.file_storage.UploadImageResourceCli.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.distributed.clients.file_storage.UploadImageResourceCliHandler",
+    "type" : "CliToCliHandler",
+    "label" : null
+  } ]
+}

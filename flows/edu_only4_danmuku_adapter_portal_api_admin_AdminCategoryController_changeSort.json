@@ -1,0 +1,23 @@
+{
+  "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminCategoryController::changeSort",
+  "entryType" : "controllermethod",
+  "nodeCount" : 2,
+  "edgeCount" : 1,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.portal.api.admin.AdminCategoryController::changeSort",
+    "name" : "AdminCategoryController::changeSort",
+    "fullName" : "edu.only4.danmuku.adapter.portal.api.admin.AdminCategoryController::changeSort",
+    "type" : "controllermethod"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.category.UpdateCategorySortOrderCmd.Request",
+    "name" : "UpdateCategorySortOrderCmd.Request",
+    "fullName" : "edu.only4.danmuku.application.commands.category.UpdateCategorySortOrderCmd.Request",
+    "type" : "command"
+  } ],
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminCategoryController::changeSort",
+    "toId" : "edu.only4.danmuku.application.commands.category.UpdateCategorySortOrderCmd.Request",
+    "type" : "ControllerMethodToCommand",
+    "label" : null
+  } ]
+}

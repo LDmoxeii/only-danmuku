@@ -1,0 +1,33 @@
+{
+  "entryId" : "edu.only4.danmuku.application.validator.UserExists.Validator::isValid",
+  "entryType" : "validator",
+  "nodeCount" : 3,
+  "edgeCount" : 2,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.application.queries.user.CheckUserExistsQryHandler",
+    "name" : "CheckUserExistsQryHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.queries.user.CheckUserExistsQryHandler",
+    "type" : "queryhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.queries.user.CheckUserExistsQry.Request",
+    "name" : "CheckUserExistsQry.Request",
+    "fullName" : "edu.only4.danmuku.application.queries.user.CheckUserExistsQry.Request",
+    "type" : "query"
+  }, {
+    "id" : "edu.only4.danmuku.application.validator.UserExists.Validator::isValid",
+    "name" : "UserExists.Validator::isValid",
+    "fullName" : "edu.only4.danmuku.application.validator.UserExists.Validator::isValid",
+    "type" : "validator"
+  } ],
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.application.queries.user.CheckUserExistsQry.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.queries.user.CheckUserExistsQryHandler",
+    "type" : "QueryToQueryHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.validator.UserExists.Validator::isValid",
+    "toId" : "edu.only4.danmuku.application.queries.user.CheckUserExistsQry.Request",
+    "type" : "ValidatorToQuery",
+    "label" : null
+  } ]
+}

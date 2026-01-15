@@ -1,0 +1,23 @@
+{
+  "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UserMessageController::delete",
+  "entryType" : "controllermethod",
+  "nodeCount" : 2,
+  "edgeCount" : 1,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.portal.api.web.UserMessageController::delete",
+    "name" : "UserMessageController::delete",
+    "fullName" : "edu.only4.danmuku.adapter.portal.api.web.UserMessageController::delete",
+    "type" : "controllermethod"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.customer_message.DeleteMessageCmd.Request",
+    "name" : "DeleteMessageCmd.Request",
+    "fullName" : "edu.only4.danmuku.application.commands.customer_message.DeleteMessageCmd.Request",
+    "type" : "command"
+  } ],
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.web.UserMessageController::delete",
+    "toId" : "edu.only4.danmuku.application.commands.customer_message.DeleteMessageCmd.Request",
+    "type" : "ControllerMethodToCommand",
+    "label" : null
+  } ]
+}

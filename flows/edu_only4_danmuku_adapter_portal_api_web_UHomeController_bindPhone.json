@@ -1,0 +1,113 @@
+{
+  "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::bindPhone",
+  "entryType" : "controllermethod",
+  "nodeCount" : 11,
+  "edgeCount" : 10,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::bindPhone",
+    "name" : "UHomeController::bindPhone",
+    "fullName" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::bindPhone",
+    "type" : "controllermethod"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.customer_profile.BindPhoneCmd.Handler",
+    "name" : "BindPhoneCmd.Handler",
+    "fullName" : "edu.only4.danmuku.application.commands.customer_profile.BindPhoneCmd.Handler",
+    "type" : "commandhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.customer_profile.BindPhoneCmd.Request",
+    "name" : "BindPhoneCmd.Request",
+    "fullName" : "edu.only4.danmuku.application.commands.customer_profile.BindPhoneCmd.Request",
+    "type" : "command"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.user.ChangeUserPhoneCmd.Handler",
+    "name" : "ChangeUserPhoneCmd.Handler",
+    "fullName" : "edu.only4.danmuku.application.commands.user.ChangeUserPhoneCmd.Handler",
+    "type" : "commandhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.user.ChangeUserPhoneCmd.Request",
+    "name" : "ChangeUserPhoneCmd.Request",
+    "fullName" : "edu.only4.danmuku.application.commands.user.ChangeUserPhoneCmd.Request",
+    "type" : "command"
+  }, {
+    "id" : "edu.only4.danmuku.application.subscribers.domain.customer_profile.CustomerProfilePhoneChangedDomainEventSubscriber::on",
+    "name" : "CustomerProfilePhoneChangedDomainEventSubscriber::on",
+    "fullName" : "edu.only4.danmuku.application.subscribers.domain.customer_profile.CustomerProfilePhoneChangedDomainEventSubscriber::on",
+    "type" : "domaineventhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.subscribers.domain.user.UserPhoneChangedDomainEventSubscriber::on",
+    "name" : "UserPhoneChangedDomainEventSubscriber::on",
+    "fullName" : "edu.only4.danmuku.application.subscribers.domain.user.UserPhoneChangedDomainEventSubscriber::on",
+    "type" : "domaineventhandler"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.customer_profile.CustomerProfile::bindPhone",
+    "name" : "CustomerProfile::bindPhone",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.customer_profile.CustomerProfile::bindPhone",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerProfilePhoneChangedDomainEvent",
+    "name" : "CustomerProfilePhoneChangedDomainEvent",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerProfilePhoneChangedDomainEvent",
+    "type" : "domainevent"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.user.User::bindPhone",
+    "name" : "User::bindPhone",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.user.User::bindPhone",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.user.events.UserPhoneChangedDomainEvent",
+    "name" : "UserPhoneChangedDomainEvent",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.user.events.UserPhoneChangedDomainEvent",
+    "type" : "domainevent"
+  } ],
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::bindPhone",
+    "toId" : "edu.only4.danmuku.application.commands.customer_profile.BindPhoneCmd.Request",
+    "type" : "ControllerMethodToCommand",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.customer_profile.BindPhoneCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.customer_profile.CustomerProfile::bindPhone",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.customer_profile.BindPhoneCmd.Request",
+    "toId" : "edu.only4.danmuku.application.commands.customer_profile.BindPhoneCmd.Handler",
+    "type" : "CommandToCommandHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.user.ChangeUserPhoneCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.user.User::bindPhone",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.user.ChangeUserPhoneCmd.Request",
+    "toId" : "edu.only4.danmuku.application.commands.user.ChangeUserPhoneCmd.Handler",
+    "type" : "CommandToCommandHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.subscribers.domain.customer_profile.CustomerProfilePhoneChangedDomainEventSubscriber::on",
+    "toId" : "edu.only4.danmuku.application.commands.user.ChangeUserPhoneCmd.Request",
+    "type" : "DomainEventHandlerToCommand",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.customer_profile.CustomerProfile::bindPhone",
+    "toId" : "edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerProfilePhoneChangedDomainEvent",
+    "type" : "EntityMethodToDomainEvent",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerProfilePhoneChangedDomainEvent",
+    "toId" : "edu.only4.danmuku.application.subscribers.domain.customer_profile.CustomerProfilePhoneChangedDomainEventSubscriber::on",
+    "type" : "DomainEventToHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.user.User::bindPhone",
+    "toId" : "edu.only4.danmuku.domain.aggregates.user.events.UserPhoneChangedDomainEvent",
+    "type" : "EntityMethodToDomainEvent",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.user.events.UserPhoneChangedDomainEvent",
+    "toId" : "edu.only4.danmuku.application.subscribers.domain.user.UserPhoneChangedDomainEventSubscriber::on",
+    "type" : "DomainEventToHandler",
+    "label" : null
+  } ]
+}

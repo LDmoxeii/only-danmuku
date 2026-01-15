@@ -1,0 +1,44 @@
+flowchart TD
+  N1[[CreateUploadSessionTempDirCliHandler]]
+  class N1 clihandler
+  N2([FileController::preUploadVideo])
+  class N2 controllermethod
+  N3[[CreateUploadSessionCmd.Handler]]
+  class N3 commandhandler
+  N4{{CreateUploadSessionCmd.Request}}
+  class N4 command
+  N5[[InitTempAndStartUploadingCmd.Handler]]
+  class N5 commandhandler
+  N6{{InitTempAndStartUploadingCmd.Request}}
+  class N6 command
+  N7{{CreateUploadSessionTempDirCli.Request}}
+  class N7 cli
+  N8[[UploadSessionCreatedDomainEventSubscriber::on]]
+  class N8 domaineventhandler
+  N9(VideoFileUploadSession::&lt;get-id&gt;)
+  class N9 entitymethod
+  N10(VideoFileUploadSession::initTempAndStartUploading)
+  class N10 entitymethod
+  N11(VideoFileUploadSession::onCreate)
+  class N11 entitymethod
+  N12((UploadSessionCreatedDomainEvent))
+  class N12 domainevent
+  N2 -->|ControllerMethodToCommand| N4
+  N3 -->|CommandHandlerToEntityMethod| N9
+  N3 -->|CommandHandlerToEntityMethod| N11
+  N4 -->|CommandToCommandHandler| N3
+  N5 -->|CommandHandlerToEntityMethod| N10
+  N6 -->|CommandToCommandHandler| N5
+  N7 -->|CliToCliHandler| N1
+  N8 -->|DomainEventHandlerToCommand| N6
+  N8 -->|DomainEventHandlerToCli| N7
+  N11 -->|EntityMethodToDomainEvent| N12
+  N12 -->|DomainEventToHandler| N8
+  classDef cli fill:#86EFAC,stroke:#15803D,color:#0F172A
+  classDef clihandler fill:#22C55E,stroke:#166534,color:#F0FDF4
+  classDef command fill:#FDBA74,stroke:#C2410C,color:#111827
+  classDef commandhandler fill:#F97316,stroke:#9A3412,color:#111827
+  classDef controllermethod fill:#FDE68A,stroke:#B45309,color:#111827
+  classDef domainevent fill:#FECACA,stroke:#B91C1C,color:#111827
+  classDef domaineventhandler fill:#F87171,stroke:#991B1B,color:#111827
+  classDef entitymethod fill:#F3F4F6,stroke:#6B7280,color:#111827

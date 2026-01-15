@@ -1,0 +1,103 @@
+{
+  "entryId" : "edu.only4.danmuku.adapter.portal.api.web.FileController::deleteUploadSession",
+  "entryType" : "controllermethod",
+  "nodeCount" : 10,
+  "edgeCount" : 9,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.application.distributed.clients.file_upload_session.DeleteUploadSessionTempDirCliHandler",
+    "name" : "DeleteUploadSessionTempDirCliHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.distributed.clients.file_upload_session.DeleteUploadSessionTempDirCliHandler",
+    "type" : "clihandler"
+  }, {
+    "id" : "edu.only4.danmuku.adapter.portal.api.web.FileController::deleteUploadSession",
+    "name" : "FileController::deleteUploadSession",
+    "fullName" : "edu.only4.danmuku.adapter.portal.api.web.FileController::deleteUploadSession",
+    "type" : "controllermethod"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.file_upload_session.DeleteUploadSessionCmd.Handler",
+    "name" : "DeleteUploadSessionCmd.Handler",
+    "fullName" : "edu.only4.danmuku.application.commands.file_upload_session.DeleteUploadSessionCmd.Handler",
+    "type" : "commandhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.file_upload_session.DeleteUploadSessionCmd.Request",
+    "name" : "DeleteUploadSessionCmd.Request",
+    "fullName" : "edu.only4.danmuku.application.commands.file_upload_session.DeleteUploadSessionCmd.Request",
+    "type" : "command"
+  }, {
+    "id" : "edu.only4.danmuku.application.distributed.clients.file_upload_session.DeleteUploadSessionTempDirCli.Request",
+    "name" : "DeleteUploadSessionTempDirCli.Request",
+    "fullName" : "edu.only4.danmuku.application.distributed.clients.file_upload_session.DeleteUploadSessionTempDirCli.Request",
+    "type" : "cli"
+  }, {
+    "id" : "edu.only4.danmuku.application.subscribers.domain.video_file_upload_session.UploadSessionAbortedDomainEventSubscriber::on",
+    "name" : "UploadSessionAbortedDomainEventSubscriber::on",
+    "fullName" : "edu.only4.danmuku.application.subscribers.domain.video_file_upload_session.UploadSessionAbortedDomainEventSubscriber::on",
+    "type" : "domaineventhandler"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_file_upload_session.VideoFileUploadSession::<get-tempDir>",
+    "name" : "VideoFileUploadSession::<get-tempDir>",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_file_upload_session.VideoFileUploadSession::<get-tempDir>",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_file_upload_session.VideoFileUploadSession::abort",
+    "name" : "VideoFileUploadSession::abort",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_file_upload_session.VideoFileUploadSession::abort",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_file_upload_session.VideoFileUploadSession::ensureOwnedBy",
+    "name" : "VideoFileUploadSession::ensureOwnedBy",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_file_upload_session.VideoFileUploadSession::ensureOwnedBy",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_file_upload_session.events.UploadSessionAbortedDomainEvent",
+    "name" : "UploadSessionAbortedDomainEvent",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_file_upload_session.events.UploadSessionAbortedDomainEvent",
+    "type" : "domainevent"
+  } ],
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.web.FileController::deleteUploadSession",
+    "toId" : "edu.only4.danmuku.application.commands.file_upload_session.DeleteUploadSessionCmd.Request",
+    "type" : "ControllerMethodToCommand",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.file_upload_session.DeleteUploadSessionCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_file_upload_session.VideoFileUploadSession::<get-tempDir>",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.file_upload_session.DeleteUploadSessionCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_file_upload_session.VideoFileUploadSession::abort",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.file_upload_session.DeleteUploadSessionCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_file_upload_session.VideoFileUploadSession::ensureOwnedBy",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.file_upload_session.DeleteUploadSessionCmd.Request",
+    "toId" : "edu.only4.danmuku.application.commands.file_upload_session.DeleteUploadSessionCmd.Handler",
+    "type" : "CommandToCommandHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.distributed.clients.file_upload_session.DeleteUploadSessionTempDirCli.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.distributed.clients.file_upload_session.DeleteUploadSessionTempDirCliHandler",
+    "type" : "CliToCliHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.subscribers.domain.video_file_upload_session.UploadSessionAbortedDomainEventSubscriber::on",
+    "toId" : "edu.only4.danmuku.application.distributed.clients.file_upload_session.DeleteUploadSessionTempDirCli.Request",
+    "type" : "DomainEventHandlerToCli",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.video_file_upload_session.VideoFileUploadSession::abort",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_file_upload_session.events.UploadSessionAbortedDomainEvent",
+    "type" : "EntityMethodToDomainEvent",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.video_file_upload_session.events.UploadSessionAbortedDomainEvent",
+    "toId" : "edu.only4.danmuku.application.subscribers.domain.video_file_upload_session.UploadSessionAbortedDomainEventSubscriber::on",
+    "type" : "DomainEventToHandler",
+    "label" : null
+  } ]
+}

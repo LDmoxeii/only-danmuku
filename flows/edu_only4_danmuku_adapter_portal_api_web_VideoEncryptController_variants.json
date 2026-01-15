@@ -1,0 +1,13 @@
+{
+  "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoEncryptController::variants",
+  "entryType" : "controllermethod",
+  "nodeCount" : 1,
+  "edgeCount" : 0,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.portal.api.web.VideoEncryptController::variants",
+    "name" : "VideoEncryptController::variants",
+    "fullName" : "edu.only4.danmuku.adapter.portal.api.web.VideoEncryptController::variants",
+    "type" : "controllermethod"
+  } ],
+  "edges" : [ ]
+}

@@ -1,0 +1,57 @@
+flowchart TD
+  N1([VideoSeriesController::saveVideoSeries])
+  class N1 controllermethod
+  N2[[CreateCustomerVideoSeriesCmd.Handler]]
+  class N2 commandhandler
+  N3{{CreateCustomerVideoSeriesCmd.Request}}
+  class N3 command
+  N4[[UpdateCustomerVideoSeriesInfoCmd.Handler]]
+  class N4 commandhandler
+  N5{{UpdateCustomerVideoSeriesInfoCmd.Request}}
+  class N5 command
+  N6[[UpdateCustomerVideoSeriesVideosCmd.Handler]]
+  class N6 commandhandler
+  N7{{UpdateCustomerVideoSeriesVideosCmd.Request}}
+  class N7 command
+  N8(CustomerVideoSeries::&lt;get-customerId&gt;)
+  class N8 entitymethod
+  N9(CustomerVideoSeries::&lt;get-customerVideoSeriesVideos&gt;)
+  class N9 entitymethod
+  N10(CustomerVideoSeries::&lt;get-id&gt;)
+  class N10 entitymethod
+  N11(CustomerVideoSeries::&lt;get-sort&gt;)
+  class N11 entitymethod
+  N12(CustomerVideoSeries::onCreate)
+  class N12 entitymethod
+  N13(CustomerVideoSeries::replaceVideos)
+  class N13 entitymethod
+  N14(CustomerVideoSeries::updateBasicInfo)
+  class N14 entitymethod
+  N15(CustomerVideoSeriesVideo::&lt;get-sort&gt;)
+  class N15 entitymethod
+  N16(CustomerVideoSeriesVideo::&lt;get-videoId&gt;)
+  class N16 entitymethod
+  N1 -->|ControllerMethodToCommand| N3
+  N1 -->|ControllerMethodToCommand| N5
+  N1 -->|ControllerMethodToCommand| N7
+  N2 -->|CommandHandlerToEntityMethod| N8
+  N2 -->|CommandHandlerToEntityMethod| N10
+  N2 -->|CommandHandlerToEntityMethod| N11
+  N2 -->|CommandHandlerToEntityMethod| N12
+  N2 -->|CommandHandlerToEntityMethod| N13
+  N2 -->|CommandHandlerToEntityMethod| N14
+  N3 -->|CommandToCommandHandler| N2
+  N4 -->|CommandHandlerToEntityMethod| N8
+  N4 -->|CommandHandlerToEntityMethod| N10
+  N4 -->|CommandHandlerToEntityMethod| N14
+  N5 -->|CommandToCommandHandler| N4
+  N6 -->|CommandHandlerToEntityMethod| N8
+  N6 -->|CommandHandlerToEntityMethod| N9
+  N6 -->|CommandHandlerToEntityMethod| N13
+  N6 -->|CommandHandlerToEntityMethod| N15
+  N6 -->|CommandHandlerToEntityMethod| N16
+  N7 -->|CommandToCommandHandler| N6
+  classDef command fill:#FDBA74,stroke:#C2410C,color:#111827
+  classDef commandhandler fill:#F97316,stroke:#9A3412,color:#111827
+  classDef controllermethod fill:#FDE68A,stroke:#B45309,color:#111827
+  classDef entitymethod fill:#F3F4F6,stroke:#6B7280,color:#111827

@@ -1,0 +1,13 @@
+{
+  "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminVideoController::getVideoPList",
+  "entryType" : "controllermethod",
+  "nodeCount" : 1,
+  "edgeCount" : 0,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.portal.api.admin.AdminVideoController::getVideoPList",
+    "name" : "AdminVideoController::getVideoPList",
+    "fullName" : "edu.only4.danmuku.adapter.portal.api.admin.AdminVideoController::getVideoPList",
+    "type" : "controllermethod"
+  } ],
+  "edges" : [ ]
+}

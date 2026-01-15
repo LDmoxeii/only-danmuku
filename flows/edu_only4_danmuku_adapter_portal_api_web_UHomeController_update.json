@@ -1,0 +1,23 @@
+{
+  "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::update",
+  "entryType" : "controllermethod",
+  "nodeCount" : 2,
+  "edgeCount" : 1,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::update",
+    "name" : "UHomeController::update",
+    "fullName" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::update",
+    "type" : "controllermethod"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.customer_profile.UpdateCustomerProfileCmd.Request",
+    "name" : "UpdateCustomerProfileCmd.Request",
+    "fullName" : "edu.only4.danmuku.application.commands.customer_profile.UpdateCustomerProfileCmd.Request",
+    "type" : "command"
+  } ],
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::update",
+    "toId" : "edu.only4.danmuku.application.commands.customer_profile.UpdateCustomerProfileCmd.Request",
+    "type" : "ControllerMethodToCommand",
+    "label" : null
+  } ]
+}

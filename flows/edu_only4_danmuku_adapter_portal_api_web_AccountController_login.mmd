@@ -1,0 +1,70 @@
+flowchart TD
+  N1[[CaptchaValidCliHandler]]
+  class N1 clihandler
+  N2[[GetCustomerProfileQryHandler]]
+  class N2 queryhandler
+  N3[[GetAccountInfoByEmailQryHandler]]
+  class N3 queryhandler
+  N4[[GetRecentPasswordFailureCountQryHandler]]
+  class N4 queryhandler
+  N5([AccountController::login])
+  class N5 controllermethod
+  N6{{UpdateLoginInfoCmd.Request}}
+  class N6 command
+  N7[[RecordAbnormalOperationCmd.Handler]]
+  class N7 commandhandler
+  N8{{RecordAbnormalOperationCmd.Request}}
+  class N8 command
+  N9[[RecordLoginLogCmd.Handler]]
+  class N9 commandhandler
+  N10{{RecordLoginLogCmd.Request}}
+  class N10 command
+  N11{{CaptchaValidCli.Request}}
+  class N11 cli
+  N12{{GetCustomerProfileQry.Request}}
+  class N12 query
+  N13{{GetAccountInfoByEmailQry.Request}}
+  class N13 query
+  N14{{GetRecentPasswordFailureCountQry.Request}}
+  class N14 query
+  N15[[PasswordInputFailedDomainEventSubscriber::on]]
+  class N15 domaineventhandler
+  N16(UserAbnormalOperationLog::&lt;get-id&gt;)
+  class N16 entitymethod
+  N17(UserAbnormalOperationLog::onCreate)
+  class N17 entitymethod
+  N18(UserLoginLog::&lt;get-id&gt;)
+  class N18 entitymethod
+  N19(UserLoginLog::onCreate)
+  class N19 entitymethod
+  N20((PasswordInputFailedDomainEvent))
+  class N20 domainevent
+  N5 -->|ControllerMethodToCommand| N6
+  N5 -->|ControllerMethodToCommand| N10
+  N5 -->|ControllerMethodToCli| N11
+  N5 -->|ControllerMethodToQuery| N12
+  N5 -->|ControllerMethodToQuery| N13
+  N7 -->|CommandHandlerToEntityMethod| N16
+  N7 -->|CommandHandlerToEntityMethod| N17
+  N8 -->|CommandToCommandHandler| N7
+  N9 -->|CommandHandlerToEntityMethod| N18
+  N9 -->|CommandHandlerToEntityMethod| N19
+  N10 -->|CommandToCommandHandler| N9
+  N11 -->|CliToCliHandler| N1
+  N12 -->|QueryToQueryHandler| N2
+  N13 -->|QueryToQueryHandler| N3
+  N14 -->|QueryToQueryHandler| N4
+  N15 -->|DomainEventHandlerToCommand| N8
+  N15 -->|DomainEventHandlerToQuery| N14
+  N19 -->|EntityMethodToDomainEvent| N20
+  N20 -->|DomainEventToHandler| N15
+  classDef cli fill:#86EFAC,stroke:#15803D,color:#0F172A
+  classDef clihandler fill:#22C55E,stroke:#166534,color:#F0FDF4
+  classDef command fill:#FDBA74,stroke:#C2410C,color:#111827
+  classDef commandhandler fill:#F97316,stroke:#9A3412,color:#111827
+  classDef controllermethod fill:#FDE68A,stroke:#B45309,color:#111827
+  classDef domainevent fill:#FECACA,stroke:#B91C1C,color:#111827
+  classDef domaineventhandler fill:#F87171,stroke:#991B1B,color:#111827
+  classDef entitymethod fill:#F3F4F6,stroke:#6B7280,color:#111827
+  classDef query fill:#93C5FD,stroke:#1D4ED8,color:#0F172A
+  classDef queryhandler fill:#3B82F6,stroke:#1E40AF,color:#F8FAFC

@@ -1,0 +1,23 @@
+{
+  "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminUserController::changeStatus",
+  "entryType" : "controllermethod",
+  "nodeCount" : 2,
+  "edgeCount" : 1,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.portal.api.admin.AdminUserController::changeStatus",
+    "name" : "AdminUserController::changeStatus",
+    "fullName" : "edu.only4.danmuku.adapter.portal.api.admin.AdminUserController::changeStatus",
+    "type" : "controllermethod"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.user.ChangeUserStatusCmd.Request",
+    "name" : "ChangeUserStatusCmd.Request",
+    "fullName" : "edu.only4.danmuku.application.commands.user.ChangeUserStatusCmd.Request",
+    "type" : "command"
+  } ],
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminUserController::changeStatus",
+    "toId" : "edu.only4.danmuku.application.commands.user.ChangeUserStatusCmd.Request",
+    "type" : "ControllerMethodToCommand",
+    "label" : null
+  } ]
+}

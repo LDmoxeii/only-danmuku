@@ -1,0 +1,33 @@
+{
+  "entryId" : "edu.only4.danmuku.application.validator.VideoPostStatusPending.Validator::isValid",
+  "entryType" : "validator",
+  "nodeCount" : 3,
+  "edgeCount" : 2,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.application.queries.video_draft.GetVideoPostInfoQryHandler",
+    "name" : "GetVideoPostInfoQryHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.queries.video_draft.GetVideoPostInfoQryHandler",
+    "type" : "queryhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.queries.video_draft.GetVideoPostInfoQry.Request",
+    "name" : "GetVideoPostInfoQry.Request",
+    "fullName" : "edu.only4.danmuku.application.queries.video_draft.GetVideoPostInfoQry.Request",
+    "type" : "query"
+  }, {
+    "id" : "edu.only4.danmuku.application.validator.VideoPostStatusPending.Validator::isValid",
+    "name" : "VideoPostStatusPending.Validator::isValid",
+    "fullName" : "edu.only4.danmuku.application.validator.VideoPostStatusPending.Validator::isValid",
+    "type" : "validator"
+  } ],
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.application.queries.video_draft.GetVideoPostInfoQry.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.queries.video_draft.GetVideoPostInfoQryHandler",
+    "type" : "QueryToQueryHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.validator.VideoPostStatusPending.Validator::isValid",
+    "toId" : "edu.only4.danmuku.application.queries.video_draft.GetVideoPostInfoQry.Request",
+    "type" : "ValidatorToQuery",
+    "label" : null
+  } ]
+}

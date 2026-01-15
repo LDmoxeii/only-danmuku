@@ -1,0 +1,33 @@
+{
+  "entryId" : "edu.only4.danmuku.application.validator.UniqueSeriesNameForUser.Validator::isValid",
+  "entryType" : "validator",
+  "nodeCount" : 3,
+  "edgeCount" : 2,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.application.queries.customer_video_series.CheckSeriesNameExistsQryHandler",
+    "name" : "CheckSeriesNameExistsQryHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.queries.customer_video_series.CheckSeriesNameExistsQryHandler",
+    "type" : "queryhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.queries.customer_video_series.CheckSeriesNameExistsQry.Request",
+    "name" : "CheckSeriesNameExistsQry.Request",
+    "fullName" : "edu.only4.danmuku.application.queries.customer_video_series.CheckSeriesNameExistsQry.Request",
+    "type" : "query"
+  }, {
+    "id" : "edu.only4.danmuku.application.validator.UniqueSeriesNameForUser.Validator::isValid",
+    "name" : "UniqueSeriesNameForUser.Validator::isValid",
+    "fullName" : "edu.only4.danmuku.application.validator.UniqueSeriesNameForUser.Validator::isValid",
+    "type" : "validator"
+  } ],
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.application.queries.customer_video_series.CheckSeriesNameExistsQry.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.queries.customer_video_series.CheckSeriesNameExistsQryHandler",
+    "type" : "QueryToQueryHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.validator.UniqueSeriesNameForUser.Validator::isValid",
+    "toId" : "edu.only4.danmuku.application.queries.customer_video_series.CheckSeriesNameExistsQry.Request",
+    "type" : "ValidatorToQuery",
+    "label" : null
+  } ]
+}

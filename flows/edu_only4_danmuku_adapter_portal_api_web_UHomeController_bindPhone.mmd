@@ -1,0 +1,39 @@
+flowchart TD
+  N1([UHomeController::bindPhone])
+  class N1 controllermethod
+  N2[[BindPhoneCmd.Handler]]
+  class N2 commandhandler
+  N3{{BindPhoneCmd.Request}}
+  class N3 command
+  N4[[ChangeUserPhoneCmd.Handler]]
+  class N4 commandhandler
+  N5{{ChangeUserPhoneCmd.Request}}
+  class N5 command
+  N6[[CustomerProfilePhoneChangedDomainEventSubscriber::on]]
+  class N6 domaineventhandler
+  N7[[UserPhoneChangedDomainEventSubscriber::on]]
+  class N7 domaineventhandler
+  N8(CustomerProfile::bindPhone)
+  class N8 entitymethod
+  N9((CustomerProfilePhoneChangedDomainEvent))
+  class N9 domainevent
+  N10(User::bindPhone)
+  class N10 entitymethod
+  N11((UserPhoneChangedDomainEvent))
+  class N11 domainevent
+  N1 -->|ControllerMethodToCommand| N3
+  N2 -->|CommandHandlerToEntityMethod| N8
+  N3 -->|CommandToCommandHandler| N2
+  N4 -->|CommandHandlerToEntityMethod| N10
+  N5 -->|CommandToCommandHandler| N4
+  N6 -->|DomainEventHandlerToCommand| N5
+  N8 -->|EntityMethodToDomainEvent| N9
+  N9 -->|DomainEventToHandler| N6
+  N10 -->|EntityMethodToDomainEvent| N11
+  N11 -->|DomainEventToHandler| N7
+  classDef command fill:#FDBA74,stroke:#C2410C,color:#111827
+  classDef commandhandler fill:#F97316,stroke:#9A3412,color:#111827
+  classDef controllermethod fill:#FDE68A,stroke:#B45309,color:#111827
+  classDef domainevent fill:#FECACA,stroke:#B91C1C,color:#111827
+  classDef domaineventhandler fill:#F87171,stroke:#991B1B,color:#111827
+  classDef entitymethod fill:#F3F4F6,stroke:#6B7280,color:#111827

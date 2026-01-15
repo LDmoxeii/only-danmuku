@@ -1,0 +1,723 @@
+{
+  "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UCenterVideoPostController::update",
+  "entryType" : "controllermethod",
+  "nodeCount" : 70,
+  "edgeCount" : 73,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.application.distributed.clients.video_encrypt.EncryptHlsVariantWithKeyCliHandler",
+    "name" : "EncryptHlsVariantWithKeyCliHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.distributed.clients.video_encrypt.EncryptHlsVariantWithKeyCliHandler",
+    "type" : "clihandler"
+  }, {
+    "id" : "edu.only4.danmuku.adapter.application.distributed.clients.video_encrypt.GenerateEncryptedMasterByVariantsCliHandler",
+    "name" : "GenerateEncryptedMasterByVariantsCliHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.distributed.clients.video_encrypt.GenerateEncryptedMasterByVariantsCliHandler",
+    "type" : "clihandler"
+  }, {
+    "id" : "edu.only4.danmuku.adapter.application.distributed.clients.video_transcode.GenerateVideoAbrMasterCliHandler",
+    "name" : "GenerateVideoAbrMasterCliHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.distributed.clients.video_transcode.GenerateVideoAbrMasterCliHandler",
+    "type" : "clihandler"
+  }, {
+    "id" : "edu.only4.danmuku.adapter.application.distributed.clients.video_transcode.MergeUploadToMp4ByPathCliHandler",
+    "name" : "MergeUploadToMp4ByPathCliHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.distributed.clients.video_transcode.MergeUploadToMp4ByPathCliHandler",
+    "type" : "clihandler"
+  }, {
+    "id" : "edu.only4.danmuku.adapter.application.distributed.clients.video_transcode.TranscodeVideoFileToAbrByPathCliHandler",
+    "name" : "TranscodeVideoFileToAbrByPathCliHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.distributed.clients.video_transcode.TranscodeVideoFileToAbrByPathCliHandler",
+    "type" : "clihandler"
+  }, {
+    "id" : "edu.only4.danmuku.adapter.application.distributed.clients.video_transcode.UploadVideoAbrOutputCliHandler",
+    "name" : "UploadVideoAbrOutputCliHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.distributed.clients.video_transcode.UploadVideoAbrOutputCliHandler",
+    "type" : "clihandler"
+  }, {
+    "id" : "edu.only4.danmuku.adapter.application.queries.video_post_processing.GetVideoPostProcessingEncryptContextQryHandler",
+    "name" : "GetVideoPostProcessingEncryptContextQryHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.queries.video_post_processing.GetVideoPostProcessingEncryptContextQryHandler",
+    "type" : "queryhandler"
+  }, {
+    "id" : "edu.only4.danmuku.adapter.application.queries.video_transcode.GetUploadSessionTempPathQryHandler",
+    "name" : "GetUploadSessionTempPathQryHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.queries.video_transcode.GetUploadSessionTempPathQryHandler",
+    "type" : "queryhandler"
+  }, {
+    "id" : "edu.only4.danmuku.adapter.portal.api.web.UCenterVideoPostController::update",
+    "name" : "UCenterVideoPostController::update",
+    "fullName" : "edu.only4.danmuku.adapter.portal.api.web.UCenterVideoPostController::update",
+    "type" : "controllermethod"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.video_encrypt.GenerateVideoPostQualityKeyCmd.Handler",
+    "name" : "GenerateVideoPostQualityKeyCmd.Handler",
+    "fullName" : "edu.only4.danmuku.application.commands.video_encrypt.GenerateVideoPostQualityKeyCmd.Handler",
+    "type" : "commandhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.video_encrypt.GenerateVideoPostQualityKeyCmd.Request",
+    "name" : "GenerateVideoPostQualityKeyCmd.Request",
+    "fullName" : "edu.only4.danmuku.application.commands.video_encrypt.GenerateVideoPostQualityKeyCmd.Request",
+    "type" : "command"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.video_post.SyncVideoPostProcessStatusCmd.Handler",
+    "name" : "SyncVideoPostProcessStatusCmd.Handler",
+    "fullName" : "edu.only4.danmuku.application.commands.video_post.SyncVideoPostProcessStatusCmd.Handler",
+    "type" : "commandhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.video_post.SyncVideoPostProcessStatusCmd.Request",
+    "name" : "SyncVideoPostProcessStatusCmd.Request",
+    "fullName" : "edu.only4.danmuku.application.commands.video_post.SyncVideoPostProcessStatusCmd.Request",
+    "type" : "command"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.video_post.UpdateVideoPostCmd.Handler",
+    "name" : "UpdateVideoPostCmd.Handler",
+    "fullName" : "edu.only4.danmuku.application.commands.video_post.UpdateVideoPostCmd.Handler",
+    "type" : "commandhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.video_post.UpdateVideoPostCmd.Request",
+    "name" : "UpdateVideoPostCmd.Request",
+    "fullName" : "edu.only4.danmuku.application.commands.video_post.UpdateVideoPostCmd.Request",
+    "type" : "command"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.video_post_processing.ApplyVideoPostProcessingEncryptResultCmd.Handler",
+    "name" : "ApplyVideoPostProcessingEncryptResultCmd.Handler",
+    "fullName" : "edu.only4.danmuku.application.commands.video_post_processing.ApplyVideoPostProcessingEncryptResultCmd.Handler",
+    "type" : "commandhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.video_post_processing.ApplyVideoPostProcessingEncryptResultCmd.Request",
+    "name" : "ApplyVideoPostProcessingEncryptResultCmd.Request",
+    "fullName" : "edu.only4.danmuku.application.commands.video_post_processing.ApplyVideoPostProcessingEncryptResultCmd.Request",
+    "type" : "command"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.video_post_processing.ApplyVideoPostProcessingTranscodeResultCmd.Handler",
+    "name" : "ApplyVideoPostProcessingTranscodeResultCmd.Handler",
+    "fullName" : "edu.only4.danmuku.application.commands.video_post_processing.ApplyVideoPostProcessingTranscodeResultCmd.Handler",
+    "type" : "commandhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.video_post_processing.ApplyVideoPostProcessingTranscodeResultCmd.Request",
+    "name" : "ApplyVideoPostProcessingTranscodeResultCmd.Request",
+    "fullName" : "edu.only4.danmuku.application.commands.video_post_processing.ApplyVideoPostProcessingTranscodeResultCmd.Request",
+    "type" : "command"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.video_post_processing.ApplyVideoPostProcessingVariantEncryptResultCmd.Handler",
+    "name" : "ApplyVideoPostProcessingVariantEncryptResultCmd.Handler",
+    "fullName" : "edu.only4.danmuku.application.commands.video_post_processing.ApplyVideoPostProcessingVariantEncryptResultCmd.Handler",
+    "type" : "commandhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.video_post_processing.ApplyVideoPostProcessingVariantEncryptResultCmd.Request",
+    "name" : "ApplyVideoPostProcessingVariantEncryptResultCmd.Request",
+    "fullName" : "edu.only4.danmuku.application.commands.video_post_processing.ApplyVideoPostProcessingVariantEncryptResultCmd.Request",
+    "type" : "command"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.video_post_processing.PrepareVideoPostProcessingEncryptContextCmd.Handler",
+    "name" : "PrepareVideoPostProcessingEncryptContextCmd.Handler",
+    "fullName" : "edu.only4.danmuku.application.commands.video_post_processing.PrepareVideoPostProcessingEncryptContextCmd.Handler",
+    "type" : "commandhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.video_post_processing.PrepareVideoPostProcessingEncryptContextCmd.Request",
+    "name" : "PrepareVideoPostProcessingEncryptContextCmd.Request",
+    "fullName" : "edu.only4.danmuku.application.commands.video_post_processing.PrepareVideoPostProcessingEncryptContextCmd.Request",
+    "type" : "command"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.video_post_processing.StartVideoPostProcessingCmd.Handler",
+    "name" : "StartVideoPostProcessingCmd.Handler",
+    "fullName" : "edu.only4.danmuku.application.commands.video_post_processing.StartVideoPostProcessingCmd.Handler",
+    "type" : "commandhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.video_post_processing.StartVideoPostProcessingCmd.Request",
+    "name" : "StartVideoPostProcessingCmd.Request",
+    "fullName" : "edu.only4.danmuku.application.commands.video_post_processing.StartVideoPostProcessingCmd.Request",
+    "type" : "command"
+  }, {
+    "id" : "edu.only4.danmuku.application.distributed.clients.video_encrypt.EncryptHlsVariantWithKeyCli.Request",
+    "name" : "EncryptHlsVariantWithKeyCli.Request",
+    "fullName" : "edu.only4.danmuku.application.distributed.clients.video_encrypt.EncryptHlsVariantWithKeyCli.Request",
+    "type" : "cli"
+  }, {
+    "id" : "edu.only4.danmuku.application.distributed.clients.video_encrypt.GenerateEncryptedMasterByVariantsCli.Request",
+    "name" : "GenerateEncryptedMasterByVariantsCli.Request",
+    "fullName" : "edu.only4.danmuku.application.distributed.clients.video_encrypt.GenerateEncryptedMasterByVariantsCli.Request",
+    "type" : "cli"
+  }, {
+    "id" : "edu.only4.danmuku.application.distributed.clients.video_transcode.GenerateVideoAbrMasterCli.Request",
+    "name" : "GenerateVideoAbrMasterCli.Request",
+    "fullName" : "edu.only4.danmuku.application.distributed.clients.video_transcode.GenerateVideoAbrMasterCli.Request",
+    "type" : "cli"
+  }, {
+    "id" : "edu.only4.danmuku.application.distributed.clients.video_transcode.MergeUploadToMp4ByPathCli.Request",
+    "name" : "MergeUploadToMp4ByPathCli.Request",
+    "fullName" : "edu.only4.danmuku.application.distributed.clients.video_transcode.MergeUploadToMp4ByPathCli.Request",
+    "type" : "cli"
+  }, {
+    "id" : "edu.only4.danmuku.application.distributed.clients.video_transcode.TranscodeVideoFileToAbrByPathCli.Request",
+    "name" : "TranscodeVideoFileToAbrByPathCli.Request",
+    "fullName" : "edu.only4.danmuku.application.distributed.clients.video_transcode.TranscodeVideoFileToAbrByPathCli.Request",
+    "type" : "cli"
+  }, {
+    "id" : "edu.only4.danmuku.application.distributed.clients.video_transcode.UploadVideoAbrOutputCli.Request",
+    "name" : "UploadVideoAbrOutputCli.Request",
+    "fullName" : "edu.only4.danmuku.application.distributed.clients.video_transcode.UploadVideoAbrOutputCli.Request",
+    "type" : "cli"
+  }, {
+    "id" : "edu.only4.danmuku.application.queries.video_post_processing.GetVideoPostProcessingEncryptContextQry.Request",
+    "name" : "GetVideoPostProcessingEncryptContextQry.Request",
+    "fullName" : "edu.only4.danmuku.application.queries.video_post_processing.GetVideoPostProcessingEncryptContextQry.Request",
+    "type" : "query"
+  }, {
+    "id" : "edu.only4.danmuku.application.queries.video_transcode.GetUploadSessionTempPathQry.Request",
+    "name" : "GetUploadSessionTempPathQry.Request",
+    "fullName" : "edu.only4.danmuku.application.queries.video_transcode.GetUploadSessionTempPathQry.Request",
+    "type" : "query"
+  }, {
+    "id" : "edu.only4.danmuku.application.subscribers.domain.video_encrypt.VideoPostQualityKeyGeneratedDomainEventSubscriber::on",
+    "name" : "VideoPostQualityKeyGeneratedDomainEventSubscriber::on",
+    "fullName" : "edu.only4.danmuku.application.subscribers.domain.video_encrypt.VideoPostQualityKeyGeneratedDomainEventSubscriber::on",
+    "type" : "domaineventhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.subscribers.domain.video_post.VideoPostTranscodingRequestedDomainEventSubscriber::on",
+    "name" : "VideoPostTranscodingRequestedDomainEventSubscriber::on",
+    "fullName" : "edu.only4.danmuku.application.subscribers.domain.video_post.VideoPostTranscodingRequestedDomainEventSubscriber::on",
+    "type" : "domaineventhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.subscribers.domain.video_post_processing.VideoPostProcessingCompletedDomainEventSubscriber::on",
+    "name" : "VideoPostProcessingCompletedDomainEventSubscriber::on",
+    "fullName" : "edu.only4.danmuku.application.subscribers.domain.video_post_processing.VideoPostProcessingCompletedDomainEventSubscriber::on",
+    "type" : "domaineventhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.subscribers.domain.video_post_processing.VideoPostProcessingEncryptContextPreparedDomainEventSubscriber::on",
+    "name" : "VideoPostProcessingEncryptContextPreparedDomainEventSubscriber::on",
+    "fullName" : "edu.only4.danmuku.application.subscribers.domain.video_post_processing.VideoPostProcessingEncryptContextPreparedDomainEventSubscriber::on",
+    "type" : "domaineventhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.subscribers.domain.video_post_processing.VideoPostProcessingFileEncryptCompletedDomainEventSubscriber::on",
+    "name" : "VideoPostProcessingFileEncryptCompletedDomainEventSubscriber::on",
+    "fullName" : "edu.only4.danmuku.application.subscribers.domain.video_post_processing.VideoPostProcessingFileEncryptCompletedDomainEventSubscriber::on",
+    "type" : "domaineventhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.subscribers.domain.video_post_processing.VideoPostProcessingStartedDomainEventSubscriber::on",
+    "name" : "VideoPostProcessingStartedDomainEventSubscriber::on",
+    "fullName" : "edu.only4.danmuku.application.subscribers.domain.video_post_processing.VideoPostProcessingStartedDomainEventSubscriber::on",
+    "type" : "domaineventhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.subscribers.domain.video_post_processing.VideoPostProcessingTranscodeCompletedDomainEventSubscriber::on",
+    "name" : "VideoPostProcessingTranscodeCompletedDomainEventSubscriber::on",
+    "fullName" : "edu.only4.danmuku.application.subscribers.domain.video_post_processing.VideoPostProcessingTranscodeCompletedDomainEventSubscriber::on",
+    "type" : "domaineventhandler"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_hls_encrypt_key.VideoHlsEncryptKey::onCreate",
+    "name" : "VideoHlsEncryptKey::onCreate",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_hls_encrypt_key.VideoHlsEncryptKey::onCreate",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_hls_encrypt_key.events.VideoHlsEncryptKeyCreatedDomainEvent",
+    "name" : "VideoHlsEncryptKeyCreatedDomainEvent",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_hls_encrypt_key.events.VideoHlsEncryptKeyCreatedDomainEvent",
+    "type" : "domainevent"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_post.VideoFilePost::<get-fileIndex>",
+    "name" : "VideoFilePost::<get-fileIndex>",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_post.VideoFilePost::<get-fileIndex>",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_post.VideoFilePost::<get-uploadId>",
+    "name" : "VideoFilePost::<get-uploadId>",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_post.VideoFilePost::<get-uploadId>",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_post.VideoFilePost::applyEncryptResult",
+    "name" : "VideoFilePost::applyEncryptResult",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_post.VideoFilePost::applyEncryptResult",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_post.VideoFilePost::applyTranscodeResult",
+    "name" : "VideoFilePost::applyTranscodeResult",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_post.VideoFilePost::applyTranscodeResult",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_post.VideoFilePost::syncVariants",
+    "name" : "VideoFilePost::syncVariants",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_post.VideoFilePost::syncVariants",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_post.VideoPost::<get-customerId>",
+    "name" : "VideoPost::<get-customerId>",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_post.VideoPost::<get-customerId>",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_post.VideoPost::<get-id>",
+    "name" : "VideoPost::<get-id>",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_post.VideoPost::<get-id>",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_post.VideoPost::<get-videoFilePosts>",
+    "name" : "VideoPost::<get-videoFilePosts>",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_post.VideoPost::<get-videoFilePosts>",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_post.VideoPost::applyBasicInfo",
+    "name" : "VideoPost::applyBasicInfo",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_post.VideoPost::applyBasicInfo",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_post.VideoPost::applyProcessStatus",
+    "name" : "VideoPost::applyProcessStatus",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_post.VideoPost::applyProcessStatus",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_post.VideoPost::markPendingReview",
+    "name" : "VideoPost::markPendingReview",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_post.VideoPost::markPendingReview",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_post.VideoPost::markTranscoding",
+    "name" : "VideoPost::markTranscoding",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_post.VideoPost::markTranscoding",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_post.VideoPost::updateDuration",
+    "name" : "VideoPost::updateDuration",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_post.VideoPost::updateDuration",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_post.events.VideoPostTranscodingRequestedDomainEvent",
+    "name" : "VideoPostTranscodingRequestedDomainEvent",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_post.events.VideoPostTranscodingRequestedDomainEvent",
+    "type" : "domainevent"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_post_processing.VideoPostProcessing::<get-videoPostProcessingFiles>",
+    "name" : "VideoPostProcessing::<get-videoPostProcessingFiles>",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_post_processing.VideoPostProcessing::<get-videoPostProcessingFiles>",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_post_processing.VideoPostProcessing::appendFiles",
+    "name" : "VideoPostProcessing::appendFiles",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_post_processing.VideoPostProcessing::appendFiles",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_post_processing.VideoPostProcessing::applyEncryptResult",
+    "name" : "VideoPostProcessing::applyEncryptResult",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_post_processing.VideoPostProcessing::applyEncryptResult",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_post_processing.VideoPostProcessing::applyTranscodeResult",
+    "name" : "VideoPostProcessing::applyTranscodeResult",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_post_processing.VideoPostProcessing::applyTranscodeResult",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_post_processing.VideoPostProcessing::applyVariantEncryptResult",
+    "name" : "VideoPostProcessing::applyVariantEncryptResult",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_post_processing.VideoPostProcessing::applyVariantEncryptResult",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_post_processing.VideoPostProcessing::onCreate",
+    "name" : "VideoPostProcessing::onCreate",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_post_processing.VideoPostProcessing::onCreate",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_post_processing.VideoPostProcessing::prepareEncryptContext",
+    "name" : "VideoPostProcessing::prepareEncryptContext",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_post_processing.VideoPostProcessing::prepareEncryptContext",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_post_processing.VideoPostProcessingFile::<get-encryptKeyVersion>",
+    "name" : "VideoPostProcessingFile::<get-encryptKeyVersion>",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_post_processing.VideoPostProcessingFile::<get-encryptKeyVersion>",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_post_processing.VideoPostProcessingFile::<get-fileIndex>",
+    "name" : "VideoPostProcessingFile::<get-fileIndex>",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_post_processing.VideoPostProcessingFile::<get-fileIndex>",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_post_processing.events.VideoPostProcessingCompletedDomainEvent",
+    "name" : "VideoPostProcessingCompletedDomainEvent",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_post_processing.events.VideoPostProcessingCompletedDomainEvent",
+    "type" : "domainevent"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_post_processing.events.VideoPostProcessingEncryptContextPreparedDomainEvent",
+    "name" : "VideoPostProcessingEncryptContextPreparedDomainEvent",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_post_processing.events.VideoPostProcessingEncryptContextPreparedDomainEvent",
+    "type" : "domainevent"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_post_processing.events.VideoPostProcessingFileEncryptCompletedDomainEvent",
+    "name" : "VideoPostProcessingFileEncryptCompletedDomainEvent",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_post_processing.events.VideoPostProcessingFileEncryptCompletedDomainEvent",
+    "type" : "domainevent"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_post_processing.events.VideoPostProcessingStartedDomainEvent",
+    "name" : "VideoPostProcessingStartedDomainEvent",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_post_processing.events.VideoPostProcessingStartedDomainEvent",
+    "type" : "domainevent"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_post_processing.events.VideoPostProcessingTranscodeCompletedDomainEvent",
+    "name" : "VideoPostProcessingTranscodeCompletedDomainEvent",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_post_processing.events.VideoPostProcessingTranscodeCompletedDomainEvent",
+    "type" : "domainevent"
+  } ],
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.web.UCenterVideoPostController::update",
+    "toId" : "edu.only4.danmuku.application.commands.video_post.UpdateVideoPostCmd.Request",
+    "type" : "ControllerMethodToCommand",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_encrypt.GenerateVideoPostQualityKeyCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_hls_encrypt_key.VideoHlsEncryptKey::onCreate",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_encrypt.GenerateVideoPostQualityKeyCmd.Request",
+    "toId" : "edu.only4.danmuku.application.commands.video_encrypt.GenerateVideoPostQualityKeyCmd.Handler",
+    "type" : "CommandToCommandHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_post.SyncVideoPostProcessStatusCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_post.VideoFilePost::<get-fileIndex>",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_post.SyncVideoPostProcessStatusCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_post.VideoFilePost::applyEncryptResult",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_post.SyncVideoPostProcessStatusCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_post.VideoFilePost::applyTranscodeResult",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_post.SyncVideoPostProcessStatusCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_post.VideoFilePost::syncVariants",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_post.SyncVideoPostProcessStatusCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_post.VideoPost::<get-videoFilePosts>",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_post.SyncVideoPostProcessStatusCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_post.VideoPost::applyProcessStatus",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_post.SyncVideoPostProcessStatusCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_post.VideoPost::updateDuration",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_post.SyncVideoPostProcessStatusCmd.Request",
+    "toId" : "edu.only4.danmuku.application.commands.video_post.SyncVideoPostProcessStatusCmd.Handler",
+    "type" : "CommandToCommandHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_post.UpdateVideoPostCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_post.VideoFilePost::<get-fileIndex>",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_post.UpdateVideoPostCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_post.VideoFilePost::<get-uploadId>",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_post.UpdateVideoPostCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_post.VideoPost::<get-customerId>",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_post.UpdateVideoPostCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_post.VideoPost::<get-id>",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_post.UpdateVideoPostCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_post.VideoPost::<get-videoFilePosts>",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_post.UpdateVideoPostCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_post.VideoPost::applyBasicInfo",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_post.UpdateVideoPostCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_post.VideoPost::markPendingReview",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_post.UpdateVideoPostCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_post.VideoPost::markTranscoding",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_post.UpdateVideoPostCmd.Request",
+    "toId" : "edu.only4.danmuku.application.commands.video_post.UpdateVideoPostCmd.Handler",
+    "type" : "CommandToCommandHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_post_processing.ApplyVideoPostProcessingEncryptResultCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_post_processing.VideoPostProcessing::applyEncryptResult",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_post_processing.ApplyVideoPostProcessingEncryptResultCmd.Request",
+    "toId" : "edu.only4.danmuku.application.commands.video_post_processing.ApplyVideoPostProcessingEncryptResultCmd.Handler",
+    "type" : "CommandToCommandHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_post_processing.ApplyVideoPostProcessingTranscodeResultCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_post_processing.VideoPostProcessing::applyTranscodeResult",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_post_processing.ApplyVideoPostProcessingTranscodeResultCmd.Request",
+    "toId" : "edu.only4.danmuku.application.commands.video_post_processing.ApplyVideoPostProcessingTranscodeResultCmd.Handler",
+    "type" : "CommandToCommandHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_post_processing.ApplyVideoPostProcessingVariantEncryptResultCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_post_processing.VideoPostProcessing::applyVariantEncryptResult",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_post_processing.ApplyVideoPostProcessingVariantEncryptResultCmd.Request",
+    "toId" : "edu.only4.danmuku.application.commands.video_post_processing.ApplyVideoPostProcessingVariantEncryptResultCmd.Handler",
+    "type" : "CommandToCommandHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_post_processing.PrepareVideoPostProcessingEncryptContextCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_post_processing.VideoPostProcessing::<get-videoPostProcessingFiles>",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_post_processing.PrepareVideoPostProcessingEncryptContextCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_post_processing.VideoPostProcessing::prepareEncryptContext",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_post_processing.PrepareVideoPostProcessingEncryptContextCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_post_processing.VideoPostProcessingFile::<get-encryptKeyVersion>",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_post_processing.PrepareVideoPostProcessingEncryptContextCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_post_processing.VideoPostProcessingFile::<get-fileIndex>",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_post_processing.PrepareVideoPostProcessingEncryptContextCmd.Request",
+    "toId" : "edu.only4.danmuku.application.commands.video_post_processing.PrepareVideoPostProcessingEncryptContextCmd.Handler",
+    "type" : "CommandToCommandHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_post_processing.StartVideoPostProcessingCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_post_processing.VideoPostProcessing::appendFiles",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_post_processing.StartVideoPostProcessingCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_post_processing.VideoPostProcessing::onCreate",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_post_processing.StartVideoPostProcessingCmd.Request",
+    "toId" : "edu.only4.danmuku.application.commands.video_post_processing.StartVideoPostProcessingCmd.Handler",
+    "type" : "CommandToCommandHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.distributed.clients.video_encrypt.EncryptHlsVariantWithKeyCli.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.distributed.clients.video_encrypt.EncryptHlsVariantWithKeyCliHandler",
+    "type" : "CliToCliHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.distributed.clients.video_encrypt.GenerateEncryptedMasterByVariantsCli.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.distributed.clients.video_encrypt.GenerateEncryptedMasterByVariantsCliHandler",
+    "type" : "CliToCliHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.distributed.clients.video_transcode.GenerateVideoAbrMasterCli.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.distributed.clients.video_transcode.GenerateVideoAbrMasterCliHandler",
+    "type" : "CliToCliHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.distributed.clients.video_transcode.MergeUploadToMp4ByPathCli.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.distributed.clients.video_transcode.MergeUploadToMp4ByPathCliHandler",
+    "type" : "CliToCliHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.distributed.clients.video_transcode.TranscodeVideoFileToAbrByPathCli.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.distributed.clients.video_transcode.TranscodeVideoFileToAbrByPathCliHandler",
+    "type" : "CliToCliHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.distributed.clients.video_transcode.UploadVideoAbrOutputCli.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.distributed.clients.video_transcode.UploadVideoAbrOutputCliHandler",
+    "type" : "CliToCliHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.queries.video_post_processing.GetVideoPostProcessingEncryptContextQry.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.queries.video_post_processing.GetVideoPostProcessingEncryptContextQryHandler",
+    "type" : "QueryToQueryHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.queries.video_transcode.GetUploadSessionTempPathQry.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.queries.video_transcode.GetUploadSessionTempPathQryHandler",
+    "type" : "QueryToQueryHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.subscribers.domain.video_encrypt.VideoPostQualityKeyGeneratedDomainEventSubscriber::on",
+    "toId" : "edu.only4.danmuku.application.commands.video_post_processing.ApplyVideoPostProcessingVariantEncryptResultCmd.Request",
+    "type" : "DomainEventHandlerToCommand",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.subscribers.domain.video_encrypt.VideoPostQualityKeyGeneratedDomainEventSubscriber::on",
+    "toId" : "edu.only4.danmuku.application.distributed.clients.video_encrypt.EncryptHlsVariantWithKeyCli.Request",
+    "type" : "DomainEventHandlerToCli",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.subscribers.domain.video_encrypt.VideoPostQualityKeyGeneratedDomainEventSubscriber::on",
+    "toId" : "edu.only4.danmuku.application.queries.video_post_processing.GetVideoPostProcessingEncryptContextQry.Request",
+    "type" : "DomainEventHandlerToQuery",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.subscribers.domain.video_post.VideoPostTranscodingRequestedDomainEventSubscriber::on",
+    "toId" : "edu.only4.danmuku.application.commands.video_post_processing.StartVideoPostProcessingCmd.Request",
+    "type" : "DomainEventHandlerToCommand",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.subscribers.domain.video_post_processing.VideoPostProcessingCompletedDomainEventSubscriber::on",
+    "toId" : "edu.only4.danmuku.application.commands.video_post.SyncVideoPostProcessStatusCmd.Request",
+    "type" : "DomainEventHandlerToCommand",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.subscribers.domain.video_post_processing.VideoPostProcessingEncryptContextPreparedDomainEventSubscriber::on",
+    "toId" : "edu.only4.danmuku.application.commands.video_encrypt.GenerateVideoPostQualityKeyCmd.Request",
+    "type" : "DomainEventHandlerToCommand",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.subscribers.domain.video_post_processing.VideoPostProcessingEncryptContextPreparedDomainEventSubscriber::on",
+    "toId" : "edu.only4.danmuku.application.commands.video_post_processing.ApplyVideoPostProcessingEncryptResultCmd.Request",
+    "type" : "DomainEventHandlerToCommand",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.subscribers.domain.video_post_processing.VideoPostProcessingFileEncryptCompletedDomainEventSubscriber::on",
+    "toId" : "edu.only4.danmuku.application.commands.video_post_processing.ApplyVideoPostProcessingEncryptResultCmd.Request",
+    "type" : "DomainEventHandlerToCommand",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.subscribers.domain.video_post_processing.VideoPostProcessingFileEncryptCompletedDomainEventSubscriber::on",
+    "toId" : "edu.only4.danmuku.application.distributed.clients.video_encrypt.GenerateEncryptedMasterByVariantsCli.Request",
+    "type" : "DomainEventHandlerToCli",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.subscribers.domain.video_post_processing.VideoPostProcessingFileEncryptCompletedDomainEventSubscriber::on",
+    "toId" : "edu.only4.danmuku.application.queries.video_post_processing.GetVideoPostProcessingEncryptContextQry.Request",
+    "type" : "DomainEventHandlerToQuery",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.subscribers.domain.video_post_processing.VideoPostProcessingStartedDomainEventSubscriber::on",
+    "toId" : "edu.only4.danmuku.application.commands.video_post_processing.ApplyVideoPostProcessingTranscodeResultCmd.Request",
+    "type" : "DomainEventHandlerToCommand",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.subscribers.domain.video_post_processing.VideoPostProcessingStartedDomainEventSubscriber::on",
+    "toId" : "edu.only4.danmuku.application.distributed.clients.video_transcode.GenerateVideoAbrMasterCli.Request",
+    "type" : "DomainEventHandlerToCli",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.subscribers.domain.video_post_processing.VideoPostProcessingStartedDomainEventSubscriber::on",
+    "toId" : "edu.only4.danmuku.application.distributed.clients.video_transcode.MergeUploadToMp4ByPathCli.Request",
+    "type" : "DomainEventHandlerToCli",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.subscribers.domain.video_post_processing.VideoPostProcessingStartedDomainEventSubscriber::on",
+    "toId" : "edu.only4.danmuku.application.distributed.clients.video_transcode.TranscodeVideoFileToAbrByPathCli.Request",
+    "type" : "DomainEventHandlerToCli",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.subscribers.domain.video_post_processing.VideoPostProcessingStartedDomainEventSubscriber::on",
+    "toId" : "edu.only4.danmuku.application.distributed.clients.video_transcode.UploadVideoAbrOutputCli.Request",
+    "type" : "DomainEventHandlerToCli",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.subscribers.domain.video_post_processing.VideoPostProcessingStartedDomainEventSubscriber::on",
+    "toId" : "edu.only4.danmuku.application.queries.video_transcode.GetUploadSessionTempPathQry.Request",
+    "type" : "DomainEventHandlerToQuery",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.subscribers.domain.video_post_processing.VideoPostProcessingTranscodeCompletedDomainEventSubscriber::on",
+    "toId" : "edu.only4.danmuku.application.commands.video_post_processing.PrepareVideoPostProcessingEncryptContextCmd.Request",
+    "type" : "DomainEventHandlerToCommand",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.video_hls_encrypt_key.VideoHlsEncryptKey::onCreate",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_hls_encrypt_key.events.VideoHlsEncryptKeyCreatedDomainEvent",
+    "type" : "EntityMethodToDomainEvent",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.video_hls_encrypt_key.events.VideoHlsEncryptKeyCreatedDomainEvent",
+    "toId" : "edu.only4.danmuku.application.subscribers.domain.video_encrypt.VideoPostQualityKeyGeneratedDomainEventSubscriber::on",
+    "type" : "DomainEventToHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.video_post.VideoPost::markTranscoding",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_post.events.VideoPostTranscodingRequestedDomainEvent",
+    "type" : "EntityMethodToDomainEvent",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.video_post.events.VideoPostTranscodingRequestedDomainEvent",
+    "toId" : "edu.only4.danmuku.application.subscribers.domain.video_post.VideoPostTranscodingRequestedDomainEventSubscriber::on",
+    "type" : "DomainEventToHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.video_post_processing.VideoPostProcessing::appendFiles",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_post_processing.events.VideoPostProcessingStartedDomainEvent",
+    "type" : "EntityMethodToDomainEvent",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.video_post_processing.VideoPostProcessing::applyEncryptResult",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_post_processing.events.VideoPostProcessingCompletedDomainEvent",
+    "type" : "EntityMethodToDomainEvent",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.video_post_processing.VideoPostProcessing::applyTranscodeResult",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_post_processing.events.VideoPostProcessingTranscodeCompletedDomainEvent",
+    "type" : "EntityMethodToDomainEvent",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.video_post_processing.VideoPostProcessing::applyVariantEncryptResult",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_post_processing.events.VideoPostProcessingFileEncryptCompletedDomainEvent",
+    "type" : "EntityMethodToDomainEvent",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.video_post_processing.VideoPostProcessing::prepareEncryptContext",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_post_processing.events.VideoPostProcessingEncryptContextPreparedDomainEvent",
+    "type" : "EntityMethodToDomainEvent",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.video_post_processing.events.VideoPostProcessingCompletedDomainEvent",
+    "toId" : "edu.only4.danmuku.application.subscribers.domain.video_post_processing.VideoPostProcessingCompletedDomainEventSubscriber::on",
+    "type" : "DomainEventToHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.video_post_processing.events.VideoPostProcessingEncryptContextPreparedDomainEvent",
+    "toId" : "edu.only4.danmuku.application.subscribers.domain.video_post_processing.VideoPostProcessingEncryptContextPreparedDomainEventSubscriber::on",
+    "type" : "DomainEventToHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.video_post_processing.events.VideoPostProcessingFileEncryptCompletedDomainEvent",
+    "toId" : "edu.only4.danmuku.application.subscribers.domain.video_post_processing.VideoPostProcessingFileEncryptCompletedDomainEventSubscriber::on",
+    "type" : "DomainEventToHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.video_post_processing.events.VideoPostProcessingStartedDomainEvent",
+    "toId" : "edu.only4.danmuku.application.subscribers.domain.video_post_processing.VideoPostProcessingStartedDomainEventSubscriber::on",
+    "type" : "DomainEventToHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.video_post_processing.events.VideoPostProcessingTranscodeCompletedDomainEvent",
+    "toId" : "edu.only4.danmuku.application.subscribers.domain.video_post_processing.VideoPostProcessingTranscodeCompletedDomainEventSubscriber::on",
+    "type" : "DomainEventToHandler",
+    "label" : null
+  } ]
+}

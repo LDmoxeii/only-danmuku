@@ -1,0 +1,23 @@
+{
+  "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoDanmukuController::postDanmuku",
+  "entryType" : "controllermethod",
+  "nodeCount" : 2,
+  "edgeCount" : 1,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.portal.api.web.VideoDanmukuController::postDanmuku",
+    "name" : "VideoDanmukuController::postDanmuku",
+    "fullName" : "edu.only4.danmuku.adapter.portal.api.web.VideoDanmukuController::postDanmuku",
+    "type" : "controllermethod"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.video_danmuku.PostDanmukuCmd.Request",
+    "name" : "PostDanmukuCmd.Request",
+    "fullName" : "edu.only4.danmuku.application.commands.video_danmuku.PostDanmukuCmd.Request",
+    "type" : "command"
+  } ],
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.web.VideoDanmukuController::postDanmuku",
+    "toId" : "edu.only4.danmuku.application.commands.video_danmuku.PostDanmukuCmd.Request",
+    "type" : "ControllerMethodToCommand",
+    "label" : null
+  } ]
+}

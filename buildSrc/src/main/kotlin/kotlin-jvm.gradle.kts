@@ -38,3 +38,22 @@ tasks.withType<Test>().configureEach {
         )
     }
 }
+
+// Cap4k code analysis compiler plugin (IR/K2)
+val cap4kPluginDir = file("D:/ideaProjects/code-analysis/cap4k/cap4k-code-analysis-compiler-plugin/build/libs")
+val cap4kCoreDir = file("D:/ideaProjects/code-analysis/cap4k/cap4k-extensions-code-analysis-core/build/libs")
+val cap4kPluginJar = cap4kPluginDir.listFiles()
+    ?.firstOrNull { it.name.startsWith("cap4k-code-analysis-compiler-plugin") && it.name.endsWith(".jar") && !it.name.endsWith("-sources.jar") }
+val cap4kCoreJar = cap4kCoreDir.listFiles()
+    ?.firstOrNull { it.name.startsWith("cap4k-extensions-code-analysis-core") && it.name.endsWith(".jar") && !it.name.endsWith("-sources.jar") }
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    if (cap4kPluginJar != null && cap4kCoreJar != null) {
+        compilerOptions {
+            freeCompilerArgs.addAll(
+                "-Xplugin=${cap4kPluginJar.absolutePath}",
+                "-Xplugin=${cap4kCoreJar.absolutePath}"
+            )
+        }
+    }
+}

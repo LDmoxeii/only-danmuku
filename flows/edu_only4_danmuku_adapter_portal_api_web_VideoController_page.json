@@ -1,0 +1,13 @@
+{
+  "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoController::page",
+  "entryType" : "controllermethod",
+  "nodeCount" : 1,
+  "edgeCount" : 0,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.portal.api.web.VideoController::page",
+    "name" : "VideoController::page",
+    "fullName" : "edu.only4.danmuku.adapter.portal.api.web.VideoController::page",
+    "type" : "controllermethod"
+  } ],
+  "edges" : [ ]
+}

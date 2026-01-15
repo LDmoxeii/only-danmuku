@@ -1,0 +1,33 @@
+{
+  "entryId" : "edu.only4.danmuku.application.commands.video_encrypt.IssueVideoHlsKeyTokenCmd.Handler::exec",
+  "entryType" : "querysendermethod",
+  "nodeCount" : 3,
+  "edgeCount" : 2,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.application.queries.video_encrypt.GetLatestVideoHlsKeyVersionQryHandler",
+    "name" : "GetLatestVideoHlsKeyVersionQryHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.queries.video_encrypt.GetLatestVideoHlsKeyVersionQryHandler",
+    "type" : "queryhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.video_encrypt.IssueVideoHlsKeyTokenCmd.Handler::exec",
+    "name" : "IssueVideoHlsKeyTokenCmd.Handler::exec",
+    "fullName" : "edu.only4.danmuku.application.commands.video_encrypt.IssueVideoHlsKeyTokenCmd.Handler::exec",
+    "type" : "querysendermethod"
+  }, {
+    "id" : "edu.only4.danmuku.application.queries.video_encrypt.GetLatestVideoHlsKeyVersionQry.Request",
+    "name" : "GetLatestVideoHlsKeyVersionQry.Request",
+    "fullName" : "edu.only4.danmuku.application.queries.video_encrypt.GetLatestVideoHlsKeyVersionQry.Request",
+    "type" : "query"
+  } ],
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.application.commands.video_encrypt.IssueVideoHlsKeyTokenCmd.Handler::exec",
+    "toId" : "edu.only4.danmuku.application.queries.video_encrypt.GetLatestVideoHlsKeyVersionQry.Request",
+    "type" : "QuerySenderMethodToQuery",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.queries.video_encrypt.GetLatestVideoHlsKeyVersionQry.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.queries.video_encrypt.GetLatestVideoHlsKeyVersionQryHandler",
+    "type" : "QueryToQueryHandler",
+    "label" : null
+  } ]
+}

@@ -1,0 +1,63 @@
+{
+  "entryId" : "edu.only4.danmuku.adapter.portal.api.web.FileController::uploadVideo",
+  "entryType" : "controllermethod",
+  "nodeCount" : 6,
+  "edgeCount" : 5,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.application.distributed.clients.file_upload_session.UploadVideoChunkStorageCliHandler",
+    "name" : "UploadVideoChunkStorageCliHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.distributed.clients.file_upload_session.UploadVideoChunkStorageCliHandler",
+    "type" : "clihandler"
+  }, {
+    "id" : "edu.only4.danmuku.adapter.application.queries.video_transcode.GetUploadSessionTempPathQryHandler",
+    "name" : "GetUploadSessionTempPathQryHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.queries.video_transcode.GetUploadSessionTempPathQryHandler",
+    "type" : "queryhandler"
+  }, {
+    "id" : "edu.only4.danmuku.adapter.portal.api.web.FileController::uploadVideo",
+    "name" : "FileController::uploadVideo",
+    "fullName" : "edu.only4.danmuku.adapter.portal.api.web.FileController::uploadVideo",
+    "type" : "controllermethod"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.file_upload_session.UploadVideoChunkCmd.Request",
+    "name" : "UploadVideoChunkCmd.Request",
+    "fullName" : "edu.only4.danmuku.application.commands.file_upload_session.UploadVideoChunkCmd.Request",
+    "type" : "command"
+  }, {
+    "id" : "edu.only4.danmuku.application.distributed.clients.file_upload_session.UploadVideoChunkStorageCli.Request",
+    "name" : "UploadVideoChunkStorageCli.Request",
+    "fullName" : "edu.only4.danmuku.application.distributed.clients.file_upload_session.UploadVideoChunkStorageCli.Request",
+    "type" : "cli"
+  }, {
+    "id" : "edu.only4.danmuku.application.queries.video_transcode.GetUploadSessionTempPathQry.Request",
+    "name" : "GetUploadSessionTempPathQry.Request",
+    "fullName" : "edu.only4.danmuku.application.queries.video_transcode.GetUploadSessionTempPathQry.Request",
+    "type" : "query"
+  } ],
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.web.FileController::uploadVideo",
+    "toId" : "edu.only4.danmuku.application.commands.file_upload_session.UploadVideoChunkCmd.Request",
+    "type" : "ControllerMethodToCommand",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.web.FileController::uploadVideo",
+    "toId" : "edu.only4.danmuku.application.distributed.clients.file_upload_session.UploadVideoChunkStorageCli.Request",
+    "type" : "ControllerMethodToCli",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.web.FileController::uploadVideo",
+    "toId" : "edu.only4.danmuku.application.queries.video_transcode.GetUploadSessionTempPathQry.Request",
+    "type" : "ControllerMethodToQuery",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.distributed.clients.file_upload_session.UploadVideoChunkStorageCli.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.distributed.clients.file_upload_session.UploadVideoChunkStorageCliHandler",
+    "type" : "CliToCliHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.queries.video_transcode.GetUploadSessionTempPathQry.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.queries.video_transcode.GetUploadSessionTempPathQryHandler",
+    "type" : "QueryToQueryHandler",
+    "label" : null
+  } ]
+}

@@ -1,0 +1,53 @@
+{
+  "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoSeriesController::changeSort",
+  "entryType" : "controllermethod",
+  "nodeCount" : 5,
+  "edgeCount" : 4,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.portal.api.web.VideoSeriesController::changeSort",
+    "name" : "VideoSeriesController::changeSort",
+    "fullName" : "edu.only4.danmuku.adapter.portal.api.web.VideoSeriesController::changeSort",
+    "type" : "controllermethod"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.customer_video_series.UpdateVideoSeriesSortCmd.Handler",
+    "name" : "UpdateVideoSeriesSortCmd.Handler",
+    "fullName" : "edu.only4.danmuku.application.commands.customer_video_series.UpdateVideoSeriesSortCmd.Handler",
+    "type" : "commandhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.customer_video_series.UpdateVideoSeriesSortCmd.Request",
+    "name" : "UpdateVideoSeriesSortCmd.Request",
+    "fullName" : "edu.only4.danmuku.application.commands.customer_video_series.UpdateVideoSeriesSortCmd.Request",
+    "type" : "command"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.customer_video_series.CustomerVideoSeries::<get-id>",
+    "name" : "CustomerVideoSeries::<get-id>",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.customer_video_series.CustomerVideoSeries::<get-id>",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.customer_video_series.CustomerVideoSeries::updateSort",
+    "name" : "CustomerVideoSeries::updateSort",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.customer_video_series.CustomerVideoSeries::updateSort",
+    "type" : "entitymethod"
+  } ],
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.web.VideoSeriesController::changeSort",
+    "toId" : "edu.only4.danmuku.application.commands.customer_video_series.UpdateVideoSeriesSortCmd.Request",
+    "type" : "ControllerMethodToCommand",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.customer_video_series.UpdateVideoSeriesSortCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.customer_video_series.CustomerVideoSeries::<get-id>",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.customer_video_series.UpdateVideoSeriesSortCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.customer_video_series.CustomerVideoSeries::updateSort",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.customer_video_series.UpdateVideoSeriesSortCmd.Request",
+    "toId" : "edu.only4.danmuku.application.commands.customer_video_series.UpdateVideoSeriesSortCmd.Handler",
+    "type" : "CommandToCommandHandler",
+    "label" : null
+  } ]
+}

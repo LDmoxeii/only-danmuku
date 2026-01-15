@@ -1,0 +1,173 @@
+{
+  "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminAccountController::login",
+  "entryType" : "controllermethod",
+  "nodeCount" : 17,
+  "edgeCount" : 16,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.application.distributed.clients.CaptchaValidCliHandler",
+    "name" : "CaptchaValidCliHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.distributed.clients.CaptchaValidCliHandler",
+    "type" : "clihandler"
+  }, {
+    "id" : "edu.only4.danmuku.adapter.application.queries.user.GetAccountInfoByEmailQryHandler",
+    "name" : "GetAccountInfoByEmailQryHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.queries.user.GetAccountInfoByEmailQryHandler",
+    "type" : "queryhandler"
+  }, {
+    "id" : "edu.only4.danmuku.adapter.application.queries.user_behavior.GetRecentPasswordFailureCountQryHandler",
+    "name" : "GetRecentPasswordFailureCountQryHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.queries.user_behavior.GetRecentPasswordFailureCountQryHandler",
+    "type" : "queryhandler"
+  }, {
+    "id" : "edu.only4.danmuku.adapter.portal.api.admin.AdminAccountController::login",
+    "name" : "AdminAccountController::login",
+    "fullName" : "edu.only4.danmuku.adapter.portal.api.admin.AdminAccountController::login",
+    "type" : "controllermethod"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.user_behavior.RecordAbnormalOperationCmd.Handler",
+    "name" : "RecordAbnormalOperationCmd.Handler",
+    "fullName" : "edu.only4.danmuku.application.commands.user_behavior.RecordAbnormalOperationCmd.Handler",
+    "type" : "commandhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.user_behavior.RecordAbnormalOperationCmd.Request",
+    "name" : "RecordAbnormalOperationCmd.Request",
+    "fullName" : "edu.only4.danmuku.application.commands.user_behavior.RecordAbnormalOperationCmd.Request",
+    "type" : "command"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.user_behavior.RecordLoginLogCmd.Handler",
+    "name" : "RecordLoginLogCmd.Handler",
+    "fullName" : "edu.only4.danmuku.application.commands.user_behavior.RecordLoginLogCmd.Handler",
+    "type" : "commandhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.user_behavior.RecordLoginLogCmd.Request",
+    "name" : "RecordLoginLogCmd.Request",
+    "fullName" : "edu.only4.danmuku.application.commands.user_behavior.RecordLoginLogCmd.Request",
+    "type" : "command"
+  }, {
+    "id" : "edu.only4.danmuku.application.distributed.clients.CaptchaValidCli.Request",
+    "name" : "CaptchaValidCli.Request",
+    "fullName" : "edu.only4.danmuku.application.distributed.clients.CaptchaValidCli.Request",
+    "type" : "cli"
+  }, {
+    "id" : "edu.only4.danmuku.application.queries.user.GetAccountInfoByEmailQry.Request",
+    "name" : "GetAccountInfoByEmailQry.Request",
+    "fullName" : "edu.only4.danmuku.application.queries.user.GetAccountInfoByEmailQry.Request",
+    "type" : "query"
+  }, {
+    "id" : "edu.only4.danmuku.application.queries.user_behavior.GetRecentPasswordFailureCountQry.Request",
+    "name" : "GetRecentPasswordFailureCountQry.Request",
+    "fullName" : "edu.only4.danmuku.application.queries.user_behavior.GetRecentPasswordFailureCountQry.Request",
+    "type" : "query"
+  }, {
+    "id" : "edu.only4.danmuku.application.subscribers.domain.user_login_log.PasswordInputFailedDomainEventSubscriber::on",
+    "name" : "PasswordInputFailedDomainEventSubscriber::on",
+    "fullName" : "edu.only4.danmuku.application.subscribers.domain.user_login_log.PasswordInputFailedDomainEventSubscriber::on",
+    "type" : "domaineventhandler"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.user_abnormal_operation_log.UserAbnormalOperationLog::<get-id>",
+    "name" : "UserAbnormalOperationLog::<get-id>",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.user_abnormal_operation_log.UserAbnormalOperationLog::<get-id>",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.user_abnormal_operation_log.UserAbnormalOperationLog::onCreate",
+    "name" : "UserAbnormalOperationLog::onCreate",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.user_abnormal_operation_log.UserAbnormalOperationLog::onCreate",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.user_login_log.UserLoginLog::<get-id>",
+    "name" : "UserLoginLog::<get-id>",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.user_login_log.UserLoginLog::<get-id>",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.user_login_log.UserLoginLog::onCreate",
+    "name" : "UserLoginLog::onCreate",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.user_login_log.UserLoginLog::onCreate",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.user_login_log.events.PasswordInputFailedDomainEvent",
+    "name" : "PasswordInputFailedDomainEvent",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.user_login_log.events.PasswordInputFailedDomainEvent",
+    "type" : "domainevent"
+  } ],
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminAccountController::login",
+    "toId" : "edu.only4.danmuku.application.commands.user_behavior.RecordLoginLogCmd.Request",
+    "type" : "ControllerMethodToCommand",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminAccountController::login",
+    "toId" : "edu.only4.danmuku.application.distributed.clients.CaptchaValidCli.Request",
+    "type" : "ControllerMethodToCli",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminAccountController::login",
+    "toId" : "edu.only4.danmuku.application.queries.user.GetAccountInfoByEmailQry.Request",
+    "type" : "ControllerMethodToQuery",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.user_behavior.RecordAbnormalOperationCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.user_abnormal_operation_log.UserAbnormalOperationLog::<get-id>",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.user_behavior.RecordAbnormalOperationCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.user_abnormal_operation_log.UserAbnormalOperationLog::onCreate",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.user_behavior.RecordAbnormalOperationCmd.Request",
+    "toId" : "edu.only4.danmuku.application.commands.user_behavior.RecordAbnormalOperationCmd.Handler",
+    "type" : "CommandToCommandHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.user_behavior.RecordLoginLogCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.user_login_log.UserLoginLog::<get-id>",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.user_behavior.RecordLoginLogCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.user_login_log.UserLoginLog::onCreate",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.user_behavior.RecordLoginLogCmd.Request",
+    "toId" : "edu.only4.danmuku.application.commands.user_behavior.RecordLoginLogCmd.Handler",
+    "type" : "CommandToCommandHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.distributed.clients.CaptchaValidCli.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.distributed.clients.CaptchaValidCliHandler",
+    "type" : "CliToCliHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.queries.user.GetAccountInfoByEmailQry.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.queries.user.GetAccountInfoByEmailQryHandler",
+    "type" : "QueryToQueryHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.queries.user_behavior.GetRecentPasswordFailureCountQry.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.queries.user_behavior.GetRecentPasswordFailureCountQryHandler",
+    "type" : "QueryToQueryHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.subscribers.domain.user_login_log.PasswordInputFailedDomainEventSubscriber::on",
+    "toId" : "edu.only4.danmuku.application.commands.user_behavior.RecordAbnormalOperationCmd.Request",
+    "type" : "DomainEventHandlerToCommand",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.subscribers.domain.user_login_log.PasswordInputFailedDomainEventSubscriber::on",
+    "toId" : "edu.only4.danmuku.application.queries.user_behavior.GetRecentPasswordFailureCountQry.Request",
+    "type" : "DomainEventHandlerToQuery",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.user_login_log.UserLoginLog::onCreate",
+    "toId" : "edu.only4.danmuku.domain.aggregates.user_login_log.events.PasswordInputFailedDomainEvent",
+    "type" : "EntityMethodToDomainEvent",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.user_login_log.events.PasswordInputFailedDomainEvent",
+    "toId" : "edu.only4.danmuku.application.subscribers.domain.user_login_log.PasswordInputFailedDomainEventSubscriber::on",
+    "type" : "DomainEventToHandler",
+    "label" : null
+  } ]
+}

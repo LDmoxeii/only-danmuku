@@ -1,0 +1,33 @@
+{
+  "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoSeriesController::deleteVideoSeries",
+  "entryType" : "controllermethod",
+  "nodeCount" : 3,
+  "edgeCount" : 2,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.portal.api.web.VideoSeriesController::deleteVideoSeries",
+    "name" : "VideoSeriesController::deleteVideoSeries",
+    "fullName" : "edu.only4.danmuku.adapter.portal.api.web.VideoSeriesController::deleteVideoSeries",
+    "type" : "controllermethod"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.customer_video_series.DeleteVideoSeriesCmd.Handler",
+    "name" : "DeleteVideoSeriesCmd.Handler",
+    "fullName" : "edu.only4.danmuku.application.commands.customer_video_series.DeleteVideoSeriesCmd.Handler",
+    "type" : "commandhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.customer_video_series.DeleteVideoSeriesCmd.Request",
+    "name" : "DeleteVideoSeriesCmd.Request",
+    "fullName" : "edu.only4.danmuku.application.commands.customer_video_series.DeleteVideoSeriesCmd.Request",
+    "type" : "command"
+  } ],
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.web.VideoSeriesController::deleteVideoSeries",
+    "toId" : "edu.only4.danmuku.application.commands.customer_video_series.DeleteVideoSeriesCmd.Request",
+    "type" : "ControllerMethodToCommand",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.customer_video_series.DeleteVideoSeriesCmd.Request",
+    "toId" : "edu.only4.danmuku.application.commands.customer_video_series.DeleteVideoSeriesCmd.Handler",
+    "type" : "CommandToCommandHandler",
+    "label" : null
+  } ]
+}

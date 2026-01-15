@@ -1,0 +1,23 @@
+{
+  "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoCommentController::top",
+  "entryType" : "controllermethod",
+  "nodeCount" : 2,
+  "edgeCount" : 1,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.portal.api.web.VideoCommentController::top",
+    "name" : "VideoCommentController::top",
+    "fullName" : "edu.only4.danmuku.adapter.portal.api.web.VideoCommentController::top",
+    "type" : "controllermethod"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.video_comment.TopCommentCmd.Request",
+    "name" : "TopCommentCmd.Request",
+    "fullName" : "edu.only4.danmuku.application.commands.video_comment.TopCommentCmd.Request",
+    "type" : "command"
+  } ],
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.web.VideoCommentController::top",
+    "toId" : "edu.only4.danmuku.application.commands.video_comment.TopCommentCmd.Request",
+    "type" : "ControllerMethodToCommand",
+    "label" : null
+  } ]
+}

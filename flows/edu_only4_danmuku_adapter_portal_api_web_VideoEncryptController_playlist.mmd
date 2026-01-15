@@ -1,0 +1,18 @@
+flowchart TD
+  N1[[GetVideoFileContextByIdQryHandler]]
+  class N1 queryhandler
+  N2[[GetVideoEncryptStatusQryHandler]]
+  class N2 queryhandler
+  N3([VideoEncryptController::playlist])
+  class N3 controllermethod
+  N4{{GetVideoFileContextByIdQry.Request}}
+  class N4 query
+  N5{{GetVideoEncryptStatusQry.Request}}
+  class N5 query
+  N3 -->|ControllerMethodToQuery| N4
+  N3 -->|ControllerMethodToQuery| N5
+  N4 -->|QueryToQueryHandler| N1
+  N5 -->|QueryToQueryHandler| N2
+  classDef controllermethod fill:#FDE68A,stroke:#B45309,color:#111827
+  classDef query fill:#93C5FD,stroke:#1D4ED8,color:#0F172A
+  classDef queryhandler fill:#3B82F6,stroke:#1E40AF,color:#F8FAFC
