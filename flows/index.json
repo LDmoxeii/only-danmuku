@@ -1,20 +1,19 @@
 {
-  "generatedAt" : "2026-01-16T08:38:54Z",
+  "generatedAt" : "2026-01-16T08:57:14Z",
   "inputDirs" : [ "D:\\ideaProjects\\code-analysis\\only-danmuku\\only-danmuku-adapter\\build\\cap4k-code-analysis", "D:\\ideaProjects\\code-analysis\\only-danmuku\\only-danmuku-application\\build\\cap4k-code-analysis", "D:\\ideaProjects\\code-analysis\\only-danmuku\\only-danmuku-domain\\build\\cap4k-code-analysis" ],
-  "entryTypes" : [ "<anonymous>", "clisendermethod", "controllermethod" ],
+  "entryTypes" : [ "<anonymous>", "controllermethod" ],
   "entryTypeCounts" : {
     "<anonymous>" : 1,
-    "controllermethod" : 112,
-    "clisendermethod" : 1
+    "controllermethod" : 112
   },
   "nodeCount" : 2086,
-  "edgeCount" : 837,
-  "flowCount" : 114,
+  "edgeCount" : 838,
+  "flowCount" : 113,
   "flows" : [ {
     "entryId" : "<anonymous>",
     "entryType" : "<anonymous>",
-    "nodeCount" : 407,
-    "edgeCount" : 475,
+    "nodeCount" : 408,
+    "edgeCount" : 477,
     "json" : "anonymous.json",
     "mermaid" : "anonymous.mmd"
   }, {
@@ -801,12 +800,5 @@
     "edgeCount" : 20,
     "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoSeriesController_saveVideoSeries.json",
     "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoSeriesController_saveVideoSeries.mmd"
-  }, {
-    "entryId" : "edu.only4.danmuku.application.subscribers.domain.customer_profile.CustomerAvatarUpdatedDomainEventSubscriber::on",
-    "entryType" : "clisendermethod",
-    "nodeCount" : 3,
-    "edgeCount" : 2,
-    "json" : "edu_only4_danmuku_application_subscribers_domain_customer_profile_CustomerAvatar.json",
-    "mermaid" : "edu_only4_danmuku_application_subscribers_domain_customer_profile_CustomerAvatar.mmd"
   } ]
 }

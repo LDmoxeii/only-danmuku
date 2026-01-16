@@ -1,8 +1,8 @@
 {
   "entryId" : "<anonymous>",
   "entryType" : "<anonymous>",
-  "nodeCount" : 407,
-  "edgeCount" : 475,
+  "nodeCount" : 408,
+  "edgeCount" : 477,
   "nodes" : [ {
     "id" : "<anonymous>",
     "name" : "<anonymous>",
@@ -962,6 +962,11 @@
     "id" : "edu.only4.danmuku.application.subscribers.domain.customer_message.CustomerMessageSystemCreatedDomainEventSubscriber::on",
     "name" : "CustomerMessageSystemCreatedDomainEventSubscriber::on",
     "fullName" : "edu.only4.danmuku.application.subscribers.domain.customer_message.CustomerMessageSystemCreatedDomainEventSubscriber::on",
+    "type" : "domaineventhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.subscribers.domain.customer_profile.CustomerAvatarUpdatedDomainEventSubscriber::on",
+    "name" : "CustomerAvatarUpdatedDomainEventSubscriber::on",
+    "fullName" : "edu.only4.danmuku.application.subscribers.domain.customer_profile.CustomerAvatarUpdatedDomainEventSubscriber::on",
     "type" : "domaineventhandler"
   }, {
     "id" : "edu.only4.danmuku.application.subscribers.domain.customer_profile.CustomerNicknameUpdatedDomainEventSubscriber::on",
@@ -3540,6 +3545,11 @@
     "type" : "DomainEventHandlerToCommand",
     "label" : null
   }, {
+    "fromId" : "edu.only4.danmuku.application.subscribers.domain.customer_profile.CustomerAvatarUpdatedDomainEventSubscriber::on",
+    "toId" : "edu.only4.danmuku.application.distributed.clients.RefreshLoginSessionCli.Request",
+    "type" : "DomainEventHandlerToCli",
+    "label" : null
+  }, {
     "fromId" : "edu.only4.danmuku.application.subscribers.domain.customer_profile.CustomerNicknameUpdatedDomainEventSubscriber::on",
     "toId" : "edu.only4.danmuku.application.commands.customer_profile.SpendCoinsForNicknameChangeCmd.Request",
     "type" : "DomainEventHandlerToCommand",
@@ -4008,6 +4018,11 @@
     "fromId" : "edu.only4.danmuku.domain.aggregates.customer_profile.CustomerProfile::rewardCoins",
     "toId" : "edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerProfileCoinsRewardedDomainEvent",
     "type" : "EntityMethodToDomainEvent",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerAvatarUpdatedDomainEvent",
+    "toId" : "edu.only4.danmuku.application.subscribers.domain.customer_profile.CustomerAvatarUpdatedDomainEventSubscriber::on",
+    "type" : "DomainEventToHandler",
     "label" : null
   }, {
     "fromId" : "edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerNicknameUpdatedDomainEvent",

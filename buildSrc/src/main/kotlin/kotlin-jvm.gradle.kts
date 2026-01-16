@@ -2,10 +2,9 @@
 // `buildSrc` is a Gradle-recognized directory and every plugin there will be easily available in the rest of the build.
 package buildsrc.convention
 
-import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.api.tasks.testing.logging.TestLogEvent
+import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import java.io.File
 import java.time.Duration
 
 plugins {
@@ -29,7 +28,7 @@ tasks.withType<Test>().configureEach {
     useJUnitPlatform()
     timeout.set(Duration.ofMinutes(10))
     jvmArgs(
-        "-Xmx2g",
+        "-Xmx4g",
         "-Xms512m",
         "-XX:MaxMetaspaceSize=512m",
     )
@@ -43,10 +42,9 @@ tasks.withType<Test>().configureEach {
 }
 
 // Cap4k code analysis compiler plugin (IR/K2)
-val cap4kCompilerPluginClasspath = configurations.create("cap4kCompilerPluginClasspath") {
-    isCanBeConsumed = false
-    isCanBeResolved = true
-}
+val cap4kCompilerPluginClasspath = configurations.create("cap4kCompilerPluginClasspath")
+cap4kCompilerPluginClasspath.isCanBeConsumed = false
+cap4kCompilerPluginClasspath.isCanBeResolved = true
 val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
 dependencies {
     cap4kCompilerPluginClasspath(libs.findLibrary("cap4k-plugin-code-analysis-compiler").get())
