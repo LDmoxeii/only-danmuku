@@ -2,7 +2,7 @@
 plugins {
     id("buildsrc.convention.kotlin-jvm")
     id("buildsrc.convention.cap4k-flow-export")
-    id("com.only4.codegen") version "0.2.0-SNAPSHOT"
+    id("com.only4.cap4k.ddd.codegen") version "0.4.2-SNAPSHOT"
 }
 
 dependencies {
@@ -19,7 +19,7 @@ kotlin {
     jvmToolchain(17)
 }
 
-codegen {
+cap4kCodegen {
     basePackage.set("edu.only4.danmuku")
     archTemplate.set("cap4k-ddd-codegen-template-multi-nested.json")
     designFiles.from(
