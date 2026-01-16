@@ -1,5 +1,5 @@
 {
-  "generatedAt" : "2026-01-15T11:56:46Z",
+  "generatedAt" : "2026-01-16T06:25:27Z",
   "inputDirs" : [ "D:\\ideaProjects\\code-analysis\\only-danmuku\\only-danmuku-adapter\\build\\cap4k-code-analysis", "D:\\ideaProjects\\code-analysis\\only-danmuku\\only-danmuku-application\\build\\cap4k-code-analysis", "D:\\ideaProjects\\code-analysis\\only-danmuku\\only-danmuku-domain\\build\\cap4k-code-analysis" ],
   "entryTypes" : [ "<anonymous>", "clisendermethod", "commandsendermethod", "controllermethod", "querysendermethod", "validator" ],
   "entryTypeCounts" : {
@@ -10,7 +10,7 @@
     "clisendermethod" : 1,
     "validator" : 42
   },
-  "nodeCount" : 2092,
+  "nodeCount" : 2090,
   "edgeCount" : 849,
   "flowCount" : 159,
   "flows" : [ {
