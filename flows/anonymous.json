@@ -1,8 +1,8 @@
 {
   "entryId" : "<anonymous>",
   "entryType" : "<anonymous>",
-  "nodeCount" : 408,
-  "edgeCount" : 477,
+  "nodeCount" : 410,
+  "edgeCount" : 481,
   "nodes" : [ {
     "id" : "<anonymous>",
     "name" : "<anonymous>",
@@ -1724,6 +1724,11 @@
     "fullName" : "edu.only4.danmuku.domain.aggregates.video_comment.VideoComment::<get-customerId>",
     "type" : "entitymethod"
   }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_comment.VideoComment::onDelete",
+    "name" : "VideoComment::onDelete",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_comment.VideoComment::onDelete",
+    "type" : "entitymethod"
+  }, {
     "id" : "edu.only4.danmuku.domain.aggregates.video_comment.VideoComment::updateStatistics",
     "name" : "VideoComment::updateStatistics",
     "fullName" : "edu.only4.danmuku.domain.aggregates.video_comment.VideoComment::updateStatistics",
@@ -1748,6 +1753,11 @@
     "name" : "CommentUntoppedDomainEvent",
     "fullName" : "edu.only4.danmuku.domain.aggregates.video_comment.events.CommentUntoppedDomainEvent",
     "type" : "domainevent"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_danmuku.VideoDanmuku::onDelete",
+    "name" : "VideoDanmuku::onDelete",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_danmuku.VideoDanmuku::onDelete",
+    "type" : "entitymethod"
   }, {
     "id" : "edu.only4.danmuku.domain.aggregates.video_danmuku.events.DanmukuDeletedDomainEvent",
     "name" : "DanmukuDeletedDomainEvent",
@@ -3085,9 +3095,19 @@
     "type" : "CommandToCommandHandler",
     "label" : null
   }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_comment.BatchDeleteCommentCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_comment.VideoComment::onDelete",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
     "fromId" : "edu.only4.danmuku.application.commands.video_comment.BatchDeleteCommentCmd.Request",
     "toId" : "edu.only4.danmuku.application.commands.video_comment.BatchDeleteCommentCmd.Handler",
     "type" : "CommandToCommandHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_danmuku.BatchDeleteDanmukuCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_danmuku.VideoDanmuku::onDelete",
+    "type" : "CommandHandlerToEntityMethod",
     "label" : null
   }, {
     "fromId" : "edu.only4.danmuku.application.commands.video_danmuku.BatchDeleteDanmukuCmd.Request",
@@ -4230,6 +4250,11 @@
     "type" : "DomainEventToHandler",
     "label" : null
   }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.video_comment.VideoComment::onDelete",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_comment.events.CommentDeletedDomainEvent",
+    "type" : "EntityMethodToDomainEvent",
+    "label" : null
+  }, {
     "fromId" : "edu.only4.danmuku.domain.aggregates.video_comment.events.CommentDeletedDomainEvent",
     "toId" : "edu.only4.danmuku.application.subscribers.domain.video_comment.CommentDeletedDomainEventSubscriber::on",
     "type" : "DomainEventToHandler",
@@ -4263,6 +4288,11 @@
     "fromId" : "edu.only4.danmuku.domain.aggregates.video_comment.events.CommentUntoppedDomainEvent",
     "toId" : "edu.only4.danmuku.application.subscribers.domain.video_comment.CommentUntoppedDomainEventSubscriber::on",
     "type" : "DomainEventToHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.video_danmuku.VideoDanmuku::onDelete",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_danmuku.events.DanmukuDeletedDomainEvent",
+    "type" : "EntityMethodToDomainEvent",
     "label" : null
   }, {
     "fromId" : "edu.only4.danmuku.domain.aggregates.video_danmuku.events.DanmukuDeletedDomainEvent",

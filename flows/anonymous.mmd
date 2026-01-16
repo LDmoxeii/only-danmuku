@@ -687,134 +687,138 @@ flowchart TD
   class N343 domainevent
   N344(VideoComment::&lt;get-customerId&gt;)
   class N344 entitymethod
-  N345(VideoComment::updateStatistics)
+  N345(VideoComment::onDelete)
   class N345 entitymethod
-  N346((CommentDeletedDomainEvent))
-  class N346 domainevent
-  N347((CommentPostedDomainEvent))
+  N346(VideoComment::updateStatistics)
+  class N346 entitymethod
+  N347((CommentDeletedDomainEvent))
   class N347 domainevent
-  N348((CommentToppedDomainEvent))
+  N348((CommentPostedDomainEvent))
   class N348 domainevent
-  N349((CommentUntoppedDomainEvent))
+  N349((CommentToppedDomainEvent))
   class N349 domainevent
-  N350((DanmukuDeletedDomainEvent))
+  N350((CommentUntoppedDomainEvent))
   class N350 domainevent
-  N351((DanmukuPostedDomainEvent))
-  class N351 domainevent
-  N352(VideoFileUploadSession::initTempAndStartUploading)
-  class N352 entitymethod
-  N353((UploadSessionAbortedDomainEvent))
+  N351(VideoDanmuku::onDelete)
+  class N351 entitymethod
+  N352((DanmukuDeletedDomainEvent))
+  class N352 domainevent
+  N353((DanmukuPostedDomainEvent))
   class N353 domainevent
-  N354((UploadSessionCreatedDomainEvent))
-  class N354 domainevent
-  N355((VideoFileUploadSessionChunkUploadedDomainEvent))
+  N354(VideoFileUploadSession::initTempAndStartUploading)
+  class N354 entitymethod
+  N355((UploadSessionAbortedDomainEvent))
   class N355 domainevent
-  N356((VideoFileUploadSessionMarkedDoneDomainEvent))
+  N356((UploadSessionCreatedDomainEvent))
   class N356 domainevent
-  N357(VideoHlsEncryptKey::bindVideoId)
-  class N357 entitymethod
-  N358(VideoHlsEncryptKey::onCreate)
-  class N358 entitymethod
-  N359((VideoHlsEncryptKeyCreatedDomainEvent))
-  class N359 domainevent
-  N360(VideoHlsKeyToken::bindVideoId)
+  N357((VideoFileUploadSessionChunkUploadedDomainEvent))
+  class N357 domainevent
+  N358((VideoFileUploadSessionMarkedDoneDomainEvent))
+  class N358 domainevent
+  N359(VideoHlsEncryptKey::bindVideoId)
+  class N359 entitymethod
+  N360(VideoHlsEncryptKey::onCreate)
   class N360 entitymethod
-  N361((VideoHlsKeyTokenIssuedDomainEvent))
+  N361((VideoHlsEncryptKeyCreatedDomainEvent))
   class N361 domainevent
-  N362((VideoPlayHistoryCreatedDomainEvent))
-  class N362 domainevent
-  N363((VideoPlayHistoryProgressUpdatedDomainEvent))
+  N362(VideoHlsKeyToken::bindVideoId)
+  class N362 entitymethod
+  N363((VideoHlsKeyTokenIssuedDomainEvent))
   class N363 domainevent
-  N364(VideoFilePost::&lt;get-customerId&gt;)
-  class N364 entitymethod
-  N365(VideoFilePost::&lt;get-duration&gt;)
-  class N365 entitymethod
-  N366(VideoFilePost::&lt;get-fileIndex&gt;)
+  N364((VideoPlayHistoryCreatedDomainEvent))
+  class N364 domainevent
+  N365((VideoPlayHistoryProgressUpdatedDomainEvent))
+  class N365 domainevent
+  N366(VideoFilePost::&lt;get-customerId&gt;)
   class N366 entitymethod
-  N367(VideoFilePost::&lt;get-fileName&gt;)
+  N367(VideoFilePost::&lt;get-duration&gt;)
   class N367 entitymethod
-  N368(VideoFilePost::&lt;get-fileSize&gt;)
+  N368(VideoFilePost::&lt;get-fileIndex&gt;)
   class N368 entitymethod
-  N369(VideoFilePost::&lt;get-id&gt;)
+  N369(VideoFilePost::&lt;get-fileName&gt;)
   class N369 entitymethod
-  N370(VideoFilePost::&lt;get-videoFilePostVariants&gt;)
+  N370(VideoFilePost::&lt;get-fileSize&gt;)
   class N370 entitymethod
-  N371(VideoFilePost::applyEncryptResult)
+  N371(VideoFilePost::&lt;get-id&gt;)
   class N371 entitymethod
-  N372(VideoFilePost::applyTranscodeResult)
+  N372(VideoFilePost::&lt;get-videoFilePostVariants&gt;)
   class N372 entitymethod
-  N373(VideoFilePost::syncVariants)
+  N373(VideoFilePost::applyEncryptResult)
   class N373 entitymethod
-  N374(VideoFilePostVariant::&lt;get-audioBitrateKbps&gt;)
+  N374(VideoFilePost::applyTranscodeResult)
   class N374 entitymethod
-  N375(VideoFilePostVariant::&lt;get-bandwidthBps&gt;)
+  N375(VideoFilePost::syncVariants)
   class N375 entitymethod
-  N376(VideoFilePostVariant::&lt;get-height&gt;)
+  N376(VideoFilePostVariant::&lt;get-audioBitrateKbps&gt;)
   class N376 entitymethod
-  N377(VideoFilePostVariant::&lt;get-playlistPath&gt;)
+  N377(VideoFilePostVariant::&lt;get-bandwidthBps&gt;)
   class N377 entitymethod
-  N378(VideoFilePostVariant::&lt;get-quality&gt;)
+  N378(VideoFilePostVariant::&lt;get-height&gt;)
   class N378 entitymethod
-  N379(VideoFilePostVariant::&lt;get-segmentDuration&gt;)
+  N379(VideoFilePostVariant::&lt;get-playlistPath&gt;)
   class N379 entitymethod
-  N380(VideoFilePostVariant::&lt;get-segmentPrefix&gt;)
+  N380(VideoFilePostVariant::&lt;get-quality&gt;)
   class N380 entitymethod
-  N381(VideoFilePostVariant::&lt;get-videoBitrateKbps&gt;)
+  N381(VideoFilePostVariant::&lt;get-segmentDuration&gt;)
   class N381 entitymethod
-  N382(VideoFilePostVariant::&lt;get-width&gt;)
+  N382(VideoFilePostVariant::&lt;get-segmentPrefix&gt;)
   class N382 entitymethod
-  N383(VideoPost::&lt;get-customerId&gt;)
+  N383(VideoFilePostVariant::&lt;get-videoBitrateKbps&gt;)
   class N383 entitymethod
-  N384(VideoPost::&lt;get-videoFilePosts&gt;)
+  N384(VideoFilePostVariant::&lt;get-width&gt;)
   class N384 entitymethod
-  N385(VideoPost::applyProcessStatus)
+  N385(VideoPost::&lt;get-customerId&gt;)
   class N385 entitymethod
-  N386(VideoPost::updateDuration)
+  N386(VideoPost::&lt;get-videoFilePosts&gt;)
   class N386 entitymethod
-  N387((VideoAuditFailedDomainEvent))
-  class N387 domainevent
-  N388((VideoAuditPassedDomainEvent))
-  class N388 domainevent
-  N389((VideoPostCreatedDomainEvent))
+  N387(VideoPost::applyProcessStatus)
+  class N387 entitymethod
+  N388(VideoPost::updateDuration)
+  class N388 entitymethod
+  N389((VideoAuditFailedDomainEvent))
   class N389 domainevent
-  N390((VideoPostDeletedDomainEvent))
+  N390((VideoAuditPassedDomainEvent))
   class N390 domainevent
-  N391((VideoPostInteractionChangedDomainEvent))
+  N391((VideoPostCreatedDomainEvent))
   class N391 domainevent
-  N392((VideoPostTranscodingRequestedDomainEvent))
+  N392((VideoPostDeletedDomainEvent))
   class N392 domainevent
-  N393(VideoPostProcessing::&lt;get-videoPostProcessingFiles&gt;)
-  class N393 entitymethod
-  N394(VideoPostProcessing::appendFiles)
-  class N394 entitymethod
-  N395(VideoPostProcessing::applyEncryptResult)
+  N393((VideoPostInteractionChangedDomainEvent))
+  class N393 domainevent
+  N394((VideoPostTranscodingRequestedDomainEvent))
+  class N394 domainevent
+  N395(VideoPostProcessing::&lt;get-videoPostProcessingFiles&gt;)
   class N395 entitymethod
-  N396(VideoPostProcessing::applyTranscodeResult)
+  N396(VideoPostProcessing::appendFiles)
   class N396 entitymethod
-  N397(VideoPostProcessing::applyVariantEncryptResult)
+  N397(VideoPostProcessing::applyEncryptResult)
   class N397 entitymethod
-  N398(VideoPostProcessing::onCreate)
+  N398(VideoPostProcessing::applyTranscodeResult)
   class N398 entitymethod
-  N399(VideoPostProcessing::prepareEncryptContext)
+  N399(VideoPostProcessing::applyVariantEncryptResult)
   class N399 entitymethod
-  N400(VideoPostProcessingFile::&lt;get-encryptKeyVersion&gt;)
+  N400(VideoPostProcessing::onCreate)
   class N400 entitymethod
-  N401(VideoPostProcessingFile::&lt;get-fileIndex&gt;)
+  N401(VideoPostProcessing::prepareEncryptContext)
   class N401 entitymethod
-  N402((VideoPostProcessingCompletedDomainEvent))
-  class N402 domainevent
-  N403((VideoPostProcessingEncryptContextPreparedDomainEvent))
-  class N403 domainevent
-  N404((VideoPostProcessingFileEncryptCompletedDomainEvent))
+  N402(VideoPostProcessingFile::&lt;get-encryptKeyVersion&gt;)
+  class N402 entitymethod
+  N403(VideoPostProcessingFile::&lt;get-fileIndex&gt;)
+  class N403 entitymethod
+  N404((VideoPostProcessingCompletedDomainEvent))
   class N404 domainevent
-  N405((VideoPostProcessingStartedDomainEvent))
+  N405((VideoPostProcessingEncryptContextPreparedDomainEvent))
   class N405 domainevent
-  N406((VideoPostProcessingTranscodeCompletedDomainEvent))
+  N406((VideoPostProcessingFileEncryptCompletedDomainEvent))
   class N406 domainevent
-  N407(VideoQualityPolicy::applyPolicy)
-  class N407 entitymethod
-  N408(VideoQualityPolicy::onCreate)
-  class N408 entitymethod
+  N407((VideoPostProcessingStartedDomainEvent))
+  class N407 domainevent
+  N408((VideoPostProcessingTranscodeCompletedDomainEvent))
+  class N408 domainevent
+  N409(VideoQualityPolicy::applyPolicy)
+  class N409 entitymethod
+  N410(VideoQualityPolicy::onCreate)
+  class N410 entitymethod
   N1 -->|CommandSenderMethodToCommand| N102
   N1 -->|CommandSenderMethodToCommand| N104
   N1 -->|CommandSenderMethodToCommand| N106
@@ -906,31 +910,31 @@ flowchart TD
   N1 -->|EntityMethodToDomainEvent| N341
   N1 -->|EntityMethodToDomainEvent| N342
   N1 -->|EntityMethodToDomainEvent| N343
-  N1 -->|EntityMethodToDomainEvent| N346
   N1 -->|EntityMethodToDomainEvent| N347
   N1 -->|EntityMethodToDomainEvent| N348
   N1 -->|EntityMethodToDomainEvent| N349
   N1 -->|EntityMethodToDomainEvent| N350
-  N1 -->|EntityMethodToDomainEvent| N351
+  N1 -->|EntityMethodToDomainEvent| N352
   N1 -->|EntityMethodToDomainEvent| N353
-  N1 -->|EntityMethodToDomainEvent| N354
   N1 -->|EntityMethodToDomainEvent| N355
   N1 -->|EntityMethodToDomainEvent| N356
-  N1 -->|EntityMethodToDomainEvent| N359
+  N1 -->|EntityMethodToDomainEvent| N357
+  N1 -->|EntityMethodToDomainEvent| N358
   N1 -->|EntityMethodToDomainEvent| N361
-  N1 -->|EntityMethodToDomainEvent| N362
   N1 -->|EntityMethodToDomainEvent| N363
-  N1 -->|EntityMethodToDomainEvent| N387
-  N1 -->|EntityMethodToDomainEvent| N388
+  N1 -->|EntityMethodToDomainEvent| N364
+  N1 -->|EntityMethodToDomainEvent| N365
   N1 -->|EntityMethodToDomainEvent| N389
   N1 -->|EntityMethodToDomainEvent| N390
   N1 -->|EntityMethodToDomainEvent| N391
   N1 -->|EntityMethodToDomainEvent| N392
-  N1 -->|EntityMethodToDomainEvent| N402
-  N1 -->|EntityMethodToDomainEvent| N403
+  N1 -->|EntityMethodToDomainEvent| N393
+  N1 -->|EntityMethodToDomainEvent| N394
   N1 -->|EntityMethodToDomainEvent| N404
   N1 -->|EntityMethodToDomainEvent| N405
   N1 -->|EntityMethodToDomainEvent| N406
+  N1 -->|EntityMethodToDomainEvent| N407
+  N1 -->|EntityMethodToDomainEvent| N408
   N44 -->|CommandHandlerToEntityMethod| N260
   N44 -->|CommandHandlerToEntityMethod| N261
   N44 -->|CommandHandlerToEntityMethod| N262
@@ -952,10 +956,10 @@ flowchart TD
   N52 -->|CommandHandlerToEntityMethod| N344
   N53 -->|CommandToCommandHandler| N52
   N54 -->|CommandHandlerToEntityMethod| N285
-  N54 -->|CommandHandlerToEntityMethod| N383
+  N54 -->|CommandHandlerToEntityMethod| N385
   N55 -->|CommandToCommandHandler| N54
   N56 -->|CommandHandlerToEntityMethod| N285
-  N56 -->|CommandHandlerToEntityMethod| N383
+  N56 -->|CommandHandlerToEntityMethod| N385
   N57 -->|CommandToCommandHandler| N56
   N58 -->|CommandHandlerToEntityMethod| N292
   N59 -->|CommandToCommandHandler| N58
@@ -997,15 +1001,13 @@ flowchart TD
   N87 -->|CommandHandlerToEntityMethod| N319
   N87 -->|CommandHandlerToEntityMethod| N328
   N87 -->|CommandHandlerToEntityMethod| N329
-  N87 -->|CommandHandlerToEntityMethod| N364
-  N87 -->|CommandHandlerToEntityMethod| N365
   N87 -->|CommandHandlerToEntityMethod| N366
   N87 -->|CommandHandlerToEntityMethod| N367
   N87 -->|CommandHandlerToEntityMethod| N368
   N87 -->|CommandHandlerToEntityMethod| N369
   N87 -->|CommandHandlerToEntityMethod| N370
-  N87 -->|CommandHandlerToEntityMethod| N374
-  N87 -->|CommandHandlerToEntityMethod| N375
+  N87 -->|CommandHandlerToEntityMethod| N371
+  N87 -->|CommandHandlerToEntityMethod| N372
   N87 -->|CommandHandlerToEntityMethod| N376
   N87 -->|CommandHandlerToEntityMethod| N377
   N87 -->|CommandHandlerToEntityMethod| N378
@@ -1013,50 +1015,54 @@ flowchart TD
   N87 -->|CommandHandlerToEntityMethod| N380
   N87 -->|CommandHandlerToEntityMethod| N381
   N87 -->|CommandHandlerToEntityMethod| N382
+  N87 -->|CommandHandlerToEntityMethod| N383
   N87 -->|CommandHandlerToEntityMethod| N384
+  N87 -->|CommandHandlerToEntityMethod| N386
   N88 -->|CommandToCommandHandler| N87
-  N89 -->|CommandHandlerToEntityMethod| N345
+  N89 -->|CommandHandlerToEntityMethod| N346
   N90 -->|CommandToCommandHandler| N89
-  N91 -->|CommandHandlerToEntityMethod| N345
+  N91 -->|CommandHandlerToEntityMethod| N346
   N92 -->|CommandToCommandHandler| N91
-  N93 -->|CommandHandlerToEntityMethod| N345
+  N93 -->|CommandHandlerToEntityMethod| N346
   N94 -->|CommandToCommandHandler| N93
-  N95 -->|CommandHandlerToEntityMethod| N345
+  N95 -->|CommandHandlerToEntityMethod| N346
   N96 -->|CommandToCommandHandler| N95
+  N97 -->|CommandHandlerToEntityMethod| N345
   N98 -->|CommandToCommandHandler| N97
+  N99 -->|CommandHandlerToEntityMethod| N351
   N100 -->|CommandToCommandHandler| N99
-  N101 -->|CommandHandlerToEntityMethod| N357
+  N101 -->|CommandHandlerToEntityMethod| N359
   N102 -->|CommandToCommandHandler| N101
-  N103 -->|CommandHandlerToEntityMethod| N360
+  N103 -->|CommandHandlerToEntityMethod| N362
   N104 -->|CommandToCommandHandler| N103
-  N105 -->|CommandHandlerToEntityMethod| N358
+  N105 -->|CommandHandlerToEntityMethod| N360
   N106 -->|CommandToCommandHandler| N105
-  N107 -->|CommandHandlerToEntityMethod| N352
+  N107 -->|CommandHandlerToEntityMethod| N354
   N108 -->|CommandToCommandHandler| N107
-  N111 -->|CommandHandlerToEntityMethod| N366
-  N111 -->|CommandHandlerToEntityMethod| N371
-  N111 -->|CommandHandlerToEntityMethod| N372
+  N111 -->|CommandHandlerToEntityMethod| N368
   N111 -->|CommandHandlerToEntityMethod| N373
-  N111 -->|CommandHandlerToEntityMethod| N384
-  N111 -->|CommandHandlerToEntityMethod| N385
+  N111 -->|CommandHandlerToEntityMethod| N374
+  N111 -->|CommandHandlerToEntityMethod| N375
   N111 -->|CommandHandlerToEntityMethod| N386
+  N111 -->|CommandHandlerToEntityMethod| N387
+  N111 -->|CommandHandlerToEntityMethod| N388
   N112 -->|CommandToCommandHandler| N111
-  N113 -->|CommandHandlerToEntityMethod| N395
+  N113 -->|CommandHandlerToEntityMethod| N397
   N114 -->|CommandToCommandHandler| N113
-  N115 -->|CommandHandlerToEntityMethod| N396
+  N115 -->|CommandHandlerToEntityMethod| N398
   N116 -->|CommandToCommandHandler| N115
-  N117 -->|CommandHandlerToEntityMethod| N397
+  N117 -->|CommandHandlerToEntityMethod| N399
   N118 -->|CommandToCommandHandler| N117
-  N119 -->|CommandHandlerToEntityMethod| N393
-  N119 -->|CommandHandlerToEntityMethod| N399
-  N119 -->|CommandHandlerToEntityMethod| N400
+  N119 -->|CommandHandlerToEntityMethod| N395
   N119 -->|CommandHandlerToEntityMethod| N401
+  N119 -->|CommandHandlerToEntityMethod| N402
+  N119 -->|CommandHandlerToEntityMethod| N403
   N120 -->|CommandToCommandHandler| N119
-  N121 -->|CommandHandlerToEntityMethod| N394
-  N121 -->|CommandHandlerToEntityMethod| N398
+  N121 -->|CommandHandlerToEntityMethod| N396
+  N121 -->|CommandHandlerToEntityMethod| N400
   N122 -->|CommandToCommandHandler| N121
-  N123 -->|CommandHandlerToEntityMethod| N407
-  N123 -->|CommandHandlerToEntityMethod| N408
+  N123 -->|CommandHandlerToEntityMethod| N409
+  N123 -->|CommandHandlerToEntityMethod| N410
   N124 -->|CommandToCommandHandler| N123
   N125 -->|CliToCliHandler| N2
   N126 -->|CliToCliHandler| N3
@@ -1252,46 +1258,48 @@ flowchart TD
   N342 -->|DomainEventToHandler| N226
   N343 -->|DomainEventToHandler| N227
   N343 -->|DomainEventToHandler| N228
-  N346 -->|DomainEventToHandler| N229
-  N346 -->|DomainEventToHandler| N230
-  N347 -->|DomainEventToHandler| N231
-  N347 -->|DomainEventToHandler| N232
-  N347 -->|DomainEventToHandler| N233
-  N348 -->|DomainEventToHandler| N234
-  N349 -->|DomainEventToHandler| N235
-  N350 -->|DomainEventToHandler| N236
-  N351 -->|DomainEventToHandler| N237
-  N353 -->|DomainEventToHandler| N239
-  N354 -->|DomainEventToHandler| N240
-  N355 -->|DomainEventToHandler| N241
-  N356 -->|DomainEventToHandler| N242
-  N358 -->|EntityMethodToDomainEvent| N359
-  N359 -->|DomainEventToHandler| N238
-  N361 -->|DomainEventToHandler| N243
-  N361 -->|DomainEventToHandler| N244
-  N362 -->|DomainEventToHandler| N245
-  N363 -->|DomainEventToHandler| N246
-  N387 -->|DomainEventToHandler| N247
-  N388 -->|DomainEventToHandler| N248
-  N388 -->|DomainEventToHandler| N249
-  N388 -->|DomainEventToHandler| N250
-  N388 -->|DomainEventToHandler| N251
-  N389 -->|DomainEventToHandler| N252
-  N390 -->|DomainEventToHandler| N222
-  N390 -->|DomainEventToHandler| N223
-  N390 -->|DomainEventToHandler| N224
-  N391 -->|DomainEventToHandler| N253
-  N392 -->|DomainEventToHandler| N254
-  N394 -->|EntityMethodToDomainEvent| N405
-  N395 -->|EntityMethodToDomainEvent| N402
-  N396 -->|EntityMethodToDomainEvent| N406
+  N345 -->|EntityMethodToDomainEvent| N347
+  N347 -->|DomainEventToHandler| N229
+  N347 -->|DomainEventToHandler| N230
+  N348 -->|DomainEventToHandler| N231
+  N348 -->|DomainEventToHandler| N232
+  N348 -->|DomainEventToHandler| N233
+  N349 -->|DomainEventToHandler| N234
+  N350 -->|DomainEventToHandler| N235
+  N351 -->|EntityMethodToDomainEvent| N352
+  N352 -->|DomainEventToHandler| N236
+  N353 -->|DomainEventToHandler| N237
+  N355 -->|DomainEventToHandler| N239
+  N356 -->|DomainEventToHandler| N240
+  N357 -->|DomainEventToHandler| N241
+  N358 -->|DomainEventToHandler| N242
+  N360 -->|EntityMethodToDomainEvent| N361
+  N361 -->|DomainEventToHandler| N238
+  N363 -->|DomainEventToHandler| N243
+  N363 -->|DomainEventToHandler| N244
+  N364 -->|DomainEventToHandler| N245
+  N365 -->|DomainEventToHandler| N246
+  N389 -->|DomainEventToHandler| N247
+  N390 -->|DomainEventToHandler| N248
+  N390 -->|DomainEventToHandler| N249
+  N390 -->|DomainEventToHandler| N250
+  N390 -->|DomainEventToHandler| N251
+  N391 -->|DomainEventToHandler| N252
+  N392 -->|DomainEventToHandler| N222
+  N392 -->|DomainEventToHandler| N223
+  N392 -->|DomainEventToHandler| N224
+  N393 -->|DomainEventToHandler| N253
+  N394 -->|DomainEventToHandler| N254
+  N396 -->|EntityMethodToDomainEvent| N407
   N397 -->|EntityMethodToDomainEvent| N404
-  N399 -->|EntityMethodToDomainEvent| N403
-  N402 -->|DomainEventToHandler| N255
-  N403 -->|DomainEventToHandler| N256
-  N404 -->|DomainEventToHandler| N257
-  N405 -->|DomainEventToHandler| N258
-  N406 -->|DomainEventToHandler| N259
+  N398 -->|EntityMethodToDomainEvent| N408
+  N399 -->|EntityMethodToDomainEvent| N406
+  N401 -->|EntityMethodToDomainEvent| N405
+  N404 -->|DomainEventToHandler| N255
+  N405 -->|DomainEventToHandler| N256
+  N406 -->|DomainEventToHandler| N257
+  N407 -->|DomainEventToHandler| N258
+  N408 -->|DomainEventToHandler| N259
   classDef cli fill:#86EFAC,stroke:#15803D,color:#0F172A
   classDef clihandler fill:#22C55E,stroke:#166534,color:#F0FDF4
   classDef command fill:#FDBA74,stroke:#C2410C,color:#111827

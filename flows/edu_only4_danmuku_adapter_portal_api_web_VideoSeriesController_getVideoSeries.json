@@ -1,9 +1,14 @@
 {
   "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoSeriesController::getVideoSeries",
   "entryType" : "controllermethod",
-  "nodeCount" : 2,
-  "edgeCount" : 1,
+  "nodeCount" : 3,
+  "edgeCount" : 2,
   "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.application.queries.customer_video_series.GetCustomerVideoSeriesListQryHandler",
+    "name" : "GetCustomerVideoSeriesListQryHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.queries.customer_video_series.GetCustomerVideoSeriesListQryHandler",
+    "type" : "queryhandler"
+  }, {
     "id" : "edu.only4.danmuku.adapter.portal.api.web.VideoSeriesController::getVideoSeries",
     "name" : "VideoSeriesController::getVideoSeries",
     "fullName" : "edu.only4.danmuku.adapter.portal.api.web.VideoSeriesController::getVideoSeries",
@@ -18,6 +23,11 @@
     "fromId" : "edu.only4.danmuku.adapter.portal.api.web.VideoSeriesController::getVideoSeries",
     "toId" : "edu.only4.danmuku.application.queries.customer_video_series.GetCustomerVideoSeriesListQry.Request",
     "type" : "ControllerMethodToQuery",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.queries.customer_video_series.GetCustomerVideoSeriesListQry.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.queries.customer_video_series.GetCustomerVideoSeriesListQryHandler",
+    "type" : "QueryToQueryHandler",
     "label" : null
   } ]
 }

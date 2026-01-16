@@ -1,19 +1,19 @@
 {
-  "generatedAt" : "2026-01-16T08:57:14Z",
+  "generatedAt" : "2026-01-16T10:56:57Z",
   "inputDirs" : [ "D:\\ideaProjects\\code-analysis\\only-danmuku\\only-danmuku-adapter\\build\\cap4k-code-analysis", "D:\\ideaProjects\\code-analysis\\only-danmuku\\only-danmuku-application\\build\\cap4k-code-analysis", "D:\\ideaProjects\\code-analysis\\only-danmuku\\only-danmuku-domain\\build\\cap4k-code-analysis" ],
   "entryTypes" : [ "<anonymous>", "controllermethod" ],
   "entryTypeCounts" : {
     "<anonymous>" : 1,
     "controllermethod" : 112
   },
-  "nodeCount" : 2086,
-  "edgeCount" : 838,
+  "nodeCount" : 2147,
+  "edgeCount" : 872,
   "flowCount" : 113,
   "flows" : [ {
     "entryId" : "<anonymous>",
     "entryType" : "<anonymous>",
-    "nodeCount" : 408,
-    "edgeCount" : 477,
+    "nodeCount" : 410,
+    "edgeCount" : 481,
     "json" : "anonymous.json",
     "mermaid" : "anonymous.mmd"
   }, {
@@ -754,8 +754,8 @@
   }, {
     "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoSeriesController::deleteVideoSeries",
     "entryType" : "controllermethod",
-    "nodeCount" : 3,
-    "edgeCount" : 2,
+    "nodeCount" : 4,
+    "edgeCount" : 3,
     "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoSeriesController_deleteVideoSeries.json",
     "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoSeriesController_deleteVideoSeries.mmd"
   }, {
@@ -768,22 +768,22 @@
   }, {
     "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoSeriesController::getAllVideoList",
     "entryType" : "controllermethod",
-    "nodeCount" : 2,
-    "edgeCount" : 1,
+    "nodeCount" : 3,
+    "edgeCount" : 2,
     "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoSeriesController_getAllVideoList.json",
     "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoSeriesController_getAllVideoList.mmd"
   }, {
     "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoSeriesController::getVideoSeries",
     "entryType" : "controllermethod",
-    "nodeCount" : 2,
-    "edgeCount" : 1,
+    "nodeCount" : 3,
+    "edgeCount" : 2,
     "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoSeriesController_getVideoSeries.json",
     "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoSeriesController_getVideoSeries.mmd"
   }, {
     "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoSeriesController::loadVideoSeriesWithVideo",
     "entryType" : "controllermethod",
-    "nodeCount" : 2,
-    "edgeCount" : 1,
+    "nodeCount" : 3,
+    "edgeCount" : 2,
     "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoSeriesController_loadVideoSeriesWi.json",
     "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoSeriesController_loadVideoSeriesWi.mmd"
   }, {

@@ -3,7 +3,6 @@
 package buildsrc.convention
 
 import org.gradle.api.tasks.testing.logging.TestLogEvent
-import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.time.Duration
 
@@ -58,4 +57,5 @@ val cap4kPluginArgs = providers.provider {
 
 tasks.withType<KotlinCompile>().configureEach {
     compilerOptions.freeCompilerArgs.addAll(cap4kPluginArgs)
+    outputs.dir(layout.buildDirectory.dir("cap4k-code-analysis"))
 }

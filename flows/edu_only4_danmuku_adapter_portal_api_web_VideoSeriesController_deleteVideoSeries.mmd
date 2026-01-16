@@ -5,8 +5,12 @@ flowchart TD
   class N2 commandhandler
   N3{{DeleteVideoSeriesCmd.Request}}
   class N3 command
+  N4(CustomerVideoSeries::onDelete)
+  class N4 entitymethod
   N1 -->|ControllerMethodToCommand| N3
+  N2 -->|CommandHandlerToEntityMethod| N4
   N3 -->|CommandToCommandHandler| N2
   classDef command fill:#FDBA74,stroke:#C2410C,color:#111827
   classDef commandhandler fill:#F97316,stroke:#9A3412,color:#111827
   classDef controllermethod fill:#FDE68A,stroke:#B45309,color:#111827
+  classDef entitymethod fill:#F3F4F6,stroke:#6B7280,color:#111827
