@@ -49,8 +49,8 @@ val cap4kCompilerPluginClasspath = configurations.create("cap4kCompilerPluginCla
 }
 val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
 dependencies {
-    cap4kCompilerPluginClasspath(libs.findLibrary("cap4k-code-analysis-compiler-plugin").get())
-    cap4kCompilerPluginClasspath(libs.findLibrary("cap4k-extensions-code-analysis-core").get())
+    cap4kCompilerPluginClasspath(libs.findLibrary("cap4k-plugin-code-analysis-compiler").get())
+    cap4kCompilerPluginClasspath(libs.findLibrary("cap4k-plugin-code-analysis-core").get())
 }
 val cap4kPluginArgs = providers.provider {
     cap4kCompilerPluginClasspath

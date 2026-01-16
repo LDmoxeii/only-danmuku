@@ -1,8 +1,8 @@
 // [cap4k-ddd-codegen-gradle-plugin:do-not-overwrite]
 plugins {
     id("buildsrc.convention.kotlin-jvm")
-    id("com.only4.cap4k.code.analysis.flow-export") version "0.4.2-SNAPSHOT"
-    id("com.only4.cap4k.ddd.codegen") version "0.4.2-SNAPSHOT"
+    id("com.only4.cap4k.plugin.codeanalysis.flow-export") version "0.4.2-SNAPSHOT"
+    id("com.only4.cap4k.plugin.codegen") version "0.4.2-SNAPSHOT"
 }
 
 dependencies {
