@@ -5,20 +5,54 @@ flowchart TD
   class N2 queryhandler
   N3([FileController::uploadVideo])
   class N3 controllermethod
-  N4{{UploadVideoChunkCmd.Request}}
-  class N4 command
-  N5{{UploadVideoChunkStorageCli.Request}}
-  class N5 cli
-  N6{{GetUploadSessionTempPathQry.Request}}
-  class N6 query
-  N3 -->|ControllerMethodToCommand| N4
-  N3 -->|ControllerMethodToCli| N5
-  N3 -->|ControllerMethodToQuery| N6
-  N5 -->|CliToCliHandler| N1
-  N6 -->|QueryToQueryHandler| N2
+  N4[[UploadVideoChunkCmd.Handler]]
+  class N4 commandhandler
+  N5{{UploadVideoChunkCmd.Request}}
+  class N5 command
+  N6{{UploadVideoChunkStorageCli.Request}}
+  class N6 cli
+  N7{{GetUploadSessionTempPathQry.Request}}
+  class N7 query
+  N8[[VideoFileUploadSessionChunkUploadedDomainEventSubscriber::on]]
+  class N8 domaineventhandler
+  N9[[VideoFileUploadSessionMarkedDoneDomainEventSubscriber::on]]
+  class N9 domaineventhandler
+  N10(VideoFileUploadSession::ensureActive)
+  class N10 entitymethod
+  N11(VideoFileUploadSession::ensureChunkAllowed)
+  class N11 entitymethod
+  N12(VideoFileUploadSession::ensureOwnedBy)
+  class N12 entitymethod
+  N13(VideoFileUploadSession::onChunkUploaded)
+  class N13 entitymethod
+  N14(VideoFileUploadSession::tryMarkDoneIfComplete)
+  class N14 entitymethod
+  N15((VideoFileUploadSessionChunkUploadedDomainEvent))
+  class N15 domainevent
+  N16((VideoFileUploadSessionMarkedDoneDomainEvent))
+  class N16 domainevent
+  N3 -->|ControllerMethodToCommand| N5
+  N3 -->|ControllerMethodToCli| N6
+  N3 -->|ControllerMethodToQuery| N7
+  N4 -->|CommandHandlerToEntityMethod| N10
+  N4 -->|CommandHandlerToEntityMethod| N11
+  N4 -->|CommandHandlerToEntityMethod| N12
+  N4 -->|CommandHandlerToEntityMethod| N13
+  N4 -->|CommandHandlerToEntityMethod| N14
+  N5 -->|CommandToCommandHandler| N4
+  N6 -->|CliToCliHandler| N1
+  N7 -->|QueryToQueryHandler| N2
+  N13 -->|EntityMethodToDomainEvent| N15
+  N14 -->|EntityMethodToDomainEvent| N16
+  N15 -->|DomainEventToHandler| N8
+  N16 -->|DomainEventToHandler| N9
   classDef cli fill:#86EFAC,stroke:#15803D,color:#0F172A
   classDef clihandler fill:#22C55E,stroke:#166534,color:#F0FDF4
   classDef command fill:#FDBA74,stroke:#C2410C,color:#111827
+  classDef commandhandler fill:#F97316,stroke:#9A3412,color:#111827
   classDef controllermethod fill:#FDE68A,stroke:#B45309,color:#111827
+  classDef domainevent fill:#FECACA,stroke:#B91C1C,color:#111827
+  classDef domaineventhandler fill:#F87171,stroke:#991B1B,color:#111827
+  classDef entitymethod fill:#F3F4F6,stroke:#6B7280,color:#111827
   classDef query fill:#93C5FD,stroke:#1D4ED8,color:#0F172A
   classDef queryhandler fill:#3B82F6,stroke:#1E40AF,color:#F8FAFC

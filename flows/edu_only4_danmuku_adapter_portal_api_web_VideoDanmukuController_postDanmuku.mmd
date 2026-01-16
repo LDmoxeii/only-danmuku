@@ -1,8 +1,63 @@
 flowchart TD
   N1([VideoDanmukuController::postDanmuku])
   class N1 controllermethod
-  N2{{PostDanmukuCmd.Request}}
-  class N2 command
-  N1 -->|ControllerMethodToCommand| N2
+  N2[[UpdateStatisticsInfoCmd.Handler]]
+  class N2 commandhandler
+  N3{{UpdateStatisticsInfoCmd.Request}}
+  class N3 command
+  N4[[ApplyVideoDanmukuCountDeltaCmd.Handler]]
+  class N4 commandhandler
+  N5{{ApplyVideoDanmukuCountDeltaCmd.Request}}
+  class N5 command
+  N6[[PostDanmukuCmd.Handler]]
+  class N6 commandhandler
+  N7{{PostDanmukuCmd.Request}}
+  class N7 command
+  N8[[StatisticsCountUpdatedDomainEventSubscriber::on]]
+  class N8 domaineventhandler
+  N9[[VideoDanmukuCountDeltaAppliedDomainEventSubscriber::on]]
+  class N9 domaineventhandler
+  N10[[DanmukuPostedDomainEventSubscriber::on]]
+  class N10 domaineventhandler
+  N11(Statistics::onCreate)
+  class N11 entitymethod
+  N12(Statistics::updateCount)
+  class N12 entitymethod
+  N13((StatisticsCountUpdatedDomainEvent))
+  class N13 domainevent
+  N14(Video::&lt;get-danmukuCount&gt;)
+  class N14 entitymethod
+  N15(Video::&lt;get-id&gt;)
+  class N15 entitymethod
+  N16(Video::applyDanmukuCountDelta)
+  class N16 entitymethod
+  N17((VideoDanmukuCountDeltaAppliedDomainEvent))
+  class N17 domainevent
+  N18(VideoDanmuku::onCreate)
+  class N18 entitymethod
+  N19((DanmukuPostedDomainEvent))
+  class N19 domainevent
+  N1 -->|ControllerMethodToCommand| N7
+  N2 -->|CommandHandlerToEntityMethod| N11
+  N2 -->|CommandHandlerToEntityMethod| N12
+  N3 -->|CommandToCommandHandler| N2
+  N4 -->|CommandHandlerToEntityMethod| N14
+  N4 -->|CommandHandlerToEntityMethod| N15
+  N4 -->|CommandHandlerToEntityMethod| N16
+  N5 -->|CommandToCommandHandler| N4
+  N6 -->|CommandHandlerToEntityMethod| N18
+  N7 -->|CommandToCommandHandler| N6
+  N9 -->|DomainEventHandlerToCommand| N3
+  N10 -->|DomainEventHandlerToCommand| N5
+  N12 -->|EntityMethodToDomainEvent| N13
+  N13 -->|DomainEventToHandler| N8
+  N16 -->|EntityMethodToDomainEvent| N17
+  N17 -->|DomainEventToHandler| N9
+  N18 -->|EntityMethodToDomainEvent| N19
+  N19 -->|DomainEventToHandler| N10
   classDef command fill:#FDBA74,stroke:#C2410C,color:#111827
+  classDef commandhandler fill:#F97316,stroke:#9A3412,color:#111827
   classDef controllermethod fill:#FDE68A,stroke:#B45309,color:#111827
+  classDef domainevent fill:#FECACA,stroke:#B91C1C,color:#111827
+  classDef domaineventhandler fill:#F87171,stroke:#991B1B,color:#111827
+  classDef entitymethod fill:#F3F4F6,stroke:#6B7280,color:#111827

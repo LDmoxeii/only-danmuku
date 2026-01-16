@@ -1,23 +1,83 @@
 {
   "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminCategoryController::changeSort",
   "entryType" : "controllermethod",
-  "nodeCount" : 2,
-  "edgeCount" : 1,
+  "nodeCount" : 8,
+  "edgeCount" : 7,
   "nodes" : [ {
     "id" : "edu.only4.danmuku.adapter.portal.api.admin.AdminCategoryController::changeSort",
     "name" : "AdminCategoryController::changeSort",
     "fullName" : "edu.only4.danmuku.adapter.portal.api.admin.AdminCategoryController::changeSort",
     "type" : "controllermethod"
   }, {
+    "id" : "edu.only4.danmuku.application.commands.category.UpdateCategorySortOrderCmd.Handler",
+    "name" : "UpdateCategorySortOrderCmd.Handler",
+    "fullName" : "edu.only4.danmuku.application.commands.category.UpdateCategorySortOrderCmd.Handler",
+    "type" : "commandhandler"
+  }, {
     "id" : "edu.only4.danmuku.application.commands.category.UpdateCategorySortOrderCmd.Request",
     "name" : "UpdateCategorySortOrderCmd.Request",
     "fullName" : "edu.only4.danmuku.application.commands.category.UpdateCategorySortOrderCmd.Request",
     "type" : "command"
+  }, {
+    "id" : "edu.only4.danmuku.application.subscribers.domain.category.CategorySortChangedDomainEventSubscriber::on",
+    "name" : "CategorySortChangedDomainEventSubscriber::on",
+    "fullName" : "edu.only4.danmuku.application.subscribers.domain.category.CategorySortChangedDomainEventSubscriber::on",
+    "type" : "domaineventhandler"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.category.Category::<get-id>",
+    "name" : "Category::<get-id>",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.category.Category::<get-id>",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.category.Category::changeSort",
+    "name" : "Category::changeSort",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.category.Category::changeSort",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.category.Category::isDirectChildOf",
+    "name" : "Category::isDirectChildOf",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.category.Category::isDirectChildOf",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.category.events.CategorySortChangedDomainEvent",
+    "name" : "CategorySortChangedDomainEvent",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.category.events.CategorySortChangedDomainEvent",
+    "type" : "domainevent"
   } ],
   "edges" : [ {
     "fromId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminCategoryController::changeSort",
     "toId" : "edu.only4.danmuku.application.commands.category.UpdateCategorySortOrderCmd.Request",
     "type" : "ControllerMethodToCommand",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.category.UpdateCategorySortOrderCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.category.Category::<get-id>",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.category.UpdateCategorySortOrderCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.category.Category::changeSort",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.category.UpdateCategorySortOrderCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.category.Category::isDirectChildOf",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.category.UpdateCategorySortOrderCmd.Request",
+    "toId" : "edu.only4.danmuku.application.commands.category.UpdateCategorySortOrderCmd.Handler",
+    "type" : "CommandToCommandHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.category.Category::changeSort",
+    "toId" : "edu.only4.danmuku.domain.aggregates.category.events.CategorySortChangedDomainEvent",
+    "type" : "EntityMethodToDomainEvent",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.category.events.CategorySortChangedDomainEvent",
+    "toId" : "edu.only4.danmuku.application.subscribers.domain.category.CategorySortChangedDomainEventSubscriber::on",
+    "type" : "DomainEventToHandler",
     "label" : null
   } ]
 }

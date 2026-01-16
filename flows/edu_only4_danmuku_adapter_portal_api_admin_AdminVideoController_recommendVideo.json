@@ -1,23 +1,83 @@
 {
   "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminVideoController::recommendVideo",
   "entryType" : "controllermethod",
-  "nodeCount" : 2,
-  "edgeCount" : 1,
+  "nodeCount" : 8,
+  "edgeCount" : 7,
   "nodes" : [ {
     "id" : "edu.only4.danmuku.adapter.portal.api.admin.AdminVideoController::recommendVideo",
     "name" : "AdminVideoController::recommendVideo",
     "fullName" : "edu.only4.danmuku.adapter.portal.api.admin.AdminVideoController::recommendVideo",
     "type" : "controllermethod"
   }, {
+    "id" : "edu.only4.danmuku.application.commands.video.RecommendVideoCmd.Handler",
+    "name" : "RecommendVideoCmd.Handler",
+    "fullName" : "edu.only4.danmuku.application.commands.video.RecommendVideoCmd.Handler",
+    "type" : "commandhandler"
+  }, {
     "id" : "edu.only4.danmuku.application.commands.video.RecommendVideoCmd.Request",
     "name" : "RecommendVideoCmd.Request",
     "fullName" : "edu.only4.danmuku.application.commands.video.RecommendVideoCmd.Request",
     "type" : "command"
+  }, {
+    "id" : "edu.only4.danmuku.application.subscribers.domain.video.VideoRecommendedDomainEventSubscriber::on",
+    "name" : "VideoRecommendedDomainEventSubscriber::on",
+    "fullName" : "edu.only4.danmuku.application.subscribers.domain.video.VideoRecommendedDomainEventSubscriber::on",
+    "type" : "domaineventhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.subscribers.domain.video.VideoUnrecommendedDomainEventSubscriber::on",
+    "name" : "VideoUnrecommendedDomainEventSubscriber::on",
+    "fullName" : "edu.only4.danmuku.application.subscribers.domain.video.VideoUnrecommendedDomainEventSubscriber::on",
+    "type" : "domaineventhandler"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video.Video::toggleRecommend",
+    "name" : "Video::toggleRecommend",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video.Video::toggleRecommend",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video.events.VideoRecommendedDomainEvent",
+    "name" : "VideoRecommendedDomainEvent",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video.events.VideoRecommendedDomainEvent",
+    "type" : "domainevent"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video.events.VideoUnrecommendedDomainEvent",
+    "name" : "VideoUnrecommendedDomainEvent",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video.events.VideoUnrecommendedDomainEvent",
+    "type" : "domainevent"
   } ],
   "edges" : [ {
     "fromId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminVideoController::recommendVideo",
     "toId" : "edu.only4.danmuku.application.commands.video.RecommendVideoCmd.Request",
     "type" : "ControllerMethodToCommand",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video.RecommendVideoCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video.Video::toggleRecommend",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video.RecommendVideoCmd.Request",
+    "toId" : "edu.only4.danmuku.application.commands.video.RecommendVideoCmd.Handler",
+    "type" : "CommandToCommandHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.video.Video::toggleRecommend",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video.events.VideoRecommendedDomainEvent",
+    "type" : "EntityMethodToDomainEvent",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.video.Video::toggleRecommend",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video.events.VideoUnrecommendedDomainEvent",
+    "type" : "EntityMethodToDomainEvent",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.video.events.VideoRecommendedDomainEvent",
+    "toId" : "edu.only4.danmuku.application.subscribers.domain.video.VideoRecommendedDomainEventSubscriber::on",
+    "type" : "DomainEventToHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.video.events.VideoUnrecommendedDomainEvent",
+    "toId" : "edu.only4.danmuku.application.subscribers.domain.video.VideoUnrecommendedDomainEventSubscriber::on",
+    "type" : "DomainEventToHandler",
     "label" : null
   } ]
 }

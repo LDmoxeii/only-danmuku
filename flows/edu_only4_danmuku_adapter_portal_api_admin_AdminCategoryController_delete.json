@@ -1,23 +1,43 @@
 {
   "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminCategoryController::delete",
   "entryType" : "controllermethod",
-  "nodeCount" : 2,
-  "edgeCount" : 1,
+  "nodeCount" : 4,
+  "edgeCount" : 3,
   "nodes" : [ {
     "id" : "edu.only4.danmuku.adapter.portal.api.admin.AdminCategoryController::delete",
     "name" : "AdminCategoryController::delete",
     "fullName" : "edu.only4.danmuku.adapter.portal.api.admin.AdminCategoryController::delete",
     "type" : "controllermethod"
   }, {
+    "id" : "edu.only4.danmuku.application.commands.category.DeleteCategoryCmd.Handler",
+    "name" : "DeleteCategoryCmd.Handler",
+    "fullName" : "edu.only4.danmuku.application.commands.category.DeleteCategoryCmd.Handler",
+    "type" : "commandhandler"
+  }, {
     "id" : "edu.only4.danmuku.application.commands.category.DeleteCategoryCmd.Request",
     "name" : "DeleteCategoryCmd.Request",
     "fullName" : "edu.only4.danmuku.application.commands.category.DeleteCategoryCmd.Request",
     "type" : "command"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.category.Category::onDelete",
+    "name" : "Category::onDelete",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.category.Category::onDelete",
+    "type" : "entitymethod"
   } ],
   "edges" : [ {
     "fromId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminCategoryController::delete",
     "toId" : "edu.only4.danmuku.application.commands.category.DeleteCategoryCmd.Request",
     "type" : "ControllerMethodToCommand",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.category.DeleteCategoryCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.category.Category::onDelete",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.category.DeleteCategoryCmd.Request",
+    "toId" : "edu.only4.danmuku.application.commands.category.DeleteCategoryCmd.Handler",
+    "type" : "CommandToCommandHandler",
     "label" : null
   } ]
 }

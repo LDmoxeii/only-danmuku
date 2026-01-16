@@ -1,8 +1,45 @@
 flowchart TD
   N1([UCenterVideoPostController::saveInteraction])
   class N1 controllermethod
-  N2{{ChangeVideoPostInteractionCmd.Request}}
-  class N2 command
-  N1 -->|ControllerMethodToCommand| N2
+  N2[[ChangeVideoInteractionCmd.Handler]]
+  class N2 commandhandler
+  N3{{ChangeVideoInteractionCmd.Request}}
+  class N3 command
+  N4[[ChangeVideoPostInteractionCmd.Handler]]
+  class N4 commandhandler
+  N5{{ChangeVideoPostInteractionCmd.Request}}
+  class N5 command
+  N6[[VideoInteractionChangedDomainEventSubscriber::on]]
+  class N6 domaineventhandler
+  N7[[VideoPostInteractionChangedDomainEventSubscriber::on]]
+  class N7 domaineventhandler
+  N8(Video::&lt;get-customerId&gt;)
+  class N8 entitymethod
+  N9(Video::changeInteraction)
+  class N9 entitymethod
+  N10((VideoInteractionChangedDomainEvent))
+  class N10 domainevent
+  N11(VideoPost::&lt;get-customerId&gt;)
+  class N11 entitymethod
+  N12(VideoPost::changeInteraction)
+  class N12 entitymethod
+  N13((VideoPostInteractionChangedDomainEvent))
+  class N13 domainevent
+  N1 -->|ControllerMethodToCommand| N5
+  N2 -->|CommandHandlerToEntityMethod| N8
+  N2 -->|CommandHandlerToEntityMethod| N9
+  N3 -->|CommandToCommandHandler| N2
+  N4 -->|CommandHandlerToEntityMethod| N11
+  N4 -->|CommandHandlerToEntityMethod| N12
+  N5 -->|CommandToCommandHandler| N4
+  N7 -->|DomainEventHandlerToCommand| N3
+  N9 -->|EntityMethodToDomainEvent| N10
+  N10 -->|DomainEventToHandler| N6
+  N12 -->|EntityMethodToDomainEvent| N13
+  N13 -->|DomainEventToHandler| N7
   classDef command fill:#FDBA74,stroke:#C2410C,color:#111827
+  classDef commandhandler fill:#F97316,stroke:#9A3412,color:#111827
   classDef controllermethod fill:#FDE68A,stroke:#B45309,color:#111827
+  classDef domainevent fill:#FECACA,stroke:#B91C1C,color:#111827
+  classDef domaineventhandler fill:#F87171,stroke:#991B1B,color:#111827
+  classDef entitymethod fill:#F3F4F6,stroke:#6B7280,color:#111827

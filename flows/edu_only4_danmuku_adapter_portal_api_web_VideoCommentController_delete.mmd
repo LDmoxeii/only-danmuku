@@ -1,8 +1,72 @@
 flowchart TD
   N1([VideoCommentController::delete])
   class N1 controllermethod
-  N2{{DeleteVideoCommentCmd.Request}}
-  class N2 command
-  N1 -->|ControllerMethodToCommand| N2
+  N2[[UpdateStatisticsInfoCmd.Handler]]
+  class N2 commandhandler
+  N3{{UpdateStatisticsInfoCmd.Request}}
+  class N3 command
+  N4[[ApplyVideoCommentCountDeltaCmd.Handler]]
+  class N4 commandhandler
+  N5{{ApplyVideoCommentCountDeltaCmd.Request}}
+  class N5 command
+  N6[[DeleteVideoCommentCmd.Handler]]
+  class N6 commandhandler
+  N7{{DeleteVideoCommentCmd.Request}}
+  class N7 command
+  N8[[StatisticsCountUpdatedDomainEventSubscriber::on]]
+  class N8 domaineventhandler
+  N9[[VideoCommentCountDeltaAppliedDomainEventSubscriber::on]]
+  class N9 domaineventhandler
+  N10[[CommentDeletedDomainEventSubscriber::on]]
+  class N10 domaineventhandler
+  N11[[CommentDeletedDomainEventSubscriber::on1]]
+  class N11 domaineventhandler
+  N12(Statistics::onCreate)
+  class N12 entitymethod
+  N13(Statistics::updateCount)
+  class N13 entitymethod
+  N14((StatisticsCountUpdatedDomainEvent))
+  class N14 domainevent
+  N15(Video::&lt;get-commentCount&gt;)
+  class N15 entitymethod
+  N16(Video::&lt;get-id&gt;)
+  class N16 entitymethod
+  N17(Video::applyCommentCountDelta)
+  class N17 entitymethod
+  N18((VideoCommentCountDeltaAppliedDomainEvent))
+  class N18 domainevent
+  N19(VideoComment::&lt;get-id&gt;)
+  class N19 entitymethod
+  N20(VideoComment::&lt;get-parentId&gt;)
+  class N20 entitymethod
+  N21(VideoComment::onDelete)
+  class N21 entitymethod
+  N22((CommentDeletedDomainEvent))
+  class N22 domainevent
+  N1 -->|ControllerMethodToCommand| N7
+  N2 -->|CommandHandlerToEntityMethod| N12
+  N2 -->|CommandHandlerToEntityMethod| N13
+  N3 -->|CommandToCommandHandler| N2
+  N4 -->|CommandHandlerToEntityMethod| N15
+  N4 -->|CommandHandlerToEntityMethod| N16
+  N4 -->|CommandHandlerToEntityMethod| N17
+  N5 -->|CommandToCommandHandler| N4
+  N6 -->|CommandHandlerToEntityMethod| N19
+  N6 -->|CommandHandlerToEntityMethod| N20
+  N6 -->|CommandHandlerToEntityMethod| N21
+  N7 -->|CommandToCommandHandler| N6
+  N9 -->|DomainEventHandlerToCommand| N3
+  N10 -->|DomainEventHandlerToCommand| N5
+  N13 -->|EntityMethodToDomainEvent| N14
+  N14 -->|DomainEventToHandler| N8
+  N17 -->|EntityMethodToDomainEvent| N18
+  N18 -->|DomainEventToHandler| N9
+  N21 -->|EntityMethodToDomainEvent| N22
+  N22 -->|DomainEventToHandler| N10
+  N22 -->|DomainEventToHandler| N11
   classDef command fill:#FDBA74,stroke:#C2410C,color:#111827
+  classDef commandhandler fill:#F97316,stroke:#9A3412,color:#111827
   classDef controllermethod fill:#FDE68A,stroke:#B45309,color:#111827
+  classDef domainevent fill:#FECACA,stroke:#B91C1C,color:#111827
+  classDef domaineventhandler fill:#F87171,stroke:#991B1B,color:#111827
+  classDef entitymethod fill:#F3F4F6,stroke:#6B7280,color:#111827

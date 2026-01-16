@@ -1,23 +1,43 @@
 {
   "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UserMessageController::delete",
   "entryType" : "controllermethod",
-  "nodeCount" : 2,
-  "edgeCount" : 1,
+  "nodeCount" : 4,
+  "edgeCount" : 3,
   "nodes" : [ {
     "id" : "edu.only4.danmuku.adapter.portal.api.web.UserMessageController::delete",
     "name" : "UserMessageController::delete",
     "fullName" : "edu.only4.danmuku.adapter.portal.api.web.UserMessageController::delete",
     "type" : "controllermethod"
   }, {
+    "id" : "edu.only4.danmuku.application.commands.customer_message.DeleteMessageCmd.Handler",
+    "name" : "DeleteMessageCmd.Handler",
+    "fullName" : "edu.only4.danmuku.application.commands.customer_message.DeleteMessageCmd.Handler",
+    "type" : "commandhandler"
+  }, {
     "id" : "edu.only4.danmuku.application.commands.customer_message.DeleteMessageCmd.Request",
     "name" : "DeleteMessageCmd.Request",
     "fullName" : "edu.only4.danmuku.application.commands.customer_message.DeleteMessageCmd.Request",
     "type" : "command"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.customer_message.CustomerMessage::onDelete",
+    "name" : "CustomerMessage::onDelete",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.customer_message.CustomerMessage::onDelete",
+    "type" : "entitymethod"
   } ],
   "edges" : [ {
     "fromId" : "edu.only4.danmuku.adapter.portal.api.web.UserMessageController::delete",
     "toId" : "edu.only4.danmuku.application.commands.customer_message.DeleteMessageCmd.Request",
     "type" : "ControllerMethodToCommand",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.customer_message.DeleteMessageCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.customer_message.CustomerMessage::onDelete",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.customer_message.DeleteMessageCmd.Request",
+    "toId" : "edu.only4.danmuku.application.commands.customer_message.DeleteMessageCmd.Handler",
+    "type" : "CommandToCommandHandler",
     "label" : null
   } ]
 }

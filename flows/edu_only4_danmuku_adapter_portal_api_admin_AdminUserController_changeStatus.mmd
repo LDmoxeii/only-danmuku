@@ -1,8 +1,30 @@
 flowchart TD
   N1([AdminUserController::changeStatus])
   class N1 controllermethod
-  N2{{ChangeUserStatusCmd.Request}}
-  class N2 command
-  N1 -->|ControllerMethodToCommand| N2
+  N2[[ChangeUserStatusCmd.Handler]]
+  class N2 commandhandler
+  N3{{ChangeUserStatusCmd.Request}}
+  class N3 command
+  N4[[AccountDisabledDomainEventSubscriber::on]]
+  class N4 domaineventhandler
+  N5[[AccountEnabledDomainEventSubscriber::on]]
+  class N5 domaineventhandler
+  N6(User::changeStatus)
+  class N6 entitymethod
+  N7((AccountDisabledDomainEvent))
+  class N7 domainevent
+  N8((AccountEnabledDomainEvent))
+  class N8 domainevent
+  N1 -->|ControllerMethodToCommand| N3
+  N2 -->|CommandHandlerToEntityMethod| N6
+  N3 -->|CommandToCommandHandler| N2
+  N6 -->|EntityMethodToDomainEvent| N7
+  N6 -->|EntityMethodToDomainEvent| N8
+  N7 -->|DomainEventToHandler| N4
+  N8 -->|DomainEventToHandler| N5
   classDef command fill:#FDBA74,stroke:#C2410C,color:#111827
+  classDef commandhandler fill:#F97316,stroke:#9A3412,color:#111827
   classDef controllermethod fill:#FDE68A,stroke:#B45309,color:#111827
+  classDef domainevent fill:#FECACA,stroke:#B91C1C,color:#111827
+  classDef domaineventhandler fill:#F87171,stroke:#991B1B,color:#111827
+  classDef entitymethod fill:#F3F4F6,stroke:#6B7280,color:#111827

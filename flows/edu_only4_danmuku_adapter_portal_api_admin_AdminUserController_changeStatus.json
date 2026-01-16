@@ -1,23 +1,83 @@
 {
   "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminUserController::changeStatus",
   "entryType" : "controllermethod",
-  "nodeCount" : 2,
-  "edgeCount" : 1,
+  "nodeCount" : 8,
+  "edgeCount" : 7,
   "nodes" : [ {
     "id" : "edu.only4.danmuku.adapter.portal.api.admin.AdminUserController::changeStatus",
     "name" : "AdminUserController::changeStatus",
     "fullName" : "edu.only4.danmuku.adapter.portal.api.admin.AdminUserController::changeStatus",
     "type" : "controllermethod"
   }, {
+    "id" : "edu.only4.danmuku.application.commands.user.ChangeUserStatusCmd.Handler",
+    "name" : "ChangeUserStatusCmd.Handler",
+    "fullName" : "edu.only4.danmuku.application.commands.user.ChangeUserStatusCmd.Handler",
+    "type" : "commandhandler"
+  }, {
     "id" : "edu.only4.danmuku.application.commands.user.ChangeUserStatusCmd.Request",
     "name" : "ChangeUserStatusCmd.Request",
     "fullName" : "edu.only4.danmuku.application.commands.user.ChangeUserStatusCmd.Request",
     "type" : "command"
+  }, {
+    "id" : "edu.only4.danmuku.application.subscribers.domain.user.AccountDisabledDomainEventSubscriber::on",
+    "name" : "AccountDisabledDomainEventSubscriber::on",
+    "fullName" : "edu.only4.danmuku.application.subscribers.domain.user.AccountDisabledDomainEventSubscriber::on",
+    "type" : "domaineventhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.subscribers.domain.user.AccountEnabledDomainEventSubscriber::on",
+    "name" : "AccountEnabledDomainEventSubscriber::on",
+    "fullName" : "edu.only4.danmuku.application.subscribers.domain.user.AccountEnabledDomainEventSubscriber::on",
+    "type" : "domaineventhandler"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.user.User::changeStatus",
+    "name" : "User::changeStatus",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.user.User::changeStatus",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.user.events.AccountDisabledDomainEvent",
+    "name" : "AccountDisabledDomainEvent",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.user.events.AccountDisabledDomainEvent",
+    "type" : "domainevent"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.user.events.AccountEnabledDomainEvent",
+    "name" : "AccountEnabledDomainEvent",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.user.events.AccountEnabledDomainEvent",
+    "type" : "domainevent"
   } ],
   "edges" : [ {
     "fromId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminUserController::changeStatus",
     "toId" : "edu.only4.danmuku.application.commands.user.ChangeUserStatusCmd.Request",
     "type" : "ControllerMethodToCommand",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.user.ChangeUserStatusCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.user.User::changeStatus",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.user.ChangeUserStatusCmd.Request",
+    "toId" : "edu.only4.danmuku.application.commands.user.ChangeUserStatusCmd.Handler",
+    "type" : "CommandToCommandHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.user.User::changeStatus",
+    "toId" : "edu.only4.danmuku.domain.aggregates.user.events.AccountDisabledDomainEvent",
+    "type" : "EntityMethodToDomainEvent",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.user.User::changeStatus",
+    "toId" : "edu.only4.danmuku.domain.aggregates.user.events.AccountEnabledDomainEvent",
+    "type" : "EntityMethodToDomainEvent",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.user.events.AccountDisabledDomainEvent",
+    "toId" : "edu.only4.danmuku.application.subscribers.domain.user.AccountDisabledDomainEventSubscriber::on",
+    "type" : "DomainEventToHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.user.events.AccountEnabledDomainEvent",
+    "toId" : "edu.only4.danmuku.application.subscribers.domain.user.AccountEnabledDomainEventSubscriber::on",
+    "type" : "DomainEventToHandler",
     "label" : null
   } ]
 }

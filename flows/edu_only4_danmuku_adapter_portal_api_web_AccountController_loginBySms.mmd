@@ -5,18 +5,34 @@ flowchart TD
   class N2 queryhandler
   N3([AccountController::loginBySms])
   class N3 controllermethod
-  N4{{UpdateLoginInfoCmd.Request}}
-  class N4 command
-  N5{{GetCustomerProfileQry.Request}}
-  class N5 query
-  N6{{GetUserByPhoneQry.Request}}
+  N4[[UpdateLoginInfoCmd.Handler]]
+  class N4 commandhandler
+  N5{{UpdateLoginInfoCmd.Request}}
+  class N5 command
+  N6{{GetCustomerProfileQry.Request}}
   class N6 query
-  N3 -->|ControllerMethodToCommand| N4
-  N3 -->|ControllerMethodToQuery| N5
+  N7{{GetUserByPhoneQry.Request}}
+  class N7 query
+  N8[[LoginInfoUpdatedDomainEventSubscriber::on]]
+  class N8 domaineventhandler
+  N9(User::updateLoginInfo)
+  class N9 entitymethod
+  N10((LoginInfoUpdatedDomainEvent))
+  class N10 domainevent
+  N3 -->|ControllerMethodToCommand| N5
   N3 -->|ControllerMethodToQuery| N6
-  N5 -->|QueryToQueryHandler| N1
-  N6 -->|QueryToQueryHandler| N2
+  N3 -->|ControllerMethodToQuery| N7
+  N4 -->|CommandHandlerToEntityMethod| N9
+  N5 -->|CommandToCommandHandler| N4
+  N6 -->|QueryToQueryHandler| N1
+  N7 -->|QueryToQueryHandler| N2
+  N9 -->|EntityMethodToDomainEvent| N10
+  N10 -->|DomainEventToHandler| N8
   classDef command fill:#FDBA74,stroke:#C2410C,color:#111827
+  classDef commandhandler fill:#F97316,stroke:#9A3412,color:#111827
   classDef controllermethod fill:#FDE68A,stroke:#B45309,color:#111827
+  classDef domainevent fill:#FECACA,stroke:#B91C1C,color:#111827
+  classDef domaineventhandler fill:#F87171,stroke:#991B1B,color:#111827
+  classDef entitymethod fill:#F3F4F6,stroke:#6B7280,color:#111827
   classDef query fill:#93C5FD,stroke:#1D4ED8,color:#0F172A
   classDef queryhandler fill:#3B82F6,stroke:#1E40AF,color:#F8FAFC

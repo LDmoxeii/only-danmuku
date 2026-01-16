@@ -1,8 +1,172 @@
 flowchart TD
-  N1([AdminVideoController::deleteVideo])
-  class N1 controllermethod
-  N2{{DeleteVideoPostCmd.Request}}
-  class N2 command
-  N1 -->|ControllerMethodToCommand| N2
+  N1[[DeleteVideoFileResourcesCliHandler]]
+  class N1 clihandler
+  N2[[RemoveVideoSearchIndexCliHandler]]
+  class N2 clihandler
+  N3([AdminVideoController::deleteVideo])
+  class N3 controllermethod
+  N4[[AdjustAuthorCoinAfterDeleteCmd.Handler]]
+  class N4 commandhandler
+  N5{{AdjustAuthorCoinAfterDeleteCmd.Request}}
+  class N5 command
+  N6[[UpdateStatisticsInfoCmd.Handler]]
+  class N6 commandhandler
+  N7{{UpdateStatisticsInfoCmd.Request}}
+  class N7 command
+  N8[[ApplyVideoCommentCountDeltaCmd.Handler]]
+  class N8 commandhandler
+  N9{{ApplyVideoCommentCountDeltaCmd.Request}}
+  class N9 command
+  N10[[ApplyVideoDanmukuCountDeltaCmd.Handler]]
+  class N10 commandhandler
+  N11{{ApplyVideoDanmukuCountDeltaCmd.Request}}
+  class N11 command
+  N12[[DeleteVideoCmd.Handler]]
+  class N12 commandhandler
+  N13{{DeleteVideoCmd.Request}}
+  class N13 command
+  N14[[BatchDeleteCommentCmd.Handler]]
+  class N14 commandhandler
+  N15{{BatchDeleteCommentCmd.Request}}
+  class N15 command
+  N16[[BatchDeleteDanmukuCmd.Handler]]
+  class N16 commandhandler
+  N17{{BatchDeleteDanmukuCmd.Request}}
+  class N17 command
+  N18[[DeleteVideoPostCmd.Handler]]
+  class N18 commandhandler
+  N19{{DeleteVideoPostCmd.Request}}
+  class N19 command
+  N20{{DeleteVideoFileResourcesCli.Request}}
+  class N20 cli
+  N21{{RemoveVideoSearchIndexCli.Request}}
+  class N21 cli
+  N22[[CustomerProfileRewardCoinsReclaimedDomainEventSubscriber::on]]
+  class N22 domaineventhandler
+  N23[[StatisticsCountUpdatedDomainEventSubscriber::on]]
+  class N23 domaineventhandler
+  N24[[VideoCommentCountDeltaAppliedDomainEventSubscriber::on]]
+  class N24 domaineventhandler
+  N25[[VideoDanmukuCountDeltaAppliedDomainEventSubscriber::on]]
+  class N25 domaineventhandler
+  N26[[VideoDeletedDomainEventSubscriber::cleanupComments]]
+  class N26 domaineventhandler
+  N27[[VideoDeletedDomainEventSubscriber::cleanupDanmaku]]
+  class N27 domaineventhandler
+  N28[[VideoDeletedDomainEventSubscriber::removeSearchIndex]]
+  class N28 domaineventhandler
+  N29[[VideoPostDeletedDomainEventSubscriber::adjustAuthorCoin]]
+  class N29 domaineventhandler
+  N30[[VideoPostDeletedDomainEventSubscriber::deletePhysicalFiles]]
+  class N30 domaineventhandler
+  N31[[VideoPostDeletedDomainEventSubscriber::removeVideo]]
+  class N31 domaineventhandler
+  N32[[CommentDeletedDomainEventSubscriber::on]]
+  class N32 domaineventhandler
+  N33[[CommentDeletedDomainEventSubscriber::on1]]
+  class N33 domaineventhandler
+  N34[[DanmukuDeletedDomainEventSubscriber::on]]
+  class N34 domaineventhandler
+  N35(CustomerProfile::reclaimRewardCoins)
+  class N35 entitymethod
+  N36((CustomerProfileRewardCoinsReclaimedDomainEvent))
+  class N36 domainevent
+  N37(Statistics::onCreate)
+  class N37 entitymethod
+  N38(Statistics::updateCount)
+  class N38 entitymethod
+  N39((StatisticsCountUpdatedDomainEvent))
+  class N39 domainevent
+  N40(Video::&lt;get-commentCount&gt;)
+  class N40 entitymethod
+  N41(Video::&lt;get-danmukuCount&gt;)
+  class N41 entitymethod
+  N42(Video::&lt;get-id&gt;)
+  class N42 entitymethod
+  N43(Video::applyCommentCountDelta)
+  class N43 entitymethod
+  N44(Video::applyDanmukuCountDelta)
+  class N44 entitymethod
+  N45(Video::onDelete)
+  class N45 entitymethod
+  N46((VideoCommentCountDeltaAppliedDomainEvent))
+  class N46 domainevent
+  N47((VideoDanmukuCountDeltaAppliedDomainEvent))
+  class N47 domainevent
+  N48((VideoDeletedDomainEvent))
+  class N48 domainevent
+  N49(VideoComment::onDelete)
+  class N49 entitymethod
+  N50((CommentDeletedDomainEvent))
+  class N50 domainevent
+  N51(VideoDanmuku::onDelete)
+  class N51 entitymethod
+  N52((DanmukuDeletedDomainEvent))
+  class N52 domainevent
+  N53(VideoPost::onDelete)
+  class N53 entitymethod
+  N54((VideoPostDeletedDomainEvent))
+  class N54 domainevent
+  N3 -->|ControllerMethodToCommand| N19
+  N4 -->|CommandHandlerToEntityMethod| N35
+  N5 -->|CommandToCommandHandler| N4
+  N6 -->|CommandHandlerToEntityMethod| N37
+  N6 -->|CommandHandlerToEntityMethod| N38
+  N7 -->|CommandToCommandHandler| N6
+  N8 -->|CommandHandlerToEntityMethod| N40
+  N8 -->|CommandHandlerToEntityMethod| N42
+  N8 -->|CommandHandlerToEntityMethod| N43
+  N9 -->|CommandToCommandHandler| N8
+  N10 -->|CommandHandlerToEntityMethod| N41
+  N10 -->|CommandHandlerToEntityMethod| N42
+  N10 -->|CommandHandlerToEntityMethod| N44
+  N11 -->|CommandToCommandHandler| N10
+  N12 -->|CommandHandlerToEntityMethod| N45
+  N13 -->|CommandToCommandHandler| N12
+  N14 -->|CommandHandlerToEntityMethod| N49
+  N15 -->|CommandToCommandHandler| N14
+  N16 -->|CommandHandlerToEntityMethod| N51
+  N17 -->|CommandToCommandHandler| N16
+  N18 -->|CommandHandlerToEntityMethod| N53
+  N19 -->|CommandToCommandHandler| N18
+  N20 -->|CliToCliHandler| N1
+  N21 -->|CliToCliHandler| N2
+  N24 -->|DomainEventHandlerToCommand| N7
+  N25 -->|DomainEventHandlerToCommand| N7
+  N26 -->|DomainEventHandlerToCommand| N15
+  N27 -->|DomainEventHandlerToCommand| N17
+  N28 -->|DomainEventHandlerToCli| N21
+  N29 -->|DomainEventHandlerToCommand| N5
+  N30 -->|DomainEventHandlerToCli| N20
+  N31 -->|DomainEventHandlerToCommand| N13
+  N32 -->|DomainEventHandlerToCommand| N9
+  N34 -->|DomainEventHandlerToCommand| N11
+  N35 -->|EntityMethodToDomainEvent| N36
+  N36 -->|DomainEventToHandler| N22
+  N38 -->|EntityMethodToDomainEvent| N39
+  N39 -->|DomainEventToHandler| N23
+  N43 -->|EntityMethodToDomainEvent| N46
+  N44 -->|EntityMethodToDomainEvent| N47
+  N45 -->|EntityMethodToDomainEvent| N48
+  N46 -->|DomainEventToHandler| N24
+  N47 -->|DomainEventToHandler| N25
+  N48 -->|DomainEventToHandler| N26
+  N48 -->|DomainEventToHandler| N27
+  N48 -->|DomainEventToHandler| N28
+  N49 -->|EntityMethodToDomainEvent| N50
+  N50 -->|DomainEventToHandler| N32
+  N50 -->|DomainEventToHandler| N33
+  N51 -->|EntityMethodToDomainEvent| N52
+  N52 -->|DomainEventToHandler| N34
+  N53 -->|EntityMethodToDomainEvent| N54
+  N54 -->|DomainEventToHandler| N29
+  N54 -->|DomainEventToHandler| N30
+  N54 -->|DomainEventToHandler| N31
+  classDef cli fill:#86EFAC,stroke:#15803D,color:#0F172A
+  classDef clihandler fill:#22C55E,stroke:#166534,color:#F0FDF4
   classDef command fill:#FDBA74,stroke:#C2410C,color:#111827
+  classDef commandhandler fill:#F97316,stroke:#9A3412,color:#111827
   classDef controllermethod fill:#FDE68A,stroke:#B45309,color:#111827
+  classDef domainevent fill:#FECACA,stroke:#B91C1C,color:#111827
+  classDef domaineventhandler fill:#F87171,stroke:#991B1B,color:#111827
+  classDef entitymethod fill:#F3F4F6,stroke:#6B7280,color:#111827

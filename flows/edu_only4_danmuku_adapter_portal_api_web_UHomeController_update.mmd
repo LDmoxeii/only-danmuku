@@ -1,8 +1,54 @@
 flowchart TD
-  N1([UHomeController::update])
-  class N1 controllermethod
-  N2{{UpdateCustomerProfileCmd.Request}}
-  class N2 command
-  N1 -->|ControllerMethodToCommand| N2
+  N1[[RefreshLoginSessionCliHandler]]
+  class N1 clihandler
+  N2([UHomeController::update])
+  class N2 controllermethod
+  N3[[SpendCoinsForNicknameChangeCmd.Handler]]
+  class N3 commandhandler
+  N4{{SpendCoinsForNicknameChangeCmd.Request}}
+  class N4 command
+  N5[[UpdateCustomerProfileCmd.Handler]]
+  class N5 commandhandler
+  N6{{UpdateCustomerProfileCmd.Request}}
+  class N6 command
+  N7{{RefreshLoginSessionCli.Request}}
+  class N7 cli
+  N8[[CustomerAvatarUpdatedDomainEventSubscriber::on]]
+  class N8 domaineventhandler
+  N9[[CustomerNicknameUpdatedDomainEventSubscriber::on]]
+  class N9 domaineventhandler
+  N10[[CustomerProfileUpdatedDomainEventSubscriber::on]]
+  class N10 domaineventhandler
+  N11(CustomerProfile::spendCoins)
+  class N11 entitymethod
+  N12(CustomerProfile::updateProfileInfo)
+  class N12 entitymethod
+  N13((CustomerAvatarUpdatedDomainEvent))
+  class N13 domainevent
+  N14((CustomerNicknameUpdatedDomainEvent))
+  class N14 domainevent
+  N15((CustomerProfileUpdatedDomainEvent))
+  class N15 domainevent
+  N2 -->|ControllerMethodToCommand| N6
+  N3 -->|CommandHandlerToEntityMethod| N11
+  N4 -->|CommandToCommandHandler| N3
+  N5 -->|CommandHandlerToEntityMethod| N12
+  N6 -->|CommandToCommandHandler| N5
+  N7 -->|CliToCliHandler| N1
+  N8 -->|DomainEventHandlerToCli| N7
+  N9 -->|DomainEventHandlerToCommand| N4
+  N9 -->|DomainEventHandlerToCli| N7
+  N12 -->|EntityMethodToDomainEvent| N13
+  N12 -->|EntityMethodToDomainEvent| N14
+  N12 -->|EntityMethodToDomainEvent| N15
+  N13 -->|DomainEventToHandler| N8
+  N14 -->|DomainEventToHandler| N9
+  N15 -->|DomainEventToHandler| N10
+  classDef cli fill:#86EFAC,stroke:#15803D,color:#0F172A
+  classDef clihandler fill:#22C55E,stroke:#166534,color:#F0FDF4
   classDef command fill:#FDBA74,stroke:#C2410C,color:#111827
+  classDef commandhandler fill:#F97316,stroke:#9A3412,color:#111827
   classDef controllermethod fill:#FDE68A,stroke:#B45309,color:#111827
+  classDef domainevent fill:#FECACA,stroke:#B91C1C,color:#111827
+  classDef domaineventhandler fill:#F87171,stroke:#991B1B,color:#111827
+  classDef entitymethod fill:#F3F4F6,stroke:#6B7280,color:#111827

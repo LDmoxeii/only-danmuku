@@ -11,104 +11,119 @@ flowchart TD
   class N5 commandhandler
   N6{{SendReplyMessageCmd.Request}}
   class N6 command
-  N7{{UpdateStatisticsInfoCmd.Request}}
-  class N7 command
-  N8[[ApplyVideoCommentCountDeltaCmd.Handler]]
-  class N8 commandhandler
-  N9{{ApplyVideoCommentCountDeltaCmd.Request}}
-  class N9 command
-  N10[[PostCommentCmd.Handler]]
-  class N10 commandhandler
-  N11{{PostCommentCmd.Request}}
-  class N11 command
-  N12{{GetCommentByIdQry.Request}}
-  class N12 query
-  N13[[CustomerMessageCollectionCreatedDomainEventSubscriber::on]]
-  class N13 domaineventhandler
-  N14[[CustomerMessageCommentMentionCreatedDomainEventSubscriber::on]]
+  N7[[UpdateStatisticsInfoCmd.Handler]]
+  class N7 commandhandler
+  N8{{UpdateStatisticsInfoCmd.Request}}
+  class N8 command
+  N9[[ApplyVideoCommentCountDeltaCmd.Handler]]
+  class N9 commandhandler
+  N10{{ApplyVideoCommentCountDeltaCmd.Request}}
+  class N10 command
+  N11[[PostCommentCmd.Handler]]
+  class N11 commandhandler
+  N12{{PostCommentCmd.Request}}
+  class N12 command
+  N13{{GetCommentByIdQry.Request}}
+  class N13 query
+  N14[[CustomerMessageCollectionCreatedDomainEventSubscriber::on]]
   class N14 domaineventhandler
-  N15[[CustomerMessageLikeCreatedDomainEventSubscriber::on]]
+  N15[[CustomerMessageCommentMentionCreatedDomainEventSubscriber::on]]
   class N15 domaineventhandler
-  N16[[CustomerMessagePrivateCreatedDomainEventSubscriber::on]]
+  N16[[CustomerMessageLikeCreatedDomainEventSubscriber::on]]
   class N16 domaineventhandler
-  N17[[CustomerMessageSystemCreatedDomainEventSubscriber::on]]
+  N17[[CustomerMessagePrivateCreatedDomainEventSubscriber::on]]
   class N17 domaineventhandler
-  N18[[VideoCommentCountDeltaAppliedDomainEventSubscriber::on]]
+  N18[[CustomerMessageSystemCreatedDomainEventSubscriber::on]]
   class N18 domaineventhandler
-  N19[[CommentPostedDomainEventSubscriber::on]]
+  N19[[StatisticsCountUpdatedDomainEventSubscriber::on]]
   class N19 domaineventhandler
-  N20[[CommentPostedDomainEventSubscriber::on1]]
+  N20[[VideoCommentCountDeltaAppliedDomainEventSubscriber::on]]
   class N20 domaineventhandler
-  N21[[CommentPostedDomainEventSubscriber::on2]]
+  N21[[CommentPostedDomainEventSubscriber::on]]
   class N21 domaineventhandler
-  N22(CustomerMessage::onCreate)
-  class N22 entitymethod
-  N23((CustomerMessageCollectionCreatedDomainEvent))
-  class N23 domainevent
-  N24((CustomerMessageCommentMentionCreatedDomainEvent))
-  class N24 domainevent
-  N25((CustomerMessageLikeCreatedDomainEvent))
+  N22[[CommentPostedDomainEventSubscriber::on1]]
+  class N22 domaineventhandler
+  N23[[CommentPostedDomainEventSubscriber::on2]]
+  class N23 domaineventhandler
+  N24(CustomerMessage::onCreate)
+  class N24 entitymethod
+  N25((CustomerMessageCollectionCreatedDomainEvent))
   class N25 domainevent
-  N26((CustomerMessagePrivateCreatedDomainEvent))
+  N26((CustomerMessageCommentMentionCreatedDomainEvent))
   class N26 domainevent
-  N27((CustomerMessageSystemCreatedDomainEvent))
+  N27((CustomerMessageLikeCreatedDomainEvent))
   class N27 domainevent
-  N28(Video::&lt;get-commentCount&gt;)
-  class N28 entitymethod
-  N29(Video::&lt;get-customerId&gt;)
-  class N29 entitymethod
-  N30(Video::&lt;get-id&gt;)
+  N28((CustomerMessagePrivateCreatedDomainEvent))
+  class N28 domainevent
+  N29((CustomerMessageSystemCreatedDomainEvent))
+  class N29 domainevent
+  N30(Statistics::onCreate)
   class N30 entitymethod
-  N31(Video::applyCommentCountDelta)
+  N31(Statistics::updateCount)
   class N31 entitymethod
-  N32((VideoCommentCountDeltaAppliedDomainEvent))
+  N32((StatisticsCountUpdatedDomainEvent))
   class N32 domainevent
-  N33(VideoComment::&lt;get-customerId&gt;)
+  N33(Video::&lt;get-commentCount&gt;)
   class N33 entitymethod
-  N34(VideoComment::&lt;get-id&gt;)
+  N34(Video::&lt;get-customerId&gt;)
   class N34 entitymethod
-  N35(VideoComment::onCreate)
+  N35(Video::&lt;get-id&gt;)
   class N35 entitymethod
-  N36((CommentPostedDomainEvent))
-  class N36 domainevent
-  N2 -->|ControllerMethodToCommand| N11
-  N2 -->|ControllerMethodToQuery| N12
-  N3 -->|CommandHandlerToEntityMethod| N22
-  N3 -->|CommandHandlerToEntityMethod| N29
+  N36(Video::applyCommentCountDelta)
+  class N36 entitymethod
+  N37((VideoCommentCountDeltaAppliedDomainEvent))
+  class N37 domainevent
+  N38(VideoComment::&lt;get-customerId&gt;)
+  class N38 entitymethod
+  N39(VideoComment::&lt;get-id&gt;)
+  class N39 entitymethod
+  N40(VideoComment::onCreate)
+  class N40 entitymethod
+  N41((CommentPostedDomainEvent))
+  class N41 domainevent
+  N2 -->|ControllerMethodToCommand| N12
+  N2 -->|ControllerMethodToQuery| N13
+  N3 -->|CommandHandlerToEntityMethod| N24
+  N3 -->|CommandHandlerToEntityMethod| N34
   N4 -->|CommandToCommandHandler| N3
-  N5 -->|CommandHandlerToEntityMethod| N22
-  N5 -->|CommandHandlerToEntityMethod| N33
+  N5 -->|CommandHandlerToEntityMethod| N24
+  N5 -->|CommandHandlerToEntityMethod| N38
   N6 -->|CommandToCommandHandler| N5
-  N8 -->|CommandHandlerToEntityMethod| N28
-  N8 -->|CommandHandlerToEntityMethod| N30
-  N8 -->|CommandHandlerToEntityMethod| N31
-  N9 -->|CommandToCommandHandler| N8
-  N10 -->|CommandHandlerToEntityMethod| N29
-  N10 -->|CommandHandlerToEntityMethod| N34
-  N10 -->|CommandHandlerToEntityMethod| N35
-  N11 -->|CommandToCommandHandler| N10
-  N12 -->|QueryToQueryHandler| N1
-  N18 -->|DomainEventHandlerToCommand| N7
-  N19 -->|DomainEventHandlerToCommand| N9
-  N20 -->|DomainEventHandlerToCommand| N4
-  N21 -->|DomainEventHandlerToCommand| N6
-  N21 -->|DomainEventHandlerToQuery| N12
-  N22 -->|EntityMethodToDomainEvent| N23
-  N22 -->|EntityMethodToDomainEvent| N24
-  N22 -->|EntityMethodToDomainEvent| N25
-  N22 -->|EntityMethodToDomainEvent| N26
-  N22 -->|EntityMethodToDomainEvent| N27
-  N23 -->|DomainEventToHandler| N13
-  N24 -->|DomainEventToHandler| N14
-  N25 -->|DomainEventToHandler| N15
-  N26 -->|DomainEventToHandler| N16
-  N27 -->|DomainEventToHandler| N17
+  N7 -->|CommandHandlerToEntityMethod| N30
+  N7 -->|CommandHandlerToEntityMethod| N31
+  N8 -->|CommandToCommandHandler| N7
+  N9 -->|CommandHandlerToEntityMethod| N33
+  N9 -->|CommandHandlerToEntityMethod| N35
+  N9 -->|CommandHandlerToEntityMethod| N36
+  N10 -->|CommandToCommandHandler| N9
+  N11 -->|CommandHandlerToEntityMethod| N34
+  N11 -->|CommandHandlerToEntityMethod| N39
+  N11 -->|CommandHandlerToEntityMethod| N40
+  N12 -->|CommandToCommandHandler| N11
+  N13 -->|QueryToQueryHandler| N1
+  N20 -->|DomainEventHandlerToCommand| N8
+  N21 -->|DomainEventHandlerToCommand| N10
+  N22 -->|DomainEventHandlerToCommand| N4
+  N23 -->|DomainEventHandlerToCommand| N6
+  N23 -->|DomainEventHandlerToQuery| N13
+  N24 -->|EntityMethodToDomainEvent| N25
+  N24 -->|EntityMethodToDomainEvent| N26
+  N24 -->|EntityMethodToDomainEvent| N27
+  N24 -->|EntityMethodToDomainEvent| N28
+  N24 -->|EntityMethodToDomainEvent| N29
+  N25 -->|DomainEventToHandler| N14
+  N26 -->|DomainEventToHandler| N15
+  N27 -->|DomainEventToHandler| N16
+  N28 -->|DomainEventToHandler| N17
+  N29 -->|DomainEventToHandler| N18
   N31 -->|EntityMethodToDomainEvent| N32
-  N32 -->|DomainEventToHandler| N18
-  N35 -->|EntityMethodToDomainEvent| N36
-  N36 -->|DomainEventToHandler| N19
-  N36 -->|DomainEventToHandler| N20
-  N36 -->|DomainEventToHandler| N21
+  N32 -->|DomainEventToHandler| N19
+  N36 -->|EntityMethodToDomainEvent| N37
+  N37 -->|DomainEventToHandler| N20
+  N40 -->|EntityMethodToDomainEvent| N41
+  N41 -->|DomainEventToHandler| N21
+  N41 -->|DomainEventToHandler| N22
+  N41 -->|DomainEventToHandler| N23
   classDef command fill:#FDBA74,stroke:#C2410C,color:#111827
   classDef commandhandler fill:#F97316,stroke:#9A3412,color:#111827
   classDef controllermethod fill:#FDE68A,stroke:#B45309,color:#111827

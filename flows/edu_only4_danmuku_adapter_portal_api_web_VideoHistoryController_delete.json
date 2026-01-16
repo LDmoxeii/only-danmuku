@@ -1,23 +1,43 @@
 {
   "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoHistoryController::delete",
   "entryType" : "controllermethod",
-  "nodeCount" : 2,
-  "edgeCount" : 1,
+  "nodeCount" : 4,
+  "edgeCount" : 3,
   "nodes" : [ {
     "id" : "edu.only4.danmuku.adapter.portal.api.web.VideoHistoryController::delete",
     "name" : "VideoHistoryController::delete",
     "fullName" : "edu.only4.danmuku.adapter.portal.api.web.VideoHistoryController::delete",
     "type" : "controllermethod"
   }, {
+    "id" : "edu.only4.danmuku.application.commands.video_play_history.DelHistoryCmd.Handler",
+    "name" : "DelHistoryCmd.Handler",
+    "fullName" : "edu.only4.danmuku.application.commands.video_play_history.DelHistoryCmd.Handler",
+    "type" : "commandhandler"
+  }, {
     "id" : "edu.only4.danmuku.application.commands.video_play_history.DelHistoryCmd.Request",
     "name" : "DelHistoryCmd.Request",
     "fullName" : "edu.only4.danmuku.application.commands.video_play_history.DelHistoryCmd.Request",
     "type" : "command"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_play_history.VideoPlayHistory::onDelete",
+    "name" : "VideoPlayHistory::onDelete",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_play_history.VideoPlayHistory::onDelete",
+    "type" : "entitymethod"
   } ],
   "edges" : [ {
     "fromId" : "edu.only4.danmuku.adapter.portal.api.web.VideoHistoryController::delete",
     "toId" : "edu.only4.danmuku.application.commands.video_play_history.DelHistoryCmd.Request",
     "type" : "ControllerMethodToCommand",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_play_history.DelHistoryCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_play_history.VideoPlayHistory::onDelete",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_play_history.DelHistoryCmd.Request",
+    "toId" : "edu.only4.danmuku.application.commands.video_play_history.DelHistoryCmd.Handler",
+    "type" : "CommandToCommandHandler",
     "label" : null
   } ]
 }

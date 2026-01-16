@@ -1,8 +1,8 @@
 {
   "entryId" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::register",
   "entryType" : "controllermethod",
-  "nodeCount" : 4,
-  "edgeCount" : 3,
+  "nodeCount" : 18,
+  "edgeCount" : 17,
   "nodes" : [ {
     "id" : "edu.only4.danmuku.adapter.application.distributed.clients.CaptchaValidCliHandler",
     "name" : "CaptchaValidCliHandler",
@@ -14,15 +14,85 @@
     "fullName" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::register",
     "type" : "controllermethod"
   }, {
+    "id" : "edu.only4.danmuku.application.commands.customer_profile.CreateCustomerProfileCmd.Handler",
+    "name" : "CreateCustomerProfileCmd.Handler",
+    "fullName" : "edu.only4.danmuku.application.commands.customer_profile.CreateCustomerProfileCmd.Handler",
+    "type" : "commandhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.customer_profile.CreateCustomerProfileCmd.Request",
+    "name" : "CreateCustomerProfileCmd.Request",
+    "fullName" : "edu.only4.danmuku.application.commands.customer_profile.CreateCustomerProfileCmd.Request",
+    "type" : "command"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.user.RegisterAccountCmd.Handler",
+    "name" : "RegisterAccountCmd.Handler",
+    "fullName" : "edu.only4.danmuku.application.commands.user.RegisterAccountCmd.Handler",
+    "type" : "commandhandler"
+  }, {
     "id" : "edu.only4.danmuku.application.commands.user.RegisterAccountCmd.Request",
     "name" : "RegisterAccountCmd.Request",
     "fullName" : "edu.only4.danmuku.application.commands.user.RegisterAccountCmd.Request",
+    "type" : "command"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.user.RelationProfileCmd.Handler",
+    "name" : "RelationProfileCmd.Handler",
+    "fullName" : "edu.only4.danmuku.application.commands.user.RelationProfileCmd.Handler",
+    "type" : "commandhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.user.RelationProfileCmd.Request",
+    "name" : "RelationProfileCmd.Request",
+    "fullName" : "edu.only4.danmuku.application.commands.user.RelationProfileCmd.Request",
     "type" : "command"
   }, {
     "id" : "edu.only4.danmuku.application.distributed.clients.CaptchaValidCli.Request",
     "name" : "CaptchaValidCli.Request",
     "fullName" : "edu.only4.danmuku.application.distributed.clients.CaptchaValidCli.Request",
     "type" : "cli"
+  }, {
+    "id" : "edu.only4.danmuku.application.subscribers.domain.customer_profile.CustomerProfileCreatedDomainEventSubscriber::on1",
+    "name" : "CustomerProfileCreatedDomainEventSubscriber::on1",
+    "fullName" : "edu.only4.danmuku.application.subscribers.domain.customer_profile.CustomerProfileCreatedDomainEventSubscriber::on1",
+    "type" : "domaineventhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.subscribers.domain.user.RelationshipBoundDomainEventSubscriber::on",
+    "name" : "RelationshipBoundDomainEventSubscriber::on",
+    "fullName" : "edu.only4.danmuku.application.subscribers.domain.user.RelationshipBoundDomainEventSubscriber::on",
+    "type" : "domaineventhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.subscribers.domain.user.UserCreatedDomainEventSubscriber::on",
+    "name" : "UserCreatedDomainEventSubscriber::on",
+    "fullName" : "edu.only4.danmuku.application.subscribers.domain.user.UserCreatedDomainEventSubscriber::on",
+    "type" : "domaineventhandler"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.customer_profile.CustomerProfile::onCreate",
+    "name" : "CustomerProfile::onCreate",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.customer_profile.CustomerProfile::onCreate",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerProfileCreatedDomainEvent",
+    "name" : "CustomerProfileCreatedDomainEvent",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerProfileCreatedDomainEvent",
+    "type" : "domainevent"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.user.User::bindingRelationship",
+    "name" : "User::bindingRelationship",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.user.User::bindingRelationship",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.user.User::onCreate",
+    "name" : "User::onCreate",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.user.User::onCreate",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.user.events.RelationshipBoundDomainEvent",
+    "name" : "RelationshipBoundDomainEvent",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.user.events.RelationshipBoundDomainEvent",
+    "type" : "domainevent"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.user.events.UserCreatedDomainEvent",
+    "name" : "UserCreatedDomainEvent",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.user.events.UserCreatedDomainEvent",
+    "type" : "domainevent"
   } ],
   "edges" : [ {
     "fromId" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::register",
@@ -35,9 +105,79 @@
     "type" : "ControllerMethodToCli",
     "label" : null
   }, {
+    "fromId" : "edu.only4.danmuku.application.commands.customer_profile.CreateCustomerProfileCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.customer_profile.CustomerProfile::onCreate",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.customer_profile.CreateCustomerProfileCmd.Request",
+    "toId" : "edu.only4.danmuku.application.commands.customer_profile.CreateCustomerProfileCmd.Handler",
+    "type" : "CommandToCommandHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.user.RegisterAccountCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.user.User::onCreate",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.user.RegisterAccountCmd.Request",
+    "toId" : "edu.only4.danmuku.application.commands.user.RegisterAccountCmd.Handler",
+    "type" : "CommandToCommandHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.user.RelationProfileCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.user.User::bindingRelationship",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.user.RelationProfileCmd.Request",
+    "toId" : "edu.only4.danmuku.application.commands.user.RelationProfileCmd.Handler",
+    "type" : "CommandToCommandHandler",
+    "label" : null
+  }, {
     "fromId" : "edu.only4.danmuku.application.distributed.clients.CaptchaValidCli.Request",
     "toId" : "edu.only4.danmuku.adapter.application.distributed.clients.CaptchaValidCliHandler",
     "type" : "CliToCliHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.subscribers.domain.customer_profile.CustomerProfileCreatedDomainEventSubscriber::on1",
+    "toId" : "edu.only4.danmuku.application.commands.user.RelationProfileCmd.Request",
+    "type" : "DomainEventHandlerToCommand",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.subscribers.domain.user.UserCreatedDomainEventSubscriber::on",
+    "toId" : "edu.only4.danmuku.application.commands.customer_profile.CreateCustomerProfileCmd.Request",
+    "type" : "DomainEventHandlerToCommand",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.customer_profile.CustomerProfile::onCreate",
+    "toId" : "edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerProfileCreatedDomainEvent",
+    "type" : "EntityMethodToDomainEvent",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerProfileCreatedDomainEvent",
+    "toId" : "edu.only4.danmuku.application.subscribers.domain.customer_profile.CustomerProfileCreatedDomainEventSubscriber::on1",
+    "type" : "DomainEventToHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.user.User::bindingRelationship",
+    "toId" : "edu.only4.danmuku.domain.aggregates.user.events.RelationshipBoundDomainEvent",
+    "type" : "EntityMethodToDomainEvent",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.user.User::onCreate",
+    "toId" : "edu.only4.danmuku.domain.aggregates.user.events.UserCreatedDomainEvent",
+    "type" : "EntityMethodToDomainEvent",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.user.events.RelationshipBoundDomainEvent",
+    "toId" : "edu.only4.danmuku.application.subscribers.domain.user.RelationshipBoundDomainEventSubscriber::on",
+    "type" : "DomainEventToHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.user.events.UserCreatedDomainEvent",
+    "toId" : "edu.only4.danmuku.application.subscribers.domain.user.UserCreatedDomainEventSubscriber::on",
+    "type" : "DomainEventToHandler",
     "label" : null
   } ]
 }

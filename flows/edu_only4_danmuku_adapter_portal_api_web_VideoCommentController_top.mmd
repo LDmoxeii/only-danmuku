@@ -1,8 +1,30 @@
 flowchart TD
   N1([VideoCommentController::top])
   class N1 controllermethod
-  N2{{TopCommentCmd.Request}}
-  class N2 command
-  N1 -->|ControllerMethodToCommand| N2
+  N2[[TopCommentCmd.Handler]]
+  class N2 commandhandler
+  N3{{TopCommentCmd.Request}}
+  class N3 command
+  N4[[CommentToppedDomainEventSubscriber::on]]
+  class N4 domaineventhandler
+  N5(VideoComment::&lt;get-id&gt;)
+  class N5 entitymethod
+  N6(VideoComment::&lt;get-videoId&gt;)
+  class N6 entitymethod
+  N7(VideoComment::top)
+  class N7 entitymethod
+  N8((CommentToppedDomainEvent))
+  class N8 domainevent
+  N1 -->|ControllerMethodToCommand| N3
+  N2 -->|CommandHandlerToEntityMethod| N5
+  N2 -->|CommandHandlerToEntityMethod| N6
+  N2 -->|CommandHandlerToEntityMethod| N7
+  N3 -->|CommandToCommandHandler| N2
+  N7 -->|EntityMethodToDomainEvent| N8
+  N8 -->|DomainEventToHandler| N4
   classDef command fill:#FDBA74,stroke:#C2410C,color:#111827
+  classDef commandhandler fill:#F97316,stroke:#9A3412,color:#111827
   classDef controllermethod fill:#FDE68A,stroke:#B45309,color:#111827
+  classDef domainevent fill:#FECACA,stroke:#B91C1C,color:#111827
+  classDef domaineventhandler fill:#F87171,stroke:#991B1B,color:#111827
+  classDef entitymethod fill:#F3F4F6,stroke:#6B7280,color:#111827

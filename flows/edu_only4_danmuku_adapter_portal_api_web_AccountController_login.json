@@ -1,8 +1,8 @@
 {
   "entryId" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::login",
   "entryType" : "controllermethod",
-  "nodeCount" : 20,
-  "edgeCount" : 19,
+  "nodeCount" : 24,
+  "edgeCount" : 23,
   "nodes" : [ {
     "id" : "edu.only4.danmuku.adapter.application.distributed.clients.CaptchaValidCliHandler",
     "name" : "CaptchaValidCliHandler",
@@ -28,6 +28,11 @@
     "name" : "AccountController::login",
     "fullName" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::login",
     "type" : "controllermethod"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.user.UpdateLoginInfoCmd.Handler",
+    "name" : "UpdateLoginInfoCmd.Handler",
+    "fullName" : "edu.only4.danmuku.application.commands.user.UpdateLoginInfoCmd.Handler",
+    "type" : "commandhandler"
   }, {
     "id" : "edu.only4.danmuku.application.commands.user.UpdateLoginInfoCmd.Request",
     "name" : "UpdateLoginInfoCmd.Request",
@@ -74,10 +79,25 @@
     "fullName" : "edu.only4.danmuku.application.queries.user_behavior.GetRecentPasswordFailureCountQry.Request",
     "type" : "query"
   }, {
+    "id" : "edu.only4.danmuku.application.subscribers.domain.user.LoginInfoUpdatedDomainEventSubscriber::on",
+    "name" : "LoginInfoUpdatedDomainEventSubscriber::on",
+    "fullName" : "edu.only4.danmuku.application.subscribers.domain.user.LoginInfoUpdatedDomainEventSubscriber::on",
+    "type" : "domaineventhandler"
+  }, {
     "id" : "edu.only4.danmuku.application.subscribers.domain.user_login_log.PasswordInputFailedDomainEventSubscriber::on",
     "name" : "PasswordInputFailedDomainEventSubscriber::on",
     "fullName" : "edu.only4.danmuku.application.subscribers.domain.user_login_log.PasswordInputFailedDomainEventSubscriber::on",
     "type" : "domaineventhandler"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.user.User::updateLoginInfo",
+    "name" : "User::updateLoginInfo",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.user.User::updateLoginInfo",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.user.events.LoginInfoUpdatedDomainEvent",
+    "name" : "LoginInfoUpdatedDomainEvent",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.user.events.LoginInfoUpdatedDomainEvent",
+    "type" : "domainevent"
   }, {
     "id" : "edu.only4.danmuku.domain.aggregates.user_abnormal_operation_log.UserAbnormalOperationLog::<get-id>",
     "name" : "UserAbnormalOperationLog::<get-id>",
@@ -128,6 +148,16 @@
     "fromId" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::login",
     "toId" : "edu.only4.danmuku.application.queries.user.GetAccountInfoByEmailQry.Request",
     "type" : "ControllerMethodToQuery",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.user.UpdateLoginInfoCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.user.User::updateLoginInfo",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.user.UpdateLoginInfoCmd.Request",
+    "toId" : "edu.only4.danmuku.application.commands.user.UpdateLoginInfoCmd.Handler",
+    "type" : "CommandToCommandHandler",
     "label" : null
   }, {
     "fromId" : "edu.only4.danmuku.application.commands.user_behavior.RecordAbnormalOperationCmd.Handler",
@@ -188,6 +218,16 @@
     "fromId" : "edu.only4.danmuku.application.subscribers.domain.user_login_log.PasswordInputFailedDomainEventSubscriber::on",
     "toId" : "edu.only4.danmuku.application.queries.user_behavior.GetRecentPasswordFailureCountQry.Request",
     "type" : "DomainEventHandlerToQuery",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.user.User::updateLoginInfo",
+    "toId" : "edu.only4.danmuku.domain.aggregates.user.events.LoginInfoUpdatedDomainEvent",
+    "type" : "EntityMethodToDomainEvent",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.user.events.LoginInfoUpdatedDomainEvent",
+    "toId" : "edu.only4.danmuku.application.subscribers.domain.user.LoginInfoUpdatedDomainEventSubscriber::on",
+    "type" : "DomainEventToHandler",
     "label" : null
   }, {
     "fromId" : "edu.only4.danmuku.domain.aggregates.user_login_log.UserLoginLog::onCreate",

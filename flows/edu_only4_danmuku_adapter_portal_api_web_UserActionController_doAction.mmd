@@ -33,196 +33,211 @@ flowchart TD
   class N16 commandhandler
   N17{{TransferCoinCmd.Request}}
   class N17 command
-  N18{{UpdateStatisticsInfoCmd.Request}}
-  class N18 command
-  N19[[ApplyVideoCoinCountDeltaCmd.Handler]]
-  class N19 commandhandler
-  N20{{ApplyVideoCoinCountDeltaCmd.Request}}
-  class N20 command
-  N21[[ApplyVideoCollectCountDeltaCmd.Handler]]
-  class N21 commandhandler
-  N22{{ApplyVideoCollectCountDeltaCmd.Request}}
-  class N22 command
-  N23[[ApplyVideoLikeCountDeltaCmd.Handler]]
-  class N23 commandhandler
-  N24{{ApplyVideoLikeCountDeltaCmd.Request}}
-  class N24 command
-  N25[[ApplyCustomerDislikedCommentCmd.Handler]]
-  class N25 commandhandler
-  N26{{ApplyCustomerDislikedCommentCmd.Request}}
-  class N26 command
-  N27[[ApplyCustomerLikedCommentCmd.Handler]]
-  class N27 commandhandler
-  N28{{ApplyCustomerLikedCommentCmd.Request}}
-  class N28 command
-  N29[[CustomerCoinGivenDomainEventSubscriber::on1]]
-  class N29 domaineventhandler
-  N30[[CustomerCoinGivenDomainEventSubscriber::on2]]
+  N18[[UpdateStatisticsInfoCmd.Handler]]
+  class N18 commandhandler
+  N19{{UpdateStatisticsInfoCmd.Request}}
+  class N19 command
+  N20[[ApplyVideoCoinCountDeltaCmd.Handler]]
+  class N20 commandhandler
+  N21{{ApplyVideoCoinCountDeltaCmd.Request}}
+  class N21 command
+  N22[[ApplyVideoCollectCountDeltaCmd.Handler]]
+  class N22 commandhandler
+  N23{{ApplyVideoCollectCountDeltaCmd.Request}}
+  class N23 command
+  N24[[ApplyVideoLikeCountDeltaCmd.Handler]]
+  class N24 commandhandler
+  N25{{ApplyVideoLikeCountDeltaCmd.Request}}
+  class N25 command
+  N26[[ApplyCustomerDislikedCommentCmd.Handler]]
+  class N26 commandhandler
+  N27{{ApplyCustomerDislikedCommentCmd.Request}}
+  class N27 command
+  N28[[ApplyCustomerLikedCommentCmd.Handler]]
+  class N28 commandhandler
+  N29{{ApplyCustomerLikedCommentCmd.Request}}
+  class N29 command
+  N30[[CustomerCoinGivenDomainEventSubscriber::on1]]
   class N30 domaineventhandler
-  N31[[CustomerCollectedVideoDomainEventSubscriber::on]]
+  N31[[CustomerCoinGivenDomainEventSubscriber::on2]]
   class N31 domaineventhandler
-  N32[[CustomerCollectedVideoDomainEventSubscriber::onSendMessage]]
+  N32[[CustomerCollectedVideoDomainEventSubscriber::on]]
   class N32 domaineventhandler
-  N33[[CustomerDislikedCommentDomainEventSubscriber::on]]
+  N33[[CustomerCollectedVideoDomainEventSubscriber::onSendMessage]]
   class N33 domaineventhandler
-  N34[[CustomerLikedCommentDomainEventSubscriber::on]]
+  N34[[CustomerDislikedCommentDomainEventSubscriber::on]]
   class N34 domaineventhandler
-  N35[[CustomerLikedVideoDomainEventSubscriber::on]]
+  N35[[CustomerLikedCommentDomainEventSubscriber::on]]
   class N35 domaineventhandler
-  N36[[CustomerLikedVideoDomainEventSubscriber::onSendMessage]]
+  N36[[CustomerLikedVideoDomainEventSubscriber::on]]
   class N36 domaineventhandler
-  N37[[CustomerMessageCollectionCreatedDomainEventSubscriber::on]]
+  N37[[CustomerLikedVideoDomainEventSubscriber::onSendMessage]]
   class N37 domaineventhandler
-  N38[[CustomerMessageCommentMentionCreatedDomainEventSubscriber::on]]
+  N38[[CustomerMessageCollectionCreatedDomainEventSubscriber::on]]
   class N38 domaineventhandler
-  N39[[CustomerMessageLikeCreatedDomainEventSubscriber::on]]
+  N39[[CustomerMessageCommentMentionCreatedDomainEventSubscriber::on]]
   class N39 domaineventhandler
-  N40[[CustomerMessagePrivateCreatedDomainEventSubscriber::on]]
+  N40[[CustomerMessageLikeCreatedDomainEventSubscriber::on]]
   class N40 domaineventhandler
-  N41[[CustomerMessageSystemCreatedDomainEventSubscriber::on]]
+  N41[[CustomerMessagePrivateCreatedDomainEventSubscriber::on]]
   class N41 domaineventhandler
-  N42[[VideoCoinCountDeltaAppliedDomainEventSubscriber::on]]
+  N42[[CustomerMessageSystemCreatedDomainEventSubscriber::on]]
   class N42 domaineventhandler
-  N43[[VideoCollectCountDeltaAppliedDomainEventSubscriber::on]]
+  N43[[StatisticsCountUpdatedDomainEventSubscriber::on]]
   class N43 domaineventhandler
-  N44[[VideoLikeCountDeltaAppliedDomainEventSubscriber::on]]
+  N44[[VideoCoinCountDeltaAppliedDomainEventSubscriber::on]]
   class N44 domaineventhandler
-  N45(CustomerAction::onCreate)
-  class N45 entitymethod
-  N46((CustomerCoinGivenDomainEvent))
-  class N46 domainevent
-  N47((CustomerCollectedVideoDomainEvent))
-  class N47 domainevent
-  N48((CustomerDislikedCommentDomainEvent))
+  N45[[VideoCollectCountDeltaAppliedDomainEventSubscriber::on]]
+  class N45 domaineventhandler
+  N46[[VideoLikeCountDeltaAppliedDomainEventSubscriber::on]]
+  class N46 domaineventhandler
+  N47(CustomerAction::onCreate)
+  class N47 entitymethod
+  N48((CustomerCoinGivenDomainEvent))
   class N48 domainevent
-  N49((CustomerLikedCommentDomainEvent))
+  N49((CustomerCollectedVideoDomainEvent))
   class N49 domainevent
-  N50((CustomerLikedVideoDomainEvent))
+  N50((CustomerDislikedCommentDomainEvent))
   class N50 domainevent
-  N51(CustomerMessage::onCreate)
-  class N51 entitymethod
-  N52((CustomerMessageCollectionCreatedDomainEvent))
+  N51((CustomerLikedCommentDomainEvent))
+  class N51 domainevent
+  N52((CustomerLikedVideoDomainEvent))
   class N52 domainevent
-  N53((CustomerMessageCommentMentionCreatedDomainEvent))
-  class N53 domainevent
-  N54((CustomerMessageLikeCreatedDomainEvent))
+  N53(CustomerMessage::onCreate)
+  class N53 entitymethod
+  N54((CustomerMessageCollectionCreatedDomainEvent))
   class N54 domainevent
-  N55((CustomerMessagePrivateCreatedDomainEvent))
+  N55((CustomerMessageCommentMentionCreatedDomainEvent))
   class N55 domainevent
-  N56((CustomerMessageSystemCreatedDomainEvent))
+  N56((CustomerMessageLikeCreatedDomainEvent))
   class N56 domainevent
-  N57(CustomerProfile::transferCoin)
-  class N57 entitymethod
-  N58(Video::&lt;get-coinCount&gt;)
-  class N58 entitymethod
-  N59(Video::&lt;get-collectCount&gt;)
+  N57((CustomerMessagePrivateCreatedDomainEvent))
+  class N57 domainevent
+  N58((CustomerMessageSystemCreatedDomainEvent))
+  class N58 domainevent
+  N59(CustomerProfile::transferCoin)
   class N59 entitymethod
-  N60(Video::&lt;get-customerId&gt;)
+  N60(Statistics::onCreate)
   class N60 entitymethod
-  N61(Video::&lt;get-id&gt;)
+  N61(Statistics::updateCount)
   class N61 entitymethod
-  N62(Video::&lt;get-likeCount&gt;)
-  class N62 entitymethod
-  N63(Video::applyCoinCountDelta)
+  N62((StatisticsCountUpdatedDomainEvent))
+  class N62 domainevent
+  N63(Video::&lt;get-coinCount&gt;)
   class N63 entitymethod
-  N64(Video::applyCollectCountDelta)
+  N64(Video::&lt;get-collectCount&gt;)
   class N64 entitymethod
-  N65(Video::applyLikeCountDelta)
+  N65(Video::&lt;get-customerId&gt;)
   class N65 entitymethod
-  N66((VideoCoinCountDeltaAppliedDomainEvent))
-  class N66 domainevent
-  N67((VideoCollectCountDeltaAppliedDomainEvent))
-  class N67 domainevent
-  N68((VideoLikeCountDeltaAppliedDomainEvent))
-  class N68 domainevent
-  N69(VideoComment::&lt;get-videoOwnerId&gt;)
+  N66(Video::&lt;get-id&gt;)
+  class N66 entitymethod
+  N67(Video::&lt;get-likeCount&gt;)
+  class N67 entitymethod
+  N68(Video::applyCoinCountDelta)
+  class N68 entitymethod
+  N69(Video::applyCollectCountDelta)
   class N69 entitymethod
-  N70(VideoComment::updateStatistics)
+  N70(Video::applyLikeCountDelta)
   class N70 entitymethod
+  N71((VideoCoinCountDeltaAppliedDomainEvent))
+  class N71 domainevent
+  N72((VideoCollectCountDeltaAppliedDomainEvent))
+  class N72 domainevent
+  N73((VideoLikeCountDeltaAppliedDomainEvent))
+  class N73 domainevent
+  N74(VideoComment::&lt;get-videoOwnerId&gt;)
+  class N74 entitymethod
+  N75(VideoComment::updateStatistics)
+  class N75 entitymethod
   N1 -->|ControllerMethodToCommand| N3
   N1 -->|ControllerMethodToCommand| N5
   N1 -->|ControllerMethodToCommand| N7
   N1 -->|ControllerMethodToCommand| N9
   N1 -->|ControllerMethodToCommand| N11
-  N2 -->|CommandHandlerToEntityMethod| N45
-  N2 -->|CommandHandlerToEntityMethod| N60
+  N2 -->|CommandHandlerToEntityMethod| N47
+  N2 -->|CommandHandlerToEntityMethod| N65
   N3 -->|CommandToCommandHandler| N2
-  N4 -->|CommandHandlerToEntityMethod| N45
-  N4 -->|CommandHandlerToEntityMethod| N69
+  N4 -->|CommandHandlerToEntityMethod| N47
+  N4 -->|CommandHandlerToEntityMethod| N74
   N5 -->|CommandToCommandHandler| N4
-  N6 -->|CommandHandlerToEntityMethod| N45
-  N6 -->|CommandHandlerToEntityMethod| N60
+  N6 -->|CommandHandlerToEntityMethod| N47
+  N6 -->|CommandHandlerToEntityMethod| N65
   N7 -->|CommandToCommandHandler| N6
-  N8 -->|CommandHandlerToEntityMethod| N45
-  N8 -->|CommandHandlerToEntityMethod| N69
+  N8 -->|CommandHandlerToEntityMethod| N47
+  N8 -->|CommandHandlerToEntityMethod| N74
   N9 -->|CommandToCommandHandler| N8
-  N10 -->|CommandHandlerToEntityMethod| N45
-  N10 -->|CommandHandlerToEntityMethod| N60
+  N10 -->|CommandHandlerToEntityMethod| N47
+  N10 -->|CommandHandlerToEntityMethod| N65
   N11 -->|CommandToCommandHandler| N10
-  N12 -->|CommandHandlerToEntityMethod| N51
-  N12 -->|CommandHandlerToEntityMethod| N60
+  N12 -->|CommandHandlerToEntityMethod| N53
+  N12 -->|CommandHandlerToEntityMethod| N65
   N13 -->|CommandToCommandHandler| N12
-  N14 -->|CommandHandlerToEntityMethod| N51
-  N14 -->|CommandHandlerToEntityMethod| N60
+  N14 -->|CommandHandlerToEntityMethod| N53
+  N14 -->|CommandHandlerToEntityMethod| N65
   N15 -->|CommandToCommandHandler| N14
-  N16 -->|CommandHandlerToEntityMethod| N57
+  N16 -->|CommandHandlerToEntityMethod| N59
   N17 -->|CommandToCommandHandler| N16
-  N19 -->|CommandHandlerToEntityMethod| N58
-  N19 -->|CommandHandlerToEntityMethod| N61
-  N19 -->|CommandHandlerToEntityMethod| N63
-  N20 -->|CommandToCommandHandler| N19
-  N21 -->|CommandHandlerToEntityMethod| N59
-  N21 -->|CommandHandlerToEntityMethod| N61
-  N21 -->|CommandHandlerToEntityMethod| N64
-  N22 -->|CommandToCommandHandler| N21
-  N23 -->|CommandHandlerToEntityMethod| N61
-  N23 -->|CommandHandlerToEntityMethod| N62
-  N23 -->|CommandHandlerToEntityMethod| N65
-  N24 -->|CommandToCommandHandler| N23
-  N25 -->|CommandHandlerToEntityMethod| N70
-  N26 -->|CommandToCommandHandler| N25
-  N27 -->|CommandHandlerToEntityMethod| N70
-  N28 -->|CommandToCommandHandler| N27
-  N29 -->|DomainEventHandlerToCommand| N17
-  N30 -->|DomainEventHandlerToCommand| N20
-  N31 -->|DomainEventHandlerToCommand| N22
-  N32 -->|DomainEventHandlerToCommand| N13
-  N33 -->|DomainEventHandlerToCommand| N26
-  N34 -->|DomainEventHandlerToCommand| N28
-  N35 -->|DomainEventHandlerToCommand| N24
-  N36 -->|DomainEventHandlerToCommand| N15
-  N42 -->|DomainEventHandlerToCommand| N18
-  N43 -->|DomainEventHandlerToCommand| N18
-  N44 -->|DomainEventHandlerToCommand| N18
-  N45 -->|EntityMethodToDomainEvent| N46
-  N45 -->|EntityMethodToDomainEvent| N47
-  N45 -->|EntityMethodToDomainEvent| N48
-  N45 -->|EntityMethodToDomainEvent| N49
-  N45 -->|EntityMethodToDomainEvent| N50
-  N46 -->|DomainEventToHandler| N29
-  N46 -->|DomainEventToHandler| N30
-  N47 -->|DomainEventToHandler| N31
-  N47 -->|DomainEventToHandler| N32
-  N48 -->|DomainEventToHandler| N33
-  N49 -->|DomainEventToHandler| N34
-  N50 -->|DomainEventToHandler| N35
-  N50 -->|DomainEventToHandler| N36
-  N51 -->|EntityMethodToDomainEvent| N52
-  N51 -->|EntityMethodToDomainEvent| N53
-  N51 -->|EntityMethodToDomainEvent| N54
-  N51 -->|EntityMethodToDomainEvent| N55
-  N51 -->|EntityMethodToDomainEvent| N56
+  N18 -->|CommandHandlerToEntityMethod| N60
+  N18 -->|CommandHandlerToEntityMethod| N61
+  N19 -->|CommandToCommandHandler| N18
+  N20 -->|CommandHandlerToEntityMethod| N63
+  N20 -->|CommandHandlerToEntityMethod| N66
+  N20 -->|CommandHandlerToEntityMethod| N68
+  N21 -->|CommandToCommandHandler| N20
+  N22 -->|CommandHandlerToEntityMethod| N64
+  N22 -->|CommandHandlerToEntityMethod| N66
+  N22 -->|CommandHandlerToEntityMethod| N69
+  N23 -->|CommandToCommandHandler| N22
+  N24 -->|CommandHandlerToEntityMethod| N66
+  N24 -->|CommandHandlerToEntityMethod| N67
+  N24 -->|CommandHandlerToEntityMethod| N70
+  N25 -->|CommandToCommandHandler| N24
+  N26 -->|CommandHandlerToEntityMethod| N75
+  N27 -->|CommandToCommandHandler| N26
+  N28 -->|CommandHandlerToEntityMethod| N75
+  N29 -->|CommandToCommandHandler| N28
+  N30 -->|DomainEventHandlerToCommand| N17
+  N31 -->|DomainEventHandlerToCommand| N21
+  N32 -->|DomainEventHandlerToCommand| N23
+  N33 -->|DomainEventHandlerToCommand| N13
+  N34 -->|DomainEventHandlerToCommand| N27
+  N35 -->|DomainEventHandlerToCommand| N29
+  N36 -->|DomainEventHandlerToCommand| N25
+  N37 -->|DomainEventHandlerToCommand| N15
+  N44 -->|DomainEventHandlerToCommand| N19
+  N45 -->|DomainEventHandlerToCommand| N19
+  N46 -->|DomainEventHandlerToCommand| N19
+  N47 -->|EntityMethodToDomainEvent| N48
+  N47 -->|EntityMethodToDomainEvent| N49
+  N47 -->|EntityMethodToDomainEvent| N50
+  N47 -->|EntityMethodToDomainEvent| N51
+  N47 -->|EntityMethodToDomainEvent| N52
+  N48 -->|DomainEventToHandler| N30
+  N48 -->|DomainEventToHandler| N31
+  N49 -->|DomainEventToHandler| N32
+  N49 -->|DomainEventToHandler| N33
+  N50 -->|DomainEventToHandler| N34
+  N51 -->|DomainEventToHandler| N35
+  N52 -->|DomainEventToHandler| N36
   N52 -->|DomainEventToHandler| N37
-  N53 -->|DomainEventToHandler| N38
-  N54 -->|DomainEventToHandler| N39
-  N55 -->|DomainEventToHandler| N40
-  N56 -->|DomainEventToHandler| N41
-  N63 -->|EntityMethodToDomainEvent| N66
-  N64 -->|EntityMethodToDomainEvent| N67
-  N65 -->|EntityMethodToDomainEvent| N68
-  N66 -->|DomainEventToHandler| N42
-  N67 -->|DomainEventToHandler| N43
-  N68 -->|DomainEventToHandler| N44
+  N53 -->|EntityMethodToDomainEvent| N54
+  N53 -->|EntityMethodToDomainEvent| N55
+  N53 -->|EntityMethodToDomainEvent| N56
+  N53 -->|EntityMethodToDomainEvent| N57
+  N53 -->|EntityMethodToDomainEvent| N58
+  N54 -->|DomainEventToHandler| N38
+  N55 -->|DomainEventToHandler| N39
+  N56 -->|DomainEventToHandler| N40
+  N57 -->|DomainEventToHandler| N41
+  N58 -->|DomainEventToHandler| N42
+  N61 -->|EntityMethodToDomainEvent| N62
+  N62 -->|DomainEventToHandler| N43
+  N68 -->|EntityMethodToDomainEvent| N71
+  N69 -->|EntityMethodToDomainEvent| N72
+  N70 -->|EntityMethodToDomainEvent| N73
+  N71 -->|DomainEventToHandler| N44
+  N72 -->|DomainEventToHandler| N45
+  N73 -->|DomainEventToHandler| N46
   classDef command fill:#FDBA74,stroke:#C2410C,color:#111827
   classDef commandhandler fill:#F97316,stroke:#9A3412,color:#111827
   classDef controllermethod fill:#FDE68A,stroke:#B45309,color:#111827

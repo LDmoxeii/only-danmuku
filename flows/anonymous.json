@@ -1,8 +1,8 @@
 {
   "entryId" : "<anonymous>",
   "entryType" : "<anonymous>",
-  "nodeCount" : 410,
-  "edgeCount" : 481,
+  "nodeCount" : 427,
+  "edgeCount" : 507,
   "nodes" : [ {
     "id" : "<anonymous>",
     "name" : "<anonymous>",
@@ -319,6 +319,11 @@
     "fullName" : "edu.only4.danmuku.application.commands.customer_profile.RewardUserForVideoCmd.Request",
     "type" : "command"
   }, {
+    "id" : "edu.only4.danmuku.application.commands.customer_profile.SpendCoinsForNicknameChangeCmd.Handler",
+    "name" : "SpendCoinsForNicknameChangeCmd.Handler",
+    "fullName" : "edu.only4.danmuku.application.commands.customer_profile.SpendCoinsForNicknameChangeCmd.Handler",
+    "type" : "commandhandler"
+  }, {
     "id" : "edu.only4.danmuku.application.commands.customer_profile.SpendCoinsForNicknameChangeCmd.Request",
     "name" : "SpendCoinsForNicknameChangeCmd.Request",
     "fullName" : "edu.only4.danmuku.application.commands.customer_profile.SpendCoinsForNicknameChangeCmd.Request",
@@ -334,6 +339,11 @@
     "fullName" : "edu.only4.danmuku.application.commands.customer_profile.TransferCoinCmd.Request",
     "type" : "command"
   }, {
+    "id" : "edu.only4.danmuku.application.commands.statistics.UpdateStatisticsInfoCmd.Handler",
+    "name" : "UpdateStatisticsInfoCmd.Handler",
+    "fullName" : "edu.only4.danmuku.application.commands.statistics.UpdateStatisticsInfoCmd.Handler",
+    "type" : "commandhandler"
+  }, {
     "id" : "edu.only4.danmuku.application.commands.statistics.UpdateStatisticsInfoCmd.Request",
     "name" : "UpdateStatisticsInfoCmd.Request",
     "fullName" : "edu.only4.danmuku.application.commands.statistics.UpdateStatisticsInfoCmd.Request",
@@ -348,6 +358,11 @@
     "name" : "ChangeUserPhoneCmd.Request",
     "fullName" : "edu.only4.danmuku.application.commands.user.ChangeUserPhoneCmd.Request",
     "type" : "command"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.user.RelationProfileCmd.Handler",
+    "name" : "RelationProfileCmd.Handler",
+    "fullName" : "edu.only4.danmuku.application.commands.user.RelationProfileCmd.Handler",
+    "type" : "commandhandler"
   }, {
     "id" : "edu.only4.danmuku.application.commands.user.RelationProfileCmd.Request",
     "name" : "RelationProfileCmd.Request",
@@ -424,10 +439,20 @@
     "fullName" : "edu.only4.danmuku.application.commands.video.ApplyVideoPlayCountDeltaCmd.Request",
     "type" : "command"
   }, {
+    "id" : "edu.only4.danmuku.application.commands.video.ChangeVideoInteractionCmd.Handler",
+    "name" : "ChangeVideoInteractionCmd.Handler",
+    "fullName" : "edu.only4.danmuku.application.commands.video.ChangeVideoInteractionCmd.Handler",
+    "type" : "commandhandler"
+  }, {
     "id" : "edu.only4.danmuku.application.commands.video.ChangeVideoInteractionCmd.Request",
     "name" : "ChangeVideoInteractionCmd.Request",
     "fullName" : "edu.only4.danmuku.application.commands.video.ChangeVideoInteractionCmd.Request",
     "type" : "command"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.video.DeleteVideoCmd.Handler",
+    "name" : "DeleteVideoCmd.Handler",
+    "fullName" : "edu.only4.danmuku.application.commands.video.DeleteVideoCmd.Handler",
+    "type" : "commandhandler"
   }, {
     "id" : "edu.only4.danmuku.application.commands.video.DeleteVideoCmd.Request",
     "name" : "DeleteVideoCmd.Request",
@@ -544,10 +569,20 @@
     "fullName" : "edu.only4.danmuku.application.commands.video_file_upload_session.InitTempAndStartUploadingCmd.Request",
     "type" : "command"
   }, {
+    "id" : "edu.only4.danmuku.application.commands.video_play_history.AddPlayHistoryCmd.Handler",
+    "name" : "AddPlayHistoryCmd.Handler",
+    "fullName" : "edu.only4.danmuku.application.commands.video_play_history.AddPlayHistoryCmd.Handler",
+    "type" : "commandhandler"
+  }, {
     "id" : "edu.only4.danmuku.application.commands.video_play_history.AddPlayHistoryCmd.Request",
     "name" : "AddPlayHistoryCmd.Request",
     "fullName" : "edu.only4.danmuku.application.commands.video_play_history.AddPlayHistoryCmd.Request",
     "type" : "command"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.video_post.AuditVideoPostCmd.Handler",
+    "name" : "AuditVideoPostCmd.Handler",
+    "fullName" : "edu.only4.danmuku.application.commands.video_post.AuditVideoPostCmd.Handler",
+    "type" : "commandhandler"
   }, {
     "id" : "edu.only4.danmuku.application.commands.video_post.AuditVideoPostCmd.Request",
     "name" : "AuditVideoPostCmd.Request",
@@ -1469,6 +1504,11 @@
     "fullName" : "edu.only4.danmuku.domain.aggregates.customer_profile.CustomerProfile::rewardCoins",
     "type" : "entitymethod"
   }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.customer_profile.CustomerProfile::spendCoins",
+    "name" : "CustomerProfile::spendCoins",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.customer_profile.CustomerProfile::spendCoins",
+    "type" : "entitymethod"
+  }, {
     "id" : "edu.only4.danmuku.domain.aggregates.customer_profile.CustomerProfile::transferCoin",
     "name" : "CustomerProfile::transferCoin",
     "fullName" : "edu.only4.danmuku.domain.aggregates.customer_profile.CustomerProfile::transferCoin",
@@ -1509,6 +1549,16 @@
     "fullName" : "edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerProfileUpdatedDomainEvent",
     "type" : "domainevent"
   }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.statistics.Statistics::onCreate",
+    "name" : "Statistics::onCreate",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.statistics.Statistics::onCreate",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.statistics.Statistics::updateCount",
+    "name" : "Statistics::updateCount",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.statistics.Statistics::updateCount",
+    "type" : "entitymethod"
+  }, {
     "id" : "edu.only4.danmuku.domain.aggregates.statistics.events.StatisticsCountUpdatedDomainEvent",
     "name" : "StatisticsCountUpdatedDomainEvent",
     "fullName" : "edu.only4.danmuku.domain.aggregates.statistics.events.StatisticsCountUpdatedDomainEvent",
@@ -1517,6 +1567,11 @@
     "id" : "edu.only4.danmuku.domain.aggregates.user.User::bindPhone",
     "name" : "User::bindPhone",
     "fullName" : "edu.only4.danmuku.domain.aggregates.user.User::bindPhone",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.user.User::bindingRelationship",
+    "name" : "User::bindingRelationship",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.user.User::bindingRelationship",
     "type" : "entitymethod"
   }, {
     "id" : "edu.only4.danmuku.domain.aggregates.user.events.AccountDisabledDomainEvent",
@@ -1639,9 +1694,19 @@
     "fullName" : "edu.only4.danmuku.domain.aggregates.video.Video::applyPlayCountDelta",
     "type" : "entitymethod"
   }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video.Video::changeInteraction",
+    "name" : "Video::changeInteraction",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video.Video::changeInteraction",
+    "type" : "entitymethod"
+  }, {
     "id" : "edu.only4.danmuku.domain.aggregates.video.Video::onCreate",
     "name" : "Video::onCreate",
     "fullName" : "edu.only4.danmuku.domain.aggregates.video.Video::onCreate",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video.Video::onDelete",
+    "name" : "Video::onDelete",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video.Video::onDelete",
     "type" : "entitymethod"
   }, {
     "id" : "edu.only4.danmuku.domain.aggregates.video.Video::syncFromBasics",
@@ -1819,6 +1884,16 @@
     "fullName" : "edu.only4.danmuku.domain.aggregates.video_hls_key_token.events.VideoHlsKeyTokenIssuedDomainEvent",
     "type" : "domainevent"
   }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_play_history.VideoPlayHistory::onCreate",
+    "name" : "VideoPlayHistory::onCreate",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_play_history.VideoPlayHistory::onCreate",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_play_history.VideoPlayHistory::updatePlayProgress",
+    "name" : "VideoPlayHistory::updatePlayProgress",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_play_history.VideoPlayHistory::updatePlayProgress",
+    "type" : "entitymethod"
+  }, {
     "id" : "edu.only4.danmuku.domain.aggregates.video_play_history.events.VideoPlayHistoryCreatedDomainEvent",
     "name" : "VideoPlayHistoryCreatedDomainEvent",
     "fullName" : "edu.only4.danmuku.domain.aggregates.video_play_history.events.VideoPlayHistoryCreatedDomainEvent",
@@ -1937,6 +2012,16 @@
     "id" : "edu.only4.danmuku.domain.aggregates.video_post.VideoPost::applyProcessStatus",
     "name" : "VideoPost::applyProcessStatus",
     "fullName" : "edu.only4.danmuku.domain.aggregates.video_post.VideoPost::applyProcessStatus",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_post.VideoPost::reviewFail",
+    "name" : "VideoPost::reviewFail",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_post.VideoPost::reviewFail",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.video_post.VideoPost::reviewPass",
+    "name" : "VideoPost::reviewPass",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.video_post.VideoPost::reviewPass",
     "type" : "entitymethod"
   }, {
     "id" : "edu.only4.danmuku.domain.aggregates.video_post.VideoPost::updateDuration",
@@ -2795,6 +2880,16 @@
     "type" : "CommandToCommandHandler",
     "label" : null
   }, {
+    "fromId" : "edu.only4.danmuku.application.commands.customer_profile.SpendCoinsForNicknameChangeCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.customer_profile.CustomerProfile::spendCoins",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.customer_profile.SpendCoinsForNicknameChangeCmd.Request",
+    "toId" : "edu.only4.danmuku.application.commands.customer_profile.SpendCoinsForNicknameChangeCmd.Handler",
+    "type" : "CommandToCommandHandler",
+    "label" : null
+  }, {
     "fromId" : "edu.only4.danmuku.application.commands.customer_profile.TransferCoinCmd.Handler",
     "toId" : "edu.only4.danmuku.domain.aggregates.customer_profile.CustomerProfile::transferCoin",
     "type" : "CommandHandlerToEntityMethod",
@@ -2805,6 +2900,21 @@
     "type" : "CommandToCommandHandler",
     "label" : null
   }, {
+    "fromId" : "edu.only4.danmuku.application.commands.statistics.UpdateStatisticsInfoCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.statistics.Statistics::onCreate",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.statistics.UpdateStatisticsInfoCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.statistics.Statistics::updateCount",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.statistics.UpdateStatisticsInfoCmd.Request",
+    "toId" : "edu.only4.danmuku.application.commands.statistics.UpdateStatisticsInfoCmd.Handler",
+    "type" : "CommandToCommandHandler",
+    "label" : null
+  }, {
     "fromId" : "edu.only4.danmuku.application.commands.user.ChangeUserPhoneCmd.Handler",
     "toId" : "edu.only4.danmuku.domain.aggregates.user.User::bindPhone",
     "type" : "CommandHandlerToEntityMethod",
@@ -2812,6 +2922,16 @@
   }, {
     "fromId" : "edu.only4.danmuku.application.commands.user.ChangeUserPhoneCmd.Request",
     "toId" : "edu.only4.danmuku.application.commands.user.ChangeUserPhoneCmd.Handler",
+    "type" : "CommandToCommandHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.user.RelationProfileCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.user.User::bindingRelationship",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.user.RelationProfileCmd.Request",
+    "toId" : "edu.only4.danmuku.application.commands.user.RelationProfileCmd.Handler",
     "type" : "CommandToCommandHandler",
     "label" : null
   }, {
@@ -2947,6 +3067,31 @@
   }, {
     "fromId" : "edu.only4.danmuku.application.commands.video.ApplyVideoPlayCountDeltaCmd.Request",
     "toId" : "edu.only4.danmuku.application.commands.video.ApplyVideoPlayCountDeltaCmd.Handler",
+    "type" : "CommandToCommandHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video.ChangeVideoInteractionCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video.Video::<get-customerId>",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video.ChangeVideoInteractionCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video.Video::changeInteraction",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video.ChangeVideoInteractionCmd.Request",
+    "toId" : "edu.only4.danmuku.application.commands.video.ChangeVideoInteractionCmd.Handler",
+    "type" : "CommandToCommandHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video.DeleteVideoCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video.Video::onDelete",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video.DeleteVideoCmd.Request",
+    "toId" : "edu.only4.danmuku.application.commands.video.DeleteVideoCmd.Handler",
     "type" : "CommandToCommandHandler",
     "label" : null
   }, {
@@ -3152,6 +3297,36 @@
   }, {
     "fromId" : "edu.only4.danmuku.application.commands.video_file_upload_session.InitTempAndStartUploadingCmd.Request",
     "toId" : "edu.only4.danmuku.application.commands.video_file_upload_session.InitTempAndStartUploadingCmd.Handler",
+    "type" : "CommandToCommandHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_play_history.AddPlayHistoryCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_play_history.VideoPlayHistory::onCreate",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_play_history.AddPlayHistoryCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_play_history.VideoPlayHistory::updatePlayProgress",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_play_history.AddPlayHistoryCmd.Request",
+    "toId" : "edu.only4.danmuku.application.commands.video_play_history.AddPlayHistoryCmd.Handler",
+    "type" : "CommandToCommandHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_post.AuditVideoPostCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_post.VideoPost::reviewFail",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_post.AuditVideoPostCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_post.VideoPost::reviewPass",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.video_post.AuditVideoPostCmd.Request",
+    "toId" : "edu.only4.danmuku.application.commands.video_post.AuditVideoPostCmd.Handler",
     "type" : "CommandToCommandHandler",
     "label" : null
   }, {
@@ -4075,6 +4250,11 @@
     "type" : "DomainEventToHandler",
     "label" : null
   }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.statistics.Statistics::updateCount",
+    "toId" : "edu.only4.danmuku.domain.aggregates.statistics.events.StatisticsCountUpdatedDomainEvent",
+    "type" : "EntityMethodToDomainEvent",
+    "label" : null
+  }, {
     "fromId" : "edu.only4.danmuku.domain.aggregates.statistics.events.StatisticsCountUpdatedDomainEvent",
     "toId" : "edu.only4.danmuku.application.subscribers.domain.statistics.StatisticsCountUpdatedDomainEventSubscriber::on",
     "type" : "DomainEventToHandler",
@@ -4082,6 +4262,11 @@
   }, {
     "fromId" : "edu.only4.danmuku.domain.aggregates.user.User::bindPhone",
     "toId" : "edu.only4.danmuku.domain.aggregates.user.events.UserPhoneChangedDomainEvent",
+    "type" : "EntityMethodToDomainEvent",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.user.User::bindingRelationship",
+    "toId" : "edu.only4.danmuku.domain.aggregates.user.events.RelationshipBoundDomainEvent",
     "type" : "EntityMethodToDomainEvent",
     "label" : null
   }, {
@@ -4155,8 +4340,18 @@
     "type" : "EntityMethodToDomainEvent",
     "label" : null
   }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.video.Video::changeInteraction",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video.events.VideoInteractionChangedDomainEvent",
+    "type" : "EntityMethodToDomainEvent",
+    "label" : null
+  }, {
     "fromId" : "edu.only4.danmuku.domain.aggregates.video.Video::onCreate",
     "toId" : "edu.only4.danmuku.domain.aggregates.video.events.VideoCreatedDomainEvent",
+    "type" : "EntityMethodToDomainEvent",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.video.Video::onDelete",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video.events.VideoDeletedDomainEvent",
     "type" : "EntityMethodToDomainEvent",
     "label" : null
   }, {
@@ -4345,6 +4540,16 @@
     "type" : "DomainEventToHandler",
     "label" : null
   }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.video_play_history.VideoPlayHistory::onCreate",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_play_history.events.VideoPlayHistoryCreatedDomainEvent",
+    "type" : "EntityMethodToDomainEvent",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.video_play_history.VideoPlayHistory::updatePlayProgress",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_play_history.events.VideoPlayHistoryProgressUpdatedDomainEvent",
+    "type" : "EntityMethodToDomainEvent",
+    "label" : null
+  }, {
     "fromId" : "edu.only4.danmuku.domain.aggregates.video_play_history.events.VideoPlayHistoryCreatedDomainEvent",
     "toId" : "edu.only4.danmuku.application.subscribers.domain.video_play_history.VideoPlayHistoryCreatedDomainEventSubscriber::on",
     "type" : "DomainEventToHandler",
@@ -4353,6 +4558,16 @@
     "fromId" : "edu.only4.danmuku.domain.aggregates.video_play_history.events.VideoPlayHistoryProgressUpdatedDomainEvent",
     "toId" : "edu.only4.danmuku.application.subscribers.domain.video_play_history.VideoPlayHistoryProgressUpdatedDomainEventSubscriber::on",
     "type" : "DomainEventToHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.video_post.VideoPost::reviewFail",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_post.events.VideoAuditFailedDomainEvent",
+    "type" : "EntityMethodToDomainEvent",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.video_post.VideoPost::reviewPass",
+    "toId" : "edu.only4.danmuku.domain.aggregates.video_post.events.VideoAuditPassedDomainEvent",
+    "type" : "EntityMethodToDomainEvent",
     "label" : null
   }, {
     "fromId" : "edu.only4.danmuku.domain.aggregates.video_post.events.VideoAuditFailedDomainEvent",

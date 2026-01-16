@@ -1,8 +1,8 @@
 {
   "entryId" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::loginBySms",
   "entryType" : "controllermethod",
-  "nodeCount" : 6,
-  "edgeCount" : 5,
+  "nodeCount" : 10,
+  "edgeCount" : 9,
   "nodes" : [ {
     "id" : "edu.only4.danmuku.adapter.application.queries.customer_profile.GetCustomerProfileQryHandler",
     "name" : "GetCustomerProfileQryHandler",
@@ -19,6 +19,11 @@
     "fullName" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::loginBySms",
     "type" : "controllermethod"
   }, {
+    "id" : "edu.only4.danmuku.application.commands.user.UpdateLoginInfoCmd.Handler",
+    "name" : "UpdateLoginInfoCmd.Handler",
+    "fullName" : "edu.only4.danmuku.application.commands.user.UpdateLoginInfoCmd.Handler",
+    "type" : "commandhandler"
+  }, {
     "id" : "edu.only4.danmuku.application.commands.user.UpdateLoginInfoCmd.Request",
     "name" : "UpdateLoginInfoCmd.Request",
     "fullName" : "edu.only4.danmuku.application.commands.user.UpdateLoginInfoCmd.Request",
@@ -33,6 +38,21 @@
     "name" : "GetUserByPhoneQry.Request",
     "fullName" : "edu.only4.danmuku.application.queries.user.GetUserByPhoneQry.Request",
     "type" : "query"
+  }, {
+    "id" : "edu.only4.danmuku.application.subscribers.domain.user.LoginInfoUpdatedDomainEventSubscriber::on",
+    "name" : "LoginInfoUpdatedDomainEventSubscriber::on",
+    "fullName" : "edu.only4.danmuku.application.subscribers.domain.user.LoginInfoUpdatedDomainEventSubscriber::on",
+    "type" : "domaineventhandler"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.user.User::updateLoginInfo",
+    "name" : "User::updateLoginInfo",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.user.User::updateLoginInfo",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.user.events.LoginInfoUpdatedDomainEvent",
+    "name" : "LoginInfoUpdatedDomainEvent",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.user.events.LoginInfoUpdatedDomainEvent",
+    "type" : "domainevent"
   } ],
   "edges" : [ {
     "fromId" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::loginBySms",
@@ -50,6 +70,16 @@
     "type" : "ControllerMethodToQuery",
     "label" : null
   }, {
+    "fromId" : "edu.only4.danmuku.application.commands.user.UpdateLoginInfoCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.user.User::updateLoginInfo",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.user.UpdateLoginInfoCmd.Request",
+    "toId" : "edu.only4.danmuku.application.commands.user.UpdateLoginInfoCmd.Handler",
+    "type" : "CommandToCommandHandler",
+    "label" : null
+  }, {
     "fromId" : "edu.only4.danmuku.application.queries.customer_profile.GetCustomerProfileQry.Request",
     "toId" : "edu.only4.danmuku.adapter.application.queries.customer_profile.GetCustomerProfileQryHandler",
     "type" : "QueryToQueryHandler",
@@ -58,6 +88,16 @@
     "fromId" : "edu.only4.danmuku.application.queries.user.GetUserByPhoneQry.Request",
     "toId" : "edu.only4.danmuku.adapter.application.queries.user.GetUserByPhoneQryHandler",
     "type" : "QueryToQueryHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.user.User::updateLoginInfo",
+    "toId" : "edu.only4.danmuku.domain.aggregates.user.events.LoginInfoUpdatedDomainEvent",
+    "type" : "EntityMethodToDomainEvent",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.user.events.LoginInfoUpdatedDomainEvent",
+    "toId" : "edu.only4.danmuku.application.subscribers.domain.user.LoginInfoUpdatedDomainEventSubscriber::on",
+    "type" : "DomainEventToHandler",
     "label" : null
   } ]
 }

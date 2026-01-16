@@ -3,14 +3,60 @@ flowchart TD
   class N1 clihandler
   N2([AccountController::register])
   class N2 controllermethod
-  N3{{RegisterAccountCmd.Request}}
-  class N3 command
-  N4{{CaptchaValidCli.Request}}
-  class N4 cli
-  N2 -->|ControllerMethodToCommand| N3
-  N2 -->|ControllerMethodToCli| N4
-  N4 -->|CliToCliHandler| N1
+  N3[[CreateCustomerProfileCmd.Handler]]
+  class N3 commandhandler
+  N4{{CreateCustomerProfileCmd.Request}}
+  class N4 command
+  N5[[RegisterAccountCmd.Handler]]
+  class N5 commandhandler
+  N6{{RegisterAccountCmd.Request}}
+  class N6 command
+  N7[[RelationProfileCmd.Handler]]
+  class N7 commandhandler
+  N8{{RelationProfileCmd.Request}}
+  class N8 command
+  N9{{CaptchaValidCli.Request}}
+  class N9 cli
+  N10[[CustomerProfileCreatedDomainEventSubscriber::on1]]
+  class N10 domaineventhandler
+  N11[[RelationshipBoundDomainEventSubscriber::on]]
+  class N11 domaineventhandler
+  N12[[UserCreatedDomainEventSubscriber::on]]
+  class N12 domaineventhandler
+  N13(CustomerProfile::onCreate)
+  class N13 entitymethod
+  N14((CustomerProfileCreatedDomainEvent))
+  class N14 domainevent
+  N15(User::bindingRelationship)
+  class N15 entitymethod
+  N16(User::onCreate)
+  class N16 entitymethod
+  N17((RelationshipBoundDomainEvent))
+  class N17 domainevent
+  N18((UserCreatedDomainEvent))
+  class N18 domainevent
+  N2 -->|ControllerMethodToCommand| N6
+  N2 -->|ControllerMethodToCli| N9
+  N3 -->|CommandHandlerToEntityMethod| N13
+  N4 -->|CommandToCommandHandler| N3
+  N5 -->|CommandHandlerToEntityMethod| N16
+  N6 -->|CommandToCommandHandler| N5
+  N7 -->|CommandHandlerToEntityMethod| N15
+  N8 -->|CommandToCommandHandler| N7
+  N9 -->|CliToCliHandler| N1
+  N10 -->|DomainEventHandlerToCommand| N8
+  N12 -->|DomainEventHandlerToCommand| N4
+  N13 -->|EntityMethodToDomainEvent| N14
+  N14 -->|DomainEventToHandler| N10
+  N15 -->|EntityMethodToDomainEvent| N17
+  N16 -->|EntityMethodToDomainEvent| N18
+  N17 -->|DomainEventToHandler| N11
+  N18 -->|DomainEventToHandler| N12
   classDef cli fill:#86EFAC,stroke:#15803D,color:#0F172A
   classDef clihandler fill:#22C55E,stroke:#166534,color:#F0FDF4
   classDef command fill:#FDBA74,stroke:#C2410C,color:#111827
+  classDef commandhandler fill:#F97316,stroke:#9A3412,color:#111827
   classDef controllermethod fill:#FDE68A,stroke:#B45309,color:#111827
+  classDef domainevent fill:#FECACA,stroke:#B91C1C,color:#111827
+  classDef domaineventhandler fill:#F87171,stroke:#991B1B,color:#111827
+  classDef entitymethod fill:#F3F4F6,stroke:#6B7280,color:#111827

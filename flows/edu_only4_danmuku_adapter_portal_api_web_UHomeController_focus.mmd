@@ -1,8 +1,42 @@
 flowchart TD
   N1([UHomeController::focus])
   class N1 controllermethod
-  N2{{FocusCmd.Request}}
-  class N2 command
-  N1 -->|ControllerMethodToCommand| N2
+  N2[[FocusCmd.Handler]]
+  class N2 commandhandler
+  N3{{FocusCmd.Request}}
+  class N3 command
+  N4[[UpdateStatisticsInfoCmd.Handler]]
+  class N4 commandhandler
+  N5{{UpdateStatisticsInfoCmd.Request}}
+  class N5 command
+  N6[[UserFocusedDomainEventSubscriber::on]]
+  class N6 domaineventhandler
+  N7[[StatisticsCountUpdatedDomainEventSubscriber::on]]
+  class N7 domaineventhandler
+  N8(CustomerFocus::onCreate)
+  class N8 entitymethod
+  N9((UserFocusedDomainEvent))
+  class N9 domainevent
+  N10(Statistics::onCreate)
+  class N10 entitymethod
+  N11(Statistics::updateCount)
+  class N11 entitymethod
+  N12((StatisticsCountUpdatedDomainEvent))
+  class N12 domainevent
+  N1 -->|ControllerMethodToCommand| N3
+  N2 -->|CommandHandlerToEntityMethod| N8
+  N3 -->|CommandToCommandHandler| N2
+  N4 -->|CommandHandlerToEntityMethod| N10
+  N4 -->|CommandHandlerToEntityMethod| N11
+  N5 -->|CommandToCommandHandler| N4
+  N6 -->|DomainEventHandlerToCommand| N5
+  N8 -->|EntityMethodToDomainEvent| N9
+  N9 -->|DomainEventToHandler| N6
+  N11 -->|EntityMethodToDomainEvent| N12
+  N12 -->|DomainEventToHandler| N7
   classDef command fill:#FDBA74,stroke:#C2410C,color:#111827
+  classDef commandhandler fill:#F97316,stroke:#9A3412,color:#111827
   classDef controllermethod fill:#FDE68A,stroke:#B45309,color:#111827
+  classDef domainevent fill:#FECACA,stroke:#B91C1C,color:#111827
+  classDef domaineventhandler fill:#F87171,stroke:#991B1B,color:#111827
+  classDef entitymethod fill:#F3F4F6,stroke:#6B7280,color:#111827
