@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service
 @Service
 class CustomerAvatarUpdatedDomainEventSubscriber {
 
-//    @EventListener(CustomerAvatarUpdatedDomainEvent::class)
+    @EventListener(CustomerAvatarUpdatedDomainEvent::class)
     fun on(event: CustomerAvatarUpdatedDomainEvent) {
         val profile = event.entity
         Mediator.requests.send(

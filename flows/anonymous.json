@@ -1,8 +1,8 @@
 {
   "entryId" : "<anonymous>",
   "entryType" : "<anonymous>",
-  "nodeCount" : 410,
-  "edgeCount" : 482,
+  "nodeCount" : 407,
+  "edgeCount" : 475,
   "nodes" : [ {
     "id" : "<anonymous>",
     "name" : "<anonymous>",
@@ -17,6 +17,11 @@
     "id" : "edu.only4.danmuku.adapter.application.distributed.clients.DeleteVideoFileResourcesCliHandler",
     "name" : "DeleteVideoFileResourcesCliHandler",
     "fullName" : "edu.only4.danmuku.adapter.application.distributed.clients.DeleteVideoFileResourcesCliHandler",
+    "type" : "clihandler"
+  }, {
+    "id" : "edu.only4.danmuku.adapter.application.distributed.clients.RefreshLoginSessionCliHandler",
+    "name" : "RefreshLoginSessionCliHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.distributed.clients.RefreshLoginSessionCliHandler",
     "type" : "clihandler"
   }, {
     "id" : "edu.only4.danmuku.adapter.application.distributed.clients.RemoveVideoSearchIndexCliHandler",
@@ -37,11 +42,6 @@
     "id" : "edu.only4.danmuku.adapter.application.distributed.clients.video_encrypt.EncryptHlsVariantWithKeyCliHandler",
     "name" : "EncryptHlsVariantWithKeyCliHandler",
     "fullName" : "edu.only4.danmuku.adapter.application.distributed.clients.video_encrypt.EncryptHlsVariantWithKeyCliHandler",
-    "type" : "clihandler"
-  }, {
-    "id" : "edu.only4.danmuku.adapter.application.distributed.clients.video_encrypt.EncryptHlsWithQualityKeysCliHandler",
-    "name" : "EncryptHlsWithQualityKeysCliHandler",
-    "fullName" : "edu.only4.danmuku.adapter.application.distributed.clients.video_encrypt.EncryptHlsWithQualityKeysCliHandler",
     "type" : "clihandler"
   }, {
     "id" : "edu.only4.danmuku.adapter.application.distributed.clients.video_encrypt.GenerateEncryptedMasterByVariantsCliHandler",
@@ -319,6 +319,11 @@
     "fullName" : "edu.only4.danmuku.application.commands.customer_profile.RewardUserForVideoCmd.Request",
     "type" : "command"
   }, {
+    "id" : "edu.only4.danmuku.application.commands.customer_profile.SpendCoinsForNicknameChangeCmd.Request",
+    "name" : "SpendCoinsForNicknameChangeCmd.Request",
+    "fullName" : "edu.only4.danmuku.application.commands.customer_profile.SpendCoinsForNicknameChangeCmd.Request",
+    "type" : "command"
+  }, {
     "id" : "edu.only4.danmuku.application.commands.customer_profile.TransferCoinCmd.Handler",
     "name" : "TransferCoinCmd.Handler",
     "fullName" : "edu.only4.danmuku.application.commands.customer_profile.TransferCoinCmd.Handler",
@@ -529,26 +534,6 @@
     "fullName" : "edu.only4.danmuku.application.commands.video_encrypt.GenerateVideoPostQualityKeyCmd.Request",
     "type" : "command"
   }, {
-    "id" : "edu.only4.danmuku.application.commands.video_encrypt.GenerateVideoPostQualityKeysCmd.Handler",
-    "name" : "GenerateVideoPostQualityKeysCmd.Handler",
-    "fullName" : "edu.only4.danmuku.application.commands.video_encrypt.GenerateVideoPostQualityKeysCmd.Handler",
-    "type" : "commandhandler"
-  }, {
-    "id" : "edu.only4.danmuku.application.commands.video_encrypt.GenerateVideoPostQualityKeysCmd.Request",
-    "name" : "GenerateVideoPostQualityKeysCmd.Request",
-    "fullName" : "edu.only4.danmuku.application.commands.video_encrypt.GenerateVideoPostQualityKeysCmd.Request",
-    "type" : "command"
-  }, {
-    "id" : "edu.only4.danmuku.application.commands.video_encrypt.PersistVideoEncryptBatchResultCmd.Handler",
-    "name" : "PersistVideoEncryptBatchResultCmd.Handler",
-    "fullName" : "edu.only4.danmuku.application.commands.video_encrypt.PersistVideoEncryptBatchResultCmd.Handler",
-    "type" : "commandhandler"
-  }, {
-    "id" : "edu.only4.danmuku.application.commands.video_encrypt.PersistVideoEncryptBatchResultCmd.Request",
-    "name" : "PersistVideoEncryptBatchResultCmd.Request",
-    "fullName" : "edu.only4.danmuku.application.commands.video_encrypt.PersistVideoEncryptBatchResultCmd.Request",
-    "type" : "command"
-  }, {
     "id" : "edu.only4.danmuku.application.commands.video_file_upload_session.InitTempAndStartUploadingCmd.Handler",
     "name" : "InitTempAndStartUploadingCmd.Handler",
     "fullName" : "edu.only4.danmuku.application.commands.video_file_upload_session.InitTempAndStartUploadingCmd.Handler",
@@ -649,6 +634,11 @@
     "fullName" : "edu.only4.danmuku.application.distributed.clients.DeleteVideoFileResourcesCli.Request",
     "type" : "cli"
   }, {
+    "id" : "edu.only4.danmuku.application.distributed.clients.RefreshLoginSessionCli.Request",
+    "name" : "RefreshLoginSessionCli.Request",
+    "fullName" : "edu.only4.danmuku.application.distributed.clients.RefreshLoginSessionCli.Request",
+    "type" : "cli"
+  }, {
     "id" : "edu.only4.danmuku.application.distributed.clients.RemoveVideoSearchIndexCli.Request",
     "name" : "RemoveVideoSearchIndexCli.Request",
     "fullName" : "edu.only4.danmuku.application.distributed.clients.RemoveVideoSearchIndexCli.Request",
@@ -667,11 +657,6 @@
     "id" : "edu.only4.danmuku.application.distributed.clients.video_encrypt.EncryptHlsVariantWithKeyCli.Request",
     "name" : "EncryptHlsVariantWithKeyCli.Request",
     "fullName" : "edu.only4.danmuku.application.distributed.clients.video_encrypt.EncryptHlsVariantWithKeyCli.Request",
-    "type" : "cli"
-  }, {
-    "id" : "edu.only4.danmuku.application.distributed.clients.video_encrypt.EncryptHlsWithQualityKeysCli.Request",
-    "name" : "EncryptHlsWithQualityKeysCli.Request",
-    "fullName" : "edu.only4.danmuku.application.distributed.clients.video_encrypt.EncryptHlsWithQualityKeysCli.Request",
     "type" : "cli"
   }, {
     "id" : "edu.only4.danmuku.application.distributed.clients.video_encrypt.GenerateEncryptedMasterByVariantsCli.Request",
@@ -977,6 +962,11 @@
     "id" : "edu.only4.danmuku.application.subscribers.domain.customer_message.CustomerMessageSystemCreatedDomainEventSubscriber::on",
     "name" : "CustomerMessageSystemCreatedDomainEventSubscriber::on",
     "fullName" : "edu.only4.danmuku.application.subscribers.domain.customer_message.CustomerMessageSystemCreatedDomainEventSubscriber::on",
+    "type" : "domaineventhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.subscribers.domain.customer_profile.CustomerNicknameUpdatedDomainEventSubscriber::on",
+    "name" : "CustomerNicknameUpdatedDomainEventSubscriber::on",
+    "fullName" : "edu.only4.danmuku.application.subscribers.domain.customer_profile.CustomerNicknameUpdatedDomainEventSubscriber::on",
     "type" : "domaineventhandler"
   }, {
     "id" : "edu.only4.danmuku.application.subscribers.domain.customer_profile.CustomerProfileCoinsRewardedDomainEventSubscriber::on",
@@ -1834,11 +1824,6 @@
     "fullName" : "edu.only4.danmuku.domain.aggregates.video_post.VideoFilePost::<get-duration>",
     "type" : "entitymethod"
   }, {
-    "id" : "edu.only4.danmuku.domain.aggregates.video_post.VideoFilePost::<get-encryptStatus>",
-    "name" : "VideoFilePost::<get-encryptStatus>",
-    "fullName" : "edu.only4.danmuku.domain.aggregates.video_post.VideoFilePost::<get-encryptStatus>",
-    "type" : "entitymethod"
-  }, {
     "id" : "edu.only4.danmuku.domain.aggregates.video_post.VideoFilePost::<get-fileIndex>",
     "name" : "VideoFilePost::<get-fileIndex>",
     "fullName" : "edu.only4.danmuku.domain.aggregates.video_post.VideoFilePost::<get-fileIndex>",
@@ -2071,16 +2056,6 @@
     "label" : null
   }, {
     "fromId" : "<anonymous>",
-    "toId" : "edu.only4.danmuku.application.commands.video_encrypt.GenerateVideoPostQualityKeysCmd.Request",
-    "type" : "CommandSenderMethodToCommand",
-    "label" : null
-  }, {
-    "fromId" : "<anonymous>",
-    "toId" : "edu.only4.danmuku.application.commands.video_encrypt.PersistVideoEncryptBatchResultCmd.Request",
-    "type" : "CommandSenderMethodToCommand",
-    "label" : null
-  }, {
-    "fromId" : "<anonymous>",
     "toId" : "edu.only4.danmuku.application.commands.video_post_processing.ApplyVideoPostProcessingTranscodeResultCmd.Request",
     "type" : "CommandSenderMethodToCommand",
     "label" : null
@@ -2092,11 +2067,6 @@
   }, {
     "fromId" : "<anonymous>",
     "toId" : "edu.only4.danmuku.application.distributed.clients.file_upload_session.DeleteUploadSessionTempDirCli.Request",
-    "type" : "CliSenderMethodToCli",
-    "label" : null
-  }, {
-    "fromId" : "<anonymous>",
-    "toId" : "edu.only4.danmuku.application.distributed.clients.video_encrypt.EncryptHlsWithQualityKeysCli.Request",
     "type" : "CliSenderMethodToCli",
     "label" : null
   }, {
@@ -3150,41 +3120,6 @@
     "type" : "CommandToCommandHandler",
     "label" : null
   }, {
-    "fromId" : "edu.only4.danmuku.application.commands.video_encrypt.GenerateVideoPostQualityKeysCmd.Handler",
-    "toId" : "edu.only4.danmuku.domain.aggregates.video_hls_encrypt_key.VideoHlsEncryptKey::onCreate",
-    "type" : "CommandHandlerToEntityMethod",
-    "label" : null
-  }, {
-    "fromId" : "edu.only4.danmuku.application.commands.video_encrypt.GenerateVideoPostQualityKeysCmd.Request",
-    "toId" : "edu.only4.danmuku.application.commands.video_encrypt.GenerateVideoPostQualityKeysCmd.Handler",
-    "type" : "CommandToCommandHandler",
-    "label" : null
-  }, {
-    "fromId" : "edu.only4.danmuku.application.commands.video_encrypt.PersistVideoEncryptBatchResultCmd.Handler",
-    "toId" : "edu.only4.danmuku.domain.aggregates.video_post.VideoFilePost::<get-encryptStatus>",
-    "type" : "CommandHandlerToEntityMethod",
-    "label" : null
-  }, {
-    "fromId" : "edu.only4.danmuku.application.commands.video_encrypt.PersistVideoEncryptBatchResultCmd.Handler",
-    "toId" : "edu.only4.danmuku.domain.aggregates.video_post.VideoFilePost::<get-fileIndex>",
-    "type" : "CommandHandlerToEntityMethod",
-    "label" : null
-  }, {
-    "fromId" : "edu.only4.danmuku.application.commands.video_encrypt.PersistVideoEncryptBatchResultCmd.Handler",
-    "toId" : "edu.only4.danmuku.domain.aggregates.video_post.VideoFilePost::applyEncryptResult",
-    "type" : "CommandHandlerToEntityMethod",
-    "label" : null
-  }, {
-    "fromId" : "edu.only4.danmuku.application.commands.video_encrypt.PersistVideoEncryptBatchResultCmd.Handler",
-    "toId" : "edu.only4.danmuku.domain.aggregates.video_post.VideoPost::<get-videoFilePosts>",
-    "type" : "CommandHandlerToEntityMethod",
-    "label" : null
-  }, {
-    "fromId" : "edu.only4.danmuku.application.commands.video_encrypt.PersistVideoEncryptBatchResultCmd.Request",
-    "toId" : "edu.only4.danmuku.application.commands.video_encrypt.PersistVideoEncryptBatchResultCmd.Handler",
-    "type" : "CommandToCommandHandler",
-    "label" : null
-  }, {
     "fromId" : "edu.only4.danmuku.application.commands.video_file_upload_session.InitTempAndStartUploadingCmd.Handler",
     "toId" : "edu.only4.danmuku.domain.aggregates.video_file_upload_session.VideoFileUploadSession::initTempAndStartUploading",
     "type" : "CommandHandlerToEntityMethod",
@@ -3330,6 +3265,11 @@
     "type" : "CliToCliHandler",
     "label" : null
   }, {
+    "fromId" : "edu.only4.danmuku.application.distributed.clients.RefreshLoginSessionCli.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.distributed.clients.RefreshLoginSessionCliHandler",
+    "type" : "CliToCliHandler",
+    "label" : null
+  }, {
     "fromId" : "edu.only4.danmuku.application.distributed.clients.RemoveVideoSearchIndexCli.Request",
     "toId" : "edu.only4.danmuku.adapter.application.distributed.clients.RemoveVideoSearchIndexCliHandler",
     "type" : "CliToCliHandler",
@@ -3347,11 +3287,6 @@
   }, {
     "fromId" : "edu.only4.danmuku.application.distributed.clients.video_encrypt.EncryptHlsVariantWithKeyCli.Request",
     "toId" : "edu.only4.danmuku.adapter.application.distributed.clients.video_encrypt.EncryptHlsVariantWithKeyCliHandler",
-    "type" : "CliToCliHandler",
-    "label" : null
-  }, {
-    "fromId" : "edu.only4.danmuku.application.distributed.clients.video_encrypt.EncryptHlsWithQualityKeysCli.Request",
-    "toId" : "edu.only4.danmuku.adapter.application.distributed.clients.video_encrypt.EncryptHlsWithQualityKeysCliHandler",
     "type" : "CliToCliHandler",
     "label" : null
   }, {
@@ -3603,6 +3538,16 @@
     "fromId" : "edu.only4.danmuku.application.subscribers.domain.customer_focus.UserUnfocusedDomainEventSubscriber::on",
     "toId" : "edu.only4.danmuku.application.commands.statistics.UpdateStatisticsInfoCmd.Request",
     "type" : "DomainEventHandlerToCommand",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.subscribers.domain.customer_profile.CustomerNicknameUpdatedDomainEventSubscriber::on",
+    "toId" : "edu.only4.danmuku.application.commands.customer_profile.SpendCoinsForNicknameChangeCmd.Request",
+    "type" : "DomainEventHandlerToCommand",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.subscribers.domain.customer_profile.CustomerNicknameUpdatedDomainEventSubscriber::on",
+    "toId" : "edu.only4.danmuku.application.distributed.clients.RefreshLoginSessionCli.Request",
+    "type" : "DomainEventHandlerToCli",
     "label" : null
   }, {
     "fromId" : "edu.only4.danmuku.application.subscribers.domain.customer_profile.CustomerProfileCreatedDomainEventSubscriber::on1",
@@ -4063,6 +4008,11 @@
     "fromId" : "edu.only4.danmuku.domain.aggregates.customer_profile.CustomerProfile::rewardCoins",
     "toId" : "edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerProfileCoinsRewardedDomainEvent",
     "type" : "EntityMethodToDomainEvent",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerNicknameUpdatedDomainEvent",
+    "toId" : "edu.only4.danmuku.application.subscribers.domain.customer_profile.CustomerNicknameUpdatedDomainEventSubscriber::on",
+    "type" : "DomainEventToHandler",
     "label" : null
   }, {
     "fromId" : "edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerProfileCoinsRewardedDomainEvent",

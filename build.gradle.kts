@@ -61,3 +61,7 @@ cap4kCodegen {
         ))
     }
 }
+
+cap4kFlow {
+    entryTypeExcludes.add("validator")
+}

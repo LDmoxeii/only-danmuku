@@ -1,10 +1,8 @@
 package edu.only4.danmuku.application.commands.video_encrypt
 
-import com.only.engine.exception.KnownException
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
-import edu.only4.danmuku.application.queries.video_encrypt.GetLatestVideoHlsKeyVersionQry
 import edu.only4.danmuku.domain.aggregates.video_hls_key_token.factory.VideoHlsKeyTokenFactory
 import org.springframework.stereotype.Service
 import java.nio.charset.StandardCharsets
@@ -24,12 +22,7 @@ object IssueVideoHlsKeyTokenCmd {
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
-            val keyVersion = request.keyVersion ?: Mediator.queries.send(
-                GetLatestVideoHlsKeyVersionQry.Request(
-                    videoPostId = request.videoPostId,
-                    fileIndex = request.fileIndex
-                )
-            ).keyVersion ?: throw KnownException("未找到可用密钥版本")
+            val keyVersion = request.keyVersion
 
             val now = System.currentTimeMillis()
             val expireAt = now + request.expireSeconds * 1000L
@@ -71,7 +64,7 @@ object IssueVideoHlsKeyTokenCmd {
         val videoPostId: Long,
         val videoId: Long,
         val fileIndex: Int,
-        val keyVersion: Int?,
+        val keyVersion: Int,
         val audience: String?,
         val expireSeconds: Int = 600,
         val maxUse: Int = 30,
