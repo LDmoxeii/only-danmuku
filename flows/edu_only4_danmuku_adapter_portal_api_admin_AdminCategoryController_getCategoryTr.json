@@ -1,13 +1,33 @@
 {
   "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminCategoryController::getCategoryTree",
   "entryType" : "controllermethod",
-  "nodeCount" : 1,
-  "edgeCount" : 0,
+  "nodeCount" : 3,
+  "edgeCount" : 2,
   "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.application.queries.category.GetCategoryTreeQryHandler",
+    "name" : "GetCategoryTreeQryHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.queries.category.GetCategoryTreeQryHandler",
+    "type" : "queryhandler"
+  }, {
     "id" : "edu.only4.danmuku.adapter.portal.api.admin.AdminCategoryController::getCategoryTree",
     "name" : "AdminCategoryController::getCategoryTree",
     "fullName" : "edu.only4.danmuku.adapter.portal.api.admin.AdminCategoryController::getCategoryTree",
     "type" : "controllermethod"
+  }, {
+    "id" : "edu.only4.danmuku.application.queries.category.GetCategoryTreeQry.Request",
+    "name" : "GetCategoryTreeQry.Request",
+    "fullName" : "edu.only4.danmuku.application.queries.category.GetCategoryTreeQry.Request",
+    "type" : "query"
   } ],
-  "edges" : [ ]
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminCategoryController::getCategoryTree",
+    "toId" : "edu.only4.danmuku.application.queries.category.GetCategoryTreeQry.Request",
+    "type" : "ControllerMethodToQuery",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.queries.category.GetCategoryTreeQry.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.queries.category.GetCategoryTreeQryHandler",
+    "type" : "QueryToQueryHandler",
+    "label" : null
+  } ]
 }

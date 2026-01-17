@@ -1,13 +1,33 @@
 {
   "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UCenterVideoPostController::getPage",
   "entryType" : "controllermethod",
-  "nodeCount" : 1,
-  "edgeCount" : 0,
+  "nodeCount" : 3,
+  "edgeCount" : 2,
   "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.application.queries.video_draft.GetUserVideoPostsQryHandler",
+    "name" : "GetUserVideoPostsQryHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.queries.video_draft.GetUserVideoPostsQryHandler",
+    "type" : "queryhandler"
+  }, {
     "id" : "edu.only4.danmuku.adapter.portal.api.web.UCenterVideoPostController::getPage",
     "name" : "UCenterVideoPostController::getPage",
     "fullName" : "edu.only4.danmuku.adapter.portal.api.web.UCenterVideoPostController::getPage",
     "type" : "controllermethod"
+  }, {
+    "id" : "edu.only4.danmuku.application.queries.video_draft.GetUserVideoPostQry.Request",
+    "name" : "GetUserVideoPostQry.Request",
+    "fullName" : "edu.only4.danmuku.application.queries.video_draft.GetUserVideoPostQry.Request",
+    "type" : "query"
   } ],
-  "edges" : [ ]
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.web.UCenterVideoPostController::getPage",
+    "toId" : "edu.only4.danmuku.application.queries.video_draft.GetUserVideoPostQry.Request",
+    "type" : "ControllerMethodToQuery",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.queries.video_draft.GetUserVideoPostQry.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.queries.video_draft.GetUserVideoPostsQryHandler",
+    "type" : "QueryToQueryHandler",
+    "label" : null
+  } ]
 }

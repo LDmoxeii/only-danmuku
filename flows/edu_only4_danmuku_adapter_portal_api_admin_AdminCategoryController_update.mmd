@@ -1,0 +1,57 @@
+flowchart TD
+  N1([AdminCategoryController::update])
+  class N1 controllermethod
+  N2[[UpdateCategoryInfoCmd.Handler]]
+  class N2 commandhandler
+  N3{{UpdateCategoryInfoCmd.Request}}
+  class N3 command
+  N4[[CategoryBasicInfoUpdatedDomainEventSubscriber::on]]
+  class N4 domaineventhandler
+  N5[[CategoryCodeChangedDomainEventSubscriber::on]]
+  class N5 domaineventhandler
+  N6[[CategoryParentChangedDomainEventSubscriber::on]]
+  class N6 domaineventhandler
+  N7(Category::changeCode)
+  class N7 entitymethod
+  N8(Category::changeParent)
+  class N8 entitymethod
+  N9(Category::isCodeChanged)
+  class N9 entitymethod
+  N10(Category::isMovingToDescendant)
+  class N10 entitymethod
+  N11(Category::isMovingToSelf)
+  class N11 entitymethod
+  N12(Category::isParentChanged)
+  class N12 entitymethod
+  N13(Category::rebaseNodePath)
+  class N13 entitymethod
+  N14(Category::updateBasicInfo)
+  class N14 entitymethod
+  N15((CategoryBasicInfoUpdatedDomainEvent))
+  class N15 domainevent
+  N16((CategoryCodeChangedDomainEvent))
+  class N16 domainevent
+  N17((CategoryParentChangedDomainEvent))
+  class N17 domainevent
+  N1 -->|ControllerMethodToCommand| N3
+  N2 -->|CommandHandlerToEntityMethod| N7
+  N2 -->|CommandHandlerToEntityMethod| N8
+  N2 -->|CommandHandlerToEntityMethod| N9
+  N2 -->|CommandHandlerToEntityMethod| N10
+  N2 -->|CommandHandlerToEntityMethod| N11
+  N2 -->|CommandHandlerToEntityMethod| N12
+  N2 -->|CommandHandlerToEntityMethod| N13
+  N2 -->|CommandHandlerToEntityMethod| N14
+  N3 -->|CommandToCommandHandler| N2
+  N7 -->|EntityMethodToDomainEvent| N16
+  N8 -->|EntityMethodToDomainEvent| N17
+  N14 -->|EntityMethodToDomainEvent| N15
+  N15 -->|DomainEventToHandler| N4
+  N16 -->|DomainEventToHandler| N5
+  N17 -->|DomainEventToHandler| N6
+  classDef command fill:#FDBA74,stroke:#C2410C,color:#111827
+  classDef commandhandler fill:#F97316,stroke:#9A3412,color:#111827
+  classDef controllermethod fill:#FDE68A,stroke:#B45309,color:#111827
+  classDef domainevent fill:#FECACA,stroke:#B91C1C,color:#111827
+  classDef domaineventhandler fill:#F87171,stroke:#991B1B,color:#111827
+  classDef entitymethod fill:#F3F4F6,stroke:#6B7280,color:#111827

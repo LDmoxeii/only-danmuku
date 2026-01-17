@@ -1,13 +1,33 @@
 {
   "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::getFocusPage",
   "entryType" : "controllermethod",
-  "nodeCount" : 1,
-  "edgeCount" : 0,
+  "nodeCount" : 3,
+  "edgeCount" : 2,
   "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.application.queries.customer_focus.GetFocusPageQryHandler",
+    "name" : "GetFocusPageQryHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.queries.customer_focus.GetFocusPageQryHandler",
+    "type" : "queryhandler"
+  }, {
     "id" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::getFocusPage",
     "name" : "UHomeController::getFocusPage",
     "fullName" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::getFocusPage",
     "type" : "controllermethod"
+  }, {
+    "id" : "edu.only4.danmuku.application.queries.customer_focus.GetFocusPageQry.Request",
+    "name" : "GetFocusPageQry.Request",
+    "fullName" : "edu.only4.danmuku.application.queries.customer_focus.GetFocusPageQry.Request",
+    "type" : "query"
   } ],
-  "edges" : [ ]
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::getFocusPage",
+    "toId" : "edu.only4.danmuku.application.queries.customer_focus.GetFocusPageQry.Request",
+    "type" : "ControllerMethodToQuery",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.queries.customer_focus.GetFocusPageQry.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.queries.customer_focus.GetFocusPageQryHandler",
+    "type" : "QueryToQueryHandler",
+    "label" : null
+  } ]
 }

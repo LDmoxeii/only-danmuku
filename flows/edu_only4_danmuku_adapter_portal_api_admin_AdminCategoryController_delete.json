@@ -1,8 +1,8 @@
 {
   "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminCategoryController::delete",
   "entryType" : "controllermethod",
-  "nodeCount" : 4,
-  "edgeCount" : 3,
+  "nodeCount" : 6,
+  "edgeCount" : 5,
   "nodes" : [ {
     "id" : "edu.only4.danmuku.adapter.portal.api.admin.AdminCategoryController::delete",
     "name" : "AdminCategoryController::delete",
@@ -19,10 +19,20 @@
     "fullName" : "edu.only4.danmuku.application.commands.category.DeleteCategoryCmd.Request",
     "type" : "command"
   }, {
+    "id" : "edu.only4.danmuku.application.subscribers.domain.category.CategoryDeletedDomainEventSubscriber::on",
+    "name" : "CategoryDeletedDomainEventSubscriber::on",
+    "fullName" : "edu.only4.danmuku.application.subscribers.domain.category.CategoryDeletedDomainEventSubscriber::on",
+    "type" : "domaineventhandler"
+  }, {
     "id" : "edu.only4.danmuku.domain.aggregates.category.Category::onDelete",
     "name" : "Category::onDelete",
     "fullName" : "edu.only4.danmuku.domain.aggregates.category.Category::onDelete",
     "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.category.events.CategoryDeletedDomainEvent",
+    "name" : "CategoryDeletedDomainEvent",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.category.events.CategoryDeletedDomainEvent",
+    "type" : "domainevent"
   } ],
   "edges" : [ {
     "fromId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminCategoryController::delete",
@@ -38,6 +48,16 @@
     "fromId" : "edu.only4.danmuku.application.commands.category.DeleteCategoryCmd.Request",
     "toId" : "edu.only4.danmuku.application.commands.category.DeleteCategoryCmd.Handler",
     "type" : "CommandToCommandHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.category.Category::onDelete",
+    "toId" : "edu.only4.danmuku.domain.aggregates.category.events.CategoryDeletedDomainEvent",
+    "type" : "EntityMethodToDomainEvent",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.category.events.CategoryDeletedDomainEvent",
+    "toId" : "edu.only4.danmuku.application.subscribers.domain.category.CategoryDeletedDomainEventSubscriber::on",
+    "type" : "DomainEventToHandler",
     "label" : null
   } ]
 }

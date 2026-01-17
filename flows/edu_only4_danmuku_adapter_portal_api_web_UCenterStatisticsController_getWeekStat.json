@@ -1,13 +1,33 @@
 {
   "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UCenterStatisticsController::getWeekStatisticsInfo",
   "entryType" : "controllermethod",
-  "nodeCount" : 1,
-  "edgeCount" : 0,
+  "nodeCount" : 3,
+  "edgeCount" : 2,
   "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.application.queries.statistics.GetWeekStatisticsInfoQryHandler",
+    "name" : "GetWeekStatisticsInfoQryHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.queries.statistics.GetWeekStatisticsInfoQryHandler",
+    "type" : "queryhandler"
+  }, {
     "id" : "edu.only4.danmuku.adapter.portal.api.web.UCenterStatisticsController::getWeekStatisticsInfo",
     "name" : "UCenterStatisticsController::getWeekStatisticsInfo",
     "fullName" : "edu.only4.danmuku.adapter.portal.api.web.UCenterStatisticsController::getWeekStatisticsInfo",
     "type" : "controllermethod"
+  }, {
+    "id" : "edu.only4.danmuku.application.queries.statistics.GetWeekStatisticsInfoQry.Request",
+    "name" : "GetWeekStatisticsInfoQry.Request",
+    "fullName" : "edu.only4.danmuku.application.queries.statistics.GetWeekStatisticsInfoQry.Request",
+    "type" : "query"
   } ],
-  "edges" : [ ]
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.web.UCenterStatisticsController::getWeekStatisticsInfo",
+    "toId" : "edu.only4.danmuku.application.queries.statistics.GetWeekStatisticsInfoQry.Request",
+    "type" : "ControllerMethodToQuery",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.queries.statistics.GetWeekStatisticsInfoQry.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.queries.statistics.GetWeekStatisticsInfoQryHandler",
+    "type" : "QueryToQueryHandler",
+    "label" : null
+  } ]
 }

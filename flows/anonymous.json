@@ -1,8 +1,8 @@
 {
   "entryId" : "<anonymous>",
   "entryType" : "<anonymous>",
-  "nodeCount" : 427,
-  "edgeCount" : 507,
+  "nodeCount" : 429,
+  "edgeCount" : 509,
   "nodes" : [ {
     "id" : "<anonymous>",
     "name" : "<anonymous>",
@@ -72,6 +72,11 @@
     "id" : "edu.only4.danmuku.adapter.application.queries.category.UniqueCategoryCodeQryHandler",
     "name" : "UniqueCategoryCodeQryHandler",
     "fullName" : "edu.only4.danmuku.adapter.application.queries.category.UniqueCategoryCodeQryHandler",
+    "type" : "queryhandler"
+  }, {
+    "id" : "edu.only4.danmuku.adapter.application.queries.customer_action.GetUserActionsByVideoIdQryHandler",
+    "name" : "GetUserActionsByVideoIdQryHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.queries.customer_action.GetUserActionsByVideoIdQryHandler",
     "type" : "queryhandler"
   }, {
     "id" : "edu.only4.danmuku.adapter.application.queries.customer_action.UniqueCustomerActionTypeQryHandler",
@@ -722,6 +727,11 @@
     "id" : "edu.only4.danmuku.application.queries.category.UniqueCategoryCodeQry.Request",
     "name" : "UniqueCategoryCodeQry.Request",
     "fullName" : "edu.only4.danmuku.application.queries.category.UniqueCategoryCodeQry.Request",
+    "type" : "query"
+  }, {
+    "id" : "edu.only4.danmuku.application.queries.customer_action.GetUserActionsByVideoIdQry.Request",
+    "name" : "GetUserActionsByVideoIdQry.Request",
+    "fullName" : "edu.only4.danmuku.application.queries.customer_action.GetUserActionsByVideoIdQry.Request",
     "type" : "query"
   }, {
     "id" : "edu.only4.danmuku.application.queries.customer_action.UniqueCustomerActionTypeQry.Request",
@@ -2196,6 +2206,11 @@
     "label" : null
   }, {
     "fromId" : "<anonymous>",
+    "toId" : "edu.only4.danmuku.application.queries.customer_action.GetUserActionsByVideoIdQry.Request",
+    "type" : "QuerySenderMethodToQuery",
+    "label" : null
+  }, {
+    "fromId" : "<anonymous>",
     "toId" : "edu.only4.danmuku.application.queries.customer_action.UniqueCustomerActionTypeQry.Request",
     "type" : "QuerySenderMethodToQuery",
     "label" : null
@@ -3517,6 +3532,11 @@
   }, {
     "fromId" : "edu.only4.danmuku.application.queries.category.UniqueCategoryCodeQry.Request",
     "toId" : "edu.only4.danmuku.adapter.application.queries.category.UniqueCategoryCodeQryHandler",
+    "type" : "QueryToQueryHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.queries.customer_action.GetUserActionsByVideoIdQry.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.queries.customer_action.GetUserActionsByVideoIdQryHandler",
     "type" : "QueryToQueryHandler",
     "label" : null
   }, {

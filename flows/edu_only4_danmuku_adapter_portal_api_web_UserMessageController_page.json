@@ -1,13 +1,33 @@
 {
   "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UserMessageController::page",
   "entryType" : "controllermethod",
-  "nodeCount" : 1,
-  "edgeCount" : 0,
+  "nodeCount" : 3,
+  "edgeCount" : 2,
   "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.application.queries.customer_message.GetMessagePageQryHandler",
+    "name" : "GetMessagePageQryHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.queries.customer_message.GetMessagePageQryHandler",
+    "type" : "queryhandler"
+  }, {
     "id" : "edu.only4.danmuku.adapter.portal.api.web.UserMessageController::page",
     "name" : "UserMessageController::page",
     "fullName" : "edu.only4.danmuku.adapter.portal.api.web.UserMessageController::page",
     "type" : "controllermethod"
+  }, {
+    "id" : "edu.only4.danmuku.application.queries.message.GetMessagePageQry.Request",
+    "name" : "GetMessagePageQry.Request",
+    "fullName" : "edu.only4.danmuku.application.queries.message.GetMessagePageQry.Request",
+    "type" : "query"
   } ],
-  "edges" : [ ]
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.web.UserMessageController::page",
+    "toId" : "edu.only4.danmuku.application.queries.message.GetMessagePageQry.Request",
+    "type" : "ControllerMethodToQuery",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.queries.message.GetMessagePageQry.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.queries.customer_message.GetMessagePageQryHandler",
+    "type" : "QueryToQueryHandler",
+    "label" : null
+  } ]
 }

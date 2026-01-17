@@ -1,13 +1,33 @@
 {
   "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminUserController::page",
   "entryType" : "controllermethod",
-  "nodeCount" : 1,
-  "edgeCount" : 0,
+  "nodeCount" : 3,
+  "edgeCount" : 2,
   "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.application.queries.customer_profile.GetCustomerProfilePageQryHandler",
+    "name" : "GetCustomerProfilePageQryHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.queries.customer_profile.GetCustomerProfilePageQryHandler",
+    "type" : "queryhandler"
+  }, {
     "id" : "edu.only4.danmuku.adapter.portal.api.admin.AdminUserController::page",
     "name" : "AdminUserController::page",
     "fullName" : "edu.only4.danmuku.adapter.portal.api.admin.AdminUserController::page",
     "type" : "controllermethod"
+  }, {
+    "id" : "edu.only4.danmuku.application.queries.customer_profile.GetCustomerProfilePageQry.Request",
+    "name" : "GetCustomerProfilePageQry.Request",
+    "fullName" : "edu.only4.danmuku.application.queries.customer_profile.GetCustomerProfilePageQry.Request",
+    "type" : "query"
   } ],
-  "edges" : [ ]
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminUserController::page",
+    "toId" : "edu.only4.danmuku.application.queries.customer_profile.GetCustomerProfilePageQry.Request",
+    "type" : "ControllerMethodToQuery",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.queries.customer_profile.GetCustomerProfilePageQry.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.queries.customer_profile.GetCustomerProfilePageQryHandler",
+    "type" : "QueryToQueryHandler",
+    "label" : null
+  } ]
 }

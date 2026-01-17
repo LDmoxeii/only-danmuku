@@ -1,6 +1,6 @@
 package edu.only4.danmuku.adapter.portal.api.payload.admin_category
 
-import edu.only4.danmuku.application.commands.category.CreateCategoryCmd
+import edu.only4.danmuku.application.commands.category.UpdateCategoryInfoCmd
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.PositiveOrZero
 import org.mapstruct.Mapper
@@ -8,14 +8,17 @@ import org.mapstruct.Mapping
 import org.mapstruct.factory.Mappers
 
 /**
- * 保存分类接口载荷
+ * 更新分类接口载荷
  */
-object SaveCategory {
+object UpdateCategory {
 
     data class Request(
         /** 父分类ID */
         @field:PositiveOrZero(message = "父分类ID必须大于等于0")
         val pCategoryId: Long,
+
+        /** 分类ID(更新时传) */
+        val categoryId: Long,
 
         /** 分类编码 */
         @field:NotEmpty(message = "分类编码不能为空")
@@ -39,7 +42,7 @@ object SaveCategory {
         @Mapping(source = "PCategoryId", target = "parentId")
         @Mapping(source = "categoryCode", target = "code")
         @Mapping(source = "categoryName", target = "name")
-        fun toCmd(request: Request): CreateCategoryCmd.Request
+        fun toCmd(request: Request): UpdateCategoryInfoCmd.Request
 
         companion object {
             val INSTANCE: Converter = Mappers.getMapper(Converter::class.java)

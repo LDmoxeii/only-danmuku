@@ -1,0 +1,173 @@
+{
+  "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminCategoryController::update",
+  "entryType" : "controllermethod",
+  "nodeCount" : 17,
+  "edgeCount" : 16,
+  "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.portal.api.admin.AdminCategoryController::update",
+    "name" : "AdminCategoryController::update",
+    "fullName" : "edu.only4.danmuku.adapter.portal.api.admin.AdminCategoryController::update",
+    "type" : "controllermethod"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.category.UpdateCategoryInfoCmd.Handler",
+    "name" : "UpdateCategoryInfoCmd.Handler",
+    "fullName" : "edu.only4.danmuku.application.commands.category.UpdateCategoryInfoCmd.Handler",
+    "type" : "commandhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.commands.category.UpdateCategoryInfoCmd.Request",
+    "name" : "UpdateCategoryInfoCmd.Request",
+    "fullName" : "edu.only4.danmuku.application.commands.category.UpdateCategoryInfoCmd.Request",
+    "type" : "command"
+  }, {
+    "id" : "edu.only4.danmuku.application.subscribers.domain.category.CategoryBasicInfoUpdatedDomainEventSubscriber::on",
+    "name" : "CategoryBasicInfoUpdatedDomainEventSubscriber::on",
+    "fullName" : "edu.only4.danmuku.application.subscribers.domain.category.CategoryBasicInfoUpdatedDomainEventSubscriber::on",
+    "type" : "domaineventhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.subscribers.domain.category.CategoryCodeChangedDomainEventSubscriber::on",
+    "name" : "CategoryCodeChangedDomainEventSubscriber::on",
+    "fullName" : "edu.only4.danmuku.application.subscribers.domain.category.CategoryCodeChangedDomainEventSubscriber::on",
+    "type" : "domaineventhandler"
+  }, {
+    "id" : "edu.only4.danmuku.application.subscribers.domain.category.CategoryParentChangedDomainEventSubscriber::on",
+    "name" : "CategoryParentChangedDomainEventSubscriber::on",
+    "fullName" : "edu.only4.danmuku.application.subscribers.domain.category.CategoryParentChangedDomainEventSubscriber::on",
+    "type" : "domaineventhandler"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.category.Category::changeCode",
+    "name" : "Category::changeCode",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.category.Category::changeCode",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.category.Category::changeParent",
+    "name" : "Category::changeParent",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.category.Category::changeParent",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.category.Category::isCodeChanged",
+    "name" : "Category::isCodeChanged",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.category.Category::isCodeChanged",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.category.Category::isMovingToDescendant",
+    "name" : "Category::isMovingToDescendant",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.category.Category::isMovingToDescendant",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.category.Category::isMovingToSelf",
+    "name" : "Category::isMovingToSelf",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.category.Category::isMovingToSelf",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.category.Category::isParentChanged",
+    "name" : "Category::isParentChanged",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.category.Category::isParentChanged",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.category.Category::rebaseNodePath",
+    "name" : "Category::rebaseNodePath",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.category.Category::rebaseNodePath",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.category.Category::updateBasicInfo",
+    "name" : "Category::updateBasicInfo",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.category.Category::updateBasicInfo",
+    "type" : "entitymethod"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.category.events.CategoryBasicInfoUpdatedDomainEvent",
+    "name" : "CategoryBasicInfoUpdatedDomainEvent",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.category.events.CategoryBasicInfoUpdatedDomainEvent",
+    "type" : "domainevent"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.category.events.CategoryCodeChangedDomainEvent",
+    "name" : "CategoryCodeChangedDomainEvent",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.category.events.CategoryCodeChangedDomainEvent",
+    "type" : "domainevent"
+  }, {
+    "id" : "edu.only4.danmuku.domain.aggregates.category.events.CategoryParentChangedDomainEvent",
+    "name" : "CategoryParentChangedDomainEvent",
+    "fullName" : "edu.only4.danmuku.domain.aggregates.category.events.CategoryParentChangedDomainEvent",
+    "type" : "domainevent"
+  } ],
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminCategoryController::update",
+    "toId" : "edu.only4.danmuku.application.commands.category.UpdateCategoryInfoCmd.Request",
+    "type" : "ControllerMethodToCommand",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.category.UpdateCategoryInfoCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.category.Category::changeCode",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.category.UpdateCategoryInfoCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.category.Category::changeParent",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.category.UpdateCategoryInfoCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.category.Category::isCodeChanged",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.category.UpdateCategoryInfoCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.category.Category::isMovingToDescendant",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.category.UpdateCategoryInfoCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.category.Category::isMovingToSelf",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.category.UpdateCategoryInfoCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.category.Category::isParentChanged",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.category.UpdateCategoryInfoCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.category.Category::rebaseNodePath",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.category.UpdateCategoryInfoCmd.Handler",
+    "toId" : "edu.only4.danmuku.domain.aggregates.category.Category::updateBasicInfo",
+    "type" : "CommandHandlerToEntityMethod",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.commands.category.UpdateCategoryInfoCmd.Request",
+    "toId" : "edu.only4.danmuku.application.commands.category.UpdateCategoryInfoCmd.Handler",
+    "type" : "CommandToCommandHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.category.Category::changeCode",
+    "toId" : "edu.only4.danmuku.domain.aggregates.category.events.CategoryCodeChangedDomainEvent",
+    "type" : "EntityMethodToDomainEvent",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.category.Category::changeParent",
+    "toId" : "edu.only4.danmuku.domain.aggregates.category.events.CategoryParentChangedDomainEvent",
+    "type" : "EntityMethodToDomainEvent",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.category.Category::updateBasicInfo",
+    "toId" : "edu.only4.danmuku.domain.aggregates.category.events.CategoryBasicInfoUpdatedDomainEvent",
+    "type" : "EntityMethodToDomainEvent",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.category.events.CategoryBasicInfoUpdatedDomainEvent",
+    "toId" : "edu.only4.danmuku.application.subscribers.domain.category.CategoryBasicInfoUpdatedDomainEventSubscriber::on",
+    "type" : "DomainEventToHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.category.events.CategoryCodeChangedDomainEvent",
+    "toId" : "edu.only4.danmuku.application.subscribers.domain.category.CategoryCodeChangedDomainEventSubscriber::on",
+    "type" : "DomainEventToHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.domain.aggregates.category.events.CategoryParentChangedDomainEvent",
+    "toId" : "edu.only4.danmuku.application.subscribers.domain.category.CategoryParentChangedDomainEventSubscriber::on",
+    "type" : "DomainEventToHandler",
+    "label" : null
+  } ]
+}

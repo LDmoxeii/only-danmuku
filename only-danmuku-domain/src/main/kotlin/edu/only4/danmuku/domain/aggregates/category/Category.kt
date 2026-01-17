@@ -126,7 +126,7 @@ class Category(
 //        events().attach(this) { CategoryUpdatedDomainEvent(this) }
     }
 
-    fun onDeleted() {
+    fun onDelete() {
         events().attach(this) { CategoryDeletedDomainEvent(this) }
     }
 

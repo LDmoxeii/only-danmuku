@@ -1,9 +1,14 @@
 {
   "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoController::detail",
   "entryType" : "controllermethod",
-  "nodeCount" : 3,
-  "edgeCount" : 2,
+  "nodeCount" : 5,
+  "edgeCount" : 4,
   "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.application.queries.customer_action.GetUserActionsByVideoIdQryHandler",
+    "name" : "GetUserActionsByVideoIdQryHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.queries.customer_action.GetUserActionsByVideoIdQryHandler",
+    "type" : "queryhandler"
+  }, {
     "id" : "edu.only4.danmuku.adapter.application.queries.video.GetVideoInfoQryHandler",
     "name" : "GetVideoInfoQryHandler",
     "fullName" : "edu.only4.danmuku.adapter.application.queries.video.GetVideoInfoQryHandler",
@@ -14,6 +19,11 @@
     "fullName" : "edu.only4.danmuku.adapter.portal.api.web.VideoController::detail",
     "type" : "controllermethod"
   }, {
+    "id" : "edu.only4.danmuku.application.queries.customer_action.GetUserActionsByVideoIdQry.Request",
+    "name" : "GetUserActionsByVideoIdQry.Request",
+    "fullName" : "edu.only4.danmuku.application.queries.customer_action.GetUserActionsByVideoIdQry.Request",
+    "type" : "query"
+  }, {
     "id" : "edu.only4.danmuku.application.queries.video.GetVideoInfoQry.Request",
     "name" : "GetVideoInfoQry.Request",
     "fullName" : "edu.only4.danmuku.application.queries.video.GetVideoInfoQry.Request",
@@ -21,8 +31,18 @@
   } ],
   "edges" : [ {
     "fromId" : "edu.only4.danmuku.adapter.portal.api.web.VideoController::detail",
+    "toId" : "edu.only4.danmuku.application.queries.customer_action.GetUserActionsByVideoIdQry.Request",
+    "type" : "ControllerMethodToQuery",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.web.VideoController::detail",
     "toId" : "edu.only4.danmuku.application.queries.video.GetVideoInfoQry.Request",
     "type" : "ControllerMethodToQuery",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.queries.customer_action.GetUserActionsByVideoIdQry.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.queries.customer_action.GetUserActionsByVideoIdQryHandler",
+    "type" : "QueryToQueryHandler",
     "label" : null
   }, {
     "fromId" : "edu.only4.danmuku.application.queries.video.GetVideoInfoQry.Request",

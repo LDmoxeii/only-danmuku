@@ -3,97 +3,103 @@ flowchart TD
   class N1 queryhandler
   N2[[GetLatestVideoHlsKeyVersionQryHandler]]
   class N2 queryhandler
-  N3([VideoEncryptController::issueToken])
-  class N3 controllermethod
-  N4[[UpdateStatisticsInfoCmd.Handler]]
-  class N4 commandhandler
-  N5{{UpdateStatisticsInfoCmd.Request}}
-  class N5 command
-  N6[[ApplyVideoPlayCountDeltaCmd.Handler]]
-  class N6 commandhandler
-  N7{{ApplyVideoPlayCountDeltaCmd.Request}}
-  class N7 command
-  N8[[IssueVideoHlsKeyTokenCmd.Handler]]
-  class N8 commandhandler
-  N9{{IssueVideoHlsKeyTokenCmd.Request}}
-  class N9 command
-  N10[[AddPlayHistoryCmd.Handler]]
-  class N10 commandhandler
-  N11{{AddPlayHistoryCmd.Request}}
-  class N11 command
-  N12{{GetVideoFileContextByIdQry.Request}}
-  class N12 query
-  N13{{GetLatestVideoHlsKeyVersionQry.Request}}
+  N3[[ListVideoQualityAuthQryHandler]]
+  class N3 queryhandler
+  N4([VideoEncryptController::issueToken])
+  class N4 controllermethod
+  N5[[UpdateStatisticsInfoCmd.Handler]]
+  class N5 commandhandler
+  N6{{UpdateStatisticsInfoCmd.Request}}
+  class N6 command
+  N7[[ApplyVideoPlayCountDeltaCmd.Handler]]
+  class N7 commandhandler
+  N8{{ApplyVideoPlayCountDeltaCmd.Request}}
+  class N8 command
+  N9[[IssueVideoHlsKeyTokenCmd.Handler]]
+  class N9 commandhandler
+  N10{{IssueVideoHlsKeyTokenCmd.Request}}
+  class N10 command
+  N11[[AddPlayHistoryCmd.Handler]]
+  class N11 commandhandler
+  N12{{AddPlayHistoryCmd.Request}}
+  class N12 command
+  N13{{GetVideoFileContextByIdQry.Request}}
   class N13 query
-  N14[[StatisticsCountUpdatedDomainEventSubscriber::on]]
-  class N14 domaineventhandler
-  N15[[VideoPlayCountDeltaAppliedDomainEventSubscriber::on]]
-  class N15 domaineventhandler
-  N16[[VideoHlsKeyTokenIssuedDomainEventSubscriber::addPlayHistoryCmd]]
+  N14{{GetLatestVideoHlsKeyVersionQry.Request}}
+  class N14 query
+  N15{{ListVideoQualityAuthQry.Request}}
+  class N15 query
+  N16[[StatisticsCountUpdatedDomainEventSubscriber::on]]
   class N16 domaineventhandler
-  N17[[VideoHlsKeyTokenIssuedDomainEventSubscriber::applyVideoPlayCountDelta]]
+  N17[[VideoPlayCountDeltaAppliedDomainEventSubscriber::on]]
   class N17 domaineventhandler
-  N18[[VideoPlayHistoryCreatedDomainEventSubscriber::on]]
+  N18[[VideoHlsKeyTokenIssuedDomainEventSubscriber::addPlayHistoryCmd]]
   class N18 domaineventhandler
-  N19[[VideoPlayHistoryProgressUpdatedDomainEventSubscriber::on]]
+  N19[[VideoHlsKeyTokenIssuedDomainEventSubscriber::applyVideoPlayCountDelta]]
   class N19 domaineventhandler
-  N20(Statistics::onCreate)
-  class N20 entitymethod
-  N21(Statistics::updateCount)
-  class N21 entitymethod
-  N22((StatisticsCountUpdatedDomainEvent))
-  class N22 domainevent
-  N23(Video::&lt;get-id&gt;)
+  N20[[VideoPlayHistoryCreatedDomainEventSubscriber::on]]
+  class N20 domaineventhandler
+  N21[[VideoPlayHistoryProgressUpdatedDomainEventSubscriber::on]]
+  class N21 domaineventhandler
+  N22(Statistics::onCreate)
+  class N22 entitymethod
+  N23(Statistics::updateCount)
   class N23 entitymethod
-  N24(Video::&lt;get-playCount&gt;)
-  class N24 entitymethod
-  N25(Video::applyPlayCountDelta)
+  N24((StatisticsCountUpdatedDomainEvent))
+  class N24 domainevent
+  N25(Video::&lt;get-id&gt;)
   class N25 entitymethod
-  N26((VideoPlayCountDeltaAppliedDomainEvent))
-  class N26 domainevent
-  N27(VideoHlsKeyToken::onCreate)
+  N26(Video::&lt;get-playCount&gt;)
+  class N26 entitymethod
+  N27(Video::applyPlayCountDelta)
   class N27 entitymethod
-  N28((VideoHlsKeyTokenIssuedDomainEvent))
+  N28((VideoPlayCountDeltaAppliedDomainEvent))
   class N28 domainevent
-  N29(VideoPlayHistory::onCreate)
+  N29(VideoHlsKeyToken::onCreate)
   class N29 entitymethod
-  N30(VideoPlayHistory::updatePlayProgress)
-  class N30 entitymethod
-  N31((VideoPlayHistoryCreatedDomainEvent))
-  class N31 domainevent
-  N32((VideoPlayHistoryProgressUpdatedDomainEvent))
-  class N32 domainevent
-  N3 -->|ControllerMethodToCommand| N9
-  N3 -->|ControllerMethodToQuery| N12
-  N3 -->|ControllerMethodToQuery| N13
-  N4 -->|CommandHandlerToEntityMethod| N20
-  N4 -->|CommandHandlerToEntityMethod| N21
-  N5 -->|CommandToCommandHandler| N4
-  N6 -->|CommandHandlerToEntityMethod| N23
-  N6 -->|CommandHandlerToEntityMethod| N24
-  N6 -->|CommandHandlerToEntityMethod| N25
-  N7 -->|CommandToCommandHandler| N6
-  N8 -->|CommandHandlerToEntityMethod| N27
-  N9 -->|CommandToCommandHandler| N8
-  N10 -->|CommandHandlerToEntityMethod| N29
-  N10 -->|CommandHandlerToEntityMethod| N30
-  N11 -->|CommandToCommandHandler| N10
-  N12 -->|QueryToQueryHandler| N1
-  N13 -->|QueryToQueryHandler| N2
-  N15 -->|DomainEventHandlerToCommand| N5
-  N16 -->|DomainEventHandlerToCommand| N11
-  N17 -->|DomainEventHandlerToCommand| N7
-  N21 -->|EntityMethodToDomainEvent| N22
-  N22 -->|DomainEventToHandler| N14
-  N25 -->|EntityMethodToDomainEvent| N26
-  N26 -->|DomainEventToHandler| N15
+  N30((VideoHlsKeyTokenIssuedDomainEvent))
+  class N30 domainevent
+  N31(VideoPlayHistory::onCreate)
+  class N31 entitymethod
+  N32(VideoPlayHistory::updatePlayProgress)
+  class N32 entitymethod
+  N33((VideoPlayHistoryCreatedDomainEvent))
+  class N33 domainevent
+  N34((VideoPlayHistoryProgressUpdatedDomainEvent))
+  class N34 domainevent
+  N4 -->|ControllerMethodToCommand| N10
+  N4 -->|ControllerMethodToQuery| N13
+  N4 -->|ControllerMethodToQuery| N14
+  N4 -->|ControllerMethodToQuery| N15
+  N5 -->|CommandHandlerToEntityMethod| N22
+  N5 -->|CommandHandlerToEntityMethod| N23
+  N6 -->|CommandToCommandHandler| N5
+  N7 -->|CommandHandlerToEntityMethod| N25
+  N7 -->|CommandHandlerToEntityMethod| N26
+  N7 -->|CommandHandlerToEntityMethod| N27
+  N8 -->|CommandToCommandHandler| N7
+  N9 -->|CommandHandlerToEntityMethod| N29
+  N10 -->|CommandToCommandHandler| N9
+  N11 -->|CommandHandlerToEntityMethod| N31
+  N11 -->|CommandHandlerToEntityMethod| N32
+  N12 -->|CommandToCommandHandler| N11
+  N13 -->|QueryToQueryHandler| N1
+  N14 -->|QueryToQueryHandler| N2
+  N15 -->|QueryToQueryHandler| N3
+  N17 -->|DomainEventHandlerToCommand| N6
+  N18 -->|DomainEventHandlerToCommand| N12
+  N19 -->|DomainEventHandlerToCommand| N8
+  N23 -->|EntityMethodToDomainEvent| N24
+  N24 -->|DomainEventToHandler| N16
   N27 -->|EntityMethodToDomainEvent| N28
-  N28 -->|DomainEventToHandler| N16
   N28 -->|DomainEventToHandler| N17
-  N29 -->|EntityMethodToDomainEvent| N31
-  N30 -->|EntityMethodToDomainEvent| N32
-  N31 -->|DomainEventToHandler| N18
-  N32 -->|DomainEventToHandler| N19
+  N29 -->|EntityMethodToDomainEvent| N30
+  N30 -->|DomainEventToHandler| N18
+  N30 -->|DomainEventToHandler| N19
+  N31 -->|EntityMethodToDomainEvent| N33
+  N32 -->|EntityMethodToDomainEvent| N34
+  N33 -->|DomainEventToHandler| N20
+  N34 -->|DomainEventToHandler| N21
   classDef command fill:#FDBA74,stroke:#C2410C,color:#111827
   classDef commandhandler fill:#F97316,stroke:#9A3412,color:#111827
   classDef controllermethod fill:#FDE68A,stroke:#B45309,color:#111827

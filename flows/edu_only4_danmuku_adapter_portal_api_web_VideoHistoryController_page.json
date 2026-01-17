@@ -1,13 +1,33 @@
 {
   "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoHistoryController::page",
   "entryType" : "controllermethod",
-  "nodeCount" : 1,
-  "edgeCount" : 0,
+  "nodeCount" : 3,
+  "edgeCount" : 2,
   "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.application.queries.video_play_history.GetUserPlayHistoryQryHandler",
+    "name" : "GetUserPlayHistoryQryHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.queries.video_play_history.GetUserPlayHistoryQryHandler",
+    "type" : "queryhandler"
+  }, {
     "id" : "edu.only4.danmuku.adapter.portal.api.web.VideoHistoryController::page",
     "name" : "VideoHistoryController::page",
     "fullName" : "edu.only4.danmuku.adapter.portal.api.web.VideoHistoryController::page",
     "type" : "controllermethod"
+  }, {
+    "id" : "edu.only4.danmuku.application.queries.video_play_history.GetUserPlayHistoryQry.Request",
+    "name" : "GetUserPlayHistoryQry.Request",
+    "fullName" : "edu.only4.danmuku.application.queries.video_play_history.GetUserPlayHistoryQry.Request",
+    "type" : "query"
   } ],
-  "edges" : [ ]
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.web.VideoHistoryController::page",
+    "toId" : "edu.only4.danmuku.application.queries.video_play_history.GetUserPlayHistoryQry.Request",
+    "type" : "ControllerMethodToQuery",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.queries.video_play_history.GetUserPlayHistoryQry.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.queries.video_play_history.GetUserPlayHistoryQryHandler",
+    "type" : "QueryToQueryHandler",
+    "label" : null
+  } ]
 }

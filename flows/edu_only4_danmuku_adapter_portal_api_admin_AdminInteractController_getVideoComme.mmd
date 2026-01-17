@@ -1,4 +1,12 @@
 flowchart TD
-  N1([AdminInteractController::getVideoCommentPage])
-  class N1 controllermethod
+  N1[[VideoCommentPageQryHandler]]
+  class N1 queryhandler
+  N2([AdminInteractController::getVideoCommentPage])
+  class N2 controllermethod
+  N3{{VideoCommentPageQry.Request}}
+  class N3 query
+  N2 -->|ControllerMethodToQuery| N3
+  N3 -->|QueryToQueryHandler| N1
   classDef controllermethod fill:#FDE68A,stroke:#B45309,color:#111827
+  classDef query fill:#93C5FD,stroke:#1D4ED8,color:#0F172A
+  classDef queryhandler fill:#3B82F6,stroke:#1E40AF,color:#F8FAFC

@@ -1,13 +1,33 @@
 {
   "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::getCollectionPage",
   "entryType" : "controllermethod",
-  "nodeCount" : 1,
-  "edgeCount" : 0,
+  "nodeCount" : 3,
+  "edgeCount" : 2,
   "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.application.queries.customer_action.GetCollectionPageQryHandler",
+    "name" : "GetCollectionPageQryHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.queries.customer_action.GetCollectionPageQryHandler",
+    "type" : "queryhandler"
+  }, {
     "id" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::getCollectionPage",
     "name" : "UHomeController::getCollectionPage",
     "fullName" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::getCollectionPage",
     "type" : "controllermethod"
+  }, {
+    "id" : "edu.only4.danmuku.application.queries.customer_action.GetCollectionPageQry.Request",
+    "name" : "GetCollectionPageQry.Request",
+    "fullName" : "edu.only4.danmuku.application.queries.customer_action.GetCollectionPageQry.Request",
+    "type" : "query"
   } ],
-  "edges" : [ ]
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::getCollectionPage",
+    "toId" : "edu.only4.danmuku.application.queries.customer_action.GetCollectionPageQry.Request",
+    "type" : "ControllerMethodToQuery",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.queries.customer_action.GetCollectionPageQry.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.queries.customer_action.GetCollectionPageQryHandler",
+    "type" : "QueryToQueryHandler",
+    "label" : null
+  } ]
 }

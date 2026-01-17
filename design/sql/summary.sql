@@ -550,7 +550,7 @@ DROP TABLE IF EXISTS `video_file_post_variant`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `video_file_post_variant` (
   `id` bigint NOT NULL COMMENT 'ID',
-  `parent_id` bigint NOT NULL COMMENT '稿件文件ID@Ref=video_file_post',
+  `file_post_id` bigint NOT NULL COMMENT '稿件文件ID@Ref=video_file_post',
   `quality` varchar(32) NOT NULL COMMENT '清晰度档位，如 1080p/720p',
   `width` int NOT NULL COMMENT '输出宽度(px)',
   `height` int NOT NULL COMMENT '输出高度(px)',
@@ -568,7 +568,7 @@ CREATE TABLE `video_file_post_variant` (
   `update_time` bigint DEFAULT NULL COMMENT '更新时间',
   `deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE KEY `uk_i` (`parent_id`,`quality`,`deleted`),
+  UNIQUE KEY `uk_i` (`file_post_id`,`quality`,`deleted`),
   KEY `idx_vfpv_height` (`height`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='视频稿件文件分辨率档位;@P=video_file_post;';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -613,7 +613,7 @@ DROP TABLE IF EXISTS `video_file_variant`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `video_file_variant` (
   `id` bigint NOT NULL COMMENT 'ID',
-  `parent_id` bigint NOT NULL COMMENT '视频文件ID@Ref=video_file',
+  `file_id` bigint NOT NULL COMMENT '视频文件ID@Ref=video_file',
   `quality` varchar(32) NOT NULL COMMENT '清晰度档位，如 1080p/720p',
   `width` int NOT NULL COMMENT '输出宽度(px)',
   `height` int NOT NULL COMMENT '输出高度(px)',
@@ -631,7 +631,7 @@ CREATE TABLE `video_file_variant` (
   `update_time` bigint DEFAULT NULL COMMENT '更新时间',
   `deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE KEY `uk_i` (`parent_id`,`quality`,`deleted`) USING BTREE,
+  UNIQUE KEY `uk_i` (`file_id`,`quality`,`deleted`) USING BTREE,
   KEY `idx_vfv_height` (`height`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='视频文件分辨率档位;@P=video_file;';
 /*!40101 SET character_set_client = @saved_cs_client */;

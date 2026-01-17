@@ -1,4 +1,63 @@
 flowchart TD
   N1([AdminCategoryController::save])
   class N1 controllermethod
+  N2[[CreateCategoryCmd.Handler]]
+  class N2 commandhandler
+  N3{{CreateCategoryCmd.Request}}
+  class N3 command
+  N4[[FinalizeCategoryAfterCreateCmd.Handler]]
+  class N4 commandhandler
+  N5{{FinalizeCategoryAfterCreateCmd.Request}}
+  class N5 command
+  N6[[CategoryCreatedDomainEventSubscriber::on1]]
+  class N6 domaineventhandler
+  N7[[CategoryNodePathUpdatedDomainEventSubscriber::on]]
+  class N7 domaineventhandler
+  N8[[CategorySortChangedDomainEventSubscriber::on]]
+  class N8 domaineventhandler
+  N9(Category::&lt;get-id&gt;)
+  class N9 entitymethod
+  N10(Category::&lt;get-nodePath&gt;)
+  class N10 entitymethod
+  N11(Category::&lt;get-parentId&gt;)
+  class N11 entitymethod
+  N12(Category::&lt;get-sort&gt;)
+  class N12 entitymethod
+  N13(Category::addSort)
+  class N13 entitymethod
+  N14(Category::changeSort)
+  class N14 entitymethod
+  N15(Category::onCreate)
+  class N15 entitymethod
+  N16(Category::updateNodePath)
+  class N16 entitymethod
+  N17((CategoryCreatedDomainEvent))
+  class N17 domainevent
+  N18((CategoryNodePathUpdatedDomainEvent))
+  class N18 domainevent
+  N19((CategorySortChangedDomainEvent))
+  class N19 domainevent
+  N1 -->|ControllerMethodToCommand| N3
+  N2 -->|CommandHandlerToEntityMethod| N15
+  N3 -->|CommandToCommandHandler| N2
+  N4 -->|CommandHandlerToEntityMethod| N9
+  N4 -->|CommandHandlerToEntityMethod| N10
+  N4 -->|CommandHandlerToEntityMethod| N11
+  N4 -->|CommandHandlerToEntityMethod| N12
+  N4 -->|CommandHandlerToEntityMethod| N13
+  N4 -->|CommandHandlerToEntityMethod| N14
+  N4 -->|CommandHandlerToEntityMethod| N16
+  N5 -->|CommandToCommandHandler| N4
+  N6 -->|DomainEventHandlerToCommand| N5
+  N14 -->|EntityMethodToDomainEvent| N19
+  N15 -->|EntityMethodToDomainEvent| N17
+  N16 -->|EntityMethodToDomainEvent| N18
+  N17 -->|DomainEventToHandler| N6
+  N18 -->|DomainEventToHandler| N7
+  N19 -->|DomainEventToHandler| N8
+  classDef command fill:#FDBA74,stroke:#C2410C,color:#111827
+  classDef commandhandler fill:#F97316,stroke:#9A3412,color:#111827
   classDef controllermethod fill:#FDE68A,stroke:#B45309,color:#111827
+  classDef domainevent fill:#FECACA,stroke:#B91C1C,color:#111827
+  classDef domaineventhandler fill:#F87171,stroke:#991B1B,color:#111827
+  classDef entitymethod fill:#F3F4F6,stroke:#6B7280,color:#111827

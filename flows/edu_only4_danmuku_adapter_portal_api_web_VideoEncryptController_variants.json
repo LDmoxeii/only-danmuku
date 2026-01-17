@@ -1,13 +1,53 @@
 {
   "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoEncryptController::variants",
   "entryType" : "controllermethod",
-  "nodeCount" : 1,
-  "edgeCount" : 0,
+  "nodeCount" : 5,
+  "edgeCount" : 4,
   "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.application.queries.video.ListVideoFileVariantsQryHandler",
+    "name" : "ListVideoFileVariantsQryHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.queries.video.ListVideoFileVariantsQryHandler",
+    "type" : "queryhandler"
+  }, {
+    "id" : "edu.only4.danmuku.adapter.application.queries.video_encrypt.ListVideoQualityAuthQryHandler",
+    "name" : "ListVideoQualityAuthQryHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.queries.video_encrypt.ListVideoQualityAuthQryHandler",
+    "type" : "queryhandler"
+  }, {
     "id" : "edu.only4.danmuku.adapter.portal.api.web.VideoEncryptController::variants",
     "name" : "VideoEncryptController::variants",
     "fullName" : "edu.only4.danmuku.adapter.portal.api.web.VideoEncryptController::variants",
     "type" : "controllermethod"
+  }, {
+    "id" : "edu.only4.danmuku.application.queries.video.ListVideoFileVariantsQry.Request",
+    "name" : "ListVideoFileVariantsQry.Request",
+    "fullName" : "edu.only4.danmuku.application.queries.video.ListVideoFileVariantsQry.Request",
+    "type" : "query"
+  }, {
+    "id" : "edu.only4.danmuku.application.queries.video_encrypt.ListVideoQualityAuthQry.Request",
+    "name" : "ListVideoQualityAuthQry.Request",
+    "fullName" : "edu.only4.danmuku.application.queries.video_encrypt.ListVideoQualityAuthQry.Request",
+    "type" : "query"
   } ],
-  "edges" : [ ]
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.web.VideoEncryptController::variants",
+    "toId" : "edu.only4.danmuku.application.queries.video.ListVideoFileVariantsQry.Request",
+    "type" : "ControllerMethodToQuery",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.web.VideoEncryptController::variants",
+    "toId" : "edu.only4.danmuku.application.queries.video_encrypt.ListVideoQualityAuthQry.Request",
+    "type" : "ControllerMethodToQuery",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.queries.video.ListVideoFileVariantsQry.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.queries.video.ListVideoFileVariantsQryHandler",
+    "type" : "QueryToQueryHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.queries.video_encrypt.ListVideoQualityAuthQry.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.queries.video_encrypt.ListVideoQualityAuthQryHandler",
+    "type" : "QueryToQueryHandler",
+    "label" : null
+  } ]
 }
