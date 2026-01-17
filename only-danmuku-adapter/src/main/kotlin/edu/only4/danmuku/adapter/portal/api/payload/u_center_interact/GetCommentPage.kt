@@ -14,7 +14,7 @@ import org.mapstruct.factory.Mappers
 object GetCommentPage {
 
     data class Request(
-        val videoId: String? = null
+        val videoId: Long? = null
     ) : PageParam()
 
     data class Item(
@@ -34,13 +34,17 @@ object GetCommentPage {
 
     @Mapper(componentModel = "default")
     interface Converter {
+
+        @Mapping(source = "currentUserId", target = "videoUserId")
+        fun toQry(req: Request, currentUserId: Long): VideoCommentPageQry.Request
+
         @Mapping(source = "commentId", target = "commentId")
         @Mapping(source = "videoId", target = "videoId")
         @Mapping(source = "customerId", target = "userId")
         @Mapping(source = "customerNickname", target = "nickName")
         @Mapping(source = "customerAvatar", target = "avatar")
         @Mapping(source = "replyCustomerNickname", target = "replyNickName")
-        fun fromApp(resp: VideoCommentPageQry.Response): Item
+        fun fromQry(resp: VideoCommentPageQry.Response): Item
 
         companion object {
             val INSTANCE: Converter = Mappers.getMapper(Converter::class.java)

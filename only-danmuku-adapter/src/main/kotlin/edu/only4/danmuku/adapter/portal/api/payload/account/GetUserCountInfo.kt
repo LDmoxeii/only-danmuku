@@ -13,7 +13,7 @@ object GetUserCountInfo {
 
     @Mapper(componentModel = "default")
     interface Converter {
-        fun fromApp(response: GetUserCountInfoQry.Response): Response
+        fun fromQry(response: GetUserCountInfoQry.Response): Response
 
         companion object {
             val INSTANCE: Converter = Mappers.getMapper(Converter::class.java)

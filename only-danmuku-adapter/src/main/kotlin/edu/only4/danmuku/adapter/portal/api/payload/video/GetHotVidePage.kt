@@ -5,6 +5,7 @@ import com.only.engine.translation.translation.EpochSecondToDateStringTranslatio
 import com.only4.cap4k.ddd.core.share.PageParam
 import edu.only4.danmuku.application.queries.video.GetHotVideoPageQry
 import org.mapstruct.Mapper
+import org.mapstruct.Mapping
 import org.mapstruct.factory.Mappers
 
 object GetHotVidePage {
@@ -32,7 +33,7 @@ object GetHotVidePage {
         var duration: Int,
         var playCount: Int,
         var likeCount: Int,
-        var danmuCount: Int,
+        var danmukuCount: Int,
         var commentCount: Int,
         var coinCount: Int,
         var collectCount: Int,
@@ -46,7 +47,11 @@ object GetHotVidePage {
 
     @Mapper(componentModel = "default")
     interface Converter {
-        fun fromApp(resp: GetHotVideoPageQry.Response): Item
+
+        @Mapping(target = "lastPlayHour", constant = "24")
+        fun toQry(request: Request): GetHotVideoPageQry.Request
+
+        fun fromQry(resp: GetHotVideoPageQry.Response): Item
 
         companion object { val INSTANCE: Converter = Mappers.getMapper(Converter::class.java) }
     }

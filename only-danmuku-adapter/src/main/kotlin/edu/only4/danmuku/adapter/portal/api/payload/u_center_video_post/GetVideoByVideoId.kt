@@ -76,11 +76,11 @@ object GetVideoByVideoId {
     interface Converter {
         @Mapping(source = "videoInfo", target = "videoInfo")
         @Mapping(source = "videoFileList", target = "videoInfoFileList")
-        fun fromApp(resp: GetVideoPostInfoQry.Response): Response
+        fun fromQry(resp: GetVideoPostInfoQry.Response): Response
 
-        fun fromApp(info: GetVideoPostInfoQry.VideoInfo): VideoInfo
+        fun fromQry(info: GetVideoPostInfoQry.VideoInfo): VideoInfo
 
-        fun fromApp(item: GetVideoPostInfoQry.VideoFileItem): VideoFileItem
+        fun fromQry(item: GetVideoPostInfoQry.VideoFileItem): VideoFileItem
 
         companion object {
             val INSTANCE: Converter = Mappers.getMapper(Converter::class.java)

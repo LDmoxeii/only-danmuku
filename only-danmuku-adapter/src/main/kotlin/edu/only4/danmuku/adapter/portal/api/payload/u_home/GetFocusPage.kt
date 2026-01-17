@@ -24,6 +24,9 @@ object GetFocusPage {
 
     @Mapper(componentModel = "default")
     interface Converter {
+
+        fun toQry(request: Request, userId: Long): GetFocusPageQry.Request
+
         @Mapping(source = "focusUserId", target = "otherUserId")
         @Mapping(source = "nickName", target = "otherNickName")
         @Mapping(source = "personIntroduction", target = "otherPersonIntroduction")

@@ -19,7 +19,7 @@ object GetVideoPage {
         val userId: Long,
         val type: Int?,
         val videoName: String?,
-        val orderType: Int?
+        val orderType: Int?,
     ) : PageParam() {
         companion object {
             val CREATE_TIME_DESC = OrderInfo.desc(SVideo.props.createTime)
@@ -36,15 +36,32 @@ object GetVideoPage {
         var createTime: Long,
         var playCount: Int? = null,
         var likeCount: Int? = null,
-        var danmuCount: Int? = null,
-        var commentCount: Int? = null
+        var danmukuCount: Int? = null,
+        var commentCount: Int? = null,
     )
 
     @Mapper(componentModel = "default")
     interface Converter {
-        @Mapping(source = "videoId", target = "videoId")
-        fun fromApp(resp: GetVideoPageQry.Response): Item
 
-        companion object { val INSTANCE: Converter = Mappers.getMapper(Converter::class.java) }
+        @Mapping(target = "pageSize", expression = "java(resolvePageSize(req))")
+        @Mapping(target = "sort", expression = "java(resolveSort(req))")
+        fun toQry(req: Request): GetVideoPageQry.Request
+
+        @Mapping(source = "videoId", target = "videoId")
+        fun fromQry(resp: GetVideoPageQry.Response): Item
+
+        fun resolvePageSize(request: Request): Int = if (request.type != null) 10 else request.pageSize
+
+        fun resolveSort(request: Request): List<OrderInfo> =
+            listOf(when (request.orderType) {
+                0 -> Request.CREATE_TIME_DESC
+                1 -> Request.PLAY_COUNT_DESC
+                2 -> Request.COLLECT_COUNT_DESC
+                else -> Request.CREATE_TIME_DESC
+            })
+
+        companion object {
+            val INSTANCE: Converter = Mappers.getMapper(Converter::class.java)
+        }
     }
 }

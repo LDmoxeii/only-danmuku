@@ -4,7 +4,9 @@ import com.only.engine.translation.annotation.Translation
 import com.only.engine.translation.translation.EpochSecondToDateStringTranslation
 import com.only4.cap4k.ddd.core.share.PageParam
 import edu.only4.danmuku.application.queries.video.GetVideoPageQry
+import edu.only4.danmuku.domain.aggregates.video.enums.RecommendType
 import org.mapstruct.Mapper
+import org.mapstruct.Mapping
 import org.mapstruct.factory.Mappers
 
 object GetVideoPage {
@@ -32,7 +34,7 @@ object GetVideoPage {
         var duration: Int,
         var playCount: Int,
         var likeCount: Int,
-        var danmuCount: Int,
+        var danmukuCount: Int,
         var commentCount: Int,
         var coinCount: Int,
         var collectCount: Int,
@@ -44,9 +46,16 @@ object GetVideoPage {
         var categoryFullName: String?,
     )
 
-    @Mapper(componentModel = "default")
+    @Mapper(componentModel = "default",
+        imports = [RecommendType::class]
+    )
     interface Converter {
-        fun fromApp(resp: GetVideoPageQry.Response): Item
+
+        @Mapping(target = "categoryParentId", source = "request.parentCategoryId")
+        @Mapping(target = "recommendType", expression = "java((request.getCategoryId() == null && request.getParentCategoryId() == null) ? RecommendType.NOT_RECOMMEND : null)")
+        fun toQry(request: Request): GetVideoPageQry.Request
+
+        fun fromQry(resp: GetVideoPageQry.Response): Item
 
         companion object { val INSTANCE: Converter = Mappers.getMapper(Converter::class.java) }
     }

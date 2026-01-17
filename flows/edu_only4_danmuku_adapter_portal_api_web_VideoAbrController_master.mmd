@@ -1,18 +1,26 @@
 flowchart TD
-  N1[[GetVideoAbrMasterQryHandler]]
-  class N1 queryhandler
-  N2[[GetVideoPostIdByFileIdQryHandler]]
+  N1[[ReadObjectAsTextCliHandler]]
+  class N1 clihandler
+  N2[[GetVideoAbrMasterQryHandler]]
   class N2 queryhandler
-  N3([VideoAbrController::master])
-  class N3 controllermethod
-  N4{{GetVideoAbrMasterQry.Request}}
-  class N4 query
-  N5{{GetVideoPostIdByFileIdQry.Request}}
-  class N5 query
-  N3 -->|ControllerMethodToQuery| N4
-  N3 -->|ControllerMethodToQuery| N5
-  N4 -->|QueryToQueryHandler| N1
-  N5 -->|QueryToQueryHandler| N2
+  N3[[GetVideoPostIdByFileIdQryHandler]]
+  class N3 queryhandler
+  N4([VideoAbrController::master])
+  class N4 controllermethod
+  N5{{ReadObjectAsTextCli.Request}}
+  class N5 cli
+  N6{{GetVideoAbrMasterQry.Request}}
+  class N6 query
+  N7{{GetVideoPostIdByFileIdQry.Request}}
+  class N7 query
+  N4 -->|ControllerMethodToCli| N5
+  N4 -->|ControllerMethodToQuery| N6
+  N4 -->|ControllerMethodToQuery| N7
+  N5 -->|CliToCliHandler| N1
+  N6 -->|QueryToQueryHandler| N2
+  N7 -->|QueryToQueryHandler| N3
+  classDef cli fill:#86EFAC,stroke:#15803D,color:#0F172A
+  classDef clihandler fill:#22C55E,stroke:#166534,color:#F0FDF4
   classDef controllermethod fill:#FDE68A,stroke:#B45309,color:#111827
   classDef query fill:#93C5FD,stroke:#1D4ED8,color:#0F172A
   classDef queryhandler fill:#3B82F6,stroke:#1E40AF,color:#F8FAFC

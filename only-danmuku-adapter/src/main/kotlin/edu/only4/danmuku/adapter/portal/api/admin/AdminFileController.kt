@@ -24,16 +24,14 @@ class AdminFileController {
     fun uploadImage(
         file: MultipartFile,
         createThumbnail: Boolean,
-    ): String {
-        val resp = Mediator.requests.send(
+    ): String =
+        Mediator.requests.send(
             UploadImageResourceCli.Request(
                 file = file,
                 createThumbnail = createThumbnail,
                 bizType = "COVER"
             )
-        )
-        return resp.resourceKey
-    }
+        ).resourceKey
 
     @SaIgnore
     @IgnoreResultWrapper

@@ -20,9 +20,7 @@ class AdminInteractController {
 
     @PostMapping("/page")
     fun page(@RequestBody @Validated request: GetDanmukuPage.Request): PageData<GetDanmukuPage.Response> {
-        val queryRequest = GetDanmukuPage.Converter.INSTANCE.toQry(request)
-
-        val queryResult = Mediator.queries.send(queryRequest)
+        val queryResult = Mediator.queries.send(GetDanmukuPage.Converter.INSTANCE.toQry(request))
 
         return PageData.create(
             pageNum = queryResult.pageNum,
@@ -43,9 +41,7 @@ class AdminInteractController {
 
     @PostMapping("/getVideoCommentPage")
     fun getVideoCommentPage(@RequestBody @Validated request: GetVideoCommentPage.Request): PageData<GetVideoCommentPage.Response> {
-        val queryRequest = GetVideoCommentPage.Converter.INSTANCE.toQry(request)
-
-        val queryResult = Mediator.queries.send(queryRequest)
+        val queryResult = Mediator.queries.send(GetVideoCommentPage.Converter.INSTANCE.toQry(request))
 
         return PageData.create(
             pageNum = queryResult.pageNum,

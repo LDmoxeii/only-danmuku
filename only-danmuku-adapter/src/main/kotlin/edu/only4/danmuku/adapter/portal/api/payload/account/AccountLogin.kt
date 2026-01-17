@@ -1,9 +1,15 @@
 package edu.only4.danmuku.adapter.portal.api.payload.account
 
+import edu.only4.danmuku.adapter.portal.api.payload.admin_user.ChangeStatus
+import edu.only4.danmuku.application.commands.user.ChangeUserStatusCmd
+import edu.only4.danmuku.application.queries.authorize.AutoLoginQry
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.Pattern
 import jakarta.validation.constraints.Size
+import org.mapstruct.Mapper
+import org.mapstruct.Mapping
+import org.mapstruct.factory.Mappers
 
 object AccountLogin {
 
@@ -26,4 +32,14 @@ object AccountLogin {
 
         var token: String,
     )
+
+    @Mapper(componentModel = "default")
+    interface Converter {
+
+        fun fromQry(request: AutoLoginQry.Response): Response
+
+        companion object {
+            val INSTANCE: Converter = Mappers.getMapper(Converter::class.java)
+        }
+    }
 }

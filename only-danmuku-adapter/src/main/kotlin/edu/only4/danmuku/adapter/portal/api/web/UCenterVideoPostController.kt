@@ -16,7 +16,6 @@ import edu.only4.danmuku.application.commands.video_post.ChangeVideoPostInteract
 import edu.only4.danmuku.application.commands.video_post.CreateVideoPostCmd
 import edu.only4.danmuku.application.commands.video_post.DeleteVideoPostCmd
 import edu.only4.danmuku.application.commands.video_post.UpdateVideoPostCmd
-import edu.only4.danmuku.application.queries.video_draft.GetUserVideoPostQry
 import edu.only4.danmuku.application.queries.video_draft.GetVideoDraftCountByStatusQry
 import edu.only4.danmuku.application.queries.video_draft.GetVideoPostInfoQry
 import edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus
@@ -107,25 +106,12 @@ class UCenterVideoPostController {
     fun getPage(@RequestBody @Validated request: GetVideoPostPage.Request): PageData<GetVideoPostPage.Item> {
         val currentUserId = LoginHelper.getUserId()!!
 
-        val queryRequest = GetUserVideoPostQry.Request(
-            userId = currentUserId,
-            status = if (request.status == VideoStatus.UNKNOW) null else request.status,
-            videoNameFuzzy = request.videoNameFuzzy,
-            excludeStatusArray = if (request.status == VideoStatus.UNKNOW) listOf(
-                VideoStatus.REVIEW_PASSED,
-                VideoStatus.REVIEW_FAILED
-            ) else null // 进行中排除审核通过和不通过
-        ).apply {
-            pageNum = request.pageNum
-            pageSize = 999
-        }
-
-        val queryResult = Mediator.queries.send(queryRequest)
+        val queryResult = Mediator.queries.send(GetVideoPostPage.Converter.INSTANCE.toQry(request, currentUserId))
 
         return PageData.create(
             pageNum = queryResult.pageNum,
             pageSize = queryResult.pageSize,
-            list = queryResult.list.map { GetVideoPostPage.Converter.INSTANCE.fromApp(it) },
+            list = queryResult.list.map { GetVideoPostPage.Converter.INSTANCE.fromQry(it) },
             totalCount = queryResult.totalCount
         )
     }
@@ -176,31 +162,26 @@ class UCenterVideoPostController {
             )
         )
 
-        return GetVideoByVideoId.Converter.INSTANCE.fromApp(queryResult)
+        return GetVideoByVideoId.Converter.INSTANCE.fromQry(queryResult)
     }
 
     @PostMapping("/videoPost/saveInteraction")
-    fun saveInteraction(@RequestBody @Validated request: SaveVideoPostInteraction.Request) {
-        val userId = LoginHelper.getUserId()!!
-
+    fun saveInteraction(@RequestBody @Validated request: SaveVideoPostInteraction.Request) =
         Mediator.commands.send(
             ChangeVideoPostInteractionCmd.Request(
                 videoPostId = request.videoPostId,
-                userId = userId,
+                userId = LoginHelper.getUserId()!!,
                 interaction = request.interaction
             )
         )
-    }
 
     @PostMapping("videoPost/delete")
-    fun delete(@RequestBody @Validated request: DeleteVideo.Request) {
-        val currentUserId = LoginHelper.getUserId()!!
+    fun delete(@RequestBody @Validated request: DeleteVideo.Request) =
         Mediator.commands.send(
             DeleteVideoPostCmd.Request(
                 videoId = request.videoId,
-                operatorId = currentUserId
+                operatorId = LoginHelper.getUserId()!!
             )
         )
-    }
 }
 

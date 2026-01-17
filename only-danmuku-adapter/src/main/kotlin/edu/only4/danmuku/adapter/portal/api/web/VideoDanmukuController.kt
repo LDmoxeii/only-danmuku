@@ -51,20 +51,17 @@ class VideoDanmukuController {
         return list
     }
 
-    @PostMapping("/postDanmu")
-    fun postDanmuku(@RequestBody @Validated request: PostDanmuku.Request) {
-        val userId = LoginHelper.getUserId()!!
-        Mediator.commands.send(
-            PostDanmukuCmd.Request(
-                videoId = request.videoId,
-                fileId = request.fileId,
-                customerId = userId,
-                text = request.text,
-                mode = request.mode,
-                color = request.color,
-                time = request.time
-            )
+    @PostMapping("/postDanmuku")
+    fun postDanmuku(@RequestBody @Validated request: PostDanmuku.Request) = Mediator.commands.send(
+        PostDanmukuCmd.Request(
+            videoId = request.videoId,
+            fileId = request.fileId,
+            customerId = LoginHelper.getUserId()!!,
+            text = request.text,
+            mode = request.mode,
+            color = request.color,
+            time = request.time
         )
-    }
+    )
 
 }

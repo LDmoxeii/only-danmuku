@@ -1,4 +1,12 @@
 flowchart TD
-  N1([AdminSettingController::getSetting])
-  class N1 controllermethod
+  N1[[GetSettingsCliHandler]]
+  class N1 clihandler
+  N2([AdminSettingController::getSetting])
+  class N2 controllermethod
+  N3{{GetSettingsCli.Request}}
+  class N3 cli
+  N2 -->|ControllerMethodToCli| N3
+  N3 -->|CliToCliHandler| N1
+  classDef cli fill:#86EFAC,stroke:#15803D,color:#0F172A
+  classDef clihandler fill:#22C55E,stroke:#166534,color:#F0FDF4
   classDef controllermethod fill:#FDE68A,stroke:#B45309,color:#111827

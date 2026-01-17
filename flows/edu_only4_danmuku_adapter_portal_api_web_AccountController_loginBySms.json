@@ -1,9 +1,14 @@
 {
   "entryId" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::loginBySms",
   "entryType" : "controllermethod",
-  "nodeCount" : 10,
-  "edgeCount" : 9,
+  "nodeCount" : 12,
+  "edgeCount" : 11,
   "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.application.distributed.clients.authorize.IssueTokenCliHandler",
+    "name" : "IssueTokenCliHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.distributed.clients.authorize.IssueTokenCliHandler",
+    "type" : "clihandler"
+  }, {
     "id" : "edu.only4.danmuku.adapter.application.queries.customer_profile.GetCustomerProfileQryHandler",
     "name" : "GetCustomerProfileQryHandler",
     "fullName" : "edu.only4.danmuku.adapter.application.queries.customer_profile.GetCustomerProfileQryHandler",
@@ -28,6 +33,11 @@
     "name" : "UpdateLoginInfoCmd.Request",
     "fullName" : "edu.only4.danmuku.application.commands.user.UpdateLoginInfoCmd.Request",
     "type" : "command"
+  }, {
+    "id" : "edu.only4.danmuku.application.distributed.clients.authorize.IssueTokenCli.Request",
+    "name" : "IssueTokenCli.Request",
+    "fullName" : "edu.only4.danmuku.application.distributed.clients.authorize.IssueTokenCli.Request",
+    "type" : "cli"
   }, {
     "id" : "edu.only4.danmuku.application.queries.customer_profile.GetCustomerProfileQry.Request",
     "name" : "GetCustomerProfileQry.Request",
@@ -61,6 +71,11 @@
     "label" : null
   }, {
     "fromId" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::loginBySms",
+    "toId" : "edu.only4.danmuku.application.distributed.clients.authorize.IssueTokenCli.Request",
+    "type" : "ControllerMethodToCli",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::loginBySms",
     "toId" : "edu.only4.danmuku.application.queries.customer_profile.GetCustomerProfileQry.Request",
     "type" : "ControllerMethodToQuery",
     "label" : null
@@ -78,6 +93,11 @@
     "fromId" : "edu.only4.danmuku.application.commands.user.UpdateLoginInfoCmd.Request",
     "toId" : "edu.only4.danmuku.application.commands.user.UpdateLoginInfoCmd.Handler",
     "type" : "CommandToCommandHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.distributed.clients.authorize.IssueTokenCli.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.distributed.clients.authorize.IssueTokenCliHandler",
+    "type" : "CliToCliHandler",
     "label" : null
   }, {
     "fromId" : "edu.only4.danmuku.application.queries.customer_profile.GetCustomerProfileQry.Request",

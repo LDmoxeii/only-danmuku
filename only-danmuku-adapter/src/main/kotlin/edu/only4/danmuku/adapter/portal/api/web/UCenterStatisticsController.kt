@@ -42,7 +42,7 @@ class UCenterStatisticsController {
             "collectCount" to totalData.collectCount,
             "coinCount" to totalData.coinCount,
             "commentCount" to totalData.commentCount,
-            "danmuCount" to totalData.danmukuCount
+            "danmukuCount" to totalData.danmukuCount
         )
 
         return GetActualTimeStatistics.Response(
@@ -62,7 +62,7 @@ class UCenterStatisticsController {
             )
         )
 
-        return weekData.map { Converter.INSTANCE.fromApp(it) }
+        return weekData.map { Converter.INSTANCE.fromQry(it) }
     }
 
 }

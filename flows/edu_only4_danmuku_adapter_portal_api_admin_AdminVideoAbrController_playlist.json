@@ -1,9 +1,14 @@
 {
   "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminVideoAbrController::playlist",
   "entryType" : "controllermethod",
-  "nodeCount" : 3,
-  "edgeCount" : 2,
+  "nodeCount" : 5,
+  "edgeCount" : 4,
   "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.application.distributed.clients.oss.ReadObjectAsTextCliHandler",
+    "name" : "ReadObjectAsTextCliHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.distributed.clients.oss.ReadObjectAsTextCliHandler",
+    "type" : "clihandler"
+  }, {
     "id" : "edu.only4.danmuku.adapter.application.queries.video_transcode.GetVideoFilePostPathQryHandler",
     "name" : "GetVideoFilePostPathQryHandler",
     "fullName" : "edu.only4.danmuku.adapter.application.queries.video_transcode.GetVideoFilePostPathQryHandler",
@@ -14,6 +19,11 @@
     "fullName" : "edu.only4.danmuku.adapter.portal.api.admin.AdminVideoAbrController::playlist",
     "type" : "controllermethod"
   }, {
+    "id" : "edu.only4.danmuku.application.distributed.clients.oss.ReadObjectAsTextCli.Request",
+    "name" : "ReadObjectAsTextCli.Request",
+    "fullName" : "edu.only4.danmuku.application.distributed.clients.oss.ReadObjectAsTextCli.Request",
+    "type" : "cli"
+  }, {
     "id" : "edu.only4.danmuku.application.queries.video_transcode.GetVideoFilePostPathQry.Request",
     "name" : "GetVideoFilePostPathQry.Request",
     "fullName" : "edu.only4.danmuku.application.queries.video_transcode.GetVideoFilePostPathQry.Request",
@@ -21,8 +31,18 @@
   } ],
   "edges" : [ {
     "fromId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminVideoAbrController::playlist",
+    "toId" : "edu.only4.danmuku.application.distributed.clients.oss.ReadObjectAsTextCli.Request",
+    "type" : "ControllerMethodToCli",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminVideoAbrController::playlist",
     "toId" : "edu.only4.danmuku.application.queries.video_transcode.GetVideoFilePostPathQry.Request",
     "type" : "ControllerMethodToQuery",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.distributed.clients.oss.ReadObjectAsTextCli.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.distributed.clients.oss.ReadObjectAsTextCliHandler",
+    "type" : "CliToCliHandler",
     "label" : null
   }, {
     "fromId" : "edu.only4.danmuku.application.queries.video_transcode.GetVideoFilePostPathQry.Request",

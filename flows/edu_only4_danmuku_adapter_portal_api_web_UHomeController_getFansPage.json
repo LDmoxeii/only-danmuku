@@ -14,18 +14,18 @@
     "fullName" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::getFansPage",
     "type" : "controllermethod"
   }, {
-    "id" : "edu.only4.danmuku.application.queries.customer_focus.GetFansListQry.Request",
-    "name" : "GetFansListQry.Request",
-    "fullName" : "edu.only4.danmuku.application.queries.customer_focus.GetFansListQry.Request",
+    "id" : "edu.only4.danmuku.application.queries.customer_focus.GetFansPageQry.Request",
+    "name" : "GetFansPageQry.Request",
+    "fullName" : "edu.only4.danmuku.application.queries.customer_focus.GetFansPageQry.Request",
     "type" : "query"
   } ],
   "edges" : [ {
     "fromId" : "edu.only4.danmuku.adapter.portal.api.web.UHomeController::getFansPage",
-    "toId" : "edu.only4.danmuku.application.queries.customer_focus.GetFansListQry.Request",
+    "toId" : "edu.only4.danmuku.application.queries.customer_focus.GetFansPageQry.Request",
     "type" : "ControllerMethodToQuery",
     "label" : null
   }, {
-    "fromId" : "edu.only4.danmuku.application.queries.customer_focus.GetFansListQry.Request",
+    "fromId" : "edu.only4.danmuku.application.queries.customer_focus.GetFansPageQry.Request",
     "toId" : "edu.only4.danmuku.adapter.application.queries.customer_focus.GetFansListQryHandler",
     "type" : "QueryToQueryHandler",
     "label" : null

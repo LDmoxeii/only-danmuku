@@ -2,6 +2,7 @@ package edu.only4.danmuku.adapter.portal.api.payload.setting
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import edu.only4.danmuku.application._share.config.properties.SysSettingProperties
+import edu.only4.danmuku.application.distributed.clients.system.GetSettingsCli
 import org.mapstruct.Mapper
 import org.mapstruct.factory.Mappers
 
@@ -56,7 +57,7 @@ object GetSetting {
 
     @Mapper(componentModel = "default")
     interface Converter {
-        fun fromApp(props: SysSettingProperties): Response
+        fun fromCli(props: GetSettingsCli.Response): Response
 
         companion object {
             val INSTANCE: Converter = Mappers.getMapper(Converter::class.java)

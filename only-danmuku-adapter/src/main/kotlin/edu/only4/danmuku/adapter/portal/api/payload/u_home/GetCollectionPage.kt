@@ -33,6 +33,10 @@ object GetCollectionPage {
 
     @Mapper(componentModel = "default")
     interface Converter {
+
+        @Mapping(source = "currentUserId", target = "customerId")
+        fun toQry(req: Request, currentUserId: Long): GetCollectionPageQry.Request
+
         @Mapping(source = "videoId", target = "videoId")
         @Mapping(source = "videoUserId", target = "videoUserId")
         @Mapping(source = "userId", target = "userId")

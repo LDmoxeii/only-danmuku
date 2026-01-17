@@ -1,42 +1,50 @@
 flowchart TD
-  N1[[GetRecentPasswordFailureCountQryHandler]]
-  class N1 queryhandler
-  N2([AdminAccountController::logout])
-  class N2 controllermethod
-  N3[[RecordAbnormalOperationCmd.Handler]]
-  class N3 commandhandler
-  N4{{RecordAbnormalOperationCmd.Request}}
-  class N4 command
-  N5[[RecordLoginLogCmd.Handler]]
-  class N5 commandhandler
-  N6{{RecordLoginLogCmd.Request}}
-  class N6 command
-  N7{{GetRecentPasswordFailureCountQry.Request}}
-  class N7 query
-  N8[[PasswordInputFailedDomainEventSubscriber::on]]
-  class N8 domaineventhandler
-  N9(UserAbnormalOperationLog::&lt;get-id&gt;)
-  class N9 entitymethod
-  N10(UserAbnormalOperationLog::onCreate)
-  class N10 entitymethod
-  N11(UserLoginLog::&lt;get-id&gt;)
+  N1[[LogoutCliHandler]]
+  class N1 clihandler
+  N2[[GetRecentPasswordFailureCountQryHandler]]
+  class N2 queryhandler
+  N3([AdminAccountController::logout])
+  class N3 controllermethod
+  N4[[RecordAbnormalOperationCmd.Handler]]
+  class N4 commandhandler
+  N5{{RecordAbnormalOperationCmd.Request}}
+  class N5 command
+  N6[[RecordLoginLogCmd.Handler]]
+  class N6 commandhandler
+  N7{{RecordLoginLogCmd.Request}}
+  class N7 command
+  N8{{LogoutCli.Request}}
+  class N8 cli
+  N9{{GetRecentPasswordFailureCountQry.Request}}
+  class N9 query
+  N10[[PasswordInputFailedDomainEventSubscriber::on]]
+  class N10 domaineventhandler
+  N11(UserAbnormalOperationLog::&lt;get-id&gt;)
   class N11 entitymethod
-  N12(UserLoginLog::onCreate)
+  N12(UserAbnormalOperationLog::onCreate)
   class N12 entitymethod
-  N13((PasswordInputFailedDomainEvent))
-  class N13 domainevent
-  N2 -->|ControllerMethodToCommand| N6
-  N3 -->|CommandHandlerToEntityMethod| N9
-  N3 -->|CommandHandlerToEntityMethod| N10
-  N4 -->|CommandToCommandHandler| N3
-  N5 -->|CommandHandlerToEntityMethod| N11
-  N5 -->|CommandHandlerToEntityMethod| N12
-  N6 -->|CommandToCommandHandler| N5
-  N7 -->|QueryToQueryHandler| N1
-  N8 -->|DomainEventHandlerToCommand| N4
-  N8 -->|DomainEventHandlerToQuery| N7
-  N12 -->|EntityMethodToDomainEvent| N13
-  N13 -->|DomainEventToHandler| N8
+  N13(UserLoginLog::&lt;get-id&gt;)
+  class N13 entitymethod
+  N14(UserLoginLog::onCreate)
+  class N14 entitymethod
+  N15((PasswordInputFailedDomainEvent))
+  class N15 domainevent
+  N3 -->|ControllerMethodToCommand| N7
+  N3 -->|ControllerMethodToCli| N8
+  N4 -->|CommandHandlerToEntityMethod| N11
+  N4 -->|CommandHandlerToEntityMethod| N12
+  N5 -->|CommandToCommandHandler| N4
+  N6 -->|CommandHandlerToEntityMethod| N13
+  N6 -->|CommandHandlerToEntityMethod| N14
+  N7 -->|CommandToCommandHandler| N6
+  N8 -->|CliToCliHandler| N1
+  N9 -->|QueryToQueryHandler| N2
+  N10 -->|DomainEventHandlerToCommand| N5
+  N10 -->|DomainEventHandlerToQuery| N9
+  N14 -->|EntityMethodToDomainEvent| N15
+  N15 -->|DomainEventToHandler| N10
+  classDef cli fill:#86EFAC,stroke:#15803D,color:#0F172A
+  classDef clihandler fill:#22C55E,stroke:#166534,color:#F0FDF4
   classDef command fill:#FDBA74,stroke:#C2410C,color:#111827
   classDef commandhandler fill:#F97316,stroke:#9A3412,color:#111827
   classDef controllermethod fill:#FDE68A,stroke:#B45309,color:#111827

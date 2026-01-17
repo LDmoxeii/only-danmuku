@@ -18,7 +18,7 @@ object GetActualTimeStatistics {
          * 3: 收藏 (COLLECTION)
          * 4: 投币 (COIN)
          * 5: 评论 (COMMENT)
-         * 6: 弹幕 (DANMU)
+         * 6: 弹幕 (DANMUKU)
          */
         var preDayData: Map<Int, Int> = emptyMap(),
 

@@ -18,13 +18,9 @@ import edu.only4.danmuku.application.commands.customer_focus.FocusCmd
 import edu.only4.danmuku.application.commands.customer_focus.UnFocusCmd
 import edu.only4.danmuku.application.commands.customer_profile.UpdateCustomerProfileCmd
 import edu.only4.danmuku.application.commands.customer_profile.BindPhoneCmd
-import edu.only4.danmuku.application.queries.customer_action.GetCollectionPageQry
 import edu.only4.danmuku.application.queries.customer_focus.CheckFocusStatusQry
-import edu.only4.danmuku.application.queries.customer_focus.GetFansListQry
-import edu.only4.danmuku.application.queries.customer_focus.GetFocusPageQry
 import edu.only4.danmuku.application.queries.customer_profile.GetCustomerProfileQry
 import edu.only4.danmuku.application.queries.statistics.GetTotalStatisticsInfoQry
-import edu.only4.danmuku.application.queries.video.GetVideoPageQry
 import edu.only4.danmuku.domain._share.meta.user.SUser
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
@@ -62,7 +58,7 @@ class UHomeController {
         } ?: false
 
         return GetCustomerProfileDetail.Response(
-            userId = queryResult.customerId.toString(),
+            userId = queryResult.customerId,
             nickName = queryResult.nickName,
             avatar = queryResult.avatar,
             sex = queryResult.sex,
@@ -82,11 +78,10 @@ class UHomeController {
     }
 
     @PostMapping("/customerProfile/update")
-    fun update(@RequestBody @Validated request: UpdateCustomerProfile.Request) {
-        val userId = LoginHelper.getUserId()!!
+    fun update(@RequestBody @Validated request: UpdateCustomerProfile.Request) =
         Mediator.commands.send(
             UpdateCustomerProfileCmd.Request(
-                customerId = userId,
+                customerId = LoginHelper.getUserId()!!,
                 nickName = request.nickName,
                 avatar = request.avatar,
                 sex = request.sex,
@@ -96,57 +91,39 @@ class UHomeController {
                 noticeInfo = request.noticeInfo
             )
         )
-    }
 
     @PostMapping("/saveTheme")
-    fun saveTheme(@RequestBody @Validated request: SaveTheme.Request) {
-        val userId = LoginHelper.getUserId()!!
-
+    fun saveTheme(@RequestBody @Validated request: SaveTheme.Request) =
         Mediator.commands.send(
             UpdateCustomerProfileCmd.Request(
-                customerId = userId,
+                customerId = LoginHelper.getUserId()!!,
                 theme = request.theme
             )
         )
-    }
 
     @PostMapping("/focus")
-    fun focus(@RequestBody @Validated  request: Focus.Request) {
-        val currentUserId = LoginHelper.getUserId()!!
-
+    fun focus(@RequestBody @Validated  request: Focus.Request) =
         Mediator.commands.send(
             FocusCmd.Request(
-                userId = currentUserId,
+                userId = LoginHelper.getUserId()!!,
                 focusUserId = request.focusUserId
             )
         )
-    }
 
     @PostMapping("/cancelFocus")
-    fun cancelFocus(@RequestBody @Validated  request: CancelFocus.Request) {
-        val currentUserId = LoginHelper.getUserId()!!
-
-        // 调用命令取消关注
+    fun cancelFocus(@RequestBody @Validated  request: CancelFocus.Request) =
         Mediator.commands.send(
             UnFocusCmd.Request(
-                userId = currentUserId,
+                userId = LoginHelper.getUserId()!!,
                 focusUserId = request.focusUserId
             )
         )
-    }
 
     @PostMapping("/getFocusPage")
     fun getFocusPage(@RequestBody @Validated request: GetFocusPage.Request): PageData<GetFocusPage.Item> {
         val userId = LoginHelper.getUserId()!!
 
-        val queryRequest = GetFocusPageQry.Request(
-            userId = userId
-        ).apply {
-            pageNum = request.pageNum
-            pageSize = request.pageSize
-        }
-
-        val queryResult = Mediator.queries.send(queryRequest)
+        val queryResult = Mediator.queries.send(GetFocusPage.Converter.INSTANCE.toQry(request, userId))
 
         // 转换为前端需要的格式
         return PageData.create(
@@ -161,19 +138,12 @@ class UHomeController {
     fun getFansPage(@RequestBody @Validated request: GetFansPage.Request): PageData<GetFansPage.Item> {
         val userId = LoginHelper.getUserId()!!
 
-        val queryRequest = GetFansListQry.Request(
-            userId = userId
-        ).apply {
-            pageNum = request.pageNum
-            pageSize = request.pageSize
-        }
-
-        val queryResult = Mediator.queries.send(queryRequest)
+        val queryResult = Mediator.queries.send(GetFansPage.Converter.INSTANCE.toQry(request, userId))
 
         return PageData.create(
             pageNum = queryResult.pageNum,
             pageSize = queryResult.pageSize,
-            list = queryResult.list.map { GetFansPage.Converter.INSTANCE.fromApp(it) },
+            list = queryResult.list.map { GetFansPage.Converter.INSTANCE.fromQry(it) },
             totalCount = queryResult.totalCount
         )
     }
@@ -181,28 +151,12 @@ class UHomeController {
     @SaIgnore
     @PostMapping("/getVideoPage")
     fun getVideoPage(@RequestBody @Validated request: GetVideoPage.Request): PageData<GetVideoPage.Item> {
-        val queryRequest = GetVideoPageQry.Request(
-            userId = request.userId,
-            videoNameFuzzy = request.videoName,
-        ).apply {
-            pageNum = request.pageNum
-            pageSize = if (request.type != null) 10 else request.pageSize
-            sort.add(
-                when (request.orderType) {
-                    0 -> GetVideoPage.Request.CREATE_TIME_DESC
-                    1 -> GetVideoPage.Request.PLAY_COUNT_DESC
-                    2 -> GetVideoPage.Request.COLLECT_COUNT_DESC
-                    else -> GetVideoPage.Request.CREATE_TIME_DESC
-                }
-            )
-        }
-
-        val queryResult = Mediator.queries.send(queryRequest)
+        val queryResult = Mediator.queries.send(GetVideoPage.Converter.INSTANCE.toQry(request))
 
         return PageData.create(
             pageNum = queryResult.pageNum,
             pageSize = queryResult.pageSize,
-            list = queryResult.list.map { GetVideoPage.Converter.INSTANCE.fromApp(it) },
+            list = queryResult.list.map { GetVideoPage.Converter.INSTANCE.fromQry(it) },
             totalCount = queryResult.totalCount
         )
     }
@@ -210,17 +164,9 @@ class UHomeController {
     @SaIgnore
     @PostMapping("/getCollectionPage")
     fun getCollectionPage(@RequestBody @Validated request: GetCollectionPage.Request): PageData<GetCollectionPage.Item> {
-        val actualUserId = request.userId ?: LoginHelper.getUserId()!!
+        val currentUserId = request.userId ?: LoginHelper.getUserId()!!
 
-        // 调用查询获取用户收藏的视频ID列表
-        val collectionRequest = GetCollectionPageQry.Request(
-            customerId = actualUserId
-        ).apply {
-            pageNum = request.pageNum
-            pageSize = request.pageSize
-        }
-
-        val collectedActions = Mediator.queries.send(collectionRequest)
+        val collectedActions = Mediator.queries.send(GetCollectionPage.Converter.INSTANCE.toQry(request, currentUserId))
 
         // 如果没有收藏的视频，直接返回空列表
         if (collectedActions.list.isEmpty()) {
@@ -229,8 +175,8 @@ class UHomeController {
 
         // 转换为前端需要的格式（与注释示例保持一致）
         return PageData.create(
-            pageNum = collectionRequest.pageNum,
-            pageSize = collectionRequest.pageSize,
+            pageNum = collectedActions.pageNum,
+            pageSize = collectedActions.pageSize,
             list = collectedActions.list.map { GetCollectionPage.Converter.INSTANCE.fromApp(it) },
             totalCount = collectedActions.totalCount
         )

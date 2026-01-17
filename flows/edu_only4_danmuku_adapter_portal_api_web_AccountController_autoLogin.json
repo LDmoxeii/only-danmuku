@@ -1,13 +1,33 @@
 {
   "entryId" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::autoLogin",
   "entryType" : "controllermethod",
-  "nodeCount" : 1,
-  "edgeCount" : 0,
+  "nodeCount" : 3,
+  "edgeCount" : 2,
   "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.application.queries.authorize.AutoLoginQryHandler",
+    "name" : "AutoLoginQryHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.queries.authorize.AutoLoginQryHandler",
+    "type" : "queryhandler"
+  }, {
     "id" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::autoLogin",
     "name" : "AccountController::autoLogin",
     "fullName" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::autoLogin",
     "type" : "controllermethod"
+  }, {
+    "id" : "edu.only4.danmuku.application.queries.authorize.AutoLoginQry.Request",
+    "name" : "AutoLoginQry.Request",
+    "fullName" : "edu.only4.danmuku.application.queries.authorize.AutoLoginQry.Request",
+    "type" : "query"
   } ],
-  "edges" : [ ]
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::autoLogin",
+    "toId" : "edu.only4.danmuku.application.queries.authorize.AutoLoginQry.Request",
+    "type" : "ControllerMethodToQuery",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.queries.authorize.AutoLoginQry.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.queries.authorize.AutoLoginQryHandler",
+    "type" : "QueryToQueryHandler",
+    "label" : null
+  } ]
 }

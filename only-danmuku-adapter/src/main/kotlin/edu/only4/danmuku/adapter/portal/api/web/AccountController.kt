@@ -20,6 +20,9 @@ import edu.only4.danmuku.application.commands.user.UpdateLoginInfoCmd
 import edu.only4.danmuku.application.commands.user_behavior.RecordLoginLogCmd
 import edu.only4.danmuku.application.distributed.clients.CaptchaGenCli
 import edu.only4.danmuku.application.distributed.clients.CaptchaValidCli
+import edu.only4.danmuku.application.distributed.clients.authorize.IssueTokenCli
+import edu.only4.danmuku.application.distributed.clients.authorize.LogoutCli
+import edu.only4.danmuku.application.queries.authorize.AutoLoginQry
 import edu.only4.danmuku.application.queries.customer_profile.GetCustomerProfileQry
 import edu.only4.danmuku.application.queries.user.GetAccountInfoByEmailQry
 import edu.only4.danmuku.application.queries.user.GetUserByPhoneQry
@@ -93,15 +96,17 @@ class AccountController {
             )
         )
 
-        LoginHelper.login(
-            UserInfo(
-                userAccount.userId, userAccount.type.code, userAccount.nickName,
+        val token = Mediator.requests.send(
+            IssueTokenCli.Request(
+                userId = userAccount.userId,
+                accountType = userAccount.type.code,
+                account = userAccount.email,
                 extra = mapOf(
                     SCustomerProfile.props.avatar to (customerProfile.avatar ?: ""),
                     SUser.props.relatedId to (customerProfile.customerId)
                 )
             )
-        )
+        ).token
 
         Mediator.commands.send(
             RecordLoginLogCmd.Request(
@@ -128,21 +133,18 @@ class AccountController {
             nickName = userAccount.nickName,
             avatar = customerProfile.avatar,
             expireAt = StpUtil.getTokenTimeout(),
-            token = StpUtil.getTokenValue()
+            token = token
         )
     }
 
     @SaIgnore
     @PostMapping("/autoLogin")
     fun autoLogin() : AccountLogin.Response? {
-        if (!LoginHelper.isLogin()) return null
-        return AccountLogin.Response(
-            userId = LoginHelper.getUserId()!!,
-            nickName = LoginHelper.getUserInfo()!!.username,
-            avatar = LoginHelper.getUserInfo()!!.extra[SCustomerProfile.props.avatar] as String,
-            expireAt = StpUtil.getTokenTimeout(),
-            token = StpUtil.getTokenValue()
+        val response = Mediator.queries.send(
+            AutoLoginQry.Request()
         )
+
+        return AccountLogin.Converter.INSTANCE.fromQry(response)
     }
 
     @PostMapping("/logout")
@@ -150,6 +152,7 @@ class AccountController {
         val userInfo = LoginHelper.getUserInfo()
         val userId = LoginHelper.getUserId()
         val ip = getClientIP().orEmpty()
+        Mediator.requests.send(LogoutCli.Request())
         Mediator.commands.send(
             RecordLoginLogCmd.Request(
                 userId = userId,
@@ -162,7 +165,6 @@ class AccountController {
                 occurTime = System.currentTimeMillis() / 1000L
             )
         )
-        StpUtil.logout()
     }
 
     @PostMapping("/getUserCountInfo")
@@ -175,7 +177,7 @@ class AccountController {
             )
         )
 
-        return GetUserCountInfo.Converter.INSTANCE.fromApp(userCountInfo)
+        return GetUserCountInfo.Converter.INSTANCE.fromQry(userCountInfo)
     }
 
     @SaIgnore
@@ -222,21 +224,23 @@ class AccountController {
             )
         )
 
-        LoginHelper.login(
-            UserInfo(
-                userAccount.userId, userAccount.type.code, userAccount.nickName,
+        val token = Mediator.requests.send(
+            IssueTokenCli.Request(
+                userId = userAccount.userId,
+                accountType = userAccount.type.code,
+                account = userAccount.nickName,
                 extra = mapOf(
                     SCustomerProfile.props.avatar to (customerProfile.avatar ?: ""),
                     SUser.props.relatedId to (customerProfile.customerId)
                 )
             )
-        )
+        ).token
 
         return LoginBySms.Response(
             userId = userAccount.userId,
             nickName = userAccount.nickName,
             avatar = customerProfile.avatar,
-            token = StpUtil.getTokenValue(),
+            token = token,
             expireAt = StpUtil.getTokenTimeout()
         )
     }

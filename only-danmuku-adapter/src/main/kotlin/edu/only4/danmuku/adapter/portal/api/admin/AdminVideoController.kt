@@ -3,11 +3,7 @@ package edu.only4.danmuku.adapter.portal.api.admin
 import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.share.PageData
-import edu.only4.danmuku.adapter.portal.api.payload.admin_video.GetVideoPage
-import edu.only4.danmuku.adapter.portal.api.payload.admin_video.GetVideoPList
-import edu.only4.danmuku.adapter.portal.api.payload.admin_video.AuditVideo
-import edu.only4.danmuku.adapter.portal.api.payload.admin_video.DeleteVideo
-import edu.only4.danmuku.adapter.portal.api.payload.admin_video.RecommendVideo
+import edu.only4.danmuku.adapter.portal.api.payload.admin_video.*
 import edu.only4.danmuku.application.commands.video.RecommendVideoCmd
 import edu.only4.danmuku.application.commands.video_post.DeleteVideoPostCmd
 import edu.only4.danmuku.application.commands.video_post.RecordVideoAuditTraceCmd
@@ -31,26 +27,23 @@ class AdminVideoController {
 
     @PostMapping("/page")
     fun page(@RequestBody @Validated request: GetVideoPage.Request): PageData<GetVideoPage.Item> {
-        val queryRequest = GetVideoPage.Converter.INSTANCE.toQry(request)
-
-        val queryResult = Mediator.queries.send(queryRequest)
+        val queryResult = Mediator.queries.send(GetVideoPage.Converter.INSTANCE.toQry(request))
 
         return PageData.create(
             pageNum = queryResult.pageNum,
             pageSize = queryResult.pageSize,
-            list = queryResult.list.map { GetVideoPage.Converter.INSTANCE.fromApp(it) },
+            list = queryResult.list.map { GetVideoPage.Converter.INSTANCE.fromQry(it) },
             totalCount = queryResult.totalCount
         )
     }
 
     @PostMapping("/recommendVideo")
-    fun recommendVideo(@RequestBody @Validated request: RecommendVideo.Request) {
+    fun recommendVideo(@RequestBody @Validated request: RecommendVideo.Request) =
         Mediator.commands.send(
             RecommendVideoCmd.Request(
                 videoId = request.videoId
             )
         )
-    }
 
     @PostMapping("/auditVideo")
     fun auditVideo(@RequestBody @Validated request: AuditVideo.Request) {
@@ -73,13 +66,12 @@ class AdminVideoController {
     }
 
     @PostMapping("/deleteVideo")
-    fun deleteVideo(@RequestBody @Validated request: DeleteVideo.Request) {
+    fun deleteVideo(@RequestBody @Validated request: DeleteVideo.Request) =
         Mediator.commands.send(
             DeleteVideoPostCmd.Request(
                 videoId = request.videoId
             )
         )
-    }
 
     @PostMapping("/getVideoPList")
     fun getVideoPList(@RequestBody @Validated request: GetVideoPList.Request): List<GetVideoPList.Item> {
@@ -89,7 +81,7 @@ class AdminVideoController {
             )
         )
 
-        return queryResultList.map { GetVideoPList.Converter.INSTANCE.fromApp(it) }
+        return queryResultList.map { GetVideoPList.Converter.INSTANCE.fromQry(it) }
     }
 
 }

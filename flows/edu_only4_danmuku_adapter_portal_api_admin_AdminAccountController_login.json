@@ -1,12 +1,17 @@
 {
   "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminAccountController::login",
   "entryType" : "controllermethod",
-  "nodeCount" : 17,
-  "edgeCount" : 16,
+  "nodeCount" : 19,
+  "edgeCount" : 18,
   "nodes" : [ {
     "id" : "edu.only4.danmuku.adapter.application.distributed.clients.CaptchaValidCliHandler",
     "name" : "CaptchaValidCliHandler",
     "fullName" : "edu.only4.danmuku.adapter.application.distributed.clients.CaptchaValidCliHandler",
+    "type" : "clihandler"
+  }, {
+    "id" : "edu.only4.danmuku.adapter.application.distributed.clients.authorize.IssueTokenCliHandler",
+    "name" : "IssueTokenCliHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.distributed.clients.authorize.IssueTokenCliHandler",
     "type" : "clihandler"
   }, {
     "id" : "edu.only4.danmuku.adapter.application.queries.user.GetAccountInfoByEmailQryHandler",
@@ -47,6 +52,11 @@
     "id" : "edu.only4.danmuku.application.distributed.clients.CaptchaValidCli.Request",
     "name" : "CaptchaValidCli.Request",
     "fullName" : "edu.only4.danmuku.application.distributed.clients.CaptchaValidCli.Request",
+    "type" : "cli"
+  }, {
+    "id" : "edu.only4.danmuku.application.distributed.clients.authorize.IssueTokenCli.Request",
+    "name" : "IssueTokenCli.Request",
+    "fullName" : "edu.only4.danmuku.application.distributed.clients.authorize.IssueTokenCli.Request",
     "type" : "cli"
   }, {
     "id" : "edu.only4.danmuku.application.queries.user.GetAccountInfoByEmailQry.Request",
@@ -101,6 +111,11 @@
     "label" : null
   }, {
     "fromId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminAccountController::login",
+    "toId" : "edu.only4.danmuku.application.distributed.clients.authorize.IssueTokenCli.Request",
+    "type" : "ControllerMethodToCli",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminAccountController::login",
     "toId" : "edu.only4.danmuku.application.queries.user.GetAccountInfoByEmailQry.Request",
     "type" : "ControllerMethodToQuery",
     "label" : null
@@ -137,6 +152,11 @@
   }, {
     "fromId" : "edu.only4.danmuku.application.distributed.clients.CaptchaValidCli.Request",
     "toId" : "edu.only4.danmuku.adapter.application.distributed.clients.CaptchaValidCliHandler",
+    "type" : "CliToCliHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.distributed.clients.authorize.IssueTokenCli.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.distributed.clients.authorize.IssueTokenCliHandler",
     "type" : "CliToCliHandler",
     "label" : null
   }, {

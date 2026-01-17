@@ -1,12 +1,20 @@
 flowchart TD
-  N1[[GetVideoPostIdByFileIdQryHandler]]
-  class N1 queryhandler
-  N2([VideoAbrController::playlist])
-  class N2 controllermethod
-  N3{{GetVideoPostIdByFileIdQry.Request}}
-  class N3 query
-  N2 -->|ControllerMethodToQuery| N3
-  N3 -->|QueryToQueryHandler| N1
+  N1[[ReadObjectAsTextCliHandler]]
+  class N1 clihandler
+  N2[[GetVideoPostIdByFileIdQryHandler]]
+  class N2 queryhandler
+  N3([VideoAbrController::playlist])
+  class N3 controllermethod
+  N4{{ReadObjectAsTextCli.Request}}
+  class N4 cli
+  N5{{GetVideoPostIdByFileIdQry.Request}}
+  class N5 query
+  N3 -->|ControllerMethodToCli| N4
+  N3 -->|ControllerMethodToQuery| N5
+  N4 -->|CliToCliHandler| N1
+  N5 -->|QueryToQueryHandler| N2
+  classDef cli fill:#86EFAC,stroke:#15803D,color:#0F172A
+  classDef clihandler fill:#22C55E,stroke:#166534,color:#F0FDF4
   classDef controllermethod fill:#FDE68A,stroke:#B45309,color:#111827
   classDef query fill:#93C5FD,stroke:#1D4ED8,color:#0F172A
   classDef queryhandler fill:#3B82F6,stroke:#1E40AF,color:#F8FAFC

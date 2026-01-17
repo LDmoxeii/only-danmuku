@@ -1,33 +1,41 @@
 flowchart TD
-  N1[[GetCustomerProfileQryHandler]]
-  class N1 queryhandler
-  N2[[GetUserByPhoneQryHandler]]
+  N1[[IssueTokenCliHandler]]
+  class N1 clihandler
+  N2[[GetCustomerProfileQryHandler]]
   class N2 queryhandler
-  N3([AccountController::loginBySms])
-  class N3 controllermethod
-  N4[[UpdateLoginInfoCmd.Handler]]
-  class N4 commandhandler
-  N5{{UpdateLoginInfoCmd.Request}}
-  class N5 command
-  N6{{GetCustomerProfileQry.Request}}
-  class N6 query
-  N7{{GetUserByPhoneQry.Request}}
-  class N7 query
-  N8[[LoginInfoUpdatedDomainEventSubscriber::on]]
-  class N8 domaineventhandler
-  N9(User::updateLoginInfo)
-  class N9 entitymethod
-  N10((LoginInfoUpdatedDomainEvent))
-  class N10 domainevent
-  N3 -->|ControllerMethodToCommand| N5
-  N3 -->|ControllerMethodToQuery| N6
-  N3 -->|ControllerMethodToQuery| N7
-  N4 -->|CommandHandlerToEntityMethod| N9
-  N5 -->|CommandToCommandHandler| N4
-  N6 -->|QueryToQueryHandler| N1
-  N7 -->|QueryToQueryHandler| N2
-  N9 -->|EntityMethodToDomainEvent| N10
-  N10 -->|DomainEventToHandler| N8
+  N3[[GetUserByPhoneQryHandler]]
+  class N3 queryhandler
+  N4([AccountController::loginBySms])
+  class N4 controllermethod
+  N5[[UpdateLoginInfoCmd.Handler]]
+  class N5 commandhandler
+  N6{{UpdateLoginInfoCmd.Request}}
+  class N6 command
+  N7{{IssueTokenCli.Request}}
+  class N7 cli
+  N8{{GetCustomerProfileQry.Request}}
+  class N8 query
+  N9{{GetUserByPhoneQry.Request}}
+  class N9 query
+  N10[[LoginInfoUpdatedDomainEventSubscriber::on]]
+  class N10 domaineventhandler
+  N11(User::updateLoginInfo)
+  class N11 entitymethod
+  N12((LoginInfoUpdatedDomainEvent))
+  class N12 domainevent
+  N4 -->|ControllerMethodToCommand| N6
+  N4 -->|ControllerMethodToCli| N7
+  N4 -->|ControllerMethodToQuery| N8
+  N4 -->|ControllerMethodToQuery| N9
+  N5 -->|CommandHandlerToEntityMethod| N11
+  N6 -->|CommandToCommandHandler| N5
+  N7 -->|CliToCliHandler| N1
+  N8 -->|QueryToQueryHandler| N2
+  N9 -->|QueryToQueryHandler| N3
+  N11 -->|EntityMethodToDomainEvent| N12
+  N12 -->|DomainEventToHandler| N10
+  classDef cli fill:#86EFAC,stroke:#15803D,color:#0F172A
+  classDef clihandler fill:#22C55E,stroke:#166534,color:#F0FDF4
   classDef command fill:#FDBA74,stroke:#C2410C,color:#111827
   classDef commandhandler fill:#F97316,stroke:#9A3412,color:#111827
   classDef controllermethod fill:#FDE68A,stroke:#B45309,color:#111827

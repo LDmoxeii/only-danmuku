@@ -1,13 +1,13 @@
 {
-  "generatedAt" : "2026-01-17T07:54:14Z",
+  "generatedAt" : "2026-01-17T13:34:26Z",
   "inputDirs" : [ "C:\\Users\\LD_moxeii\\Documents\\code\\only-workspace\\only-danmuku\\only-danmuku-adapter\\build\\cap4k-code-analysis", "C:\\Users\\LD_moxeii\\Documents\\code\\only-workspace\\only-danmuku\\only-danmuku-application\\build\\cap4k-code-analysis", "C:\\Users\\LD_moxeii\\Documents\\code\\only-workspace\\only-danmuku\\only-danmuku-domain\\build\\cap4k-code-analysis" ],
   "entryTypes" : [ "<anonymous>", "controllermethod" ],
   "entryTypeCounts" : {
     "<anonymous>" : 1,
     "controllermethod" : 113
   },
-  "nodeCount" : 2183,
-  "edgeCount" : 1002,
+  "nodeCount" : 2201,
+  "edgeCount" : 1027,
   "flowCount" : 114,
   "flows" : [ {
     "entryId" : "<anonymous>",
@@ -26,15 +26,15 @@
   }, {
     "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminAccountController::login",
     "entryType" : "controllermethod",
-    "nodeCount" : 17,
-    "edgeCount" : 16,
+    "nodeCount" : 19,
+    "edgeCount" : 18,
     "json" : "edu_only4_danmuku_adapter_portal_api_admin_AdminAccountController_login.json",
     "mermaid" : "edu_only4_danmuku_adapter_portal_api_admin_AdminAccountController_login.mmd"
   }, {
     "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminAccountController::logout",
     "entryType" : "controllermethod",
-    "nodeCount" : 13,
-    "edgeCount" : 12,
+    "nodeCount" : 15,
+    "edgeCount" : 14,
     "json" : "edu_only4_danmuku_adapter_portal_api_admin_AdminAccountController_logout.json",
     "mermaid" : "edu_only4_danmuku_adapter_portal_api_admin_AdminAccountController_logout.mmd"
   }, {
@@ -131,15 +131,15 @@
   }, {
     "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminSettingController::getSetting",
     "entryType" : "controllermethod",
-    "nodeCount" : 1,
-    "edgeCount" : 0,
+    "nodeCount" : 3,
+    "edgeCount" : 2,
     "json" : "edu_only4_danmuku_adapter_portal_api_admin_AdminSettingController_getSetting.json",
     "mermaid" : "edu_only4_danmuku_adapter_portal_api_admin_AdminSettingController_getSetting.mmd"
   }, {
     "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminSettingController::saveSetting",
     "entryType" : "controllermethod",
-    "nodeCount" : 1,
-    "edgeCount" : 0,
+    "nodeCount" : 3,
+    "edgeCount" : 2,
     "json" : "edu_only4_danmuku_adapter_portal_api_admin_AdminSettingController_saveSetting.json",
     "mermaid" : "edu_only4_danmuku_adapter_portal_api_admin_AdminSettingController_saveSetting.mmd"
   }, {
@@ -166,15 +166,15 @@
   }, {
     "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminVideoAbrController::master",
     "entryType" : "controllermethod",
-    "nodeCount" : 5,
-    "edgeCount" : 4,
+    "nodeCount" : 7,
+    "edgeCount" : 6,
     "json" : "edu_only4_danmuku_adapter_portal_api_admin_AdminVideoAbrController_master.json",
     "mermaid" : "edu_only4_danmuku_adapter_portal_api_admin_AdminVideoAbrController_master.mmd"
   }, {
     "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminVideoAbrController::playlist",
     "entryType" : "controllermethod",
-    "nodeCount" : 3,
-    "edgeCount" : 2,
+    "nodeCount" : 5,
+    "edgeCount" : 4,
     "json" : "edu_only4_danmuku_adapter_portal_api_admin_AdminVideoAbrController_playlist.json",
     "mermaid" : "edu_only4_danmuku_adapter_portal_api_admin_AdminVideoAbrController_playlist.mmd"
   }, {
@@ -222,8 +222,8 @@
   }, {
     "entryId" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::autoLogin",
     "entryType" : "controllermethod",
-    "nodeCount" : 1,
-    "edgeCount" : 0,
+    "nodeCount" : 3,
+    "edgeCount" : 2,
     "json" : "edu_only4_danmuku_adapter_portal_api_web_AccountController_autoLogin.json",
     "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_AccountController_autoLogin.mmd"
   }, {
@@ -250,22 +250,22 @@
   }, {
     "entryId" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::login",
     "entryType" : "controllermethod",
-    "nodeCount" : 24,
-    "edgeCount" : 23,
+    "nodeCount" : 26,
+    "edgeCount" : 25,
     "json" : "edu_only4_danmuku_adapter_portal_api_web_AccountController_login.json",
     "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_AccountController_login.mmd"
   }, {
     "entryId" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::loginBySms",
     "entryType" : "controllermethod",
-    "nodeCount" : 10,
-    "edgeCount" : 9,
+    "nodeCount" : 12,
+    "edgeCount" : 11,
     "json" : "edu_only4_danmuku_adapter_portal_api_web_AccountController_loginBySms.json",
     "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_AccountController_loginBySms.mmd"
   }, {
     "entryId" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::logout",
     "entryType" : "controllermethod",
-    "nodeCount" : 13,
-    "edgeCount" : 12,
+    "nodeCount" : 15,
+    "edgeCount" : 14,
     "json" : "edu_only4_danmuku_adapter_portal_api_web_AccountController_logout.json",
     "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_AccountController_logout.mmd"
   }, {
@@ -327,8 +327,8 @@
   }, {
     "entryId" : "edu.only4.danmuku.adapter.portal.api.web.SettingController::getSetting",
     "entryType" : "controllermethod",
-    "nodeCount" : 1,
-    "edgeCount" : 0,
+    "nodeCount" : 3,
+    "edgeCount" : 2,
     "json" : "edu_only4_danmuku_adapter_portal_api_web_SettingController_getSetting.json",
     "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_SettingController_getSetting.mmd"
   }, {
@@ -544,15 +544,15 @@
   }, {
     "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoAbrController::master",
     "entryType" : "controllermethod",
-    "nodeCount" : 5,
-    "edgeCount" : 4,
+    "nodeCount" : 7,
+    "edgeCount" : 6,
     "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoAbrController_master.json",
     "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoAbrController_master.mmd"
   }, {
     "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoAbrController::playlist",
     "entryType" : "controllermethod",
-    "nodeCount" : 3,
-    "edgeCount" : 2,
+    "nodeCount" : 5,
+    "edgeCount" : 4,
     "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoAbrController_playlist.json",
     "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoAbrController_playlist.mmd"
   }, {
@@ -628,8 +628,8 @@
   }, {
     "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoController::getSearchKeywordTop",
     "entryType" : "controllermethod",
-    "nodeCount" : 1,
-    "edgeCount" : 0,
+    "nodeCount" : 3,
+    "edgeCount" : 2,
     "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoController_getSearchKeywordTop.json",
     "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoController_getSearchKeywordTop.mmd"
   }, {
@@ -656,15 +656,15 @@
   }, {
     "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoController::reportVideoPlayOnline",
     "entryType" : "controllermethod",
-    "nodeCount" : 1,
-    "edgeCount" : 0,
+    "nodeCount" : 3,
+    "edgeCount" : 2,
     "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoController_reportVideoPlayOnline.json",
     "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoController_reportVideoPlayOnline.mmd"
   }, {
     "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoController::search",
     "entryType" : "controllermethod",
-    "nodeCount" : 3,
-    "edgeCount" : 2,
+    "nodeCount" : 5,
+    "edgeCount" : 4,
     "json" : "edu_only4_danmuku_adapter_portal_api_web_VideoController_search.json",
     "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_VideoController_search.mmd"
   }, {

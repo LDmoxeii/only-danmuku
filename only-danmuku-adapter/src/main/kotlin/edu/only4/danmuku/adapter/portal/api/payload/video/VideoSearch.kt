@@ -6,6 +6,7 @@ import com.only4.cap4k.ddd.core.share.PageParam
 import edu.only4.danmuku.application.queries.video.GetVideoPageQry
 import jakarta.validation.constraints.NotEmpty
 import org.mapstruct.Mapper
+import org.mapstruct.Mapping
 import org.mapstruct.factory.Mappers
 
 /**
@@ -40,7 +41,7 @@ object VideoSearch {
         var duration: Int,
         var playCount: Int,
         var likeCount: Int,
-        var danmuCount: Int,
+        var danmukuCount: Int,
         var commentCount: Int,
         var coinCount: Int,
         var collectCount: Int,
@@ -54,7 +55,11 @@ object VideoSearch {
 
     @Mapper(componentModel = "default")
     interface Converter {
-        fun fromApp(resp: GetVideoPageQry.Response): Item
+
+        @Mapping(target = "videoNameFuzzy", source = "request.keyword")
+        fun toQry(request: Request): GetVideoPageQry.Request
+
+        fun fromQry(resp: GetVideoPageQry.Response): Item
 
         companion object { val INSTANCE: Converter = Mappers.getMapper(Converter::class.java) }
     }

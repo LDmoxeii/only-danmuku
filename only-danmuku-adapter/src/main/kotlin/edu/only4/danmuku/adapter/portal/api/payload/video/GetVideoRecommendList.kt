@@ -3,6 +3,7 @@ package edu.only4.danmuku.adapter.portal.api.payload.video
 import edu.only4.danmuku.application.queries.video.GetVideoPageQry
 import jakarta.validation.constraints.NotEmpty
 import org.mapstruct.Mapper
+import org.mapstruct.Mapping
 import org.mapstruct.factory.Mappers
 
 /**
@@ -46,7 +47,7 @@ object GetVideoRecommendList {
         val status: Int,
         var playCount: Int,
         var likeCount: Int,
-        var danmuCount: Int,
+        var danmukuCount: Int,
         var commentCount: Int,
         var coinCount: Int,
         var collectCount: Int,
@@ -57,9 +58,18 @@ object GetVideoRecommendList {
         var categoryFullName: String?,
     )
 
-    @Mapper(componentModel = "default")
+    @Mapper(componentModel = "default",
+        imports = [List::class]
+    )
     interface Converter {
-        fun fromApp(resp: GetVideoPageQry.Response): Item
+
+        @Mapping(target = "videoNameFuzzy", source = "request.keyword")
+        @Mapping(target = "excludeVideoIds", expression = "java(List.of(request.getVideoId()))")
+        @Mapping(target = "pageNum", constant = "1")
+        @Mapping(target = "pageSize", constant = "10")
+        fun toQry(request: Request): GetVideoPageQry.Request
+
+        fun fromQry(resp: GetVideoPageQry.Response): Item
 
         companion object { val INSTANCE: Converter = Mappers.getMapper(Converter::class.java) }
     }

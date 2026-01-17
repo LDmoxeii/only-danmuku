@@ -36,7 +36,7 @@ object GetVideoPList {
 
     @Mapper(componentModel = "default")
     interface Converter {
-        fun fromApp(resp: GetVideoPlayFilesQry.Response): Item
+        fun fromQry(resp: GetVideoPlayFilesQry.Response): Item
 
         companion object {
             val INSTANCE: Converter = Mappers.getMapper(Converter::class.java)

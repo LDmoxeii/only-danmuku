@@ -1,6 +1,6 @@
 package edu.only4.danmuku.adapter.portal.api.payload.admin_setting
 
-import edu.only4.danmuku.application._share.config.properties.SysSettingProperties
+import edu.only4.danmuku.application.distributed.clients.system.SaveSettingsCli
 import jakarta.validation.constraints.Min
 import org.mapstruct.Mapper
 import org.mapstruct.factory.Mappers
@@ -58,7 +58,7 @@ object SaveSetting {
 
     @Mapper(componentModel = "default")
     interface Converter {
-        fun toApp(request: Request): SysSettingProperties
+        fun toCli(request: Request): SaveSettingsCli.Request
 
         companion object {
             val INSTANCE: Converter = Mappers.getMapper(Converter::class.java)

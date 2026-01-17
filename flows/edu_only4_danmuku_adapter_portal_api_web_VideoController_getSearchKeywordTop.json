@@ -1,13 +1,33 @@
 {
   "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoController::getSearchKeywordTop",
   "entryType" : "controllermethod",
-  "nodeCount" : 1,
-  "edgeCount" : 0,
+  "nodeCount" : 3,
+  "edgeCount" : 2,
   "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.application.queries.statistics.GetSearchKeywordTopListQryHandler",
+    "name" : "GetSearchKeywordTopListQryHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.queries.statistics.GetSearchKeywordTopListQryHandler",
+    "type" : "queryhandler"
+  }, {
     "id" : "edu.only4.danmuku.adapter.portal.api.web.VideoController::getSearchKeywordTop",
     "name" : "VideoController::getSearchKeywordTop",
     "fullName" : "edu.only4.danmuku.adapter.portal.api.web.VideoController::getSearchKeywordTop",
     "type" : "controllermethod"
+  }, {
+    "id" : "edu.only4.danmuku.application.queries.statistics.GetSearchKeywordTopListQry.Request",
+    "name" : "GetSearchKeywordTopListQry.Request",
+    "fullName" : "edu.only4.danmuku.application.queries.statistics.GetSearchKeywordTopListQry.Request",
+    "type" : "query"
   } ],
-  "edges" : [ ]
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.web.VideoController::getSearchKeywordTop",
+    "toId" : "edu.only4.danmuku.application.queries.statistics.GetSearchKeywordTopListQry.Request",
+    "type" : "ControllerMethodToQuery",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.queries.statistics.GetSearchKeywordTopListQry.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.queries.statistics.GetSearchKeywordTopListQryHandler",
+    "type" : "QueryToQueryHandler",
+    "label" : null
+  } ]
 }

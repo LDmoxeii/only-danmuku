@@ -1,9 +1,14 @@
 {
   "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoController::search",
   "entryType" : "controllermethod",
-  "nodeCount" : 3,
-  "edgeCount" : 2,
+  "nodeCount" : 5,
+  "edgeCount" : 4,
   "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.application.distributed.clients.statistics.ReportVideoSearchCountCliHandler",
+    "name" : "ReportVideoSearchCountCliHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.distributed.clients.statistics.ReportVideoSearchCountCliHandler",
+    "type" : "clihandler"
+  }, {
     "id" : "edu.only4.danmuku.adapter.application.queries.video.GetVideoPageQryHandler",
     "name" : "GetVideoPageQryHandler",
     "fullName" : "edu.only4.danmuku.adapter.application.queries.video.GetVideoPageQryHandler",
@@ -14,6 +19,11 @@
     "fullName" : "edu.only4.danmuku.adapter.portal.api.web.VideoController::search",
     "type" : "controllermethod"
   }, {
+    "id" : "edu.only4.danmuku.application.distributed.clients.statistics.ReportVideoSearchCountCli.Request",
+    "name" : "ReportVideoSearchCountCli.Request",
+    "fullName" : "edu.only4.danmuku.application.distributed.clients.statistics.ReportVideoSearchCountCli.Request",
+    "type" : "cli"
+  }, {
     "id" : "edu.only4.danmuku.application.queries.video.GetVideoPageQry.Request",
     "name" : "GetVideoPageQry.Request",
     "fullName" : "edu.only4.danmuku.application.queries.video.GetVideoPageQry.Request",
@@ -21,8 +31,18 @@
   } ],
   "edges" : [ {
     "fromId" : "edu.only4.danmuku.adapter.portal.api.web.VideoController::search",
+    "toId" : "edu.only4.danmuku.application.distributed.clients.statistics.ReportVideoSearchCountCli.Request",
+    "type" : "ControllerMethodToCli",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.web.VideoController::search",
     "toId" : "edu.only4.danmuku.application.queries.video.GetVideoPageQry.Request",
     "type" : "ControllerMethodToQuery",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.distributed.clients.statistics.ReportVideoSearchCountCli.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.distributed.clients.statistics.ReportVideoSearchCountCliHandler",
+    "type" : "CliToCliHandler",
     "label" : null
   }, {
     "fromId" : "edu.only4.danmuku.application.queries.video.GetVideoPageQry.Request",

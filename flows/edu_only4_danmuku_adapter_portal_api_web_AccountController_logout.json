@@ -1,9 +1,14 @@
 {
   "entryId" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::logout",
   "entryType" : "controllermethod",
-  "nodeCount" : 13,
-  "edgeCount" : 12,
+  "nodeCount" : 15,
+  "edgeCount" : 14,
   "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.application.distributed.clients.authorize.LogoutCliHandler",
+    "name" : "LogoutCliHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.distributed.clients.authorize.LogoutCliHandler",
+    "type" : "clihandler"
+  }, {
     "id" : "edu.only4.danmuku.adapter.application.queries.user_behavior.GetRecentPasswordFailureCountQryHandler",
     "name" : "GetRecentPasswordFailureCountQryHandler",
     "fullName" : "edu.only4.danmuku.adapter.application.queries.user_behavior.GetRecentPasswordFailureCountQryHandler",
@@ -33,6 +38,11 @@
     "name" : "RecordLoginLogCmd.Request",
     "fullName" : "edu.only4.danmuku.application.commands.user_behavior.RecordLoginLogCmd.Request",
     "type" : "command"
+  }, {
+    "id" : "edu.only4.danmuku.application.distributed.clients.authorize.LogoutCli.Request",
+    "name" : "LogoutCli.Request",
+    "fullName" : "edu.only4.danmuku.application.distributed.clients.authorize.LogoutCli.Request",
+    "type" : "cli"
   }, {
     "id" : "edu.only4.danmuku.application.queries.user_behavior.GetRecentPasswordFailureCountQry.Request",
     "name" : "GetRecentPasswordFailureCountQry.Request",
@@ -75,6 +85,11 @@
     "type" : "ControllerMethodToCommand",
     "label" : null
   }, {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::logout",
+    "toId" : "edu.only4.danmuku.application.distributed.clients.authorize.LogoutCli.Request",
+    "type" : "ControllerMethodToCli",
+    "label" : null
+  }, {
     "fromId" : "edu.only4.danmuku.application.commands.user_behavior.RecordAbnormalOperationCmd.Handler",
     "toId" : "edu.only4.danmuku.domain.aggregates.user_abnormal_operation_log.UserAbnormalOperationLog::<get-id>",
     "type" : "CommandHandlerToEntityMethod",
@@ -103,6 +118,11 @@
     "fromId" : "edu.only4.danmuku.application.commands.user_behavior.RecordLoginLogCmd.Request",
     "toId" : "edu.only4.danmuku.application.commands.user_behavior.RecordLoginLogCmd.Handler",
     "type" : "CommandToCommandHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.distributed.clients.authorize.LogoutCli.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.distributed.clients.authorize.LogoutCliHandler",
+    "type" : "CliToCliHandler",
     "label" : null
   }, {
     "fromId" : "edu.only4.danmuku.application.queries.user_behavior.GetRecentPasswordFailureCountQry.Request",

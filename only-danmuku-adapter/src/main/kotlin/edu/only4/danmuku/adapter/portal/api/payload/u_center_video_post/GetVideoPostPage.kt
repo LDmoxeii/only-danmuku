@@ -7,6 +7,7 @@ import edu.only4.danmuku.adapter.domain.translation.video_post.VideoStatusTransl
 import edu.only4.danmuku.application.queries.video_draft.GetUserVideoPostQry
 import edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus
 import org.mapstruct.Mapper
+import org.mapstruct.Mapping
 import org.mapstruct.factory.Mappers
 
 object GetVideoPostPage {
@@ -38,9 +39,18 @@ object GetVideoPostPage {
         var collectCount: Int? = null,
     )
 
-    @Mapper(componentModel = "default")
+    @Mapper(componentModel = "default",
+        imports = [List::class, VideoStatus::class]
+    )
     interface Converter {
-        fun fromApp(resp: GetUserVideoPostQry.Response): Item
+
+        @Mapping(target = "userId", source = "currentUserId")
+        @Mapping(target = "status", expression = "java(request.getStatus().equals(VideoStatus.UNKNOW) ? null : request.getStatus())")
+        @Mapping(target = "excludeStatusArray", expression = "java(request.getStatus().equals(VideoStatus.UNKNOW) ? List.of(VideoStatus.REVIEW_PASSED, VideoStatus.REVIEW_FAILED) : null)")
+        @Mapping(target = "pageSize", constant = "999")
+        fun toQry(request: Request, currentUserId: Long): GetUserVideoPostQry.Request
+
+        fun fromQry(resp: GetUserVideoPostQry.Response): Item
 
         companion object {
             val INSTANCE: Converter = Mappers.getMapper(Converter::class.java)

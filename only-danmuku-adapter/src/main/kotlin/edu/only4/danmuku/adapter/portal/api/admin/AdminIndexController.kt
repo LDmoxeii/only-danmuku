@@ -42,7 +42,7 @@ class AdminIndexController {
             "collectCount" to totalData.collectCount,
             "coinCount" to totalData.coinCount,
             "commentCount" to totalData.commentCount,
-            "danmuCount" to totalData.danmukuCount
+            "danmukuCount" to totalData.danmukuCount
         )
 
         return GetActualTimeStatistics.Response(

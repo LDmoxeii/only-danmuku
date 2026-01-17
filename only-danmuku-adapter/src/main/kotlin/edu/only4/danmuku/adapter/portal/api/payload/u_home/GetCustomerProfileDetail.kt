@@ -13,7 +13,7 @@ object GetCustomerProfileDetail {
     )
 
     data class Response(
-        var userId: String? = null,
+        var userId: Long? = null,
         var nickName: String? = null,
         var avatar: String? = null,
         var sex: Int? = null,

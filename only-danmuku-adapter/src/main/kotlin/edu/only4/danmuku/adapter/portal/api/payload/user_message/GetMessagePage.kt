@@ -37,9 +37,11 @@ object GetMessagePage {
 
     @Mapper(componentModel = "default")
     interface Converter {
+        fun toQry(req: Request): GetMessagePageQry.Request
+
         @Mapping(source = "extendJson", target = "extendDto")
         @Mapping(source = "id", target = "messageId")
-        fun fromApp(resp: GetMessagePageQry.Response): Item
+        fun fromQry(resp: GetMessagePageQry.Response): Item
 
         companion object { val INSTANCE: Converter = Mappers.getMapper(Converter::class.java) }
     }

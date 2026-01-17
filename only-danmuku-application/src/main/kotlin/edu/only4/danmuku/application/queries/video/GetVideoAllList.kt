@@ -35,7 +35,7 @@ object GetVideoAllList {
         val status: VideoStatus,
         var playCount: Int,
         var likeCount: Int,
-        var danmuCount: Int,
+        var danmukuCount: Int,
         var commentCount: Int,
         var coinCount: Int,
         var collectCount: Int,

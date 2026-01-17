@@ -47,7 +47,7 @@ class GetVideoInfoQryHandler(
             duration = video.duration,
             playCount = video.playCount,
             likeCount = video.likeCount,
-            danmuCount = video.danmukuCount,
+            danmukuCount = video.danmukuCount,
             commentCount = video.commentCount,
             coinCount = video.coinCount,
             collectCount = video.collectCount,

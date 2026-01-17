@@ -23,7 +23,7 @@ object GetWeekStatisticsInfo {
     interface Converter {
         @Mapping(source = "date", target = "statisticsDate")
         @Mapping(source = "count", target = "statisticsCount")
-        fun fromApp(resp: GetWeekStatisticsInfoQry.Response): Item
+        fun fromQry(resp: GetWeekStatisticsInfoQry.Response): Item
 
         companion object { val INSTANCE: Converter = Mappers.getMapper(Converter::class.java) }
     }

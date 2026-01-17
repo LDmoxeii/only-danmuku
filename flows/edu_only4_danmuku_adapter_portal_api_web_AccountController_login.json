@@ -1,12 +1,17 @@
 {
   "entryId" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::login",
   "entryType" : "controllermethod",
-  "nodeCount" : 24,
-  "edgeCount" : 23,
+  "nodeCount" : 26,
+  "edgeCount" : 25,
   "nodes" : [ {
     "id" : "edu.only4.danmuku.adapter.application.distributed.clients.CaptchaValidCliHandler",
     "name" : "CaptchaValidCliHandler",
     "fullName" : "edu.only4.danmuku.adapter.application.distributed.clients.CaptchaValidCliHandler",
+    "type" : "clihandler"
+  }, {
+    "id" : "edu.only4.danmuku.adapter.application.distributed.clients.authorize.IssueTokenCliHandler",
+    "name" : "IssueTokenCliHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.distributed.clients.authorize.IssueTokenCliHandler",
     "type" : "clihandler"
   }, {
     "id" : "edu.only4.danmuku.adapter.application.queries.customer_profile.GetCustomerProfileQryHandler",
@@ -62,6 +67,11 @@
     "id" : "edu.only4.danmuku.application.distributed.clients.CaptchaValidCli.Request",
     "name" : "CaptchaValidCli.Request",
     "fullName" : "edu.only4.danmuku.application.distributed.clients.CaptchaValidCli.Request",
+    "type" : "cli"
+  }, {
+    "id" : "edu.only4.danmuku.application.distributed.clients.authorize.IssueTokenCli.Request",
+    "name" : "IssueTokenCli.Request",
+    "fullName" : "edu.only4.danmuku.application.distributed.clients.authorize.IssueTokenCli.Request",
     "type" : "cli"
   }, {
     "id" : "edu.only4.danmuku.application.queries.customer_profile.GetCustomerProfileQry.Request",
@@ -141,6 +151,11 @@
     "label" : null
   }, {
     "fromId" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::login",
+    "toId" : "edu.only4.danmuku.application.distributed.clients.authorize.IssueTokenCli.Request",
+    "type" : "ControllerMethodToCli",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.web.AccountController::login",
     "toId" : "edu.only4.danmuku.application.queries.customer_profile.GetCustomerProfileQry.Request",
     "type" : "ControllerMethodToQuery",
     "label" : null
@@ -192,6 +207,11 @@
   }, {
     "fromId" : "edu.only4.danmuku.application.distributed.clients.CaptchaValidCli.Request",
     "toId" : "edu.only4.danmuku.adapter.application.distributed.clients.CaptchaValidCliHandler",
+    "type" : "CliToCliHandler",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.distributed.clients.authorize.IssueTokenCli.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.distributed.clients.authorize.IssueTokenCliHandler",
     "type" : "CliToCliHandler",
     "label" : null
   }, {

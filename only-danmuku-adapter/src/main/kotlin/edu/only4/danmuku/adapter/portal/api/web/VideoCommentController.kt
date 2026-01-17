@@ -140,34 +140,30 @@ class VideoCommentController {
     }
 
     @PostMapping("/delete")
-    fun delete(@RequestBody @Validated request: DeleteComment.Request) {
-        // 调用命令删除评论
+    fun delete(@RequestBody @Validated request: DeleteComment.Request) =
         Mediator.commands.send(
             DeleteVideoCommentCmd.Request(
                 commentId = request.commentId,
                 operatorId = LoginHelper.getUserId()!!
             )
         )
-    }
 
     @PostMapping("/top")
-    fun top(@RequestBody @Validated request: TopComment.Request) {
+    fun top(@RequestBody @Validated request: TopComment.Request) =
         Mediator.commands.send(
             TopCommentCmd.Request(
                 commentId = request.commentId,
                 operatorId = LoginHelper.getUserId()!!
             )
         )
-    }
 
     @PostMapping("/cancelTop")
-    fun cancelTop(@RequestBody @Validated request: CancelTopComment.Request) {
+    fun cancelTop(@RequestBody @Validated request: CancelTopComment.Request) =
         Mediator.commands.send(
             UntopCommentCmd.Request(
                 commentId = request.commentId,
                 operatorId = LoginHelper.getUserId()!!
             )
         )
-    }
 
 }

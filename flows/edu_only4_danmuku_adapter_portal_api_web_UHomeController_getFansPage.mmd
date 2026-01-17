@@ -3,7 +3,7 @@ flowchart TD
   class N1 queryhandler
   N2([UHomeController::getFansPage])
   class N2 controllermethod
-  N3{{GetFansListQry.Request}}
+  N3{{GetFansPageQry.Request}}
   class N3 query
   N2 -->|ControllerMethodToQuery| N3
   N3 -->|QueryToQueryHandler| N1

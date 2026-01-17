@@ -13,6 +13,8 @@ import edu.only4.danmuku.adapter.portal.api.payload.admin_account.Login
 import edu.only4.danmuku.application.commands.user_behavior.RecordLoginLogCmd
 import edu.only4.danmuku.application.distributed.clients.CaptchaGenCli
 import edu.only4.danmuku.application.distributed.clients.CaptchaValidCli
+import edu.only4.danmuku.application.distributed.clients.authorize.IssueTokenCli
+import edu.only4.danmuku.application.distributed.clients.authorize.LogoutCli
 import edu.only4.danmuku.application.queries.user.GetAccountInfoByEmailQry
 import edu.only4.danmuku.domain.aggregates.user.User
 import edu.only4.danmuku.domain.aggregates.user.enums.UserType
@@ -74,8 +76,13 @@ class AdminAccountController {
             throw KnownException("密码错误")
         }
 
-        LoginHelper.login(UserInfo(userAccount.userId, userAccount.type.code, userAccount.email))
-        val token = StpUtil.getTokenValue()
+        val token = Mediator.requests.send(
+            IssueTokenCli.Request(
+                userId = userAccount.userId,
+                accountType = userAccount.type.code,
+                account = userAccount.email
+            )
+        ).token
 
         Mediator.commands.send(
             RecordLoginLogCmd.Request(
@@ -103,6 +110,9 @@ class AdminAccountController {
         val userInfo = LoginHelper.getUserInfo()
         val userId = LoginHelper.getUserId()
         val ip = getClientIP().orEmpty()
+        Mediator.requests.send(
+            LogoutCli.Request()
+        )
         Mediator.commands.send(
             RecordLoginLogCmd.Request(
                 userId = userId,
@@ -115,6 +125,5 @@ class AdminAccountController {
                 occurTime = System.currentTimeMillis() / 1000L
             )
         )
-        StpUtil.logout()
     }
 }

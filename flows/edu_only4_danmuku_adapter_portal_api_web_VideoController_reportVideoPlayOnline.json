@@ -1,13 +1,33 @@
 {
   "entryId" : "edu.only4.danmuku.adapter.portal.api.web.VideoController::reportVideoPlayOnline",
   "entryType" : "controllermethod",
-  "nodeCount" : 1,
-  "edgeCount" : 0,
+  "nodeCount" : 3,
+  "edgeCount" : 2,
   "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.application.distributed.clients.statistics.ReportVideoPlayOnlineCliHandler",
+    "name" : "ReportVideoPlayOnlineCliHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.distributed.clients.statistics.ReportVideoPlayOnlineCliHandler",
+    "type" : "clihandler"
+  }, {
     "id" : "edu.only4.danmuku.adapter.portal.api.web.VideoController::reportVideoPlayOnline",
     "name" : "VideoController::reportVideoPlayOnline",
     "fullName" : "edu.only4.danmuku.adapter.portal.api.web.VideoController::reportVideoPlayOnline",
     "type" : "controllermethod"
+  }, {
+    "id" : "edu.only4.danmuku.application.distributed.clients.statistics.ReportVideoPlayOnlineCli.Request",
+    "name" : "ReportVideoPlayOnlineCli.Request",
+    "fullName" : "edu.only4.danmuku.application.distributed.clients.statistics.ReportVideoPlayOnlineCli.Request",
+    "type" : "cli"
   } ],
-  "edges" : [ ]
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.web.VideoController::reportVideoPlayOnline",
+    "toId" : "edu.only4.danmuku.application.distributed.clients.statistics.ReportVideoPlayOnlineCli.Request",
+    "type" : "ControllerMethodToCli",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.distributed.clients.statistics.ReportVideoPlayOnlineCli.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.distributed.clients.statistics.ReportVideoPlayOnlineCliHandler",
+    "type" : "CliToCliHandler",
+    "label" : null
+  } ]
 }

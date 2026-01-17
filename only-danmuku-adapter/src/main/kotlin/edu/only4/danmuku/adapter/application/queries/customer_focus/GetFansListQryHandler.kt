@@ -6,7 +6,7 @@ import edu.only4.danmuku.application.queries._share.model.CustomerFocus
 import edu.only4.danmuku.application.queries._share.model.customerId
 import edu.only4.danmuku.application.queries._share.model.fetchBy
 import edu.only4.danmuku.application.queries._share.model.focusCustomerId
-import edu.only4.danmuku.application.queries.customer_focus.GetFansListQry
+import edu.only4.danmuku.application.queries.customer_focus.GetFansPageQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.count
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
@@ -18,9 +18,9 @@ import org.springframework.stereotype.Service
 @Service
 class GetFansListQryHandler(
     private val sqlClient: KSqlClient,
-) : PageQuery<GetFansListQry.Request, GetFansListQry.Response> {
+) : PageQuery<GetFansPageQry.Request, GetFansPageQry.Response> {
 
-    override fun exec(request: GetFansListQry.Request): PageData<GetFansListQry.Response> {
+    override fun exec(request: GetFansPageQry.Request): PageData<GetFansPageQry.Response> {
 
         // 查询当前用户的粉丝列表（谁关注了我）
         val pageResult =
@@ -54,7 +54,7 @@ class GetFansListQryHandler(
                     where(table.focusCustomerId eq focus.customerId)
                     select(count(table))
                 }.fetchOne().toInt()
-                GetFansListQry.Response(
+                GetFansPageQry.Response(
                     userId = focus.customerId,
                     nickName = focus.customer.relation!!.nickName,
                     avatar = focus.customer.relation!!.avatar,

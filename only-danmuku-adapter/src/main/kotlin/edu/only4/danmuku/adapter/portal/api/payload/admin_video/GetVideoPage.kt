@@ -62,7 +62,7 @@ object GetVideoPage {
 
         @Mapping(source = "videoId", target = "videoId")
         @Mapping(source = "userId", target = "userId")
-        fun fromApp(resp: GetVideoPostPageQry.Response): Item
+        fun fromQry(resp: GetVideoPostPageQry.Response): Item
 
         companion object {
             val INSTANCE: Converter = Mappers.getMapper(Converter::class.java)

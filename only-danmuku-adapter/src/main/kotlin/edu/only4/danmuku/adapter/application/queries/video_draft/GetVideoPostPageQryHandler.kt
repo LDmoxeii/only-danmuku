@@ -88,7 +88,7 @@ class GetVideoPostPageQryHandler(
                 status = videoPost.status,
                 playCount = videoPost.video?.playCount ?: 0,
                 likeCount = videoPost.video?.likeCount ?: 0,
-                danmuCount = videoPost.video?.danmukuCount ?: 0,
+                danmukuCount = videoPost.video?.danmukuCount ?: 0,
                 commentCount = videoPost.video?.commentCount ?: 0,
                 coinCount = videoPost.video?.coinCount ?: 0,
                 collectCount = videoPost.video?.collectCount ?: 0,

@@ -42,45 +42,34 @@ class UCenterInteractController {
     fun getCommentPage(@RequestBody @Validated request: GetCommentPage.Request): PageData<GetCommentPage.Item> {
         val currentUserId = LoginHelper.getUserId()!!
 
-        val queryRequest = VideoCommentPageQry.Request(
-            videoUserId = currentUserId,
-        ).apply {
-            pageNum = request.pageNum
-            pageSize = request.pageSize
-        }
-
-        val queryResult = Mediator.queries.send(queryRequest)
+        val queryResult = Mediator.queries.send(
+            GetCommentPage.Converter.INSTANCE.toQry(request, currentUserId)
+        )
 
         return PageData.create(
             pageNum = queryResult.pageNum,
             pageSize = queryResult.pageSize,
-            list = queryResult.list.map { GetCommentPage.Converter.INSTANCE.fromApp(it) },
+            list = queryResult.list.map { GetCommentPage.Converter.INSTANCE.fromQry(it) },
             totalCount = queryResult.totalCount
         )
     }
 
     @PostMapping("/delComment")
-    fun deleteComment(@RequestBody @Validated request: DeleteComment.Request) {
+    fun deleteComment(@RequestBody @Validated request: DeleteComment.Request) =
         Mediator.commands.send(
             DeleteVideoCommentCmd.Request(
                 commentId = request.commentId,
                 operatorId = LoginHelper.getUserId()!!
             )
         )
-    }
 
     @PostMapping("/getDanmukuPage")
     fun getDanmukuPage(@RequestBody @Validated request: GetDanmukuPage.Request): PageData<GetDanmukuPage.DanmukuItem> {
         val currentUserId = LoginHelper.getUserId()!!
 
-        val queryRequest = GetVideoDanmukuPageQry.Request(
-            videoUserId = currentUserId,
-        ).apply {
-            pageNum = request.pageNum
-            pageSize = request.pageSize
-        }
-
-        val queryResult = Mediator.queries.send(queryRequest)
+        val queryResult = Mediator.queries.send(
+            GetDanmukuPage.Converter.INSTANCE.toQry(request, currentUserId)
+        )
 
         return PageData.create(
             pageNum = queryResult.pageNum,
@@ -91,13 +80,11 @@ class UCenterInteractController {
     }
 
     @PostMapping("/deleteDanmuku")
-    fun deleteDanmuku(@RequestBody @Validated request: DeleteDanmuku.Request) {
+    fun deleteDanmuku(@RequestBody @Validated request: DeleteDanmuku.Request) =
         Mediator.commands.send(
             DeleteVideoDanmukuCmd.Request(
                 danmukuId = request.danmukuId,
                 operatorId = LoginHelper.getUserId()!!
             )
         )
-    }
-
 }

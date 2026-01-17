@@ -1,54 +1,60 @@
 flowchart TD
   N1[[CaptchaValidCliHandler]]
   class N1 clihandler
-  N2[[GetAccountInfoByEmailQryHandler]]
-  class N2 queryhandler
-  N3[[GetRecentPasswordFailureCountQryHandler]]
+  N2[[IssueTokenCliHandler]]
+  class N2 clihandler
+  N3[[GetAccountInfoByEmailQryHandler]]
   class N3 queryhandler
-  N4([AdminAccountController::login])
-  class N4 controllermethod
-  N5[[RecordAbnormalOperationCmd.Handler]]
-  class N5 commandhandler
-  N6{{RecordAbnormalOperationCmd.Request}}
-  class N6 command
-  N7[[RecordLoginLogCmd.Handler]]
-  class N7 commandhandler
-  N8{{RecordLoginLogCmd.Request}}
-  class N8 command
-  N9{{CaptchaValidCli.Request}}
-  class N9 cli
-  N10{{GetAccountInfoByEmailQry.Request}}
-  class N10 query
-  N11{{GetRecentPasswordFailureCountQry.Request}}
-  class N11 query
-  N12[[PasswordInputFailedDomainEventSubscriber::on]]
-  class N12 domaineventhandler
-  N13(UserAbnormalOperationLog::&lt;get-id&gt;)
-  class N13 entitymethod
-  N14(UserAbnormalOperationLog::onCreate)
-  class N14 entitymethod
-  N15(UserLoginLog::&lt;get-id&gt;)
+  N4[[GetRecentPasswordFailureCountQryHandler]]
+  class N4 queryhandler
+  N5([AdminAccountController::login])
+  class N5 controllermethod
+  N6[[RecordAbnormalOperationCmd.Handler]]
+  class N6 commandhandler
+  N7{{RecordAbnormalOperationCmd.Request}}
+  class N7 command
+  N8[[RecordLoginLogCmd.Handler]]
+  class N8 commandhandler
+  N9{{RecordLoginLogCmd.Request}}
+  class N9 command
+  N10{{CaptchaValidCli.Request}}
+  class N10 cli
+  N11{{IssueTokenCli.Request}}
+  class N11 cli
+  N12{{GetAccountInfoByEmailQry.Request}}
+  class N12 query
+  N13{{GetRecentPasswordFailureCountQry.Request}}
+  class N13 query
+  N14[[PasswordInputFailedDomainEventSubscriber::on]]
+  class N14 domaineventhandler
+  N15(UserAbnormalOperationLog::&lt;get-id&gt;)
   class N15 entitymethod
-  N16(UserLoginLog::onCreate)
+  N16(UserAbnormalOperationLog::onCreate)
   class N16 entitymethod
-  N17((PasswordInputFailedDomainEvent))
-  class N17 domainevent
-  N4 -->|ControllerMethodToCommand| N8
-  N4 -->|ControllerMethodToCli| N9
-  N4 -->|ControllerMethodToQuery| N10
-  N5 -->|CommandHandlerToEntityMethod| N13
-  N5 -->|CommandHandlerToEntityMethod| N14
-  N6 -->|CommandToCommandHandler| N5
-  N7 -->|CommandHandlerToEntityMethod| N15
-  N7 -->|CommandHandlerToEntityMethod| N16
-  N8 -->|CommandToCommandHandler| N7
-  N9 -->|CliToCliHandler| N1
-  N10 -->|QueryToQueryHandler| N2
-  N11 -->|QueryToQueryHandler| N3
-  N12 -->|DomainEventHandlerToCommand| N6
-  N12 -->|DomainEventHandlerToQuery| N11
-  N16 -->|EntityMethodToDomainEvent| N17
-  N17 -->|DomainEventToHandler| N12
+  N17(UserLoginLog::&lt;get-id&gt;)
+  class N17 entitymethod
+  N18(UserLoginLog::onCreate)
+  class N18 entitymethod
+  N19((PasswordInputFailedDomainEvent))
+  class N19 domainevent
+  N5 -->|ControllerMethodToCommand| N9
+  N5 -->|ControllerMethodToCli| N10
+  N5 -->|ControllerMethodToCli| N11
+  N5 -->|ControllerMethodToQuery| N12
+  N6 -->|CommandHandlerToEntityMethod| N15
+  N6 -->|CommandHandlerToEntityMethod| N16
+  N7 -->|CommandToCommandHandler| N6
+  N8 -->|CommandHandlerToEntityMethod| N17
+  N8 -->|CommandHandlerToEntityMethod| N18
+  N9 -->|CommandToCommandHandler| N8
+  N10 -->|CliToCliHandler| N1
+  N11 -->|CliToCliHandler| N2
+  N12 -->|QueryToQueryHandler| N3
+  N13 -->|QueryToQueryHandler| N4
+  N14 -->|DomainEventHandlerToCommand| N7
+  N14 -->|DomainEventHandlerToQuery| N13
+  N18 -->|EntityMethodToDomainEvent| N19
+  N19 -->|DomainEventToHandler| N14
   classDef cli fill:#86EFAC,stroke:#15803D,color:#0F172A
   classDef clihandler fill:#22C55E,stroke:#166534,color:#F0FDF4
   classDef command fill:#FDBA74,stroke:#C2410C,color:#111827

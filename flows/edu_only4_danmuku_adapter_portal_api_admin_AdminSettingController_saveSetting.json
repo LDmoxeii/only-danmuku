@@ -1,13 +1,33 @@
 {
   "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminSettingController::saveSetting",
   "entryType" : "controllermethod",
-  "nodeCount" : 1,
-  "edgeCount" : 0,
+  "nodeCount" : 3,
+  "edgeCount" : 2,
   "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.application.distributed.clients.system.SaveSettingsCliHandler",
+    "name" : "SaveSettingsCliHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.distributed.clients.system.SaveSettingsCliHandler",
+    "type" : "clihandler"
+  }, {
     "id" : "edu.only4.danmuku.adapter.portal.api.admin.AdminSettingController::saveSetting",
     "name" : "AdminSettingController::saveSetting",
     "fullName" : "edu.only4.danmuku.adapter.portal.api.admin.AdminSettingController::saveSetting",
     "type" : "controllermethod"
+  }, {
+    "id" : "edu.only4.danmuku.application.distributed.clients.system.SaveSettingsCli.Request",
+    "name" : "SaveSettingsCli.Request",
+    "fullName" : "edu.only4.danmuku.application.distributed.clients.system.SaveSettingsCli.Request",
+    "type" : "cli"
   } ],
-  "edges" : [ ]
+  "edges" : [ {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminSettingController::saveSetting",
+    "toId" : "edu.only4.danmuku.application.distributed.clients.system.SaveSettingsCli.Request",
+    "type" : "ControllerMethodToCli",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.distributed.clients.system.SaveSettingsCli.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.distributed.clients.system.SaveSettingsCliHandler",
+    "type" : "CliToCliHandler",
+    "label" : null
+  } ]
 }

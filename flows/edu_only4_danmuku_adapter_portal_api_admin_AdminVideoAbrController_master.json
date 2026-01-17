@@ -1,9 +1,14 @@
 {
   "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminVideoAbrController::master",
   "entryType" : "controllermethod",
-  "nodeCount" : 5,
-  "edgeCount" : 4,
+  "nodeCount" : 7,
+  "edgeCount" : 6,
   "nodes" : [ {
+    "id" : "edu.only4.danmuku.adapter.application.distributed.clients.oss.ReadObjectAsTextCliHandler",
+    "name" : "ReadObjectAsTextCliHandler",
+    "fullName" : "edu.only4.danmuku.adapter.application.distributed.clients.oss.ReadObjectAsTextCliHandler",
+    "type" : "clihandler"
+  }, {
     "id" : "edu.only4.danmuku.adapter.application.queries.video_transcode.GetVideoAbrMasterQryHandler",
     "name" : "GetVideoAbrMasterQryHandler",
     "fullName" : "edu.only4.danmuku.adapter.application.queries.video_transcode.GetVideoAbrMasterQryHandler",
@@ -19,6 +24,11 @@
     "fullName" : "edu.only4.danmuku.adapter.portal.api.admin.AdminVideoAbrController::master",
     "type" : "controllermethod"
   }, {
+    "id" : "edu.only4.danmuku.application.distributed.clients.oss.ReadObjectAsTextCli.Request",
+    "name" : "ReadObjectAsTextCli.Request",
+    "fullName" : "edu.only4.danmuku.application.distributed.clients.oss.ReadObjectAsTextCli.Request",
+    "type" : "cli"
+  }, {
     "id" : "edu.only4.danmuku.application.queries.video_transcode.GetVideoAbrMasterQry.Request",
     "name" : "GetVideoAbrMasterQry.Request",
     "fullName" : "edu.only4.danmuku.application.queries.video_transcode.GetVideoAbrMasterQry.Request",
@@ -31,6 +41,11 @@
   } ],
   "edges" : [ {
     "fromId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminVideoAbrController::master",
+    "toId" : "edu.only4.danmuku.application.distributed.clients.oss.ReadObjectAsTextCli.Request",
+    "type" : "ControllerMethodToCli",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminVideoAbrController::master",
     "toId" : "edu.only4.danmuku.application.queries.video_transcode.GetVideoAbrMasterQry.Request",
     "type" : "ControllerMethodToQuery",
     "label" : null
@@ -38,6 +53,11 @@
     "fromId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminVideoAbrController::master",
     "toId" : "edu.only4.danmuku.application.queries.video_transcode.GetVideoFilePostPathQry.Request",
     "type" : "ControllerMethodToQuery",
+    "label" : null
+  }, {
+    "fromId" : "edu.only4.danmuku.application.distributed.clients.oss.ReadObjectAsTextCli.Request",
+    "toId" : "edu.only4.danmuku.adapter.application.distributed.clients.oss.ReadObjectAsTextCliHandler",
+    "type" : "CliToCliHandler",
     "label" : null
   }, {
     "fromId" : "edu.only4.danmuku.application.queries.video_transcode.GetVideoAbrMasterQry.Request",

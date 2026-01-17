@@ -30,7 +30,7 @@ object GetVideoInfoQry {
         var interaction: String? = null,
         var playCount: Int? = null,
         var likeCount: Int? = null,
-        var danmuCount: Int? = null,
+        var danmukuCount: Int? = null,
         var commentCount: Int? = null,
         var coinCount: Int? = null,
         var collectCount: Int? = null,

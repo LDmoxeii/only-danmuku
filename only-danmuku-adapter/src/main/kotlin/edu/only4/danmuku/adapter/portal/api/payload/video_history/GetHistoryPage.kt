@@ -38,9 +38,13 @@ object GetHistoryPage {
 
     @Mapper(componentModel = "default")
     interface Converter {
+
+        @Mapping(target = "customerId", source = "currentUserId")
+        fun toQry(request: Request, currentUserId: Long): GetUserPlayHistoryQry.Request
+
         @Mapping(source = "historyId", target = "historyId")
         @Mapping(source = "videoId", target = "videoId")
-        fun fromApp(resp: GetUserPlayHistoryQry.HistoryItem): Item
+        fun fromQry(resp: GetUserPlayHistoryQry.HistoryItem): Item
 
         companion object { val INSTANCE: Converter = Mappers.getMapper(Converter::class.java) }
     }

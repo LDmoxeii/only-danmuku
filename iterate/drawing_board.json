@@ -7,5 +7,124 @@
     "aggregates": ["VideoHlsKeyToken"],
     "entity": "VideoHlsKeyToken",
     "persist": true
+  },
+  {
+    "tag": "cli",
+    "package": "authorize",
+    "name": "IssueToken",
+    "desc": "签发 Token",
+    "requestFields": [
+      { "name": "userId", "type": "Long" },
+      { "name": "accountType", "type": "Int" },
+      { "name": "account", "type": "String" }
+    ],
+    "responseFields": [
+      { "name": "token", "type": "String" }
+    ]
+  },
+  {
+    "tag": "cli",
+    "package": "authorize",
+    "name": "Logout",
+    "desc": "用户登出",
+    "requestFields": [
+    ],
+    "responseFields": [
+    ]
+  },
+
+  {
+    "tag": "cli",
+    "package": "system",
+    "name": "GetSettings",
+    "desc": "获取系统设置",
+    "responseFields": [
+      { "name": "registerCoinCount", "type": "Int" },
+      { "name": "postVideoCoinCount", "type": "Int" },
+      { "name": "videoSize", "type": "Int" },
+      { "name": "videoPCount", "type": "Int" },
+      { "name": "videoCount", "type": "Int" },
+      { "name": "commentCount", "type": "Int" },
+      { "name": "danmukuCount", "type": "Int" },
+      { "name": "renameNicknameCoinCost", "type": "Int" }
+    ]
+  },
+  {
+    "tag": "cli",
+    "package": "system",
+    "name": "SaveSettings",
+    "desc": "保存系统设置",
+    "requestFields": [
+      { "name": "registerCoinCount", "type": "Int" },
+      { "name": "postVideoCoinCount", "type": "Int" },
+      { "name": "videoSize", "type": "Int" },
+      { "name": "videoPCount", "type": "Int" },
+      { "name": "videoCount", "type": "Int" },
+      { "name": "commentCount", "type": "Int" },
+      { "name": "danmukuCount", "type": "Int" },
+      { "name": "renameNicknameCoinCost", "type": "Int" }
+    ]
+  },
+  {
+    "tag": "cli",
+    "package": "oss",
+    "name": "ReadObjectAsText",
+    "desc": "读取 OSS 对象为文本",
+    "requestFields": [
+      { "name": "objectKey", "type": "String" }
+    ],
+    "responseFields": [
+      { "name": "content", "type": "String" }
+    ]
+  },
+  {
+    "tag": "qry",
+    "package": "authorize",
+    "name": "AutoLogin",
+    "desc": "自动登录",
+    "requestFields": [
+    ],
+    "responseFields": [
+      { "name": "userId", "type": "Long" },
+      { "name": "nickName", "type": "String" },
+      { "name": "avatar", "type": "String" },
+      { "name": "expireAt", "type": "Long" },
+      { "name": "token", "type": "String" }
+    ]
+  },
+  {
+    "tag": "cli",
+    "package": "statistics",
+    "name": "ReportVideoPlayOnline",
+    "desc": "上报视频播放在线人数",
+    "requestFields": [
+      { "name": "fileId", "type": "Long" },
+      { "name": "deviceId", "type": "String" }
+    ],
+    "responseFields": [
+      { "name": "current", "type": "Long" }
+    ]
+  },
+  {
+    "tag": "cli",
+    "package": "statistics",
+    "name": "ReportVideoSearchCount",
+    "desc": "上报视频搜索次数",
+    "requestFields": [
+      { "name": "keyword", "type": "String" }
+    ],
+    "responseFields": [
+    ]
+  },
+  {
+    "tag": "qry",
+    "package": "statistics",
+    "name": "GetSearchKeywordTopList",
+    "desc": "获取搜索关键词排行榜",
+    "requestFields": [
+    ],
+    "responseFields": [
+        { "name": "keywords", "type": "List<String>" }
+    ]
   }
 ]
