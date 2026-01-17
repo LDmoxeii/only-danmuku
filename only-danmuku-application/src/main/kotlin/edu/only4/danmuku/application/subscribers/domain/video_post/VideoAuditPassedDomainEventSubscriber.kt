@@ -24,7 +24,7 @@ import kotlin.jvm.optionals.getOrNull
 class VideoAuditPassedDomainEventSubscriber {
 
     @EventListener(VideoAuditPassedDomainEvent::class)
-    fun on(event: VideoAuditPassedDomainEvent) {
+    fun rewardUserForVideo(event: VideoAuditPassedDomainEvent) {
         val videoPost = event.entity
         Mediator.commands.send(
             RewardUserForVideoCmd.Request(
@@ -34,7 +34,7 @@ class VideoAuditPassedDomainEventSubscriber {
     }
 
     @EventListener(VideoAuditPassedDomainEvent::class)
-    fun on1(event: VideoAuditPassedDomainEvent) {
+    fun transferVideoToProduction(event: VideoAuditPassedDomainEvent) {
         val videoPost = event.entity
         Mediator.commands.send(
             TransferVideoToProductionCmd.Request(
@@ -72,7 +72,7 @@ class VideoAuditPassedDomainEventSubscriber {
     }
 
     @EventListener(VideoAuditPassedDomainEvent::class)
-    fun on3(event: VideoAuditPassedDomainEvent) {
+    fun bindVideoHlsEncryptKeyToVideo(event: VideoAuditPassedDomainEvent) {
         val videoPost = event.entity
         val video = Mediator.repositories.findFirst(
             SVideo.predicate { schema ->
@@ -95,6 +95,19 @@ class VideoAuditPassedDomainEventSubscriber {
                     )
                 )
             }
+        }
+    }
+
+    @EventListener(VideoAuditPassedDomainEvent::class)
+    fun bindVideoHlsKeyTokenToVideo(event: VideoAuditPassedDomainEvent) {
+        val videoPost = event.entity
+        val video = Mediator.repositories.findFirst(
+            SVideo.predicate { schema ->
+                schema.videoPostId.eq(videoPost.id)
+            }
+        ).getOrNull() ?: return
+
+        videoPost.videoFilePosts.forEach { file ->
 
             val tokenIds = Mediator.queries.send(
                 ListVideoHlsKeyTokensByPostFileQry.Request(
@@ -110,7 +123,19 @@ class VideoAuditPassedDomainEventSubscriber {
                     )
                 )
             }
+        }
+    }
 
+    @EventListener(VideoAuditPassedDomainEvent::class)
+    fun setVideoQualityPolicy(event: VideoAuditPassedDomainEvent) {
+        val videoPost = event.entity
+        val video = Mediator.repositories.findFirst(
+            SVideo.predicate { schema ->
+                schema.videoPostId.eq(videoPost.id)
+            }
+        ).getOrNull() ?: return
+
+        videoPost.videoFilePosts.forEach { file ->
             file.videoFilePostVariants
                 .map { variant -> variant.quality.trim() }
                 .filter(String::isNotBlank)

@@ -1,239 +1,263 @@
 flowchart TD
   N1[[CleanTempFilesCliHandler]]
   class N1 clihandler
-  N2([AdminVideoController::auditVideo])
-  class N2 controllermethod
-  N3[[SendVideoAuditFailedMessageCmd.Handler]]
-  class N3 commandhandler
-  N4{{SendVideoAuditFailedMessageCmd.Request}}
-  class N4 command
-  N5[[SendVideoAuditPassedMessageCmd.Handler]]
-  class N5 commandhandler
-  N6{{SendVideoAuditPassedMessageCmd.Request}}
-  class N6 command
-  N7[[RewardUserForVideoCmd.Handler]]
-  class N7 commandhandler
-  N8{{RewardUserForVideoCmd.Request}}
-  class N8 command
-  N9[[TransferVideoToProductionCmd.Handler]]
-  class N9 commandhandler
-  N10{{TransferVideoToProductionCmd.Request}}
-  class N10 command
-  N11[[BindVideoHlsEncryptKeyToVideoCmd.Handler]]
-  class N11 commandhandler
-  N12{{BindVideoHlsEncryptKeyToVideoCmd.Request}}
-  class N12 command
-  N13[[BindVideoHlsKeyTokenToVideoCmd.Handler]]
-  class N13 commandhandler
-  N14{{BindVideoHlsKeyTokenToVideoCmd.Request}}
-  class N14 command
-  N15[[AuditVideoPostCmd.Handler]]
-  class N15 commandhandler
-  N16{{AuditVideoPostCmd.Request}}
-  class N16 command
-  N17[[RecordVideoAuditTraceCmd.Handler]]
-  class N17 commandhandler
-  N18{{RecordVideoAuditTraceCmd.Request}}
-  class N18 command
-  N19[[SetVideoQualityPolicyCmd.Handler]]
-  class N19 commandhandler
-  N20{{SetVideoQualityPolicyCmd.Request}}
-  class N20 command
-  N21{{CleanTempFilesCli.Request}}
-  class N21 cli
-  N22[[CustomerMessageCollectionCreatedDomainEventSubscriber::on]]
-  class N22 domaineventhandler
-  N23[[CustomerMessageCommentMentionCreatedDomainEventSubscriber::on]]
-  class N23 domaineventhandler
-  N24[[CustomerMessageLikeCreatedDomainEventSubscriber::on]]
-  class N24 domaineventhandler
-  N25[[CustomerMessagePrivateCreatedDomainEventSubscriber::on]]
-  class N25 domaineventhandler
-  N26[[CustomerMessageSystemCreatedDomainEventSubscriber::on]]
-  class N26 domaineventhandler
-  N27[[CustomerProfileCoinsRewardedDomainEventSubscriber::on]]
-  class N27 domaineventhandler
-  N28[[VideoBasicsSyncedDomainEventSubscriber::on]]
+  N2[[ListVideoHlsEncryptKeysByPostFileQryHandler]]
+  class N2 queryhandler
+  N3[[ListVideoHlsKeyTokensByPostFileQryHandler]]
+  class N3 queryhandler
+  N4[[GetUploadedTempPathsQryHandler]]
+  class N4 queryhandler
+  N5([AdminVideoController::auditVideo])
+  class N5 controllermethod
+  N6[[SendVideoAuditFailedMessageCmd.Handler]]
+  class N6 commandhandler
+  N7{{SendVideoAuditFailedMessageCmd.Request}}
+  class N7 command
+  N8[[SendVideoAuditPassedMessageCmd.Handler]]
+  class N8 commandhandler
+  N9{{SendVideoAuditPassedMessageCmd.Request}}
+  class N9 command
+  N10[[RewardUserForVideoCmd.Handler]]
+  class N10 commandhandler
+  N11{{RewardUserForVideoCmd.Request}}
+  class N11 command
+  N12[[TransferVideoToProductionCmd.Handler]]
+  class N12 commandhandler
+  N13{{TransferVideoToProductionCmd.Request}}
+  class N13 command
+  N14[[BindVideoHlsEncryptKeyToVideoCmd.Handler]]
+  class N14 commandhandler
+  N15{{BindVideoHlsEncryptKeyToVideoCmd.Request}}
+  class N15 command
+  N16[[BindVideoHlsKeyTokenToVideoCmd.Handler]]
+  class N16 commandhandler
+  N17{{BindVideoHlsKeyTokenToVideoCmd.Request}}
+  class N17 command
+  N18[[AuditVideoPostCmd.Handler]]
+  class N18 commandhandler
+  N19{{AuditVideoPostCmd.Request}}
+  class N19 command
+  N20[[RecordVideoAuditTraceCmd.Handler]]
+  class N20 commandhandler
+  N21{{RecordVideoAuditTraceCmd.Request}}
+  class N21 command
+  N22[[SetVideoQualityPolicyCmd.Handler]]
+  class N22 commandhandler
+  N23{{SetVideoQualityPolicyCmd.Request}}
+  class N23 command
+  N24{{CleanTempFilesCli.Request}}
+  class N24 cli
+  N25{{ListVideoHlsEncryptKeysByPostFileQry.Request}}
+  class N25 query
+  N26{{ListVideoHlsKeyTokensByPostFileQry.Request}}
+  class N26 query
+  N27{{GetUploadedTempPathsQry.Request}}
+  class N27 query
+  N28[[CustomerMessageCollectionCreatedDomainEventSubscriber::on]]
   class N28 domaineventhandler
-  N29[[VideoCreatedDomainEventSubscriber::on]]
+  N29[[CustomerMessageCommentMentionCreatedDomainEventSubscriber::on]]
   class N29 domaineventhandler
-  N30[[VideoAuditTraceRecordedDomainEventSubscriber::sendAuditMessage]]
+  N30[[CustomerMessageLikeCreatedDomainEventSubscriber::on]]
   class N30 domaineventhandler
-  N31[[VideoAuditTraceRecordedDomainEventSubscriber::updateVideoStatus]]
+  N31[[CustomerMessagePrivateCreatedDomainEventSubscriber::on]]
   class N31 domaineventhandler
-  N32[[VideoAuditFailedDomainEventSubscriber::on]]
+  N32[[CustomerMessageSystemCreatedDomainEventSubscriber::on]]
   class N32 domaineventhandler
-  N33[[VideoAuditPassedDomainEventSubscriber::on]]
+  N33[[CustomerProfileCoinsRewardedDomainEventSubscriber::on]]
   class N33 domaineventhandler
-  N34[[VideoAuditPassedDomainEventSubscriber::on1]]
+  N34[[VideoBasicsSyncedDomainEventSubscriber::on]]
   class N34 domaineventhandler
-  N35[[VideoAuditPassedDomainEventSubscriber::on2]]
+  N35[[VideoCreatedDomainEventSubscriber::on]]
   class N35 domaineventhandler
-  N36[[VideoAuditPassedDomainEventSubscriber::on3]]
+  N36[[VideoAuditTraceRecordedDomainEventSubscriber::sendAuditMessage]]
   class N36 domaineventhandler
-  N37(CustomerMessage::onCreate)
-  class N37 entitymethod
-  N38((CustomerMessageCollectionCreatedDomainEvent))
-  class N38 domainevent
-  N39((CustomerMessageCommentMentionCreatedDomainEvent))
-  class N39 domainevent
-  N40((CustomerMessageLikeCreatedDomainEvent))
-  class N40 domainevent
-  N41((CustomerMessagePrivateCreatedDomainEvent))
-  class N41 domainevent
-  N42((CustomerMessageSystemCreatedDomainEvent))
-  class N42 domainevent
-  N43(CustomerProfile::rewardCoins)
-  class N43 entitymethod
-  N44((CustomerProfileCoinsRewardedDomainEvent))
-  class N44 domainevent
-  N45(Video::&lt;get-id&gt;)
+  N37[[VideoAuditTraceRecordedDomainEventSubscriber::updateVideoStatus]]
+  class N37 domaineventhandler
+  N38[[VideoAuditFailedDomainEventSubscriber::on]]
+  class N38 domaineventhandler
+  N39[[VideoAuditPassedDomainEventSubscriber::bindVideoHlsEncryptKeyToVideo]]
+  class N39 domaineventhandler
+  N40[[VideoAuditPassedDomainEventSubscriber::bindVideoHlsKeyTokenToVideo]]
+  class N40 domaineventhandler
+  N41[[VideoAuditPassedDomainEventSubscriber::on2]]
+  class N41 domaineventhandler
+  N42[[VideoAuditPassedDomainEventSubscriber::rewardUserForVideo]]
+  class N42 domaineventhandler
+  N43[[VideoAuditPassedDomainEventSubscriber::setVideoQualityPolicy]]
+  class N43 domaineventhandler
+  N44[[VideoAuditPassedDomainEventSubscriber::transferVideoToProduction]]
+  class N44 domaineventhandler
+  N45(CustomerMessage::onCreate)
   class N45 entitymethod
-  N46(Video::onCreate)
-  class N46 entitymethod
-  N47(Video::syncFromBasics)
-  class N47 entitymethod
-  N48((VideoBasicsSyncedDomainEvent))
+  N46((CustomerMessageCollectionCreatedDomainEvent))
+  class N46 domainevent
+  N47((CustomerMessageCommentMentionCreatedDomainEvent))
+  class N47 domainevent
+  N48((CustomerMessageLikeCreatedDomainEvent))
   class N48 domainevent
-  N49((VideoCreatedDomainEvent))
+  N49((CustomerMessagePrivateCreatedDomainEvent))
   class N49 domainevent
-  N50(VideoAuditTrace::&lt;get-id&gt;)
-  class N50 entitymethod
-  N51(VideoAuditTrace::onCreate)
+  N50((CustomerMessageSystemCreatedDomainEvent))
+  class N50 domainevent
+  N51(CustomerProfile::rewardCoins)
   class N51 entitymethod
-  N52((VideoAuditTraceRecordedDomainEvent))
+  N52((CustomerProfileCoinsRewardedDomainEvent))
   class N52 domainevent
-  N53(VideoHlsEncryptKey::bindVideoId)
+  N53(Video::&lt;get-id&gt;)
   class N53 entitymethod
-  N54(VideoHlsKeyToken::bindVideoId)
+  N54(Video::onCreate)
   class N54 entitymethod
-  N55(VideoFilePost::&lt;get-customerId&gt;)
+  N55(Video::syncFromBasics)
   class N55 entitymethod
-  N56(VideoFilePost::&lt;get-duration&gt;)
-  class N56 entitymethod
-  N57(VideoFilePost::&lt;get-fileIndex&gt;)
-  class N57 entitymethod
-  N58(VideoFilePost::&lt;get-fileName&gt;)
+  N56((VideoBasicsSyncedDomainEvent))
+  class N56 domainevent
+  N57((VideoCreatedDomainEvent))
+  class N57 domainevent
+  N58(VideoAuditTrace::&lt;get-id&gt;)
   class N58 entitymethod
-  N59(VideoFilePost::&lt;get-fileSize&gt;)
+  N59(VideoAuditTrace::onCreate)
   class N59 entitymethod
-  N60(VideoFilePost::&lt;get-id&gt;)
-  class N60 entitymethod
-  N61(VideoFilePost::&lt;get-videoFilePostVariants&gt;)
+  N60((VideoAuditTraceRecordedDomainEvent))
+  class N60 domainevent
+  N61(VideoHlsEncryptKey::bindVideoId)
   class N61 entitymethod
-  N62(VideoFilePostVariant::&lt;get-audioBitrateKbps&gt;)
+  N62(VideoHlsKeyToken::bindVideoId)
   class N62 entitymethod
-  N63(VideoFilePostVariant::&lt;get-bandwidthBps&gt;)
+  N63(VideoFilePost::&lt;get-customerId&gt;)
   class N63 entitymethod
-  N64(VideoFilePostVariant::&lt;get-height&gt;)
+  N64(VideoFilePost::&lt;get-duration&gt;)
   class N64 entitymethod
-  N65(VideoFilePostVariant::&lt;get-playlistPath&gt;)
+  N65(VideoFilePost::&lt;get-fileIndex&gt;)
   class N65 entitymethod
-  N66(VideoFilePostVariant::&lt;get-quality&gt;)
+  N66(VideoFilePost::&lt;get-fileName&gt;)
   class N66 entitymethod
-  N67(VideoFilePostVariant::&lt;get-segmentDuration&gt;)
+  N67(VideoFilePost::&lt;get-fileSize&gt;)
   class N67 entitymethod
-  N68(VideoFilePostVariant::&lt;get-segmentPrefix&gt;)
+  N68(VideoFilePost::&lt;get-id&gt;)
   class N68 entitymethod
-  N69(VideoFilePostVariant::&lt;get-videoBitrateKbps&gt;)
+  N69(VideoFilePost::&lt;get-videoFilePostVariants&gt;)
   class N69 entitymethod
-  N70(VideoFilePostVariant::&lt;get-width&gt;)
+  N70(VideoFilePostVariant::&lt;get-audioBitrateKbps&gt;)
   class N70 entitymethod
-  N71(VideoPost::&lt;get-customerId&gt;)
+  N71(VideoFilePostVariant::&lt;get-bandwidthBps&gt;)
   class N71 entitymethod
-  N72(VideoPost::&lt;get-videoFilePosts&gt;)
+  N72(VideoFilePostVariant::&lt;get-height&gt;)
   class N72 entitymethod
-  N73(VideoPost::reviewFail)
+  N73(VideoFilePostVariant::&lt;get-playlistPath&gt;)
   class N73 entitymethod
-  N74(VideoPost::reviewPass)
+  N74(VideoFilePostVariant::&lt;get-quality&gt;)
   class N74 entitymethod
-  N75((VideoAuditFailedDomainEvent))
-  class N75 domainevent
-  N76((VideoAuditPassedDomainEvent))
-  class N76 domainevent
-  N77(VideoQualityPolicy::applyPolicy)
+  N75(VideoFilePostVariant::&lt;get-segmentDuration&gt;)
+  class N75 entitymethod
+  N76(VideoFilePostVariant::&lt;get-segmentPrefix&gt;)
+  class N76 entitymethod
+  N77(VideoFilePostVariant::&lt;get-videoBitrateKbps&gt;)
   class N77 entitymethod
-  N78(VideoQualityPolicy::onCreate)
+  N78(VideoFilePostVariant::&lt;get-width&gt;)
   class N78 entitymethod
-  N2 -->|ControllerMethodToCommand| N18
-  N3 -->|CommandHandlerToEntityMethod| N37
-  N3 -->|CommandHandlerToEntityMethod| N71
-  N4 -->|CommandToCommandHandler| N3
-  N5 -->|CommandHandlerToEntityMethod| N37
-  N5 -->|CommandHandlerToEntityMethod| N71
-  N6 -->|CommandToCommandHandler| N5
-  N7 -->|CommandHandlerToEntityMethod| N43
-  N8 -->|CommandToCommandHandler| N7
-  N9 -->|CommandHandlerToEntityMethod| N45
-  N9 -->|CommandHandlerToEntityMethod| N46
-  N9 -->|CommandHandlerToEntityMethod| N47
-  N9 -->|CommandHandlerToEntityMethod| N55
-  N9 -->|CommandHandlerToEntityMethod| N56
-  N9 -->|CommandHandlerToEntityMethod| N57
-  N9 -->|CommandHandlerToEntityMethod| N58
-  N9 -->|CommandHandlerToEntityMethod| N59
-  N9 -->|CommandHandlerToEntityMethod| N60
-  N9 -->|CommandHandlerToEntityMethod| N61
-  N9 -->|CommandHandlerToEntityMethod| N62
-  N9 -->|CommandHandlerToEntityMethod| N63
-  N9 -->|CommandHandlerToEntityMethod| N64
-  N9 -->|CommandHandlerToEntityMethod| N65
-  N9 -->|CommandHandlerToEntityMethod| N66
-  N9 -->|CommandHandlerToEntityMethod| N67
-  N9 -->|CommandHandlerToEntityMethod| N68
-  N9 -->|CommandHandlerToEntityMethod| N69
-  N9 -->|CommandHandlerToEntityMethod| N70
-  N9 -->|CommandHandlerToEntityMethod| N72
-  N10 -->|CommandToCommandHandler| N9
-  N11 -->|CommandHandlerToEntityMethod| N53
-  N12 -->|CommandToCommandHandler| N11
-  N13 -->|CommandHandlerToEntityMethod| N54
-  N14 -->|CommandToCommandHandler| N13
-  N15 -->|CommandHandlerToEntityMethod| N73
-  N15 -->|CommandHandlerToEntityMethod| N74
-  N16 -->|CommandToCommandHandler| N15
-  N17 -->|CommandHandlerToEntityMethod| N50
-  N17 -->|CommandHandlerToEntityMethod| N51
-  N18 -->|CommandToCommandHandler| N17
-  N19 -->|CommandHandlerToEntityMethod| N77
-  N19 -->|CommandHandlerToEntityMethod| N78
-  N20 -->|CommandToCommandHandler| N19
-  N21 -->|CliToCliHandler| N1
-  N30 -->|DomainEventHandlerToCommand| N4
-  N30 -->|DomainEventHandlerToCommand| N6
-  N31 -->|DomainEventHandlerToCommand| N16
-  N33 -->|DomainEventHandlerToCommand| N8
-  N34 -->|DomainEventHandlerToCommand| N10
-  N35 -->|DomainEventHandlerToCli| N21
-  N36 -->|DomainEventHandlerToCommand| N12
-  N36 -->|DomainEventHandlerToCommand| N14
-  N36 -->|DomainEventHandlerToCommand| N20
-  N37 -->|EntityMethodToDomainEvent| N38
-  N37 -->|EntityMethodToDomainEvent| N39
-  N37 -->|EntityMethodToDomainEvent| N40
-  N37 -->|EntityMethodToDomainEvent| N41
-  N37 -->|EntityMethodToDomainEvent| N42
-  N38 -->|DomainEventToHandler| N22
-  N39 -->|DomainEventToHandler| N23
-  N40 -->|DomainEventToHandler| N24
-  N41 -->|DomainEventToHandler| N25
-  N42 -->|DomainEventToHandler| N26
-  N43 -->|EntityMethodToDomainEvent| N44
-  N44 -->|DomainEventToHandler| N27
-  N46 -->|EntityMethodToDomainEvent| N49
-  N47 -->|EntityMethodToDomainEvent| N48
-  N48 -->|DomainEventToHandler| N28
-  N49 -->|DomainEventToHandler| N29
+  N79(VideoPost::&lt;get-customerId&gt;)
+  class N79 entitymethod
+  N80(VideoPost::&lt;get-videoFilePosts&gt;)
+  class N80 entitymethod
+  N81(VideoPost::reviewFail)
+  class N81 entitymethod
+  N82(VideoPost::reviewPass)
+  class N82 entitymethod
+  N83((VideoAuditFailedDomainEvent))
+  class N83 domainevent
+  N84((VideoAuditPassedDomainEvent))
+  class N84 domainevent
+  N85(VideoQualityPolicy::applyPolicy)
+  class N85 entitymethod
+  N86(VideoQualityPolicy::onCreate)
+  class N86 entitymethod
+  N5 -->|ControllerMethodToCommand| N21
+  N6 -->|CommandHandlerToEntityMethod| N45
+  N6 -->|CommandHandlerToEntityMethod| N79
+  N7 -->|CommandToCommandHandler| N6
+  N8 -->|CommandHandlerToEntityMethod| N45
+  N8 -->|CommandHandlerToEntityMethod| N79
+  N9 -->|CommandToCommandHandler| N8
+  N10 -->|CommandHandlerToEntityMethod| N51
+  N11 -->|CommandToCommandHandler| N10
+  N12 -->|CommandHandlerToEntityMethod| N53
+  N12 -->|CommandHandlerToEntityMethod| N54
+  N12 -->|CommandHandlerToEntityMethod| N55
+  N12 -->|CommandHandlerToEntityMethod| N63
+  N12 -->|CommandHandlerToEntityMethod| N64
+  N12 -->|CommandHandlerToEntityMethod| N65
+  N12 -->|CommandHandlerToEntityMethod| N66
+  N12 -->|CommandHandlerToEntityMethod| N67
+  N12 -->|CommandHandlerToEntityMethod| N68
+  N12 -->|CommandHandlerToEntityMethod| N69
+  N12 -->|CommandHandlerToEntityMethod| N70
+  N12 -->|CommandHandlerToEntityMethod| N71
+  N12 -->|CommandHandlerToEntityMethod| N72
+  N12 -->|CommandHandlerToEntityMethod| N73
+  N12 -->|CommandHandlerToEntityMethod| N74
+  N12 -->|CommandHandlerToEntityMethod| N75
+  N12 -->|CommandHandlerToEntityMethod| N76
+  N12 -->|CommandHandlerToEntityMethod| N77
+  N12 -->|CommandHandlerToEntityMethod| N78
+  N12 -->|CommandHandlerToEntityMethod| N80
+  N13 -->|CommandToCommandHandler| N12
+  N14 -->|CommandHandlerToEntityMethod| N61
+  N15 -->|CommandToCommandHandler| N14
+  N16 -->|CommandHandlerToEntityMethod| N62
+  N17 -->|CommandToCommandHandler| N16
+  N18 -->|CommandHandlerToEntityMethod| N81
+  N18 -->|CommandHandlerToEntityMethod| N82
+  N19 -->|CommandToCommandHandler| N18
+  N20 -->|CommandHandlerToEntityMethod| N58
+  N20 -->|CommandHandlerToEntityMethod| N59
+  N21 -->|CommandToCommandHandler| N20
+  N22 -->|CommandHandlerToEntityMethod| N85
+  N22 -->|CommandHandlerToEntityMethod| N86
+  N23 -->|CommandToCommandHandler| N22
+  N24 -->|CliToCliHandler| N1
+  N25 -->|QueryToQueryHandler| N2
+  N26 -->|QueryToQueryHandler| N3
+  N27 -->|QueryToQueryHandler| N4
+  N36 -->|DomainEventHandlerToCommand| N7
+  N36 -->|DomainEventHandlerToCommand| N9
+  N37 -->|DomainEventHandlerToCommand| N19
+  N39 -->|DomainEventHandlerToCommand| N15
+  N39 -->|DomainEventHandlerToQuery| N25
+  N40 -->|DomainEventHandlerToCommand| N17
+  N40 -->|DomainEventHandlerToQuery| N26
+  N41 -->|DomainEventHandlerToCli| N24
+  N41 -->|DomainEventHandlerToQuery| N27
+  N42 -->|DomainEventHandlerToCommand| N11
+  N43 -->|DomainEventHandlerToCommand| N23
+  N44 -->|DomainEventHandlerToCommand| N13
+  N45 -->|EntityMethodToDomainEvent| N46
+  N45 -->|EntityMethodToDomainEvent| N47
+  N45 -->|EntityMethodToDomainEvent| N48
+  N45 -->|EntityMethodToDomainEvent| N49
+  N45 -->|EntityMethodToDomainEvent| N50
+  N46 -->|DomainEventToHandler| N28
+  N47 -->|DomainEventToHandler| N29
+  N48 -->|DomainEventToHandler| N30
+  N49 -->|DomainEventToHandler| N31
+  N50 -->|DomainEventToHandler| N32
   N51 -->|EntityMethodToDomainEvent| N52
-  N52 -->|DomainEventToHandler| N30
-  N52 -->|DomainEventToHandler| N31
-  N73 -->|EntityMethodToDomainEvent| N75
-  N74 -->|EntityMethodToDomainEvent| N76
-  N75 -->|DomainEventToHandler| N32
-  N76 -->|DomainEventToHandler| N33
-  N76 -->|DomainEventToHandler| N34
-  N76 -->|DomainEventToHandler| N35
-  N76 -->|DomainEventToHandler| N36
+  N52 -->|DomainEventToHandler| N33
+  N54 -->|EntityMethodToDomainEvent| N57
+  N55 -->|EntityMethodToDomainEvent| N56
+  N56 -->|DomainEventToHandler| N34
+  N57 -->|DomainEventToHandler| N35
+  N59 -->|EntityMethodToDomainEvent| N60
+  N60 -->|DomainEventToHandler| N36
+  N60 -->|DomainEventToHandler| N37
+  N81 -->|EntityMethodToDomainEvent| N83
+  N82 -->|EntityMethodToDomainEvent| N84
+  N83 -->|DomainEventToHandler| N38
+  N84 -->|DomainEventToHandler| N39
+  N84 -->|DomainEventToHandler| N40
+  N84 -->|DomainEventToHandler| N41
+  N84 -->|DomainEventToHandler| N42
+  N84 -->|DomainEventToHandler| N43
+  N84 -->|DomainEventToHandler| N44
   classDef cli fill:#86EFAC,stroke:#15803D,color:#0F172A
   classDef clihandler fill:#22C55E,stroke:#166534,color:#F0FDF4
   classDef command fill:#FDBA74,stroke:#C2410C,color:#111827
@@ -242,3 +266,5 @@ flowchart TD
   classDef domainevent fill:#FECACA,stroke:#B91C1C,color:#111827
   classDef domaineventhandler fill:#F87171,stroke:#991B1B,color:#111827
   classDef entitymethod fill:#F3F4F6,stroke:#6B7280,color:#111827
+  classDef query fill:#93C5FD,stroke:#1D4ED8,color:#0F172A
+  classDef queryhandler fill:#3B82F6,stroke:#1E40AF,color:#F8FAFC

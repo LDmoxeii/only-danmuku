@@ -1,19 +1,19 @@
 {
-  "generatedAt" : "2026-01-17T07:37:19Z",
+  "generatedAt" : "2026-01-17T07:54:14Z",
   "inputDirs" : [ "C:\\Users\\LD_moxeii\\Documents\\code\\only-workspace\\only-danmuku\\only-danmuku-adapter\\build\\cap4k-code-analysis", "C:\\Users\\LD_moxeii\\Documents\\code\\only-workspace\\only-danmuku\\only-danmuku-application\\build\\cap4k-code-analysis", "C:\\Users\\LD_moxeii\\Documents\\code\\only-workspace\\only-danmuku\\only-danmuku-domain\\build\\cap4k-code-analysis" ],
   "entryTypes" : [ "<anonymous>", "controllermethod" ],
   "entryTypeCounts" : {
     "<anonymous>" : 1,
     "controllermethod" : 113
   },
-  "nodeCount" : 2181,
-  "edgeCount" : 993,
+  "nodeCount" : 2183,
+  "edgeCount" : 1002,
   "flowCount" : 114,
   "flows" : [ {
     "entryId" : "<anonymous>",
     "entryType" : "<anonymous>",
-    "nodeCount" : 429,
-    "edgeCount" : 509,
+    "nodeCount" : 441,
+    "edgeCount" : 523,
     "json" : "anonymous.json",
     "mermaid" : "anonymous.mmd"
   }, {
@@ -187,8 +187,8 @@
   }, {
     "entryId" : "edu.only4.danmuku.adapter.portal.api.admin.AdminVideoController::auditVideo",
     "entryType" : "controllermethod",
-    "nodeCount" : 78,
-    "edgeCount" : 79,
+    "nodeCount" : 86,
+    "edgeCount" : 87,
     "json" : "edu_only4_danmuku_adapter_portal_api_admin_AdminVideoController_auditVideo.json",
     "mermaid" : "edu_only4_danmuku_adapter_portal_api_admin_AdminVideoController_auditVideo.mmd"
   }, {
@@ -411,8 +411,8 @@
   }, {
     "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UCenterVideoPostController::save",
     "entryType" : "controllermethod",
-    "nodeCount" : 69,
-    "edgeCount" : 71,
+    "nodeCount" : 73,
+    "edgeCount" : 75,
     "json" : "edu_only4_danmuku_adapter_portal_api_web_UCenterVideoPostController_save.json",
     "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_UCenterVideoPostController_save.mmd"
   }, {
@@ -425,8 +425,8 @@
   }, {
     "entryId" : "edu.only4.danmuku.adapter.portal.api.web.UCenterVideoPostController::update",
     "entryType" : "controllermethod",
-    "nodeCount" : 70,
-    "edgeCount" : 73,
+    "nodeCount" : 74,
+    "edgeCount" : 77,
     "json" : "edu_only4_danmuku_adapter_portal_api_web_UCenterVideoPostController_update.json",
     "mermaid" : "edu_only4_danmuku_adapter_portal_api_web_UCenterVideoPostController_update.mmd"
   }, {
