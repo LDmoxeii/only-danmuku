@@ -1,8 +1,6 @@
 package {{ basePackage }}{{ templatePackage }}{{ package }}
 import com.fasterxml.jackson.annotation.JsonValue
-{%- for import in imports %}
-{{ import }}
-{%- endfor %}
+{{ imports() }}
 
 /**
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
