@@ -316,7 +316,7 @@ CREATE TABLE `user_abnormal_operation_log` (
   PRIMARY KEY (`id`) USING BTREE,
   KEY `idx_user_abnormal_op_user_type` (`user_id`,`op_type`) USING BTREE,
   KEY `idx_user_abnormal_op_time` (`occur_time`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='用户异常操作日志;@Spe;';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='用户异常操作日志';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -348,7 +348,7 @@ CREATE TABLE `user_login_log` (
   KEY `idx_user_login_log_user_id_time` (`user_id`,`occur_time`) USING BTREE,
   KEY `idx_user_login_log_login_name_time` (`login_name`,`occur_time`) USING BTREE,
   KEY `idx_user_login_log_result_time` (`result`,`occur_time`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='用户登录日志;@Spe;';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='用户登录日志';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
