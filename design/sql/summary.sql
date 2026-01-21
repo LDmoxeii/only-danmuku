@@ -40,7 +40,7 @@ CREATE TABLE `category` (
   `deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `uk_v_code` (`code`,`deleted`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='分类信息;@Spe;@Fac;';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='分类信息';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -78,7 +78,7 @@ CREATE TABLE `customer_action` (
   `deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `uk_v_type` (`video_id`,`comment_id`,`action_type`,`customer_id`,`deleted`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='用户行为 点赞、评论;@Spe;@Fac;';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='用户行为 点赞、评论';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -100,7 +100,7 @@ CREATE TABLE `customer_focus` (
   `update_time` bigint DEFAULT NULL COMMENT '更新时间',
   `deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='用户关注;@Spe;@Fac;';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='用户关注';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -126,7 +126,7 @@ CREATE TABLE `customer_message` (
   `update_time` bigint DEFAULT NULL COMMENT '更新时间',
   `deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='用户消息表;@Spe;@Fac;';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='用户消息表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -163,7 +163,7 @@ CREATE TABLE `customer_profile` (
   UNIQUE KEY `uk_v_nick_name` (`nick_name`,`deleted`),
   UNIQUE KEY `uk_v_phone` (`phone`,`deleted`),
   KEY `idx_user_id` (`user_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='用户信息;@Spe;@Fac;';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='用户信息';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -197,7 +197,7 @@ CREATE TABLE `customer_video_series` (
   `update_time` bigint DEFAULT NULL COMMENT '更新时间',
   `deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='用户视频序列归档;@Spe;@Fac;';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='用户视频序列归档';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -245,7 +245,7 @@ CREATE TABLE `statistics` (
   `update_time` bigint DEFAULT NULL COMMENT '更新时间（秒级时间戳）',
   `deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='统计信息;@Spe;@Fac;';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='统计信息';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -277,7 +277,7 @@ CREATE TABLE `user` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `uk_v_email` (`email`,`deleted`),
   UNIQUE KEY `uk_v_phone` (`phone`,`deleted`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='帐号;@Spe;@Fac;';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='帐号';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -388,7 +388,7 @@ CREATE TABLE `video` (
   `update_time` bigint DEFAULT NULL COMMENT '更新时间',
   `deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='视频信息;@Spe;@Fac;';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='视频信息';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -447,7 +447,7 @@ CREATE TABLE `video_comment` (
   `update_time` bigint DEFAULT NULL COMMENT '更新时间',
   `deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='评论;@Spe;@Fac;';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='评论';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -475,7 +475,7 @@ CREATE TABLE `video_danmuku` (
   `update_time` bigint DEFAULT NULL COMMENT '更新时间',
   `deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='视频弹幕;@Spe;@Fac;';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='视频弹幕';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -729,7 +729,7 @@ CREATE TABLE `video_play_history` (
   `update_time` bigint DEFAULT NULL COMMENT '更新时间',
   `deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='视频播放历史;@Spe;@Fac;';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='视频播放历史';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -761,7 +761,7 @@ CREATE TABLE `video_post` (
   `update_time` bigint DEFAULT NULL COMMENT '更新时间',
   `deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='视频信息;@Spe;@Fac;';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='视频信息';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -791,7 +791,7 @@ CREATE TABLE `video_post_processing` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `uk_i` (`video_post_id`,`deleted`),
   KEY `idx_vpp_status` (`transcode_status`,`encrypt_status`,`update_time`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='视频稿件处理聚合;@Spe;@Fac;';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='视频稿件处理聚合';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -892,7 +892,7 @@ CREATE TABLE `video_quality_policy` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `uk_i` (`video_id`,`file_index`,`quality`,`deleted`),
   KEY `idx_video_quality_policy` (`auth_policy`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='视频清晰度策略;@Spe;@Fac;';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='视频清晰度策略';
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
