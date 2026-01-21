@@ -17,14 +17,14 @@ import org.hibernate.annotations.SQLDelete
 import org.hibernate.annotations.Where
 
 /**
- * 视频弹幕;
+ * 视频弹幕
  *
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2026/01/14
+ * @date 2026/01/21
  */
-@Aggregate(aggregate = "VideoDanmuku", name = "VideoDanmuku", root = true, type = Aggregate.TYPE_ENTITY, description = "视频弹幕，")
+@Aggregate(aggregate = "VideoDanmuku", name = "VideoDanmuku", root = true, type = Aggregate.TYPE_ENTITY, description = "视频弹幕")
 @Entity
 @Table(name = "`video_danmuku`")
 @DynamicInsert

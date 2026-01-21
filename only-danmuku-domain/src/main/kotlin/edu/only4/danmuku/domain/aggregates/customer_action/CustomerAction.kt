@@ -26,14 +26,14 @@ import org.hibernate.annotations.SQLDelete
 import org.hibernate.annotations.Where
 
 /**
- * 用户行为 点赞、评论;
+ * 用户行为 点赞、评论
  *
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2026/01/14
+ * @date 2026/01/21
  */
-@Aggregate(aggregate = "CustomerAction", name = "CustomerAction", root = true, type = Aggregate.TYPE_ENTITY, description = "用户行为 点赞、评论，")
+@Aggregate(aggregate = "CustomerAction", name = "CustomerAction", root = true, type = Aggregate.TYPE_ENTITY, description = "用户行为 点赞、评论")
 @Entity
 @Table(name = "`customer_action`")
 @DynamicInsert
