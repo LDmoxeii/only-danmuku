@@ -3,15 +3,7 @@ package edu.only4.danmuku.adapter.application.queries.customer_message
 import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.application.query.PageQuery
 import com.only4.cap4k.ddd.core.share.PageData
-import edu.only4.danmuku.application.queries._share.model.CustomerMessage
-import edu.only4.danmuku.application.queries._share.model.CustomerProfile
-import edu.only4.danmuku.application.queries._share.model.Video
-import edu.only4.danmuku.application.queries._share.model.VideoPost
-import edu.only4.danmuku.application.queries._share.model.customerId
-import edu.only4.danmuku.application.queries._share.model.fetchBy
-import edu.only4.danmuku.application.queries._share.model.id
-import edu.only4.danmuku.application.queries._share.model.messageType
-import edu.only4.danmuku.application.queries._share.model.userId
+import edu.only4.danmuku.application.queries._share.model.*
 import edu.only4.danmuku.application.queries.message.GetMessagePageQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.desc

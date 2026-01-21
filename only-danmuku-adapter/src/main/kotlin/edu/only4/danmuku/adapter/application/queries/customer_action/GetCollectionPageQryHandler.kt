@@ -10,7 +10,6 @@ import edu.only4.danmuku.application.queries.customer_action.GetCollectionPageQr
 import edu.only4.danmuku.domain.aggregates.customer_action.enums.ActionType
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
-import org.springframework.data.jpa.domain.AbstractPersistable_.id
 import org.springframework.stereotype.Service
 
 /**
