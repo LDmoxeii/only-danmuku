@@ -11,42 +11,13 @@
     {
       "type": "dir",
       "tag": "api_payload",
-      "pattern": "^(?!.*(List|list|Page|page)).*$",
       "name": "{{ path }}",
       "children": [
         {
           "type": "file",
           "name": "{{ Payload }}.kt",
           "format": "url",
-          "data": "template/_tpl/api_payload_single.kt.peb"
-        }
-      ]
-    },
-    {
-      "type": "dir",
-      "tag": "api_payload",
-      "pattern": "^.*(List|list).*$",
-      "name": "{{ path }}",
-      "children": [
-        {
-          "type": "file",
-          "name": "{{ Payload }}.kt",
-          "format": "url",
-          "data": "template/_tpl/api_payload_list.kt.peb"
-        }
-      ]
-    },
-    {
-      "type": "dir",
-      "tag": "api_payload",
-      "pattern": "^.*(Page|page).*$",
-      "name": "{{ path }}",
-      "children": [
-        {
-          "type": "file",
-          "name": "{{ Payload }}.kt",
-          "format": "url",
-          "data": "template/_tpl/api_payload_page.kt.peb"
+          "data": "template/_tpl/api_payload.kt.peb"
         }
       ]
     },
