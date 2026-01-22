@@ -1,15 +1,12 @@
 package edu.only4.danmuku.application.validator
 
 import com.only4.cap4k.ddd.core.Mediator
-
 import edu.only4.danmuku.application.queries.customer_action.UniqueCustomerActionTypeQry
 import edu.only4.danmuku.domain.aggregates.customer_action.enums.ActionType
-
 import jakarta.validation.Constraint
 import jakarta.validation.ConstraintValidator
 import jakarta.validation.ConstraintValidatorContext
 import jakarta.validation.Payload
-
 import kotlin.reflect.KClass
 import kotlin.reflect.full.memberProperties
 

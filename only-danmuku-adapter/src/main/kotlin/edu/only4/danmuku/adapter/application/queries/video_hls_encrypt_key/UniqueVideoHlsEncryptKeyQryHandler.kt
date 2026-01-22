@@ -1,7 +1,6 @@
 package edu.only4.danmuku.adapter.application.queries.video_hls_encrypt_key
 
 import com.only4.cap4k.ddd.core.application.query.Query
-
 import edu.only4.danmuku.application.queries._share.model.VideoHlsEncryptKey
 import edu.only4.danmuku.application.queries._share.model.fileIndex
 import edu.only4.danmuku.application.queries._share.model.id
@@ -14,7 +13,6 @@ import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.`ne?`
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.babyfish.jimmer.sql.kt.exists
-
 import org.springframework.stereotype.Service
 
 /**
@@ -41,4 +39,3 @@ class UniqueVideoHlsEncryptKeyQryHandler(
         )
     }
 }
-

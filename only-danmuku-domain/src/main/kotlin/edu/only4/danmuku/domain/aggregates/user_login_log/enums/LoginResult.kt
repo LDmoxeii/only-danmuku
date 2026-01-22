@@ -1,17 +1,15 @@
 package edu.only4.danmuku.domain.aggregates.user_login_log.enums
+
 import com.fasterxml.jackson.annotation.JsonValue
-
 import com.only.engine.exception.KnownException
-
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
-
 import jakarta.persistence.AttributeConverter
 
 /**
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件，重新生成会覆盖该文件
  * @author cap4k-ddd-codegen
- * @date 2026/01/21
+ * @date 2026/01/22
  */
 @Aggregate(aggregate = "UserLoginLog", name = "LoginResult", type = "enum", description = "")
 enum class LoginResult(

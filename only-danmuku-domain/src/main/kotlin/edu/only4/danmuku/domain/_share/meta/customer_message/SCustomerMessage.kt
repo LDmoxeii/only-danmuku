@@ -1,7 +1,6 @@
 package edu.only4.danmuku.domain._share.meta.customer_message
 
 import com.only4.cap4k.ddd.domain.repo.JpaPredicate
-
 import edu.only4.danmuku.domain._share.meta.ExpressionBuilder
 import edu.only4.danmuku.domain._share.meta.Field
 import edu.only4.danmuku.domain._share.meta.OrderBuilder
@@ -12,9 +11,7 @@ import edu.only4.danmuku.domain.aggregates.customer_message.CustomerMessage
 import edu.only4.danmuku.domain.aggregates.customer_message.enums.MessageType
 import edu.only4.danmuku.domain.aggregates.customer_message.enums.ReadType
 import edu.only4.danmuku.domain.aggregates.customer_message.extend.UserMessageExtend
-
 import jakarta.persistence.criteria.*
-
 import org.springframework.data.jpa.domain.Specification
 
 /**

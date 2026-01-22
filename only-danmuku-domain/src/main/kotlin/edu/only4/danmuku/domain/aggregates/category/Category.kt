@@ -2,7 +2,6 @@ package edu.only4.danmuku.domain.aggregates.category
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
-
 import edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity
 import edu.only4.danmuku.domain.aggregates.category.events.CategoryBasicInfoUpdatedDomainEvent
 import edu.only4.danmuku.domain.aggregates.category.events.CategoryCodeChangedDomainEvent
@@ -11,10 +10,8 @@ import edu.only4.danmuku.domain.aggregates.category.events.CategoryDeletedDomain
 import edu.only4.danmuku.domain.aggregates.category.events.CategoryNodePathUpdatedDomainEvent
 import edu.only4.danmuku.domain.aggregates.category.events.CategoryParentChangedDomainEvent
 import edu.only4.danmuku.domain.aggregates.category.events.CategorySortChangedDomainEvent
-
 import jakarta.persistence.*
 import jakarta.persistence.Table
-
 import org.hibernate.annotations.DynamicInsert
 import org.hibernate.annotations.DynamicUpdate
 import org.hibernate.annotations.GenericGenerator
@@ -27,7 +24,7 @@ import org.hibernate.annotations.Where
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2026/01/21
+ * @date 2026/01/22
  */
 @Aggregate(aggregate = "Category", name = "Category", root = true, type = Aggregate.TYPE_ENTITY, description = "分类信息")
 @Entity

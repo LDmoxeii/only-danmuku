@@ -7,9 +7,7 @@ import edu.only4.danmuku.domain._share.meta.PredicateBuilder
 import edu.only4.danmuku.domain._share.meta.SchemaSpecification
 import edu.only4.danmuku.domain._share.meta.SubqueryConfigure
 import edu.only4.danmuku.domain.aggregates.customer_video_series.CustomerVideoSeriesVideo
-
 import jakarta.persistence.criteria.*
-
 import org.springframework.data.jpa.domain.Specification
 
 /**

@@ -5,7 +5,6 @@ import com.only.engine.translation.core.BatchTranslationInterface
 import com.only.engine.translation.core.TranslationInterface
 import edu.only4.danmuku.adapter.domain.translation.user_abnormal_operation_log.AbnormalOpTypeTranslation.Companion.ABNORMAL_OP_TYPE_CODE_TO_DESC
 import edu.only4.danmuku.domain.aggregates.user_abnormal_operation_log.enums.AbnormalOpType
-
 import org.springframework.stereotype.Component
 
 /**
@@ -50,4 +49,3 @@ class AbnormalOpTypeTranslation :
         return keyToCode.mapValues { (_, c) -> c?.let { codeToDesc[it] } }
     }
 }
-

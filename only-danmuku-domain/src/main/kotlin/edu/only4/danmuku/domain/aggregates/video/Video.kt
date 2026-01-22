@@ -2,16 +2,13 @@ package edu.only4.danmuku.domain.aggregates.video
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
-
 import edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity
 import edu.only4.danmuku.domain.aggregates.video.enums.RecommendType
 import edu.only4.danmuku.domain.aggregates.video.events.*
 import edu.only4.danmuku.domain.aggregates.video_post.enums.PostType
-
 import jakarta.persistence.*
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Table
-
 import org.hibernate.annotations.*
 
 /**
@@ -20,7 +17,7 @@ import org.hibernate.annotations.*
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2026/01/21
+ * @date 2026/01/22
  */
 @Aggregate(aggregate = "Video", name = "Video", root = true, type = Aggregate.TYPE_ENTITY, description = "视频信息")
 @Entity

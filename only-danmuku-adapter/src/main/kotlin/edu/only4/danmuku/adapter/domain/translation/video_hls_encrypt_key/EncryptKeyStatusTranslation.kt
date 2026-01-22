@@ -5,7 +5,6 @@ import com.only.engine.translation.core.BatchTranslationInterface
 import com.only.engine.translation.core.TranslationInterface
 import edu.only4.danmuku.adapter.domain.translation.video_hls_encrypt_key.EncryptKeyStatusTranslation.Companion.ENCRYPT_KEY_STATUS_CODE_TO_DESC
 import edu.only4.danmuku.domain.aggregates.video_hls_encrypt_key.enums.EncryptKeyStatus
-
 import org.springframework.stereotype.Component
 
 /**
@@ -50,4 +49,3 @@ class EncryptKeyStatusTranslation :
         return keyToCode.mapValues { (_, c) -> c?.let { codeToDesc[it] } }
     }
 }
-

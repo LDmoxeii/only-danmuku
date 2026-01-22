@@ -5,7 +5,6 @@ import com.only.engine.translation.core.BatchTranslationInterface
 import com.only.engine.translation.core.TranslationInterface
 import edu.only4.danmuku.adapter.domain.translation.customer_message.MessageTypeTranslation.Companion.MESSAGE_TYPE_CODE_TO_DESC
 import edu.only4.danmuku.domain.aggregates.customer_message.enums.MessageType
-
 import org.springframework.stereotype.Component
 
 /**
@@ -50,4 +49,3 @@ class MessageTypeTranslation :
         return keyToCode.mapValues { (_, c) -> c?.let { codeToDesc[it] } }
     }
 }
-

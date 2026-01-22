@@ -1,12 +1,9 @@
 package edu.only4.danmuku.domain.aggregates.video_post
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
-
 import edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity
-
 import jakarta.persistence.*
 import jakarta.persistence.Table
-
 import org.hibernate.annotations.*
 
 /**
@@ -15,7 +12,7 @@ import org.hibernate.annotations.*
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2026/01/21
+ * @date 2026/01/22
  */
 @Aggregate(aggregate = "VideoPost", name = "VideoFilePostVariant", root = false, type = Aggregate.TYPE_ENTITY, description = "视频稿件文件分辨率档位，")
 @Entity

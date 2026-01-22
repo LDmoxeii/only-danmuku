@@ -1,7 +1,6 @@
 package edu.only4.danmuku.domain._share.meta.user_login_log
 
 import com.only4.cap4k.ddd.domain.repo.JpaPredicate
-
 import edu.only4.danmuku.domain._share.meta.ExpressionBuilder
 import edu.only4.danmuku.domain._share.meta.Field
 import edu.only4.danmuku.domain._share.meta.OrderBuilder
@@ -12,9 +11,7 @@ import edu.only4.danmuku.domain.aggregates.user.enums.UserType
 import edu.only4.danmuku.domain.aggregates.user_login_log.UserLoginLog
 import edu.only4.danmuku.domain.aggregates.user_login_log.enums.LoginResult
 import edu.only4.danmuku.domain.aggregates.user_login_log.enums.LoginType
-
 import jakarta.persistence.criteria.*
-
 import org.springframework.data.jpa.domain.Specification
 
 /**

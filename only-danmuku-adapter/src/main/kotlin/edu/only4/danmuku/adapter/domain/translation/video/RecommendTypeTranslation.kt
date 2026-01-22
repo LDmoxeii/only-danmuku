@@ -5,7 +5,6 @@ import com.only.engine.translation.core.BatchTranslationInterface
 import com.only.engine.translation.core.TranslationInterface
 import edu.only4.danmuku.adapter.domain.translation.video.RecommendTypeTranslation.Companion.RECOMMEND_TYPE_CODE_TO_DESC
 import edu.only4.danmuku.domain.aggregates.video.enums.RecommendType
-
 import org.springframework.stereotype.Component
 
 /**
@@ -50,4 +49,3 @@ class RecommendTypeTranslation :
         return keyToCode.mapValues { (_, c) -> c?.let { codeToDesc[it] } }
     }
 }
-

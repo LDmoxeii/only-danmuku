@@ -10,9 +10,7 @@ import edu.only4.danmuku.domain.aggregates.video_post.VideoFilePost
 import edu.only4.danmuku.domain.aggregates.video_post.enums.EncryptMethod
 import edu.only4.danmuku.domain.aggregates.video_post.enums.EncryptStatus
 import edu.only4.danmuku.domain.aggregates.video_post.enums.TransferResult
-
 import jakarta.persistence.criteria.*
-
 import org.springframework.data.jpa.domain.Specification
 
 /**

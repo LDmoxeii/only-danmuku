@@ -5,7 +5,6 @@ import com.only.engine.translation.core.BatchTranslationInterface
 import com.only.engine.translation.core.TranslationInterface
 import edu.only4.danmuku.adapter.domain.translation.user_login_log.LoginResultTranslation.Companion.LOGIN_RESULT_CODE_TO_DESC
 import edu.only4.danmuku.domain.aggregates.user_login_log.enums.LoginResult
-
 import org.springframework.stereotype.Component
 
 /**
@@ -50,4 +49,3 @@ class LoginResultTranslation :
         return keyToCode.mapValues { (_, c) -> c?.let { codeToDesc[it] } }
     }
 }
-

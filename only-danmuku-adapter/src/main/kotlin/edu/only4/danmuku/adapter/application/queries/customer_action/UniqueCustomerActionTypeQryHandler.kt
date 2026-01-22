@@ -1,7 +1,6 @@
 package edu.only4.danmuku.adapter.application.queries.customer_action
 
 import com.only4.cap4k.ddd.core.application.query.Query
-
 import edu.only4.danmuku.application.queries._share.model.CustomerAction
 import edu.only4.danmuku.application.queries._share.model.actionType
 import edu.only4.danmuku.application.queries._share.model.commentId
@@ -13,7 +12,6 @@ import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.`ne?`
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.babyfish.jimmer.sql.kt.exists
-
 import org.springframework.stereotype.Service
 
 /**
@@ -39,4 +37,3 @@ class UniqueCustomerActionTypeQryHandler(
         )
     }
 }
-

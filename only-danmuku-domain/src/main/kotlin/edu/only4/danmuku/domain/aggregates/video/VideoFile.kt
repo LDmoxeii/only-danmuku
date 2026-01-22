@@ -1,11 +1,8 @@
 package edu.only4.danmuku.domain.aggregates.video
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
-
 import edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity
-
 import jakarta.persistence.*
-
 import org.hibernate.annotations.DynamicInsert
 import org.hibernate.annotations.DynamicUpdate
 import org.hibernate.annotations.Fetch
@@ -20,7 +17,7 @@ import org.hibernate.annotations.Where
  * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
  * 警告：请勿手工修改该文件的字段声明，重新生成会覆盖字段声明
  * @author cap4k-ddd-codegen
- * @date 2026/01/21
+ * @date 2026/01/22
  */
 @Aggregate(aggregate = "Video", name = "VideoFile", root = false, type = Aggregate.TYPE_ENTITY, description = "视频文件信息，")
 @Entity

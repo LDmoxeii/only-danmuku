@@ -5,7 +5,6 @@ import com.only.engine.translation.core.BatchTranslationInterface
 import com.only.engine.translation.core.TranslationInterface
 import edu.only4.danmuku.adapter.domain.translation.statistics.StatisticsDataTypeTranslation.Companion.STATISTICS_DATA_TYPE_CODE_TO_DESC
 import edu.only4.danmuku.domain.aggregates.statistics.enums.StatisticsDataType
-
 import org.springframework.stereotype.Component
 
 /**
@@ -50,4 +49,3 @@ class StatisticsDataTypeTranslation :
         return keyToCode.mapValues { (_, c) -> c?.let { codeToDesc[it] } }
     }
 }
-
