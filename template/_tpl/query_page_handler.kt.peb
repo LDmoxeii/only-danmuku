@@ -1,5 +1,6 @@
 package {{ basePackage }}{{ templatePackage }}{{ package }}
-{{ use("org.babyfish.jimmer.sql.kt.KSqlClient") }}
+
+{{ use("org.babyfish.jimmer.sql.kt.KSqlClient") -}}
 {{ imports() }}
 
 /**

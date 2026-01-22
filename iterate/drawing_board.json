@@ -108,7 +108,7 @@
   {
     "tag": "cli",
     "package": "statistics",
-    "name": "ReportVideoSearchCount",
+    "name": "ReportVideoSearchCountaaa",
     "desc": "上报视频搜索次数",
     "requestFields": [
       { "name": "keyword", "type": "String" }
