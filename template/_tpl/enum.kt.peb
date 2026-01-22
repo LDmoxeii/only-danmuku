@@ -1,5 +1,5 @@
 package {{ basePackage }}{{ templatePackage }}{{ package }}
-import com.fasterxml.jackson.annotation.JsonValue
+{{ use("com.fasterxml.jackson.annotation.JsonValue") }}
 {{ imports() }}
 
 /**

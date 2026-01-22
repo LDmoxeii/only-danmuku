@@ -1,7 +1,7 @@
 package {{ basePackage }}{{ templatePackage }}{{ package }}
+{{ use("org.mapstruct.Mapper") }}
+{{ use("org.mapstruct.factory.Mappers") }}
 {{ imports() }}
-import org.mapstruct.Mapper
-import org.mapstruct.factory.Mappers
 
 /**
  * {{ Comment }}

@@ -1,6 +1,6 @@
 package {{ basePackage }}{{ templatePackage }}{{ package }}
+{{ use("org.babyfish.jimmer.sql.kt.KSqlClient") }}
 {{ imports() }}
-import org.babyfish.jimmer.sql.kt.KSqlClient
 
 /**
  * {{ Comment }}
