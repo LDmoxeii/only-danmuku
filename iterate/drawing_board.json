@@ -134,11 +134,12 @@
     "desc": "批量新增客商账户信息（来源：付款申请）",
     "requestFields": [
       { "name": "globalId", "type": "String", "required": true, "desc": "客商全局Id", "defaultValue": "0" },
-      { "name": "accountList", "type": "List<AccountIt>", "required": true, "desc": "账户信息列表" },
-      { "name": "accountList[].accountNumber", "type": "String", "required": true, "desc": "账号" },
-      { "name": "accountList[].accountName", "type": "String", "required": true, "desc": "户名" },
-      { "name": "accountList[].bankName", "type": "String", "required": true, "desc": "银行名称" },
-      { "name": "accountList[].currency", "type": "String", "required": true, "desc": "币种" }
+      { "name": "account", "type": "AccountInfo", "required": true, "desc": "账户信息" },
+      { "name": "account.accountNumber", "type": "String", "required": true, "desc": "账号" },
+      { "name": "account.accountName", "type": "String", "required": true, "desc": "户名" },
+      { "name": "account.bank", "type": "Bank", "required": true, "desc": "银行" },
+      { "name": "account.bank.code", "type": "String", "required": true, "desc": "银行编码" },
+      { "name": "account.currency", "type": "String", "required": true, "desc": "币种" }
     ],
     "responseFields": [
       { "name": "result", "type": "Boolean", "desc": "处理成功返回 true" }
