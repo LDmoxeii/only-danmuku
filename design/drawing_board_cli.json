@@ -1,0 +1,415 @@
+[
+  {
+    "tag": "cli",
+    "package": "edu.only4.danmuku.application.distributed.clients",
+    "name": "CaptchaGen",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "bizType", "type": "String", "nullable": false },
+      { "name": "channel", "type": "CaptchaChannel", "nullable": false },
+      { "name": "targets", "type": "List<String>", "nullable": false },
+      { "name": "templateCode", "type": "String", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "captchaId", "type": "String", "nullable": false },
+      { "name": "byte", "type": "String", "nullable": false },
+      { "name": "text", "type": "String", "nullable": false }
+    ]
+  },
+  {
+    "tag": "cli",
+    "package": "edu.only4.danmuku.application.distributed.clients",
+    "name": "CaptchaValid",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "id", "type": "String", "nullable": false },
+      { "name": "input", "type": "String", "nullable": false }
+    ],
+    "responseFields": [
+      { "name": "result", "type": "Boolean", "nullable": false }
+    ]
+  },
+  {
+    "tag": "cli",
+    "package": "edu.only4.danmuku.application.distributed.clients",
+    "name": "CleanTempFiles",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "tempPaths", "type": "List<String>", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cli",
+    "package": "edu.only4.danmuku.application.distributed.clients",
+    "name": "DeleteVideoFileResources",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "videoId", "type": "Long", "nullable": false },
+      { "name": "ownerId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cli",
+    "package": "edu.only4.danmuku.application.distributed.clients",
+    "name": "RefreshLoginSession",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "userId", "type": "Long", "nullable": false },
+      { "name": "nickName", "type": "String", "nullable": true },
+      { "name": "avatar", "type": "String", "nullable": true }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cli",
+    "package": "edu.only4.danmuku.application.distributed.clients",
+    "name": "RemoveVideoSearchIndex",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "videoId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cli",
+    "package": "authorize",
+    "name": "IssueToken",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "userId", "type": "Long", "nullable": false },
+      { "name": "accountType", "type": "Int", "nullable": false },
+      { "name": "account", "type": "String", "nullable": false },
+      { "name": "extra", "type": "Map<String,Any>", "nullable": false }
+    ],
+    "responseFields": [
+      { "name": "token", "type": "String", "nullable": false }
+    ]
+  },
+  {
+    "tag": "cli",
+    "package": "authorize",
+    "name": "Logout",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [],
+    "responseFields": []
+  },
+  {
+    "tag": "cli",
+    "package": "file_storage",
+    "name": "UploadImageResource",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "file", "type": "MultipartFile", "nullable": false },
+      { "name": "createThumbnail", "type": "Boolean", "nullable": false, "defaultValue": "false" },
+      { "name": "bizType", "type": "String", "nullable": false }
+    ],
+    "responseFields": [
+      { "name": "resourceKey", "type": "String", "nullable": false },
+      { "name": "thumbnailKey", "type": "String", "nullable": true },
+      { "name": "publicUrl", "type": "String", "nullable": true }
+    ]
+  },
+  {
+    "tag": "cli",
+    "package": "file_upload_session",
+    "name": "CreateUploadSessionTempDir",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "uploadId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": [
+      { "name": "tempPath", "type": "String", "nullable": false }
+    ]
+  },
+  {
+    "tag": "cli",
+    "package": "file_upload_session",
+    "name": "DeleteUploadSessionTempDir",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "tempPath", "type": "String", "nullable": false }
+    ],
+    "responseFields": [
+      { "name": "success", "type": "Boolean", "nullable": false, "defaultValue": "true" },
+      { "name": "failReason", "type": "String", "nullable": true }
+    ]
+  },
+  {
+    "tag": "cli",
+    "package": "file_upload_session",
+    "name": "UploadVideoChunkStorage",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "tempPath", "type": "String", "nullable": false },
+      { "name": "chunkIndex", "type": "Int", "nullable": false },
+      { "name": "chunkFile", "type": "MultipartFile", "nullable": false }
+    ],
+    "responseFields": [
+      { "name": "storedPath", "type": "String", "nullable": false },
+      { "name": "size", "type": "Long", "nullable": false }
+    ]
+  },
+  {
+    "tag": "cli",
+    "package": "oss",
+    "name": "ReadObjectAsText",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "objectKey", "type": "String", "nullable": false }
+    ],
+    "responseFields": [
+      { "name": "content", "type": "String", "nullable": false }
+    ]
+  },
+  {
+    "tag": "cli",
+    "package": "statistics",
+    "name": "ReportVideoPlayOnline",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "fileId", "type": "Long", "nullable": false },
+      { "name": "deviceId", "type": "String", "nullable": false }
+    ],
+    "responseFields": [
+      { "name": "current", "type": "Long", "nullable": false }
+    ]
+  },
+  {
+    "tag": "cli",
+    "package": "statistics",
+    "name": "ReportVideoSearchCount",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "keyword", "type": "String", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cli",
+    "package": "system",
+    "name": "GetSettings",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [],
+    "responseFields": [
+      { "name": "registerCoinCount", "type": "Int", "nullable": false },
+      { "name": "postVideoCoinCount", "type": "Int", "nullable": false },
+      { "name": "videoSize", "type": "Int", "nullable": false },
+      { "name": "videoPCount", "type": "Int", "nullable": false },
+      { "name": "videoCount", "type": "Int", "nullable": false },
+      { "name": "commentCount", "type": "Int", "nullable": false },
+      { "name": "danmukuCount", "type": "Int", "nullable": false },
+      { "name": "renameNicknameCoinCost", "type": "Int", "nullable": false }
+    ]
+  },
+  {
+    "tag": "cli",
+    "package": "system",
+    "name": "SaveSettings",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "registerCoinCount", "type": "Int", "nullable": false },
+      { "name": "postVideoCoinCount", "type": "Int", "nullable": false },
+      { "name": "videoSize", "type": "Int", "nullable": false },
+      { "name": "videoPCount", "type": "Int", "nullable": false },
+      { "name": "videoCount", "type": "Int", "nullable": false },
+      { "name": "commentCount", "type": "Int", "nullable": false },
+      { "name": "danmukuCount", "type": "Int", "nullable": false },
+      { "name": "renameNicknameCoinCost", "type": "Int", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cli",
+    "package": "video_encrypt",
+    "name": "EncryptHlsVariantWithKey",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "sourceDir", "type": "String", "nullable": false },
+      { "name": "outputDir", "type": "String", "nullable": false },
+      { "name": "quality", "type": "String", "nullable": false },
+      { "name": "keyPlainHex", "type": "String", "nullable": false },
+      { "name": "ivHex", "type": "String", "nullable": true },
+      { "name": "keyUriTemplate", "type": "String", "nullable": true },
+      { "name": "segmentExt", "type": "String", "nullable": false, "defaultValue": ".ts.enc" }
+    ],
+    "responseFields": [
+      { "name": "success", "type": "Boolean", "nullable": false, "defaultValue": "true" },
+      { "name": "playlistPath", "type": "String", "nullable": true },
+      { "name": "segmentPrefix", "type": "String", "nullable": true },
+      { "name": "segmentCount", "type": "Int", "nullable": true },
+      { "name": "failReason", "type": "String", "nullable": true }
+    ]
+  },
+  {
+    "tag": "cli",
+    "package": "video_encrypt",
+    "name": "EncryptHlsWithQualityKeys",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "sourceDir", "type": "String", "nullable": false },
+      { "name": "outputDir", "type": "String", "nullable": false },
+      { "name": "keysJson", "type": "String", "nullable": false },
+      { "name": "segmentExt", "type": "String", "nullable": false, "defaultValue": ".ts.enc" }
+    ],
+    "responseFields": [
+      { "name": "success", "type": "Boolean", "nullable": false, "defaultValue": "true" },
+      { "name": "encryptedMasterPath", "type": "String", "nullable": false },
+      { "name": "encryptedVariants", "type": "String", "nullable": false },
+      { "name": "failReason", "type": "String", "nullable": true }
+    ]
+  },
+  {
+    "tag": "cli",
+    "package": "video_encrypt",
+    "name": "GenerateEncryptedMasterByVariants",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "outputDir", "type": "String", "nullable": false },
+      { "name": "variantsJson", "type": "String", "nullable": false }
+    ],
+    "responseFields": [
+      { "name": "success", "type": "Boolean", "nullable": false, "defaultValue": "true" },
+      { "name": "masterPath", "type": "String", "nullable": true },
+      { "name": "failReason", "type": "String", "nullable": true }
+    ]
+  },
+  {
+    "tag": "cli",
+    "package": "video_transcode",
+    "name": "CleanupMergedMp4",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "mergedMp4Path", "type": "String", "nullable": false }
+    ],
+    "responseFields": [
+      { "name": "success", "type": "Boolean", "nullable": false, "defaultValue": "true" },
+      { "name": "failReason", "type": "String", "nullable": true }
+    ]
+  },
+  {
+    "tag": "cli",
+    "package": "video_transcode",
+    "name": "CleanupTempUploadDir",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "tempPath", "type": "String", "nullable": false }
+    ],
+    "responseFields": [
+      { "name": "success", "type": "Boolean", "nullable": false, "defaultValue": "true" },
+      { "name": "failReason", "type": "String", "nullable": true }
+    ]
+  },
+  {
+    "tag": "cli",
+    "package": "video_transcode",
+    "name": "GenerateVideoAbrMaster",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "outputPrefix", "type": "String", "nullable": false },
+      { "name": "variantsJson", "type": "String", "nullable": false }
+    ],
+    "responseFields": [
+      { "name": "success", "type": "Boolean", "nullable": false, "defaultValue": "true" },
+      { "name": "masterPath", "type": "String", "nullable": true },
+      { "name": "failReason", "type": "String", "nullable": true }
+    ]
+  },
+  {
+    "tag": "cli",
+    "package": "video_transcode",
+    "name": "MergeUploadToMp4ByPath",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "tempPath", "type": "String", "nullable": false },
+      { "name": "outputDir", "type": "String", "nullable": false }
+    ],
+    "responseFields": [
+      { "name": "success", "type": "Boolean", "nullable": false, "defaultValue": "true" },
+      { "name": "outputDir", "type": "String", "nullable": false },
+      { "name": "mergedMp4Path", "type": "String", "nullable": false },
+      { "name": "duration", "type": "Int", "nullable": true },
+      { "name": "fileSize", "type": "Long", "nullable": true },
+      { "name": "failReason", "type": "String", "nullable": true }
+    ]
+  },
+  {
+    "tag": "cli",
+    "package": "video_transcode",
+    "name": "MergeUploadToMp4",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "videoId", "type": "Long", "nullable": false },
+      { "name": "fileIndex", "type": "Int", "nullable": false },
+      { "name": "tempPath", "type": "String", "nullable": false }
+    ],
+    "responseFields": [
+      { "name": "success", "type": "Boolean", "nullable": false },
+      { "name": "outputDir", "type": "String", "nullable": false, "defaultValue": "" },
+      { "name": "mergedMp4Path", "type": "String", "nullable": false, "defaultValue": "" },
+      { "name": "duration", "type": "Int", "nullable": true },
+      { "name": "fileSize", "type": "Long", "nullable": true },
+      { "name": "failReason", "type": "String", "nullable": true }
+    ]
+  },
+  {
+    "tag": "cli",
+    "package": "video_transcode",
+    "name": "TranscodeVideoFileToAbrByPath",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "sourcePath", "type": "String", "nullable": false },
+      { "name": "outputDir", "type": "String", "nullable": false },
+      { "name": "profiles", "type": "String", "nullable": false },
+      { "name": "segmentDurationSec", "type": "Int", "nullable": false, "defaultValue": "6" }
+    ],
+    "responseFields": [
+      { "name": "accepted", "type": "Boolean", "nullable": false, "defaultValue": "true" },
+      { "name": "variantsJson", "type": "String", "nullable": false },
+      { "name": "failReason", "type": "String", "nullable": true }
+    ]
+  },
+  {
+    "tag": "cli",
+    "package": "video_transcode",
+    "name": "UploadVideoAbrOutput",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "outputDir", "type": "String", "nullable": false },
+      { "name": "objectPrefix", "type": "String", "nullable": false }
+    ],
+    "responseFields": [
+      { "name": "success", "type": "Boolean", "nullable": false, "defaultValue": "true" },
+      { "name": "storagePrefix", "type": "String", "nullable": true },
+      { "name": "failReason", "type": "String", "nullable": true }
+    ]
+  }
+]

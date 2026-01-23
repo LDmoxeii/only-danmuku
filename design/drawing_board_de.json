@@ -1,0 +1,1395 @@
+[
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.category.events",
+    "name": "CategoryBasicInfoUpdatedDomainEvent",
+    "desc": "",
+    "aggregates": ["Category"],
+    "entity": "Category",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "Category", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.category.events",
+    "name": "CategoryCodeChangedDomainEvent",
+    "desc": "",
+    "aggregates": ["Category"],
+    "entity": "Category",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "Category", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.category.events",
+    "name": "CategoryCreatedDomainEvent",
+    "desc": "",
+    "aggregates": ["Category"],
+    "entity": "Category",
+    "persist": false,
+    "requestFields": [
+      { "name": "id", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.category.events",
+    "name": "CategoryDeletedDomainEvent",
+    "desc": "",
+    "aggregates": ["Category"],
+    "entity": "Category",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "Category", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.category.events",
+    "name": "CategoryInfoUpdatedDomainEvent",
+    "desc": "",
+    "aggregates": ["Category"],
+    "entity": "Category",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "Category", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.category.events",
+    "name": "CategoryNodePathUpdatedDomainEvent",
+    "desc": "",
+    "aggregates": ["Category"],
+    "entity": "Category",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "Category", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.category.events",
+    "name": "CategoryParentChangedDomainEvent",
+    "desc": "",
+    "aggregates": ["Category"],
+    "entity": "Category",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "Category", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.category.events",
+    "name": "CategorySortChangedDomainEvent",
+    "desc": "",
+    "aggregates": ["Category"],
+    "entity": "Category",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "Category", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.category.events",
+    "name": "CategorySortOrderUpdatedDomainEvent",
+    "desc": "",
+    "aggregates": ["Category"],
+    "entity": "Category",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "Category", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.customer_action.events",
+    "name": "CustomerCoinGivenDomainEvent",
+    "desc": "",
+    "aggregates": ["CustomerAction"],
+    "entity": "CustomerAction",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "CustomerAction", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.customer_action.events",
+    "name": "CustomerCollectedVideoDomainEvent",
+    "desc": "",
+    "aggregates": ["CustomerAction"],
+    "entity": "CustomerAction",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "CustomerAction", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.customer_action.events",
+    "name": "CustomerDislikedCommentDomainEvent",
+    "desc": "",
+    "aggregates": ["CustomerAction"],
+    "entity": "CustomerAction",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "CustomerAction", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.customer_action.events",
+    "name": "CustomerLikedCommentDomainEvent",
+    "desc": "",
+    "aggregates": ["CustomerAction"],
+    "entity": "CustomerAction",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "CustomerAction", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.customer_action.events",
+    "name": "CustomerLikedVideoDomainEvent",
+    "desc": "",
+    "aggregates": ["CustomerAction"],
+    "entity": "CustomerAction",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "CustomerAction", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.customer_action.events",
+    "name": "CustomerUncollectedVideoDomainEvent",
+    "desc": "",
+    "aggregates": ["CustomerAction"],
+    "entity": "CustomerAction",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "CustomerAction", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.customer_action.events",
+    "name": "CustomerUndislikedCommentDomainEvent",
+    "desc": "",
+    "aggregates": ["CustomerAction"],
+    "entity": "CustomerAction",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "CustomerAction", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.customer_action.events",
+    "name": "CustomerUnlikedCommentDomainEvent",
+    "desc": "",
+    "aggregates": ["CustomerAction"],
+    "entity": "CustomerAction",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "CustomerAction", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.customer_action.events",
+    "name": "CustomerUnlikedVideoDomainEvent",
+    "desc": "",
+    "aggregates": ["CustomerAction"],
+    "entity": "CustomerAction",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "CustomerAction", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.customer_focus.events",
+    "name": "UserFocusedDomainEvent",
+    "desc": "",
+    "aggregates": ["CustomerFocus"],
+    "entity": "CustomerFocus",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "CustomerFocus", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.customer_focus.events",
+    "name": "UserUnfocusedDomainEvent",
+    "desc": "",
+    "aggregates": ["CustomerFocus"],
+    "entity": "CustomerFocus",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "CustomerFocus", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.customer_message.events",
+    "name": "CustomerMessageCollectionCreatedDomainEvent",
+    "desc": "",
+    "aggregates": ["CustomerMessage"],
+    "entity": "CustomerMessage",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "CustomerMessage", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.customer_message.events",
+    "name": "CustomerMessageCommentMentionCreatedDomainEvent",
+    "desc": "",
+    "aggregates": ["CustomerMessage"],
+    "entity": "CustomerMessage",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "CustomerMessage", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.customer_message.events",
+    "name": "CustomerMessageLikeCreatedDomainEvent",
+    "desc": "",
+    "aggregates": ["CustomerMessage"],
+    "entity": "CustomerMessage",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "CustomerMessage", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.customer_message.events",
+    "name": "CustomerMessagePrivateCreatedDomainEvent",
+    "desc": "",
+    "aggregates": ["CustomerMessage"],
+    "entity": "CustomerMessage",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "CustomerMessage", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.customer_message.events",
+    "name": "CustomerMessageSystemCreatedDomainEvent",
+    "desc": "",
+    "aggregates": ["CustomerMessage"],
+    "entity": "CustomerMessage",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "CustomerMessage", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.customer_profile.events",
+    "name": "CustomerAvatarUpdatedDomainEvent",
+    "desc": "",
+    "aggregates": ["CustomerProfile"],
+    "entity": "CustomerProfile",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "CustomerProfile", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.customer_profile.events",
+    "name": "CustomerNicknameUpdatedDomainEvent",
+    "desc": "",
+    "aggregates": ["CustomerProfile"],
+    "entity": "CustomerProfile",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "CustomerProfile", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.customer_profile.events",
+    "name": "CustomerProfileCoinsRewardedDomainEvent",
+    "desc": "",
+    "aggregates": ["CustomerProfile"],
+    "entity": "CustomerProfile",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "CustomerProfile", "nullable": false },
+      { "name": "amount", "type": "Int", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.customer_profile.events",
+    "name": "CustomerProfileCreatedDomainEvent",
+    "desc": "",
+    "aggregates": ["CustomerProfile"],
+    "entity": "CustomerProfile",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "CustomerProfile", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.customer_profile.events",
+    "name": "CustomerProfilePhoneChangedDomainEvent",
+    "desc": "",
+    "aggregates": ["CustomerProfile"],
+    "entity": "CustomerProfile",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "CustomerProfile", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.customer_profile.events",
+    "name": "CustomerProfileRewardCoinsReclaimedDomainEvent",
+    "desc": "",
+    "aggregates": ["CustomerProfile"],
+    "entity": "CustomerProfile",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "CustomerProfile", "nullable": false },
+      { "name": "deduction", "type": "Int", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.customer_profile.events",
+    "name": "CustomerProfileUpdatedDomainEvent",
+    "desc": "",
+    "aggregates": ["CustomerProfile"],
+    "entity": "CustomerProfile",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "CustomerProfile", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.customer_profile.events",
+    "name": "CustomerStatisticUpdatedDomainEvent",
+    "desc": "",
+    "aggregates": ["CustomerProfile"],
+    "entity": "CustomerProfile",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "CustomerProfile", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.statistics.events",
+    "name": "StatisticsBatchCalculatedDomainEvent",
+    "desc": "",
+    "aggregates": ["Statistics"],
+    "entity": "Statistics",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "Statistics", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.statistics.events",
+    "name": "StatisticsCountUpdatedDomainEvent",
+    "desc": "",
+    "aggregates": ["Statistics"],
+    "entity": "Statistics",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "Statistics", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.statistics.events",
+    "name": "StatisticsInfoAddedDomainEvent",
+    "desc": "",
+    "aggregates": ["Statistics"],
+    "entity": "Statistics",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "Statistics", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.statistics.events",
+    "name": "StatisticsInfoDeletedDomainEvent",
+    "desc": "",
+    "aggregates": ["Statistics"],
+    "entity": "Statistics",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "Statistics", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.statistics.events",
+    "name": "StatisticsInfoUpdatedDomainEvent",
+    "desc": "",
+    "aggregates": ["Statistics"],
+    "entity": "Statistics",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "Statistics", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.user.events",
+    "name": "AccountDeletedDomainEvent",
+    "desc": "",
+    "aggregates": ["User"],
+    "entity": "User",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "User", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.user.events",
+    "name": "AccountDisabledDomainEvent",
+    "desc": "",
+    "aggregates": ["User"],
+    "entity": "User",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "User", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.user.events",
+    "name": "AccountEnabledDomainEvent",
+    "desc": "",
+    "aggregates": ["User"],
+    "entity": "User",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "User", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.user.events",
+    "name": "LoginInfoUpdatedDomainEvent",
+    "desc": "",
+    "aggregates": ["User"],
+    "entity": "User",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "User", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.user.events",
+    "name": "PasswordChangedDomainEvent",
+    "desc": "",
+    "aggregates": ["User"],
+    "entity": "User",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "User", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.user.events",
+    "name": "PasswordResetDomainEvent",
+    "desc": "",
+    "aggregates": ["User"],
+    "entity": "User",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "User", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.user.events",
+    "name": "RelationshipBoundDomainEvent",
+    "desc": "",
+    "aggregates": ["User"],
+    "entity": "User",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "User", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.user.events",
+    "name": "UserCreatedDomainEvent",
+    "desc": "",
+    "aggregates": ["User"],
+    "entity": "User",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "User", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.user.events",
+    "name": "UserLoginFailedDomainEvent",
+    "desc": "",
+    "aggregates": ["User"],
+    "entity": "User",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "User", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.user.events",
+    "name": "UserLoginSuccessfulDomainEvent",
+    "desc": "",
+    "aggregates": ["User"],
+    "entity": "User",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "User", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.user.events",
+    "name": "UserPhoneChangedDomainEvent",
+    "desc": "",
+    "aggregates": ["User"],
+    "entity": "User",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "User", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.user_login_log.events",
+    "name": "PasswordInputFailedDomainEvent",
+    "desc": "",
+    "aggregates": ["UserLoginLog"],
+    "entity": "UserLoginLog",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "UserLoginLog", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video.events",
+    "name": "VideoBasicsSyncedDomainEvent",
+    "desc": "",
+    "aggregates": ["Video"],
+    "entity": "Video",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "Video", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video.events",
+    "name": "VideoCoinCountDeltaAppliedDomainEvent",
+    "desc": "",
+    "aggregates": ["Video"],
+    "entity": "Video",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "Video", "nullable": false },
+      { "name": "delta", "type": "Int", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video.events",
+    "name": "VideoCollectCountDeltaAppliedDomainEvent",
+    "desc": "",
+    "aggregates": ["Video"],
+    "entity": "Video",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "Video", "nullable": false },
+      { "name": "delta", "type": "Int", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video.events",
+    "name": "VideoCommentCountDeltaAppliedDomainEvent",
+    "desc": "",
+    "aggregates": ["Video"],
+    "entity": "Video",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "Video", "nullable": false },
+      { "name": "delta", "type": "Int", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video.events",
+    "name": "VideoCreatedDomainEvent",
+    "desc": "",
+    "aggregates": ["Video"],
+    "entity": "Video",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "Video", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video.events",
+    "name": "VideoDanmukuCountDeltaAppliedDomainEvent",
+    "desc": "",
+    "aggregates": ["Video"],
+    "entity": "Video",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "Video", "nullable": false },
+      { "name": "delta", "type": "Int", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video.events",
+    "name": "VideoDeletedDomainEvent",
+    "desc": "",
+    "aggregates": ["Video"],
+    "entity": "Video",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "Video", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video.events",
+    "name": "VideoInteractionChangedDomainEvent",
+    "desc": "",
+    "aggregates": ["Video"],
+    "entity": "Video",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "Video", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video.events",
+    "name": "VideoLastPlayTimeAttachedDomainEvent",
+    "desc": "",
+    "aggregates": ["Video"],
+    "entity": "Video",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "Video", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video.events",
+    "name": "VideoLikeCountDeltaAppliedDomainEvent",
+    "desc": "",
+    "aggregates": ["Video"],
+    "entity": "Video",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "Video", "nullable": false },
+      { "name": "delta", "type": "Int", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video.events",
+    "name": "VideoPlayCountDeltaAppliedDomainEvent",
+    "desc": "",
+    "aggregates": ["Video"],
+    "entity": "Video",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "Video", "nullable": false },
+      { "name": "delta", "type": "Int", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video.events",
+    "name": "VideoPlayCountIncreasedDomainEvent",
+    "desc": "",
+    "aggregates": ["Video"],
+    "entity": "Video",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "Video", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video.events",
+    "name": "VideoRecommendedDomainEvent",
+    "desc": "",
+    "aggregates": ["Video"],
+    "entity": "Video",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "Video", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video.events",
+    "name": "VideoUnrecommendedDomainEvent",
+    "desc": "",
+    "aggregates": ["Video"],
+    "entity": "Video",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "Video", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video_audit_trace.events",
+    "name": "VideoAuditTraceRecordedDomainEvent",
+    "desc": "",
+    "aggregates": ["VideoAuditTrace"],
+    "entity": "VideoAuditTrace",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "VideoAuditTrace", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video_comment.events",
+    "name": "CommentDeletedDomainEvent",
+    "desc": "",
+    "aggregates": ["VideoComment"],
+    "entity": "VideoComment",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "VideoComment", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video_comment.events",
+    "name": "CommentHateCountUpdatedDomainEvent",
+    "desc": "",
+    "aggregates": ["VideoComment"],
+    "entity": "VideoComment",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "VideoComment", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video_comment.events",
+    "name": "CommentLikeCountUpdatedDomainEvent",
+    "desc": "",
+    "aggregates": ["VideoComment"],
+    "entity": "VideoComment",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "VideoComment", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video_comment.events",
+    "name": "CommentPostedDomainEvent",
+    "desc": "",
+    "aggregates": ["VideoComment"],
+    "entity": "VideoComment",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "VideoComment", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video_comment.events",
+    "name": "CommentRepliedDomainEvent",
+    "desc": "",
+    "aggregates": ["VideoComment"],
+    "entity": "VideoComment",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "VideoComment", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video_comment.events",
+    "name": "CommentToppedDomainEvent",
+    "desc": "",
+    "aggregates": ["VideoComment"],
+    "entity": "VideoComment",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "VideoComment", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video_comment.events",
+    "name": "CommentUntoppedDomainEvent",
+    "desc": "",
+    "aggregates": ["VideoComment"],
+    "entity": "VideoComment",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "VideoComment", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video_danmuku.events",
+    "name": "DanmukuBatchDeletedDomainEvent",
+    "desc": "",
+    "aggregates": ["VideoDanmuku"],
+    "entity": "VideoDanmuku",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "VideoDanmuku", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video_danmuku.events",
+    "name": "DanmukuDeletedDomainEvent",
+    "desc": "",
+    "aggregates": ["VideoDanmuku"],
+    "entity": "VideoDanmuku",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "VideoDanmuku", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video_danmuku.events",
+    "name": "DanmukuPostedDomainEvent",
+    "desc": "",
+    "aggregates": ["VideoDanmuku"],
+    "entity": "VideoDanmuku",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "VideoDanmuku", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video_file_upload_session.events",
+    "name": "UploadSessionAbortedDomainEvent",
+    "desc": "",
+    "aggregates": ["VideoFileUploadSession"],
+    "entity": "VideoFileUploadSession",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "VideoFileUploadSession", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video_file_upload_session.events",
+    "name": "UploadSessionCreatedDomainEvent",
+    "desc": "",
+    "aggregates": ["VideoFileUploadSession"],
+    "entity": "VideoFileUploadSession",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "VideoFileUploadSession", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video_file_upload_session.events",
+    "name": "VideoFileUploadSessionAbortedDomainEvent",
+    "desc": "",
+    "aggregates": ["VideoFileUploadSession"],
+    "entity": "VideoFileUploadSession",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "VideoFileUploadSession", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video_file_upload_session.events",
+    "name": "VideoFileUploadSessionChunkUploadedDomainEvent",
+    "desc": "",
+    "aggregates": ["VideoFileUploadSession"],
+    "entity": "VideoFileUploadSession",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "VideoFileUploadSession", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video_file_upload_session.events",
+    "name": "VideoFileUploadSessionMarkedDoneDomainEvent",
+    "desc": "",
+    "aggregates": ["VideoFileUploadSession"],
+    "entity": "VideoFileUploadSession",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "VideoFileUploadSession", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video_hls_encrypt_key.events",
+    "name": "VideoHlsEncryptKeyCreatedDomainEvent",
+    "desc": "",
+    "aggregates": ["VideoHlsEncryptKey"],
+    "entity": "VideoHlsEncryptKey",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "VideoHlsEncryptKey", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video_hls_key_token.events",
+    "name": "VideoHlsKeyTokenIssuedDomainEvent",
+    "desc": "",
+    "aggregates": ["VideoHlsKeyToken"],
+    "entity": "VideoHlsKeyToken",
+    "persist": true,
+    "requestFields": [
+      { "name": "entity", "type": "VideoHlsKeyToken", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video_play_history.events",
+    "name": "PlayHistoryAddedDomainEvent",
+    "desc": "",
+    "aggregates": ["VideoPlayHistory"],
+    "entity": "VideoPlayHistory",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "VideoPlayHistory", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video_play_history.events",
+    "name": "PlayHistoryBatchAddedDomainEvent",
+    "desc": "",
+    "aggregates": ["VideoPlayHistory"],
+    "entity": "VideoPlayHistory",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "VideoPlayHistory", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video_play_history.events",
+    "name": "PlayHistoryClearedDomainEvent",
+    "desc": "",
+    "aggregates": ["VideoPlayHistory"],
+    "entity": "VideoPlayHistory",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "VideoPlayHistory", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video_play_history.events",
+    "name": "PlayHistoryDeletedDomainEvent",
+    "desc": "",
+    "aggregates": ["VideoPlayHistory"],
+    "entity": "VideoPlayHistory",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "VideoPlayHistory", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video_play_history.events",
+    "name": "PlayProgressUpdatedDomainEvent",
+    "desc": "",
+    "aggregates": ["VideoPlayHistory"],
+    "entity": "VideoPlayHistory",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "VideoPlayHistory", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video_play_history.events",
+    "name": "VideoPlayHistoryCreatedDomainEvent",
+    "desc": "",
+    "aggregates": ["VideoPlayHistory"],
+    "entity": "VideoPlayHistory",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "VideoPlayHistory", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video_play_history.events",
+    "name": "VideoPlayHistoryProgressUpdatedDomainEvent",
+    "desc": "",
+    "aggregates": ["VideoPlayHistory"],
+    "entity": "VideoPlayHistory",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "VideoPlayHistory", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video_post.events",
+    "name": "VideoAuditFailedDomainEvent",
+    "desc": "",
+    "aggregates": ["VideoPost"],
+    "entity": "VideoPost",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "VideoPost", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video_post.events",
+    "name": "VideoAuditPassedDomainEvent",
+    "desc": "",
+    "aggregates": ["VideoPost"],
+    "entity": "VideoPost",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "VideoPost", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video_post.events",
+    "name": "VideoDraftSubmittedDomainEvent",
+    "desc": "",
+    "aggregates": ["VideoPost"],
+    "entity": "VideoPost",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "VideoPost", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video_post.events",
+    "name": "VideoFileDraftTranscodedDomainEvent",
+    "desc": "",
+    "aggregates": ["VideoPost"],
+    "entity": "VideoPost",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "VideoFilePost", "nullable": false },
+      { "name": "success", "type": "Boolean", "nullable": false },
+      { "name": "errorMessage", "type": "String", "nullable": true }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video_post.events",
+    "name": "VideoPostCreatedDomainEvent",
+    "desc": "",
+    "aggregates": ["VideoPost"],
+    "entity": "VideoPost",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "VideoPost", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video_post.events",
+    "name": "VideoPostDeletedDomainEvent",
+    "desc": "",
+    "aggregates": ["VideoPost"],
+    "entity": "VideoPost",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "VideoPost", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video_post.events",
+    "name": "VideoPostInteractionChangedDomainEvent",
+    "desc": "",
+    "aggregates": ["VideoPost"],
+    "entity": "VideoPost",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "VideoPost", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video_post.events",
+    "name": "VideoPostTranscodingRequestedDomainEvent",
+    "desc": "",
+    "aggregates": ["VideoPost"],
+    "entity": "VideoPost",
+    "persist": true,
+    "requestFields": [
+      { "name": "videoPostId", "type": "Long", "nullable": false },
+      { "name": "fileList", "type": "List<FileItem>", "nullable": false },
+      { "name": "fileList[].uploadId", "type": "Long", "nullable": false },
+      { "name": "fileList[].fileIndex", "type": "Int", "nullable": false },
+      { "name": "fileList[].fileName", "type": "String", "nullable": true },
+      { "name": "fileList[].fileSize", "type": "Long", "nullable": true },
+      { "name": "fileList[].duration", "type": "Int", "nullable": true },
+      { "name": "entity", "type": "VideoPost", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video_post.events",
+    "name": "VideoPostTranscodingRequiredDomainEvent",
+    "desc": "",
+    "aggregates": ["VideoPost"],
+    "entity": "VideoPost",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "VideoPost", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video_post.events",
+    "name": "VideoTransferredToProductionDomainEvent",
+    "desc": "",
+    "aggregates": ["VideoPost"],
+    "entity": "VideoPost",
+    "persist": false,
+    "requestFields": [
+      { "name": "entity", "type": "VideoPost", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video_post_processing.events",
+    "name": "VideoPostProcessingCompletedDomainEvent",
+    "desc": "",
+    "aggregates": ["VideoPostProcessing"],
+    "entity": "VideoPostProcessing",
+    "persist": false,
+    "requestFields": [
+      { "name": "videoPostId", "type": "Long", "nullable": false },
+      { "name": "duration", "type": "Int", "nullable": true },
+      { "name": "failedCount", "type": "Int", "nullable": false },
+      { "name": "lastFailReason", "type": "String", "nullable": true },
+      { "name": "entity", "type": "VideoPostProcessing", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video_post_processing.events",
+    "name": "VideoPostProcessingEncryptContextPreparedDomainEvent",
+    "desc": "",
+    "aggregates": ["VideoPostProcessing"],
+    "entity": "VideoPostProcessing",
+    "persist": false,
+    "requestFields": [
+      { "name": "videoPostId", "type": "Long", "nullable": false },
+      { "name": "fileIndex", "type": "Int", "nullable": false },
+      { "name": "keyVersion", "type": "Int", "nullable": false },
+      { "name": "transcodeOutputPrefix", "type": "String", "nullable": true },
+      { "name": "encryptOutputDir", "type": "String", "nullable": true },
+      { "name": "variantsJson", "type": "String", "nullable": true },
+      { "name": "entity", "type": "VideoPostProcessing", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video_post_processing.events",
+    "name": "VideoPostProcessingFileEncryptCompletedDomainEvent",
+    "desc": "",
+    "aggregates": ["VideoPostProcessing"],
+    "entity": "VideoPostProcessing",
+    "persist": false,
+    "requestFields": [
+      { "name": "videoPostId", "type": "Long", "nullable": false },
+      { "name": "fileIndex", "type": "Int", "nullable": false },
+      { "name": "entity", "type": "VideoPostProcessing", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video_post_processing.events",
+    "name": "VideoPostProcessingStartedDomainEvent",
+    "desc": "",
+    "aggregates": ["VideoPostProcessing"],
+    "entity": "VideoPostProcessing",
+    "persist": false,
+    "requestFields": [
+      { "name": "videoPostId", "type": "Long", "nullable": false },
+      { "name": "fileList", "type": "List<FileItem>", "nullable": false },
+      { "name": "fileList[].uploadId", "type": "Long", "nullable": false },
+      { "name": "fileList[].fileIndex", "type": "Int", "nullable": false },
+      { "name": "fileList[].outputDir", "type": "String", "nullable": false },
+      { "name": "fileList[].objectPrefix", "type": "String", "nullable": false },
+      { "name": "fileList[].encOutputDir", "type": "String", "nullable": false },
+      { "name": "entity", "type": "VideoPostProcessing", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "de",
+    "package": "edu.only4.danmuku.domain.aggregates.video_post_processing.events",
+    "name": "VideoPostProcessingTranscodeCompletedDomainEvent",
+    "desc": "",
+    "aggregates": ["VideoPostProcessing"],
+    "entity": "VideoPostProcessing",
+    "persist": false,
+    "requestFields": [
+      { "name": "videoPostId", "type": "Long", "nullable": false },
+      { "name": "fileIndex", "type": "Int", "nullable": false },
+      { "name": "outputPrefix", "type": "String", "nullable": true },
+      { "name": "encOutputDir", "type": "String", "nullable": true },
+      { "name": "variantsJson", "type": "String", "nullable": true },
+      { "name": "entity", "type": "VideoPostProcessing", "nullable": false }
+    ],
+    "responseFields": []
+  }
+]

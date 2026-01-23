@@ -1,0 +1,1476 @@
+[
+  {
+    "tag": "payload",
+    "package": "account",
+    "name": "accountLogin",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "email", "type": "String", "nullable": false },
+      { "name": "password", "type": "String", "nullable": false },
+      { "name": "checkCodeKey", "type": "String", "nullable": false },
+      { "name": "checkCode", "type": "String", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "account",
+    "name": "accountRegister",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "email", "type": "String", "nullable": false },
+      { "name": "nickName", "type": "String", "nullable": false },
+      { "name": "registerPassword", "type": "String", "nullable": false },
+      { "name": "checkCodeKey", "type": "String", "nullable": false },
+      { "name": "checkCode", "type": "String", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "account",
+    "name": "changePassword",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "oldPassword", "type": "String", "nullable": false },
+      { "name": "newPassword", "type": "String", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "account",
+    "name": "checkCode",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "account",
+    "name": "getUserCountInfo",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "account",
+    "name": "loginBySms",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "phone", "type": "String", "nullable": false },
+      { "name": "smsCode", "type": "String", "nullable": false },
+      { "name": "captchaId", "type": "String", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "account",
+    "name": "sendSmsCode",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "scene", "type": "String", "nullable": false },
+      { "name": "phone", "type": "String", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "admin_account",
+    "name": "checkCode",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "admin_account",
+    "name": "login",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "account", "type": "String", "nullable": false, "defaultValue": "" },
+      { "name": "password", "type": "String", "nullable": false, "defaultValue": "" },
+      { "name": "checkCode", "type": "String", "nullable": false, "defaultValue": "" },
+      { "name": "checkCodeKey", "type": "String", "nullable": false, "defaultValue": "" }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "admin_category",
+    "name": "changeCategorySort",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "parentId", "type": "Long", "nullable": false },
+      { "name": "categoryIds", "type": "String", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "admin_category",
+    "name": "deleteCategory",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "categoryId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "admin_category",
+    "name": "getCategoryTree",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [],
+    "responseFields": [
+      { "name": "categoryId", "type": "Long", "nullable": false },
+      { "name": "categoryCode", "type": "String", "nullable": false },
+      { "name": "categoryName", "type": "String", "nullable": false },
+      { "name": "parentId", "type": "Long", "nullable": true },
+      { "name": "icon", "type": "String", "nullable": true },
+      { "name": "background", "type": "String", "nullable": true },
+      { "name": "sort", "type": "Int", "nullable": false },
+      { "name": "children", "type": "List<Item>", "nullable": false }
+    ]
+  },
+  {
+    "tag": "payload",
+    "package": "admin_category",
+    "name": "saveCategory",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "pCategoryId", "type": "Long", "nullable": false },
+      { "name": "categoryCode", "type": "String", "nullable": false },
+      { "name": "categoryName", "type": "String", "nullable": false },
+      { "name": "icon", "type": "String", "nullable": true },
+      { "name": "background", "type": "String", "nullable": true }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "admin_category",
+    "name": "updateCategory",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "pCategoryId", "type": "Long", "nullable": false },
+      { "name": "categoryId", "type": "Long", "nullable": false },
+      { "name": "categoryCode", "type": "String", "nullable": false },
+      { "name": "categoryName", "type": "String", "nullable": false },
+      { "name": "icon", "type": "String", "nullable": true },
+      { "name": "background", "type": "String", "nullable": true }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "admin_index",
+    "name": "getActualTimeStatistics",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "admin_index",
+    "name": "getWeekStatisticsInfo",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "dataType", "type": "Int", "nullable": false, "defaultValue": "0" }
+    ],
+    "responseFields": [
+      { "name": "statisticsDate", "type": "Long", "nullable": false },
+      { "name": "statisticsCount", "type": "Int", "nullable": false }
+    ]
+  },
+  {
+    "tag": "payload",
+    "package": "admin_interact",
+    "name": "deleteComment",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "commentId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "admin_interact",
+    "name": "deleteDanmuku",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "danmukuId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "admin_interact",
+    "name": "getDanmukuPage",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "videoNameFuzzy", "type": "String", "nullable": true }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "admin_interact",
+    "name": "getVideoCommentPage",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "videoNameFuzzy", "type": "String", "nullable": true }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "admin_setting",
+    "name": "getSetting",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "admin_setting",
+    "name": "saveSetting",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "registerCoinCount", "type": "Int", "nullable": false },
+      { "name": "postVideoCoinCount", "type": "Int", "nullable": false },
+      { "name": "videoSize", "type": "Int", "nullable": false },
+      { "name": "videoPCount", "type": "Int", "nullable": false },
+      { "name": "videoCount", "type": "Int", "nullable": false },
+      { "name": "commentCount", "type": "Int", "nullable": false },
+      { "name": "danmukuCount", "type": "Int", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "admin_user",
+    "name": "changeStatus",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "userId", "type": "Long", "nullable": false },
+      { "name": "status", "type": "Int", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "admin_user",
+    "name": "getUserPage",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "nickNameFuzzy", "type": "String", "nullable": true },
+      { "name": "status", "type": "Int", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "userId", "type": "Long", "nullable": false },
+      { "name": "avatar", "type": "String", "nullable": true },
+      { "name": "nickName", "type": "String", "nullable": true },
+      { "name": "email", "type": "String", "nullable": true },
+      { "name": "birthday", "type": "String", "nullable": true },
+      { "name": "joinTime", "type": "Long", "nullable": false },
+      { "name": "lastLoginTime", "type": "Long", "nullable": true },
+      { "name": "sex", "type": "Int", "nullable": true },
+      { "name": "lastLoginIp", "type": "String", "nullable": true },
+      { "name": "personIntroduction", "type": "String", "nullable": true },
+      { "name": "currentCoinCount", "type": "Int", "nullable": true },
+      { "name": "totalCoinCount", "type": "Int", "nullable": true },
+      { "name": "status", "type": "Int", "nullable": true }
+    ]
+  },
+  {
+    "tag": "payload",
+    "package": "admin_video",
+    "name": "auditVideo",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "videoId", "type": "Long", "nullable": false },
+      { "name": "status", "type": "Int", "nullable": false },
+      { "name": "reason", "type": "String", "nullable": true }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "admin_video",
+    "name": "deleteVideo",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "videoId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "admin_video",
+    "name": "getVideoPList",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "videoId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": [
+      { "name": "fileId", "type": "String", "nullable": true },
+      { "name": "videoId", "type": "String", "nullable": true },
+      { "name": "fileIndex", "type": "Int", "nullable": true },
+      { "name": "fileName", "type": "String", "nullable": true },
+      { "name": "fileSize", "type": "Long", "nullable": true },
+      { "name": "filePath", "type": "String", "nullable": true },
+      { "name": "duration", "type": "Int", "nullable": true }
+    ]
+  },
+  {
+    "tag": "payload",
+    "package": "admin_video",
+    "name": "getVideoPage",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "videoNameFuzzy", "type": "String", "nullable": true },
+      { "name": "categoryParentId", "type": "Long", "nullable": true },
+      { "name": "categoryId", "type": "Long", "nullable": true },
+      { "name": "recommendType", "type": "Int", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "videoId", "type": "String", "nullable": true },
+      { "name": "videoCover", "type": "String", "nullable": true },
+      { "name": "videoName", "type": "String", "nullable": true },
+      { "name": "userId", "type": "String", "nullable": true },
+      { "name": "nickName", "type": "String", "nullable": true },
+      { "name": "duration", "type": "Int", "nullable": true },
+      { "name": "postType", "type": "Int", "nullable": true },
+      { "name": "originInfo", "type": "String", "nullable": true },
+      { "name": "tags", "type": "String", "nullable": true },
+      { "name": "introduction", "type": "String", "nullable": true },
+      { "name": "status", "type": "Int", "nullable": false },
+      { "name": "statusName", "type": "String", "nullable": true },
+      { "name": "createTime", "type": "Long", "nullable": false },
+      { "name": "lastUpdateTime", "type": "Long", "nullable": true },
+      { "name": "playCount", "type": "Int", "nullable": true },
+      { "name": "likeCount", "type": "Int", "nullable": true },
+      { "name": "danmukuCount", "type": "Int", "nullable": true },
+      { "name": "commentCount", "type": "Int", "nullable": true },
+      { "name": "coinCount", "type": "Int", "nullable": true },
+      { "name": "collectCount", "type": "Int", "nullable": true },
+      { "name": "recommendType", "type": "Int", "nullable": true }
+    ]
+  },
+  {
+    "tag": "payload",
+    "package": "admin_video",
+    "name": "recommendVideo",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "videoId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "admin_video_abr",
+    "name": "getVariants",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "fileId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "category",
+    "name": "getCategoryTree",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [],
+    "responseFields": [
+      { "name": "categoryId", "type": "Long", "nullable": false },
+      { "name": "categoryCode", "type": "String", "nullable": false },
+      { "name": "categoryName", "type": "String", "nullable": false },
+      { "name": "parentCategoryId", "type": "Long", "nullable": false },
+      { "name": "icon", "type": "String", "nullable": true },
+      { "name": "background", "type": "String", "nullable": true },
+      { "name": "sort", "type": "Int", "nullable": false },
+      { "name": "children", "type": "List<Item>", "nullable": false }
+    ]
+  },
+  {
+    "tag": "payload",
+    "package": "file",
+    "name": "deleteUploadSession",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "uploadId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "file",
+    "name": "preUploadVideo",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "fileName", "type": "String", "nullable": false },
+      { "name": "chunks", "type": "Int", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "file",
+    "name": "uploadVideo",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "chunkIndex", "type": "Int", "nullable": false, "defaultValue": "0" },
+      { "name": "uploadId", "type": "String", "nullable": false, "defaultValue": "" }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "setting",
+    "name": "getSetting",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "u_center_interact",
+    "name": "deleteComment",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "commentId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "u_center_interact",
+    "name": "deleteDanmuku",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "danmukuId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "u_center_interact",
+    "name": "getAllVideoList",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [],
+    "responseFields": [
+      { "name": "videoId", "type": "String", "nullable": true },
+      { "name": "videoCover", "type": "String", "nullable": true },
+      { "name": "videoName", "type": "String", "nullable": true },
+      { "name": "createTime", "type": "Long", "nullable": false }
+    ]
+  },
+  {
+    "tag": "payload",
+    "package": "u_center_interact",
+    "name": "getCommentPage",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "videoId", "type": "Long", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "commentId", "type": "String", "nullable": true },
+      { "name": "avatar", "type": "String", "nullable": true },
+      { "name": "videoId", "type": "String", "nullable": true },
+      { "name": "videoName", "type": "String", "nullable": true },
+      { "name": "videoCover", "type": "String", "nullable": false },
+      { "name": "content", "type": "String", "nullable": true },
+      { "name": "imgPath", "type": "String", "nullable": true },
+      { "name": "userId", "type": "String", "nullable": true },
+      { "name": "nickName", "type": "String", "nullable": true },
+      { "name": "replyNickName", "type": "String", "nullable": true },
+      { "name": "postTime", "type": "Long", "nullable": false }
+    ]
+  },
+  {
+    "tag": "payload",
+    "package": "u_center_interact",
+    "name": "getDanmukuPage",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "videoId", "type": "Long", "nullable": true }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "u_center_statistics",
+    "name": "getActualTimeStatistics",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "u_center_statistics",
+    "name": "getWeekStatisticsInfo",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "dataType", "type": "Int", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "statisticsDate", "type": "Long", "nullable": false },
+      { "name": "statisticsCount", "type": "Int", "nullable": false }
+    ]
+  },
+  {
+    "tag": "payload",
+    "package": "u_center_video_post",
+    "name": "deleteVideo",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "videoId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "u_center_video_post",
+    "name": "getVideoByVideoId",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "videoId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "u_center_video_post",
+    "name": "getVideoPostCountInfo",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "u_center_video_post",
+    "name": "getVideoPostPage",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "status", "type": "VideoStatus", "nullable": true },
+      { "name": "videoNameFuzzy", "type": "String", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "videoPostId", "type": "Long", "nullable": false },
+      { "name": "videoId", "type": "Long", "nullable": true },
+      { "name": "videoCover", "type": "String", "nullable": true },
+      { "name": "videoName", "type": "String", "nullable": true },
+      { "name": "duration", "type": "Int", "nullable": true },
+      { "name": "createTime", "type": "Long", "nullable": false },
+      { "name": "lastUpdateTime", "type": "Long", "nullable": true },
+      { "name": "status", "type": "Int", "nullable": true },
+      { "name": "statusName", "type": "String", "nullable": true },
+      { "name": "interaction", "type": "String", "nullable": true },
+      { "name": "playCount", "type": "Int", "nullable": true },
+      { "name": "likeCount", "type": "Int", "nullable": true },
+      { "name": "danmukuCount", "type": "Int", "nullable": true },
+      { "name": "commentCount", "type": "Int", "nullable": true },
+      { "name": "coinCount", "type": "Int", "nullable": true },
+      { "name": "collectCount", "type": "Int", "nullable": true }
+    ]
+  },
+  {
+    "tag": "payload",
+    "package": "u_center_video_post",
+    "name": "saveVideoPost",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "videoCover", "type": "String", "nullable": false },
+      { "name": "videoName", "type": "String", "nullable": false },
+      { "name": "parentCategoryId", "type": "Long", "nullable": false },
+      { "name": "categoryId", "type": "Long", "nullable": true },
+      { "name": "postType", "type": "PostType", "nullable": false },
+      { "name": "originInfo", "type": "String", "nullable": true },
+      { "name": "tags", "type": "String", "nullable": false },
+      { "name": "introduction", "type": "String", "nullable": true },
+      { "name": "interaction", "type": "String", "nullable": true },
+      { "name": "uploadFileList", "type": "String", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "u_center_video_post",
+    "name": "saveVideoPostInteraction",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "videoPostId", "type": "Long", "nullable": false },
+      { "name": "interaction", "type": "String", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "u_center_video_post",
+    "name": "updateVideoPost",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "videoPostId", "type": "Long", "nullable": false },
+      { "name": "videoCover", "type": "String", "nullable": false },
+      { "name": "videoName", "type": "String", "nullable": false },
+      { "name": "parentCategoryId", "type": "Long", "nullable": false },
+      { "name": "categoryId", "type": "Long", "nullable": true },
+      { "name": "postType", "type": "PostType", "nullable": false },
+      { "name": "originInfo", "type": "String", "nullable": true },
+      { "name": "tags", "type": "String", "nullable": false },
+      { "name": "introduction", "type": "String", "nullable": true },
+      { "name": "interaction", "type": "String", "nullable": true },
+      { "name": "uploadFileList", "type": "String", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "u_home",
+    "name": "bindPhone",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "phone", "type": "String", "nullable": false },
+      { "name": "smsCode", "type": "String", "nullable": false },
+      { "name": "captchaId", "type": "String", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "u_home",
+    "name": "cancelFocus",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "focusUserId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "u_home",
+    "name": "focus",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "focusUserId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "u_home",
+    "name": "getCollectionPage",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "userId", "type": "Long", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "actionId", "type": "Long", "nullable": false },
+      { "name": "videoId", "type": "String", "nullable": false },
+      { "name": "videoUserId", "type": "String", "nullable": false },
+      { "name": "commentId", "type": "Long", "nullable": false },
+      { "name": "actionType", "type": "Int", "nullable": false },
+      { "name": "actionCount", "type": "Int", "nullable": false },
+      { "name": "userId", "type": "String", "nullable": false },
+      { "name": "actionTime", "type": "Long", "nullable": false },
+      { "name": "videoName", "type": "String", "nullable": false },
+      { "name": "videoCover", "type": "String", "nullable": false }
+    ]
+  },
+  {
+    "tag": "payload",
+    "package": "u_home",
+    "name": "getCustomerProfileDetail",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "userId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "u_home",
+    "name": "getFansPage",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [],
+    "responseFields": [
+      { "name": "otherUserId", "type": "String", "nullable": true },
+      { "name": "otherNickName", "type": "String", "nullable": true },
+      { "name": "otherPersonIntroduction", "type": "String", "nullable": true },
+      { "name": "otherAvatar", "type": "String", "nullable": true },
+      { "name": "focusType", "type": "Int", "nullable": true }
+    ]
+  },
+  {
+    "tag": "payload",
+    "package": "u_home",
+    "name": "getFocusPage",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [],
+    "responseFields": [
+      { "name": "otherUserId", "type": "String", "nullable": true },
+      { "name": "otherNickName", "type": "String", "nullable": true },
+      { "name": "otherPersonIntroduction", "type": "String", "nullable": true },
+      { "name": "otherAvatar", "type": "String", "nullable": true },
+      { "name": "focusType", "type": "Int", "nullable": true }
+    ]
+  },
+  {
+    "tag": "payload",
+    "package": "u_home",
+    "name": "getVideoPage",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "userId", "type": "Long", "nullable": false },
+      { "name": "type", "type": "Int", "nullable": true },
+      { "name": "videoName", "type": "String", "nullable": true },
+      { "name": "orderType", "type": "Int", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "videoId", "type": "String", "nullable": true },
+      { "name": "videoCover", "type": "String", "nullable": true },
+      { "name": "videoName", "type": "String", "nullable": true },
+      { "name": "createTime", "type": "Long", "nullable": false },
+      { "name": "playCount", "type": "Int", "nullable": true },
+      { "name": "likeCount", "type": "Int", "nullable": true },
+      { "name": "danmukuCount", "type": "Int", "nullable": true },
+      { "name": "commentCount", "type": "Int", "nullable": true }
+    ]
+  },
+  {
+    "tag": "payload",
+    "package": "u_home",
+    "name": "saveTheme",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "theme", "type": "Int", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "u_home",
+    "name": "updateCustomerProfile",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "nickName", "type": "String", "nullable": false },
+      { "name": "avatar", "type": "String", "nullable": false },
+      { "name": "sex", "type": "Int", "nullable": false },
+      { "name": "birthday", "type": "String", "nullable": true },
+      { "name": "school", "type": "String", "nullable": true },
+      { "name": "personIntroduction", "type": "String", "nullable": true },
+      { "name": "noticeInfo", "type": "String", "nullable": true }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "user_action",
+    "name": "doAction",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "videoId", "type": "Long", "nullable": false },
+      { "name": "actionType", "type": "Int", "nullable": false },
+      { "name": "actionCount", "type": "Int", "nullable": false, "defaultValue": "1" },
+      { "name": "commentId", "type": "Long", "nullable": true }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "user_message",
+    "name": "deleteMessage",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "messageId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "user_message",
+    "name": "getMessagePage",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "messageType", "type": "Int", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "messageId", "type": "Long", "nullable": false },
+      { "name": "messageType", "type": "Int", "nullable": false },
+      { "name": "readType", "type": "Int", "nullable": false },
+      { "name": "extendDto", "type": "UserMessageExtend", "nullable": true },
+      { "name": "createTime", "type": "Long", "nullable": false },
+      { "name": "videoPostId", "type": "Long", "nullable": true },
+      { "name": "videoId", "type": "Long", "nullable": true },
+      { "name": "videoName", "type": "String", "nullable": true },
+      { "name": "videoCover", "type": "String", "nullable": true },
+      { "name": "sendUserId", "type": "Long", "nullable": true },
+      { "name": "sendUserName", "type": "String", "nullable": true },
+      { "name": "sendUserAvatar", "type": "String", "nullable": true }
+    ]
+  },
+  {
+    "tag": "payload",
+    "package": "user_message",
+    "name": "getNoReadCountGroup",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [],
+    "responseFields": [
+      { "name": "messageType", "type": "Int", "nullable": false },
+      { "name": "messageCount", "type": "Int", "nullable": false }
+    ]
+  },
+  {
+    "tag": "payload",
+    "package": "user_message",
+    "name": "readAllMessage",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "messageType", "type": "Int", "nullable": true }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "video",
+    "name": "getHotVidePage",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [],
+    "responseFields": [
+      { "name": "videoId", "type": "Long", "nullable": false },
+      { "name": "videoCover", "type": "String", "nullable": true },
+      { "name": "videoName", "type": "String", "nullable": true },
+      { "name": "userId", "type": "Long", "nullable": true },
+      { "name": "createTime", "type": "Long", "nullable": false },
+      { "name": "lastUpdateTime", "type": "Long", "nullable": true },
+      { "name": "parentCategoryId", "type": "Long", "nullable": false },
+      { "name": "categoryId", "type": "Long", "nullable": true },
+      { "name": "postType", "type": "Int", "nullable": false },
+      { "name": "originInfo", "type": "String", "nullable": true },
+      { "name": "tags", "type": "String", "nullable": true },
+      { "name": "introduction", "type": "String", "nullable": true },
+      { "name": "duration", "type": "Int", "nullable": false },
+      { "name": "playCount", "type": "Int", "nullable": false },
+      { "name": "likeCount", "type": "Int", "nullable": false },
+      { "name": "danmukuCount", "type": "Int", "nullable": false },
+      { "name": "commentCount", "type": "Int", "nullable": false },
+      { "name": "coinCount", "type": "Int", "nullable": false },
+      { "name": "collectCount", "type": "Int", "nullable": false },
+      { "name": "recommendType", "type": "Int", "nullable": false },
+      { "name": "lastPlayTime", "type": "Long", "nullable": true },
+      { "name": "nickName", "type": "String", "nullable": true },
+      { "name": "avatar", "type": "String", "nullable": true },
+      { "name": "categoryFullName", "type": "String", "nullable": true }
+    ]
+  },
+  {
+    "tag": "payload",
+    "package": "video",
+    "name": "getRecommendVideoList",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [],
+    "responseFields": [
+      { "name": "videoId", "type": "String", "nullable": true },
+      { "name": "videoCover", "type": "String", "nullable": true },
+      { "name": "videoName", "type": "String", "nullable": true },
+      { "name": "userId", "type": "String", "nullable": true },
+      { "name": "nickName", "type": "String", "nullable": true },
+      { "name": "avatar", "type": "String", "nullable": true },
+      { "name": "playCount", "type": "Int", "nullable": true },
+      { "name": "likeCount", "type": "Int", "nullable": true },
+      { "name": "createTime", "type": "Long", "nullable": false }
+    ]
+  },
+  {
+    "tag": "payload",
+    "package": "video",
+    "name": "getVideoDetail",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "videoId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "video",
+    "name": "getVideoPList",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "videoId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "video",
+    "name": "getVideoPage",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "parentCategoryId", "type": "Long", "nullable": true },
+      { "name": "categoryId", "type": "Long", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "videoId", "type": "Long", "nullable": false },
+      { "name": "videoCover", "type": "String", "nullable": true },
+      { "name": "videoName", "type": "String", "nullable": true },
+      { "name": "userId", "type": "Long", "nullable": true },
+      { "name": "createTime", "type": "Long", "nullable": false },
+      { "name": "lastUpdateTime", "type": "Long", "nullable": true },
+      { "name": "parentCategoryId", "type": "Long", "nullable": false },
+      { "name": "categoryId", "type": "Long", "nullable": true },
+      { "name": "postType", "type": "Int", "nullable": false },
+      { "name": "originInfo", "type": "String", "nullable": true },
+      { "name": "tags", "type": "String", "nullable": true },
+      { "name": "introduction", "type": "String", "nullable": true },
+      { "name": "duration", "type": "Int", "nullable": false },
+      { "name": "playCount", "type": "Int", "nullable": false },
+      { "name": "likeCount", "type": "Int", "nullable": false },
+      { "name": "danmukuCount", "type": "Int", "nullable": false },
+      { "name": "commentCount", "type": "Int", "nullable": false },
+      { "name": "coinCount", "type": "Int", "nullable": false },
+      { "name": "collectCount", "type": "Int", "nullable": false },
+      { "name": "recommendType", "type": "Int", "nullable": false },
+      { "name": "lastPlayTime", "type": "Long", "nullable": true },
+      { "name": "nickName", "type": "String", "nullable": true },
+      { "name": "avatar", "type": "String", "nullable": true },
+      { "name": "categoryFullName", "type": "String", "nullable": true }
+    ]
+  },
+  {
+    "tag": "payload",
+    "package": "video",
+    "name": "getVideoRecommendList",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "keyword", "type": "String", "nullable": false, "defaultValue": "" },
+      { "name": "videoId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": [
+      { "name": "videoId", "type": "Long", "nullable": false },
+      { "name": "videoCover", "type": "String", "nullable": true },
+      { "name": "videoName", "type": "String", "nullable": true },
+      { "name": "userId", "type": "Long", "nullable": true },
+      { "name": "createTime", "type": "Long", "nullable": false },
+      { "name": "lastUpdateTime", "type": "Long", "nullable": true },
+      { "name": "parentCategoryId", "type": "Long", "nullable": false },
+      { "name": "categoryId", "type": "Long", "nullable": true },
+      { "name": "postType", "type": "Int", "nullable": false },
+      { "name": "originInfo", "type": "String", "nullable": true },
+      { "name": "tags", "type": "String", "nullable": true },
+      { "name": "introduction", "type": "String", "nullable": true },
+      { "name": "duration", "type": "Int", "nullable": false },
+      { "name": "status", "type": "Int", "nullable": false },
+      { "name": "playCount", "type": "Int", "nullable": false },
+      { "name": "likeCount", "type": "Int", "nullable": false },
+      { "name": "danmukuCount", "type": "Int", "nullable": false },
+      { "name": "commentCount", "type": "Int", "nullable": false },
+      { "name": "coinCount", "type": "Int", "nullable": false },
+      { "name": "collectCount", "type": "Int", "nullable": false },
+      { "name": "recommendType", "type": "Int", "nullable": false },
+      { "name": "lastPlayTime", "type": "Long", "nullable": true },
+      { "name": "nickName", "type": "String", "nullable": true },
+      { "name": "avatar", "type": "String", "nullable": true },
+      { "name": "categoryFullName", "type": "String", "nullable": true }
+    ]
+  },
+  {
+    "tag": "payload",
+    "package": "video",
+    "name": "reportVideoPlayOnline",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "fileId", "type": "Long", "nullable": false },
+      { "name": "deviceId", "type": "String", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "video",
+    "name": "videoSearch",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "keyword", "type": "String", "nullable": false, "defaultValue": "" },
+      { "name": "orderType", "type": "Int", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "videoId", "type": "Long", "nullable": false },
+      { "name": "videoCover", "type": "String", "nullable": true },
+      { "name": "videoName", "type": "String", "nullable": true },
+      { "name": "userId", "type": "Long", "nullable": true },
+      { "name": "createTime", "type": "Long", "nullable": false },
+      { "name": "lastUpdateTime", "type": "Long", "nullable": true },
+      { "name": "parentCategoryId", "type": "Long", "nullable": false },
+      { "name": "categoryId", "type": "Long", "nullable": true },
+      { "name": "postType", "type": "Int", "nullable": false },
+      { "name": "originInfo", "type": "String", "nullable": true },
+      { "name": "tags", "type": "String", "nullable": true },
+      { "name": "introduction", "type": "String", "nullable": true },
+      { "name": "duration", "type": "Int", "nullable": false },
+      { "name": "playCount", "type": "Int", "nullable": false },
+      { "name": "likeCount", "type": "Int", "nullable": false },
+      { "name": "danmukuCount", "type": "Int", "nullable": false },
+      { "name": "commentCount", "type": "Int", "nullable": false },
+      { "name": "coinCount", "type": "Int", "nullable": false },
+      { "name": "collectCount", "type": "Int", "nullable": false },
+      { "name": "recommendType", "type": "Int", "nullable": false },
+      { "name": "lastPlayTime", "type": "Long", "nullable": true },
+      { "name": "nickName", "type": "String", "nullable": true },
+      { "name": "avatar", "type": "String", "nullable": true },
+      { "name": "categoryFullName", "type": "String", "nullable": true }
+    ]
+  },
+  {
+    "tag": "payload",
+    "package": "video_abr",
+    "name": "getVideoVariants",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "fileId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "video_comment",
+    "name": "cancelTopComment",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "commentId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "video_comment",
+    "name": "deleteComment",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "commentId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "video_comment",
+    "name": "getCommentPage",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "videoId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "video_comment",
+    "name": "postComment",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "videoId", "type": "Long", "nullable": false },
+      { "name": "replyCommentId", "type": "Long", "nullable": true },
+      { "name": "content", "type": "String", "nullable": false },
+      { "name": "imgPath", "type": "String", "nullable": true }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "video_comment",
+    "name": "topComment",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "commentId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "video_danmuku",
+    "name": "getDanmukuList",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "fileId", "type": "Long", "nullable": false },
+      { "name": "videoId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": [
+      { "name": "danmukuId", "type": "String", "nullable": true },
+      { "name": "fileId", "type": "String", "nullable": true },
+      { "name": "videoId", "type": "String", "nullable": true },
+      { "name": "userId", "type": "String", "nullable": true },
+      { "name": "text", "type": "String", "nullable": true },
+      { "name": "mode", "type": "Int", "nullable": true },
+      { "name": "color", "type": "String", "nullable": true },
+      { "name": "time", "type": "Int", "nullable": true },
+      { "name": "postTime", "type": "Long", "nullable": true },
+      { "name": "videoName", "type": "String", "nullable": true },
+      { "name": "videoCover", "type": "String", "nullable": true },
+      { "name": "nickName", "type": "String", "nullable": true }
+    ]
+  },
+  {
+    "tag": "payload",
+    "package": "video_danmuku",
+    "name": "postDanmuku",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "videoId", "type": "Long", "nullable": false },
+      { "name": "fileId", "type": "Long", "nullable": false },
+      { "name": "text", "type": "String", "nullable": false },
+      { "name": "mode", "type": "Int", "nullable": false },
+      { "name": "color", "type": "String", "nullable": false },
+      { "name": "time", "type": "Int", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "video_encrypt",
+    "name": "getVideEncVariants",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "fileId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "video_encrypt",
+    "name": "issueToken",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "fileId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "video_history",
+    "name": "deleteVideoHistory",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "videoId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "video_history",
+    "name": "getHistoryPage",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [],
+    "responseFields": [
+      { "name": "historyId", "type": "String", "nullable": true },
+      { "name": "videoId", "type": "String", "nullable": true },
+      { "name": "videoName", "type": "String", "nullable": true },
+      { "name": "videoCover", "type": "String", "nullable": true },
+      { "name": "fileIndex", "type": "Int", "nullable": true },
+      { "name": "playTime", "type": "Long", "nullable": true }
+    ]
+  },
+  {
+    "tag": "payload",
+    "package": "video_series",
+    "name": "changeVideoSeriesSort",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "seriesIds", "type": "String", "nullable": false, "defaultValue": "" }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "video_series",
+    "name": "deleteSeriesVideo",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "seriesId", "type": "Long", "nullable": false },
+      { "name": "videoId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "video_series",
+    "name": "deleteVideoSeries",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "seriesId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "video_series",
+    "name": "getAllSeriesVideoList",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "seriesId", "type": "Long", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "videoId", "type": "String", "nullable": true },
+      { "name": "videoCover", "type": "String", "nullable": true },
+      { "name": "videoName", "type": "String", "nullable": true },
+      { "name": "playCount", "type": "Int", "nullable": true },
+      { "name": "createTime", "type": "Long", "nullable": false }
+    ]
+  },
+  {
+    "tag": "payload",
+    "package": "video_series",
+    "name": "getVideoSeriesDetail",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "seriesId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "video_series",
+    "name": "loadVideoSeriesWithVideo",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "userId", "type": "Long", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "seriesId", "type": "String", "nullable": true },
+      { "name": "seriesName", "type": "String", "nullable": true },
+      { "name": "seriesDescription", "type": "String", "nullable": true },
+      { "name": "sort", "type": "Int", "nullable": true },
+      { "name": "videoInfoList", "type": "List<VideoInfoItem>", "nullable": true },
+      { "name": "videoInfoList[].videoId", "type": "String", "nullable": true },
+      { "name": "videoInfoList[].videoCover", "type": "String", "nullable": true },
+      { "name": "videoInfoList[].videoName", "type": "String", "nullable": true },
+      { "name": "videoInfoList[].playCount", "type": "Int", "nullable": true }
+    ]
+  },
+  {
+    "tag": "payload",
+    "package": "video_series",
+    "name": "saveSeriesVideo",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "seriesId", "type": "Long", "nullable": false },
+      { "name": "videoIds", "type": "String", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "video_series",
+    "name": "saveVideoSeries",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "seriesId", "type": "Long", "nullable": true },
+      { "name": "seriesName", "type": "String", "nullable": false },
+      { "name": "seriesDescription", "type": "String", "nullable": true },
+      { "name": "videoIds", "type": "String", "nullable": true }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "video_series",
+    "name": "videoSeriesLoad",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "userId", "type": "Long", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "seriesId", "type": "String", "nullable": true },
+      { "name": "seriesName", "type": "String", "nullable": true },
+      { "name": "seriesDescription", "type": "String", "nullable": true },
+      { "name": "sort", "type": "Int", "nullable": true },
+      { "name": "videoCount", "type": "Int", "nullable": true },
+      { "name": "cover", "type": "String", "nullable": true },
+      { "name": "createTime", "type": "Long", "nullable": true },
+      { "name": "updateTime", "type": "Long", "nullable": true }
+    ]
+  },
+  {
+    "tag": "payload",
+    "package": "video_storage",
+    "name": "frontGetAbrMaster",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "fileId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "video_transcode",
+    "name": "adminGetAbrMaster",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "filePostId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "video_transcode",
+    "name": "adminGetAbrPlaylist",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "filePostId", "type": "Long", "nullable": false },
+      { "name": "quality", "type": "String", "nullable": false }
+    ],
+    "responseFields": [
+      { "name": "playlistPath", "type": "String", "nullable": false }
+    ]
+  },
+  {
+    "tag": "payload",
+    "package": "video_transcode",
+    "name": "adminGetAbrSegment",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "fileId", "type": "Long", "nullable": false },
+      { "name": "quality", "type": "String", "nullable": false },
+      { "name": "ts", "type": "String", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "video_transcode",
+    "name": "frontGetAbrMaster",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "fileId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "payload",
+    "package": "video_transcode",
+    "name": "frontGetAbrPlaylist",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "fileId", "type": "Long", "nullable": false },
+      { "name": "quality", "type": "String", "nullable": false }
+    ],
+    "responseFields": [
+      { "name": "playlistPath", "type": "String", "nullable": false }
+    ]
+  },
+  {
+    "tag": "payload",
+    "package": "video_transcode",
+    "name": "frontGetAbrSegment",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "fileId", "type": "Long", "nullable": false },
+      { "name": "quality", "type": "String", "nullable": false },
+      { "name": "ts", "type": "String", "nullable": false }
+    ],
+    "responseFields": []
+  }
+]

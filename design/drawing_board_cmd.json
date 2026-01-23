@@ -1,0 +1,1377 @@
+[
+  {
+    "tag": "cmd",
+    "package": "category",
+    "name": "CreateCategory",
+    "desc": "",
+    "aggregates": ["Category"],
+    "requestFields": [
+      { "name": "parentId", "type": "Long", "nullable": false, "defaultValue": "0" },
+      { "name": "code", "type": "String", "nullable": false },
+      { "name": "name", "type": "String", "nullable": false },
+      { "name": "icon", "type": "String", "nullable": true },
+      { "name": "background", "type": "String", "nullable": true },
+      { "name": "sort", "type": "Byte", "nullable": true }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "category",
+    "name": "DeleteCategory",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "categoryId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "category",
+    "name": "FinalizeCategoryAfterCreate",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "categoryId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "category",
+    "name": "UpdateCategoryInfo",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "categoryId", "type": "Long", "nullable": false },
+      { "name": "parentId", "type": "Long", "nullable": false, "defaultValue": "0" },
+      { "name": "code", "type": "String", "nullable": false },
+      { "name": "name", "type": "String", "nullable": false },
+      { "name": "icon", "type": "String", "nullable": true },
+      { "name": "background", "type": "String", "nullable": true }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "category",
+    "name": "UpdateCategorySortOrder",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "parentId", "type": "Long", "nullable": false, "defaultValue": "0" },
+      { "name": "categoryIds", "type": "List<Long>", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "customer_action",
+    "name": "CollectVideo",
+    "desc": "",
+    "aggregates": ["CustomerAction"],
+    "requestFields": [
+      { "name": "videoId", "type": "Long", "nullable": false },
+      { "name": "customerId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": [
+      { "name": "isCancel", "type": "Boolean", "nullable": false }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "customer_action",
+    "name": "DislikeComment",
+    "desc": "",
+    "aggregates": ["CustomerAction"],
+    "requestFields": [
+      { "name": "videoId", "type": "Long", "nullable": false },
+      { "name": "commentId", "type": "Long", "nullable": false },
+      { "name": "customerId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": [
+      { "name": "isCancel", "type": "Boolean", "nullable": false },
+      { "name": "hadOpposite", "type": "Boolean", "nullable": false }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "customer_action",
+    "name": "GiveVideoCoin",
+    "desc": "",
+    "aggregates": ["CustomerAction"],
+    "requestFields": [
+      { "name": "videoId", "type": "Long", "nullable": false },
+      { "name": "customerId", "type": "Long", "nullable": false },
+      { "name": "coinCount", "type": "Int", "nullable": false },
+      { "name": "actionType", "type": "ActionType", "nullable": false }
+    ],
+    "responseFields": [
+      { "name": "coinCount", "type": "Int", "nullable": false }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "customer_action",
+    "name": "LikeComment",
+    "desc": "",
+    "aggregates": ["CustomerAction"],
+    "requestFields": [
+      { "name": "videoId", "type": "Long", "nullable": false },
+      { "name": "commentId", "type": "Long", "nullable": false },
+      { "name": "customerId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": [
+      { "name": "isCancel", "type": "Boolean", "nullable": false },
+      { "name": "hadOpposite", "type": "Boolean", "nullable": false }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "customer_action",
+    "name": "LikeVideo",
+    "desc": "",
+    "aggregates": ["CustomerAction"],
+    "requestFields": [
+      { "name": "videoId", "type": "Long", "nullable": false },
+      { "name": "customerId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": [
+      { "name": "isCancel", "type": "Boolean", "nullable": false }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "customer_focus",
+    "name": "Focus",
+    "desc": "",
+    "aggregates": ["CustomerFocus"],
+    "requestFields": [
+      { "name": "userId", "type": "Long", "nullable": false },
+      { "name": "focusUserId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "customer_focus",
+    "name": "UnFocus",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "userId", "type": "Long", "nullable": false },
+      { "name": "focusUserId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "customer_message",
+    "name": "DeleteMessage",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "customerId", "type": "Long", "nullable": false },
+      { "name": "messageId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "customer_message",
+    "name": "MarkAllAsRead",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "customerId", "type": "Long", "nullable": false },
+      { "name": "messageType", "type": "Int", "nullable": true }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "customer_message",
+    "name": "SendCollectMessage",
+    "desc": "",
+    "aggregates": ["CustomerMessage"],
+    "requestFields": [
+      { "name": "videoId", "type": "Long", "nullable": false },
+      { "name": "sendUserId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "customer_message",
+    "name": "SendCommentMessage",
+    "desc": "",
+    "aggregates": ["CustomerMessage"],
+    "requestFields": [
+      { "name": "videoId", "type": "Long", "nullable": false },
+      { "name": "sendUserId", "type": "Long", "nullable": false },
+      { "name": "content", "type": "String", "nullable": true }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "customer_message",
+    "name": "SendLikeMessage",
+    "desc": "",
+    "aggregates": ["CustomerMessage"],
+    "requestFields": [
+      { "name": "videoId", "type": "Long", "nullable": false },
+      { "name": "sendUserId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "customer_message",
+    "name": "SendReplyMessage",
+    "desc": "",
+    "aggregates": ["CustomerMessage"],
+    "requestFields": [
+      { "name": "videoId", "type": "Long", "nullable": false },
+      { "name": "sendUserId", "type": "Long", "nullable": false },
+      { "name": "content", "type": "String", "nullable": true },
+      { "name": "replyCommentId", "type": "Long", "nullable": false },
+      { "name": "replyCommentContent", "type": "String", "nullable": true }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "customer_message",
+    "name": "SendVideoAuditFailedMessage",
+    "desc": "",
+    "aggregates": ["CustomerMessage"],
+    "requestFields": [
+      { "name": "videoId", "type": "Long", "nullable": false },
+      { "name": "operatorId", "type": "Long", "nullable": true },
+      { "name": "messageContent", "type": "String", "nullable": true }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "customer_message",
+    "name": "SendVideoAuditPassedMessage",
+    "desc": "",
+    "aggregates": ["CustomerMessage"],
+    "requestFields": [
+      { "name": "videoId", "type": "Long", "nullable": false },
+      { "name": "operatorId", "type": "Long", "nullable": true }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "customer_profile",
+    "name": "AdjustAuthorCoinAfterDelete",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "authorId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": [
+      { "name": "deducted", "type": "Boolean", "nullable": false },
+      { "name": "coinAmount", "type": "Int", "nullable": false }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "customer_profile",
+    "name": "BindPhone",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "customerProfileId", "type": "Long", "nullable": false },
+      { "name": "phone", "type": "String", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "customer_profile",
+    "name": "CreateCustomerProfile",
+    "desc": "",
+    "aggregates": ["CustomerProfile"],
+    "requestFields": [
+      { "name": "userid", "type": "Long", "nullable": false },
+      { "name": "nickName", "type": "String", "nullable": false },
+      { "name": "email", "type": "String", "nullable": false },
+      { "name": "registerCoinCount", "type": "Int", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "customer_profile",
+    "name": "RewardUserForVideo",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "customerId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": [
+      { "name": "rewarded", "type": "Boolean", "nullable": false },
+      { "name": "coinAmount", "type": "Int", "nullable": false }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "customer_profile",
+    "name": "SpendCoinsForNicknameChange",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "customerId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "customer_profile",
+    "name": "TransferCoin",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "senderUserId", "type": "Long", "nullable": false },
+      { "name": "receiverUserId", "type": "Long", "nullable": false },
+      { "name": "amount", "type": "Int", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "customer_profile",
+    "name": "UpdateCustomerProfile",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "customerId", "type": "Long", "nullable": false },
+      { "name": "nickName", "type": "String", "nullable": true },
+      { "name": "avatar", "type": "String", "nullable": true },
+      { "name": "sex", "type": "Int", "nullable": true },
+      { "name": "birthday", "type": "String", "nullable": true },
+      { "name": "school", "type": "String", "nullable": true },
+      { "name": "personIntroduction", "type": "String", "nullable": true },
+      { "name": "noticeInfo", "type": "String", "nullable": true },
+      { "name": "theme", "type": "Int", "nullable": true }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "customer_video_series",
+    "name": "CreateCustomerVideoSeries",
+    "desc": "",
+    "aggregates": ["CustomerVideoSeries"],
+    "requestFields": [
+      { "name": "userId", "type": "Long", "nullable": false },
+      { "name": "seriesId", "type": "Long", "nullable": true },
+      { "name": "seriesName", "type": "String", "nullable": false },
+      { "name": "seriesDescription", "type": "String", "nullable": true },
+      { "name": "videoIds", "type": "String", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "seriesId", "type": "Long", "nullable": false }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "customer_video_series",
+    "name": "DeleteVideoSeries",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "userId", "type": "Long", "nullable": false },
+      { "name": "seriesId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "customer_video_series",
+    "name": "RemoveVideoFromSeries",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "seriesId", "type": "Long", "nullable": false },
+      { "name": "videoId", "type": "Long", "nullable": false },
+      { "name": "operatorId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": [
+      { "name": "deleted", "type": "Boolean", "nullable": false }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "customer_video_series",
+    "name": "UpdateCustomerVideoSeriesInfo",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "userId", "type": "Long", "nullable": false },
+      { "name": "seriesId", "type": "Long", "nullable": false },
+      { "name": "seriesName", "type": "String", "nullable": false },
+      { "name": "seriesDescription", "type": "String", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "seriesId", "type": "Long", "nullable": false }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "customer_video_series",
+    "name": "UpdateCustomerVideoSeriesVideos",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "userId", "type": "Long", "nullable": false },
+      { "name": "seriesId", "type": "Long", "nullable": false },
+      { "name": "videoIds", "type": "String", "nullable": true },
+      { "name": "isDelete", "type": "Boolean", "nullable": false, "defaultValue": "false" }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "customer_video_series",
+    "name": "UpdateVideoSeriesSort",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "userId", "type": "Long", "nullable": false },
+      { "name": "seriesIds", "type": "List<Long>", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "file_upload_session",
+    "name": "CreateUploadSession",
+    "desc": "",
+    "aggregates": ["VideoFileUploadSession"],
+    "requestFields": [
+      { "name": "customerId", "type": "Long", "nullable": false },
+      { "name": "fileName", "type": "String", "nullable": false },
+      { "name": "chunks", "type": "Int", "nullable": false }
+    ],
+    "responseFields": [
+      { "name": "uploadId", "type": "Long", "nullable": false }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "file_upload_session",
+    "name": "DeleteUploadSession",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "customerId", "type": "Long", "nullable": false },
+      { "name": "uploadId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": [
+      { "name": "tempPath", "type": "String", "nullable": true }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "file_upload_session",
+    "name": "UploadVideoChunk",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "customerId", "type": "Long", "nullable": false },
+      { "name": "uploadId", "type": "Long", "nullable": false },
+      { "name": "chunkIndex", "type": "Int", "nullable": false },
+      { "name": "chunkSize", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "statistics",
+    "name": "UpdateStatisticsInfo",
+    "desc": "",
+    "aggregates": ["Statistics"],
+    "requestFields": [
+      { "name": "customerId", "type": "Long", "nullable": false },
+      { "name": "dataType", "type": "StatisticsDataType", "nullable": false },
+      { "name": "countDelta", "type": "Int", "nullable": false, "defaultValue": "1" }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "user",
+    "name": "ChangePassword",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "userId", "type": "Long", "nullable": false },
+      { "name": "oldPassword", "type": "String", "nullable": false },
+      { "name": "newPassword", "type": "String", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "user",
+    "name": "ChangeUserPhone",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "userId", "type": "Long", "nullable": false },
+      { "name": "phone", "type": "String", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "user",
+    "name": "ChangeUserStatus",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "userId", "type": "Long", "nullable": false },
+      { "name": "status", "type": "Boolean", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "user",
+    "name": "RegisterAccount",
+    "desc": "",
+    "aggregates": ["User"],
+    "requestFields": [
+      { "name": "email", "type": "String", "nullable": false },
+      { "name": "nickName", "type": "String", "nullable": false },
+      { "name": "registerPassword", "type": "String", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "user",
+    "name": "RelationProfile",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "userId", "type": "Long", "nullable": false },
+      { "name": "profileId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "user",
+    "name": "UpdateLoginInfo",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "userId", "type": "Long", "nullable": false },
+      { "name": "loginIp", "type": "String", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "user_behavior",
+    "name": "RecordAbnormalOperation",
+    "desc": "",
+    "aggregates": ["UserAbnormalOperationLog"],
+    "requestFields": [
+      { "name": "userId", "type": "Long", "nullable": false },
+      { "name": "userType", "type": "UserType", "nullable": false },
+      { "name": "opType", "type": "AbnormalOpType", "nullable": false },
+      { "name": "ip", "type": "String", "nullable": false },
+      { "name": "occurTime", "type": "Long", "nullable": true },
+      { "name": "description", "type": "String", "nullable": true },
+      { "name": "extra", "type": "String", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "abnormalOperationLogId", "type": "Long", "nullable": false }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "user_behavior",
+    "name": "RecordLoginLog",
+    "desc": "",
+    "aggregates": ["UserLoginLog"],
+    "requestFields": [
+      { "name": "userId", "type": "Long", "nullable": true },
+      { "name": "userType", "type": "UserType", "nullable": false },
+      { "name": "loginName", "type": "String", "nullable": false },
+      { "name": "loginType", "type": "LoginType", "nullable": false },
+      { "name": "result", "type": "LoginResult", "nullable": false },
+      { "name": "ip", "type": "String", "nullable": false },
+      { "name": "userAgent", "type": "String", "nullable": true },
+      { "name": "reason", "type": "String", "nullable": true },
+      { "name": "occurTime", "type": "Long", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "logId", "type": "Long", "nullable": false }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "video",
+    "name": "ApplyVideoCoinCountDelta",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "videoId", "type": "Long", "nullable": false },
+      { "name": "delta", "type": "Int", "nullable": false, "defaultValue": "1" }
+    ],
+    "responseFields": [
+      { "name": "videoId", "type": "Long", "nullable": false },
+      { "name": "coinCount", "type": "Int", "nullable": false },
+      { "name": "appliedDelta", "type": "Int", "nullable": false }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "video",
+    "name": "ApplyVideoCollectCountDelta",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "videoId", "type": "Long", "nullable": false },
+      { "name": "delta", "type": "Int", "nullable": false, "defaultValue": "1" }
+    ],
+    "responseFields": [
+      { "name": "videoId", "type": "Long", "nullable": false },
+      { "name": "collectCount", "type": "Int", "nullable": false },
+      { "name": "appliedDelta", "type": "Int", "nullable": false }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "video",
+    "name": "ApplyVideoCommentCountDelta",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "videoId", "type": "Long", "nullable": false },
+      { "name": "delta", "type": "Int", "nullable": false, "defaultValue": "1" }
+    ],
+    "responseFields": [
+      { "name": "videoId", "type": "Long", "nullable": false },
+      { "name": "commentCount", "type": "Int", "nullable": false },
+      { "name": "appliedDelta", "type": "Int", "nullable": false }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "video",
+    "name": "ApplyVideoDanmukuCountDelta",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "videoId", "type": "Long", "nullable": false },
+      { "name": "delta", "type": "Int", "nullable": false, "defaultValue": "1" }
+    ],
+    "responseFields": [
+      { "name": "videoId", "type": "Long", "nullable": false },
+      { "name": "danmukuCount", "type": "Int", "nullable": false },
+      { "name": "appliedDelta", "type": "Int", "nullable": false }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "video",
+    "name": "ApplyVideoLikeCountDelta",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "videoId", "type": "Long", "nullable": false },
+      { "name": "delta", "type": "Int", "nullable": false, "defaultValue": "1" }
+    ],
+    "responseFields": [
+      { "name": "videoId", "type": "Long", "nullable": false },
+      { "name": "likeCount", "type": "Int", "nullable": false },
+      { "name": "appliedDelta", "type": "Int", "nullable": false }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "video",
+    "name": "ApplyVideoPlayCountDelta",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "videoId", "type": "Long", "nullable": false },
+      { "name": "delta", "type": "Int", "nullable": false, "defaultValue": "1" }
+    ],
+    "responseFields": [
+      { "name": "videoId", "type": "Long", "nullable": false },
+      { "name": "playCount", "type": "Int", "nullable": false },
+      { "name": "appliedDelta", "type": "Int", "nullable": false }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "video",
+    "name": "ChangeVideoInteraction",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "videoId", "type": "Long", "nullable": false },
+      { "name": "userId", "type": "Long", "nullable": false },
+      { "name": "interaction", "type": "String", "nullable": true }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "video",
+    "name": "DeleteVideo",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "videoPostId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "video",
+    "name": "RecommendVideo",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "videoId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "video",
+    "name": "TransferVideoToProduction",
+    "desc": "",
+    "aggregates": ["Video"],
+    "requestFields": [
+      { "name": "videoPostId", "type": "Long", "nullable": false },
+      { "name": "customerId", "type": "Long", "nullable": false },
+      { "name": "videoCover", "type": "String", "nullable": false },
+      { "name": "videoName", "type": "String", "nullable": false },
+      { "name": "parentCategoryId", "type": "Long", "nullable": false },
+      { "name": "categoryId", "type": "Long", "nullable": true },
+      { "name": "postType", "type": "Int", "nullable": false },
+      { "name": "originInfo", "type": "String", "nullable": true },
+      { "name": "tags", "type": "String", "nullable": true },
+      { "name": "introduction", "type": "String", "nullable": true },
+      { "name": "interaction", "type": "String", "nullable": true },
+      { "name": "duration", "type": "Int", "nullable": false }
+    ],
+    "responseFields": [
+      { "name": "videoId", "type": "Long", "nullable": false }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "video_comment",
+    "name": "ApplyCustomerDislikedComment",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "commentId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "video_comment",
+    "name": "ApplyCustomerLikedComment",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "commentId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "video_comment",
+    "name": "ApplyCustomerUndislikedComment",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "commentId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "video_comment",
+    "name": "ApplyCustomerUnlikedComment",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "commentId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "video_comment",
+    "name": "BatchDeleteComment",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "videoId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "video_comment",
+    "name": "DeleteVideoComment",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "commentId", "type": "Long", "nullable": false },
+      { "name": "operatorId", "type": "Long", "nullable": true }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "video_comment",
+    "name": "PostComment",
+    "desc": "",
+    "aggregates": ["VideoComment"],
+    "requestFields": [
+      { "name": "videoId", "type": "Long", "nullable": false },
+      { "name": "replyCommentId", "type": "Long", "nullable": true },
+      { "name": "customerId", "type": "Long", "nullable": false },
+      { "name": "replyCustomerId", "type": "Long", "nullable": false },
+      { "name": "content", "type": "String", "nullable": false },
+      { "name": "imgPath", "type": "String", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "commentId", "type": "Long", "nullable": false }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "video_comment",
+    "name": "TopComment",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "commentId", "type": "Long", "nullable": false },
+      { "name": "operatorId", "type": "Long", "nullable": true }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "video_comment",
+    "name": "UntopComment",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "commentId", "type": "Long", "nullable": false },
+      { "name": "operatorId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "video_danmuku",
+    "name": "BatchDeleteDanmuku",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "videoId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "video_danmuku",
+    "name": "DeleteVideoDanmuku",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "danmukuId", "type": "Long", "nullable": false },
+      { "name": "operatorId", "type": "Long", "nullable": true }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "video_danmuku",
+    "name": "PostDanmuku",
+    "desc": "",
+    "aggregates": ["VideoDanmuku"],
+    "requestFields": [
+      { "name": "videoId", "type": "Long", "nullable": false },
+      { "name": "fileId", "type": "Long", "nullable": false },
+      { "name": "customerId", "type": "Long", "nullable": false },
+      { "name": "text", "type": "String", "nullable": false },
+      { "name": "mode", "type": "Int", "nullable": false },
+      { "name": "color", "type": "String", "nullable": false },
+      { "name": "time", "type": "Int", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "video_encrypt",
+    "name": "BindVideoHlsEncryptKeyToVideo",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "encryptKeyId", "type": "Long", "nullable": false },
+      { "name": "videoId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": [
+      { "name": "success", "type": "Boolean", "nullable": false, "defaultValue": "true" }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "video_encrypt",
+    "name": "BindVideoHlsKeyTokenToVideo",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "tokenId", "type": "Long", "nullable": false },
+      { "name": "videoId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": [
+      { "name": "success", "type": "Boolean", "nullable": false, "defaultValue": "true" }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "video_encrypt",
+    "name": "ConsumeVideoHlsKeyToken",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "token", "type": "String", "nullable": false },
+      { "name": "keyId", "type": "String", "nullable": false },
+      { "name": "quality", "type": "String", "nullable": false }
+    ],
+    "responseFields": [
+      { "name": "valid", "type": "Boolean", "nullable": false },
+      { "name": "keyPlainHex", "type": "String", "nullable": true },
+      { "name": "ivHex", "type": "String", "nullable": true },
+      { "name": "failReason", "type": "String", "nullable": true }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "video_encrypt",
+    "name": "GenerateVideoPostQualityKey",
+    "desc": "",
+    "aggregates": ["VideoHlsEncryptKey"],
+    "requestFields": [
+      { "name": "videoPostId", "type": "Long", "nullable": false },
+      { "name": "fileIndex", "type": "Int", "nullable": false },
+      { "name": "quality", "type": "String", "nullable": false },
+      { "name": "keyVersion", "type": "Int", "nullable": false },
+      { "name": "method", "type": "String", "nullable": false, "defaultValue": "HLS_AES_128" },
+      { "name": "keyBytes", "type": "Int", "nullable": false, "defaultValue": "16" }
+    ],
+    "responseFields": [
+      { "name": "success", "type": "Boolean", "nullable": false, "defaultValue": "true" }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "video_encrypt",
+    "name": "GenerateVideoPostQualityKeys",
+    "desc": "",
+    "aggregates": ["VideoHlsEncryptKey"],
+    "requestFields": [
+      { "name": "videoPostId", "type": "Long", "nullable": false },
+      { "name": "fileIndex", "type": "Int", "nullable": false },
+      { "name": "qualities", "type": "List<String>", "nullable": false },
+      { "name": "method", "type": "String", "nullable": false, "defaultValue": "HLS_AES_128" },
+      { "name": "keyBytes", "type": "Int", "nullable": false, "defaultValue": "16" }
+    ],
+    "responseFields": [
+      { "name": "keyVersion", "type": "Int", "nullable": false },
+      { "name": "keysJson", "type": "String", "nullable": false }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "video_encrypt",
+    "name": "IssueVideoHlsKeyToken",
+    "desc": "",
+    "aggregates": ["VideoHlsKeyToken"],
+    "requestFields": [
+      { "name": "videoPostId", "type": "Long", "nullable": false },
+      { "name": "videoId", "type": "Long", "nullable": false },
+      { "name": "fileIndex", "type": "Int", "nullable": false },
+      { "name": "keyVersion", "type": "Int", "nullable": false },
+      { "name": "audience", "type": "String", "nullable": true },
+      { "name": "expireSeconds", "type": "Int", "nullable": false, "defaultValue": "600" },
+      { "name": "maxUse", "type": "Int", "nullable": false, "defaultValue": "30" },
+      { "name": "allowedQualities", "type": "String", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "token", "type": "String", "nullable": false },
+      { "name": "expireAt", "type": "Long", "nullable": false },
+      { "name": "keyVersion", "type": "Int", "nullable": true },
+      { "name": "allowedQualities", "type": "String", "nullable": true }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "video_encrypt",
+    "name": "PersistVideoEncryptBatchResult",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "videoPostId", "type": "Long", "nullable": false },
+      { "name": "fileIndex", "type": "Int", "nullable": false },
+      { "name": "success", "type": "Boolean", "nullable": false },
+      { "name": "encryptMethod", "type": "String", "nullable": false, "defaultValue": "HLS_AES_128" },
+      { "name": "keyVersion", "type": "Int", "nullable": false },
+      { "name": "encryptedMasterPath", "type": "String", "nullable": true },
+      { "name": "encryptedVariants", "type": "String", "nullable": true },
+      { "name": "failReason", "type": "String", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "encryptStatus", "type": "Int", "nullable": false }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "video_file_upload_session",
+    "name": "InitTempAndStartUploading",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "uploadId", "type": "Long", "nullable": false },
+      { "name": "tempDir", "type": "String", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "video_play_history",
+    "name": "AddPlayHistory",
+    "desc": "",
+    "aggregates": ["VideoPlayHistory"],
+    "requestFields": [
+      { "name": "customerId", "type": "Long", "nullable": false },
+      { "name": "videoId", "type": "Long", "nullable": false },
+      { "name": "fileIndex", "type": "Int", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "video_play_history",
+    "name": "ClearHistory",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "customerId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "video_play_history",
+    "name": "DelHistory",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "customerId", "type": "Long", "nullable": false },
+      { "name": "videoId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "video_post",
+    "name": "AuditVideoPost",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "videoPostId", "type": "Long", "nullable": false },
+      { "name": "status", "type": "VideoStatus", "nullable": false },
+      { "name": "reason", "type": "String", "nullable": false, "defaultValue": "" }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "video_post",
+    "name": "ChangeVideoPostInteraction",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "videoPostId", "type": "Long", "nullable": false },
+      { "name": "userId", "type": "Long", "nullable": false },
+      { "name": "interaction", "type": "String", "nullable": true }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "video_post",
+    "name": "CreateVideoPost",
+    "desc": "",
+    "aggregates": ["VideoPost"],
+    "requestFields": [
+      { "name": "customerId", "type": "Long", "nullable": false },
+      { "name": "videoName", "type": "String", "nullable": false },
+      { "name": "videoCover", "type": "String", "nullable": true },
+      { "name": "parentCategoryId", "type": "Long", "nullable": false },
+      { "name": "categoryId", "type": "Long", "nullable": true },
+      { "name": "postType", "type": "PostType", "nullable": false },
+      { "name": "originInfo", "type": "String", "nullable": true },
+      { "name": "tags", "type": "String", "nullable": true },
+      { "name": "introduction", "type": "String", "nullable": true },
+      { "name": "interaction", "type": "String", "nullable": true },
+      { "name": "uploadFileList", "type": "List<VideoPostFileSpec>", "nullable": false },
+      { "name": "uploadFileList[].uploadId", "type": "Long", "nullable": false },
+      { "name": "uploadFileList[].fileIndex", "type": "Int", "nullable": false },
+      { "name": "uploadFileList[].fileName", "type": "String", "nullable": false },
+      { "name": "uploadFileList[].fileSize", "type": "Long", "nullable": true },
+      { "name": "uploadFileList[].duration", "type": "Int", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "videoId", "type": "Long", "nullable": false }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "video_post",
+    "name": "DeleteVideoPost",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "videoId", "type": "Long", "nullable": false },
+      { "name": "operatorId", "type": "Long", "nullable": true }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "video_post",
+    "name": "RecordVideoAuditTrace",
+    "desc": "",
+    "aggregates": ["VideoAuditTrace"],
+    "requestFields": [
+      { "name": "videoPostId", "type": "Long", "nullable": false },
+      { "name": "auditStatus", "type": "AuditStatus", "nullable": false },
+      { "name": "reviewerId", "type": "Long", "nullable": true },
+      { "name": "reviewerType", "type": "UserType", "nullable": false },
+      { "name": "reason", "type": "String", "nullable": true },
+      { "name": "occurTime", "type": "Long", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "traceId", "type": "Long", "nullable": false }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "video_post",
+    "name": "SyncVideoPostProcessStatus",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "videoPostId", "type": "Long", "nullable": false },
+      { "name": "targetStatus", "type": "VideoStatus", "nullable": false },
+      { "name": "duration", "type": "Int", "nullable": true },
+      { "name": "failReason", "type": "String", "nullable": true },
+      { "name": "fileList", "type": "List<FileItem>", "nullable": false },
+      { "name": "fileList[].fileIndex", "type": "Int", "nullable": false },
+      { "name": "fileList[].transcodeOutputPrefix", "type": "String", "nullable": true },
+      { "name": "fileList[].encryptOutputPrefix", "type": "String", "nullable": true },
+      { "name": "fileList[].variants", "type": "List<VariantItem>", "nullable": false },
+      { "name": "fileList[].variants[].quality", "type": "String", "nullable": false, "defaultValue": "" },
+      { "name": "fileList[].variants[].width", "type": "Int", "nullable": false, "defaultValue": "0" },
+      { "name": "fileList[].variants[].height", "type": "Int", "nullable": false, "defaultValue": "0" },
+      { "name": "fileList[].variants[].videoBitrateKbps", "type": "Int", "nullable": false, "defaultValue": "0" },
+      { "name": "fileList[].variants[].audioBitrateKbps", "type": "Int", "nullable": false, "defaultValue": "0" },
+      { "name": "fileList[].variants[].bandwidthBps", "type": "Int", "nullable": false, "defaultValue": "0" },
+      { "name": "fileList[].variants[].playlistPath", "type": "String", "nullable": false, "defaultValue": "" },
+      { "name": "fileList[].variants[].segmentPrefix", "type": "String", "nullable": true },
+      { "name": "fileList[].variants[].segmentDuration", "type": "Int", "nullable": true },
+      { "name": "fileList[].duration", "type": "Int", "nullable": true },
+      { "name": "fileList[].fileSize", "type": "Long", "nullable": true },
+      { "name": "fileList[].encryptMethod", "type": "String", "nullable": true },
+      { "name": "fileList[].keyVersion", "type": "Int", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "success", "type": "Boolean", "nullable": false, "defaultValue": "true" }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "video_post",
+    "name": "TranscodeAllTranscodingFiles",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "videoPostId", "type": "Long", "nullable": false }
+    ],
+    "responseFields": [
+      { "name": "total", "type": "Int", "nullable": false },
+      { "name": "success", "type": "Int", "nullable": false },
+      { "name": "failed", "type": "Int", "nullable": false }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "video_post",
+    "name": "UpdateVideoPost",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "videoPostId", "type": "Long", "nullable": false },
+      { "name": "customerId", "type": "Long", "nullable": false },
+      { "name": "videoName", "type": "String", "nullable": true },
+      { "name": "videoCover", "type": "String", "nullable": true },
+      { "name": "pCategoryId", "type": "Long", "nullable": true },
+      { "name": "categoryId", "type": "Long", "nullable": true },
+      { "name": "postType", "type": "PostType", "nullable": true },
+      { "name": "originInfo", "type": "String", "nullable": true },
+      { "name": "tags", "type": "String", "nullable": true },
+      { "name": "introduction", "type": "String", "nullable": true },
+      { "name": "interaction", "type": "String", "nullable": true },
+      { "name": "uploadFileList", "type": "List<VideoPostFileSpec>", "nullable": false },
+      { "name": "uploadFileList[].uploadId", "type": "Long", "nullable": false },
+      { "name": "uploadFileList[].fileIndex", "type": "Int", "nullable": false },
+      { "name": "uploadFileList[].fileName", "type": "String", "nullable": false },
+      { "name": "uploadFileList[].fileSize", "type": "Long", "nullable": true },
+      { "name": "uploadFileList[].duration", "type": "Int", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "videoId", "type": "Long", "nullable": false }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "video_post_processing",
+    "name": "ApplyVideoPostProcessingEncryptResult",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "videoPostId", "type": "Long", "nullable": false },
+      { "name": "fileIndex", "type": "Int", "nullable": false },
+      { "name": "success", "type": "Boolean", "nullable": false },
+      { "name": "encryptMethod", "type": "String", "nullable": false, "defaultValue": "HLS_AES_128" },
+      { "name": "keyVersion", "type": "Int", "nullable": false },
+      { "name": "encryptedPrefix", "type": "String", "nullable": true },
+      { "name": "encryptedMasterPath", "type": "String", "nullable": true },
+      { "name": "encryptedVariants", "type": "String", "nullable": true },
+      { "name": "failReason", "type": "String", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "success", "type": "Boolean", "nullable": false, "defaultValue": "true" },
+      { "name": "failReason", "type": "String", "nullable": true }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "video_post_processing",
+    "name": "ApplyVideoPostProcessingTranscodeResult",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "videoPostId", "type": "Long", "nullable": false },
+      { "name": "fileIndex", "type": "Int", "nullable": false },
+      { "name": "success", "type": "Boolean", "nullable": false },
+      { "name": "outputPrefix", "type": "String", "nullable": true },
+      { "name": "outputPath", "type": "String", "nullable": true },
+      { "name": "duration", "type": "Int", "nullable": true },
+      { "name": "fileSize", "type": "Long", "nullable": true },
+      { "name": "variantsJson", "type": "String", "nullable": true },
+      { "name": "failReason", "type": "String", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "success", "type": "Boolean", "nullable": false, "defaultValue": "true" },
+      { "name": "failReason", "type": "String", "nullable": true }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "video_post_processing",
+    "name": "ApplyVideoPostProcessingVariantEncryptResult",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "videoPostId", "type": "Long", "nullable": false },
+      { "name": "fileIndex", "type": "Int", "nullable": false },
+      { "name": "quality", "type": "String", "nullable": false },
+      { "name": "success", "type": "Boolean", "nullable": false },
+      { "name": "encryptMethod", "type": "String", "nullable": false, "defaultValue": "HLS_AES_128" },
+      { "name": "keyVersion", "type": "Int", "nullable": false },
+      { "name": "playlistPath", "type": "String", "nullable": true },
+      { "name": "segmentPrefix", "type": "String", "nullable": true },
+      { "name": "failReason", "type": "String", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "success", "type": "Boolean", "nullable": false, "defaultValue": "true" }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "video_post_processing",
+    "name": "PrepareVideoPostProcessingEncryptContext",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      { "name": "videoPostId", "type": "Long", "nullable": false },
+      { "name": "fileIndex", "type": "Int", "nullable": false },
+      { "name": "encryptMethod", "type": "String", "nullable": false, "defaultValue": "HLS_AES_128" }
+    ],
+    "responseFields": [
+      { "name": "keyVersion", "type": "Int", "nullable": false },
+      { "name": "transcodeOutputPrefix", "type": "String", "nullable": true },
+      { "name": "encryptOutputDir", "type": "String", "nullable": true }
+    ]
+  },
+  {
+    "tag": "cmd",
+    "package": "video_post_processing",
+    "name": "StartVideoPostProcessing",
+    "desc": "",
+    "aggregates": ["VideoPostProcessing"],
+    "requestFields": [
+      { "name": "videoPostId", "type": "Long", "nullable": false },
+      { "name": "fileList", "type": "List<VideoPostProcessingFileSpec>", "nullable": false },
+      { "name": "fileList[].uploadId", "type": "Long", "nullable": false },
+      { "name": "fileList[].fileIndex", "type": "Int", "nullable": false },
+      { "name": "fileList[].fileName", "type": "String", "nullable": true },
+      { "name": "fileList[].fileSize", "type": "Long", "nullable": true },
+      { "name": "fileList[].duration", "type": "Int", "nullable": true }
+    ],
+    "responseFields": []
+  },
+  {
+    "tag": "cmd",
+    "package": "video_quality_policy",
+    "name": "SetVideoQualityPolicy",
+    "desc": "",
+    "aggregates": ["VideoQualityPolicy"],
+    "requestFields": [
+      { "name": "videoId", "type": "Long", "nullable": false },
+      { "name": "fileIndex", "type": "Int", "nullable": false },
+      { "name": "quality", "type": "String", "nullable": false },
+      { "name": "authPolicy", "type": "QualityAuthPolicy", "nullable": false },
+      { "name": "remark", "type": "String", "nullable": true }
+    ],
+    "responseFields": [
+      { "name": "success", "type": "Boolean", "nullable": false, "defaultValue": "true" }
+    ]
+  }
+]
