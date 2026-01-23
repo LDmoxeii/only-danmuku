@@ -222,6 +222,13 @@
       "name": "{{ path }}",
       "children": [
       ]
+    },
+    {
+      "type": "file",
+      "tag": "drawing_board",
+      "name": "drawing_board.json",
+      "format": "raw",
+      "data": "[]"
     }
   ],
   "children": [
@@ -742,6 +749,7 @@
     {
       "type": "dir",
       "name": "design",
+      "tag": "drawing_board",
       "children": []
     },
     {
