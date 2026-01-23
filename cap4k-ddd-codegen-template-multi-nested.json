@@ -5,8 +5,7 @@
       "type": "dir",
       "tag": "command",
       "name": "{{ path }}",
-      "children": [
-      ]
+      "children": []
     },
     {
       "type": "dir",
@@ -25,32 +24,28 @@
       "type": "dir",
       "tag": "saga",
       "name": "{{ path }}",
-      "children": [
-      ]
+      "children": []
     },
     {
       "type": "dir",
       "tag": "query",
       "name": "{{ path }}",
       "pattern": "^(?!.*(List|list|Page|page)).*$",
-      "children": [
-      ]
+      "children": []
     },
     {
       "type": "dir",
       "tag": "query",
       "name": "{{ path }}",
       "pattern": "^.*(List|list).*$",
-      "children": [
-      ]
+      "children": []
     },
     {
       "type": "dir",
       "tag": "query",
       "name": "{{ path }}",
       "pattern": "^.*(Page|page).*$",
-      "children": [
-      ]
+      "children": []
     },
     {
       "type": "dir",
@@ -108,64 +103,55 @@
       "type": "dir",
       "tag": "client",
       "name": "{{ path }}",
-      "children": [
-      ]
+      "children": []
     },
     {
       "type": "dir",
       "tag": "client_handler",
       "name": "{{ path }}",
-      "children": [
-      ]
+      "children": []
     },
     {
       "type": "dir",
       "tag": "integration_event",
       "name": "",
-      "children": [
-      ]
+      "children": []
     },
     {
       "type": "dir",
       "tag": "integration_event_handler",
       "name": "",
-      "children": [
-      ]
+      "children": []
     },
     {
       "type": "dir",
       "tag": "domain_service",
       "name": "{{ path }}",
-      "children": [
-      ]
+      "children": []
     },
     {
       "type": "dir",
       "tag": "repository",
       "name": "{{ path }}",
-      "children": [
-      ]
+      "children": []
     },
     {
       "type": "dir",
       "tag": "translation",
       "name": "{{ path }}",
-      "children": [
-      ]
+      "children": []
     },
     {
       "type": "dir",
       "tag": "schema",
       "name": "{{ path }}",
-      "children": [
-      ]
+      "children": []
     },
     {
       "type": "dir",
       "tag": "aggregate",
       "name": "{{ path }}",
-      "children": [
-      ]
+      "children": []
     },
     {
       "type": "dir",
@@ -222,13 +208,70 @@
       "name": "{{ path }}",
       "children": [
       ]
+    },{
+      "type": "dir",
+      "tag": "drawing_board_cli",
+      "name": "${path}",
+      "children": [
+        {
+          "type": "file",
+          "name": "{{ drawingBoardTag }}.json",
+          "format": "url",
+          "data": "template/_tpl/drawing_board.json.peb"
+        }
+      ]
     },
     {
-      "type": "file",
-      "tag": "drawing_board",
-      "name": "drawing_board_{{ drawingBoardTag }}.json",
-      "format": "url",
-      "data": "template/_tpl/drawing_board.json.peb"
+      "type": "dir",
+      "tag": "drawing_board_cmd",
+      "name": "${path}",
+      "children": [
+        {
+          "type": "file",
+          "name": "{{ drawingBoardTag }}.json",
+          "format": "url",
+          "data": "template/_tpl/drawing_board.json.peb"
+        }
+      ]
+    },
+    {
+      "type": "dir",
+      "tag": "drawing_board_de",
+      "name": "${path}",
+      "children": [
+        {
+          "type": "file",
+          "name": "{{ drawingBoardTag }}.json",
+          "format": "url",
+          "data": "template/_tpl/drawing_board.json.peb"
+        }
+      ]
+    },
+    {
+      "type": "dir",
+      "tag": "drawing_board_payload",
+      "name": "${path}",
+      "children": [
+        {
+          "type": "file",
+          "name": "{{ drawingBoardTag }}.json",
+          "format": "url",
+          "data": "template/_tpl/drawing_board.json.peb"
+        }
+      ]
+    },
+    {
+      "type": "dir",
+      "tag": "drawing_board_qry",
+      "name": "${path}",
+      "children": [
+        {
+          "type": "file",
+          "name": "{{ drawingBoardTag }}.json",
+          "format": "url",
+          "data": "template/_tpl/drawing_board.json.peb"
+        }
+      ]
     }
   ],
   "children": [
@@ -749,7 +792,7 @@
     {
       "type": "dir",
       "name": "design",
-      "tag": "drawing_board",
+      "tag": "drawing_board_cli,drawing_board_cmd,drawing_board_de,drawing_board_payload,drawing_board_qry",
       "children": []
     },
     {
