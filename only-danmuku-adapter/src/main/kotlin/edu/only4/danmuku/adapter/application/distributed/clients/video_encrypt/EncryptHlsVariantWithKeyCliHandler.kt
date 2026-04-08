@@ -135,7 +135,9 @@ class EncryptHlsVariantWithKeyCliHandler : RequestHandler<EncryptHlsVariantWithK
 
     private fun hexToBytes(hex: String): ByteArray {
         val clean = hex.trim()
-        require(clean.length % 2 == 0) { "invalid hex length" }
+        if (clean.length % 2 != 0) {
+            throw RequestException(CommonErrors.PARAM_INVALID, "keyPlainHex")
+        }
         return ByteArray(clean.length / 2) { i ->
             clean.substring(i * 2, i * 2 + 2).toInt(16).toByte()
         }

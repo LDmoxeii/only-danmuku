@@ -1,5 +1,6 @@
 package edu.only4.danmuku.domain.aggregates.customer_profile
 
+import com.only.engine.exception.BusinessException
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
 import edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity
@@ -12,6 +13,7 @@ import edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerProfi
 import edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerProfilePhoneChangedDomainEvent
 import edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerProfileRewardCoinsReclaimedDomainEvent
 import edu.only4.danmuku.domain.aggregates.customer_profile.events.CustomerProfileUpdatedDomainEvent
+import edu.only4.danmuku.domain.shared.error.DanmukuBusinessErrors
 import jakarta.persistence.*
 import jakarta.persistence.Table
 import org.hibernate.annotations.DynamicInsert
@@ -187,15 +189,15 @@ class CustomerProfile(
 
     /** 硬币转账：从当前用户转给目标用户 */
     fun transferCoin(toProfile: CustomerProfile, amount: Int) {
-        require(amount > 0) { "转账金额必须大于0" }
-        require(this.currentCoinCount >= amount) { "硬币余额不足" }
+        requirePositiveAmount(amount, "转账金额必须大于0")
+        requireEnoughBalance(amount)
         this.currentCoinCount -= amount
         toProfile.currentCoinCount += amount
     }
 
     /** 更新用户资料信息 */
     fun rewardCoins(amount: Int) {
-        require(amount > 0) { "奖励数量必须大于0" }
+        requirePositiveAmount(amount, "奖励数量必须大于0")
         this.totalCoinCount += amount
         this.currentCoinCount += amount
 
@@ -204,7 +206,7 @@ class CustomerProfile(
 
     /** 在删除视频后回收对应奖励硬币（可能超出） */
     fun reclaimRewardCoins(amount: Int) {
-        require(amount >= 0) { "扣款数量不得小于0" }
+        requireNonNegativeAmount(amount, "扣款数量不得小于0")
         if (amount == 0) return
         val deduction = amount.coerceAtLeast(this.currentCoinCount)
         this.currentCoinCount -= deduction
@@ -216,8 +218,8 @@ class CustomerProfile(
 
     /** 支出硬币（如修改昵称消耗） */
     fun spendCoins(amount: Int) {
-        require(amount > 0) { "扣款数量必须大于0" }
-        require(this.currentCoinCount >= amount) { "硬币余额不足" }
+        requirePositiveAmount(amount, "扣款数量必须大于0")
+        requireEnoughBalance(amount)
         this.currentCoinCount -= amount
         // totalCoinCount 保持累计不变
     }
@@ -262,6 +264,24 @@ class CustomerProfile(
         if (this.phone == phone) return
         this.phone = phone
         events().attach(this) { CustomerProfilePhoneChangedDomainEvent(this) }
+    }
+
+    private fun requirePositiveAmount(amount: Int, message: String) {
+        if (amount <= 0) {
+            throw BusinessException(DanmukuBusinessErrors.COIN_AMOUNT_INVALID, message)
+        }
+    }
+
+    private fun requireNonNegativeAmount(amount: Int, message: String) {
+        if (amount < 0) {
+            throw BusinessException(DanmukuBusinessErrors.COIN_AMOUNT_INVALID, message)
+        }
+    }
+
+    private fun requireEnoughBalance(amount: Int) {
+        if (this.currentCoinCount < amount) {
+            throw BusinessException(DanmukuBusinessErrors.COIN_BALANCE_INSUFFICIENT, "硬币余额不足")
+        }
     }
 
     // 【行为方法结束】
