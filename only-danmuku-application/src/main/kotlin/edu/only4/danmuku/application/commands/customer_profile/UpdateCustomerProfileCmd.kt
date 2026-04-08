@@ -1,6 +1,12 @@
 package edu.only4.danmuku.application.commands.customer_profile
 
-import com.only.engine.exception.KnownException
+import com.only.engine.error.CommonErrors
+import com.only.engine.exception.AppException
+import com.only.engine.exception.BusinessException
+import com.only.engine.exception.DependencyException
+import com.only.engine.exception.RequestException
+import com.only.engine.exception.SystemException
+import edu.only4.danmuku.domain.shared.error.DanmukuBusinessErrors
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.NoneResultCommandParam
@@ -22,7 +28,7 @@ object UpdateCustomerProfileCmd {
         override fun exec(request: Request) {
             val profile = Mediator.repositories.findFirst(
                 SCustomerProfile.predicate { it.userId eq request.customerId },
-            ).getOrNull() ?: throw KnownException("用户资料不存在：${request.customerId}")
+            ).getOrNull() ?: throw BusinessException(DanmukuBusinessErrors.RESOURCE_NOT_FOUND, "用户资料不存在：${request.customerId}")
 
             profile.updateProfileInfo(
                 nickName = request.nickName,

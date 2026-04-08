@@ -1,7 +1,5 @@
 package edu.only4.danmuku.adapter.portal.api
 
-import com.only.engine.error.AuthErrors
-import com.only.engine.exception.BusinessException
 import com.only.engine.web.advice.GlobalExceptionHandlerAdvice
 import com.only4.cap4k.ddd.core.application.RequestSupervisor
 import com.only4.cap4k.ddd.core.application.RequestSupervisorSupport
@@ -40,8 +38,8 @@ class LoginCaptchaErrorResponseTest {
     @BeforeEach
     fun setUp() {
         clearMocks(requestSupervisor)
-        every { requestSupervisor.send(any<CaptchaValidCli.Request>()) } throws
-            BusinessException(AuthErrors.CAPTCHA_INVALID, "验证码错误")
+        every { requestSupervisor.send(any<CaptchaValidCli.Request>()) } returns
+            CaptchaValidCli.Response(result = false)
     }
 
     @Test

@@ -1,6 +1,12 @@
 package edu.only4.danmuku.adapter.application.distributed.clients.video_transcode
 
-import com.only.engine.exception.KnownException
+import com.only.engine.error.CommonErrors
+import com.only.engine.exception.AppException
+import com.only.engine.exception.BusinessException
+import com.only.engine.exception.DependencyException
+import com.only.engine.exception.RequestException
+import com.only.engine.exception.SystemException
+import edu.only4.danmuku.domain.shared.error.DanmukuBusinessErrors
 import com.only.engine.misc.convertHevcToMp4
 import com.only.engine.misc.getVideoCodec
 import com.only.engine.misc.getVideoDuration
@@ -33,12 +39,12 @@ class MergeUploadToMp4ByPathCliHandler(
         return runCatching {
             val sourceDir = resolveTempDir(request.tempPath)
             if (!sourceDir.exists() || !sourceDir.isDirectory) {
-                throw KnownException("临时目录不存在: ${sourceDir.absolutePath}")
+                throw BusinessException(DanmukuBusinessErrors.RESOURCE_NOT_FOUND, "临时目录不存在: ${sourceDir.absolutePath}")
             }
 
             val outputDir = File(request.outputDir)
             if (outputDir.exists().not() && !outputDir.mkdirs()) {
-                throw KnownException("无法创建输出目录: ${outputDir.absolutePath}")
+                throw BusinessException(DanmukuBusinessErrors.STATE_INVALID, "无法创建输出目录: ${outputDir.absolutePath}")
             }
             val mergedMp4 = Files.createTempFile(outputDir.toPath(), "merge-", ".mp4").toFile()
 
@@ -81,7 +87,7 @@ class MergeUploadToMp4ByPathCliHandler(
     private fun mergeChunks(sourceDir: File, outputFile: File) {
         val chunkFiles = sourceDir.listFiles { f -> f.isFile && f.name.matches(Regex("\\d+")) }
             ?.sortedBy { it.name.toIntOrNull() ?: 0 } ?: emptyList()
-        if (chunkFiles.isEmpty()) throw KnownException("未找到视频分片文件")
+        if (chunkFiles.isEmpty()) throw BusinessException(DanmukuBusinessErrors.RESOURCE_NOT_FOUND, "未找到视频分片文件")
         outputFile.outputStream().use { output ->
             chunkFiles.forEach { chunk ->
                 chunk.inputStream().use { input -> input.copyTo(output) }
@@ -95,7 +101,7 @@ class MergeUploadToMp4ByPathCliHandler(
         if (f.isAbsolute) {
             return f
         }
-        throw KnownException("临时目录必须为绝对路径")
+        throw BusinessException(DanmukuBusinessErrors.STATE_INVALID, "临时目录必须为绝对路径")
     }
 
     private fun cleanupTempDir(tempPath: String) {

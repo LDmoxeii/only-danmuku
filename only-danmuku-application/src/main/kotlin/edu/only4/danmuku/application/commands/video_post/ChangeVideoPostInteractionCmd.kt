@@ -1,6 +1,12 @@
 package edu.only4.danmuku.application.commands.video_post
 
-import com.only.engine.exception.KnownException
+import com.only.engine.error.CommonErrors
+import com.only.engine.exception.AppException
+import com.only.engine.exception.BusinessException
+import com.only.engine.exception.DependencyException
+import com.only.engine.exception.RequestException
+import com.only.engine.exception.SystemException
+import edu.only4.danmuku.domain.shared.error.DanmukuBusinessErrors
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.NoneResultCommandParam
@@ -16,10 +22,10 @@ object ChangeVideoPostInteractionCmd {
 
             val videoPost = Mediator.repositories.findOne(
                 SVideoPost.predicateById(request.videoPostId)
-            ).getOrNull() ?: throw KnownException("视频草稿不存在：${request.videoPostId}")
+            ).getOrNull() ?: throw BusinessException(DanmukuBusinessErrors.RESOURCE_NOT_FOUND, "视频草稿不存在：${request.videoPostId}")
 
             if (videoPost.customerId != request.userId) {
-                throw KnownException("无权限修改该视频互动设置")
+                throw BusinessException(DanmukuBusinessErrors.OPERATION_FORBIDDEN, "无权限修改该视频互动设置")
             }
 
             videoPost.changeInteraction(request.interaction)

@@ -1,6 +1,12 @@
 package edu.only4.danmuku.application.commands.customer_video_series
 
-import com.only.engine.exception.KnownException
+import com.only.engine.error.CommonErrors
+import com.only.engine.exception.AppException
+import com.only.engine.exception.BusinessException
+import com.only.engine.exception.DependencyException
+import com.only.engine.exception.RequestException
+import com.only.engine.exception.SystemException
+import edu.only4.danmuku.domain.shared.error.DanmukuBusinessErrors
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
@@ -20,7 +26,7 @@ object RemoveVideoFromSeriesCmd {
         override fun exec(request: Request): Response {
             val series = Mediator.repositories.findOne(
                 SCustomerVideoSeries.predicateById(request.seriesId),
-            ).getOrNull() ?: throw KnownException("视频系列不存在：${request.seriesId}")
+            ).getOrNull() ?: throw BusinessException(DanmukuBusinessErrors.RESOURCE_NOT_FOUND, "视频系列不存在：${request.seriesId}")
 
             val removed = series.removeVideo(request.videoId)
             if (removed) {

@@ -9,6 +9,7 @@ import com.only.engine.exception.DependencyException
 import com.only.engine.exception.RateLimitException
 import com.only.engine.exception.SystemException
 import com.only.engine.web.advice.GlobalExceptionHandlerAdvice
+import edu.only4.danmuku.domain.shared.error.DanmukuAuthErrors
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.test.web.servlet.MockMvc
@@ -77,7 +78,7 @@ class HybridExceptionProtocolIntegrationTest {
     private class TestController {
 
         @GetMapping("/exception/business")
-        fun business(): String = throw BusinessException(AuthErrors.CAPTCHA_INVALID, "验证码错误")
+        fun business(): String = throw BusinessException(DanmukuAuthErrors.CAPTCHA_INVALID, "验证码错误")
 
         @GetMapping("/exception/authentication")
         fun authentication(): String = throw AuthenticationException(AuthErrors.LOGIN_REQUIRED)

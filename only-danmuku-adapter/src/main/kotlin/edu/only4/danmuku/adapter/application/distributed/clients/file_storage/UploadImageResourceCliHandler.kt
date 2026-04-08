@@ -1,7 +1,10 @@
 package edu.only4.danmuku.adapter.application.distributed.clients.file_storage
 
 import cn.hutool.core.util.IdUtil
-import com.only.engine.exception.KnownException
+import com.only.engine.error.CommonErrors
+import com.only.engine.exception.AppException
+import com.only.engine.exception.DependencyException
+import com.only.engine.exception.RequestException
 import com.only.engine.misc.createImageThumbnail
 import com.only.engine.oss.enums.AccessPolicyType
 import com.only.engine.oss.factory.OssFactory
@@ -27,7 +30,7 @@ class UploadImageResourceCliHandler(
 ) : RequestHandler<UploadImageResourceCli.Request, UploadImageResourceCli.Response> {
     override fun exec(request: UploadImageResourceCli.Request): UploadImageResourceCli.Response {
         val originalName = request.file.originalFilename
-            ?: throw KnownException.illegalArgument("file")
+            ?: throw RequestException(CommonErrors.PARAM_INVALID, "file")
         val suffix = resolveSuffix(originalName)
         val prefix = resolveBizPrefix(request.bizType)
         val month = LocalDate.now().format(UploadImageResourceCli.MONTH_FORMATTER)
@@ -65,6 +68,10 @@ class UploadImageResourceCliHandler(
                         }
                     }
             }
+        } catch (e: AppException) {
+            throw e
+        } catch (e: Exception) {
+            throw DependencyException(CommonErrors.DEPENDENCY_ERROR, "图片上传失败", cause = e)
         } finally {
             Files.deleteIfExists(tempFile.toPath())
         }

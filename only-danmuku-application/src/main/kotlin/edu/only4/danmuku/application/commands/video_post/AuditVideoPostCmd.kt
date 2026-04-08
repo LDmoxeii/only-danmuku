@@ -1,6 +1,12 @@
 package edu.only4.danmuku.application.commands.video_post
 
-import com.only.engine.exception.KnownException
+import com.only.engine.error.CommonErrors
+import com.only.engine.exception.AppException
+import com.only.engine.exception.BusinessException
+import com.only.engine.exception.DependencyException
+import com.only.engine.exception.RequestException
+import com.only.engine.exception.SystemException
+import edu.only4.danmuku.domain.shared.error.DanmukuBusinessErrors
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.NoneResultCommandParam
@@ -17,12 +23,12 @@ object AuditVideoPostCmd {
         override fun exec(request: Request) {
             val post = Mediator.repositories.findFirst(
                 SVideoPost.predicate { it.id eq request.videoPostId },
-            ).getOrNull() ?: throw KnownException("视频草稿不存在：${request.videoPostId}")
+            ).getOrNull() ?: throw BusinessException(DanmukuBusinessErrors.RESOURCE_NOT_FOUND, "视频草稿不存在：${request.videoPostId}")
 
             when (request.status) {
                 VideoStatus.REVIEW_PASSED -> post.reviewPass()
                 VideoStatus.REVIEW_FAILED -> post.reviewFail()
-                else -> throw KnownException("不支持的审核状态：${request.status}")
+                else -> throw BusinessException(DanmukuBusinessErrors.STATE_INVALID, "不支持的审核状态：${request.status}")
             }
 
             Mediator.uow.save()

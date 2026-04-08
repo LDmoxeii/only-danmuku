@@ -1,7 +1,13 @@
 package edu.only4.danmuku.adapter.application.distributed.clients.video_encrypt
 
 import cn.hutool.core.util.RuntimeUtil
-import com.only.engine.exception.KnownException
+import com.only.engine.error.CommonErrors
+import com.only.engine.exception.AppException
+import com.only.engine.exception.BusinessException
+import com.only.engine.exception.DependencyException
+import com.only.engine.exception.RequestException
+import com.only.engine.exception.SystemException
+import edu.only4.danmuku.domain.shared.error.DanmukuBusinessErrors
 import com.only.engine.oss.core.OssClient
 import com.only.engine.oss.factory.OssFactory
 import com.only4.cap4k.ddd.core.application.RequestHandler
@@ -30,7 +36,7 @@ class EncryptHlsVariantWithKeyCliHandler : RequestHandler<EncryptHlsVariantWithK
         return runCatching {
             val quality = request.quality.trim()
             if (quality.isBlank()) {
-                throw KnownException.illegalArgument("quality")
+                throw RequestException(CommonErrors.PARAM_INVALID, "quality")
             }
             val sourcePrefix = normalizePrefix(request.sourceDir, "sourceDir")
             val outputPrefix = normalizePrefix(request.outputDir, "outputDir")
@@ -47,7 +53,7 @@ class EncryptHlsVariantWithKeyCliHandler : RequestHandler<EncryptHlsVariantWithK
 
             val playlistFile = File(sourceDir, "index.m3u8")
             if (!playlistFile.exists()) {
-                throw KnownException("缺少清晰度播放列表: $quality")
+                throw BusinessException(DanmukuBusinessErrors.STATE_INVALID, "缺少清晰度播放列表: $quality")
             }
 
             val targetDir = File(outputDir, quality)
@@ -58,7 +64,7 @@ class EncryptHlsVariantWithKeyCliHandler : RequestHandler<EncryptHlsVariantWithK
 
             val keyBytes = hexToBytes(request.keyPlainHex)
             if (keyBytes.size != 16) {
-                throw KnownException.illegalArgument("keyPlainHex")
+                throw RequestException(CommonErrors.PARAM_INVALID, "keyPlainHex")
             }
             val ivHex = resolveIvHex(request.ivHex)
             val keyInfo = buildKeyInfoFile(keyBytes, ivHex, quality, request.keyUriTemplate)
@@ -106,7 +112,7 @@ class EncryptHlsVariantWithKeyCliHandler : RequestHandler<EncryptHlsVariantWithK
     private fun normalizePrefix(prefix: String, field: String): String {
         val normalized = prefix.trim().trim('/')
         if (normalized.isBlank()) {
-            throw KnownException.illegalArgument(field)
+            throw RequestException(CommonErrors.PARAM_INVALID, field)
         }
         return normalized
     }
@@ -117,7 +123,7 @@ class EncryptHlsVariantWithKeyCliHandler : RequestHandler<EncryptHlsVariantWithK
         val tempDir = Files.createTempDirectory("hls-src-").toFile()
         val downloaded = downloadByPrefix(client, qualityPrefix, tempDir.toPath())
         if (downloaded == 0) {
-            throw KnownException.systemError("源目录不存在: $qualityPrefix")
+            throw DependencyException(CommonErrors.DEPENDENCY_ERROR, "源目录不存在: $qualityPrefix")
         }
         return StorageContext(tempDir, qualityPrefix, tempDir.toPath())
     }
@@ -142,7 +148,7 @@ class EncryptHlsVariantWithKeyCliHandler : RequestHandler<EncryptHlsVariantWithK
 
     private fun execForStdout(commands: List<String>, workDir: File? = null): String {
         if (commands.isEmpty()) {
-            throw KnownException.illegalArgument("commands")
+            throw RequestException(CommonErrors.PARAM_INVALID, "commands")
         }
 
         var process: Process? = null
@@ -168,17 +174,17 @@ class EncryptHlsVariantWithKeyCliHandler : RequestHandler<EncryptHlsVariantWithK
                         append(": ").append(stderr.trim())
                     }
                 }
-                throw KnownException.systemError(message)
+                throw DependencyException(CommonErrors.DEPENDENCY_ERROR, message)
             }
 
             stdout
         } catch (e: InterruptedException) {
             Thread.currentThread().interrupt()
-            throw KnownException.systemError(e)
-        } catch (e: KnownException) {
+            throw SystemException(CommonErrors.SYSTEM_ERROR, cause = e)
+        } catch (e: AppException) {
             throw e
         } catch (e: Exception) {
-            throw KnownException.systemError(e)
+            throw DependencyException(CommonErrors.DEPENDENCY_ERROR, "FFmpeg 单档位加密执行异常", cause = e)
         } finally {
             process?.destroy()
         }

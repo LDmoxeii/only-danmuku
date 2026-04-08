@@ -1,7 +1,13 @@
 package edu.only4.danmuku.adapter.application.distributed.clients.video_encrypt
 
 import cn.hutool.core.util.RuntimeUtil
-import com.only.engine.exception.KnownException
+import com.only.engine.error.CommonErrors
+import com.only.engine.exception.AppException
+import com.only.engine.exception.BusinessException
+import com.only.engine.exception.DependencyException
+import com.only.engine.exception.RequestException
+import com.only.engine.exception.SystemException
+import edu.only4.danmuku.domain.shared.error.DanmukuBusinessErrors
 import com.only.engine.json.misc.JsonUtils
 import com.only.engine.oss.core.OssClient
 import com.only.engine.oss.factory.OssFactory
@@ -33,7 +39,7 @@ class EncryptHlsWithQualityKeysCliHandler :
         return runCatching {
             val keyPayloads = parseKeys(request.keysJson)
             if (keyPayloads.isEmpty()) {
-                throw KnownException.illegalArgument("keysJson")
+                throw RequestException(CommonErrors.PARAM_INVALID, "keysJson")
             }
 
             val client = OssFactory.instance()
@@ -58,7 +64,7 @@ class EncryptHlsWithQualityKeysCliHandler :
                 val sourceDir = File(source, quality)
                 val playlistFile = File(sourceDir, "index.m3u8")
                 if (!playlistFile.exists()) {
-                    throw KnownException("缺少清晰度播放列表: $quality")
+                    throw BusinessException(DanmukuBusinessErrors.STATE_INVALID, "缺少清晰度播放列表: $quality")
                 }
 
                 val targetDir = File(output, quality)
@@ -69,7 +75,7 @@ class EncryptHlsWithQualityKeysCliHandler :
 
                 val keyBytes = resolveKeyBytes(payload)
                 if (keyBytes.size != 16) {
-                    throw KnownException.illegalArgument("keyPlainHex")
+                    throw RequestException(CommonErrors.PARAM_INVALID, "keyPlainHex")
                 }
                 val ivHex = resolveIvHex(payload.ivHex)
                 val keyInfo = buildKeyInfoFile(keyBytes, ivHex, payload)
@@ -107,7 +113,7 @@ class EncryptHlsWithQualityKeysCliHandler :
             }
 
             val variantsJson = JsonUtils.toJsonString(variants) ?: "[]"
-            val prefix = outputContext.objectPrefix ?: throw KnownException.illegalArgument("outputDir")
+            val prefix = outputContext.objectPrefix ?: throw RequestException(CommonErrors.PARAM_INVALID, "outputDir")
             client.deleteByPrefix(prefix)
             uploadDirectory(client, output, prefix)
             val encryptedMasterPath = prefix.trimEnd('/') + "/master.m3u8"
@@ -143,18 +149,18 @@ class EncryptHlsWithQualityKeysCliHandler :
         if (!base64.isNullOrBlank()) {
             return Base64.getDecoder().decode(base64)
         }
-        throw KnownException.illegalArgument("keysJson")
+        throw RequestException(CommonErrors.PARAM_INVALID, "keysJson")
     }
 
     private fun prepareSourceContext(sourceDir: String, client: OssClient): StorageContext {
         val prefix = sourceDir.trim().trim('/')
         if (prefix.isBlank()) {
-            throw KnownException.illegalArgument("sourceDir")
+            throw RequestException(CommonErrors.PARAM_INVALID, "sourceDir")
         }
         val tempDir = Files.createTempDirectory("hls-src-").toFile()
         val downloaded = downloadByPrefix(client, prefix, tempDir.toPath())
         if (downloaded == 0) {
-            throw KnownException.systemError("源目录不存在: $sourceDir")
+            throw DependencyException(CommonErrors.DEPENDENCY_ERROR, "源目录不存在: $sourceDir")
         }
         return StorageContext(tempDir, prefix, tempDir.toPath())
     }
@@ -162,7 +168,7 @@ class EncryptHlsWithQualityKeysCliHandler :
     private fun prepareOutputContext(outputDir: String): StorageContext {
         val prefix = outputDir.trim().trim('/')
         if (prefix.isBlank()) {
-            throw KnownException.illegalArgument("outputDir")
+            throw RequestException(CommonErrors.PARAM_INVALID, "outputDir")
         }
         val tempDir = Files.createTempDirectory("hls-enc-").toFile()
         return StorageContext(tempDir, prefix, tempDir.toPath())
@@ -182,7 +188,7 @@ class EncryptHlsWithQualityKeysCliHandler :
 
     private fun execForStdout(commands: List<String>, workDir: File? = null): String {
         if (commands.isEmpty()) {
-            throw KnownException.illegalArgument("commands")
+            throw RequestException(CommonErrors.PARAM_INVALID, "commands")
         }
 
         var process: Process? = null
@@ -208,17 +214,17 @@ class EncryptHlsWithQualityKeysCliHandler :
                         append(": ").append(stderr.trim())
                     }
                 }
-                throw KnownException.systemError(message)
+                throw DependencyException(CommonErrors.DEPENDENCY_ERROR, message)
             }
 
             stdout
         } catch (e: InterruptedException) {
             Thread.currentThread().interrupt()
-            throw KnownException.systemError(e)
-        } catch (e: KnownException) {
+            throw SystemException(CommonErrors.SYSTEM_ERROR, cause = e)
+        } catch (e: AppException) {
             throw e
         } catch (e: Exception) {
-            throw KnownException.systemError(e)
+            throw DependencyException(CommonErrors.DEPENDENCY_ERROR, "FFmpeg 加密执行异常", cause = e)
         } finally {
             process?.destroy()
         }

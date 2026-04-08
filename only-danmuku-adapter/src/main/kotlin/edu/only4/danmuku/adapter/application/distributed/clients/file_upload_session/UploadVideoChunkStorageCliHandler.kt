@@ -1,6 +1,9 @@
 package edu.only4.danmuku.adapter.application.distributed.clients.file_upload_session
 
-import com.only.engine.exception.KnownException
+import com.only.engine.error.CommonErrors
+import com.only.engine.exception.AppException
+import com.only.engine.exception.DependencyException
+import com.only.engine.exception.RequestException
 import com.only4.cap4k.ddd.core.application.RequestHandler
 
 import edu.only4.danmuku.application.distributed.clients.file_upload_session.UploadVideoChunkStorageCli
@@ -21,23 +24,29 @@ class UploadVideoChunkStorageCliHandler :
     override fun exec(request: UploadVideoChunkStorageCli.Request): UploadVideoChunkStorageCli.Response {
         val tempPath = request.tempPath.trim()
         if (tempPath.isBlank()) {
-            throw KnownException.illegalArgument("tempPath")
+            throw RequestException(CommonErrors.PARAM_INVALID, "tempPath")
         }
         if (request.chunkIndex < 0) {
-            throw KnownException.illegalArgument("chunkIndex")
+            throw RequestException(CommonErrors.PARAM_INVALID, "chunkIndex")
         }
-        val targetDir = resolveTempDir(tempPath)
-        if (!targetDir.exists()) {
-            targetDir.mkdirs()
-        }
-        val targetFile = File(targetDir, request.chunkIndex.toString())
-        request.chunkFile.transferTo(targetFile)
+        try {
+            val targetDir = resolveTempDir(tempPath)
+            if (!targetDir.exists() && !targetDir.mkdirs()) {
+                throw DependencyException(CommonErrors.DEPENDENCY_ERROR, "创建临时目录失败: ${targetDir.absolutePath}")
+            }
+            val targetFile = File(targetDir, request.chunkIndex.toString())
+            request.chunkFile.transferTo(targetFile)
 
-        val storedPath = targetFile.absolutePath.replace('\\', '/')
-        return UploadVideoChunkStorageCli.Response(
-            storedPath = storedPath,
-            size = targetFile.length()
-        )
+            val storedPath = targetFile.absolutePath.replace('\\', '/')
+            return UploadVideoChunkStorageCli.Response(
+                storedPath = storedPath,
+                size = targetFile.length()
+            )
+        } catch (e: AppException) {
+            throw e
+        } catch (e: Exception) {
+            throw DependencyException(CommonErrors.DEPENDENCY_ERROR, "分片存储失败", cause = e)
+        }
     }
 
     private fun resolveTempDir(tempPath: String): File {
@@ -45,7 +54,7 @@ class UploadVideoChunkStorageCliHandler :
         if (target.isAbsolute) {
             return target
         }
-        throw KnownException("临时目录必须为绝对路径")
+        throw RequestException(CommonErrors.PARAM_INVALID, "tempPath")
     }
 }
 

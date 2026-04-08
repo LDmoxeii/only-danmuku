@@ -1,6 +1,12 @@
 package edu.only4.danmuku.application.commands.video
 
-import com.only.engine.exception.KnownException
+import com.only.engine.error.CommonErrors
+import com.only.engine.exception.AppException
+import com.only.engine.exception.BusinessException
+import com.only.engine.exception.DependencyException
+import com.only.engine.exception.RequestException
+import com.only.engine.exception.SystemException
+import edu.only4.danmuku.domain.shared.error.DanmukuBusinessErrors
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
@@ -20,9 +26,9 @@ object TransferVideoToProductionCmd {
             val post = Mediator.repositories.findOne(
                 SVideoPost.predicateById(request.videoPostId),
                 persist = false,
-            ).getOrNull() ?: throw KnownException("稿件不存在: ${request.videoPostId}")
+            ).getOrNull() ?: throw BusinessException(DanmukuBusinessErrors.RESOURCE_NOT_FOUND, "稿件不存在: ${request.videoPostId}")
             if (post.videoFilePosts.isEmpty()) {
-                throw KnownException("稿件文件不存在: ${request.videoPostId}")
+                throw BusinessException(DanmukuBusinessErrors.RESOURCE_NOT_FOUND, "稿件文件不存在: ${request.videoPostId}")
             }
             val files = post.videoFilePosts.sortedBy { it.fileIndex }.map { file ->
                 val variants = file.videoFilePostVariants.map { variant ->

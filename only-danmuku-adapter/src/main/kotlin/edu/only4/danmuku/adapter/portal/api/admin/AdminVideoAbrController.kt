@@ -1,7 +1,8 @@
 package edu.only4.danmuku.adapter.portal.api.admin
 
 import cn.dev33.satoken.annotation.SaIgnore
-import com.only.engine.exception.KnownException
+import com.only.engine.exception.BusinessException
+import edu.only4.danmuku.domain.shared.error.DanmukuBusinessErrors
 import com.only.engine.web.annotation.IgnoreResultWrapper
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.adapter.portal.api.payload.admin_video_abr.GetVariants
@@ -26,9 +27,9 @@ class AdminVideoAbrController {
     @GetMapping("/videoResource/{fileId}/master.m3u8")
     fun master(@PathVariable fileId: Long): ResponseEntity<String> {
         val outputPrefix = Mediator.queries.send(GetVideoFilePostPathQry.Request(filePostId = fileId)).filePath
-            ?: throw KnownException("播放路径为空")
+            ?: throw BusinessException(DanmukuBusinessErrors.RESOURCE_NOT_FOUND, "播放路径为空")
         val master = Mediator.queries.send(GetVideoAbrMasterQry.Request(fileId = fileId))
-        if (master.status != "SUCCESS") throw KnownException("转码未完成: ${master.status}")
+        if (master.status != "SUCCESS") throw BusinessException(DanmukuBusinessErrors.STATE_INVALID, "转码未完成: ${master.status}")
         val objectKey = outputPrefix.trimEnd('/') + "/master.m3u8"
         val content = Mediator.requests.send(
         ReadObjectAsTextCli.Request(objectKey = objectKey)
@@ -54,7 +55,7 @@ class AdminVideoAbrController {
         @PathVariable quality: String,
     ): ResponseEntity<String> {
         val outputPrefix = Mediator.queries.send(GetVideoFilePostPathQry.Request(filePostId = fileId)).filePath
-            ?: throw KnownException("播放路径为空")
+            ?: throw BusinessException(DanmukuBusinessErrors.RESOURCE_NOT_FOUND, "播放路径为空")
         val objectKey = outputPrefix.trimEnd('/') + "/$quality/index.m3u8"
         val content = Mediator.requests.send(
             ReadObjectAsTextCli.Request(objectKey = objectKey)
@@ -73,7 +74,7 @@ class AdminVideoAbrController {
         @PathVariable ts: String,
     ): ResponseEntity<Void> {
         val outputPrefix = Mediator.queries.send(GetVideoFilePostPathQry.Request(filePostId = fileId)).filePath
-            ?: throw KnownException("播放路径为空")
+            ?: throw BusinessException(DanmukuBusinessErrors.RESOURCE_NOT_FOUND, "播放路径为空")
         val url = resolveUrl(outputPrefix, "$quality/$ts")
         return ResponseEntity.status(HttpStatus.FOUND)
             .location(URI.create(url))

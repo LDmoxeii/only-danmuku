@@ -1,7 +1,13 @@
 package edu.only4.danmuku.domain.aggregates.video_audit_trace.enums
 
 import com.fasterxml.jackson.annotation.JsonValue
-import com.only.engine.exception.KnownException
+import com.only.engine.error.CommonErrors
+import com.only.engine.exception.AppException
+import com.only.engine.exception.BusinessException
+import com.only.engine.exception.DependencyException
+import com.only.engine.exception.RequestException
+import com.only.engine.exception.SystemException
+import edu.only4.danmuku.domain.shared.error.DanmukuBusinessErrors
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import jakarta.persistence.AttributeConverter
 
@@ -40,7 +46,7 @@ enum class AuditStatus(
         }
 
         fun valueOf(value: Int?): AuditStatus {
-            return valueOfOrNull(value) ?: throw KnownException("枚举类型 AuditStatus 枚举值转换异常，不存在的值: $value")
+            return valueOfOrNull(value) ?: throw BusinessException(DanmukuBusinessErrors.RESOURCE_NOT_FOUND, "枚举类型 AuditStatus 枚举值转换异常，不存在的值: $value")
         }
 
         fun valueOfOrNull(value: Int?): AuditStatus? {

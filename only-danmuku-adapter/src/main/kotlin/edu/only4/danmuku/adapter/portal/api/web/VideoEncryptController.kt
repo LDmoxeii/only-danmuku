@@ -2,7 +2,8 @@ package edu.only4.danmuku.adapter.portal.api.web
 
 import cn.dev33.satoken.annotation.SaIgnore
 import cn.dev33.satoken.stp.StpUtil
-import com.only.engine.exception.KnownException
+import com.only.engine.exception.BusinessException
+import edu.only4.danmuku.domain.shared.error.DanmukuBusinessErrors
 import com.only.engine.json.misc.JsonUtils
 import com.only.engine.oss.factory.OssFactory
 import com.only.engine.web.annotation.IgnoreResultWrapper
@@ -41,7 +42,7 @@ class VideoEncryptController {
                 fileIndex = context.fileIndex
             )
         )
-        val keyVersion = latestKey.keyVersion ?: throw KnownException("未找到可用密钥版本")
+        val keyVersion = latestKey.keyVersion ?: throw BusinessException(DanmukuBusinessErrors.RESOURCE_NOT_FOUND, "未找到可用密钥版本")
 
         val allowedQualities = computeAllowedQualities(request.fileId)
 
@@ -95,10 +96,10 @@ class VideoEncryptController {
     ): ResponseEntity<String> {
         val status = encryptStatus(fileId)
         if (status.encryptStatus != "ENCRYPTED") {
-            throw KnownException("加密未完成: ${status.encryptStatus}")
+            throw BusinessException(DanmukuBusinessErrors.STATE_INVALID, "加密未完成: ${status.encryptStatus}")
         }
         val allowedQualities = resolveAllowedQualities(fileId)
-        val masterKey = status.encryptedMasterPath ?: throw KnownException("缺少加密路径")
+        val masterKey = status.encryptedMasterPath ?: throw BusinessException(DanmukuBusinessErrors.RESOURCE_NOT_FOUND, "缺少加密路径")
         val content = readObjectAsText(masterKey)
         val filtered = if (allowedQualities.isEmpty()) content else {
             filterMasterByAllowedQualities(content, allowedQualities.toSet())
@@ -120,7 +121,7 @@ class VideoEncryptController {
     ): ResponseEntity<String> {
         val status = encryptStatus(fileId)
         val base = status.encryptedMasterPath?.substringBeforeLast("/master.m3u8")
-            ?: throw KnownException("缺少加密目录")
+            ?: throw BusinessException(DanmukuBusinessErrors.RESOURCE_NOT_FOUND, "缺少加密目录")
         val objectKey = "$base/$quality/index.m3u8"
         val content = runCatching { readObjectAsText(objectKey) }
             .getOrElse { return ResponseEntity.status(HttpStatus.NOT_FOUND).build() }
@@ -140,7 +141,7 @@ class VideoEncryptController {
     ): ResponseEntity<Void> {
         val status = encryptStatus(fileId)
         val base = status.encryptedMasterPath?.substringBeforeLast("/master.m3u8")
-            ?: throw KnownException("缺少加密目录")
+            ?: throw BusinessException(DanmukuBusinessErrors.RESOURCE_NOT_FOUND, "缺少加密目录")
         val objectKey = "$base/$quality/$ts"
         val url = Mediator.queries.send(
             GetResourceAccessUrlQry.Request(resourceKey = objectKey)
@@ -164,8 +165,8 @@ class VideoEncryptController {
                 quality = quality ?: ""
             )
         )
-        if (!resp.valid) throw KnownException(resp.failReason ?: "token 无效")
-        val keyHex = resp.keyPlainHex ?: throw KnownException("key 为空")
+        if (!resp.valid) throw BusinessException(DanmukuBusinessErrors.STATE_INVALID, resp.failReason ?: "token 无效")
+        val keyHex = resp.keyPlainHex ?: throw BusinessException(DanmukuBusinessErrors.RESOURCE_NOT_FOUND, "key 为空")
         val keyBytes = hexToBytes(keyHex)
         val resource = ByteArrayResource(keyBytes)
         return ResponseEntity.ok()
@@ -185,7 +186,7 @@ class VideoEncryptController {
     }
 
     private fun hexToBytes(hex: String): ByteArray {
-        if (hex.length % 2 != 0) throw KnownException("key hex 长度异常")
+        if (hex.length % 2 != 0) throw BusinessException(DanmukuBusinessErrors.STATE_INVALID, "key hex 长度异常")
         return hex.chunked(2).map { it.toInt(16).toByte() }.toByteArray()
     }
 
@@ -307,7 +308,7 @@ class VideoEncryptController {
             isPlayable(resolvePolicy(it.authPolicy), allowLogin)
         }.map { it.quality }
         if (allowed.isEmpty()) {
-            throw KnownException("无可用清晰度")
+            throw BusinessException(DanmukuBusinessErrors.STATE_INVALID, "无可用清晰度")
         }
         return JsonUtils.toJsonString(allowed)
     }

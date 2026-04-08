@@ -1,7 +1,11 @@
 package edu.only4.danmuku.adapter.application.distributed.clients.video_transcode
 
 import cn.hutool.core.util.RuntimeUtil
-import com.only.engine.exception.KnownException
+import com.only.engine.error.CommonErrors
+import com.only.engine.exception.AppException
+import com.only.engine.exception.DependencyException
+import com.only.engine.exception.RequestException
+import com.only.engine.exception.SystemException
 import com.only.engine.json.misc.JsonUtils
 import com.only.engine.misc.FFprobeUtils
 import com.only4.cap4k.ddd.core.application.RequestHandler
@@ -34,11 +38,11 @@ class TranscodeVideoFileToAbrByPathCliHandler(
 
             val sourceFile = File(sourcePath)
             if (!sourceFile.exists()) {
-                throw KnownException.systemError("源视频不存在: $sourcePath")
+                throw DependencyException(CommonErrors.DEPENDENCY_ERROR, "源视频不存在: $sourcePath")
             }
             val outputDir = File(outputBaseDir)
             if (outputDir.exists().not() && !outputDir.mkdirs()) {
-                throw KnownException.systemError("无法创建输出目录: ${outputDir.absolutePath}")
+                throw DependencyException(CommonErrors.DEPENDENCY_ERROR, "无法创建输出目录: ${outputDir.absolutePath}")
             }
 
             val sourceProbe =
@@ -118,7 +122,7 @@ class TranscodeVideoFileToAbrByPathCliHandler(
     private fun parseProfiles(json: String): List<AbrProfile> {
         val profiles = JsonUtils.parseArray(json, AbrProfile::class.java)
         if (profiles.isEmpty()) {
-            throw KnownException.illegalArgument("profiles")
+            throw RequestException(CommonErrors.PARAM_INVALID, "profiles")
         }
         return profiles
     }
@@ -172,7 +176,7 @@ class TranscodeVideoFileToAbrByPathCliHandler(
 
     fun execForStdout(commands: List<String>): String {
         if (commands.isEmpty()) {
-            throw KnownException.illegalArgument("commands")
+            throw RequestException(CommonErrors.PARAM_INVALID, "commands")
         }
 
         var process: Process? = null
@@ -194,17 +198,17 @@ class TranscodeVideoFileToAbrByPathCliHandler(
                         append(": ").append(stderr.trim())
                     }
                 }
-                throw KnownException.systemError(message)
+                throw DependencyException(CommonErrors.DEPENDENCY_ERROR, message)
             }
 
             stdout
         } catch (e: InterruptedException) {
             Thread.currentThread().interrupt()
-            throw KnownException.systemError(e)
-        } catch (e: KnownException) {
+            throw SystemException(CommonErrors.SYSTEM_ERROR, cause = e)
+        } catch (e: AppException) {
             throw e
         } catch (e: Exception) {
-            throw KnownException.systemError(e)
+            throw DependencyException(CommonErrors.DEPENDENCY_ERROR, "FFmpeg 命令执行异常", cause = e)
         } finally {
             process?.destroy()
         }

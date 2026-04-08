@@ -2,9 +2,10 @@ package edu.only4.danmuku.adapter.portal.api.admin
 
 import cn.dev33.satoken.annotation.SaIgnore
 import cn.dev33.satoken.stp.StpUtil
-import com.only.engine.entity.UserInfo
-import com.only.engine.exception.KnownException
+import com.only.engine.exception.BusinessException
 import com.only.engine.misc.ServletUtils
+import edu.only4.danmuku.domain.shared.error.DanmukuBusinessErrors
+import edu.only4.danmuku.domain.shared.error.DanmukuAuthErrors
 import com.only.engine.misc.ServletUtils.getClientIP
 import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
@@ -48,7 +49,9 @@ class AdminAccountController {
     fun login(@RequestBody @Validated request: Login.Request): Login.Response {
         val captchaValidationResult =
             Mediator.requests.send(CaptchaValidCli.Request(request.checkCodeKey, request.checkCode))
-        require(captchaValidationResult.result) { "验证码错误" }
+        if (!captchaValidationResult.result) {
+            throw BusinessException(DanmukuAuthErrors.CAPTCHA_INVALID)
+        }
 
         val userAccount = Mediator.queries.send(
             GetAccountInfoByEmailQry.Request(
@@ -73,7 +76,7 @@ class AdminAccountController {
                     occurTime = occurTime
                 )
             )
-            throw KnownException("密码错误")
+            throw BusinessException(DanmukuBusinessErrors.STATE_INVALID, "密码错误")
         }
 
         val token = Mediator.requests.send(

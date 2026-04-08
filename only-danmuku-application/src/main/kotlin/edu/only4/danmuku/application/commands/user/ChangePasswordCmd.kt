@@ -1,6 +1,12 @@
 package edu.only4.danmuku.application.commands.user
 
-import com.only.engine.exception.KnownException
+import com.only.engine.error.CommonErrors
+import com.only.engine.exception.AppException
+import com.only.engine.exception.BusinessException
+import com.only.engine.exception.DependencyException
+import com.only.engine.exception.RequestException
+import com.only.engine.exception.SystemException
+import edu.only4.danmuku.domain.shared.error.DanmukuBusinessErrors
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
@@ -21,11 +27,11 @@ object ChangePasswordCmd {
         override fun exec(request: Request): Response {
             val user = Mediator.repositories
                 .findOne(SUser.predicateById(request.userId))
-                .orElseThrow { KnownException("用户不存在") }
+                .orElseThrow { BusinessException(DanmukuBusinessErrors.RESOURCE_NOT_FOUND, "用户不存在") }
 
             val isOldPasswordCorrect = user.verifyPassword(request.oldPassword)
             if (!isOldPasswordCorrect) {
-                throw KnownException("原密码不正确")
+                throw BusinessException(DanmukuBusinessErrors.STATE_INVALID, "原密码不正确")
             }
 
             user.changePassword(request.newPassword)

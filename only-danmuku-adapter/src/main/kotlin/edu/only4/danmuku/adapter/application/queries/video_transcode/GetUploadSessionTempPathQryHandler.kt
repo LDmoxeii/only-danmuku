@@ -1,6 +1,12 @@
 package edu.only4.danmuku.adapter.application.queries.video_transcode
 
-import com.only.engine.exception.KnownException
+import com.only.engine.error.CommonErrors
+import com.only.engine.exception.AppException
+import com.only.engine.exception.BusinessException
+import com.only.engine.exception.DependencyException
+import com.only.engine.exception.RequestException
+import com.only.engine.exception.SystemException
+import edu.only4.danmuku.domain.shared.error.DanmukuBusinessErrors
 import com.only4.cap4k.ddd.core.application.query.Query
 import edu.only4.danmuku.application.queries._share.model.VideoFileUploadSession
 import edu.only4.danmuku.application.queries._share.model.id
@@ -26,10 +32,10 @@ class GetUploadSessionTempPathQryHandler(
         val tempPath = sqlClient.createQuery(VideoFileUploadSession::class) {
             where(table.id eq request.uploadId)
             select(table.tempDir)
-        }.fetchOneOrNull() ?: throw KnownException("上传会话不存在: ${request.uploadId}")
+        }.fetchOneOrNull() ?: throw BusinessException(DanmukuBusinessErrors.RESOURCE_NOT_FOUND, "上传会话不存在: ${request.uploadId}")
 
         if (tempPath.isBlank()) {
-            throw KnownException("上传会话临时目录缺失: ${request.uploadId}")
+            throw BusinessException(DanmukuBusinessErrors.STATE_INVALID, "上传会话临时目录缺失: ${request.uploadId}")
         }
 
         return GetUploadSessionTempPathQry.Response(tempPath = tempPath)

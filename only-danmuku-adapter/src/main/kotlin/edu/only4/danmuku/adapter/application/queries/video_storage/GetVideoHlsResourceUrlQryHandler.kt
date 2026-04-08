@@ -1,6 +1,12 @@
 package edu.only4.danmuku.adapter.application.queries.video_storage
 
-import com.only.engine.exception.KnownException
+import com.only.engine.error.CommonErrors
+import com.only.engine.exception.AppException
+import com.only.engine.exception.BusinessException
+import com.only.engine.exception.DependencyException
+import com.only.engine.exception.RequestException
+import com.only.engine.exception.SystemException
+import edu.only4.danmuku.domain.shared.error.DanmukuBusinessErrors
 import com.only.engine.oss.enums.AccessPolicyType
 import com.only.engine.oss.factory.OssFactory
 import com.only4.cap4k.ddd.core.application.query.Query
@@ -28,14 +34,14 @@ class GetVideoHlsResourceUrlQryHandler(
     override fun exec(request: GetVideoHlsResourceUrlQry.Request): GetVideoHlsResourceUrlQry.Response {
         val relative = request.relativePath.trim().trimStart('/')
         if (relative.contains("..")) {
-            throw KnownException.illegalArgument("relativePath")
+            throw RequestException(CommonErrors.PARAM_INVALID, "relativePath")
         }
         val base = sqlClient.createQuery(VideoFile::class) {
             where(table.id eq request.videoFileId)
             select(table.filePath)
-        }.fetchOneOrNull() ?: throw KnownException("文件不存在: ${request.videoFileId}")
+        }.fetchOneOrNull() ?: throw BusinessException(DanmukuBusinessErrors.RESOURCE_NOT_FOUND, "文件不存在: ${request.videoFileId}")
         if (base.isBlank()) {
-            throw KnownException("filePath 为空: ${request.videoFileId}")
+            throw BusinessException(DanmukuBusinessErrors.STATE_INVALID, "filePath 为空: ${request.videoFileId}")
         }
         val objectKey = base.trimEnd('/') + "/" + relative
         val client = OssFactory.instance()
