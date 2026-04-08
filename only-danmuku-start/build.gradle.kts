@@ -25,4 +25,5 @@ dependencies {
     testImplementation(libs.spring.boot.starter)
 
     testImplementation(libs.engine.redis)
+    testImplementation("com.baomidou:lock4j-core:2.2.7")
 }
