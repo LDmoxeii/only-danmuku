@@ -2,7 +2,9 @@ package {{ basePackage }}{{ templatePackage }}{{ package }}
 
 {{ use("com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate") -}}
 {{ use("jakarta.persistence.AttributeConverter") -}}
-{{ use("com.only.engine.exception.KnownException") -}}
+{{ use("com.only.engine.error.CommonErrors") -}}
+{{ use("com.only.engine.exception.RequestException") -}}
+{{ use("com.only.engine.exception.SystemException") -}}
 {{ use("com.fasterxml.jackson.annotation.JsonValue") -}}
 {{ imports() }}
 
@@ -33,7 +35,13 @@ enum class {{ Enum }}(
         }
 
         fun valueOf(value: Int?): {{ Enum }} {
-            return valueOfOrNull(value) ?: throw KnownException("枚举类型 {{ Enum }} 枚举值转换异常，不存在的值: $value")
+            return valueOfOrNull(value)
+                ?: throw RequestException(CommonErrors.PARAM_INVALID, "枚举类型 {{ Enum }} 枚举值转换异常，不存在的值: $value")
+        }
+
+        fun fromDbValue(value: Int?): {{ Enum }} {
+            return valueOfOrNull(value)
+                ?: throw SystemException(CommonErrors.SYSTEM_ERROR, "枚举类型 {{ Enum }} 枚举值转换异常，不存在的值: $value")
         }
 
         fun valueOfOrNull(value: Int?): {{ Enum }}? {
@@ -52,7 +60,7 @@ enum class {{ Enum }}(
 {%- if enumUnmatchedThrowException %}
 
         override fun convertToEntityAttribute(dbData: Int): {{ Enum }} {
-            return valueOf(dbData)
+            return fromDbValue(dbData)
         }
 {%- else %}
 
