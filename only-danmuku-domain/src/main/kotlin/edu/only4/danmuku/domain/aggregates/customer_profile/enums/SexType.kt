@@ -46,7 +46,7 @@ enum class SexType(
         }
 
         fun valueOf(value: Int?): SexType {
-            return valueOfOrNull(value) ?: throw BusinessException(DanmukuBusinessErrors.RESOURCE_NOT_FOUND, "枚举类型 SexType 枚举值转换异常，不存在的值: $value")
+            return valueOfOrNull(value) ?: throw SystemException(CommonErrors.SYSTEM_ERROR, "枚举类型 SexType 枚举值转换异常，不存在的值: $value")
         }
 
         fun valueOfOrNull(value: Int?): SexType? {

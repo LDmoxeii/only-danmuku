@@ -56,7 +56,7 @@ enum class EncryptStatus(
         }
 
         fun valueOf(value: Int?): EncryptStatus {
-            return valueOfOrNull(value) ?: throw BusinessException(DanmukuBusinessErrors.RESOURCE_NOT_FOUND, "枚举类型 EncryptStatus 枚举值转换异常，不存在的值: $value")
+            return valueOfOrNull(value) ?: throw SystemException(CommonErrors.SYSTEM_ERROR, "枚举类型 EncryptStatus 枚举值转换异常，不存在的值: $value")
         }
 
         fun valueOfOrNull(value: Int?): EncryptStatus? {

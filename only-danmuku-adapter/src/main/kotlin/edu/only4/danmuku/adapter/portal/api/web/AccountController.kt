@@ -57,7 +57,9 @@ class AccountController {
     @PostMapping("/register")
     fun register(@RequestBody @Validated request: AccountRegister.Request) {
         val captchaValidationResult = Mediator.requests.send(CaptchaValidCli.Request(request.checkCodeKey, request.checkCode))
-        require(captchaValidationResult.result) { "验证码错误" }
+        if (!captchaValidationResult.result) {
+            throw BusinessException(DanmukuAuthErrors.CAPTCHA_INVALID)
+        }
         Mediator.cmd.send(AccountRegister.Converter.INSTANCE.toCmd(request))
     }
 

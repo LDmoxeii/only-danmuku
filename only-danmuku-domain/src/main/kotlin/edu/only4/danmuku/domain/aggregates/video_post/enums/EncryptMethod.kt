@@ -47,7 +47,7 @@ enum class EncryptMethod(
 
         fun valueOf(value: Int?): EncryptMethod {
             return valueOfOrNull(value)
-                ?: throw BusinessException(DanmukuBusinessErrors.RESOURCE_NOT_FOUND, "枚举类型 EncryptMethod 枚举值转换异常，不存在的值: $value")
+                ?: throw SystemException(CommonErrors.SYSTEM_ERROR, "枚举类型 EncryptMethod 枚举值转换异常，不存在的值: $value")
         }
 
         fun valueOfOrNull(value: Int?): EncryptMethod? {

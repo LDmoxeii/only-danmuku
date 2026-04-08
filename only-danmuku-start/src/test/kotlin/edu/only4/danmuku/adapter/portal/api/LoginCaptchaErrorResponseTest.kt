@@ -64,6 +64,28 @@ class LoginCaptchaErrorResponseTest {
     }
 
     @Test
+    fun `should return captcha error for register when captcha validation fails`() {
+        mockMvc.perform(
+            post("/account/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+                    {
+                      "email": "user@example.com",
+                      "nickName": "tester",
+                      "registerPassword": "admin1234",
+                      "checkCodeKey": "captcha-key",
+                      "checkCode": "1"
+                    }
+                    """.trimIndent(),
+                ),
+        )
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.code").value(40240))
+            .andExpect(jsonPath("$.message").value("验证码错误"))
+    }
+
+    @Test
     fun `should return captcha error for admin login when captcha validation fails`() {
         mockMvc.perform(
             post("/admin/account/login")
