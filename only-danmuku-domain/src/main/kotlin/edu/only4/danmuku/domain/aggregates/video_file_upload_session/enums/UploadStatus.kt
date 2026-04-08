@@ -61,6 +61,10 @@ enum class UploadStatus(
         }
 
         fun valueOf(value: Int?): UploadStatus {
+            return valueOfOrNull(value) ?: throw RequestException(CommonErrors.PARAM_INVALID, "枚举类型 UploadStatus 枚举值转换异常，不存在的值: $value")
+        }
+
+        fun fromDbValue(value: Int?): UploadStatus {
             return valueOfOrNull(value) ?: throw SystemException(CommonErrors.SYSTEM_ERROR, "枚举类型 UploadStatus 枚举值转换异常，不存在的值: $value")
         }
 
@@ -79,7 +83,7 @@ enum class UploadStatus(
         }
 
         override fun convertToEntityAttribute(dbData: Int): UploadStatus {
-            return valueOf(dbData)
+            return fromDbValue(dbData)
         }
     }
 }

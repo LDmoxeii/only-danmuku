@@ -71,6 +71,10 @@ enum class StatisticsDataType(
         }
 
         fun valueOf(value: Int?): StatisticsDataType {
+            return valueOfOrNull(value) ?: throw RequestException(CommonErrors.PARAM_INVALID, "枚举类型 StatisticsDataType 枚举值转换异常，不存在的值: $value")
+        }
+
+        fun fromDbValue(value: Int?): StatisticsDataType {
             return valueOfOrNull(value) ?: throw SystemException(CommonErrors.SYSTEM_ERROR, "枚举类型 StatisticsDataType 枚举值转换异常，不存在的值: $value")
         }
 
@@ -89,7 +93,7 @@ enum class StatisticsDataType(
         }
 
         override fun convertToEntityAttribute(dbData: Int): StatisticsDataType {
-            return valueOf(dbData)
+            return fromDbValue(dbData)
         }
     }
 }

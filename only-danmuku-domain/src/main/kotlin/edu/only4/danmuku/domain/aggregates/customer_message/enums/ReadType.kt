@@ -46,6 +46,10 @@ enum class ReadType(
         }
 
         fun valueOf(value: Int?): ReadType {
+            return valueOfOrNull(value) ?: throw RequestException(CommonErrors.PARAM_INVALID, "枚举类型 ReadType 枚举值转换异常，不存在的值: $value")
+        }
+
+        fun fromDbValue(value: Int?): ReadType {
             return valueOfOrNull(value) ?: throw SystemException(CommonErrors.SYSTEM_ERROR, "枚举类型 ReadType 枚举值转换异常，不存在的值: $value")
         }
 
@@ -64,7 +68,7 @@ enum class ReadType(
         }
 
         override fun convertToEntityAttribute(dbData: Int): ReadType {
-            return valueOf(dbData)
+            return fromDbValue(dbData)
         }
     }
 }

@@ -56,6 +56,10 @@ enum class EncryptTokenStatus(
         }
 
         fun valueOf(value: Int?): EncryptTokenStatus {
+            return valueOfOrNull(value) ?: throw RequestException(CommonErrors.PARAM_INVALID, "枚举类型 EncryptTokenStatus 枚举值转换异常，不存在的值: $value")
+        }
+
+        fun fromDbValue(value: Int?): EncryptTokenStatus {
             return valueOfOrNull(value) ?: throw SystemException(CommonErrors.SYSTEM_ERROR, "枚举类型 EncryptTokenStatus 枚举值转换异常，不存在的值: $value")
         }
 
@@ -74,7 +78,7 @@ enum class EncryptTokenStatus(
         }
 
         override fun convertToEntityAttribute(dbData: Int): EncryptTokenStatus {
-            return valueOf(dbData)
+            return fromDbValue(dbData)
         }
     }
 }

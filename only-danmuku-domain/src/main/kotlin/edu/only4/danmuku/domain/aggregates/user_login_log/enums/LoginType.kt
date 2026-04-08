@@ -51,6 +51,10 @@ enum class LoginType(
         }
 
         fun valueOf(value: Int?): LoginType {
+            return valueOfOrNull(value) ?: throw RequestException(CommonErrors.PARAM_INVALID, "枚举类型 LoginType 枚举值转换异常，不存在的值: $value")
+        }
+
+        fun fromDbValue(value: Int?): LoginType {
             return valueOfOrNull(value) ?: throw SystemException(CommonErrors.SYSTEM_ERROR, "枚举类型 LoginType 枚举值转换异常，不存在的值: $value")
         }
 
@@ -69,7 +73,7 @@ enum class LoginType(
         }
 
         override fun convertToEntityAttribute(dbData: Int): LoginType {
-            return valueOf(dbData)
+            return fromDbValue(dbData)
         }
     }
 }

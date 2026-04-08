@@ -47,6 +47,11 @@ enum class EncryptMethod(
 
         fun valueOf(value: Int?): EncryptMethod {
             return valueOfOrNull(value)
+                ?: throw RequestException(CommonErrors.PARAM_INVALID, "枚举类型 EncryptMethod 枚举值转换异常，不存在的值: $value")
+        }
+
+        fun fromDbValue(value: Int?): EncryptMethod {
+            return valueOfOrNull(value)
                 ?: throw SystemException(CommonErrors.SYSTEM_ERROR, "枚举类型 EncryptMethod 枚举值转换异常，不存在的值: $value")
         }
 
@@ -65,7 +70,7 @@ enum class EncryptMethod(
         }
 
         override fun convertToEntityAttribute(dbData: Int): EncryptMethod {
-            return valueOf(dbData)
+            return fromDbValue(dbData)
         }
     }
 }

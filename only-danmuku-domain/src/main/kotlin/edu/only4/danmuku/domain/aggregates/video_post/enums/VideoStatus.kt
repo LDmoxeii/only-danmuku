@@ -61,6 +61,10 @@ enum class VideoStatus(
         }
 
         fun valueOf(value: Int?): VideoStatus {
+            return valueOfOrNull(value) ?: throw RequestException(CommonErrors.PARAM_INVALID, "枚举类型 VideoStatus 枚举值转换异常，不存在的值: $value")
+        }
+
+        fun fromDbValue(value: Int?): VideoStatus {
             return valueOfOrNull(value) ?: throw SystemException(CommonErrors.SYSTEM_ERROR, "枚举类型 VideoStatus 枚举值转换异常，不存在的值: $value")
         }
 
@@ -79,7 +83,7 @@ enum class VideoStatus(
         }
 
         override fun convertToEntityAttribute(dbData: Int): VideoStatus {
-            return valueOf(dbData)
+            return fromDbValue(dbData)
         }
     }
 }
