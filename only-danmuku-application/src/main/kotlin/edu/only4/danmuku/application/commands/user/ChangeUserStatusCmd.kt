@@ -1,6 +1,12 @@
 package edu.only4.danmuku.application.commands.user
 
-import com.only.engine.exception.KnownException
+import com.only.engine.error.CommonErrors
+import com.only.engine.exception.AppException
+import com.only.engine.exception.BusinessException
+import com.only.engine.exception.DependencyException
+import com.only.engine.exception.RequestException
+import com.only.engine.exception.SystemException
+import edu.only4.danmuku.domain.shared.error.DanmukuBusinessErrors
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.NoneResultCommandParam
@@ -18,7 +24,7 @@ object ChangeUserStatusCmd {
         override fun exec(request: Request) {
             val user = Mediator.repositories.findFirst(
                 SUser.predicateById(request.userId)
-            ).getOrNull() ?: throw KnownException("用户不存在：${request.userId}")
+            ).getOrNull() ?: throw BusinessException(DanmukuBusinessErrors.RESOURCE_NOT_FOUND, "用户不存在：${request.userId}")
 
             user.changeStatus(request.status)
 

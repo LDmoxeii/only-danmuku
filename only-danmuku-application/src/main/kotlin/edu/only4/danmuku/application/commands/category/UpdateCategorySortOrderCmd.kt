@@ -1,6 +1,12 @@
 package edu.only4.danmuku.application.commands.category
 
-import com.only.engine.exception.KnownException
+import com.only.engine.error.CommonErrors
+import com.only.engine.exception.AppException
+import com.only.engine.exception.BusinessException
+import com.only.engine.exception.DependencyException
+import com.only.engine.exception.RequestException
+import com.only.engine.exception.SystemException
+import edu.only4.danmuku.domain.shared.error.DanmukuBusinessErrors
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.NoneResultCommandParam
@@ -26,12 +32,12 @@ object UpdateCategorySortOrderCmd {
             )
 
             if (categories.size != request.categoryIds.toSet().size) {
-                throw KnownException("存在无效的分类ID，无法完成排序")
+                throw BusinessException(DanmukuBusinessErrors.STATE_INVALID, "存在无效的分类ID，无法完成排序")
             }
 
             val invalidParent = categories.any { !it.isDirectChildOf(request.parentId) }
             if (invalidParent) {
-                throw KnownException("仅允许调整同一父分类下的子分类顺序")
+                throw BusinessException(DanmukuBusinessErrors.STATE_INVALID, "仅允许调整同一父分类下的子分类顺序")
             }
 
             val byId = categories.associateBy { it.id }

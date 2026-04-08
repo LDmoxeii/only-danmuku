@@ -1,6 +1,12 @@
 package edu.only4.danmuku.application.commands.video_post_processing
 
-import com.only.engine.exception.KnownException
+import com.only.engine.error.CommonErrors
+import com.only.engine.exception.AppException
+import com.only.engine.exception.BusinessException
+import com.only.engine.exception.DependencyException
+import com.only.engine.exception.RequestException
+import com.only.engine.exception.SystemException
+import edu.only4.danmuku.domain.shared.error.DanmukuBusinessErrors
 import com.only.engine.json.misc.JsonUtils
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
@@ -27,7 +33,7 @@ object ApplyVideoPostProcessingTranscodeResultCmd {
                 SVideoPostProcessing.predicate { schema ->
                     schema.videoPostId.eq(request.videoPostId)
                 }
-            ).getOrNull() ?: throw KnownException("处理聚合不存在: ${request.videoPostId}")
+            ).getOrNull() ?: throw BusinessException(DanmukuBusinessErrors.RESOURCE_NOT_FOUND, "处理聚合不存在: ${request.videoPostId}")
 
             val variants = parseVariants(request.variantsJson)
             processing.applyTranscodeResult(

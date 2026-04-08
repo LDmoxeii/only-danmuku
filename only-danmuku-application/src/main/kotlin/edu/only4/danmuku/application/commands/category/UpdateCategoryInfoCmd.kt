@@ -1,6 +1,12 @@
 package edu.only4.danmuku.application.commands.category
 
-import com.only.engine.exception.KnownException
+import com.only.engine.error.CommonErrors
+import com.only.engine.exception.AppException
+import com.only.engine.exception.BusinessException
+import com.only.engine.exception.DependencyException
+import com.only.engine.exception.RequestException
+import com.only.engine.exception.SystemException
+import edu.only4.danmuku.domain.shared.error.DanmukuBusinessErrors
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.NoneResultCommandParam
@@ -34,7 +40,7 @@ object UpdateCategoryInfoCmd {
 
             if (category.isParentChanged(request.parentId)) {
                 if (category.isMovingToSelf(request.parentId)) {
-                    throw KnownException("不能将分类移动到自身下")
+                    throw BusinessException(DanmukuBusinessErrors.STATE_INVALID, "不能将分类移动到自身下")
                 }
 
                 val parentCategory: Category? = if (request.parentId != 0L) {
@@ -45,7 +51,7 @@ object UpdateCategoryInfoCmd {
                 } else null
 
                 if (parentCategory != null && category.isMovingToDescendant(parentCategory)) {
-                    throw KnownException("不能将分类移动到自己的子孙节点下")
+                    throw BusinessException(DanmukuBusinessErrors.STATE_INVALID, "不能将分类移动到自己的子孙节点下")
                 }
 
                 val (oldPath, newPath) = category.changeParent(

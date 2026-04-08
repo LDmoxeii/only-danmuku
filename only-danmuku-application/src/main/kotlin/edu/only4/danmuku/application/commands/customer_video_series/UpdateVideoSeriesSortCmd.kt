@@ -1,6 +1,12 @@
 package edu.only4.danmuku.application.commands.customer_video_series
 
-import com.only.engine.exception.KnownException
+import com.only.engine.error.CommonErrors
+import com.only.engine.exception.AppException
+import com.only.engine.exception.BusinessException
+import com.only.engine.exception.DependencyException
+import com.only.engine.exception.RequestException
+import com.only.engine.exception.SystemException
+import edu.only4.danmuku.domain.shared.error.DanmukuBusinessErrors
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
@@ -26,7 +32,7 @@ object UpdateVideoSeriesSortCmd {
             )
 
             if (seriesList.size != request.seriesIds.toSet().size) {
-                throw KnownException("部分系列不存在")
+                throw BusinessException(DanmukuBusinessErrors.RESOURCE_NOT_FOUND, "部分系列不存在")
             }
 
             val byId = seriesList.associateBy { it.id }
@@ -34,7 +40,7 @@ object UpdateVideoSeriesSortCmd {
             var sortNo = 1
             request.seriesIds.forEach { seriesId ->
                 val series = byId[seriesId]
-                    ?: throw KnownException("系列不存在：$seriesId")
+                    ?: throw BusinessException(DanmukuBusinessErrors.RESOURCE_NOT_FOUND, "系列不存在：$seriesId")
                 series.updateSort(sortNo.toByte())
                 sortNo += 1
             }

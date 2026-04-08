@@ -1,6 +1,12 @@
 package edu.only4.danmuku.application.commands.file_upload_session
 
-import com.only.engine.exception.KnownException
+import com.only.engine.error.CommonErrors
+import com.only.engine.exception.AppException
+import com.only.engine.exception.BusinessException
+import com.only.engine.exception.DependencyException
+import com.only.engine.exception.RequestException
+import com.only.engine.exception.SystemException
+import edu.only4.danmuku.domain.shared.error.DanmukuBusinessErrors
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
@@ -24,7 +30,7 @@ object DeleteUploadSessionCmd {
             val session: VideoFileUploadSession = Mediator.repositories.findOne(
                 SVideoFileUploadSession.predicateById(uploadId),
                 persist = false
-            ).getOrNull() ?: throw KnownException("文件不存在请重新上传")
+            ).getOrNull() ?: throw BusinessException(DanmukuBusinessErrors.RESOURCE_NOT_FOUND, "文件不存在请重新上传")
 
             session.ensureOwnedBy(request.customerId)
 

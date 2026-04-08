@@ -1,6 +1,12 @@
 package edu.only4.danmuku.application.commands.video_encrypt
 
-import com.only.engine.exception.KnownException
+import com.only.engine.error.CommonErrors
+import com.only.engine.exception.AppException
+import com.only.engine.exception.BusinessException
+import com.only.engine.exception.DependencyException
+import com.only.engine.exception.RequestException
+import com.only.engine.exception.SystemException
+import edu.only4.danmuku.domain.shared.error.DanmukuBusinessErrors
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
@@ -27,10 +33,10 @@ object GenerateVideoPostQualityKeyCmd {
         override fun exec(request: Request): Response {
             val quality = request.quality.trim()
             if (quality.isBlank()) {
-                throw KnownException.illegalArgument("quality")
+                throw RequestException(CommonErrors.PARAM_INVALID, "quality")
             }
             val method = runCatching { EncryptMethod.valueOf(request.method) }
-                .getOrNull() ?: throw KnownException.illegalArgument("method")
+                .getOrNull() ?: throw RequestException(CommonErrors.PARAM_INVALID, "method")
 
             val keyBytes = generateRandomBytes(request.keyBytes)
             val keyId = UUID.randomUUID().toString()

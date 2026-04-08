@@ -1,6 +1,9 @@
 package edu.only4.danmuku.domain.aggregates.video_file_upload_session
 
-import com.only.engine.exception.KnownException
+import com.only.engine.error.CommonErrors
+import com.only.engine.exception.BusinessException
+import com.only.engine.exception.RequestException
+import edu.only4.danmuku.domain.shared.error.DanmukuBusinessErrors
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
 import edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity
@@ -142,14 +145,14 @@ class VideoFileUploadSession(
     /** 校验归属 */
     fun ensureOwnedBy(userId: Long) {
         if (this.customerId != userId) {
-            throw KnownException.illegalArgument("没有权限操作该上传")
+            throw BusinessException(DanmukuBusinessErrors.OPERATION_FORBIDDEN, "没有权限操作该上传")
         }
     }
 
     /** 校验会话处于活跃可上传状态 */
     fun ensureActive() {
         if (this.status == UploadStatus.ABORTED || this.status == UploadStatus.EXPIRED) {
-            throw KnownException.illegalArgument("上传会话不可用")
+            throw BusinessException(DanmukuBusinessErrors.STATE_INVALID, "上传会话不可用")
         }
     }
 
@@ -158,10 +161,10 @@ class VideoFileUploadSession(
      */
     fun ensureChunkAllowed(incomingChunkIndex: Int) {
         if (incomingChunkIndex < 0 || incomingChunkIndex > this.chunks - 1) {
-            throw KnownException.illegalArgument("分片索引非法")
+            throw RequestException(CommonErrors.PARAM_INVALID, "分片索引非法")
         }
         if ((incomingChunkIndex - 1) > this.chunkIndex) {
-            throw KnownException.illegalArgument("分片索引非法")
+            throw RequestException(CommonErrors.PARAM_INVALID, "分片索引非法")
         }
     }
 

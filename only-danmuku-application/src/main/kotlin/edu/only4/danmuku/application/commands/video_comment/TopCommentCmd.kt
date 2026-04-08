@@ -1,6 +1,12 @@
 package edu.only4.danmuku.application.commands.video_comment
 
-import com.only.engine.exception.KnownException
+import com.only.engine.error.CommonErrors
+import com.only.engine.exception.AppException
+import com.only.engine.exception.BusinessException
+import com.only.engine.exception.DependencyException
+import com.only.engine.exception.RequestException
+import com.only.engine.exception.SystemException
+import edu.only4.danmuku.domain.shared.error.DanmukuBusinessErrors
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.NoneResultCommandParam
@@ -21,7 +27,7 @@ object TopCommentCmd {
         override fun exec(request: Request) {
             val comment = Mediator.repositories.findOne(
                 SVideoComment.predicateById(request.commentId)
-            ).getOrNull() ?: throw KnownException("评论不存在：${request.commentId}")
+            ).getOrNull() ?: throw BusinessException(DanmukuBusinessErrors.RESOURCE_NOT_FOUND, "评论不存在：${request.commentId}")
 
             val existingTopComments = Mediator.repositories.find(
                 SVideoComment.predicate { schema ->

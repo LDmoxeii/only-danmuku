@@ -1,6 +1,12 @@
 package edu.only4.danmuku.application.commands.video_encrypt
 
-import com.only.engine.exception.KnownException
+import com.only.engine.error.CommonErrors
+import com.only.engine.exception.AppException
+import com.only.engine.exception.BusinessException
+import com.only.engine.exception.DependencyException
+import com.only.engine.exception.RequestException
+import com.only.engine.exception.SystemException
+import edu.only4.danmuku.domain.shared.error.DanmukuBusinessErrors
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
@@ -23,12 +29,12 @@ object PersistVideoEncryptBatchResultCmd {
         override fun exec(request: Request): Response {
             val videoPost = Mediator.repositories.findOne(
                 SVideoPost.predicateById(request.videoPostId)
-            ).getOrNull() ?: throw KnownException("稿件不存在: ${request.videoPostId}")
+            ).getOrNull() ?: throw BusinessException(DanmukuBusinessErrors.RESOURCE_NOT_FOUND, "稿件不存在: ${request.videoPostId}")
             val file = videoPost.videoFilePosts.firstOrNull { it.fileIndex == request.fileIndex }
-                ?: throw KnownException("分P不存在: videoPostId=${request.videoPostId}, fileIndex=${request.fileIndex}")
+                ?: throw BusinessException(DanmukuBusinessErrors.RESOURCE_NOT_FOUND, "分P不存在: videoPostId=${request.videoPostId}, fileIndex=${request.fileIndex}")
 
             val method = runCatching { EncryptMethod.valueOf(request.encryptMethod) }
-                .getOrNull() ?: throw KnownException.illegalArgument("encryptMethod")
+                .getOrNull() ?: throw RequestException(CommonErrors.PARAM_INVALID, "encryptMethod")
 
             val outputPrefix = resolveOutputPrefix(request.encryptedMasterPath)
             file.applyEncryptResult(

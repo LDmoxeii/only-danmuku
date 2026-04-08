@@ -1,6 +1,12 @@
 package edu.only4.danmuku.application.commands.video_post
 
-import com.only.engine.exception.KnownException
+import com.only.engine.error.CommonErrors
+import com.only.engine.exception.AppException
+import com.only.engine.exception.BusinessException
+import com.only.engine.exception.DependencyException
+import com.only.engine.exception.RequestException
+import com.only.engine.exception.SystemException
+import edu.only4.danmuku.domain.shared.error.DanmukuBusinessErrors
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
@@ -27,14 +33,14 @@ object SyncVideoPostProcessStatusCmd {
         override fun exec(request: Request): Response {
             val videoPost = Mediator.repositories.findOne(
                 SVideoPost.predicateById(request.videoPostId)
-            ).getOrNull() ?: throw KnownException("稿件不存在: ${request.videoPostId}")
+            ).getOrNull() ?: throw BusinessException(DanmukuBusinessErrors.RESOURCE_NOT_FOUND, "稿件不存在: ${request.videoPostId}")
 
             videoPost.applyProcessStatus(request.targetStatus)
             request.duration?.let { videoPost.updateDuration(it) }
 
             request.fileList.forEach { fileItem ->
                 val file = videoPost.videoFilePosts.firstOrNull { it.fileIndex == fileItem.fileIndex }
-                    ?: throw KnownException("分P不存在: videoPostId=${request.videoPostId}, fileIndex=${fileItem.fileIndex}")
+                    ?: throw BusinessException(DanmukuBusinessErrors.RESOURCE_NOT_FOUND, "分P不存在: videoPostId=${request.videoPostId}, fileIndex=${fileItem.fileIndex}")
 
                 file.applyTranscodeResult(
                     outputPrefix = fileItem.transcodeOutputPrefix,
@@ -58,7 +64,7 @@ object SyncVideoPostProcessStatusCmd {
 
                 if (!fileItem.encryptMethod.isNullOrBlank() && !fileItem.encryptOutputPrefix.isNullOrBlank()) {
                     val method = runCatching { EncryptMethod.valueOf(fileItem.encryptMethod) }
-                        .getOrNull() ?: throw KnownException.illegalArgument("encryptMethod")
+                        .getOrNull() ?: throw RequestException(CommonErrors.PARAM_INVALID, "encryptMethod")
                     file.applyEncryptResult(
                         success = true,
                         method = method,

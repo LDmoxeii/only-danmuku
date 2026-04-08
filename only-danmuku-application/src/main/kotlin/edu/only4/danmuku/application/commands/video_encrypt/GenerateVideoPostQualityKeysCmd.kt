@@ -1,6 +1,12 @@
 package edu.only4.danmuku.application.commands.video_encrypt
 
-import com.only.engine.exception.KnownException
+import com.only.engine.error.CommonErrors
+import com.only.engine.exception.AppException
+import com.only.engine.exception.BusinessException
+import com.only.engine.exception.DependencyException
+import com.only.engine.exception.RequestException
+import com.only.engine.exception.SystemException
+import edu.only4.danmuku.domain.shared.error.DanmukuBusinessErrors
 import com.only.engine.json.misc.JsonUtils
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
@@ -32,10 +38,10 @@ object GenerateVideoPostQualityKeysCmd {
                 .mapNotNull { it.trim().takeIf(String::isNotBlank) }
                 .distinct()
             if (qualities.isEmpty()) {
-                throw KnownException.illegalArgument("qualities")
+                throw RequestException(CommonErrors.PARAM_INVALID, "qualities")
             }
             val method = runCatching { EncryptMethod.valueOf(request.method) }
-                .getOrNull() ?: throw KnownException.illegalArgument("method")
+                .getOrNull() ?: throw RequestException(CommonErrors.PARAM_INVALID, "method")
 
             val keyVersion = nextKeyVersion(videoPostId, fileIndex)
             val payloads = qualities.map { quality ->

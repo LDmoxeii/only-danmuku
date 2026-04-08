@@ -1,6 +1,12 @@
 package edu.only4.danmuku.application.commands.customer_video_series
 
-import com.only.engine.exception.KnownException
+import com.only.engine.error.CommonErrors
+import com.only.engine.exception.AppException
+import com.only.engine.exception.BusinessException
+import com.only.engine.exception.DependencyException
+import com.only.engine.exception.RequestException
+import com.only.engine.exception.SystemException
+import edu.only4.danmuku.domain.shared.error.DanmukuBusinessErrors
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
@@ -24,10 +30,10 @@ object UpdateCustomerVideoSeriesInfoCmd {
 
             val series = Mediator.repositories.findFirst(
                 SCustomerVideoSeries.predicateById(request.seriesId)
-            ).getOrNull() ?: throw KnownException("系列不存在: ${request.seriesId}")
+            ).getOrNull() ?: throw BusinessException(DanmukuBusinessErrors.RESOURCE_NOT_FOUND, "系列不存在: ${request.seriesId}")
 
             if (series.customerId != request.userId) {
-                throw KnownException("没有权限操作该系列")
+                throw BusinessException(DanmukuBusinessErrors.OPERATION_FORBIDDEN, "没有权限操作该系列")
             }
 
             series.updateBasicInfo(normalizedName, normalizedDescription)

@@ -1,6 +1,12 @@
 package edu.only4.danmuku.application.commands.video_post
 
-import com.only.engine.exception.KnownException
+import com.only.engine.error.CommonErrors
+import com.only.engine.exception.AppException
+import com.only.engine.exception.BusinessException
+import com.only.engine.exception.DependencyException
+import com.only.engine.exception.RequestException
+import com.only.engine.exception.SystemException
+import edu.only4.danmuku.domain.shared.error.DanmukuBusinessErrors
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
@@ -21,10 +27,10 @@ object UpdateVideoPostCmd {
         override fun exec(request: Request): Response {
             val post = Mediator.repositories.findFirst(
                 SVideoPost.predicate { it.id eq request.videoPostId },
-            ).getOrNull() ?: throw KnownException("视频草稿不存在: ${request.videoPostId}")
+            ).getOrNull() ?: throw BusinessException(DanmukuBusinessErrors.RESOURCE_NOT_FOUND, "视频草稿不存在: ${request.videoPostId}")
 
             if (post.customerId != request.customerId) {
-                throw KnownException("无权编辑该视频草稿")
+                throw BusinessException(DanmukuBusinessErrors.OPERATION_FORBIDDEN, "无权编辑该视频草稿")
             }
 
             // 将实体加入工作单元，确保在 save() 时可被 merge/flush/refresh
@@ -49,7 +55,7 @@ object UpdateVideoPostCmd {
                 val existingByIndex = post.videoFilePosts.associateBy { it.fileIndex }
                 incomingFiles.forEach { spec ->
                     if (!seenIndex.add(spec.fileIndex)) {
-                        throw KnownException("文件索引重复: ${spec.fileIndex}")
+                        throw BusinessException(DanmukuBusinessErrors.STATE_INVALID, "文件索引重复: ${spec.fileIndex}")
                     }
                     val existing = existingByIndex[spec.fileIndex]
                     if (existing == null || existing.uploadId != spec.uploadId) {

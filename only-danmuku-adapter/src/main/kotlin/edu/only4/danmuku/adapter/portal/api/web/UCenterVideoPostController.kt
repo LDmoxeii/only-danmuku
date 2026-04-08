@@ -1,6 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.web
 
-import com.only.engine.exception.KnownException
+import com.only.engine.exception.BusinessException
+import edu.only4.danmuku.domain.shared.error.DanmukuBusinessErrors
 import com.only.engine.json.misc.JsonUtils
 import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
@@ -37,7 +38,7 @@ class UCenterVideoPostController {
             .mapIndexed { index, item ->
                 val fileIndex = item.fileIndex ?: index
                 if (!seenIndex.add(fileIndex)) {
-                    throw KnownException("文件索引重复: $fileIndex")
+                    throw BusinessException(DanmukuBusinessErrors.STATE_INVALID, "文件索引重复: $fileIndex")
                 }
                 CreateVideoPostCmd.VideoPostFileSpec(
                     uploadId = item.uploadId,
@@ -73,7 +74,7 @@ class UCenterVideoPostController {
             .mapIndexed { index, item ->
                 val fileIndex = item.fileIndex ?: index
                 if (!seenIndex.add(fileIndex)) {
-                    throw KnownException("文件索引重复: $fileIndex")
+                    throw BusinessException(DanmukuBusinessErrors.STATE_INVALID, "文件索引重复: $fileIndex")
                 }
                 UpdateVideoPostCmd.VideoPostFileSpec(
                     uploadId = item.uploadId,

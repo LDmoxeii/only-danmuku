@@ -1,6 +1,12 @@
 package edu.only4.danmuku.application.commands.video_encrypt
 
-import com.only.engine.exception.KnownException
+import com.only.engine.error.CommonErrors
+import com.only.engine.exception.AppException
+import com.only.engine.exception.BusinessException
+import com.only.engine.exception.DependencyException
+import com.only.engine.exception.RequestException
+import com.only.engine.exception.SystemException
+import edu.only4.danmuku.domain.shared.error.DanmukuBusinessErrors
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
@@ -23,7 +29,7 @@ object BindVideoHlsKeyTokenToVideoCmd {
         override fun exec(request: Request): Response {
             val token = Mediator.repositories.findOne(
                 SVideoHlsKeyToken.predicateById(request.tokenId)
-            ).getOrNull() ?: throw KnownException("播放 token 不存在: ${request.tokenId}")
+            ).getOrNull() ?: throw BusinessException(DanmukuBusinessErrors.RESOURCE_NOT_FOUND, "播放 token 不存在: ${request.tokenId}")
 
             token.bindVideoId(request.videoId)
             Mediator.uow.save()
