@@ -89,9 +89,9 @@ object UpdateCustomerVideoSeriesVideosCmd {
                 if (trimmed.isEmpty()) {
                     return@forEach
                 }
-                val id = trimmed.toLongOrNull() ?: throw BusinessException(DanmukuBusinessErrors.STATE_INVALID, "无效的视频ID: $trimmed")
+                val id = trimmed.toLongOrNull() ?: throw RequestException(CommonErrors.PARAM_INVALID, "无效的视频ID: $trimmed")
                 if (id <= 0) {
-                    throw BusinessException(DanmukuBusinessErrors.STATE_INVALID, "无效的视频ID: $trimmed")
+                    throw RequestException(CommonErrors.PARAM_INVALID, "无效的视频ID: $trimmed")
                 }
                 if (dedupe.add(id)) {
                     result.add(id)

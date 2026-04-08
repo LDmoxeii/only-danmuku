@@ -3,7 +3,6 @@ package edu.only4.danmuku.adapter.application.distributed.clients.video_transcod
 import cn.hutool.core.util.RuntimeUtil
 import com.only.engine.error.CommonErrors
 import com.only.engine.exception.AppException
-import com.only.engine.exception.DependencyException
 import com.only.engine.exception.RequestException
 import com.only.engine.exception.SystemException
 import com.only.engine.json.misc.JsonUtils
@@ -38,11 +37,11 @@ class TranscodeVideoFileToAbrByPathCliHandler(
 
             val sourceFile = File(sourcePath)
             if (!sourceFile.exists()) {
-                throw DependencyException(CommonErrors.DEPENDENCY_ERROR, "源视频不存在: $sourcePath")
+                throw SystemException(CommonErrors.SYSTEM_ERROR, "源视频不存在: $sourcePath")
             }
             val outputDir = File(outputBaseDir)
             if (outputDir.exists().not() && !outputDir.mkdirs()) {
-                throw DependencyException(CommonErrors.DEPENDENCY_ERROR, "无法创建输出目录: ${outputDir.absolutePath}")
+                throw SystemException(CommonErrors.SYSTEM_ERROR, "无法创建输出目录: ${outputDir.absolutePath}")
             }
 
             val sourceProbe =
@@ -198,7 +197,7 @@ class TranscodeVideoFileToAbrByPathCliHandler(
                         append(": ").append(stderr.trim())
                     }
                 }
-                throw DependencyException(CommonErrors.DEPENDENCY_ERROR, message)
+                throw SystemException(CommonErrors.SYSTEM_ERROR, message)
             }
 
             stdout
@@ -208,7 +207,7 @@ class TranscodeVideoFileToAbrByPathCliHandler(
         } catch (e: AppException) {
             throw e
         } catch (e: Exception) {
-            throw DependencyException(CommonErrors.DEPENDENCY_ERROR, "FFmpeg 命令执行异常", cause = e)
+            throw SystemException(CommonErrors.SYSTEM_ERROR, "FFmpeg 命令执行异常", cause = e)
         } finally {
             process?.destroy()
         }

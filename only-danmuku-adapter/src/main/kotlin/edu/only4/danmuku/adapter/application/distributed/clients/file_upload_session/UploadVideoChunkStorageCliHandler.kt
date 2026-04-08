@@ -2,8 +2,8 @@ package edu.only4.danmuku.adapter.application.distributed.clients.file_upload_se
 
 import com.only.engine.error.CommonErrors
 import com.only.engine.exception.AppException
-import com.only.engine.exception.DependencyException
 import com.only.engine.exception.RequestException
+import com.only.engine.exception.SystemException
 import com.only4.cap4k.ddd.core.application.RequestHandler
 
 import edu.only4.danmuku.application.distributed.clients.file_upload_session.UploadVideoChunkStorageCli
@@ -32,7 +32,7 @@ class UploadVideoChunkStorageCliHandler :
         try {
             val targetDir = resolveTempDir(tempPath)
             if (!targetDir.exists() && !targetDir.mkdirs()) {
-                throw DependencyException(CommonErrors.DEPENDENCY_ERROR, "创建临时目录失败: ${targetDir.absolutePath}")
+                throw SystemException(CommonErrors.SYSTEM_ERROR, "创建临时目录失败: ${targetDir.absolutePath}")
             }
             val targetFile = File(targetDir, request.chunkIndex.toString())
             request.chunkFile.transferTo(targetFile)
@@ -45,7 +45,7 @@ class UploadVideoChunkStorageCliHandler :
         } catch (e: AppException) {
             throw e
         } catch (e: Exception) {
-            throw DependencyException(CommonErrors.DEPENDENCY_ERROR, "分片存储失败", cause = e)
+            throw SystemException(CommonErrors.SYSTEM_ERROR, "分片存储失败", cause = e)
         }
     }
 

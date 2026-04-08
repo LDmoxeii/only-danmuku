@@ -4,7 +4,6 @@ import cn.hutool.core.util.RuntimeUtil
 import com.only.engine.error.CommonErrors
 import com.only.engine.exception.AppException
 import com.only.engine.exception.BusinessException
-import com.only.engine.exception.DependencyException
 import com.only.engine.exception.RequestException
 import com.only.engine.exception.SystemException
 import edu.only4.danmuku.domain.shared.error.DanmukuBusinessErrors
@@ -123,7 +122,7 @@ class EncryptHlsVariantWithKeyCliHandler : RequestHandler<EncryptHlsVariantWithK
         val tempDir = Files.createTempDirectory("hls-src-").toFile()
         val downloaded = downloadByPrefix(client, qualityPrefix, tempDir.toPath())
         if (downloaded == 0) {
-            throw DependencyException(CommonErrors.DEPENDENCY_ERROR, "源目录不存在: $qualityPrefix")
+            throw SystemException(CommonErrors.SYSTEM_ERROR, "源目录不存在: $qualityPrefix")
         }
         return StorageContext(tempDir, qualityPrefix, tempDir.toPath())
     }
@@ -174,7 +173,7 @@ class EncryptHlsVariantWithKeyCliHandler : RequestHandler<EncryptHlsVariantWithK
                         append(": ").append(stderr.trim())
                     }
                 }
-                throw DependencyException(CommonErrors.DEPENDENCY_ERROR, message)
+                throw SystemException(CommonErrors.SYSTEM_ERROR, message)
             }
 
             stdout
@@ -184,7 +183,7 @@ class EncryptHlsVariantWithKeyCliHandler : RequestHandler<EncryptHlsVariantWithK
         } catch (e: AppException) {
             throw e
         } catch (e: Exception) {
-            throw DependencyException(CommonErrors.DEPENDENCY_ERROR, "FFmpeg 单档位加密执行异常", cause = e)
+            throw SystemException(CommonErrors.SYSTEM_ERROR, "FFmpeg 单档位加密执行异常", cause = e)
         } finally {
             process?.destroy()
         }
