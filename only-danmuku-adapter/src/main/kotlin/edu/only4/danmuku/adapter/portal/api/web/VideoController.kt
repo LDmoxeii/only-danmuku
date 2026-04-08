@@ -132,6 +132,7 @@ class VideoController {
         ).map { it.keyword }
     }
 
+    @SaIgnore
     @PostMapping("/getHotVidePage")
     fun getHotVidePage(@RequestBody @Validated request: GetHotVidePage.Request): PageData<GetHotVidePage.Item> {
         val queryResult = Mediator.queries.send(GetHotVidePage.Converter.INSTANCE.toQry(request))
