@@ -104,6 +104,7 @@ class VideoController {
         )
     ).current
 
+    @SaIgnore
     @PostMapping("/search")
     fun search(@RequestBody @Validated request: VideoSearch.Request): PageData<VideoSearch.Item> {
         val queryResult = Mediator.queries.send(
